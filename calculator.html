@@ -1,97 +1,180 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
 
-<html>
-  <body
-    style="-ms-zoom: 1;"
-    data-twttr-rendered="true"
-    dir="ltr"
-    crossriderapp0002258="true"
-    class="three-col logged-in ms-windows asian ja enhanced-mini-profile ProfilePage ProfilePage--withWarning no-nav-banners supports-drag-and-drop"
-    data-fouc-class-names="swift-loading no-nav-banners"
-  >
-    <div id="bN015htcoyT__google-cache-hdr">
-      <meta http-equiv="Content-Style-Type" content="text/css" />
-      <meta http-equiv="Content-Script-Type" content="text/javascript" />
-      <title>赤石の民衆</title>
-      <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
-      <meta
-        name="keywords"
-        content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報"
-      />
-      <link href="design/style.css" rel="stylesheet" type="text/css" />
-      <link
-        rel="alternate"
-        type="application/rss+xml"
-        title="RSS"
-        href="/rss.xml"
-      />
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
 
-      <div id="container">
-        <div id="header">
-          <h1>REDSTONE総合攻略情報ポータルページ</h1>
-          <p id="logo">
-            <a href="https://sokomin.github.io/index.html"
-              ><img src="design/logo3.png" alt="" width="251" height="41"
-            /></a>
-          </p>
-        </div>
-        <!--/header-->
+      https://www.apache.org/licenses/LICENSE-2.0
 
-        <ul id="menu">
-          <li><a href="https://sokomin.github.io/index.html">ホーム</a></li>
-          <li><a href="https://sokomin.github.io/calculator.html">計算機</a></li>
-          <li><a href="https://sokomin.github.io/history.html">赤石史</a></li>
-          <li><a href="https://sokomin.github.io/link.html">リンク</a></li>
-          <li><a href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
-          <li><a href="template.html">PONPON(Debug)</a></li>
-        </ul>
-        <!--ここまでてんぷれ-->
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
 
-        <div id="contents">
-          <div id="main">
-            計算機をたくさん置く場所の予定。<br />
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0"
+    />
+    <!-- Page styles -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <link
+      rel="stylesheet"
+      href="https://code.getmdl.io/1.3.0/material.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      #view-source {
+        position: fixed;
+        display: block;
+        right: 0;
+        bottom: 0;
+        margin-right: 40px;
+        margin-bottom: 40px;
+        z-index: 900;
+      }
+    </style>
+  </head>
+  <body>
+    <title>赤石の民衆</title>
+    <meta
+      name="description"
+      content="レッドストーン総合攻略情報ポータルページ"
+    />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta
+      name="keywords"
+      content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報"
+    />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="RSS"
+      href="/rss.xml"
+    />
 
-            <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
-            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br /></font>
-            <br />
-            当サイトはリンクフリーです。バナーは準備中です。<br />
-            <br />
-            <h2>更新履歴</h2>
-            <table id="table2">
-              <colgroup>
-                <col span="1" width="110" />
-              </colgroup>
-              <tbody>
-                <tr>
-                  <td valign="top">2019年01月14日</td>
-                  <td valign="top">ひとまず枠作成</td>
-                </tr>
-              </tbody>
-            </table>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      <div
+        class="android-header mdl-layout__header mdl-layout__header--waterfall"
+      >
+        <div class="mdl-layout__header-row">
+          <span class="android-title mdl-layout-title">
+            <img class="android-logo-image" src="design/logo3.png" />
+          </span>
+          <!-- Add spacer, to align navigation to the right in desktop -->
+          <div class="android-header-spacer mdl-layout-spacer"></div>
+          <div
+            class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width"
+          >
+            <label
+              class="mdl-button mdl-js-button mdl-button--icon"
+              for="search-field"
+            >
+              <i class="material-icons">search</i>
+            </label>
+            <div class="mdl-textfield__expandable-holder">
+              <input
+                placeholder="検索できたら最高"
+                class="mdl-textfield__input"
+                type="text"
+                id="search-field"
+              />
+            </div>
           </div>
-
-<!--ここから下もテンプレ-->
-
-          <div id="sub">
-            <h3>メニュー</h3>
-            <ul class="menu">
-              <!-- <li><a href="quest/quest.html">クエスト</a></li>
-              <li><a href="secretdg/secretdg.html">秘密ダンジョン</a></li> -->
-              <li><a href="item/item.html">アイテム</a></li>
-              <!-- <li><a href="monster/monster.html">モンスター</a></li>
-              <li><a href="skill/skill.html">スキル</a></li>
-              <li><a href="calculation/calculation.html">計算機</a></li>
-              <li><a href="information/information.html">雑学</a></li>
-              <li><a href="korea/korea.html">韓国情報</a></li> -->
-            </ul>
-       </div>
+          <!-- Navigation -->
+          <div class="android-navigation-container">
+            <nav class="android-navigation mdl-navigation">
+              <a
+                class="mdl-navigation__link mdl-typography--text-uppercase"
+                href="https://sokomin.github.io/index.html"
+                >ホーム</a
+              >
+              <a
+                class="mdl-navigation__link mdl-typography--text-uppercase"
+                href="https://sokomin.github.io/calculator.html"
+                >計算機</a
+              >
+              <a
+                class="mdl-navigation__link mdl-typography--text-uppercase"
+                href="https://sokomin.github.io/history.html"
+                >赤石史</a
+              >
+              <a
+                class="mdl-navigation__link mdl-typography--text-uppercase"
+                href="https://sokomin.github.io/link.html"
+                >リンク</a
+              >
+              <a
+                class="mdl-navigation__link mdl-typography--text-uppercase"
+                href="https://marshmallow-qa.com/sokoranominnsyu"
+                >お問合せ</a
+              >
+              <a
+                class="mdl-navigation__link mdl-typography--text-uppercase"
+                href="template.html"
+                >PONPON(Debug)</a
+              >
+            </nav>
+          </div>
+          <span class="android-mobile-title mdl-layout-title">
+            <img class="android-logo-image" src="design/logo3.jpg" />
+          </span>
+        </div>
       </div>
-      <div id="footer">
-          Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
-                  <!-- c2019 L&amp;K Logic Korea Co., Ltd. All Rights Reserved.c2019 GameOn
-        Co., Ltd. All Rights Reserved. -->
+
+      <div class="android-drawer mdl-layout__drawer">
+        <span class="mdl-layout-title">
+          <h3>メニュー</h3>
+          <!-- <img class="android-logo-image" src="design/logo3.png" /> -->
+        </span>
+        <nav class="mdl-navigation">
+          <a class="mdl-navigation__link" href="item/item.html">アイテム</a>
+        </nav>
       </div>
+      <div class="main-background mdl-typography--text-center">
+        大分後でのリリースになる予定<br />
+        <br />
+        <h4>更新履歴</h4>
+        <table id="table2">
+          <colgroup>
+            <col span="1" width="300" />
+          </colgroup>
+          <tbody>
+            <tr>
+              <td valign="top">2019年01月14日</td>
+              <td valign="top">ひとまず枠作成</td>
+            </tr>
+          </tbody>
+        </table>
     </div>
-    <span id="sbmarwbthv5"></span>
+
+      <!--ハンバーガー表示するのに使う-->
+      <div class="android-content mdl-layout__content"></div>
+
+      <a
+        href="https://github.com/google/material-design-lite/blob/mdl-1.x/templates/android-dot-com/"
+        target="_blank"
+        id="view-source"
+        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast"
+        >参考デザイン</a
+      >
+      <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    </div>
   </body>
 </html>
