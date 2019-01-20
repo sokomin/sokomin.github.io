@@ -1,0 +1,264 @@
+if(location.href.indexOf("?") == -1){
+ id1.selectedIndex=1;
+ //id1.options[0].style.display = "none";
+ id1.options[0].disabled = true;
+}else{
+ id26.selectedIndex=1; //URL語尾に「?」がある場合、初期の基本スキルを裏職とする
+ //id26.options[0].style.display = "none";
+ id26.options[0].disabled = true;
+}
+SkillRefresh(); //初期化
+AwakeSwitch = 0;
+
+
+function SkillReset(){
+ AwakeSwitch = 0;
+ AwakeText.innerHTML = "なし"
+ Rebirth.selectedIndex=0;
+
+ for(num=1;num<=68;num=num+1){
+  document.getElementById("id" + num).selectedIndex = 0;
+ }
+
+ for(num=51;num<=68;num=num+1){
+  document.getElementById("id" + num).disabled = false;
+  SkillSet[num][1] = 6; SkillSet[num][4] = 0; SkillSet[num][6] = 0; SkillSet[num][8] = 0; SkillSet[num][10] = 0;
+ }
+
+ if(location.href.indexOf("?") == -1){
+  id1.selectedIndex=1;
+ }else{
+  id26.selectedIndex=1;
+ }
+ SkillRefresh()
+}
+
+function SkillRefresh(){
+ var i,tempnum,num;
+ for(num=1;num<=68;num=num+1){ //68回(全スキル)の精査
+  if((document.getElementById("id" + num).selectedIndex) > 0){
+   //Slvが振られている時
+   document.getElementById("id" + num).style.background = "mistyrose";
+   for(i=1;i<=5;i=i+1){ //前提スキル5回繰り返す
+    tempnum=SkillSet[num][2*i];
+    if(tempnum>0){ //前提スキルが設定されていたら前提スキルを必要Lv以上まで振る
+     if(document.getElementById("id" + tempnum).selectedIndex < SkillSet[num][2*i+1]){
+      document.getElementById("id" + tempnum).selectedIndex = SkillSet[num][2*i+1];
+      SkillRefresh();
+     }
+    }
+   }
+  }else{
+   document.getElementById("id" + num).style.background = "white";
+  }
+ }
+SlvSum();
+}
+
+function SlvSum(){
+ //スキルポイント算出
+ sum = 0;
+ for(num=1;num<=68;num=num+1){ //68回(全スキル)の精査
+  if((document.getElementById("id" + num).selectedIndex) > 0){
+   tempnum = SkillSet[num][1];
+    switch (tempnum){
+     case 1:
+      //sum = 難易度付加+レベル/2*(2*難易度+(レベル-1)*難易度)
+      sum = sum + (0+ document.getElementById("id" + num).selectedIndex /2*(2*1+( document.getElementById("id" + num).selectedIndex -1)*1));
+     break;
+     case 2:
+      sum = sum + (1+ document.getElementById("id" + num).selectedIndex /2*(2*2+( document.getElementById("id" + num).selectedIndex -1)*2));
+     break;
+     case 3:
+      sum = sum + (5+ document.getElementById("id" + num).selectedIndex /2*(2*3+( document.getElementById("id" + num).selectedIndex -1)*3));
+     break;
+     case 4:
+      sum = sum + (20+ document.getElementById("id" + num).selectedIndex /2*(2*4+( document.getElementById("id" + num).selectedIndex -1)*4));
+     break;
+     case 5:
+      sum = sum + (45+ document.getElementById("id" + num).selectedIndex /2*(2*5+( document.getElementById("id" + num).selectedIndex -1)*5));
+     break;
+     case 6:
+      sum = sum + 3500;
+     break;
+     case 7:
+      sum = sum + 7000;
+     break;
+    }
+    
+  }
+ }
+ SkillPointText.innerHTML = (sum);
+ //スキルポイントからLvを算出する部分
+ var SkillLevel,SkillPoint,Total,PointMuch,Lv;
+ SkillLevel = 0; SkillPoint = 0; PointMuch = 0; Total = (sum);
+
+ //算出前に転生スキルポイントボーナス分を差し引き
+ switch(Rebirth.selectedIndex){
+  case 1:
+   Total = Total - 100;
+  break;
+  case 2:
+   Total = Total - 300;
+  break;
+  case 3:
+   Total = Total - 600;
+  break;
+  case 4:
+   Total = Total - 1000;
+  break;
+  case 5:
+   Total = Total - 1500;
+  break;
+ }
+ if (Total >= 5049){ //100Lv以下の時の計算式
+  SkillLevel = 100;
+  SkillPoint = 5149;
+  PointMuch = SkillPoint - Total;
+  while ( PointMuch < 0 ){
+   SkillLevel = SkillLevel +1;
+   SkillPoint = SkillPoint +100;
+   PointMuch = SkillPoint - Total;
+  }	
+ }
+ if (Total < 5149) { //100Lv超の時の計算式
+  SkillPoint = 0;
+  for (Lv = 1; Lv<101; Lv++){
+   SkillPoint = SkillPoint + Lv + 1;
+   if (SkillPoint - Total >= 0){
+    SkillLevel = Lv;
+    PointMuch = SkillPoint - Total;
+    break;
+   }
+  }
+ }
+ SkillPointText.innerHTML = (sum -1);
+ SkillLvText.innerHTML = (SkillLevel);
+}
+
+function LvMax(num){
+ //アイコンをクリックされた時は50Lvにする
+ if(num <= 50){
+  document.getElementById("id" + num).selectedIndex = 50;
+ }else{
+  if(document.getElementById("id" + num).disabled == false){
+   document.getElementById("id" + num).selectedIndex = 1;
+   Awake(num);
+  }
+ }
+ SkillRefresh();
+}
+
+function Awake(num){
+ //★覚醒スキル制御部（覚醒が無ければコードこんなに長くならなかったのにね・・・）
+ if(AwakeSwitch==0){
+
+  if(num >= 51 && num <= 53){ //表職覚醒スキル1
+   AwakeText.innerHTML = JobName[3];
+   id54.disabled = true;
+   id57.disabled = true;
+   SkillSet[55][1] = 7; SkillSet[56][1] = 7; SkillSet[58][1] = 7; SkillSet[59][1] = 7;
+
+   //覚醒スキルの前提スキルを他覚醒スキルに埋め込む
+   SkillSet[52][4] = SkillSet[51][2]; SkillSet[53][4] = SkillSet[51][2];
+   i=51;SkillSet[55][6] = i; SkillSet[56][6] = i; SkillSet[58][6] = i; SkillSet[59][6] = i;
+   i=52;SkillSet[55][8] = i; SkillSet[56][8] = i; SkillSet[58][8] = i; SkillSet[59][8] = i;
+   i=53;SkillSet[55][10] = i; SkillSet[56][10] = i; SkillSet[58][10] = i; SkillSet[59][10] = i;
+  }
+  if(num >= 54 && num <= 56){ //表職覚醒スキル2
+   AwakeText.innerHTML = JobName[4];
+   id51.disabled = true;
+   id57.disabled = true;
+   SkillSet[52][1] = 7; SkillSet[53][1] = 7; SkillSet[58][1] = 7; SkillSet[59][1] = 7;
+
+   //覚醒スキルの前提スキルを他覚醒スキルに埋め込む
+   SkillSet[55][4] = SkillSet[54][2]; SkillSet[56][4] = SkillSet[54][2];
+   i=54; SkillSet[52][6] = i; SkillSet[53][6] = i; SkillSet[58][6] = i; SkillSet[59][6] = i;
+   i=55; SkillSet[52][8] = i; SkillSet[53][8] = i; SkillSet[58][8] = i; SkillSet[59][8] = i;
+   i=56; SkillSet[52][10] = i; SkillSet[53][10] = i; SkillSet[58][10] = i; SkillSet[59][10] = i;
+  }
+  if(num >= 57 && num <= 59){ //表職覚醒スキル3
+   AwakeText.innerHTML = JobName[5];
+   id51.disabled = true;
+   id54.disabled = true;
+   SkillSet[52][1] = 7; SkillSet[53][1] = 7; SkillSet[55][1] = 7; SkillSet[56][1] = 7;
+
+   //覚醒スキルの前提スキルを他覚醒スキルに埋め込む
+   SkillSet[58][4] = SkillSet[57][2]; SkillSet[59][4] = SkillSet[57][2];
+   i=57; SkillSet[52][6] = i; SkillSet[53][6] = i; SkillSet[55][6] = i; SkillSet[56][6] = i;
+   i=58; SkillSet[52][8] = i; SkillSet[53][8] = i; SkillSet[55][8] = i; SkillSet[56][8] = i;
+   i=59; SkillSet[52][10] = i; SkillSet[53][10] = i; SkillSet[55][10] = i; SkillSet[56][10] = i;
+  }
+
+  if(num >= 60 && num <= 62){ //裏職覚醒スキル1
+   AwakeText.innerHTML = JobName[6];
+   id63.disabled = true;
+   id66.disabled = true;
+   SkillSet[64][1] = 7; SkillSet[65][1] = 7; SkillSet[67][1] = 7; SkillSet[68][1] = 7;
+
+   //覚醒スキルの前提スキルを他覚醒スキルに埋め込む
+   SkillSet[61][4] = SkillSet[60][2]; SkillSet[62][4] = SkillSet[60][2];
+   i=60; SkillSet[64][6] = i; SkillSet[65][6] = i; SkillSet[67][6] = i; SkillSet[68][6] = i;
+   i=61; SkillSet[64][8] = i; SkillSet[65][8] = i; SkillSet[67][8] = i; SkillSet[68][8] = i;
+   i=62; SkillSet[64][10] = i; SkillSet[65][10] = i; SkillSet[67][10] = i; SkillSet[68][10] = i;
+  }
+  if(num >= 63 && num <= 65){ //裏職覚醒スキル2
+   AwakeText.innerHTML = JobName[7];
+   id60.disabled = true;
+   id66.disabled = true;
+   SkillSet[61][1] = 7; SkillSet[62][1] = 7; SkillSet[67][1] = 7; SkillSet[68][1] = 7;
+
+   //覚醒スキルの前提スキルを他覚醒スキルに埋め込む
+   SkillSet[64][4] = SkillSet[63][2]; SkillSet[65][4] = SkillSet[63][2];
+   i=63; SkillSet[61][6] = i; SkillSet[62][6] = i; SkillSet[67][6] = i; SkillSet[68][6] = i;
+   i=64; SkillSet[61][8] = i; SkillSet[62][8] = i; SkillSet[67][8] = i; SkillSet[68][8] = i;
+   i=65; SkillSet[61][10] = i; SkillSet[62][10] = i; SkillSet[67][10] = i; SkillSet[68][10] = i;
+  }
+  if(num >= 66 && num <= 68){ //裏職覚醒スキル3
+   AwakeText.innerHTML = JobName[8];
+   id60.disabled = true;
+   id63.disabled = true;
+   SkillSet[61][1] = 7; SkillSet[62][1] = 7; SkillSet[64][1] = 7; SkillSet[65][1] = 7;
+
+   //覚醒スキルの前提スキルを他覚醒スキルに埋め込む
+   SkillSet[67][4] = SkillSet[66][2]; SkillSet[68][4] = SkillSet[66][2];
+   i=66; SkillSet[61][6] = i; SkillSet[62][6] = i; SkillSet[64][6] = i; SkillSet[65][6] = i;
+   i=67; SkillSet[61][8] = i; SkillSet[62][8] = i; SkillSet[64][8] = i; SkillSet[65][8] = i;
+   i=68; SkillSet[61][10] = i; SkillSet[62][10] = i; SkillSet[64][10] = i; SkillSet[65][10] = i;
+  }
+  AwakeSwitch=1;
+ }
+ if(num >= 51 && num <= 59){
+  for(num=60;num<=68;num=num+1){ //裏職の覚醒スキルをすべて無効に
+   document.getElementById("id" + num).disabled = true;
+  }
+ }
+ if(num >= 60 && num <= 68){
+  for(num=51;num<=59;num=num+1){ //表職の覚醒スキルをすべて無効に
+   document.getElementById("id" + num).disabled = true;
+  }
+ }
+ SkillRefresh();
+}
+
+/*
+     FILE ARCHIVED ON 22:51:57 Jun 25, 2016 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 23:22:51 Jan 19, 2019.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+*/
+/*
+playback timings (ms):
+  LoadShardBlock: 110.013 (3)
+  esindex: 0.007
+  captures_list: 128.263
+  CDXLines.iter: 13.678 (3)
+  PetaboxLoader3.datanode: 107.688 (4)
+  exclusion.robots: 0.188
+  exclusion.robots.policy: 0.175
+  RedisCDXSource: 1.119
+  PetaboxLoader3.resolve: 27.832
+  load_resource: 62.379
+*/
