@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+  <!-- Page styles -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+  <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+
+  <style>
+    #view-source {
+        position: fixed;
+        display: block;
+        right: 0;
+        bottom: 0;
+        margin-right: 40px;
+        margin-bottom: 40px;
+        z-index: 900;
+      }
+    </style>
+</head>
+
+<body>
+  <title>赤石の民衆</title>
+  <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <a name="container"></a>
+    <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+      <div class="mdl-layout__header-row">
+        <span class="android-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <!-- Add spacer, to align navigation to the right in desktop -->
+        <div class="android-header-spacer mdl-layout-spacer"></div>
+        <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input placeholder="検索できたら最高" class="mdl-textfield__input" type="text" id="search-field" />
+          </div>
+        </div>
+        <!-- Navigation -->
+        <div class="android-navigation-container">
+          <nav class="android-navigation mdl-navigation">
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/index.html">ホーム</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+          </nav>
+        </div>
+        <span class="android-mobile-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
+          <i class="material-icons">more_vert</i>
+        </button>
+        <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a></li>
+          <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+        </ul>
+
+      </div>
+    </div>
+
+    <div class="android-drawer mdl-layout__drawer">
+      <span class="mdl-layout-title">
+        <h3>メニュー</h3>
+      </span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html"><strong>PTボス</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html"><strong>クエスト</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html"><strong>雑学</strong></a>
+      </nav>
+    </div>
+
+
+    <div class="mdl-layout__content">
+
+      <!--main-->
+      <div class="korea-content main-background">
+        <br>
+        <h3>韓国　2018/12/19アップデート</h3>
+        <h5>
+          <font color="#ff0000"><strong>[重要！] 韓国公式の情報を基にしています。<br>
+              誤訳や韓国独自仕様の可能性もありますので、予めご了承下さい。</strong></font><br>
+        </h5>
+        <br>
+        韓国アップデートの変更内容一覧<br>
+        <br>
+        <a href="#1">戦士バランスパッチ</a><br>
+        <a href="#2">ネフォンクリーチャー確定制作システム</a><br>
+        <a href="#3">新規エリアボス1種を追加</a><br>
+        <br>
+        <br>
+        <br>
+        <a name="1"></a>
+        <font color="#e95388">
+          <h4>戦士バランスパッチ</h4>
+        </font>
+        TODO<br>
+        <br>
+        <br>
+
+
+        <a name="2"></a>
+        <font color="#e95388">
+          <h4>ネフォンクリーチャー確定制作システム</h4>
+        </font>
+        一部ネフォンクリーチャーを確定的に製作して獲得が可能です。<br>
+        <br>
+        ※注意事項<br>
+        - 確定製作は、同時に多数の製作が不可能です。<br>
+        - 確定製作は、必要に応じて製作開始、製作中止が可能です。<br>
+        <br>
+        確定製作時」ネフォンクリーチャーの整数」と「クリーチャー別固有の材料」が必要です。<br>
+        獲得しようとするクリーチャーの評価に基づいて必要とされる「ネフォンクリーチャーの整数」の数が異なります。<br>
+        ネフォンクリーチャー転送機能を使用してクリーチャー評価に基づいて「ネフォンクリーチャーの整数」の獲得が可能です。送信されたクリーチャーは消えます。<br>
+        <br>
+        <br>
+        ※注意事項<br>
+        - PvP、冒険チームに属し有効中ネフォンクリーチャーは送信できません。<br>
+        - ネフォンクリーチャーの定数はクリーチャーPvPも獲得が可能です。<br>
+        - ネフォンクリーチャーの定数は「取引不可」アイテムです。<br>
+        - ネフォンクリーチャーの整数は、最大50,000個まで保有できます。<br>
+        - ネフォンクリーチャーの定数は、インベントリカーンをとりません。<br>
+        <br>
+        固有の材料は、ネフォンクリーチャー確定製作時に必要とし、確定製作が「進行中」である場合にのみ獲得が可能です。<br>
+        固有の材料は、インベントリカーンを占めず、製作中止時固有の材料は、削除されます。
+        <br>
+        <br>
+        <br>
+        <table id="table8">
+          <tr>
+            <th>区分</th>
+            <th>N</th>
+            <th>R</th>
+            <th>HR</th>
+            <th>SR</th>
+            <th>LR</th>
+          </tr>
+          <tr>
+            <th>対象クリーチャー</th>
+            <td> - </td>
+            <td>強靭なひよこ<br>レッドスパインレディ<br>雨<br>ブルーアブソル<br>地獄のフレア</td>
+            <td>クーマン<br>バウンティハンター<br>氏ウォーカー</td>
+            <td>アイスクイーン</td>
+            <td> -</td>
+          </tr>
+        </table>
+
+        <a name="3"></a>
+        <font color="#e95388">
+          <h4>新規エリアボス1種を追加</h4>
+        </font>
+        新規地域ボス討伐1種新たに追加されます。<br>
+        <br>
+        1）入場条件<br>
+        - レベル：900以上<br>
+        - 場所：埋め込まれた古代遺跡（座標11、14）NPC「騎士団長日露」と対話を通じて入場<br>
+        （既存の地域ボス討伐NPC「討伐騎士団長」も「騎士団長ディラン」に変更されました。）<br>
+        <br>
+        - 入場は2人以上のパーティーから可能です。<br>
+        <br>
+        - 既存の地域ボスである「シュラその」を含む討伐は一日に1回だけクリア可能です。 （討伐失敗時の再入場が可能です。）<br>
+        - 入場時[討伐許可[デフヒルズ] 1つを消費します。<br>
+        - 30分経過時にダンジョンで自動的に退場されます。<br>
+        ※[討伐許可[デフヒルズ]はNPC「騎士団長日露」との対話を通じて、個人の反復クエストクリアで獲得可能です。<br>
+        <br>
+        2）ボスの難易度<br>
+        - ボスの難易度は、荒地、漆黒、深淵、悪夢のような4ステップです。<br>
+        （既存の地域ボス討伐難易度も荒れ地、漆黒、深淵、悪夢に変更されます。）<br>
+        <br>
+        3）クリア報酬<br>
+        - 難易度が高いほど、高い評価の戦利品ボックスを取得確率が増加します。<br>
+        <br>
+        <table id="table8">
+          <colgroup>
+            <col span="1" width="20%">
+          </colgroup>
+          <tr>
+            <th>討伐難易度</th>
+            <th>補償</th>
+          </tr>
+          <tr>
+            <th>荒れ地</th>
+            <td>戦利品ボックス（評価ランダム）1個+ポルコンの翼装飾1個</td>
+          </tr>
+          <tr>
+            <th>漆黒</th>
+            <td>戦利品ボックス（評価ランダム）1個+ポルコンの翼装飾2個</td>
+          </tr>
+          <tr>
+            <th>深淵</th>
+            <td>戦利品ボックス（評価ランダム）1個+ポルコンの翼装飾3個</td>
+          </tr>
+          <tr>
+            <th>悪夢</th>
+            <td>戦利品ボックス（評価ランダム）1個+ポルコンの翼装飾4つ</td>
+          </tr>
+        </table>
+        <br>
+        4）討伐店<br>
+        - 討伐店のトークンは、「ポルコンの翼装飾」です。<br>
+        - トークンでの戦利品ボックスを購入することができます。<br>
+        - トークンで討伐バッジを交換または購入することができます。<br>
+        <br>
+        <table id="table8">
+          <colgroup>
+            <col span="1" width="5%">
+            <col span="1">
+            <col span="1" width="13%">
+          </colgroup>
+          <tr>
+            <th>NO</th>
+            <th>アイテム名</th>
+            <th>トークン数</th>
+            <th>オプション</th>
+            <th>交換時</th>
+          </tr>
+          <tr>
+            <th>1</th>
+            <td>デフヒルズ討伐バッジ[ステップ1]</td>
+            <td>10</td>
+            <td>すべてのスキルレベル増加+3<br>PVP攻撃力、防御力増加+ 1％<br></td>
+            <td> -</td>
+          </tr>
+          <tr>
+            <th>2</th>
+            <td>デフヒルズ討伐バッジ[2段階]</td>
+            <td>60</td>
+            <td>すべてのスキルレベル増加+5<br>PVP攻撃力、防御力増加+ 2％</td>
+            <td>デフヒルズ討伐バッジ[ステップ1]<br> +ポルコンの翼装飾50個</td>
+          </tr>
+          <tr>
+            <th>3</th>
+            <td>デフヒルズ討伐バッジ[3段階]</td>
+            <td>150</td>
+            <td>すべてのスキルレベルの増加+7、<br>PVP攻撃力、防御力増加+ 3％</td>
+            <td>デフヒルズ討伐バッジ[2段階]<br> +ポルコンの翼装飾90個</td>
+          </tr>
+        </table>
+        <br>
+        <table id="table8">
+          <colgroup>
+            <col span="1" width="5%">
+          </colgroup>
+          <tr>
+            <th>NO</th>
+            <th>アイテム名</th>
+            <th>トークン数</th>
+          </tr>
+          <tr>
+            <th>1</th>
+            <td>戦利品ボックス[一般]</td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <th>2</th>
+            <td>戦利品ボックス[中級]</td>
+            <td>10</td>
+          </tr>
+          <tr>
+            <th>3</th>
+            <td>戦利品ボックス[上級]</td>
+            <td>25</td>
+          </tr>
+          <tr>
+            <th>4</th>
+            <td>戦利品ボックス[最上級]</td>
+            <td>50</td>
+          </tr>
+        </table>
+        <br>
+
+
+        <a name="4"></a>
+        <font color="#e95388">
+          <h4>その他の変更点</h4>
+        </font>
+        <font color="#e95388">新規ネフォンクリーチャー6種追加</font><br>
+        新規ネフォンクリーチャー6種が追加されます。<br>
+        ※新規ネフォンクリーチャー6種はソーラーコクーンとクリスマスコクーンで獲得することができます。<br>
+        <br>
+        <table id="table8">
+          <tr>
+            <th>No</th>
+            <th>名前</th>
+            <th>評価</th>
+            <th>タイプ</th>
+            <th>メインスキル</th>
+            <th>サブスキル</th>
+            <th>特殊パッシブ</th>
+          </tr>
+          <tr>
+            <th>1</th>
+            <td>ドリーマー</td>
+            <td>英雄</td>
+            <td>健康</td>
+            <td>夢を見ること<br>自分に入ってくるダメージを80％減少させる。<br>（2ターン継続し、最初に一度だけ発動）</td>
+            <td>希望する<br>2ターンの間、メインクリーチャーが受けるダメージの80％減少した。<br>（一般的なダメージ不可）（3ターンクール）</td>
+            <td>命中率8％</td>
+          </tr>
+          <tr>
+            <th>2</th>
+            <td>ノマド</td>
+            <td>英雄</td>
+            <td>知識</td>
+            <td>分散<br>？％の確率で知識？％のダメージと3ターンの間<br>相手のメインクリーチャーバフを取り除く。</td>
+            <td>回帰<br>？％の確率で、メインクリーチャーの<br>スキルクールタイムを初期化させる。</td>
+            <td>回避率4％</td>
+          </tr>
+          <tr>
+            <th>3</th>
+            <td>バウンティハンター</td>
+            <td>英雄</td>
+            <td>力</td>
+            <td>無慈悲<br>10％の確率で力？％+健康？％ダメージ。</td>
+            <td>対価要求<br>40％の確率で相手のメインクリーチャーにかかったバフを<br>味方メインクリーチャーに移す。</td>
+            <td> 攻撃した敵に反射ダメージ<br>50％</td>
+          </tr>
+          <tr>
+            <th>4</th>
+            <td>氏ウォーカー</td>
+            <td>英雄</td>
+            <td>健康</td>
+            <td>ウント割れる<br>健康？％ほどのダメージ+<br>相手のメインクリーチャー4ターン打撃不可。<br>（最初に一度だけ発動）</td>
+            <td>冷たい血<br>相手のメインクリーチャーのスキルを<br>1ターンの間封印する。 （3ターンクール）</td>
+            <td>すべての属性抵抗<br>5％増加</td>
+          </tr>
+          <tr>
+            <th>5</th>
+            <td>クレア</td>
+            <td>英雄</td>
+            <td>サポート</td>
+            <td> - </td>
+            <td>寝言<br>相手のメインクリーチャーの健康を？％減少させ<br>減少させた量だけ味方メインクリーチャーの<br>健康を増加させる。 （2ターン持続）</td>
+            <td>攻撃した敵の混乱<br>10％</td>
+          </tr>
+          <tr>
+            <th>6</th>
+            <td>マーキュリー語</td>
+            <td>幻想</td>
+            <td>知識</td>
+            <td>水の泡アリア<br>？％の確率で知識？％ほどダメージ+<br>味方クリーチャーの知識を3ターンの間？％増加させる。</td>
+            <td>深海波動<br>？％の確率で敵全体クリーチャーのバフを取り除くしまう。</td>
+            <td>水属性抵抗力弱化<br>25％</td>
+          </tr>
+        </table>
+
+        <br>
+        <br>
+        <br>
+        <font color="#e95388">PCキャラクターのサウンドを追加</font><br>
+        すべてのサウンドは、本人のみ再生されます。<br>
+        PCキャラクターが特定のアクション、スキルを使用時にサウンドが再生され、音声On / Off機能とボリュームコントロールのオプションが追加されます。<br>
+        <br>
+        <font color="#e95388">霊術師バランス調整</font><br>
+        1）風車回転、大回転スキルの引き効果がノックバック抵抗の影響を受けない現象が修正されます。<br>
+        2）風車回転、大回転攻撃範囲/引く範囲が一定の範囲以上の広がりれないように制限されます。<br>
+        3）ミルオペアンプと加速ミル撮るの攻撃回数が12回で11回減少します。<br>
+        4）胴斬り発動確率と持続時間が減少します。（PvP）<br>
+        5）足斬り、魂斬り発動確率と持続時間が減少します。（PvP）<br>
+        6）スイッチング射程距離が400から200に減少します。（PvP）<br>
+        <br>
+        ※注意<br>
+        - 4）～ 6）の項目は、PvP時に適用される事項です。<br>
+        - PvP時に適用されるスキルについては、スキル情報ウィンドウに時スキル情報>が追加されます。<br>
+        - 時スキル情報>の場合は、Tabキーを押して有効にして確認することができます。<br>
+        - 後にPvPとPvEスキルを分離して、パッチを実行します。<br>
+        <br>
+        <br>
+        <font color="#e95388">露店設置可能領域を表示可能にする機能の追加</font><br>
+        インベントリで露天商ボタンをクリックする露天設置可能領域を示すエフェクトが出力されます。<br>
+        設置が可能な場合緑、設置ができない場合、赤い色で表示されます。<br>
+        エフェクトを有効にした後、移動が可能です。<br>
+        トレーニングセンター、広場などの設置が不可能な領域には「露店設置禁止区域」と表示されます。<br>
+        <br>
+        <br>
+        <font color="#e95388">クリーチャーPVPシステムの改善</font><br>
+        クリーチャーPvP報酬が改編されます。<br>
+        <br>
+        <br>
+        <table id="table8">
+          <colgroup>
+            <col span="1" width="20%">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="3">クリーチャーPvP報酬の内容</th>
+            </tr>
+            <tr>
+              <th>補償の種類</th>
+              <th>既存の補償</th>
+              <th>変更補償</th>
+            </tr>
+            <tr>
+              <th>勝利の報酬</th>
+              <td>ネフォンクリーチャーコイン</td>
+              <td>ネフォンクリーチャーコイン3個<br>ネフォンクリーチャーの整数1つ</td>
+            </tr>
+            <tr>
+              <th>敗北補償</th>
+              <td>なし</td>
+              <td>ネフォンクリーチャーコイン1個<br>ネフォンクリーチャーの整数1つ</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <br>
+        <br>
+        <font color="#e95388">新規/復帰者無料パッケージの変更</font><br>
+        復帰者パッケージ製品の[ポータルスピア[7日]アイテムが銀行取引不可能に変更されました。<br>
+        <br>
+        <font color="#e95388">[[協会]消滅の魔法]アイテムが銀行取引不可能に変更されました。</font><br>
+        <br>
+        <br>
+        <footer class="android-footer mdl-mega-footer">
+          <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+          </font>
+          Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+        </footer>
+        <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+        　-->
+
+      </div>
+
+      <a href="" id="view-source" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">トップ
+      </a>
+      <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    </div>
+</body>
+
+</html>
