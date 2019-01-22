@@ -1,0 +1,30 @@
+/**
+ * rollOver on jQuery
+ * rollOver tag:img,input
+ * rollOver class:Over
+ * rollOver FileName:*_o.*
+ * Last modify:20081210
+ * Licensed:MIT License
+ * @author AkiraNISHIJIMA(http://nishiaki.probo.jp/)
+ */
+
+function rollOver(){
+    var preLoad = new Object();
+    $('img.Over,input.Over').not("[src*='_o.']").each(function(){
+        var imgSrc = this.src;
+        var fType = imgSrc.substring(imgSrc.lastIndexOf('.'));
+        var imgName = imgSrc.substr(0, imgSrc.lastIndexOf('.'));
+        var imgOver = imgName + '_o' + fType;
+        preLoad[this.src] = new Image();
+        preLoad[this.src].src = imgOver;
+        $(this).hover(
+            function (){
+                this.src = imgOver;
+            },
+            function (){
+                this.src = imgSrc;
+            }
+        );
+    });
+}
+$(document).ready(rollOver);

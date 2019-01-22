@@ -1,0 +1,1 @@
+(function(){(new Date).getTime();var b=("https:"==document.location.protocol?"https:":"http:")+"//sync.shinobi.jp/v2/sync/multi?"+(new Date).getTime(),a=document.createElement("script");a.charset="utf-8";a.src=b;document.body.appendChild(a)})();

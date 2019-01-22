@@ -1,0 +1,99 @@
+var NINCtTotal = "1669056";
+var NINCtGraphType = '0';
+var NINCtYuryo = 0;
+var NINCtUserID = '1190062';
+var NINCtTsumugiStatus = 1;
+var NINCtCount = new Array(392,451,634,527,456,498,507);
+var NINCtURL = '//ct2.shinobi.jp';
+var NINCtMouseLocation;
+function __ntct__loadIframe(adf,target_obj) {
+    var fid = (adf==2)?108:103;
+
+    var div = document.createElement("div");
+    div.setAttribute("style", "backgroundColor:#000000; border:1px solid #CBCBCB;width:300px;height:250px;");
+
+    var f = document.createElement("iframe");
+    f.setAttribute("style", "margin:0;padding:0;");
+    f.setAttribute("width", "300");
+    f.setAttribute("height", "250");
+    f.setAttribute("frameborder", "0");
+    f.setAttribute("scrolling", "no");
+	f.setAttribute("id", "NINCtCMSection");
+
+    var nosrc = false;
+    if (document.uniqueID && typeof window.matchMedia == "undefined") {
+        f.setAttribute("src", "http://img.shinobi.jp/axad/asumi-"+fid+".html");
+    }else{
+        nosrc = true;
+    }
+
+    div.appendChild(f);
+    target_obj.appendChild(div);
+
+    if (nosrc === true) {
+        var d = f.contentWindow.document;
+        d.open();
+        d.write('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"><html lang="utf-8"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><title>PR</title><style type="text/css">body{margin: 0px;padding: 0px;background: #FFFFFF;color: #333333;}</style></head><body>');
+        d.write('<script type="text/javascript" charset="utf-8" src="/'+'/asumi.shinobi.jp/encount"></script>');
+        d.write('<script type="text/javascript" charset="utf-8" src="/'+'/asumi.shinobi.jp/fire?f='+fid+'"></scr'+'ipt>');
+        if (fid==108){
+            d.write('<script type="text/javascript" charset="utf-8" src="/'+'/asumi.shinobi.jp/fire?f=234"></scr'+'ipt>');
+        }else{
+            d.write('<script type="text/javascript" charset="utf-8" src="/'+'/asumi.shinobi.jp/fire?f=233"></scr'+'ipt>');
+
+        }
+        d.write("</body>");
+        d.write("</html>");
+        d.close();
+    }
+}
+
+
+function NINCtMouseOverListener(e) {
+	NINCtMouseLocation = document.all ? {x:e.clientX + (document.body.scrollLeft || document.documentElement.scrollLeft), y:e.clientY + (document.body.scrollTop || document.documentElement.scrollTop)} : {x:e.pageX, y:e.pageY}; 
+	
+	var NINCtDrawSection = document.getElementById("NINCtDrawSection");
+	if (!document.getElementById("NINCtCMSection")) {
+		var referrer = document.referrer;
+		var enc_str = "% !\"#$&'()*+,/:;<=>?@[]^`{|}~";
+		for(var index = 0; index < enc_str.length ; index++){
+			var char_n = parseInt(enc_str.charCodeAt(index));
+			var rep_word = enc_str.substr(index, 1);
+			referrer = referrer.replace(new RegExp("\\" + rep_word, "g"), "%" + char_n.toString(16));
+		}
+		if (NINCtYuryo != 1 && NINCtTsumugiStatus != 0) {
+            __ntct__loadIframe(NINCtTsumugiStatus, document.getElementById("NINCtCMArea"));
+		}
+	}
+	
+	document.getElementById("NINCtMouserOverScript").src = NINCtURL + "/js/drawMouseOver.js";
+	
+}
+var NINCtBaseHTML = ''
++ '<script id="NINCtMouserOverScript" type="text/javascript" charset="utf-8"></script>'
++ '<div id="NINCtCounterSection" style="width:300px; display:inline; position:relative;">'
+	+ '<a target="_blank" href="' + NINCtURL + '/gg/' + NINCtUserID + '">'
+		+ '<img id="NINCtImageSection" onmouseover="NINCtMouseOverListener(event);" src="' + NINCtURL + '/im/' + NINCtUserID + '?' + NINCtTotal + '" alt="" style="border-style:none;border: 0;margin: 0;padding: 0;" />'
+	+ '</a>'
+	+ '<div id="NINCtDrawSection" style="display:none; position:absolute; left:0px; top:0px;z-index:1000;border:3px solid #F0F0F0; background:#F0F0F0; width:300px; font-size:10px; line-height:1; color:#333;">'
+		+ '<div id="NINCtGraphSection" style="width:300px; border-bottom:1px solid #444444;"></div>'
+        + '<div id="NINCtCMArea"></div>'
+		+ '<div><a href="http://www.ninja.co.jp/counter/" target="_blank"  style="font-size:10px; line-height:1; padding: 4px 0 3px; color:#03D; text-align: right; text-decoration:none; display:block;">powered by 忍者カウンター</a></div>'
+	+ '</div>'
++ '</div>';
+
+document.write(NINCtBaseHTML);
+
+if (navigator.userAgent.indexOf("Safari") > -1) {
+	document.getElementById("NINCtImageSection").style.verticalAlign = "bottom";
+}
+
+(function(d){
+    var head = d.getElementsByTagName('head')[0];
+    var script = d.createElement('script');
+    script.defer = 'defer';
+    script.async = 'async';
+    script.src  = '//st.shinobi.jp/img/services/admaxdsp/static/javascripts/trac.js';
+    head.insertBefore(script, head.firstChild);
+})(document);
+

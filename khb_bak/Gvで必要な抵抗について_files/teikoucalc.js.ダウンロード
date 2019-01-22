@@ -1,0 +1,132 @@
+function TeikouCalc(){
+// 初期化
+// 数値の取り込み
+var soubi_teikou = new Array(10);
+ chie = document.Gvteikou.chie.value ; // 知恵
+ charisma = document.Gvteikou.charisma.value ; // カリスマ
+ mikkyou = document.Gvteikou.mikkyou.value ; // 密教
+ sekizou_noroi = document.Gvteikou.sekizou_noroi.value ; // 石像（呪い）
+ sekizou_teika = document.Gvteikou.sekizou_teika.value ; // 石像（低下）
+ sekizou_ijou = document.Gvteikou.sekizou_ijou.value ; // 石像（状態異常）
+ tamashiilv = eval(document.Gvteikou.tamashii.value) ; // 魂切りSLv
+ shikoulv = eval(document.Gvteikou.shinokaori.value) ; // 死の香りSLv
+ if ( shikoulv == 0 ) shikou = 0 ;
+ else shikou = shikoulv + 4 ; // 死の香りの低下値
+  for ( i = 1 ; i < 6 ; i++ ){
+  teikoutmp = 0;
+  for ( j = 1 ; j < 6 ; j++ ){
+     switch(i){
+      case(1):
+       boxselect = "noroisoubi" + j ;
+       break;
+      case(2):
+       boxselect = "teikasoubi" + j ;
+       break;
+      case(3):
+       boxselect = "ijousoubi" + j ;
+       break;
+      case(4):
+       boxselect = "zenijousoubi" + j ;
+       break;
+      case(5):
+       boxselect = "chimeidasoubi" + j ;
+       break;
+     }
+     soubitmp = eval(document.Gvteikou.elements[boxselect].value) ;
+     soubitmp2 = (isNaN(soubitmp) || !soubitmp) ? 0 : soubitmp;
+     teikoutmp += soubitmp2;
+  }
+  soubi_teikou[i] = teikoutmp;
+ }
+
+// 計算（魂切りなしでの数値）
+ sta_wis_plus_cha = parseInt(chie) + parseInt(charisma) ;
+ if ( sta_wis_plus_cha > 1000 ){
+ 	sta_wis_plus_cha = 1000;
+ }
+ noroi = Math.ceil(100/( 1 + sta_wis_plus_cha / 1000 ))-sekizou_noroi*2-mikkyou+shikou;
+ teika = Math.ceil(100/( 1 + sta_wis_plus_cha / 1000 ))-sekizou_teika*2-mikkyou+shikou;
+ ijou = Math.ceil(100/( 1 + sta_wis_plus_cha / 500 ))-sekizou_ijou*2-mikkyou+shikou;
+ chimeida = Math.ceil(100/( 1 + sta_wis_plus_cha / 1000 ));
+// 出力（魂切りなし）
+ document.Gvteikou.noroi.value = noroi;
+ document.Gvteikou.teika.value = teika;
+ document.Gvteikou.ijou.value = ijou;
+ document.Gvteikou.chimeida.value = chimeida;
+ document.Gvteikou.noroinow.value = soubi_teikou[1] + soubi_teikou[4];
+ document.Gvteikou.teikanow.value = soubi_teikou[2] + soubi_teikou[4];
+ document.Gvteikou.ijounow.value = soubi_teikou[3] + soubi_teikou[4];
+ document.Gvteikou.chimeidanow.value = soubi_teikou[5];
+ noroikahusoku = soubi_teikou[1] + soubi_teikou[4] - noroi;
+ teikakahusoku = soubi_teikou[2] + soubi_teikou[4] - teika;
+ ijoukahusoku = soubi_teikou[3] + soubi_teikou[4] - ijou;
+ chimeidakahusoku = soubi_teikou[5] - chimeida;
+ if ( noroikahusoku > 0 ){
+ 	document.Gvteikou.noroikahusoku.style.color = '#0000ff';
+ 	document.Gvteikou.noroikahusoku.value = "+" + noroikahusoku;
+ } else {
+ 	document.Gvteikou.noroikahusoku.style.color = '#ff0000';
+ 	document.Gvteikou.noroikahusoku.value = noroikahusoku ;
+ }
+ if ( teikakahusoku > 0 ){
+ 	document.Gvteikou.teikakahusoku.style.color = '#0000ff';
+ 	document.Gvteikou.teikakahusoku.value = "+" + teikakahusoku;
+ } else {
+ 	document.Gvteikou.teikakahusoku.style.color = '#ff0000';
+ 	document.Gvteikou.teikakahusoku.value = teikakahusoku ;
+ }
+ if ( ijoukahusoku > 0 ){
+ 	document.Gvteikou.ijoukahusoku.style.color = '#0000ff';
+ 	document.Gvteikou.ijoukahusoku.value = "+" + ijoukahusoku;
+ } else {
+ 	document.Gvteikou.ijoukahusoku.style.color = '#ff0000';
+ 	document.Gvteikou.ijoukahusoku.value = ijoukahusoku ;
+ }
+ if ( chimeidakahusoku > 0 ){
+ 	document.Gvteikou.chimeidakahusoku.style.color = '#0000ff';
+ 	document.Gvteikou.chimeidakahusoku.value = "+" + chimeidakahusoku;
+ } else {
+ 	document.Gvteikou.chimeidakahusoku.style.color = '#ff0000';
+ 	document.Gvteikou.chimeidakahusoku.value = chimeidakahusoku ;
+ }
+
+// 出力（魂切りあり）
+ if ( tamashiilv == 0 ){
+     tamashii = 0 ; // SLvに0が入力された場合は低下値を0にする
+ } else {
+     tamashii = tamashiilv + 5 ;
+ }
+ noroi2 = noroi + tamashii;
+ teika2 = teika + tamashii;
+ ijou2 = ijou + tamashii;
+ document.Gvteikou.noroi2.value = noroi + tamashii ;
+ document.Gvteikou.teika2.value = teika + tamashii ;
+ document.Gvteikou.ijou2.value = ijou + tamashii ;
+ document.Gvteikou.noroinow2.value = soubi_teikou[1] + soubi_teikou[4];
+ document.Gvteikou.teikanow2.value = soubi_teikou[2] + soubi_teikou[4];
+ document.Gvteikou.ijounow2.value = soubi_teikou[3] + soubi_teikou[4];
+ noroikahusoku2 = soubi_teikou[1] + soubi_teikou[4] - (noroi + tamashii) ;
+ teikakahusoku2 = soubi_teikou[2] + soubi_teikou[4] - (teika + tamashii) ;
+ ijoukahusoku2 = soubi_teikou[3] + soubi_teikou[4] - (ijou + tamashii) ;
+ if ( noroikahusoku2 > 0 ){
+ 	document.Gvteikou.noroikahusoku2.style.color = '#0000ff';
+ 	document.Gvteikou.noroikahusoku2.value = "+" + noroikahusoku2;
+ } else {
+ 	document.Gvteikou.noroikahusoku2.style.color = '#ff0000';
+ 	document.Gvteikou.noroikahusoku2.value = noroikahusoku2 ;
+ }
+ if ( teikakahusoku2 > 0 ){
+ 	document.Gvteikou.teikakahusoku2.style.color = '#0000ff';
+ 	document.Gvteikou.teikakahusoku2.value = "+" + teikakahusoku2;
+ } else {
+ 	document.Gvteikou.teikakahusoku2.style.color = '#ff0000';
+ 	document.Gvteikou.teikakahusoku2.value = teikakahusoku2 ;
+ }
+ if ( ijoukahusoku2 > 0 ){
+ 	document.Gvteikou.ijoukahusoku2.style.color = '#0000ff';
+ 	document.Gvteikou.ijoukahusoku2.value = "+" + ijoukahusoku2;
+ } else {
+ 	document.Gvteikou.ijoukahusoku2.style.color = '#ff0000';
+ 	document.Gvteikou.ijoukahusoku2.value = ijoukahusoku2 ;
+ }
+}

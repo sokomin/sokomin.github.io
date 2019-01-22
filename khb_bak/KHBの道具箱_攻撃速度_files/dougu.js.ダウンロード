@@ -1,0 +1,902 @@
+//
+//  function explvcalc()
+//  機能：EXP→Lv計算処理（「計算！」ボタンが押された場合の処理）
+//
+    function explvcalc()
+  {
+      kijunLv  = new Array(10);
+      var i, j, baselv, baseexp, cnt;
+
+    // 転生基準Lvの設定
+      kijunLv[0] = 600;  // 無転→１転
+      kijunLv[1] = 600;  // １転→２転
+      kijunLv[2] = 600;  // ２転→３転
+      kijunLv[3] = 600;  // ３転→４転
+      kijunLv[4] = 900;  // ４転→５転
+      kijunLv[5] = 1500; // ５転
+
+    // 初期処理
+      exptotal = 0;
+      expindex = 1.00;
+//  sResDbg ="";      
+    // 入力値の取得
+      tenseikaisuu = eval( document.explvcalcex.tenseikaisuu.value );  // 転生回数
+
+      input_nowlv = eval( document.explvcalcex.nowlv.value );   // 現在のLv
+//      nowhasuu = eval( document.explvcalcex.hasuuexp.value );  // 端数のEXP
+      guild_expseisaku = eval( document.explvcalcex.guild_expseisaku.value );  // ギルドの経験値政策
+      kakutokuexp = eval(document.explvcalcex.kakutokuexp.value);  // もらえるEXP
+     
+    // ラジオボタン（端数の取得方法）の値取得
+      radiostatus = document.getElementsByName("elc_method_input_hasuu");
+      for ( i = 0 ; i<radiostatus.length ; i++ ){
+        if ( radiostatus[i].checked == true ){
+          method_input_hasuu = radiostatus[i].value;  // 1:％で取得、2:数値で取得
+          break;
+        }
+      }
+    // 端数の値の取得
+      if ( method_input_hasuu == 1 ){
+      	// ％で取得
+      	nowhasuu = Math.floor( expnextlv( input_nowlv ) * eval( document.explvcalcex.hasuuexp_percent.value ) / 100 );
+      } else {
+      	// 数値で取得
+      	nowhasuu = eval( document.explvcalcex.hasuuexp_num.value );
+      }
+
+
+    // 現在のEXPの合計値を算出 
+      nowExp = LvtoExp( input_nowlv ) + nowhasuu + Math.floor( kakutokuexp * ( 1 - guild_expseisaku / 100 ));
+      
+      // Lvの百の単位がいくつかを算出する。
+      hyakutani = 0;
+      for ( i = 0 ; i < 10 ; i++ ){
+        if ( nowExp < exp_gt[i] ) break;
+        hyakutani++ ;
+      }
+      
+      tmpLv = hyakutani * 100 ;
+      
+      if ( hyakutani == 0 ) needtotalExp = 0;
+      else                  needtotalExp = exp_gt[hyakutani-1];
+      
+      // 獲得EXPと必要EXPを１レベずつ比較し、Lvの十以下の数値を決定する。
+      resLv = 0;
+      for ( i = 0 ; i < 100 ; i++ ){
+        needtotalExp += expnextlv( tmpLv + i ) ;
+        if ( needtotalExp > nowExp ){
+          resLv = tmpLv + i;  // resLv：現在のLv
+          break;
+        }
+      }
+      
+      // 転生に関する処理と結果の出力
+      tmp_tenseikaisuu = tenseikaisuu;
+      tmp_tenseiLv = resLv;
+      tmp_totalexp = nowExp;
+      tmp_restexp = tmp_totalexp - LvtoExp( kijunLv[tmp_tenseikaisuu] );
+      sRes = "";
+      tmp_hasuu = tmp_totalexp - LvtoExp( tmp_tenseiLv );  // 端数のEXP
+      tmp_wariai = Math.floor( tmp_hasuu / expnextlv( tmp_tenseiLv ) * 100 );  // 端数のパーセンテージ
+      for ( i = 0; i < 6 - tenseikaisuu ; i++ ){
+        //  出力文字列の作成
+        if ( i == 0 ){
+          sRes = tmp_tenseikaisuu + "転 Lv" + tmp_tenseiLv + " " + tmp_wariai + "％（" + tmp_hasuu.toLocaleString() + "）";
+        } else {
+          sRes += "\n" + tmp_tenseikaisuu + "転 Lv" + tmp_tenseiLv + " " + tmp_wariai + "％（" + tmp_hasuu.toLocaleString() + "）";
+        }
+        //  転生処理
+        if ( tmp_tenseiLv >= kijunLv[tmp_tenseikaisuu] ){
+          // 転生可能な場合は転生させる。
+          // 現在２転以下の場合、転生して何Lvになるかを計算する。
+          if ( tmp_tenseikaisuu <= 2 ){
+//            tmp_totalexp -=  LvtoExp( kijunLv[tmp_tenseikaisuu] ); 
+            tmp_tenseikaisuu++;
+  			result = new expadv( 300, tmp_restexp, 1.0 ); // 171228 転生後最低Lvが300になった事への対応
+    		tmp_tenseiLv = result.lv;  // 転生後のLv
+            tmp_hasuu = result.exp;  // 端数のEXP
+            tmp_wariai = Math.floor( tmp_hasuu / expnextlv( tmp_tenseiLv ) * 100 );  // 端数のパーセンテージ
+            tmp_restexp -= ( LvtoExp( kijunLv[tmp_tenseikaisuu+1] ) - LvtoExp(300) ); // Lv300→転生基準Lvまでに必要なEXPを引く
+/*              // Lvの百の位の数値を算出
+              hyakutani = 0;
+              for ( j = 0 ; j < 10 ; j++){
+                if ( tmp_totalexp < exp_gt[j] ) break;
+                hyakutani++ ;
+              }
+              
+              tmpLv = hyakutani * 100 ;
+              
+              if ( hyakutani == 0 )   needtotalExp = 0;
+              else                    needtotalExp = exp_gt[hyakutani-1];
+
+              // Lvの十以下の位の数値を算出
+              for ( j = 0 ; j < 100 ; j++ ){
+                needtotalExp += expnextlv( tmpLv + j ) ;
+                if ( needtotalExp > tmp_totalexp ){
+                  tmp_tenseiLv = tmpLv + j;
+                  break;
+                }
+
+              }
+*/
+          } else {
+          // 現在３転以上では、転生回数を増やすだけ。
+          	tmp_tenseikaisuu++;
+          }
+        } else {
+          // 転生できない場合は処理を終わる。
+          break;
+        }
+      }
+      // 結果文字列の出力
+      document.explvcalcex.kekka.value = sRes;
+//      document.explvcalcex.debugarea.value = sResDbg;
+//      document.explvcalcex.debugarea2.value = sResDbg2;
+    
+  }
+
+//　function explvcalc_re( btn, zoubun )
+//  機能：EXP→Lv計算処理（矢印ボタンによってLvが変更された場合の操作）
+//  引数：btn ボタンの種類。1　（ここでは分岐未使用のため、常に１を引数に指定すること。）
+//　　　　zoubun　増分値
+//
+    function explvcalc_re( btn, zoubun )
+  {
+    switch( btn ){
+      case 1: // 
+        nowlv = eval(document.explvcalcex.nowlv.value);
+        nowlv += zoubun;
+        if ( nowlv < 1 ) nowlv = 1;
+        document.explvcalcex.nowlv.value = nowlv;
+        explvcalc();  // 再計算させる
+        break;
+    }
+  }
+
+//
+//　function calc7()
+//  機能：攻撃速度フレーム計算処理
+//
+    function calc7()
+  {
+      hosei = new Array(20);
+      soubihosei = new Array(10);
+    // 装備による速度補正値の取り込みと合計値の計算
+      soubihosei[0] = eval(document.framecalcex.buki.value);
+      soubihosei[1] = eval(document.framecalcex.ya.value);
+      soubihosei[2] = eval(document.framecalcex.kubi.value);
+      soubihosei[3] = eval(document.framecalcex.atama.value);
+      soubihosei[4] = eval(document.framecalcex.se.value);
+      soubihosei[5] = eval(document.framecalcex.koshi.value);
+      soubihosei[6] = eval(document.framecalcex.te.value);
+      soubihosei[7] = eval(document.framecalcex.yoroi.value);
+      soubihosei[8] = eval(document.framecalcex.ashi.value);
+      soubihosei[9] = eval(document.framecalcex.yubi.value);
+      
+      soubitotal = 0 ;
+      for (i = 0; i<= 9; i++ ){
+        soubitotal  += soubihosei[i];
+      }
+      
+    // その他補正値の取り込みと合計値の計算
+      hosei[0] = eval(document.framecalcex.ishi.value);
+      hosei[1] = eval(document.framecalcex.sekizou.value);
+      hosei[2] = eval(document.framecalcex.minipet.value);
+      hosei[3] = eval(document.framecalcex.badge.value);
+      hosei[4] = eval(document.framecalcex.toubatsu.value);  // 一流討伐団のバッジ
+      hosei[5] = eval(document.framecalcex.syougou_5ten.value);  // ５次転生称号（攻撃速度ＵＰ）
+      if ( eval(document.framecalcex.haste.value) == 0 ){
+        hosei[6] = 0;
+        hosei[7] = 0;
+      } else {
+        hosei[6] = eval(document.framecalcex.haste.value) * 0.5 +10;
+        hosei[7] = eval(document.framecalcex.haste.value) * 1.5 +20;
+      }      
+      bukisokudo = eval(document.framecalcex.bukisokudo.value);
+      bukisokudoselected = document.framecalcex.bukisokudo.selectedIndex;
+      sonotatotal = 0 ;
+      for (i = 0; i<= 6; i++ ){
+        sonotatotal += hosei[i];
+      }
+  // フレーム計算
+    if ( bukisokudoselected >= 12 && bukisokudoselected <=20 ){
+    	baseframe = bukisokudo*16; // 基本フレーム（武道） 11.5フレが存在するため、小数のまま設定する。
+    } else {
+    	baseframe = Math.floor(bukisokudo*16); // 基本フレーム（その他）
+    }
+    nowframe = Math.floor(baseframe*100/(100+(soubitotal+sonotatotal+20))); // 現在のフレーム  14/06/21 基本速度20％増加に伴い修正
+    framestartnow = Math.floor(100*baseframe/(nowframe+1)-100+1)-20;	//  14/06/21 基本速度20％増加に伴い修正
+    framestartnext = Math.floor(100*baseframe/nowframe-100+1)-20; 	//  14/06/21 基本速度20％増加に伴い修正
+    framestartnextnext = Math.floor(100*baseframe/(nowframe-1)-100+1)-20; 	//  14/06/21 基本速度20％増加に伴い修正
+    
+    document.framecalcex.res1.value = soubitotal+sonotatotal;
+    document.framecalcex.res2.value = soubitotal;
+    document.framecalcex.res3.value = hosei[6];
+    document.framecalcex.res4.value = nowframe;
+    document.framecalcex.res5.value = framestartnow;
+    document.framecalcex.res6.value = framestartnext-1;
+    document.framecalcex.res7.value = Math.floor(120/nowframe)/10;
+    document.framecalcex.res8.value = nowframe-1;
+    document.framecalcex.res9.value = Math.ceil(framestartnext-(soubitotal+sonotatotal));
+    document.framecalcex.res10.value = nowframe-2;
+    document.framecalcex.res11.value = Math.ceil(framestartnextnext-(soubitotal+sonotatotal));
+    document.framecalcex.res12.value = hosei[7];
+  }
+
+//
+//　function idouframecalc()
+//  機能：移動速度フレーム計算処理
+//
+    function idouframecalc()
+  {
+      hosei = new Array(20);
+      soubihosei = new Array(10);
+    // 装備による速度補正値の取り込みと合計値の計算
+      soubihosei[0] = eval(document.idouframecalcex.buki.value);
+      soubihosei[1] = eval(document.idouframecalcex.ya.value);
+      soubihosei[2] = eval(document.idouframecalcex.kubi.value);
+      soubihosei[3] = eval(document.idouframecalcex.atama.value);
+      soubihosei[4] = eval(document.idouframecalcex.se.value);
+      soubihosei[5] = eval(document.idouframecalcex.koshi.value);
+      soubihosei[6] = eval(document.idouframecalcex.te.value);
+      soubihosei[7] = eval(document.idouframecalcex.yoroi.value);
+      soubihosei[8] = eval(document.idouframecalcex.ashi.value);
+      soubihosei[9] = eval(document.idouframecalcex.yubi.value);
+      
+      soubitotal = 0 ;
+      for (i = 0; i<= 9; i++ ){
+        soubitotal  += soubihosei[i];
+      }
+      
+    // その他補正値の取り込みと合計値の計算
+      hosei[0] = eval(document.idouframecalcex.ishi.value);
+      hosei[1] = eval(document.idouframecalcex.sekizou.value);
+      hosei[2] = eval(document.idouframecalcex.minipet.value);
+      hosei[3] = eval(document.idouframecalcex.badge.value);
+      if ( eval(document.idouframecalcex.haste.value) == 0 ){
+        hosei[4] = 0;
+      } else {
+        hosei[4] = eval(document.idouframecalcex.haste.value) * 1.5 +20;
+      }
+      hosei[5] = eval(document.idouframecalcex.syougou_5ten.value);  // ５次転生称号（攻撃速度ＵＰ）
+      
+      sonotatotal = 0 ;
+      for (i = 0; i<= 5; i++ ){
+        sonotatotal += hosei[i];
+      }
+    // 恩寵補正
+      onchou =  eval(document.idouframecalcex.onchou.value);
+      
+  // ステージ計算（Gvマップ）
+    hoseitotal = soubitotal + sonotatotal;
+    gvrank = Math.floor((hoseitotal + 36)/40);
+    if ( gvrank > 40 ) gvrank = 40;  // 上限40
+    gvstage = 41 - gvrank;
+    gvstagestart = gvrank * 40 - 36;
+    gvstageend = gvrank * 40 + 3;
+    gvstagenext = gvrank * 40 + 4 - hoseitotal;
+    gvstagenextnext = (gvrank + 1)*40 + 4 - hoseitotal;
+    gvzahyousuu = Math.floor(((gvrank * 40)*0.0005 + 0.2)*12*10)/10 ;
+    
+    document.idouframecalcex.res1.value = hoseitotal;
+    document.idouframecalcex.res2.value = soubitotal;
+    document.idouframecalcex.res3.value = hosei[4];
+    document.idouframecalcex.res4.value = hoseitotal + onchou;
+    document.idouframecalcex.res11.value = gvstage;
+    document.idouframecalcex.res12.value = gvstagestart;
+    if ( gvrank == 40 ){
+	    document.idouframecalcex.res13.value = "-----";
+    	document.idouframecalcex.res14.value = "-----";
+    	document.idouframecalcex.res15.value = "-----";
+    	document.idouframecalcex.res16.value = "-----"
+    	document.idouframecalcex.res17.value = "-----";
+	} else {
+	    document.idouframecalcex.res13.value = gvstageend;
+	    document.idouframecalcex.res14.value = gvstage-1;
+	    document.idouframecalcex.res15.value = gvstagenext;
+	    document.idouframecalcex.res16.value = gvstage-2
+	    document.idouframecalcex.res17.value = gvstagenextnext;
+	}
+    document.idouframecalcex.res18.value = gvzahyousuu;
+    document.idouframecalcex.res19.value = Math.round(((gvrank * 40)*0.0005 + 0.2) / 0.2 * 100);
+
+  // ステージ計算（フィールドマップ）
+    hoseitotal = soubitotal + sonotatotal + onchou;
+    fieldrank = Math.floor((hoseitotal + 3)/16);
+    if ( fieldrank > 18 ) fieldrank = 18;  // 上限18
+    fieldstage = 19 - fieldrank;
+    fieldstagestart = fieldrank * 16 - 3;
+    fieldstageend = fieldrank * 16 + 13;
+    fieldstagenext = fieldrank * 16 + 14 - hoseitotal;
+    fieldstagenextnext = (fieldrank + 1) * 16 + 14 - hoseitotal;
+    fieldzahyousuu = Math.floor(((fieldrank * 16)*0.0025 + 0.28)*12*10)/10 ;
+    
+    document.idouframecalcex.res21.value = fieldstage;
+    document.idouframecalcex.res22.value = fieldstagestart;
+    if ( fieldrank == 18 ){
+	    document.idouframecalcex.res23.value = "-----";
+    	document.idouframecalcex.res24.value = "-----";
+    	document.idouframecalcex.res25.value = "-----";
+    	document.idouframecalcex.res26.value = "-----"
+    	document.idouframecalcex.res27.value = "-----";
+	} else {
+	    document.idouframecalcex.res23.value = fieldstageend;
+	    document.idouframecalcex.res24.value = fieldstage-1;
+	    document.idouframecalcex.res25.value = fieldstagenext;
+	    document.idouframecalcex.res26.value = fieldstage-2
+	    document.idouframecalcex.res27.value = fieldstagenextnext;
+	}
+    document.idouframecalcex.res28.value = fieldzahyousuu;
+    document.idouframecalcex.res29.value = Math.round(((fieldrank * 16)*0.0025 + 0.28) / 0.28 * 100);
+
+  }
+
+//
+//　function calc12()
+//  機能：フレーム計算機モジュール
+//
+    function calc12()
+  {
+      skill = new Array(20);
+    // 数値の取り込み
+      skill[0] = eval(document.frameculc.soubigoukei.value);
+      skill[1] = eval(document.frameculc.sekizou.value);
+      skill[2] = eval(document.frameculc.minipet.value);
+      if ( eval(document.frameculc.haste.value) == 0 ){
+        skill[3] = 0;
+      } else {
+        skill[3] = eval(document.frameculc.haste.value) * 0.5 +10;
+      }      
+      if ( document.frameculc.sokudoishi.checked == true ){
+        skill[4] = eval(document.frameculc.sokudoishi.value);
+      } else {
+        skill[4] = 0;
+      }
+      bukisokudo = eval(document.frameculc.bukisokudo.value);
+
+  // 速度補正合計の計算
+    total = 0 ;
+    for (i = 0; i<= 4; i++ ){
+      total += skill[i];
+    }
+  // フレーム計算
+    baseframe = Math.floor(bukisokudo*16); // 基本フレーム
+    nowframe = Math.floor(baseframe*100/(100+total)); // 現在のフレーム
+    framestartnow = Math.floor(100*baseframe/(nowframe+1)-100+1);
+    framestartnext = Math.floor(100*baseframe/nowframe-100+1); 
+    framestartnextnext = Math.floor(100*baseframe/(nowframe-1)-100+1); 
+    
+    document.frameculc.res1.value = total;
+    document.frameculc.res2.value = nowframe;
+    document.frameculc.res3.value = framestartnow;
+    document.frameculc.res4.value = framestartnext-1;
+    document.frameculc.res5.value = Math.floor(120/nowframe)/10;
+    document.frameculc.res6.value = nowframe-1;
+    document.frameculc.res7.value = Math.ceil(framestartnext-total);
+    document.frameculc.res8.value = nowframe-2;
+    document.frameculc.res9.value = Math.ceil(framestartnextnext-total);
+  }
+  
+//
+//　function calc8( btn, zoubun )
+//  機能：残りEXP計算処理（矢印ボタンによってLvが変更された場合の操作）
+//  引数：btn ボタンの種類。1　（ここでは分岐未使用のため、常に１を引数に指定すること。）
+//　　　　zoubun　増分値
+//
+    function calc8( btn, zoubun )
+  {
+    switch( btn ){
+      case 1: // 本体after
+        nowlv = eval(document.restexpcalc.nowlv.value);
+        nowlv += zoubun;
+        if ( nowlv < 0 ) nowlv = 0;
+        document.restexpcalc.nowlv.value = nowlv;
+        calc9();  // 再計算させる
+        break;
+    }
+  }
+
+//
+//　function calc9()
+//  機能：残りEXP計算処理（「計算！」ボタンが押された場合の処理）
+//
+    function calc9()
+  {
+      var i,j;
+
+//      kijunlv = 600;
+      nowlv = eval(document.restexpcalc.nowlv.value);
+      hasuuexp = eval(document.restexpcalc.hasuuexp.value);
+
+      document.restexpcalc.restexp.value = Math.floor(expnextlv( nowlv )*(1-hasuuexp/100));
+/*
+      kijunexp = expgtotal( kijunlv );
+      expsabun = expgtotal( nowlv ) - kijunexp + hasuuexp;
+      expindex = 1.00;
+      result = new expadv( 1, expsabun, expindex );
+      tenseilv = result.lv;
+      document.restexpcalc.restexp.value = result.lv;
+*/
+  }
+
+//
+//　function tenseiLvcalc()
+//  機能：転生計算処理（「計算！」ボタンが押された場合の処理）
+//
+    function tenseiLvcalc()
+  {
+      var i,j;
+      kijunLv  = new Array(10);
+
+    // 転生基準Lvの設定
+      kijunLv[0] = 600;  // 無転→１転
+      kijunLv[1] = 600;  // １転→２転
+      kijunLv[2] = 600;  // ２転→３転
+      kijunLv[3] = 600;  // ３転→４転
+      kijunLv[4] = 900;  // ４転→５転
+      kijunLv[5] = 1500; // ５転
+
+    // 初期処理
+      exptotal = 0;
+      expindex = 1.00;
+      tenseikaisuu = eval(document.tenseicalcex.tenseikaisuu.value);
+//      kijunlv = 600;
+      nowlv = eval(document.tenseicalcex.nowlv.value);
+//      nowhasuu = eval(document.tenseicalcex.hasuuexp.value);
+
+    // ラジオボタン（端数の取得方法）の値取得
+      radiostatus = document.getElementsByName("tqc_method_input_hasuu");
+      for ( i = 0 ; i<radiostatus.length ; i++ ){
+        if ( radiostatus[i].checked == true ){
+          method_input_hasuu = radiostatus[i].value;  // 1:％で取得、2:数値で取得
+          break;
+        }
+      }
+    // 端数の値の取得
+      if ( method_input_hasuu == 1 ){
+      	// ％で取得
+      	nowhasuu = Math.floor( expnextlv( nowlv ) * eval( document.tenseicalcex.hasuuexp_percent.value ) / 100 );
+      } else {
+      	// 数値で取得
+      	nowhasuu = eval( document.tenseicalcex.hasuuexp_num.value );
+      }
+
+      szRes = "";
+      tenseisyurui = 5;
+      
+    // 転生クエ関連の設定値取得
+      // 転生クエのEXPを計算に入れるか？
+      if ( document.tenseicalcex.check_tenseique.checked ){
+      	flg_use_tenseique = true;
+      } else {
+      	flg_use_tenseique = false;
+      }
+      // スフィアを使う？
+      if ( document.tenseicalcex.check_use_sphere.checked ){
+      	flg_use_sphere = true;
+      	index_sphere = 2.0;
+      } else {
+      	flg_use_sphere = false;
+      	index_sphere = 1.0;
+      }
+      // パワキを使う？
+      if ( document.tenseicalcex.check_use_powerkit.checked ){
+      	flg_use_powerkit = true;
+      	if ( flg_use_sphere == true ){
+      	  index_powerkit = 1.5;
+        } else {
+      	  index_powerkit = 1.0;
+        }
+      } else {
+      	flg_use_powerkit = false;
+      	index_powerkit = 1.0;
+      }
+ 
+      // ギルドの経験値政策の設定値取得
+      guild_expseisaku = eval( document.tenseicalcex.guild_expseisaku.value );  // ギルドの経験値政策
+
+    // 転生基準Lv（Lv600）からどれくらいEXPを余分に稼いでいるかを計算
+      exptotal = LvtoExp( nowlv ) - LvtoExp( kijunLv[tenseikaisuu] ) + nowhasuu ;
+    // 転生Lvの計算
+      tmp_tenseiLv = nowlv;
+      tenseikaisuuorg = tenseikaisuu;  // 元の転生回数
+      exprest = exptotal;
+      if ( tmp_tenseiLv >= kijunLv[tenseikaisuu] ){
+        while ( tmp_tenseiLv >= kijunLv[tenseikaisuu] ){  // 転生許可回数が現在の転生回数より大きいか？
+          if ( tenseikaisuu <= 2 ) {
+          // 現在２転までの場合
+            que_exp = tq_exptable[tenseikaisuu] * flg_use_tenseique * index_sphere * index_powerkit * (1 - guild_expseisaku/100);
+            exprest += que_exp;
+            result = new expadv( 300, exprest, 1.0 ); // 171228 転生後最低Lvが300になった事への対応
+            tmp_tenseiLv = result.lv;  // 転生後のLv
+            tmp_hasuu = result.exp; // 端数のEXP
+            exprest -= ( LvtoExp( kijunLv[tenseikaisuu] ) - LvtoExp(300) ); // Lv300→転生基準Lvまでに必要なEXPを引く
+            tmp_wariai = Math.floor( tmp_hasuu / expnextlv( tmp_tenseiLv ) * 100 );  // 端数のパーセンテージ
+          } else {
+          // 現在３転以降の場合
+            que_exp = tq_exptable[tenseikaisuu] * flg_use_tenseique * index_sphere * index_powerkit * (1 - guild_expseisaku/100);
+            exprest += que_exp;
+            result = new expadv( 600, exprest, 1.0 ); // ３転以降はLvの巻き戻しがないので、最初の引数は600で。
+            tmp_tenseiLv = result.lv;  // 転生後のLv
+            tmp_hasuu = result.exp; // 端数のEXP
+            tmp_wariai = Math.floor( tmp_hasuu / expnextlv( tmp_tenseiLv ) * 100 );  // 端数のパーセンテージ
+          }
+
+          // 結果文字列の作成
+          if ( tenseikaisuu == tenseikaisuuorg ){
+          	tenseikaisuu++;
+            szRes = tenseikaisuu + "転 Lv" + tmp_tenseiLv + " " + tmp_wariai + "％（" + tmp_hasuu.toLocaleString() + "）";
+          } else {
+          	tenseikaisuu++;
+            szRes += "\n" + tenseikaisuu + "転 Lv" + tmp_tenseiLv + " " + tmp_wariai + "％（" + tmp_hasuu.toLocaleString() + "）";
+          }
+
+          if ( tmp_tenseiLv < kijunLv[tenseikaisuu] ) break;
+        }
+        if ( tenseikaisuu == tenseikaisuuorg ){
+        // 1回も転生できない場合は、入力値をそのまま吐き出す。
+        } else {
+        // 転生を行った場合の結果出力
+          document.tenseicalcex.kekka.value = szRes;
+        }
+      } else {
+      // 1回も転生できない場合は、入力値をそのまま吐き出す。
+      }
+  }
+
+
+//　function tenseicalcex_re( btn, zoubun )
+//  機能：転生計算処理（矢印ボタンによってLvが変更された場合の操作）
+//  引数：btn ボタンの種類。1　（ここでは分岐未使用のため、常に１を引数に指定すること。）
+//　　　　zoubun　増分値
+//
+    function tenseicalcex_re( btn, zoubun )
+  {
+    switch( btn ){
+      case 1: // 
+        nowlv = eval(document.tenseicalcex.nowlv.value);
+        nowlv += zoubun;
+        if ( nowlv < 1 ) nowlv = 1;
+        document.tenseicalcex.nowlv.value = nowlv;
+        tenseiLvcalc();  // 再計算させる
+        break;
+    }
+  }
+
+//　function calc12()
+//  機能：フルヒ必要量計算処理
+//
+    function calc12()
+  {
+      var i,j;
+
+    // 入力値の取得
+      maxhp = eval(document.kusurikaihukucalc.maxhp.value);
+      kenkou = eval(document.kusurikaihukucalc.kenkou.value);
+      kusuri = eval(document.kusurikaihukucalc.kusuri.value);
+//      kusuri = 255;
+      if ( kusuri > 255 ) kusuri = 255;  // 最大255%
+      yakushilv = eval(document.kusurikaihukucalc.yakushilv.value);
+
+    // 結果の演算と出力
+      maxhp = maxhp * ( 1 + yakushilv*0.1 ); // 薬師効果を最大HPに適用
+      hpkaihukupersec = ((1 + (kusuri / 100)) * (kenkou + 50)) / 5;  // 1秒あたりのHP回復量
+      document.kusurikaihukucalc.res1.value = hpkaihukupersec ;
+      document.kusurikaihukucalc.res2.value = Math.floor(maxhp / hpkaihukupersec *10 ) / 10;  // フルヒ1個の回復持続時間
+      document.kusurikaihukucalc.res3.value = Math.floor(maxhp / hpkaihukupersec / 2 *10) /10; // 改良フルヒ１セットでの回復持続時間
+      document.kusurikaihukucalc.res4.value = Math.floor( 30 / ( maxhp / hpkaihukupersec / 2 )*10)/10; // 30分回復を持続させるために必要な改良フルヒのセット数
+     
+  }
+
+
+//
+//  関数名：expnextlv( Lv )
+//  機能：引数の次のLvまでに必要なEXPを返す。
+//  戻り値：引数の次のLvまでに必要なEXP
+//
+    function expnextlv(Lv)
+  {
+
+     var i, j, exp;
+ 
+      if ( Lv < 829 ){
+        i = Math.ceil(( Math.sqrt( 4 * Lv + 1 ) - 3 )/2) ;
+        j = Lv-2-(i-1)*(i+2);
+        exp = 170*Lv+80+(20/3)*(3*(i+1)* Math.pow(j,2) + (5*Math.pow(i,3)+9*Math.pow(i,2)+16*i-9)*j+(2*Math.pow(i,5)+5*Math.pow(i,4)+12*Math.pow(i,3)-8*Math.pow(i,2)-17*i+6));
+      } else {
+         if ( Lv <= 1000 ){
+           exp = nextexptable[Lv-829];
+         } else {
+         // 1000Lv以降無効に変更　17/7/25
+         // 900Lv以降は無効　12/3/29
+           exp = 0;
+         }
+      }
+      return exp;
+  }
+
+//
+//  関数名：LvtoExp( Lv )
+//  機能：引数のLvになるまでの累計EXPを計算する。
+//  戻り値：引数のLvになるまでの累計EXP
+//
+    function LvtoExp(Lv)
+  {
+      var i, j, baselv, baseexp, cnt;
+
+      if ( Lv == 1 ){
+      	 return 0;
+      } else {
+        baselv = Math.floor(Lv/100)*100;
+        if( Lv<100 )  baseexp = 0 ;
+              else    baseexp = exp_gt[Math.floor(Lv/100)-1];
+        cnt = Lv - baselv;
+        for ( i = 0 ; i<cnt ; i++ ){
+          baseexp += expnextlv( baselv + i );
+        }
+        return baseexp;
+      }
+  }
+
+//
+//  関数名：ExptoLv( Exp )
+//  機能：総獲得経験値から現在何Lvかを計算する。
+//  引数：Exp 総獲得経験値
+//  戻り値：現在のLv
+//
+    function ExptoLv( Exp )
+  {
+      var i, j, baselv, baseexp, cnt;
+
+      // 百の単位の計算
+      hyakutani = 0;
+      for ( i = 0 ; i < 10 ; i++){
+        if ( Exp < exp_gt[i] ) break;
+        hyakutani++ ;
+      }
+      
+      tmpLv = hyakutani * 100 ;
+      
+      if ( hyakutani == 0 ) needtotalExp = 0;
+      else          needtotalExp = exp_gt[hyakutani-1];
+      
+      for ( i = 0 ; i < 100 ; i++ ){
+        needtotalExp += expnextlv( tmpLv + i ) ;
+        if ( needtotalExp > Exp ){
+          resLv = tmpLv + i;
+          break;
+        }
+      }
+
+      return resLv;
+  }
+
+//
+//　クラス名：expadv( Lv, exptotal, ind )
+//　機能：引数のLvからexptotalのEXPを倍率indで加えた時のLvと残りexpを演算する。
+//　メンバ：lv, exp
+//　戻り値：なし。
+//
+    function expadv( Lv, exptotal, ind )
+  {
+     this.lv = Lv; // 初期Lv
+     this.exp = Math.floor( exptotal * ind ) ;  // 入るtotalのEXP
+     nextexp = expnextlv( this.lv );
+     while( this.exp > nextexp ){
+       this.lv++ ;
+       this.exp -= nextexp ;
+       nextexp = expnextlv( this.lv );
+     }
+  }
+
+
+
+//
+//  転生クエ経験値テーブル
+//
+		var tq_exptable = new Array(10);
+		
+		tq_exptable[0]=0;
+		tq_exptable[1]=95000000;
+		tq_exptable[2]=102500000;
+		tq_exptable[3]=215000000;
+		tq_exptable[4]=0;
+
+//  Exp合計値テーブル
+//
+//  計算の負荷を軽くするため、
+//  100レベ毎の合計値をここで準備している。
+		var exp_gt = new Array(10);
+		
+		exp_gt[0] = 39908880;          // Lv100
+		exp_gt[1] = 441027180;         // Lv200
+		exp_gt[2] = 1808887340;        // Lv300
+		exp_gt[3] = 4931858880;        // Lv400
+		exp_gt[4] = 10744909240;       // Lv500
+		exp_gt[5] = 20308052880;       // Lv600
+		exp_gt[6] = 34794519880;       // Lv700
+		exp_gt[7] = 55479287520;       // Lv800
+		exp_gt[8] = 445019958980;      // Lv900
+		exp_gt[9] = 9558533043960;     // Lv1000
+
+
+//
+//  EXP配列テーブル（830～900、12/03/29追加）
+//                 （901～1000、17/07/25追加）
+//                 （921～1000、17/10/09修正）
+//
+//  先頭の数値は829→830になるために必要なEXP。
+//
+		var nextexptable = new Array();
+		
+		nextexptable[0] = 265269680;        // Lv829→830
+		nextexptable[1] = 266076834;
+		nextexptable[2] = 266896790;
+		nextexptable[3] = 267742876;
+		nextexptable[4] = 268635942;
+		nextexptable[5] = 269606048;
+		nextexptable[6] = 270694158;
+		nextexptable[7] = 271953840;
+		nextexptable[8] = 273452972;
+		nextexptable[9] = 275275454;
+		nextexptable[10] = 277522926;        // Lv839→840
+		nextexptable[11] = 280316492;
+		nextexptable[12] = 283798450;
+		nextexptable[13] = 288134028;
+		nextexptable[14] = 293513126;
+		nextexptable[15] = 300152064;
+		nextexptable[16] = 308295336;
+		nextexptable[17] = 318217370;
+		nextexptable[18] = 330224294;
+		nextexptable[19] = 344655708;
+		nextexptable[20] = 361886462;        // Lv849→850
+		nextexptable[21] = 382328440;
+		nextexptable[22] = 406432350;
+		nextexptable[23] = 434689520;
+		nextexptable[24] = 467633700;
+		nextexptable[25] = 505842870;
+		nextexptable[26] = 549941054;
+		nextexptable[27] = 600600140;
+		nextexptable[28] = 658541706;
+		nextexptable[29] = 724538852;
+		nextexptable[30] = 799418038;        // Lv859→860
+		nextexptable[31] = 884060928;
+		nextexptable[32] = 979406240;
+		nextexptable[33] = 1086451602;
+		nextexptable[34] = 1206255414;
+		nextexptable[35] = 1339938716;
+		nextexptable[36] = 1488687062;
+		nextexptable[37] = 1653752400;
+		nextexptable[38] = 1836454958;
+		nextexptable[39] = 2038185136;
+		nextexptable[40] = 2260405404;        // Lv869→870
+		nextexptable[41] = 2504652206;
+		nextexptable[42] = 2772537870;
+		nextexptable[43] = 3065752524;
+		nextexptable[44] = 3386066018;
+		nextexptable[45] = 3735329852;
+		nextexptable[46] = 4115479110;
+		nextexptable[47] = 4528534400;
+		nextexptable[48] = 4976603800;
+		nextexptable[49] = 5461884810;
+		nextexptable[50] = 5986666310;        // Lv879→880
+		nextexptable[51] = 6553330524;
+		nextexptable[52] = 7164354990;
+		nextexptable[53] = 7822314536;
+		nextexptable[54] = 8529883262;
+		nextexptable[55] = 9289836528;
+		nextexptable[56] = 10105052948;
+		nextexptable[57] = 10978516390;
+		nextexptable[58] = 11913317982;
+		nextexptable[59] = 12912658124;
+		nextexptable[60] = 13979848506;        // Lv889→890
+		nextexptable[61] = 15118314132;
+		nextexptable[62] = 16331595350;
+		nextexptable[63] = 17623349888;
+		nextexptable[64] = 18997354896;
+		nextexptable[65] = 20457508994;
+		nextexptable[66] = 22007834326;
+		nextexptable[67] = 23652478620;
+		nextexptable[68] = 25395717254;
+		nextexptable[69] = 27241955328;
+		nextexptable[70] = 29195729742;        // Lv899→900
+		nextexptable[71] = 31261711280; 
+		nextexptable[72] = 33444706700; 
+		nextexptable[73] = 35749660830; 
+		nextexptable[74] = 38181658670; 
+		nextexptable[75] = 40745927500; 
+		nextexptable[76] = 43447838994; 
+		nextexptable[77] = 46292911340; 
+		nextexptable[78] = 49286811366; 
+		nextexptable[79] = 52435356672; 
+		nextexptable[80] = 55744226568;        // Lv909→910 
+		nextexptable[81] = 59218963578; 
+		nextexptable[82] = 62864974950; 
+		nextexptable[83] = 66687534172; 
+		nextexptable[84] = 70691782494; 
+		nextexptable[85] = 74882730456; 
+		nextexptable[86] = 79265259422; 
+		nextexptable[87] = 83844123120; 
+		nextexptable[88] = 88623949188; 
+		nextexptable[89] = 93609240726; 
+		nextexptable[90] = 98803309734;        // Lv919→920 
+		nextexptable[91] = 98804257404; 
+		nextexptable[92] = 98805217074; 
+		nextexptable[93] = 98806188744; 
+		nextexptable[94] = 98807172414; 
+		nextexptable[95] = 98808168084; 
+		nextexptable[96] = 98809175754; 
+		nextexptable[97] = 98810195424; 
+		nextexptable[98] = 98811227094; 
+		nextexptable[99] = 98812270764; 
+		nextexptable[100] = 98813326434;        // Lv929→930  
+		nextexptable[101] = 98814413164; 
+		nextexptable[102] = 98815512294; 
+		nextexptable[103] = 98816623824; 
+		nextexptable[104] = 98817747754; 
+		nextexptable[105] = 98818884084; 
+		nextexptable[106] = 98820032814; 
+		nextexptable[107] = 98821193944; 
+		nextexptable[108] = 98822367474; 
+		nextexptable[109] = 98823553404; 
+		nextexptable[110] = 98824751734;        // Lv939→940  
+		nextexptable[111] = 98825962464; 
+		nextexptable[112] = 98827185594; 
+		nextexptable[113] = 98828421124; 
+		nextexptable[114] = 98829669054; 
+		nextexptable[115] = 98830929384; 
+		nextexptable[116] = 98832202114; 
+		nextexptable[117] = 98833487244; 
+		nextexptable[118] = 98834784774; 
+		nextexptable[119] = 98836094704; 
+		nextexptable[120] = 98837417034;        // Lv949→950  
+		nextexptable[121] = 98838751764; 
+		nextexptable[122] = 98840098894; 
+		nextexptable[123] = 98841458424; 
+		nextexptable[124] = 98842830354; 
+		nextexptable[125] = 98844214684; 
+		nextexptable[126] = 98845611414; 
+		nextexptable[127] = 98847020544; 
+		nextexptable[128] = 98848442074; 
+		nextexptable[129] = 98849876004; 
+		nextexptable[130] = 98851322334;        // Lv959→960  
+		nextexptable[131] = 98852781064; 
+		nextexptable[132] = 98854252194; 
+		nextexptable[133] = 98855735724; 
+		nextexptable[134] = 98857231654; 
+		nextexptable[135] = 98858739984; 
+		nextexptable[136] = 98860260714; 
+		nextexptable[137] = 98861793844; 
+		nextexptable[138] = 98863339374; 
+		nextexptable[139] = 98864897304; 
+		nextexptable[140] = 98866467634;        // Lv969→970 
+		nextexptable[141] = 98868050364; 
+		nextexptable[142] = 98869645494; 
+		nextexptable[143] = 98871253024; 
+		nextexptable[144] = 98872872954; 
+		nextexptable[145] = 98874505284; 
+		nextexptable[146] = 98876150014; 
+		nextexptable[147] = 98877807144; 
+		nextexptable[148] = 98879476674; 
+		nextexptable[149] = 98881158604; 
+		nextexptable[150] = 98882852934;        // Lv979→980  
+		nextexptable[151] = 98884559664; 
+		nextexptable[152] = 98886278794; 
+		nextexptable[153] = 98888010324; 
+		nextexptable[154] = 98889754254; 
+		nextexptable[155] = 98891510584; 
+		nextexptable[156] = 98893279314; 
+		nextexptable[157] = 98895060444; 
+		nextexptable[158] = 98896853974; 
+		nextexptable[159] = 98898659904; 
+		nextexptable[160] = 98900478234;        // Lv989→990  
+		nextexptable[161] = 98902308964; 
+		nextexptable[162] = 98904152094; 
+		nextexptable[163] = 98906027924; 
+		nextexptable[164] = 98907928954; 
+		nextexptable[165] = 98909842784; 
+		nextexptable[166] = 98911769414; 
+		nextexptable[167] = 98913708844; 
+		nextexptable[168] = 98915661074; 
+		nextexptable[169] = 98917626104; 
+		nextexptable[170] = 98919603934;        // Lv999→1000

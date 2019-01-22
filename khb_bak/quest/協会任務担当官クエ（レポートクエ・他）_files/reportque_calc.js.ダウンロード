@@ -1,0 +1,1959 @@
+//  ページロード時の処理
+	function Init()
+	{
+		
+		
+     //　レポートクエ１　項目の初期化
+		// 受けるレポートNo　From側
+	    for ( i=0; i<38; i++ ){
+    	    document.reportquecalc.report1_from.options[i] = new Option(i);
+    	    document.reportquecalc.report1_from.options[i].text = kntq_gt1[i][0];
+    	    document.reportquecalc.report1_from.options[i].value = kntq_gt1[i][1];
+    	}
+    	document.reportquecalc.report1_from.selectedIndex = 0; // 初期値　最初
+
+		// 受けるレポートNo　To側
+	    for ( i=0; i<38; i++ ){
+    	    document.reportquecalc.report1_to.options[i] = new Option(i);
+  	    	document.reportquecalc.report1_to.options[i].text = kntq_gt1[i][0];
+   	    	document.reportquecalc.report1_to.options[i].value = kntq_gt1[i][1];
+    	}
+    	document.reportquecalc.report1_to.selectedIndex = 37; // 初期値　最後
+    	
+     //　レポートクエ２　項目の初期化
+		// 受けるレポートNo　From側
+	    for ( i=0; i<38; i++ ){
+    	    document.reportquecalc.report2_from.options[i] = new Option(i);
+    	    document.reportquecalc.report2_from.options[i].text = kntq_gt2[i][0];
+    	    document.reportquecalc.report2_from.options[i].value = kntq_gt2[i][1];
+    	}
+    	document.reportquecalc.report2_from.selectedIndex = 0; // 初期値　最初
+
+		// 受けるレポートNo　To側
+	    for ( i=0; i<38; i++ ){
+    	    document.reportquecalc.report2_to.options[i] = new Option(i);
+  	    	document.reportquecalc.report2_to.options[i].text = kntq_gt2[i][0];
+   	    	document.reportquecalc.report2_to.options[i].value = kntq_gt2[i][1];
+    	}
+    	document.reportquecalc.report2_to.selectedIndex = 37; // 初期値　最後
+//    	getexpcalc();  // 計算させる。
+
+	}
+
+
+//
+//　function reportque_calc()
+//  機能：レポートクエ計算機処理（「計算！」ボタンが押された場合の処理）
+//
+    function reportque_calc()
+  {
+      gt = new Array(10);
+      expindex = new Array(6);
+      index_powerkit = new Array(6);
+      expindex_tq = new Array(6);
+      index_powerkit_tq = new Array(6);
+      var i, j, baselv, baseexp, cnt;
+
+// 初期処理
+      exptotal = 0;
+      for ( i = 0; i < 6 ; i++ ){
+      	expindex[i] = 1.00;
+      }
+      
+    // 入力値の取得
+      tenseikaisuu = eval( document.reportquecalc.tenseikaisuu.value );  // 転生回数
+      kijunLv = 600;
+//      if ( tenseikaisuu == 2 || tenseikaisuu == 3 ){ kijunLv = 598; }
+//      else { kijunLv = 600; }
+      input_nowlv = eval( document.reportquecalc.nowlv.value );   // 現在のLv
+//      nowhasuu = eval( document.reportquecalc.hasuuexp.value );  // 端数のEXP
+      guild_expseisaku = eval( document.reportquecalc.guild_expseisaku.value );  // ギルドの経験値政策
+      tensei_suru_Lv = eval( document.reportquecalc.tensei_suru_lv.value );  // 転生するLv（２次転生以下の場合適用）
+      
+    // ラジオボタン（端数の取得方法）の値取得
+      radiostatus = document.getElementsByName("method_input_hasuu");
+      for ( i = 0 ; i<radiostatus.length ; i++ ){
+        if ( radiostatus[i].checked == true ){
+          method_input_hasuu = radiostatus[i].value;  // 1:％で取得、2:数値で取得
+          break;
+        }
+      }
+    // 端数の値の取得
+      if ( method_input_hasuu == 1 ){
+      	// ％で取得
+      	nowhasuu = Math.floor( expnextlv( input_nowlv ) * eval( document.reportquecalc.hasuuexp_percent.value ) / 100 );
+      } else {
+      	// 数値で取得
+      	nowhasuu = eval( document.reportquecalc.hasuuexp_num.value );
+      }
+
+
+      amari_exp_wariai = Math.floor( nowhasuu / expnextlv( input_nowlv ) * 100 )
+//      kakutokuexp = eval(document.reportquecalc.kakutokuexp.value);  // もらえるEXP
+      
+      // レポートクエ１を使うかどうか
+      if ( document.reportquecalc.check_use_report1.checked ){
+      	flg_use_report_1 = true;
+      } else {
+      	flg_use_report_1 = false;
+      }
+      // レポートクエ２を使うかどうか
+      if ( document.reportquecalc.check_use_report2.checked ){
+      	flg_use_report_2 = true;
+      } else {
+      	flg_use_report_2 = false;
+      }
+      // スフィアを使うかどうか
+      if ( document.reportquecalc.check_use_sphere.checked ){
+      	index_sphere = 1.0; //　経験値100％ＵＰ
+      } else {
+      	index_sphere = 0;
+      }
+      
+      // パワキを使うかどうか（無転、４転、５転）
+      if ( document.reportquecalc.check_use_powerkit.checked ){
+      	index_powerkit[0] = 2.0; //　スフィアの効果を２倍にする
+      	index_powerkit[4] = 2.0; //　スフィアの効果を２倍にする
+      	index_powerkit[5] = 2.0; //　スフィアの効果を２倍にする
+      } else {
+      	index_powerkit[0] = 1.0; // スフィアの効果はそのまま
+      	index_powerkit[4] = 1.0; // スフィアの効果はそのまま
+      	index_powerkit[5] = 1.0; // スフィアの効果はそのまま
+      }
+
+      // １転パワキULTを使うかどうか
+      if ( document.reportquecalc.check_use_powerkitult_01.checked ){
+      	index_powerkit[1] = 3.0; //　スフィアの効果を３倍にする
+      } else {
+	      if ( document.reportquecalc.check_use_powerkit.checked ){
+	      	index_powerkit[1] = 2.0; //　スフィアの効果を２倍にする
+	      } else {
+	      	index_powerkit[1] = 1.0; // スフィアの効果はそのまま
+	      }
+      }
+
+      // ２転パワキULTを使うかどうか
+      if ( document.reportquecalc.check_use_powerkitult_02.checked ){
+      	index_powerkit[2] = 3.0; //　スフィアの効果を３倍にする
+      } else {
+	      if ( document.reportquecalc.check_use_powerkit.checked ){
+	      	index_powerkit[2] = 2.0; //　スフィアの効果を２倍にする
+	      } else {
+	      	index_powerkit[2] = 1.0; // スフィアの効果はそのまま
+	      }
+      }
+
+      // ３転パワキULTを使うかどうか
+      if ( document.reportquecalc.check_use_powerkitult_03.checked ){
+      	index_powerkit[3] = 3.0; //　スフィアの効果を３倍にする
+      } else {
+	      if ( document.reportquecalc.check_use_powerkit.checked ){
+	      	index_powerkit[3] = 2.0; //　スフィアの効果を２倍にする
+	      } else {
+	      	index_powerkit[3] = 1.0; // スフィアの効果はそのまま
+	      }
+      }
+
+      // ネカフェを使うかどうか
+      if ( document.reportquecalc.check_use_netcafe.checked ){
+      	index_netcafe = 0.5; //　基準ＥＸＰの０．５倍を加算
+      } else {
+      	index_netcafe = 0; 
+      }
+
+      // 経験値ボーナス係数の計算
+      for ( i = 0; i < 6; i++ ){
+      	expindex[i] = ( 1 + index_sphere * index_powerkit[i] + index_netcafe ) * ( 1 - guild_expseisaku / 100 );
+      }
+      
+    // 転生クエ関連値の取得
+      // 転生クエのEXPを計算に入れるかどうか
+      if ( document.reportquecalc.check_use_tqexp.checked ){
+      	index_use_tq = 1.0; // 使用
+      } else {
+      	index_use_tq = 0; // 未使用
+      }
+      
+      // スフィアを使うかどうか
+      if ( document.reportquecalc.check_tq_use_sphere.checked ){
+      	index_sphere_tq = 1.0; //　経験値100％ＵＰ
+      } else {
+      	index_sphere_tq = 0;
+      }
+      
+      // パワキを使うかどうか（無転、４転、５転）
+      if ( document.reportquecalc.check_tq_use_powerkit.checked ){
+      	index_powerkit_tq[0] = 2.0; //　スフィアの効果を２倍にする
+      	index_powerkit_tq[4] = 2.0; //　スフィアの効果を２倍にする
+      	index_powerkit_tq[5] = 2.0; //　スフィアの効果を２倍にする
+      } else {
+      	index_powerkit_tq[0] = 1.0; // スフィアの効果はそのまま
+      	index_powerkit_tq[4] = 1.0; // スフィアの効果はそのまま
+      	index_powerkit_tq[5] = 1.0; // スフィアの効果はそのまま
+      }
+
+      // １転パワキULTを使うかどうか
+      if ( document.reportquecalc.check_tq_use_powerkitult_01.checked ){
+      	index_powerkit_tq[1] = 3.0; //　スフィアの効果を３倍にする
+      } else {
+	      if ( document.reportquecalc.check_tq_use_powerkit.checked ){
+	      	index_powerkit_tq[1] = 2.0; //　スフィアの効果を２倍にする
+	      } else {
+	      	index_powerkit_tq[1] = 1.0; // スフィアの効果はそのまま
+	      }
+      }
+
+      // ２転パワキULTを使うかどうか
+      if ( document.reportquecalc.check_tq_use_powerkitult_02.checked ){
+      	index_powerkit_tq[2] = 3.0; //　スフィアの効果を３倍にする
+      } else {
+	      if ( document.reportquecalc.check_tq_use_powerkit.checked ){
+	      	index_powerkit_tq[2] = 2.0; //　スフィアの効果を２倍にする
+	      } else {
+	      	index_powerkit_tq[2] = 1.0; // スフィアの効果はそのまま
+	      }
+      }
+
+      // ３転パワキULTを使うかどうか
+      if ( document.reportquecalc.check_tq_use_powerkitult_03.checked ){
+      	index_powerkit_tq[3] = 3.0; //　スフィアの効果を３倍にする
+      } else {
+	      if ( document.reportquecalc.check_tq_use_powerkit.checked ){
+	      	index_powerkit_tq[3] = 2.0; //　スフィアの効果を２倍にする
+	      } else {
+	      	index_powerkit_tq[3] = 1.0; // スフィアの効果はそのまま
+	      }
+      }
+
+      // ネカフェを使うかどうか
+      if ( document.reportquecalc.check_tq_use_netcafe.checked ){
+      	index_netcafe_tq = 0.5; //　基準ＥＸＰの０．５倍を加算
+      } else {
+      	index_netcafe_tq = 0; 
+      }
+
+      // 経験値ボーナス係数の計算
+      for ( i = 0; i < 6; i++ ){
+      	expindex_tq[i] = index_use_tq * ( 1 + index_sphere_tq * index_powerkit_tq[i] + index_netcafe_tq ) * ( 1 - guild_expseisaku / 100 );
+      }
+    
+    // ラジオボタン（実施方法）の値取得
+      radiostatus = document.getElementsByName("calcmethod");
+      for ( i = 0 ; i<radiostatus.length ; i++ ){
+        if ( radiostatus[i].checked == true ){
+          calc_method = radiostatus[i].value;  // 1:レポクエ１優先、2:レポクエ２優先、3:Lvに合わせて交互
+          break;
+        }
+      }
+      
+    // ラジオボタン（転生方法）の値取得
+      radiostatus = document.getElementsByName("tensei_method");
+      for ( i = 0 ; i<radiostatus.length ; i++ ){
+        if ( radiostatus[i].checked == true ){
+          tensei_method = radiostatus[i].value;  // 1:転生要求回数に合わせて、2:一定以上のLvになったら強制的に転生
+          break;
+        }
+      }
+      
+      nowExp = LvtoExp(input_nowlv) + nowhasuu;
+      
+      nowLv = input_nowlv;
+      keikares = "";
+      LineCnt = 0;  // 途中経過出力の行数
+      kakutokuexp_total = 0; // レポートクエで獲得したEXPの合計
+      cntLv_age = 0; // Lv上げした回数
+      res_Lv_age = ""; // Lv上げの履歴文字列
+      
+      switch ( calc_method ){
+      	case "1":  // レポートクエ１を先に行う
+          //　レポートクエ１の処理
+          if ( flg_use_report_1 == true ){
+
+           	selectedindex_report1_from = document.reportquecalc.report1_from.selectedIndex;
+           	selectedindex_report1_to = document.reportquecalc.report1_to.selectedIndex;
+           	
+           	if ( selectedindex_report1_from <= selectedindex_report1_to ){
+           		for ( i = selectedindex_report1_from ; i <= selectedindex_report1_to ; i++ ){
+           			// 転生処理
+           			flg_tensei_exec = false;
+           			switch ( tensei_method ){
+           				case "1": // 転生要求回数に対応して転生
+           				  if ( tenseikaisuu < kntq_gt1[i][4] ){
+           				  	flg_tensei_exec = true;
+           				  }
+           				  break;
+           				
+           				case "2": // 設定値以上で強制的に転生する
+           				  if ( nowLv >= tensei_suru_Lv && nowLv >= kijunLv ){
+           				  	flg_tensei_exec = true;
+           				  }
+           				  break;
+           				
+           				default:
+           			      break;
+           		    }
+           				 
+//     				if ( tenseikaisuu <= 1 ) { kijunLv = 600; }
+//           			else                     { kijunLv = 598; }
+                    kijunLv = 600;
+           			switch ( tenseikaisuu ){
+           				case 0:
+           			        if ( flg_tensei_exec == true ){
+                    		  // 転生可能な場合、転生して何Lvになるかを計算する。
+                    		    exp_tq = tq_exptable[tenseikaisuu] * expindex_tq[tenseikaisuu];  // 転生クエで入る経験値
+                    		    nowExp += exp_tq;
+    			                nowExp -= LvtoExp( kijunLv );
+    			                nowLv_before = nowLv; // 今までのLv（情報表示用）
+    			                now_amari_wariai = amari_exp_wariai; // 今までの余りEXPの割合（情報表示用）
+    			                result = new expadv( 300, nowExp, 1.0 ); // 171228 転生後最低Lvが300になった事への対応
+    			                nowLv = result.lv;  // 転生後のLv
+    			                amari_exp_wariai =  Math.floor( result.exp / expnextlv( result.lv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+    			                tenseikaisuu++ ;
+           			            keikares += "\n" + "\n" + "★転生　" + (tenseikaisuu - 1) + "転 Lv" + nowLv_before + " " + now_amari_wariai + "％ → " + tenseikaisuu + "転 Lv" + nowLv + " " + amari_exp_wariai + "％" + "\n";
+           				    }
+           				    break;
+           				    
+           			    case 1:
+           			    	if ( document.reportquecalc.check_use_powerkitult_01.checked && kntq_gt1[report1_nowPointer][4] <= 1 ){
+           			    	// １転パワキULTを使っていて、かつクエを行うのに要求されている転生回数が１以下の場合は何もしない。
+           			    	// すなわち、ぎりぎりまで１転のままにして獲得経験値を増やす。
+           			    	} else {
+           			    	  if ( flg_tensei_exec == true ){
+                    		    // 転生可能な場合、転生して何Lvになるかを計算する。
+                    		      exp_tq = tq_exptable[tenseikaisuu] * expindex_tq[tenseikaisuu];  // 転生クエで入る経験値
+                    		      nowExp += exp_tq;
+    			                  nowExp -= LvtoExp( kijunLv );
+    			                  nowLv_before = nowLv; // 今までのLv（情報表示用）
+    			                  now_amari_wariai = amari_exp_wariai; // 今までの余りEXPの割合（情報表示用）
+    			                  result = new expadv( 300, nowExp, 1.0 ); // 171228 転生後最低Lvが300になった事への対応
+    			                  nowLv = result.lv;  // 転生後のLv
+    			                  amari_exp_wariai =  Math.floor( result.exp / expnextlv( result.lv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+    			                  tenseikaisuu++ ;
+           			              keikares += "\n" + "\n" + "★転生　" + (tenseikaisuu - 1) + "転 Lv" + nowLv_before + " " + now_amari_wariai + "％ → " + tenseikaisuu + "転 Lv" + nowLv + " " + amari_exp_wariai + "％" + "\n";
+           				      }
+           				    }
+           				    break;
+
+           			    case 2:
+           			    	if ( document.reportquecalc.check_use_powerkitult_02.checked && kntq_gt1[report1_nowPointer][4] <= 2 ){
+           			    	// ２転パワキULTを使っていて、かつクエを行うのに要求されている転生回数が２以下の場合は何もしない。
+           			    	// すなわち、ぎりぎりまで２転のままにして獲得経験値を増やす。
+           			    	} else {
+           			    	  if ( flg_tensei_exec == true ){
+                    		    // 転生可能な場合、転生して何Lvになるかを計算する。
+                    		      exp_tq = tq_exptable[tenseikaisuu] * expindex_tq[tenseikaisuu];  // 転生クエで入る経験値
+                    		      nowExp += exp_tq;
+    			                  nowExp -= LvtoExp( kijunLv );
+    			                  nowLv_before = nowLv; // 今までのLv（情報表示用）
+    			                  now_amari_wariai = amari_exp_wariai; // 今までの余りEXPの割合（情報表示用）
+    			                  result = new expadv( 300, nowExp, 1.0 ); // 171228 転生後最低Lvが300になった事への対応
+    			                  nowLv = result.lv;  // 転生後のLv
+    			                  amari_exp_wariai =  Math.floor( result.exp / expnextlv( result.lv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+    			                  tenseikaisuu++ ;
+           			              keikares += "\n" + "\n" + "★転生　" + (tenseikaisuu - 1) + "転 Lv" + nowLv_before + " " + now_amari_wariai + "％ → " + tenseikaisuu + "転 Lv" + nowLv + " " + amari_exp_wariai + "％" + "\n";
+           				      }
+           				    }
+           				    break;
+           				
+           			    case 3:
+           			    	if ( document.reportquecalc.check_use_powerkitult_03.checked && kntq_gt1[report1_nowPointer][4] <= 3 ){
+           			    	// ３転パワキULTを使っていて、かつクエを行うのに要求されている転生回数が３以下の場合は何もしない。
+           			    	// すなわち、ぎりぎりまで３転のままにして獲得経験値を増やす。
+           			    	} else {
+	           			    	if ( nowLv >= kijunLv ){
+                    		      exp_tq = tq_exptable[tenseikaisuu] * expindex_tq[tenseikaisuu];  // 転生クエで入る経験値
+                    		      nowExp += exp_tq;
+    			                  nowLv_before = nowLv; // 今までのLv（情報表示用）
+    			                  now_amari_wariai = amari_exp_wariai; // 今までの余りEXPの割合（情報表示用）
+    			                  result = new expadv( 300, nowExp, 1.0 ); // 171228 転生後最低Lvが300になった事への対応
+    			                  nowLv = result.lv;  // 転生後のLv
+    			                  amari_exp_wariai =  Math.floor( result.exp / expnextlv( result.lv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+    			                  tenseikaisuu++ ;
+           			              keikares += "\n" + "\n" + "★転生　" + (tenseikaisuu - 1) + "転 Lv" + nowLv_before + " " + now_amari_wariai + "％ → " + tenseikaisuu + "転 Lv" + nowLv + " " + amari_exp_wariai + "％" + "\n";
+	           			        }
+	           				}
+           			    	break;
+           			    
+           			    case 4:
+           			    	if ( nowLv >= 900 ){
+           			          tenseikaisuu++ ;
+           			          keikares += "\n" + "★転生：" + (tenseikaisuu - 1) + "転 Lv" + nowLv + "→" + tenseikaisuu + "転 Lv" + nowLv;
+           			        }
+           			    	break;
+           			    
+           			    default:
+           			    	break;
+       				}
+
+           			if ( nowLv > kntq_gt1[i][3] + 100 ){
+           			//　適正外の場合
+           			  // このレポートNoの獲得EXPの計算
+           			  kakutokuexp = Math.floor( kntq_gt1[i][2] * expindex[tenseikaisuu] );
+           			  kakutokuexp_total += kakutokuexp;
+           			  
+           			  now_amari_wariai = amari_exp_wariai;
+           			  
+           			  newLv = ExptoLv( nowExp + kakutokuexp );
+           			  
+           			  amari_exp = nowExp + kakutokuexp - LvtoExp( newLv );
+           			  amari_exp_wariai =  Math.floor( amari_exp / expnextlv( newLv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+
+           			  if ( LineCnt == 0 ){
+           			    keikares += "◎1-" + ( '00' + (i+1) ).slice( -2 ) + " (" + kntq_gt1[i][4] + "転 Lv" + ( '000' + kntq_gt1[i][3] ).slice( -3 ) + ")";
+           			    keikares += " 適正外  " + tenseikaisuu + "転 Lv" + ( '000' + nowLv ).slice( -3 ) + " " + ( '000' + now_amari_wariai ).slice( -3 ) + "％ → Lv" +  ( '000' + newLv ).slice( -3 ) + " " + ( '000' + amari_exp_wariai ).slice( -3 ) + "％";
+           			    keikares += "  " + kntq_gt1[i][6];
+           			    LineCnt++;
+           			  } else {
+           			    keikares += "\n" + "◎1-" + ( '00' + (i+1) ).slice( -2 ) + " (" + kntq_gt1[i][4] + "転 Lv" + ( '000' + kntq_gt1[i][3] ).slice( -3 ) + ")";
+           			    keikares += " 適正外  " + tenseikaisuu + "転 Lv" + ( '000' + nowLv ).slice( -3 ) + " " + ( '000' + now_amari_wariai ).slice( -3 ) + "％ → Lv" +  ( '000' + newLv ).slice( -3 ) + " " + ( '000' + amari_exp_wariai ).slice( -3 ) + "％";
+           			    keikares += "  " + kntq_gt1[i][6];
+           			  	LineCnt++;
+           			  }
+
+           			  nowLv = newLv;
+           			  nowExp += kakutokuexp;
+           			} else {
+           			//　適正の場合
+           			  if ( nowLv < kntq_gt1[i][3] ){
+           			  	// クエを受けるのにLvが足りない場合はまずLv上げをさせる。
+           			  	if ( LineCnt == 0 ){
+           			  	  keikares += "×Lv上げ  " + nowLv + "→" + kntq_gt1[i][3];
+           			  	  LineCnt++;
+           			    } else {
+           			  	  keikares += "\n" + "×Lv上げ  " + nowLv + "→" + kntq_gt1[i][3];
+           			  	  LineCnt++;
+           			    }
+           			    // Lv上げ回数と履歴文字列の更新
+           			    cntLv_age++;
+           			    res_Lv_age += "\n" + tenseikaisuu + "転 " + nowLv + "→" + kntq_gt1[i][3];
+           			    
+           			    nowLv = kntq_gt1[i][3];
+           			    nowExp = LvtoExp(nowLv);
+           			    amari_exp_wariai = 0;  // 余りの％をリセット
+           			  }
+           			  // このレポートNoの獲得EXPの計算
+           			  kakutokuexp = Math.floor( kntq_gt1[i][1] * expindex[tenseikaisuu] );
+           			  kakutokuexp_total += kakutokuexp;
+           			  
+           			  now_amari_wariai = amari_exp_wariai;
+
+           			  newLv = ExptoLv( nowExp + kakutokuexp );
+           			  
+           			  amari_exp = nowExp + kakutokuexp - LvtoExp( newLv );
+           			  amari_exp_wariai =  Math.floor( amari_exp / expnextlv( newLv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+           			  
+
+           			  if ( LineCnt == 0 ){
+           			    keikares += "◎1-" + ( '00' + (i+1) ).slice( -2 ) + " (" + kntq_gt1[i][4] + "転 Lv" + ( '000' + kntq_gt1[i][3] ).slice( -3 ) + ")";
+           			    keikares += " 適正　  " + tenseikaisuu + "転 Lv" + ( '000' + nowLv ).slice( -3 ) + " " + ( '000' + now_amari_wariai ).slice( -3 ) + "％ → Lv" +  ( '000' + newLv ).slice( -3 ) + " " + ( '000' + amari_exp_wariai ).slice( -3 ) + "％";
+           			    keikares += "  " + kntq_gt1[i][6];
+           			    LineCnt++;
+           			  } else {
+           			    keikares += "\n" + "◎1-" + ( '00' + (i+1) ).slice( -2 ) + " (" + kntq_gt1[i][4] + "転 Lv" + ( '000' + kntq_gt1[i][3] ).slice( -3 ) + ")";
+           			    keikares += " 適正　  " + tenseikaisuu + "転 Lv" + ( '000' + nowLv ).slice( -3 ) + " " + ( '000' + now_amari_wariai ).slice( -3 ) + "％ → Lv" +  ( '000' + newLv ).slice( -3 ) + " " + ( '000' + amari_exp_wariai ).slice( -3 ) + "％";
+           			    keikares += "  " + kntq_gt1[i][6];
+           			  	LineCnt++;
+           			  }
+
+           			  nowLv = newLv;
+           			  nowExp += kakutokuexp;
+           			}
+
+
+           		}
+             }
+          }
+
+          //　レポートクエ２の処理
+          if ( flg_use_report_2 == true ){
+          	
+          	selectedindex_report2_from = document.reportquecalc.report2_from.selectedIndex;
+           	selectedindex_report2_to = document.reportquecalc.report2_to.selectedIndex;
+           	          	
+           	if ( selectedindex_report2_from <= selectedindex_report2_to ){
+           		for ( i = selectedindex_report2_from ; i <= selectedindex_report2_to ; i++ ){
+           			// 転生処理
+           			flg_tensei_exec = false;
+           			switch ( tensei_method ){
+           				case "1": // 転生要求回数に対応して転生
+           				  if ( tenseikaisuu < kntq_gt2[i][4] ){
+           				  	flg_tensei_exec = true;
+           				  }
+           				  break;
+           				
+           				case "2": // 設定値以上で強制的に転生する
+           				  if ( nowLv >= tensei_suru_Lv && nowLv >= kijunLv ){
+           				  	flg_tensei_exec = true;
+           				  }
+           				  break;
+           				
+           				default:
+           			      break;
+           		    }
+           				 
+//     				if ( tenseikaisuu <= 1 ) { kijunLv = 600; }
+//           			else                     { kijunLv = 598; }
+                    kijunLv = 600;
+           			switch ( tenseikaisuu ){
+           				case 0:
+           			        if ( flg_tensei_exec == true ){
+                    		  // 転生可能な場合、転生して何Lvになるかを計算する。
+                    		    exp_tq = tq_exptable[tenseikaisuu] * expindex_tq[tenseikaisuu];  // 転生クエで入る経験値
+                    		    nowExp += exp_tq;
+    			                nowExp -= LvtoExp( kijunLv );
+    			                nowLv_before = nowLv; // 今までのLv（情報表示用）
+    			                now_amari_wariai = amari_exp_wariai; // 今までの余りEXPの割合（情報表示用）
+    			                result = new expadv( 300, nowExp, 1.0 ); // 171228 転生後最低Lvが300になった事への対応
+    			                nowLv = result.lv;  // 転生後のLv
+    			                amari_exp_wariai =  Math.floor( result.exp / expnextlv( result.lv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+    			                tenseikaisuu++ ;
+           			            keikares += "\n" + "\n" + "★転生　" + (tenseikaisuu - 1) + "転 Lv" + nowLv_before + " " + now_amari_wariai + "％ → " + tenseikaisuu + "転 Lv" + nowLv + " " + amari_exp_wariai + "％" + "\n";;
+           				    }
+           				    break;
+           				    
+           			    case 1:
+           			    	if ( document.reportquecalc.check_use_powerkitult_01.checked && kntq_gt1[report1_nowPointer][4] <= 1 ){
+           			    	// １転パワキULTを使っていて、かつクエを行うのに要求されている転生回数が１以下の場合は何もしない。
+           			    	// すなわち、ぎりぎりまで１転のままにして獲得経験値を増やす。
+           			    	} else {
+           			    	  if ( flg_tensei_exec == true ){
+                    		    // 転生可能な場合、転生して何Lvになるかを計算する。
+                    		      exp_tq = tq_exptable[tenseikaisuu] * expindex_tq[tenseikaisuu];  // 転生クエで入る経験値
+                    		      nowExp += exp_tq;
+    			                  nowExp -= LvtoExp( kijunLv );
+    			                  nowLv_before = nowLv; // 今までのLv（情報表示用）
+    			                  now_amari_wariai = amari_exp_wariai; // 今までの余りEXPの割合（情報表示用）
+    			                  result = new expadv( 300, nowExp, 1.0 ); // 171228 転生後最低Lvが300になった事への対応
+    			                  nowLv = result.lv;  // 転生後のLv
+    			                  amari_exp_wariai =  Math.floor( result.exp / expnextlv( result.lv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+    			                  tenseikaisuu++ ;
+           			              keikares += "\n" + "\n" + "★転生　" + (tenseikaisuu - 1) + "転 Lv" + nowLv_before + " " + now_amari_wariai + "％ → " + tenseikaisuu + "転 Lv" + nowLv + " " + amari_exp_wariai + "％" + "\n";
+           				      }
+           				    }
+           				    break;
+
+           			    case 2:
+           			    	if ( document.reportquecalc.check_use_powerkitult_02.checked && kntq_gt1[report1_nowPointer][4] <= 2 ){
+           			    	// ２転パワキULTを使っていて、かつクエを行うのに要求されている転生回数が２以下の場合は何もしない。
+           			    	// すなわち、ぎりぎりまで２転のままにして獲得経験値を増やす。
+           			    	} else {
+           			    	  if ( flg_tensei_exec == true ){
+                    		    // 転生可能な場合、転生して何Lvになるかを計算する。
+                    		      exp_tq = tq_exptable[tenseikaisuu] * expindex_tq[tenseikaisuu];  // 転生クエで入る経験値
+                    		      nowExp += exp_tq;
+    			                  nowExp -= LvtoExp( kijunLv );
+    			                  nowLv_before = nowLv; // 今までのLv（情報表示用）
+    			                  now_amari_wariai = amari_exp_wariai; // 今までの余りEXPの割合（情報表示用）
+    			                  result = new expadv( 300, nowExp, 1.0 ); // 171228 転生後最低Lvが300になった事への対応
+    			                  nowLv = result.lv;  // 転生後のLv
+    			                  amari_exp_wariai =  Math.floor( result.exp / expnextlv( result.lv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+    			                  tenseikaisuu++ ;
+           			              keikares += "\n" + "\n" + "★転生　" + (tenseikaisuu - 1) + "転 Lv" + nowLv_before + " " + now_amari_wariai + "％ → " + tenseikaisuu + "転 Lv" + nowLv + " " + amari_exp_wariai + "％" + "\n";
+           				      }
+           				    }
+           				    break;
+           				
+           			    case 3:
+           			    	if ( document.reportquecalc.check_use_powerkitult_03.checked && kntq_gt1[report1_nowPointer][4] <= 3 ){
+           			    	// ３転パワキULTを使っていて、かつクエを行うのに要求されている転生回数が３以下の場合は何もしない。
+           			    	// すなわち、ぎりぎりまで３転のままにして獲得経験値を増やす。
+           			    	} else {
+	           			    	if ( nowLv >= kijunLv ){
+                    		      exp_tq = tq_exptable[tenseikaisuu] * expindex_tq[tenseikaisuu];  // 転生クエで入る経験値
+                    		      nowExp += exp_tq;
+    			                  nowLv_before = nowLv; // 今までのLv（情報表示用）
+    			                  now_amari_wariai = amari_exp_wariai; // 今までの余りEXPの割合（情報表示用）
+    			                  result = new expadv( 300, nowExp, 1.0 ); // 171228 転生後最低Lvが300になった事への対応
+    			                  nowLv = result.lv;  // 転生後のLv
+    			                  amari_exp_wariai =  Math.floor( result.exp / expnextlv( result.lv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+    			                  tenseikaisuu++ ;
+           			              keikares += "\n" + "\n" + "★転生　" + (tenseikaisuu - 1) + "転 Lv" + nowLv_before + " " + now_amari_wariai + "％ → " + tenseikaisuu + "転 Lv" + nowLv + " " + amari_exp_wariai + "％" + "\n";
+	           			        }
+	           				}
+           			    	break;
+           			    
+           			    case 4:
+           			    	if ( nowLv >= 900 ){
+           			          tenseikaisuu++ ;
+           			          keikares += "\n" + "★転生：" + (tenseikaisuu - 1) + "転 Lv" + nowLv + "→" + tenseikaisuu + "転 Lv" + nowLv;
+           			        }
+           			    	break;
+           			    
+           			    default:
+           			    	break;
+       				}
+
+           			if ( nowLv > kntq_gt2[i][3] + 100 ){
+           			//　適正外の場合
+           			  // このレポートNoの獲得EXPの計算
+           			  kakutokuexp = Math.floor( kntq_gt2[i][2] * expindex[tenseikaisuu] );
+           			  kakutokuexp_total += kakutokuexp;
+           			  
+           			  now_amari_wariai = amari_exp_wariai;
+           			  
+           			  newLv = ExptoLv( nowExp + kakutokuexp );
+           			  
+           			  amari_exp = nowExp + kakutokuexp - LvtoExp( newLv );
+           			  amari_exp_wariai =  Math.floor( amari_exp / expnextlv( newLv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+           			  
+           			  if ( LineCnt == 0 ){
+           			    keikares += "◆2-" + ( '00' + (i+1) ).slice( -2 ) + " (" + kntq_gt2[i][4] + "転 Lv" + ( '000' + kntq_gt2[i][3] ).slice( -3 ) + ")";
+           			    keikares += " 適正外  " + tenseikaisuu + "転 Lv" + ( '000' + nowLv ).slice( -3 ) + " " + ( '000' + now_amari_wariai ).slice( -3 ) + "％ → Lv" +  ( '000' + newLv ).slice( -3 ) + " " + ( '000' + amari_exp_wariai ).slice( -3 ) + "％";
+           			    keikares += "  " + kntq_gt2[i][6];
+           			    LineCnt++;
+           			  } else {
+           			    keikares += "\n" + "◆2-" + ( '00' + (i+1) ).slice( -2 ) + " (" + kntq_gt2[i][4] + "転 Lv" + ( '000' + kntq_gt2[i][3] ).slice( -3 ) + ")";
+           			    keikares += " 適正外  " + tenseikaisuu + "転 Lv" + ( '000' + nowLv ).slice( -3 ) + " " + ( '000' + now_amari_wariai ).slice( -3 ) + "％ → Lv" +  ( '000' + newLv ).slice( -3 ) + " " + ( '000' + amari_exp_wariai ).slice( -3 ) + "％";
+           			    keikares += "  " + kntq_gt2[i][6];
+           			  	LineCnt++;
+           			  }
+
+/*
+           			  if ( LineCnt == 0 ){
+           			    keikares += "◆2-" + (i+1) + ", " + kntq_gt2[i][4] + "転 Lv" + kntq_gt2[i][3] + ", 適正外, " + tenseikaisuu + "転 Lv" + nowLv + "→" +  newLv + ", " + amari_exp_wariai + "％" + ", " + kakutokuexp + ", " + kakutokuexp_total;
+           			    LineCnt++;
+           			  } else {
+           			    keikares += "\n" + "◆2-" + (i+1) + ", " + kntq_gt2[i][4] + "転 Lv" + kntq_gt2[i][3] + ", 適正外, " + tenseikaisuu + "転 Lv" + nowLv + "→" +  newLv + ", " + amari_exp_wariai + "％" + ", " + kakutokuexp + ", " + kakutokuexp_total;
+           			  	LineCnt++;
+           			  }
+*/
+           			  nowLv = newLv;
+           			  nowExp += kakutokuexp;
+           			} else {
+           			//　適正の場合
+           			  if ( nowLv < kntq_gt2[i][3] ){
+           			  	// クエを受けるのにLvが足りない場合はまずLv上げをさせる。
+           			  	if ( LineCnt == 0 ){
+           			  	  keikares += "×Lv上げ  " + nowLv + "→" + kntq_gt2[i][3];
+           			  	  LineCnt++;
+           			    } else {
+           			  	  keikares += "\n" + "×Lv上げ  " + nowLv + "→" + kntq_gt2[i][3];
+           			  	  LineCnt++;
+           			    }
+           			    // Lv上げ回数と履歴文字列の更新
+           			    cntLv_age++;
+           			    res_Lv_age += "\n" + tenseikaisuu + "転 " + nowLv + "→" + kntq_gt2[i][3];
+
+          			    nowLv = kntq_gt2[i][3];
+           			    nowExp = LvtoExp(nowLv);
+           			    amari_exp_wariai = 0;  // 余りの％をリセット
+           			  }
+           			  // このレポートNoの獲得EXPの計算
+           			  kakutokuexp = Math.floor( kntq_gt2[i][1] * expindex[tenseikaisuu] );
+           			  kakutokuexp_total += kakutokuexp;
+           			  
+           			  now_amari_wariai = amari_exp_wariai;
+
+           			  newLv = ExptoLv( nowExp + kakutokuexp );
+           			  
+           			  amari_exp = nowExp + kakutokuexp - LvtoExp( newLv );
+           			  amari_exp_wariai =  Math.floor( amari_exp / expnextlv( newLv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+           			  
+           			  if ( LineCnt == 0 ){
+           			    keikares += "◆2-" + ( '00' + (i+1) ).slice( -2 ) + " (" + kntq_gt2[i][4] + "転 Lv" + ( '000' + kntq_gt2[i][3] ).slice( -3 ) + ")";
+           			    keikares += " 適正　  " + tenseikaisuu + "転 Lv" + ( '000' + nowLv ).slice( -3 ) + " " + ( '000' + now_amari_wariai ).slice( -3 ) + "％ → Lv" +  ( '000' + newLv ).slice( -3 ) + " " + ( '000' + amari_exp_wariai ).slice( -3 ) + "％";
+           			    keikares += "  " + kntq_gt2[i][6];
+           			    LineCnt++;
+           			  } else {
+           			    keikares += "\n" + "◆2-" + ( '00' + (i+1) ).slice( -2 ) + " (" + kntq_gt2[i][4] + "転 Lv" + ( '000' + kntq_gt2[i][3] ).slice( -3 ) + ")";
+           			    keikares += " 適正　  " + tenseikaisuu + "転 Lv" + ( '000' + nowLv ).slice( -3 ) + " " + ( '000' + now_amari_wariai ).slice( -3 ) + "％ → Lv" +  ( '000' + newLv ).slice( -3 ) + " " + ( '000' + amari_exp_wariai ).slice( -3 ) + "％";
+           			    keikares += "  " + kntq_gt2[i][6];
+           			  	LineCnt++;
+           			  }
+
+           			  nowLv = newLv;
+           			  nowExp += kakutokuexp;
+           			}
+
+           		}
+             }
+          }
+          // 経過と結果をテキストエリアに出力する。
+          document.reportquecalc.keika.value = keikares;
+          
+          kekkares = tenseikaisuu + "次転生 Lv" + nowLv + " " + amari_exp_wariai + "％";
+          kekkares += "\n\n" + "総獲得経験値 = " + kakutokuexp_total.toLocaleString();
+          kekkares += "\n\n" + "途中でLv上げが必要な回数 = " + cntLv_age;
+          kekkares += res_Lv_age;
+          document.reportquecalc.kekka.value = kekkares;
+      	  break;
+      	  
+      	case "2":  // レポートクエ２を先に行う
+          //　レポートクエ２の処理
+          if ( flg_use_report_2 == true ){
+          	
+          	selectedindex_report2_from = document.reportquecalc.report2_from.selectedIndex;
+           	selectedindex_report2_to = document.reportquecalc.report2_to.selectedIndex;
+           	          	
+           	if ( selectedindex_report2_from <= selectedindex_report2_to ){
+           		for ( i = selectedindex_report2_from ; i <= selectedindex_report2_to ; i++ ){
+           			// 転生処理
+           			flg_tensei_exec = false;
+           			switch ( tensei_method ){
+           				case "1": // 転生要求回数に対応して転生
+           				  if ( tenseikaisuu < kntq_gt2[i][4] ){
+           				  	flg_tensei_exec = true;
+           				  }
+           				  break;
+           				
+           				case "2": // 設定値以上で強制的に転生する
+           				  if ( nowLv >= tensei_suru_Lv && nowLv >= kijunLv ){
+           				  	flg_tensei_exec = true;
+           				  }
+           				  break;
+           				
+           				default:
+           			      break;
+           		    }
+           				 
+//     				if ( tenseikaisuu <= 1 ) { kijunLv = 600; }
+//           			else                     { kijunLv = 598; }
+                    kijunLv = 600;
+           			switch ( tenseikaisuu ){
+           				case 0:
+           			        if ( flg_tensei_exec == true ){
+                    		  // 転生可能な場合、転生して何Lvになるかを計算する。
+                    		    exp_tq = tq_exptable[tenseikaisuu] * expindex_tq[tenseikaisuu];  // 転生クエで入る経験値
+                    		    nowExp += exp_tq;
+    			                nowExp -= LvtoExp( kijunLv );
+    			                nowLv_before = nowLv; // 今までのLv（情報表示用）
+    			                now_amari_wariai = amari_exp_wariai; // 今までの余りEXPの割合（情報表示用）
+    			                result = new expadv( 300, nowExp, 1.0 ); // 171228 転生後最低Lvが300になった事への対応
+    			                nowLv = result.lv;  // 転生後のLv
+    			                amari_exp_wariai =  Math.floor( result.exp / expnextlv( result.lv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+    			                tenseikaisuu++ ;
+           			            keikares += "\n" + "\n" + "★転生　" + (tenseikaisuu - 1) + "転 Lv" + nowLv_before + " " + now_amari_wariai + "％ → " + tenseikaisuu + "転 Lv" + nowLv + " " + amari_exp_wariai + "％" + "\n";
+           				    }
+           				    break;
+           				    
+           			    case 1:
+           			    	if ( document.reportquecalc.check_use_powerkitult_01.checked && kntq_gt1[report1_nowPointer][4] <= 1 ){
+           			    	// １転パワキULTを使っていて、かつクエを行うのに要求されている転生回数が１以下の場合は何もしない。
+           			    	// すなわち、ぎりぎりまで１転のままにして獲得経験値を増やす。
+           			    	} else {
+           			    	  if ( flg_tensei_exec == true ){
+                    		    // 転生可能な場合、転生して何Lvになるかを計算する。
+                    		      exp_tq = tq_exptable[tenseikaisuu] * expindex_tq[tenseikaisuu];  // 転生クエで入る経験値
+                    		      nowExp += exp_tq;
+    			                  nowExp -= LvtoExp( kijunLv );
+    			                  nowLv_before = nowLv; // 今までのLv（情報表示用）
+    			                  now_amari_wariai = amari_exp_wariai; // 今までの余りEXPの割合（情報表示用）
+    			                  result = new expadv( 300, nowExp, 1.0 ); // 171228 転生後最低Lvが300になった事への対応
+    			                  nowLv = result.lv;  // 転生後のLv
+    			                  amari_exp_wariai =  Math.floor( result.exp / expnextlv( result.lv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+    			                  tenseikaisuu++ ;
+           			              keikares += "\n" + "\n" + "★転生　" + (tenseikaisuu - 1) + "転 Lv" + nowLv_before + " " + now_amari_wariai + "％ → " + tenseikaisuu + "転 Lv" + nowLv + " " + amari_exp_wariai + "％" + "\n";
+           				      }
+           				    }
+           				    break;
+
+           			    case 2:
+           			    	if ( document.reportquecalc.check_use_powerkitult_02.checked && kntq_gt1[report1_nowPointer][4] <= 2 ){
+           			    	// ２転パワキULTを使っていて、かつクエを行うのに要求されている転生回数が２以下の場合は何もしない。
+           			    	// すなわち、ぎりぎりまで２転のままにして獲得経験値を増やす。
+           			    	} else {
+           			    	  if ( flg_tensei_exec == true ){
+                    		    // 転生可能な場合、転生して何Lvになるかを計算する。
+                    		      exp_tq = tq_exptable[tenseikaisuu] * expindex_tq[tenseikaisuu];  // 転生クエで入る経験値
+                    		      nowExp += exp_tq;
+    			                  nowExp -= LvtoExp( kijunLv );
+    			                  nowLv_before = nowLv; // 今までのLv（情報表示用）
+    			                  now_amari_wariai = amari_exp_wariai; // 今までの余りEXPの割合（情報表示用）
+    			                  result = new expadv( 300, nowExp, 1.0 ); // 171228 転生後最低Lvが300になった事への対応
+    			                  nowLv = result.lv;  // 転生後のLv
+    			                  amari_exp_wariai =  Math.floor( result.exp / expnextlv( result.lv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+    			                  tenseikaisuu++ ;
+           			              keikares += "\n" + "\n" + "★転生　" + (tenseikaisuu - 1) + "転 Lv" + nowLv_before + " " + now_amari_wariai + "％ → " + tenseikaisuu + "転 Lv" + nowLv + " " + amari_exp_wariai + "％" + "\n";
+           				      }
+           				    }
+           				    break;
+           				
+           			    case 3:
+           			    	if ( document.reportquecalc.check_use_powerkitult_03.checked && kntq_gt1[report1_nowPointer][4] <= 3 ){
+           			    	// ３転パワキULTを使っていて、かつクエを行うのに要求されている転生回数が３以下の場合は何もしない。
+           			    	// すなわち、ぎりぎりまで３転のままにして獲得経験値を増やす。
+           			    	} else {
+	           			    	if ( nowLv >= kijunLv ){
+                    		      exp_tq = tq_exptable[tenseikaisuu] * expindex_tq[tenseikaisuu];  // 転生クエで入る経験値
+                    		      nowExp += exp_tq;
+    			                  nowLv_before = nowLv; // 今までのLv（情報表示用）
+    			                  now_amari_wariai = amari_exp_wariai; // 今までの余りEXPの割合（情報表示用）
+    			                  result = new expadv( 300, nowExp, 1.0 ); // 171228 転生後最低Lvが300になった事への対応
+    			                  nowLv = result.lv;  // 転生後のLv
+    			                  amari_exp_wariai =  Math.floor( result.exp / expnextlv( result.lv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+    			                  tenseikaisuu++ ;
+           			              keikares += "\n" + "\n" + "★転生　" + (tenseikaisuu - 1) + "転 Lv" + nowLv_before + " " + now_amari_wariai + "％ → " + tenseikaisuu + "転 Lv" + nowLv + " " + amari_exp_wariai + "％" + "\n";
+	           			        }
+	           				}
+           			    	break;
+           			    
+           			    case 4:
+           			    	if ( nowLv >= 900 ){
+           			          tenseikaisuu++ ;
+           			          keikares += "\n" + "★転生：" + (tenseikaisuu - 1) + "転 Lv" + nowLv + "→" + tenseikaisuu + "転 Lv" + nowLv;
+           			        }
+           			    	break;
+           			    
+           			    default:
+           			    	break;
+       				}
+
+           			if ( nowLv > kntq_gt2[i][3] + 100 ){
+           			//　適正外の場合
+           			  // このレポートNoの獲得EXPの計算
+           			  kakutokuexp = Math.floor( kntq_gt2[i][2] * expindex[tenseikaisuu] );
+           			  kakutokuexp_total += kakutokuexp;
+           			  
+           			  now_amari_wariai = amari_exp_wariai;
+           			  
+           			  newLv = ExptoLv( nowExp + kakutokuexp );
+           			  
+           			  amari_exp = nowExp + kakutokuexp - LvtoExp( newLv );
+           			  amari_exp_wariai =  Math.floor( amari_exp / expnextlv( newLv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+           			  
+           			  if ( LineCnt == 0 ){
+           			    keikares += "◆2-" + ( '00' + (i+1) ).slice( -2 ) + " (" + kntq_gt2[i][4] + "転 Lv" + ( '000' + kntq_gt2[i][3] ).slice( -3 ) + ")";
+           			    keikares += " 適正外  " + tenseikaisuu + "転 Lv" + ( '000' + nowLv ).slice( -3 ) + " " + ( '000' + now_amari_wariai ).slice( -3 ) + "％ → Lv" +  ( '000' + newLv ).slice( -3 ) + " " + ( '000' + amari_exp_wariai ).slice( -3 ) + "％";
+           			    keikares += "  " + kntq_gt2[i][6];
+           			    LineCnt++;
+           			  } else {
+           			    keikares += "\n" + "◆2-" + ( '00' + (i+1) ).slice( -2 ) + " (" + kntq_gt2[i][4] + "転 Lv" + ( '000' + kntq_gt2[i][3] ).slice( -3 ) + ")";
+           			    keikares += " 適正外  " + tenseikaisuu + "転 Lv" + ( '000' + nowLv ).slice( -3 ) + " " + ( '000' + now_amari_wariai ).slice( -3 ) + "％ → Lv" +  ( '000' + newLv ).slice( -3 ) + " " + ( '000' + amari_exp_wariai ).slice( -3 ) + "％";
+           			    keikares += "  " + kntq_gt2[i][6];
+           			  	LineCnt++;
+           			  }
+           			  nowLv = newLv;
+           			  nowExp += kakutokuexp;
+           			} else {
+           			//　適正の場合
+           			  if ( nowLv < kntq_gt2[i][3] ){
+           			  	// クエを受けるのにLvが足りない場合はまずLv上げをさせる。
+           			  	if ( LineCnt == 0 ){
+           			  	  keikares += "×Lv上げ  " + nowLv + "→" + kntq_gt2[i][3];
+           			  	  LineCnt++;
+           			    } else {
+           			  	  keikares += "\n" + "×Lv上げ  " + nowLv + "→" + kntq_gt2[i][3];
+           			  	  LineCnt++;
+           			    }
+           			    // Lv上げ回数と履歴文字列の更新
+           			    cntLv_age++;
+           			    res_Lv_age += "\n" + tenseikaisuu + "転 " + nowLv + "→" + kntq_gt2[i][3];
+
+          			    nowLv = kntq_gt2[i][3];
+           			    nowExp = LvtoExp(nowLv);
+           			    amari_exp_wariai = 0;  // 余りの％をリセット
+           			  }
+           			  // このレポートNoの獲得EXPの計算
+           			  kakutokuexp = Math.floor( kntq_gt2[i][1] * expindex[tenseikaisuu] );
+           			  kakutokuexp_total += kakutokuexp;
+           			  
+           			  now_amari_wariai = amari_exp_wariai;
+
+           			  newLv = ExptoLv( nowExp + kakutokuexp );
+           			  
+           			  amari_exp = nowExp + kakutokuexp - LvtoExp( newLv );
+           			  amari_exp_wariai =  Math.floor( amari_exp / expnextlv( newLv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+           			  
+           			  if ( LineCnt == 0 ){
+           			    keikares += "◆2-" + ( '00' + (i+1) ).slice( -2 ) + " (" + kntq_gt2[i][4] + "転 Lv" + ( '000' + kntq_gt2[i][3] ).slice( -3 ) + ")";
+           			    keikares += " 適正　  " + tenseikaisuu + "転 Lv" + ( '000' + nowLv ).slice( -3 ) + " " + ( '000' + now_amari_wariai ).slice( -3 ) + "％ → Lv" +  ( '000' + newLv ).slice( -3 ) + " " + ( '000' + amari_exp_wariai ).slice( -3 ) + "％";
+           			    keikares += "  " + kntq_gt2[i][6];
+           			    LineCnt++;
+           			  } else {
+           			    keikares += "\n" + "◆2-" + ( '00' + (i+1) ).slice( -2 ) + " (" + kntq_gt2[i][4] + "転 Lv" + ( '000' + kntq_gt2[i][3] ).slice( -3 ) + ")";
+           			    keikares += " 適正　  " + tenseikaisuu + "転 Lv" + ( '000' + nowLv ).slice( -3 ) + " " + ( '000' + now_amari_wariai ).slice( -3 ) + "％ → Lv" +  ( '000' + newLv ).slice( -3 ) + " " + ( '000' + amari_exp_wariai ).slice( -3 ) + "％";
+           			    keikares += "  " + kntq_gt2[i][6];
+           			  	LineCnt++;
+           			  }
+           			  nowLv = newLv;
+           			  nowExp += kakutokuexp;
+           			}
+
+           		}
+             }
+          }
+          //　レポートクエ１の処理
+          if ( flg_use_report_1 == true ){
+
+           	selectedindex_report1_from = document.reportquecalc.report1_from.selectedIndex;
+           	selectedindex_report1_to = document.reportquecalc.report1_to.selectedIndex;
+           	
+           	if ( selectedindex_report1_from <= selectedindex_report1_to ){
+           		for ( i = selectedindex_report1_from ; i <= selectedindex_report1_to ; i++ ){
+           			// 転生処理
+           			flg_tensei_exec = false;
+           			switch ( tensei_method ){
+           				case "1": // 転生要求回数に対応して転生
+           				  if ( tenseikaisuu < kntq_gt1[i][4] ){
+           				  	flg_tensei_exec = true;
+           				  }
+           				  break;
+           				
+           				case "2": // 設定値以上で強制的に転生する
+           				  if ( nowLv >= tensei_suru_Lv && nowLv >= kijunLv ){
+           				  	flg_tensei_exec = true;
+           				  }
+           				  break;
+           				
+           				default:
+           			      break;
+           		    }
+           				 
+//     				if ( tenseikaisuu <= 1 ) { kijunLv = 600; }
+//           			else                     { kijunLv = 598; }
+                    kijunLv = 600;
+           			switch ( tenseikaisuu ){
+           				case 0:
+           			        if ( flg_tensei_exec == true ){
+                    		  // 転生可能な場合、転生して何Lvになるかを計算する。
+                    		    exp_tq = tq_exptable[tenseikaisuu] * expindex_tq[tenseikaisuu];  // 転生クエで入る経験値
+                    		    nowExp += exp_tq;
+    			                nowExp -= LvtoExp( kijunLv );
+    			                nowLv_before = nowLv; // 今までのLv（情報表示用）
+    			                now_amari_wariai = amari_exp_wariai; // 今までの余りEXPの割合（情報表示用）
+    			                result = new expadv( 300, nowExp, 1.0 ); // 171228 転生後最低Lvが300になった事への対応
+    			                nowLv = result.lv;  // 転生後のLv
+    			                amari_exp_wariai =  Math.floor( result.exp / expnextlv( result.lv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+    			                tenseikaisuu++ ;
+           			            keikares += "\n" + "\n" + "★転生　" + (tenseikaisuu - 1) + "転 Lv" + nowLv_before + " " + now_amari_wariai + "％ → " + tenseikaisuu + "転 Lv" + nowLv + " " + amari_exp_wariai + "％" + "\n";
+           				    }
+           				    break;
+           				    
+           			    case 1:
+           			    	if ( document.reportquecalc.check_use_powerkitult_01.checked && kntq_gt1[report1_nowPointer][4] <= 1 ){
+           			    	// １転パワキULTを使っていて、かつクエを行うのに要求されている転生回数が１以下の場合は何もしない。
+           			    	// すなわち、ぎりぎりまで１転のままにして獲得経験値を増やす。
+           			    	} else {
+           			    	  if ( flg_tensei_exec == true ){
+                    		    // 転生可能な場合、転生して何Lvになるかを計算する。
+                    		      exp_tq = tq_exptable[tenseikaisuu] * expindex_tq[tenseikaisuu];  // 転生クエで入る経験値
+                    		      nowExp += exp_tq;
+    			                  nowExp -= LvtoExp( kijunLv );
+    			                  nowLv_before = nowLv; // 今までのLv（情報表示用）
+    			                  now_amari_wariai = amari_exp_wariai; // 今までの余りEXPの割合（情報表示用）
+    			                  result = new expadv( 300, nowExp, 1.0 ); // 171228 転生後最低Lvが300になった事への対応
+    			                  nowLv = result.lv;  // 転生後のLv
+    			                  amari_exp_wariai =  Math.floor( result.exp / expnextlv( result.lv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+    			                  tenseikaisuu++ ;
+           			              keikares += "\n" + "\n" + "★転生　" + (tenseikaisuu - 1) + "転 Lv" + nowLv_before + " " + now_amari_wariai + "％ → " + tenseikaisuu + "転 Lv" + nowLv + " " + amari_exp_wariai + "％" + "\n";
+           				      }
+           				    }
+           				    break;
+
+           			    case 2:
+           			    	if ( document.reportquecalc.check_use_powerkitult_02.checked && kntq_gt1[report1_nowPointer][4] <= 2 ){
+           			    	// ２転パワキULTを使っていて、かつクエを行うのに要求されている転生回数が２以下の場合は何もしない。
+           			    	// すなわち、ぎりぎりまで２転のままにして獲得経験値を増やす。
+           			    	} else {
+           			    	  if ( flg_tensei_exec == true ){
+                    		    // 転生可能な場合、転生して何Lvになるかを計算する。
+                    		      exp_tq = tq_exptable[tenseikaisuu] * expindex_tq[tenseikaisuu];  // 転生クエで入る経験値
+                    		      nowExp += exp_tq;
+    			                  nowExp -= LvtoExp( kijunLv );
+    			                  nowLv_before = nowLv; // 今までのLv（情報表示用）
+    			                  now_amari_wariai = amari_exp_wariai; // 今までの余りEXPの割合（情報表示用）
+    			                  result = new expadv( 300, nowExp, 1.0 ); // 171228 転生後最低Lvが300になった事への対応
+    			                  nowLv = result.lv;  // 転生後のLv
+    			                  amari_exp_wariai =  Math.floor( result.exp / expnextlv( result.lv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+    			                  tenseikaisuu++ ;
+           			              keikares += "\n" + "\n" + "★転生　" + (tenseikaisuu - 1) + "転 Lv" + nowLv_before + " " + now_amari_wariai + "％ → " + tenseikaisuu + "転 Lv" + nowLv + " " + amari_exp_wariai + "％" + "\n";
+           				      }
+           				    }
+           				    break;
+           				
+           			    case 3:
+           			    	if ( document.reportquecalc.check_use_powerkitult_03.checked && kntq_gt1[report1_nowPointer][4] <= 3 ){
+           			    	// ３転パワキULTを使っていて、かつクエを行うのに要求されている転生回数が３以下の場合は何もしない。
+           			    	// すなわち、ぎりぎりまで３転のままにして獲得経験値を増やす。
+           			    	} else {
+	           			    	if ( nowLv >= kijunLv ){
+                    		      exp_tq = tq_exptable[tenseikaisuu] * expindex_tq[tenseikaisuu];  // 転生クエで入る経験値
+                    		      nowExp += exp_tq;
+    			                  nowLv_before = nowLv; // 今までのLv（情報表示用）
+    			                  now_amari_wariai = amari_exp_wariai; // 今までの余りEXPの割合（情報表示用）
+    			                  result = new expadv( 300, nowExp, 1.0 ); // 171228 転生後最低Lvが300になった事への対応
+    			                  nowLv = result.lv;  // 転生後のLv
+    			                  amari_exp_wariai =  Math.floor( result.exp / expnextlv( result.lv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+    			                  tenseikaisuu++ ;
+           			              keikares += "\n" + "\n" + "★転生　" + (tenseikaisuu - 1) + "転 Lv" + nowLv_before + " " + now_amari_wariai + "％ → " + tenseikaisuu + "転 Lv" + nowLv + " " + amari_exp_wariai + "％" + "\n";
+	           			        }
+	           				}
+           			    	break;
+           			    
+           			    case 4:
+           			    	if ( nowLv >= 900 ){
+           			          tenseikaisuu++ ;
+           			          keikares += "\n" + "★転生：" + (tenseikaisuu - 1) + "転 Lv" + nowLv + "→" + tenseikaisuu + "転 Lv" + nowLv;
+           			        }
+           			    	break;
+           			    
+           			    default:
+           			    	break;
+       				}
+
+           			if ( nowLv > kntq_gt1[i][3] + 100 ){
+           			//　適正外の場合
+           			  // このレポートNoの獲得EXPの計算
+           			  kakutokuexp = Math.floor( kntq_gt1[i][2] * expindex[tenseikaisuu] );
+           			  kakutokuexp_total += kakutokuexp;
+           			  
+           			  now_amari_wariai = amari_exp_wariai;
+           			  
+           			  newLv = ExptoLv( nowExp + kakutokuexp );
+           			  
+           			  amari_exp = nowExp + kakutokuexp - LvtoExp( newLv );
+           			  amari_exp_wariai =  Math.floor( amari_exp / expnextlv( newLv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+
+           			  if ( LineCnt == 0 ){
+           			    keikares += "◎1-" + ( '00' + (i+1) ).slice( -2 ) + " (" + kntq_gt1[i][4] + "転 Lv" + ( '000' + kntq_gt1[i][3] ).slice( -3 ) + ")";
+           			    keikares += " 適正外  " + tenseikaisuu + "転 Lv" + ( '000' + nowLv ).slice( -3 ) + " " + ( '000' + now_amari_wariai ).slice( -3 ) + "％ → Lv" +  ( '000' + newLv ).slice( -3 ) + " " + ( '000' + amari_exp_wariai ).slice( -3 ) + "％";
+           			    keikares += "  " + kntq_gt1[i][6];
+           			    LineCnt++;
+           			  } else {
+           			    keikares += "\n" + "◎1-" + ( '00' + (i+1) ).slice( -2 ) + " (" + kntq_gt1[i][4] + "転 Lv" + ( '000' + kntq_gt1[i][3] ).slice( -3 ) + ")";
+           			    keikares += " 適正外  " + tenseikaisuu + "転 Lv" + ( '000' + nowLv ).slice( -3 ) + " " + ( '000' + now_amari_wariai ).slice( -3 ) + "％ → Lv" +  ( '000' + newLv ).slice( -3 ) + " " + ( '000' + amari_exp_wariai ).slice( -3 ) + "％";
+           			    keikares += "  " + kntq_gt1[i][6];
+           			  	LineCnt++;
+           			  }
+
+           			  nowLv = newLv;
+           			  nowExp += kakutokuexp;
+           			  
+           			} else {
+           			//　適正の場合
+           			  if ( nowLv < kntq_gt1[i][3] ){
+           			  	// クエを受けるのにLvが足りない場合はまずLv上げをさせる。
+           			  	if ( LineCnt == 0 ){
+           			  	  keikares += "×Lv上げ  " + nowLv + "→" + kntq_gt1[i][3];
+           			  	  LineCnt++;
+           			    } else {
+           			  	  keikares += "\n" + "×Lv上げ  " + nowLv + "→" + kntq_gt1[i][3];
+           			  	  LineCnt++;
+           			    }
+           			    // Lv上げ回数と履歴文字列の更新
+           			    cntLv_age++;
+           			    res_Lv_age += "\n" + tenseikaisuu + "転 " + nowLv + "→" + kntq_gt1[i][3];
+           			    
+           			    nowLv = kntq_gt1[i][3];
+           			    nowExp = LvtoExp(nowLv);
+           			    amari_exp_wariai = 0;  // 余りの％をリセット
+           			  }
+           			  // このレポートNoの獲得EXPの計算
+           			  kakutokuexp = Math.floor( kntq_gt1[i][1] * expindex[tenseikaisuu] );
+           			  kakutokuexp_total += kakutokuexp;
+           			  
+           			  now_amari_wariai = amari_exp_wariai;
+
+           			  newLv = ExptoLv( nowExp + kakutokuexp );
+           			  
+           			  amari_exp = nowExp + kakutokuexp - LvtoExp( newLv );
+           			  amari_exp_wariai =  Math.floor( amari_exp / expnextlv( newLv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+           			  
+
+           			  if ( LineCnt == 0 ){
+           			    keikares += "◎1-" + ( '00' + (i+1) ).slice( -2 ) + " (" + kntq_gt1[i][4] + "転 Lv" + ( '000' + kntq_gt1[i][3] ).slice( -3 ) + ")";
+           			    keikares += " 適正　  " + tenseikaisuu + "転 Lv" + ( '000' + nowLv ).slice( -3 ) + " " + ( '000' + now_amari_wariai ).slice( -3 ) + "％ → Lv" +  ( '000' + newLv ).slice( -3 ) + " " + ( '000' + amari_exp_wariai ).slice( -3 ) + "％";
+           			    keikares += "  " + kntq_gt1[i][6];
+           			    LineCnt++;
+           			  } else {
+           			    keikares += "\n" + "◎1-" + ( '00' + (i+1) ).slice( -2 ) + " (" + kntq_gt1[i][4] + "転 Lv" + ( '000' + kntq_gt1[i][3] ).slice( -3 ) + ")";
+           			    keikares += " 適正　  " + tenseikaisuu + "転 Lv" + ( '000' + nowLv ).slice( -3 ) + " " + ( '000' + now_amari_wariai ).slice( -3 ) + "％ → Lv" +  ( '000' + newLv ).slice( -3 ) + " " + ( '000' + amari_exp_wariai ).slice( -3 ) + "％";
+           			    keikares += "  " + kntq_gt1[i][6];
+           			  	LineCnt++;
+           			  }
+           			  nowLv = newLv;
+           			  nowExp += kakutokuexp;
+           			}
+
+           		}
+             }
+          }
+          // 経過と結果をテキストエリアに出力する。
+          document.reportquecalc.keika.value = keikares;
+          
+          kekkares = tenseikaisuu + "次転生 Lv" + nowLv + " " + amari_exp_wariai + "％";
+          kekkares += "\n\n" + "総獲得経験値 = " + kakutokuexp_total.toLocaleString();
+          kekkares += "\n\n" + "途中でLv上げが必要な回数 = " + cntLv_age;
+          kekkares += res_Lv_age;
+          document.reportquecalc.kekka.value = kekkares;
+      	  break;
+      	
+      	case "3":  // 要求レベルに合わせて交互に行う
+          selectedindex_report1_from = document.reportquecalc.report1_from.selectedIndex;
+          selectedindex_report1_to = document.reportquecalc.report1_to.selectedIndex;
+          selectedindex_report2_from = document.reportquecalc.report2_from.selectedIndex;
+          selectedindex_report2_to = document.reportquecalc.report2_to.selectedIndex;
+          
+          report1_nSelected = selectedindex_report1_to - selectedindex_report1_from + 1; // レポート１の選択されている項目数
+          report2_nSelected = selectedindex_report2_to - selectedindex_report2_from + 1; // レポート２の選択されている項目数
+          reportall_nSelected = report1_nSelected + report2_nSelected; // 全ての選択されている項目数
+          
+          report1_nowPointer = selectedindex_report1_from ; // レポート１の現在のポインタ
+          report2_nowPointer = selectedindex_report2_from ; // レポート２の現在のポインタ
+          
+      	  for ( i = 0 ; i < reportall_nSelected ; i++ ){
+      	  	// 転生回数×６００＋要求Lv　の数値を比較し、低い方を優先して行う。
+            if ( report1_nowPointer > selectedindex_report1_to ){
+              // report1のポインタがフローした場合の処理
+      	  	  priority_index_report1 = 99 * 600;
+      	  	  priority_index_report2 = kntq_gt2[ report2_nowPointer ][4] * 600 + kntq_gt2[ report2_nowPointer ][3];
+            } else {
+      	  	  priority_index_report1 = kntq_gt1[ report1_nowPointer ][4] * 600 + kntq_gt1[ report1_nowPointer ][3];
+      	  	  priority_index_report2 = kntq_gt2[ report2_nowPointer ][4] * 600 + kntq_gt2[ report2_nowPointer ][3];
+            }
+      	  	if ( priority_index_report1 < priority_index_report2 ){
+      	  		// レポートクエ１を処理
+      	  		if ( flg_use_report_1 == true ){
+           			// 転生処理
+           			flg_tensei_exec = false;
+           			switch ( tensei_method ){
+           				case "1": // 転生要求回数に対応して転生
+           				  if ( tenseikaisuu < kntq_gt1[report1_nowPointer][4] ){
+           				  	flg_tensei_exec = true;
+           				  }
+           				  break;
+           				
+           				case "2": // 設定値以上で強制的に転生する
+           				  if ( nowLv >= tensei_suru_Lv && nowLv >= kijunLv ){
+           				  	flg_tensei_exec = true;
+           				  }
+           				  break;
+           				
+           				default:
+           			      break;
+           		    }
+           				 
+                    kijunLv = 600;
+           			switch ( tenseikaisuu ){
+           				case 0:
+           			        if ( flg_tensei_exec == true ){
+                    		  // 転生可能な場合、転生して何Lvになるかを計算する。
+                    		    exp_tq = tq_exptable[tenseikaisuu] * expindex_tq[tenseikaisuu];  // 転生クエで入る経験値
+                    		    nowExp += exp_tq;
+    			                nowExp -= LvtoExp( kijunLv );
+    			                nowLv_before = nowLv; // 今までのLv（情報表示用）
+    			                now_amari_wariai = amari_exp_wariai; // 今までの余りEXPの割合（情報表示用）
+    			                result = new expadv( 300, nowExp, 1.0 ); // 171228 転生後最低Lvが300になった事への対応
+    			                nowLv = result.lv;  // 転生後のLv
+    			                amari_exp_wariai =  Math.floor( result.exp / expnextlv( result.lv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+    			                tenseikaisuu++ ;
+           			            keikares += "\n" + "\n" + "★転生　" + (tenseikaisuu - 1) + "転 Lv" + nowLv_before + " " + now_amari_wariai + "％ → " + tenseikaisuu + "転 Lv" + nowLv + " " + amari_exp_wariai + "％" + "\n";
+           				    }
+           				    break;
+           				    
+           			    case 1:
+           			    	if ( document.reportquecalc.check_use_powerkitult_01.checked && kntq_gt1[report1_nowPointer][4] <= 1 ){
+           			    	// １転パワキULTを使っていて、かつクエを行うのに要求されている転生回数が１以下の場合は何もしない。
+           			    	// すなわち、ぎりぎりまで１転のままにして獲得経験値を増やす。
+           			    	} else {
+           			    	  if ( flg_tensei_exec == true ){
+                    		    // 転生可能な場合、転生して何Lvになるかを計算する。
+                    		      exp_tq = tq_exptable[tenseikaisuu] * expindex_tq[tenseikaisuu];  // 転生クエで入る経験値
+                    		      nowExp += exp_tq;
+    			                  nowExp -= LvtoExp( kijunLv );
+    			                  nowLv_before = nowLv; // 今までのLv（情報表示用）
+    			                  now_amari_wariai = amari_exp_wariai; // 今までの余りEXPの割合（情報表示用）
+    			                  result = new expadv( 300, nowExp, 1.0 ); // 171228 転生後最低Lvが300になった事への対応
+    			                  nowLv = result.lv;  // 転生後のLv
+    			                  amari_exp_wariai =  Math.floor( result.exp / expnextlv( result.lv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+    			                  tenseikaisuu++ ;
+           			              keikares += "\n" + "\n" + "★転生　" + (tenseikaisuu - 1) + "転 Lv" + nowLv_before + " " + now_amari_wariai + "％ → " + tenseikaisuu + "転 Lv" + nowLv + " " + amari_exp_wariai + "％" + "\n";
+           				      }
+           				    }
+           				    break;
+
+           			    case 2:
+           			    	if ( document.reportquecalc.check_use_powerkitult_02.checked && kntq_gt1[report1_nowPointer][4] <= 2 ){
+           			    	// ２転パワキULTを使っていて、かつクエを行うのに要求されている転生回数が２以下の場合は何もしない。
+           			    	// すなわち、ぎりぎりまで２転のままにして獲得経験値を増やす。
+           			    	} else {
+           			    	  if ( flg_tensei_exec == true ){
+                    		    // 転生可能な場合、転生して何Lvになるかを計算する。
+                    		      exp_tq = tq_exptable[tenseikaisuu] * expindex_tq[tenseikaisuu];  // 転生クエで入る経験値
+                    		      nowExp += exp_tq;
+    			                  nowExp -= LvtoExp( kijunLv );
+    			                  nowLv_before = nowLv; // 今までのLv（情報表示用）
+    			                  now_amari_wariai = amari_exp_wariai; // 今までの余りEXPの割合（情報表示用）
+    			                  result = new expadv( 300, nowExp, 1.0 ); // 171228 転生後最低Lvが300になった事への対応
+    			                  nowLv = result.lv;  // 転生後のLv
+    			                  amari_exp_wariai =  Math.floor( result.exp / expnextlv( result.lv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+    			                  tenseikaisuu++ ;
+           			              keikares += "\n" + "\n" + "★転生　" + (tenseikaisuu - 1) + "転 Lv" + nowLv_before + " " + now_amari_wariai + "％ → " + tenseikaisuu + "転 Lv" + nowLv + " " + amari_exp_wariai + "％" + "\n";
+           				      }
+           				    }
+           				    break;
+           				
+           			    case 3:
+           			    	if ( document.reportquecalc.check_use_powerkitult_03.checked && kntq_gt1[report1_nowPointer][4] <= 3 ){
+           			    	// ３転パワキULTを使っていて、かつクエを行うのに要求されている転生回数が３以下の場合は何もしない。
+           			    	// すなわち、ぎりぎりまで３転のままにして獲得経験値を増やす。
+           			    	} else {
+	           			    	if ( nowLv >= kijunLv ){
+                    		      exp_tq = tq_exptable[tenseikaisuu] * expindex_tq[tenseikaisuu];  // 転生クエで入る経験値
+                    		      nowExp += exp_tq;
+    			                  nowLv_before = nowLv; // 今までのLv（情報表示用）
+    			                  now_amari_wariai = amari_exp_wariai; // 今までの余りEXPの割合（情報表示用）
+    			                  result = new expadv( 300, nowExp, 1.0 ); // 171228 転生後最低Lvが300になった事への対応
+    			                  nowLv = result.lv;  // 転生後のLv
+    			                  amari_exp_wariai =  Math.floor( result.exp / expnextlv( result.lv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+    			                  tenseikaisuu++ ;
+           			              keikares += "\n" + "\n" + "★転生　" + (tenseikaisuu - 1) + "転 Lv" + nowLv_before + " " + now_amari_wariai + "％ → " + tenseikaisuu + "転 Lv" + nowLv + " " + amari_exp_wariai + "％" + "\n";
+	           			        }
+	           				}
+           			    	break;
+           			    
+           			    case 4:
+           			    	if ( nowLv >= 900 ){
+           			          tenseikaisuu++ ;
+           			          keikares += "\n" + "★転生：" + (tenseikaisuu - 1) + "転 Lv" + nowLv + "→" + tenseikaisuu + "転 Lv" + nowLv;
+           			        }
+           			    	break;
+           			    
+           			    default:
+           			    	break;
+       				}
+
+           			if ( nowLv > kntq_gt1[report1_nowPointer][3] + 100 ){
+           			//　適正外の場合
+           			  // このレポートNoの獲得EXPの計算
+           			  kakutokuexp = Math.floor( kntq_gt1[report1_nowPointer][2] * expindex[tenseikaisuu] );
+           			  kakutokuexp_total += kakutokuexp;
+           			  
+           			  now_amari_wariai = amari_exp_wariai;
+           			  
+           			  newLv = ExptoLv( nowExp + kakutokuexp );
+           			  
+           			  amari_exp = nowExp + kakutokuexp - LvtoExp( newLv );
+           			  amari_exp_wariai =  Math.floor( amari_exp / expnextlv( newLv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+
+           			  if ( LineCnt == 0 ){
+           			    keikares += "◎1-" + ( '00' + (report1_nowPointer+1) ).slice( -2 ) + " (" + kntq_gt1[report1_nowPointer][4] + "転 Lv" + ( '000' + kntq_gt1[report1_nowPointer][3] ).slice( -3 ) + ")";
+           			    keikares += " 適正外  " + tenseikaisuu + "転 Lv" + ( '000' + nowLv ).slice( -3 ) + " " + ( '000' + now_amari_wariai ).slice( -3 ) + "％ → Lv" +  ( '000' + newLv ).slice( -3 ) + " " + ( '000' + amari_exp_wariai ).slice( -3 ) + "％";
+           			    keikares += "  " + kntq_gt1[report1_nowPointer][6];
+           			    LineCnt++;
+           			  } else {
+           			    keikares += "\n" + "◎1-" + ( '00' + (report1_nowPointer+1) ).slice( -2 ) + " (" + kntq_gt1[report1_nowPointer][4] + "転 Lv" + ( '000' + kntq_gt1[report1_nowPointer][3] ).slice( -3 ) + ")";
+           			    keikares += " 適正外  " + tenseikaisuu + "転 Lv" + ( '000' + nowLv ).slice( -3 ) + " " + ( '000' + now_amari_wariai ).slice( -3 ) + "％ → Lv" +  ( '000' + newLv ).slice( -3 ) + " " + ( '000' + amari_exp_wariai ).slice( -3 ) + "％";
+           			    keikares += "  " + kntq_gt1[report1_nowPointer][6];
+           			  	LineCnt++;
+           			  }
+           			  nowLv = newLv;
+           			  nowExp += kakutokuexp;
+           			} else {
+           			//　適正の場合
+           			  if ( nowLv < kntq_gt1[report1_nowPointer][3] ){
+           			  	// クエを受けるのにLvが足りない場合はまずLv上げをさせる。
+           			  	if ( LineCnt == 0 ){
+           			  	  keikares += "×Lv上げ  " + nowLv + "→" + kntq_gt1[report1_nowPointer][3];
+           			  	  LineCnt++;
+           			    } else {
+           			  	  keikares += "\n" + "×Lv上げ  " + nowLv + "→" + kntq_gt1[report1_nowPointer][3];
+           			  	  LineCnt++;
+           			    }
+           			    // Lv上げ回数と履歴文字列の更新
+           			    cntLv_age++;
+           			    res_Lv_age += "\n" + tenseikaisuu + "転 " + nowLv + "→" + kntq_gt1[report1_nowPointer][3];
+           			    
+           			    nowLv = kntq_gt1[report1_nowPointer][3];
+           			    nowExp = LvtoExp(nowLv);
+           			    amari_exp_wariai = 0;  // 余りの％をリセット
+           			  }
+           			  // このレポートNoの獲得EXPの計算
+           			  kakutokuexp = Math.floor( kntq_gt1[report1_nowPointer][1] * expindex[tenseikaisuu] );
+           			  kakutokuexp_total += kakutokuexp;
+           			  
+           			  now_amari_wariai = amari_exp_wariai;
+
+           			  newLv = ExptoLv( nowExp + kakutokuexp );
+           			  
+           			  amari_exp = nowExp + kakutokuexp - LvtoExp( newLv );
+           			  amari_exp_wariai =  Math.floor( amari_exp / expnextlv( newLv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+           			  
+
+           			  if ( LineCnt == 0 ){
+           			    keikares += "◎1-" + ( '00' + (report1_nowPointer+1) ).slice( -2 ) + " (" + kntq_gt1[report1_nowPointer][4] + "転 Lv" + ( '000' + kntq_gt1[report1_nowPointer][3] ).slice( -3 ) + ")";
+           			    keikares += " 適正　  " + tenseikaisuu + "転 Lv" + ( '000' + nowLv ).slice( -3 ) + " " + ( '000' + now_amari_wariai ).slice( -3 ) + "％ → Lv" +  ( '000' + newLv ).slice( -3 ) + " " + ( '000' + amari_exp_wariai ).slice( -3 ) + "％";
+           			    keikares += "  " + kntq_gt1[report1_nowPointer][6];
+           			    LineCnt++;
+           			  } else {
+           			    keikares += "\n" + "◎1-" + ( '00' + (report1_nowPointer+1) ).slice( -2 ) + " (" + kntq_gt1[report1_nowPointer][4] + "転 Lv" + ( '000' + kntq_gt1[report1_nowPointer][3] ).slice( -3 ) + ")";
+           			    keikares += " 適正　  " + tenseikaisuu + "転 Lv" + ( '000' + nowLv ).slice( -3 ) + " " + ( '000' + now_amari_wariai ).slice( -3 ) + "％ → Lv" +  ( '000' + newLv ).slice( -3 ) + " " + ( '000' + amari_exp_wariai ).slice( -3 ) + "％";
+           			    keikares += "  " + kntq_gt1[report1_nowPointer][6];
+           			  	LineCnt++;
+           			  }
+           			  nowLv = newLv;
+           			  nowExp += kakutokuexp;
+           			}
+
+      	  		}
+      	  		report1_nowPointer++;
+      	  	} else {
+      	  		// レポートクエ２を処理
+      	  		if ( flg_use_report_2 == true ){
+           			// 転生処理
+           			flg_tensei_exec = false;
+           			switch ( tensei_method ){
+           				case "1": // 転生要求回数に対応して転生
+           				  if ( tenseikaisuu < kntq_gt2[report2_nowPointer][4] ){
+           				  	flg_tensei_exec = true;
+           				  }
+           				  break;
+           				
+           				case "2": // 設定値以上で強制的に転生する
+           				  if ( nowLv >= tensei_suru_Lv && nowLv >= kijunLv ){
+           				  	flg_tensei_exec = true;
+           				  }
+           				  break;
+           				
+           				default:
+           			      break;
+           		    }
+           				 
+                    kijunLv = 600;
+           			switch ( tenseikaisuu ){
+           				case 0:
+           			        if ( flg_tensei_exec == true ){
+                    		  // 転生可能な場合、転生して何Lvになるかを計算する。
+                    		    exp_tq = tq_exptable[tenseikaisuu] * expindex_tq[tenseikaisuu];  // 転生クエで入る経験値
+                    		    nowExp += exp_tq;
+    			                nowExp -= LvtoExp( kijunLv );
+    			                nowLv_before = nowLv; // 今までのLv（情報表示用）
+    			                now_amari_wariai = amari_exp_wariai; // 今までの余りEXPの割合（情報表示用）
+    			                result = new expadv( 300, nowExp, 1.0 ); // 171228 転生後最低Lvが300になった事への対応
+    			                nowLv = result.lv;  // 転生後のLv
+    			                amari_exp_wariai =  Math.floor( result.exp / expnextlv( result.lv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+    			                tenseikaisuu++ ;
+           			            keikares += "\n" + "\n" + "★転生　" + (tenseikaisuu - 1) + "転 Lv" + nowLv_before + " " + now_amari_wariai + "％ → " + tenseikaisuu + "転 Lv" + nowLv + " " + amari_exp_wariai + "％" + "\n";
+           				    }
+           				    break;
+           				    
+           			    case 1:
+           			    	if ( document.reportquecalc.check_use_powerkitult_01.checked && kntq_gt1[report1_nowPointer][4] <= 1 ){
+           			    	// １転パワキULTを使っていて、かつクエを行うのに要求されている転生回数が１以下の場合は何もしない。
+           			    	// すなわち、ぎりぎりまで１転のままにして獲得経験値を増やす。
+           			    	} else {
+           			    	  if ( flg_tensei_exec == true ){
+                    		    // 転生可能な場合、転生して何Lvになるかを計算する。
+                    		      exp_tq = tq_exptable[tenseikaisuu] * expindex_tq[tenseikaisuu];  // 転生クエで入る経験値
+                    		      nowExp += exp_tq;
+    			                  nowExp -= LvtoExp( kijunLv );
+    			                  nowLv_before = nowLv; // 今までのLv（情報表示用）
+    			                  now_amari_wariai = amari_exp_wariai; // 今までの余りEXPの割合（情報表示用）
+    			                  result = new expadv( 300, nowExp, 1.0 ); // 171228 転生後最低Lvが300になった事への対応
+    			                  nowLv = result.lv;  // 転生後のLv
+    			                  amari_exp_wariai =  Math.floor( result.exp / expnextlv( result.lv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+    			                  tenseikaisuu++ ;
+           			              keikares += "\n" + "\n" + "★転生　" + (tenseikaisuu - 1) + "転 Lv" + nowLv_before + " " + now_amari_wariai + "％ → " + tenseikaisuu + "転 Lv" + nowLv + " " + amari_exp_wariai + "％" + "\n";
+           				      }
+           				    }
+           				    break;
+
+           			    case 2:
+           			    	if ( document.reportquecalc.check_use_powerkitult_02.checked && kntq_gt1[report1_nowPointer][4] <= 2 ){
+           			    	// ２転パワキULTを使っていて、かつクエを行うのに要求されている転生回数が２以下の場合は何もしない。
+           			    	// すなわち、ぎりぎりまで２転のままにして獲得経験値を増やす。
+           			    	} else {
+           			    	  if ( flg_tensei_exec == true ){
+                    		    // 転生可能な場合、転生して何Lvになるかを計算する。
+                    		      exp_tq = tq_exptable[tenseikaisuu] * expindex_tq[tenseikaisuu];  // 転生クエで入る経験値
+                    		      nowExp += exp_tq;
+    			                  nowExp -= LvtoExp( kijunLv );
+    			                  nowLv_before = nowLv; // 今までのLv（情報表示用）
+    			                  now_amari_wariai = amari_exp_wariai; // 今までの余りEXPの割合（情報表示用）
+    			                  result = new expadv( 300, nowExp, 1.0 ); // 171228 転生後最低Lvが300になった事への対応
+    			                  nowLv = result.lv;  // 転生後のLv
+    			                  amari_exp_wariai =  Math.floor( result.exp / expnextlv( result.lv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+    			                  tenseikaisuu++ ;
+           			              keikares += "\n" + "\n" + "★転生　" + (tenseikaisuu - 1) + "転 Lv" + nowLv_before + " " + now_amari_wariai + "％ → " + tenseikaisuu + "転 Lv" + nowLv + " " + amari_exp_wariai + "％" + "\n";
+           				      }
+           				    }
+           				    break;
+           				
+           			    case 3:
+           			    	if ( document.reportquecalc.check_use_powerkitult_03.checked && kntq_gt1[report1_nowPointer][4] <= 3 ){
+           			    	// ３転パワキULTを使っていて、かつクエを行うのに要求されている転生回数が３以下の場合は何もしない。
+           			    	// すなわち、ぎりぎりまで３転のままにして獲得経験値を増やす。
+           			    	} else {
+	           			    	if ( nowLv >= kijunLv ){
+                    		      exp_tq = tq_exptable[tenseikaisuu] * expindex_tq[tenseikaisuu];  // 転生クエで入る経験値
+                    		      nowExp += exp_tq;
+    			                  nowLv_before = nowLv; // 今までのLv（情報表示用）
+    			                  now_amari_wariai = amari_exp_wariai; // 今までの余りEXPの割合（情報表示用）
+    			                  result = new expadv( 300, nowExp, 1.0 ); // 171228 転生後最低Lvが300になった事への対応
+    			                  nowLv = result.lv;  // 転生後のLv
+    			                  amari_exp_wariai =  Math.floor( result.exp / expnextlv( result.lv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+    			                  tenseikaisuu++ ;
+           			              keikares += "\n" + "\n" + "★転生　" + (tenseikaisuu - 1) + "転 Lv" + nowLv_before + " " + now_amari_wariai + "％ → " + tenseikaisuu + "転 Lv" + nowLv + " " + amari_exp_wariai + "％" + "\n";
+	           			        }
+	           				}
+           			    	break;
+           			    
+           			    case 4:
+           			    	if ( nowLv >= 900 ){
+           			          tenseikaisuu++ ;
+           			          keikares += "\n" + "★転生：" + (tenseikaisuu - 1) + "転 Lv" + nowLv + "→" + tenseikaisuu + "転 Lv" + nowLv;
+           			        }
+           			    	break;
+           			    
+           			    default:
+           			    	break;
+       				}
+
+           			if ( nowLv > kntq_gt2[report2_nowPointer][3] + 100 ){
+           			//　適正外の場合
+           			  // このレポートNoの獲得EXPの計算
+           			  kakutokuexp = Math.floor( kntq_gt2[report2_nowPointer][2] * expindex[tenseikaisuu] );
+           			  kakutokuexp_total += kakutokuexp;
+           			  
+           			  now_amari_wariai = amari_exp_wariai;
+           			  
+           			  newLv = ExptoLv( nowExp + kakutokuexp );
+           			  
+           			  amari_exp = nowExp + kakutokuexp - LvtoExp( newLv );
+           			  amari_exp_wariai =  Math.floor( amari_exp / expnextlv( newLv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+           			  
+           			  if ( LineCnt == 0 ){
+           			    keikares += "◆2-" + ( '00' + (report2_nowPointer+1) ).slice( -2 ) + " (" + kntq_gt2[report2_nowPointer][4] + "転 Lv" + ( '000' + kntq_gt2[report2_nowPointer][3] ).slice( -3 ) + ")";
+           			    keikares += " 適正外  " + tenseikaisuu + "転 Lv" + ( '000' + nowLv ).slice( -3 ) + " " + ( '000' + now_amari_wariai ).slice( -3 ) + "％ → Lv" +  ( '000' + newLv ).slice( -3 ) + " " + ( '000' + amari_exp_wariai ).slice( -3 ) + "％";
+           			    keikares += "  " + kntq_gt2[report2_nowPointer][6];
+           			    LineCnt++;
+           			  } else {
+           			    keikares += "\n" + "◆2-" + ( '00' + (report2_nowPointer+1) ).slice( -2 ) + " (" + kntq_gt2[report2_nowPointer][4] + "転 Lv" + ( '000' + kntq_gt2[report2_nowPointer][3] ).slice( -3 ) + ")";
+           			    keikares += " 適正外  " + tenseikaisuu + "転 Lv" + ( '000' + nowLv ).slice( -3 ) + " " + ( '000' + now_amari_wariai ).slice( -3 ) + "％ → Lv" +  ( '000' + newLv ).slice( -3 ) + " " + ( '000' + amari_exp_wariai ).slice( -3 ) + "％";
+           			    keikares += "  " + kntq_gt2[report2_nowPointer][6];
+           			  	LineCnt++;
+           			  }
+           			  nowLv = newLv;
+           			  nowExp += kakutokuexp;
+
+           			} else {
+           			//　適正の場合
+           			  if ( nowLv < kntq_gt2[report2_nowPointer][3] ){
+           			  	// クエを受けるのにLvが足りない場合はまずLv上げをさせる。
+           			  	if ( LineCnt == 0 ){
+           			  	  keikares += "×Lv上げ  " + nowLv + "→" + kntq_gt2[report2_nowPointer][3];
+           			  	  LineCnt++;
+           			    } else {
+           			  	  keikares += "\n" + "×Lv上げ  " + nowLv + "→" + kntq_gt2[report2_nowPointer][3];
+           			  	  LineCnt++;
+           			    }
+           			    // Lv上げ回数と履歴文字列の更新
+           			    cntLv_age++;
+           			    res_Lv_age += "\n" + tenseikaisuu + "転 " + nowLv + "→" + kntq_gt2[report2_nowPointer][3];
+
+          			    nowLv = kntq_gt2[report2_nowPointer][3];
+           			    nowExp = LvtoExp(nowLv);
+           			    amari_exp_wariai = 0;  // 余りの％をリセット
+           			  }
+           			  // このレポートNoの獲得EXPの計算
+           			  kakutokuexp = Math.floor( kntq_gt2[report2_nowPointer][1] * expindex[tenseikaisuu] );
+           			  kakutokuexp_total += kakutokuexp;
+           			  
+           			  now_amari_wariai = amari_exp_wariai;
+
+           			  newLv = ExptoLv( nowExp + kakutokuexp );
+           			  
+           			  amari_exp = nowExp + kakutokuexp - LvtoExp( newLv );
+           			  amari_exp_wariai =  Math.floor( amari_exp / expnextlv( newLv ) * 100 );  // 次のLvまでのEXPパーセンテージ
+           			  
+           			  if ( LineCnt == 0 ){
+           			    keikares += "◆2-" + ( '00' + (report2_nowPointer+1) ).slice( -2 ) + " (" + kntq_gt2[report2_nowPointer][4] + "転 Lv" + ( '000' + kntq_gt2[report2_nowPointer][3] ).slice( -3 ) + ")";
+           			    keikares += " 適正　  " + tenseikaisuu + "転 Lv" + ( '000' + nowLv ).slice( -3 ) + " " + ( '000' + now_amari_wariai ).slice( -3 ) + "％ → Lv" +  ( '000' + newLv ).slice( -3 ) + " " + ( '000' + amari_exp_wariai ).slice( -3 ) + "％";
+           			    keikares += "  " + kntq_gt2[report2_nowPointer][6];
+           			    LineCnt++;
+           			  } else {
+           			    keikares += "\n" + "◆2-" + ( '00' + (report2_nowPointer+1) ).slice( -2 ) + " (" + kntq_gt2[report2_nowPointer][4] + "転 Lv" + ( '000' + kntq_gt2[report2_nowPointer][3] ).slice( -3 ) + ")";
+           			    keikares += " 適正　  " + tenseikaisuu + "転 Lv" + ( '000' + nowLv ).slice( -3 ) + " " + ( '000' + now_amari_wariai ).slice( -3 ) + "％ → Lv" +  ( '000' + newLv ).slice( -3 ) + " " + ( '000' + amari_exp_wariai ).slice( -3 ) + "％";
+           			    keikares += "  " + kntq_gt2[report2_nowPointer][6];
+           			  	LineCnt++;
+           			  }
+
+           			  nowLv = newLv;
+           			  nowExp += kakutokuexp;
+           			}
+
+      	  		}
+      	  		report2_nowPointer++;
+      	  	}
+      	  }
+          // 経過と結果をテキストエリアに出力する。
+          document.reportquecalc.keika.value = keikares;
+          
+          kekkares = tenseikaisuu + "次転生 Lv" + nowLv + " " + amari_exp_wariai + "％";
+          kekkares += "\n\n" + "総獲得経験値 = " + kakutokuexp_total.toLocaleString();
+          kekkares += "\n\n" + "途中でLv上げが必要な回数 = " + cntLv_age;
+          kekkares += res_Lv_age;
+          document.reportquecalc.kekka.value = kekkares;
+          break;
+        
+        default:
+          break;
+     }
+  }
+//　function reportquecalc_re( btn, zoubun )
+//  機能：EXP→Lv計算処理（矢印ボタンによってLvが変更された場合の操作）
+//  引数：btn ボタンの種類。1　（ここでは分岐未使用のため、常に１を引数に指定すること。）
+//　　　　zoubun　増分値
+//
+    function reportquecalc_re( btn, zoubun )
+  {
+    switch( btn ){
+      case 1: // 
+        nowlv = eval(document.reportquecalc.nowlv.value);
+        nowlv += zoubun;
+        if ( nowlv < 1 ) nowlv = 1;
+        document.reportquecalc.nowlv.value = nowlv;
+        reportque_calc();  // 再計算させる
+        break;
+    }
+  }
+
+
+//
+//　関数名：expnextlv( Lv )
+//　機能：引数の次のLvまでに必要なEXPを返す。
+//　戻り値：引数の次のLvまでに必要なEXP
+//
+    function expnextlv(Lv)
+  {
+
+     var i, j, exp;
+
+      if ( Lv < 829 ){
+        i = Math.ceil(( Math.sqrt( 4 * Lv + 1 ) - 3 )/2) ;
+        j = Lv-2-(i-1)*(i+2);
+        exp = 170*Lv+80+(20/3)*(3*(i+1)* Math.pow(j,2) + (5*Math.pow(i,3)+9*Math.pow(i,2)+16*i-9)*j+(2*Math.pow(i,5)+5*Math.pow(i,4)+12*Math.pow(i,3)-8*Math.pow(i,2)-17*i+6));
+      } else {
+         if ( Lv <=1000 ){
+           exp = nextexptable[Lv-829];
+         } else {
+         // 1000Lv以降無効に変更　17/7/25
+         // 900Lv以降は無効　12/3/29
+           exp = 0;
+         }
+      }
+      return exp;
+  }
+
+//
+//　関数名：LvtoExp( Lv )
+//　機能：引数のLvになるまでの累計EXPを計算する。
+//　戻り値：引数のLvになるまでの累計EXP
+//
+    function LvtoExp(Lv)
+  {
+      var i, j, baselv, baseexp, cnt;
+
+      baselv = Math.floor(Lv/100)*100;
+      if( Lv<100 )	baseexp = 0 ;
+            else		baseexp = exp_gt[Math.floor(Lv/100)-1];
+      cnt = Lv - baselv;
+      for ( i = 0 ; i<cnt ; i++ ){
+        baseexp += expnextlv( baselv + i );
+      }
+      return baseexp;
+  }
+
+//
+//　関数名：ExptoLv( Exp )
+//　機能：総獲得経験値から現在何Lvかを計算する。
+//　引数：Exp 総獲得経験値
+//　戻り値：現在のLv
+//
+    function ExptoLv( Exp )
+  {
+      var i, j, baselv, baseexp, cnt;
+
+      // 百の単位の計算
+      hyakutani = 0;
+      for ( i = 0 ; i < 10 ; i++){
+      	if ( Exp < exp_gt[i] ) break;
+      	hyakutani++ ;
+      }
+      
+      tmpLv = hyakutani * 100 ;
+      
+      if ( hyakutani == 0 ) needtotalExp = 0;
+      else					needtotalExp = exp_gt[hyakutani-1];
+      
+      for ( i = 0 ; i < 100 ; i++ ){
+      	needtotalExp += expnextlv( tmpLv + i ) ;
+      	if ( needtotalExp > Exp ){
+      		resLv = tmpLv + i;
+      		break;
+      	}
+      }
+
+      return resLv;
+  }
+
+//
+//　関数名：ExptoLvEx( Exp )
+//　機能：総獲得経験値から現在のLvとあまりの経験値を計算する。
+//　メンバ：lv, amari, wariai
+//　戻り値：現在のLv
+//
+    function ExptoLvEx( Exp )
+  {
+      var i, j, baselv, baseexp, cnt;
+
+      // 百の単位の計算
+      hyakutani = 0;
+      for ( i = 0 ; i < 10 ; i++){
+      	if ( Exp < exp_gt[i] ) break;
+      	hyakutani++ ;
+      }
+      
+      tmpLv = hyakutani * 100 ;
+      
+      if ( hyakutani == 0 ) needtotalExp = 0;
+      else					needtotalExp = exp_gt[hyakutani-1];
+      
+      for ( i = 0 ; i < 100 ; i++ ){
+      	needtotalExp += expnextlv( tmpLv + i ) ;
+      	if ( needtotalExp > Exp ){
+      		resLv = tmpLv + i;
+      		amariexp = Exp - expnextlv( resLv - 1 );
+      		break;
+      	}
+      }
+
+      this.lv = resLv;
+      this.amari = amariexp;
+      this.wariai = Math.floor( amariexp / expnextlv( resLv ) * 100 )
+  }
+
+
+//
+//　関数名：expadv( Lv, exptotal, ind )
+//　機能：引数のLvからexptotalのEXPを倍率indで加えた時のLvと残りexpを計算する。
+//　メンバ：lv, exp
+//　戻り値：なし。
+//
+    function expadv( Lv, exptotal, ind )
+  {
+     this.lv = Lv; // 初期Lv
+     this.exp = Math.floor( exptotal * ind ) ;  // 入るtotalのEXP
+     nextexp = expnextlv( this.lv );
+     while( this.exp > nextexp ){
+       this.lv++ ;
+       this.exp -= nextexp ;
+       nextexp = expnextlv( this.lv );
+     }
+  }
+
+
+
+
+//
+//  レポートクエ１のテーブル（17/7/25作成）
+//　　　◆配列の内容
+//　　　　テキスト、適正の基準ＥＸＰ、適正外の基準ＥＸＰ、必要Ｌｖ、必要転生回数
+//
+//　　　◆「適正」は必要Ｌｖ＋１００以下。
+//
+		kntq_gt1 = new Array();
+		
+		for ( i=0; i<38; i++){
+			kntq_gt1[i] = new Array();
+		}
+		
+		kntq_gt1[0] = new Array("最初（１）", 791590, 791590, 1, 0, "メインクエ", "MQ1-1-2", "ＭＱ１－１－２をクリア");
+		kntq_gt1[1] = new Array("２", 3436180, 3436180, 50, 0, "一般クエ", "一般クエ「冒険家の心得」", "「冒険家の心得」をクリア");
+		kntq_gt1[2] = new Array("３", 15206250, 15206250, 100, 0, "秘密", "秘密", "秘密に２回以上行く");
+		kntq_gt1[3] = new Array("４", 40081750, 40081750, 150, 0, "メインクエ",  "MQ2-8-1", "ＭＱ２－８－１をクリア");
+		kntq_gt1[4] = new Array("５", 72059010, 72059010, 200, 0, "メインクエ",  "MQ3-4-5", "ＭＱ３－４－５をクリア");
+		kntq_gt1[5] = new Array("６", 153599380, 124435470, 250, 0, "メインクエ",  "MQ5-2-1", "ＭＱ５－２－１をクリア");
+		kntq_gt1[6] = new Array("７", 239775880, 172242760 , 300, 0, "秘密", "秘密",  "秘密に２回以上行く");
+		kntq_gt1[7] = new Array("８", 350326900, 252075720 , 350, 0, "狩り（PTボス）", "PTボス10匹：フォーリン", "フォーリン、１０匹");
+		kntq_gt1[8] = new Array("９", 486677840, 305895660 , 400, 0, "狩り（MOB１００匹）", "MOB100匹", "自キャラ－４９ＬｖまでのＭＯＢを１００匹退治");
+		kntq_gt1[9] = new Array("１０", 650632767, 409449600 , 450, 0, "秘密",  "秘密", "秘密に２回以上行く");
+		kntq_gt1[10] = new Array("１１", 843618483, 454502750 , 500, 0, "狩り（PTボス）", "PTボス10匹：ミズナB1", "ミズナＢ１、１０匹");
+		kntq_gt1[11] = new Array("１２", 1067824340, 575850590 , 550, 0, "狩り（MOB１００匹）", "MOB100匹", "自キャラ－４９ＬｖまでのＭＯＢを１００匹退治");
+		kntq_gt1[12] = new Array("１３", 1324491700, 594520310 , 600, 0, "秘密",  "秘密", "秘密に２回以上行く");
+		kntq_gt1[13] = new Array("１４", 1614940440, 725594510 , 650, 0, "狩り（PTボス）", "PTボス10匹：ガルカスB1", "ガルカスＢ１、１０匹");
+		kntq_gt1[14] = new Array("１５", 486677840, 305895660 , 400, 1, "秘密",  "秘密", "秘密に２回以上行く");
+		kntq_gt1[15] = new Array("１６", 650632767, 40944960 , 450, 1, "狩り（PTボス）", "PTボス10匹：王宮1F", "王宮１Ｆ、１０匹");
+		kntq_gt1[16] = new Array("１７", 843618483, 454502750 , 500, 1, "メインクエ", "★RSを渡す", "ＲＳを天上・地下・悪魔のどこかに渡す");
+		kntq_gt1[17] = new Array("１８", 1067824340, 575850590 , 550, 1, "狩り（MOB１００匹）", "MOB100匹", "自キャラ－４９ＬｖまでのＭＯＢを１００匹退治");
+		kntq_gt1[18] = new Array("１９", 1324491700, 594520310 , 600, 1, "秘密",  "秘密", "秘密に２回以上行く");
+		kntq_gt1[19] = new Array("２０", 1614940440, 725594510 , 650, 1, "狩り（PTボス）", "PTボス10匹：ガルカスB1", "ガルカスＢ１、１０匹");
+		kntq_gt1[20] = new Array("２１", 486677840, 305895660 , 400, 2, "秘密",  "秘密", "秘密に２回以上行く");
+		kntq_gt1[21] = new Array("２２", 650632767, 40944960 , 450, 2, "狩り（PTボス）", "PTボス10匹：王宮1F", "王宮１Ｆ、１０匹");
+		kntq_gt1[22] = new Array("２３", 843618483, 454502750 , 500, 2, "メインクエ", "★RSを渡す", "ＲＳを天上・地下・悪魔のどこかに渡す");
+		kntq_gt1[23] = new Array("２４", 1067824340, 575850590 , 550, 2, "狩り（MOB１００匹）", "MOB100匹", "自キャラ－４９ＬｖまでのＭＯＢを１００匹退治");
+		kntq_gt1[24] = new Array("２５", 1324491700, 594520310 , 600, 2, "秘密",  "秘密", "秘密に２回以上行く");
+		kntq_gt1[25] = new Array("２６", 1614940440, 725594510 , 650, 2, "狩り（PTボス）", "PTボス10匹：ガルカスB1", "ガルカスＢ１、１０匹");
+		kntq_gt1[26] = new Array("２７", 486677840, 305895660 , 400, 3, "秘密", "秘密",  "秘密に２回以上行く");
+		kntq_gt1[27] = new Array("２８", 650632767, 40944960 , 450, 3, "狩り（PTボス）", "PTボス10匹：王宮1F", "王宮１Ｆ、１０匹");
+		kntq_gt1[28] = new Array("２９", 843618483, 454502750 , 500, 3, "メインクエ", "★RSを渡す", "ＲＳを天上・地下・悪魔のどこかに渡す");
+		kntq_gt1[29] = new Array("３０", 1067824340, 575850590 , 550, 3, "狩り（MOB１００匹）", "MOB100匹", "自キャラ－４９ＬｖまでのＭＯＢを１００匹退治");
+		kntq_gt1[30] = new Array("３１", 1324491700, 594520310 , 600, 3, "秘密",  "秘密", "秘密に２回以上行く");
+		kntq_gt1[31] = new Array("３２", 1614940440, 725594510 , 650, 3, "狩り（PTボス）", "PTボス10匹：ガルカスB1", "ガルカスＢ１、１０匹");
+		kntq_gt1[32] = new Array("３３", 486677840, 305895660 , 400, 4, "秘密",  "秘密", "秘密に２回以上行く");
+		kntq_gt1[33] = new Array("３４", 650632767, 40944960 , 450, 4, "狩り（PTボス）", "PTボス10匹：王宮1F", "王宮１Ｆ、１０匹");
+		kntq_gt1[34] = new Array("３５", 843618483, 454502750 , 500, 4, "メインクエ", "★RSを渡す", "ＲＳを天上・地下・悪魔のどこかに渡す");
+		kntq_gt1[35] = new Array("３６", 1067824340, 575850590 , 550, 4, "狩り（MOB１００匹）", "MOB100匹", "自キャラ－４９ＬｖまでのＭＯＢを１００匹退治");
+		kntq_gt1[36] = new Array("３７", 1324491700, 594520310 , 600, 4, "秘密",  "秘密", "秘密に２回以上行く");
+		kntq_gt1[37] = new Array("最後（３８）", 1614940440, 725594510 , 650, 4, "狩り（PTボス）", "PTボス10匹：ガルカスB1", "ガルカスＢ１、１０匹");
+
+//
+//  レポートクエ２のテーブル（17/7/25作成）
+//　　　◆配列の内容
+//　　　　テキスト、適正の基準ＥＸＰ、適正外の基準ＥＸＰ、必要Ｌｖ、必要転生回数
+//
+//　　　◆「適正」は必要Ｌｖ＋１００以下。
+//
+		kntq_gt2 = new Array();
+		
+		for ( i=0; i<38; i++){
+			kntq_gt2[i] = new Array();
+		}
+		
+		kntq_gt2[0] = new Array("最初（１）", 791590, 791590 , 25, 0, "狩り（MOB）", "MOB20匹：旧レッドアイ研究所B1", "旧レッドアイ研究所Ｂ１、２０匹");
+		kntq_gt2[1] = new Array("２", 3436180, 3436180 , 75, 0, "狩り（MOB）", "MOB30匹：オーガの王窟B1", "オーガの王窟Ｂ１、３０匹");
+		kntq_gt2[2] = new Array("３", 22005412, 16927240 , 125, 0, "狩り（MOB）", "MOB40匹：滝B4", "滝Ｂ４、４０匹");
+		kntq_gt2[3] = new Array("４", 57787314, 44451780 , 175, 0, "秘密", "秘密",  "秘密に２回以上行く");
+		kntq_gt2[4] = new Array("５", 115892920, 89148400 , 225, 0, "狩り（MOB）", "MOB50匹：ラカリフサ北の洞窟", "ラカリフサ北の洞窟、５０匹");
+		kntq_gt2[5] = new Array("６", 199679194, 153599380 , 275, 0, "狩り（MOB）", "MOB60匹：スウェブ19F", "スウェブ１９Ｆ、６０匹");
+		kntq_gt2[6] = new Array("７", 311708644, 239775880 , 325, 0, "狩り（PTボス）", "PTボス10匹：フォーリン", "フォーリン、１０匹");
+		kntq_gt2[7] = new Array("８", 455424970, 350326900 , 375, 0, "狩り（MOB）", "MOB70匹：スウェブB8", "スウェブＢ８、７０匹");
+		kntq_gt2[8] = new Array("９", 632681192, 486677840 , 425, 0, "狩り（MOB）", "MOB80匹：スウェブﾞB11", "スウェブＢ１１、８０匹");
+		kntq_gt2[9] = new Array("１０", 845653094, 650502380 , 475, 0, "秘密", "秘密",  "秘密に２回以上行く");
+		kntq_gt2[10] = new Array("１１", 1096704024, 843618480 , 525, 0, "狩り（MOB）", "MOB90匹：兵営B1", "兵営Ｂ１、９０匹");
+		kntq_gt2[11] = new Array("１２", 1388171642, 1067824340 , 575, 0, "狩り（MOB）", "MOB100匹：商店2F", "商店２Ｆ、１００匹");
+		kntq_gt2[12] = new Array("１３", 1721839210, 1324491700 , 625, 0, "狩り（PTボス）", "PTボス20匹：ラットB4", "ラットＢ４、２０匹");
+		kntq_gt2[13] = new Array("１４", 2099422572, 1614940440 , 675, 0, "レイド", "★レイド", "レイドを１回以上クリア");
+		kntq_gt2[14] = new Array("１５", 632681192, 486677840 , 425, 1, "狩り（PTボス）", "PTボス10匹：納骨B1", "納骨Ｂ１、１０匹");
+		kntq_gt2[15] = new Array("１６", 845653094, 650502380 , 475, 1, "秘密", "秘密",  "秘密に２回以上行く");
+		kntq_gt2[16] = new Array("１７", 1096704024, 843618480 , 525, 1, "狩り（PTボス）", "PTボス15匹：兵営B1", "兵営Ｂ１、１５匹");
+		kntq_gt2[17] = new Array("１８", 1388171642, 1067824340 , 575, 1, "レイド", "★レイド", "レイドを１回以上クリア");
+		kntq_gt2[18] = new Array("１９", 1721839210, 1324491700 , 625, 1, "秘密", "秘密",  "秘密に２回以上行く");
+		kntq_gt2[19] = new Array("２０", 2099422572, 1614940440 , 675, 1, "狩り（PTボス）", "PTボス20匹：時森2層目", "時森２層目、２０匹");
+		kntq_gt2[20] = new Array("２１", 632681192, 486677840 , 425, 2, "狩り（PTボス）", "PTボス10匹：納骨B1", "納骨Ｂ１、１０匹");
+		kntq_gt2[21] = new Array("２２", 845653094, 650502380 , 475, 2, "秘密", "秘密",  "秘密に２回以上行く");
+		kntq_gt2[22] = new Array("２３", 1096704024, 843618480 , 525, 2, "狩り（PTボス）", "PTボス15匹：兵営B1", "兵営Ｂ１、１５匹");
+		kntq_gt2[23] = new Array("２４", 1388171642, 1067824340 , 575, 2, "レイド", "★レイド", "レイドを１回以上クリア");
+		kntq_gt2[24] = new Array("２５", 1721839210, 1324491700 , 625, 2, "秘密", "秘密",  "秘密に２回以上行く");
+		kntq_gt2[25] = new Array("２６", 2099422572, 1614940440 , 675, 2, "狩り（PTボス）", "PTボス20匹：時森2層目", "時森２層目、２０匹");
+		kntq_gt2[26] = new Array("２７", 632681192, 486677840 , 425, 3, "狩り（PTボス）", "PTボス10匹：納骨B1", "納骨Ｂ１、１０匹");
+		kntq_gt2[27] = new Array("２８", 845653094, 650502380 , 475, 3, "秘密", "秘密",  "秘密に２回以上行く");
+		kntq_gt2[28] = new Array("２９", 1096704024, 843618480 , 525, 3, "狩り（PTボス）", "PTボス15匹：兵営B1", "兵営Ｂ１、１５匹");
+		kntq_gt2[29] = new Array("３０", 1388171642, 1067824340 , 575, 3, "レイド", "★レイド", "レイドを１回以上クリア");
+		kntq_gt2[30] = new Array("３１", 1721839210, 1324491700 , 625, 3, "秘密", "秘密",  "秘密に２回以上行く");
+		kntq_gt2[31] = new Array("３２", 2099422572, 1614940440 , 675, 3, "狩り（PTボス）", "PTボス20匹：時森2層目", "時森２層目、２０匹");
+		kntq_gt2[32] = new Array("３３", 632681192, 486677840 , 425, 4, "狩り（PTボス）", "PTボス10匹：納骨B1", "納骨Ｂ１、１０匹");
+		kntq_gt2[33] = new Array("３４", 845653094, 650502380 , 475, 4, "秘密", "秘密",  "秘密に２回以上行く");
+		kntq_gt2[34] = new Array("３５", 1096704024, 843618480 , 525, 4, "狩り（PTボス）", "PTボス15匹：兵営B1", "兵営Ｂ１、１５匹");
+		kntq_gt2[35] = new Array("３６", 1388171642, 1067824340 , 575, 4, "レイド", "★レイド", "レイドを１回以上クリア");
+		kntq_gt2[36] = new Array("３７", 1721839210, 1324491700 , 625, 4, "秘密", "秘密",  "秘密に２回以上行く");
+		kntq_gt2[37] = new Array("最後（３８）", 2099422572, 1614940440 , 675, 4, "狩り（PTボス）", "PTボス20匹：時森2層目", "時森２層目、２０匹");
+
+//
+//  転生クエ経験値テーブル
+//
+		var tq_exptable = new Array(10);
+		
+		tq_exptable[0]=0;
+		tq_exptable[1]=95000000;
+		tq_exptable[2]=102500000;
+		tq_exptable[3]=215000000;
+		tq_exptable[4]=0;
+
+//  Exp合計値テーブル
+//
+//  計算の負荷を軽くするため、
+//  100レベ毎の合計値をここで準備している。
+		var exp_gt = new Array(10);
+		
+		exp_gt[0] = 39908880;          // Lv100
+		exp_gt[1] = 441027180;         // Lv200
+		exp_gt[2] = 1808887340;        // Lv300
+		exp_gt[3] = 4931858880;        // Lv400
+		exp_gt[4] = 10744909240;       // Lv500
+		exp_gt[5] = 20308052880;       // Lv600
+		exp_gt[6] = 34794519880;       // Lv700
+		exp_gt[7] = 55479287520;       // Lv800
+		exp_gt[8] = 445019958980;      // Lv900
+		exp_gt[9] = 9558533043960;     // Lv1000
+
+//
+//  EXP配列テーブル（830～900、12/03/29追加）
+//                 （901～1000、17/07/25追加）
+//                 （921～1000、17/10/09修正）
+//
+//  先頭の数値は829→830になるために必要なEXP。
+//
+		var nextexptable = new Array();
+		
+		nextexptable[0] = 265269680;        // Lv829→830
+		nextexptable[1] = 266076834;
+		nextexptable[2] = 266896790;
+		nextexptable[3] = 267742876;
+		nextexptable[4] = 268635942;
+		nextexptable[5] = 269606048;
+		nextexptable[6] = 270694158;
+		nextexptable[7] = 271953840;
+		nextexptable[8] = 273452972;
+		nextexptable[9] = 275275454;
+		nextexptable[10] = 277522926;        // Lv839→840
+		nextexptable[11] = 280316492;
+		nextexptable[12] = 283798450;
+		nextexptable[13] = 288134028;
+		nextexptable[14] = 293513126;
+		nextexptable[15] = 300152064;
+		nextexptable[16] = 308295336;
+		nextexptable[17] = 318217370;
+		nextexptable[18] = 330224294;
+		nextexptable[19] = 344655708;
+		nextexptable[20] = 361886462;        // Lv849→850
+		nextexptable[21] = 382328440;
+		nextexptable[22] = 406432350;
+		nextexptable[23] = 434689520;
+		nextexptable[24] = 467633700;
+		nextexptable[25] = 505842870;
+		nextexptable[26] = 549941054;
+		nextexptable[27] = 600600140;
+		nextexptable[28] = 658541706;
+		nextexptable[29] = 724538852;
+		nextexptable[30] = 799418038;        // Lv859→860
+		nextexptable[31] = 884060928;
+		nextexptable[32] = 979406240;
+		nextexptable[33] = 1086451602;
+		nextexptable[34] = 1206255414;
+		nextexptable[35] = 1339938716;
+		nextexptable[36] = 1488687062;
+		nextexptable[37] = 1653752400;
+		nextexptable[38] = 1836454958;
+		nextexptable[39] = 2038185136;
+		nextexptable[40] = 2260405404;        // Lv869→870
+		nextexptable[41] = 2504652206;
+		nextexptable[42] = 2772537870;
+		nextexptable[43] = 3065752524;
+		nextexptable[44] = 3386066018;
+		nextexptable[45] = 3735329852;
+		nextexptable[46] = 4115479110;
+		nextexptable[47] = 4528534400;
+		nextexptable[48] = 4976603800;
+		nextexptable[49] = 5461884810;
+		nextexptable[50] = 5986666310;        // Lv879→880
+		nextexptable[51] = 6553330524;
+		nextexptable[52] = 7164354990;
+		nextexptable[53] = 7822314536;
+		nextexptable[54] = 8529883262;
+		nextexptable[55] = 9289836528;
+		nextexptable[56] = 10105052948;
+		nextexptable[57] = 10978516390;
+		nextexptable[58] = 11913317982;
+		nextexptable[59] = 12912658124;
+		nextexptable[60] = 13979848506;        // Lv889→890
+		nextexptable[61] = 15118314132;
+		nextexptable[62] = 16331595350;
+		nextexptable[63] = 17623349888;
+		nextexptable[64] = 18997354896;
+		nextexptable[65] = 20457508994;
+		nextexptable[66] = 22007834326;
+		nextexptable[67] = 23652478620;
+		nextexptable[68] = 25395717254;
+		nextexptable[69] = 27241955328;
+		nextexptable[70] = 29195729742;        // Lv899→900
+		nextexptable[71] = 31261711280; 
+		nextexptable[72] = 33444706700; 
+		nextexptable[73] = 35749660830; 
+		nextexptable[74] = 38181658670; 
+		nextexptable[75] = 40745927500; 
+		nextexptable[76] = 43447838994; 
+		nextexptable[77] = 46292911340; 
+		nextexptable[78] = 49286811366; 
+		nextexptable[79] = 52435356672; 
+		nextexptable[80] = 55744226568;        // Lv909→910 
+		nextexptable[81] = 59218963578; 
+		nextexptable[82] = 62864974950; 
+		nextexptable[83] = 66687534172; 
+		nextexptable[84] = 70691782494; 
+		nextexptable[85] = 74882730456; 
+		nextexptable[86] = 79265259422; 
+		nextexptable[87] = 83844123120; 
+		nextexptable[88] = 88623949188; 
+		nextexptable[89] = 93609240726; 
+		nextexptable[90] = 98803309734;        // Lv919→920 
+		nextexptable[91] = 98804257404; 
+		nextexptable[92] = 98805217074; 
+		nextexptable[93] = 98806188744; 
+		nextexptable[94] = 98807172414; 
+		nextexptable[95] = 98808168084; 
+		nextexptable[96] = 98809175754; 
+		nextexptable[97] = 98810195424; 
+		nextexptable[98] = 98811227094; 
+		nextexptable[99] = 98812270764; 
+		nextexptable[100] = 98813326434;        // Lv929→930  
+		nextexptable[101] = 98814413164; 
+		nextexptable[102] = 98815512294; 
+		nextexptable[103] = 98816623824; 
+		nextexptable[104] = 98817747754; 
+		nextexptable[105] = 98818884084; 
+		nextexptable[106] = 98820032814; 
+		nextexptable[107] = 98821193944; 
+		nextexptable[108] = 98822367474; 
+		nextexptable[109] = 98823553404; 
+		nextexptable[110] = 98824751734;        // Lv939→940  
+		nextexptable[111] = 98825962464; 
+		nextexptable[112] = 98827185594; 
+		nextexptable[113] = 98828421124; 
+		nextexptable[114] = 98829669054; 
+		nextexptable[115] = 98830929384; 
+		nextexptable[116] = 98832202114; 
+		nextexptable[117] = 98833487244; 
+		nextexptable[118] = 98834784774; 
+		nextexptable[119] = 98836094704; 
+		nextexptable[120] = 98837417034;        // Lv949→950  
+		nextexptable[121] = 98838751764; 
+		nextexptable[122] = 98840098894; 
+		nextexptable[123] = 98841458424; 
+		nextexptable[124] = 98842830354; 
+		nextexptable[125] = 98844214684; 
+		nextexptable[126] = 98845611414; 
+		nextexptable[127] = 98847020544; 
+		nextexptable[128] = 98848442074; 
+		nextexptable[129] = 98849876004; 
+		nextexptable[130] = 98851322334;        // Lv959→960  
+		nextexptable[131] = 98852781064; 
+		nextexptable[132] = 98854252194; 
+		nextexptable[133] = 98855735724; 
+		nextexptable[134] = 98857231654; 
+		nextexptable[135] = 98858739984; 
+		nextexptable[136] = 98860260714; 
+		nextexptable[137] = 98861793844; 
+		nextexptable[138] = 98863339374; 
+		nextexptable[139] = 98864897304; 
+		nextexptable[140] = 98866467634;        // Lv969→970 
+		nextexptable[141] = 98868050364; 
+		nextexptable[142] = 98869645494; 
+		nextexptable[143] = 98871253024; 
+		nextexptable[144] = 98872872954; 
+		nextexptable[145] = 98874505284; 
+		nextexptable[146] = 98876150014; 
+		nextexptable[147] = 98877807144; 
+		nextexptable[148] = 98879476674; 
+		nextexptable[149] = 98881158604; 
+		nextexptable[150] = 98882852934;        // Lv979→980  
+		nextexptable[151] = 98884559664; 
+		nextexptable[152] = 98886278794; 
+		nextexptable[153] = 98888010324; 
+		nextexptable[154] = 98889754254; 
+		nextexptable[155] = 98891510584; 
+		nextexptable[156] = 98893279314; 
+		nextexptable[157] = 98895060444; 
+		nextexptable[158] = 98896853974; 
+		nextexptable[159] = 98898659904; 
+		nextexptable[160] = 98900478234;        // Lv989→990  
+		nextexptable[161] = 98902308964; 
+		nextexptable[162] = 98904152094; 
+		nextexptable[163] = 98906027924; 
+		nextexptable[164] = 98907928954; 
+		nextexptable[165] = 98909842784; 
+		nextexptable[166] = 98911769414; 
+		nextexptable[167] = 98913708844; 
+		nextexptable[168] = 98915661074; 
+		nextexptable[169] = 98917626104; 
+		nextexptable[170] = 98919603934;        // Lv999→1000
