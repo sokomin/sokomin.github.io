@@ -1,0 +1,2348 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+    <!-- Page styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+
+    <style>
+        #view-source {
+        position: fixed;
+        display: block;
+        right: 0;
+        bottom: 0;
+        margin-right: 40px;
+        margin-bottom: 40px;
+        z-index: 900;
+      }
+    </style>
+</head>
+
+<body>
+    <title>赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="検索できたら最高" class="mdl-textfield__input" type="text" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-content mdl-layout__content">
+
+            <!--main-->
+            <div class="main-background mdl-typography--text-center">
+                <br>
+                <h3>ノーマル　鈍器</h3>
+
+                <a href="#1">N</a><br>
+                <a href="#2">DX</a><br>
+                <a href="#3">Ultimate</a><br>
+                <br>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1" width="95">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6"><a name="1"></a>N</th>
+                        </tr>
+                        <tr>
+                            <th colspan="6">棍棒</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0218.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">4~6</font>(<font color="#ffff00">1.00</font>秒)<br>
+                                射程距離 <font color="#ffff00">80</font><br>
+                                スタン攻撃<font color="#ffff00">[25~35]</font>％ <font color="#ffff00">1</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>力 15
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                1/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                [25~35]×2G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>原始的な形の木の棍棒
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">木の棍棒</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0218.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">7~10</font>(<font color="#ffff00">1.00</font>秒)<br>
+                                射程距離 <font color="#ffff00">80</font><br>
+                                スタン攻撃<font color="#ffff00">[25~35]</font>％ <font color="#ffff00">1</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 8<br>
+                                力 25
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                6/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                [25~35]×5G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>木を適当に削って作った棍棒
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">メイス</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0219.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">10~14</font>(<font color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">90</font><br>
+                                スタン攻撃<font color="#ffff00">[30~35]</font>％ <font color="#ffff00">2</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 16<br>
+                                力 35
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                12/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                [30~35]×25G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>鉄槌
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">ホール</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0225.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">14~21</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">100</font><br>
+                                vs アンデッド系キャラクター - ダメージ <font color="#ffff00">+50</font>％
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 21<br>
+                                力 37
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                リトルウィッチ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                16/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                1750G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>王権の象徴
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">殻竿</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0223.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">17~24</font>(<font color="#ffff00">1.60</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                スタン攻撃<font color="#ffff00">[25~35]</font>％ <font color="#ffff00">8</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 25<br>
+                                力 47
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                19/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                [25~35]×40G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>柄と鎖､球で成っている農具
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">領主のホール</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0225.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">16~23</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">100</font><br>
+                                vs アンデッド系キャラクター - ダメージ <font color="#ffff00">+50</font>％
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 30<br>
+                                力 48
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                リトルウィッチ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                23/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                2250G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>君主の権威を表す象徴
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">強化鉄槌</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0219.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">15~22</font>(<font color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">90</font><br>
+                                スタン攻撃<font color="#ffff00">[30~35]</font>％ <font color="#ffff00">2</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 35<br>
+                                力 55
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                27/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                [30~35]×50G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>先の部分を強化し、威力を上げた鉄槌
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">モーニングスター</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0222.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">16~24</font>(<font color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">90</font><br>
+                                スタン攻撃<font color="#ffff00">[40~45]</font>％ <font color="#ffff00">6</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br> レベル 36<br>
+                                力 60
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                28/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                [40~45]×100G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>鉄の球に棘がいっぱい生えた､鉄槌の一種
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">戦闘用ホール</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0226.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">21~28</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">100</font><br>
+                                vs アンデッド系キャラクター - ダメージ <font color="#ffff00">+[50~75]</font>％
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 44<br>
+                                力 59
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                リトルウィッチ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                34/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                [50~75]×150G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>もっと高威力で丈夫なホール
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">帝王のホール</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0226.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">24~31</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">100</font><br>
+                                vs アンデッド系キャラクター - ダメージ <font color="#ffff00">+[50~75]</font>％
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 51<br>
+                                力 70
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                リトルウィッチ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                39/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                [50~75]×180G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>皇帝の象徴たるホール
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">ハンマー</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0220.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">20~30</font>(<font color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">90</font><br>
+                                スタン攻撃<font color="#ffff00">[35~40]</font>％ <font color="#ffff00">3</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 52<br>
+                                力 75
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                40/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                [35~40]×200G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>金属製の槌。鎧を装備した敵に効果的な武器という
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">モルゲンシュテルン</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0222.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">24~32</font>(<font color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">90</font><br>
+                                スタン攻撃<font color="#ffff00">[45~50]</font>％ <font color="#ffff00">7</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 61<br>
+                                力 80
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                47/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                [45~50]×350G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>より多くの長い棘が生えた、重い鉄槌
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">モール</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0220.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">25~37</font>(<font color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">90</font><br>
+                                スタン攻撃<font color="#ffff00">[35~40]</font>％ <font color="#ffff00">3</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 70<br>
+                                力 105
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                54/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                [35~40]×400G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>大きな金槌
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">ウォーハンマー</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0221.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">30~44</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">100</font><br>
+                                スタン攻撃<font color="#ffff00">40</font>％ <font color="#ffff00">4</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 79<br>
+                                力 140
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                61/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                3万2000G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>戦闘用の巨大な金属製の槌
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">スカージ</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0223.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">37~44</font>(<font color="#ffff00">1.60</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                スタン攻撃<font color="#ffff00">[35~45]</font>％ <font color="#ffff00">9</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 88<br>
+                                力 147
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                68/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                [35~45]×1000G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>少し怖そうな鉄の殻竿
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">聖水撒き</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0224.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">38~45</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">100</font><br>
+                                vs アンデッド系キャラクター - ダメージ <font color="#ffff00">+[75~100]</font>％
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 99<br>
+                                力 150
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                76/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                [75~100]×600G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>聖水を撒く為の道具
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">グレートモール</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0221.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">35~51</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">100</font><br>
+                                スタン攻撃<font color="#ffff00">45</font>％ <font color="#ffff00">5</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 107<br>
+                                力 180
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                82/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                6万7500G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br> 重くて扱いづらいが、それだけの威力を持つ金属製の槌
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">神聖なるホール</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0224.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">41~48</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">100</font><br>
+                                vs アンデッド系キャラクター - ダメージ <font color="#ffff00">+[75~100]</font>％
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 127<br>
+                                力 170
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                98/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                [75~100]×1000G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>皇帝をも凌駕する絶対権力、神の力が宿ったホール
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1" width="95">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6"><a name="2"></a>DX</th>
+                        </tr>
+                        <tr>
+                            <th colspan="6">棍棒DX</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0218.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">27~29</font>(<font color="#ffff00">1.00</font>秒)<br>
+                                射程距離 <font color="#ffff00">80</font><br>
+                                スタン攻撃<font color="#ffff00">45</font>％ <font color="#ffff00">10</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 110<br>
+                                力 130
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                95/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                8万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>16型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>原始的な形の木の棍棒
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">木の棍棒DX</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0218.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">30~33</font>(<font color="#ffff00">1.00</font>秒)<br>
+                                射程距離 <font color="#ffff00">80</font><br>
+                                スタン攻撃<font color="#ffff00">45</font>％ <font color="#ffff00">11</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 126<br>
+                                力 150
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                111/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                10万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>16型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>木を適当に削って作った棍棒
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">メイスDX</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0219.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">40~44</font>(<font color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">90</font><br>
+                                スタン攻撃<font color="#ffff00">[45~50]</font>％ <font color="#ffff00">13</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 142<br>
+                                力 170
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                127/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                50万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>18型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>鉄槌
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">ホールLX</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0225.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">49~56</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">100</font><br>
+                                vs アンデッド系キャラクター - ダメージ <font color="#ffff00">+33</font>％
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 152<br>
+                                力 174<br>
+                                カリスマ 120
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                リトルウィッチ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                137/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                70万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>42型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>王権の象徴
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">殻竿DX</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0223.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">54~61</font>(<font color="#ffff00">1.60</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                スタン攻撃<font color="#ffff00">[65~70]</font>％ <font color="#ffff00">12</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 160<br>
+                                力 194
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                145/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                80万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>34型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>柄と鎖､球で成っている農具
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">領主のホールLX</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0225.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">51~58</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">100</font><br>
+                                vs アンデッド系キャラクター - ダメージ <font color="#ffff00">+33</font>％
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 170<br>
+                                力 196<br>
+                                カリスマ 135
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                リトルウィッチ<br>
+                                ネクロマンサ
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                155/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                90万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>42型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>君主の権威を表す象徴
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">強化鉄槌DX</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0219.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">45~52</font>(<font color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">90</font><br>
+                                スタン攻撃<font color="#ffff00">[45~50]</font>％ <font color="#ffff00">14</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 180<br>
+                                力 210
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                165/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                100万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>32型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>先の部分を強化し、威力を上げた鉄槌
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">モーニングスターDX</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0222.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">46~54</font>(<font color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">90</font><br>
+                                スタン攻撃<font color="#ffff00">60</font>％ <font color="#ffff00">16</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 182<br>
+                                力 220
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                167/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                200万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>24型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>鉄の球に棘がいっぱい生えた､鉄槌の一種
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">戦闘用ホールLX</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0226.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">56~63</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">100</font><br>
+                                vs アンデッド系キャラクター - ダメージ <font color="#ffff00">+[33~50]</font>％
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 198<br>
+                                力 218<br>
+                                カリスマ 150
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                リトルウィッチ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                183/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                300万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>44型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>もっと高威力で丈夫なホール
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">帝王のホールLX</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0226.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">59~66</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">100</font><br>
+                                vs アンデッド系キャラクター - ダメージ <font color="#ffff00">+[33~50]</font>％
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 212<br>
+                                力 240<br>
+                                カリスマ 165
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                リトルウィッチ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                39/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                360万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>10型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>皇帝の象徴たるホール
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">ハンマーDX</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0220.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">50~60</font>(<font color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">90</font><br>
+                                スタン攻撃<font color="#ffff00">[55~60]</font>％ <font color="#ffff00">15</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 214<br>
+                                力 250
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                199/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                400万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>40型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>金属製の槌。鎧を装備した敵に効果的な武器という
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">モルゲンシュテルンGDX</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0222.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">54~62</font>(<font color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">90</font><br>
+                                スタン攻撃<font color="#ffff00">65</font>％ <font color="#ffff00">17</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 232<br>
+                                力 260
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                217/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                700万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>26型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>より多くの長い棘が生えた、重い鉄槌
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">モールDX</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0220.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">55~67</font>(<font color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">90</font><br>
+                                スタン攻撃<font color="#ffff00">[50~55]</font>％ <font color="#ffff00">16</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 250<br>
+                                力 310
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                235/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                800万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>40型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>大きな金槌
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">ウォーハンマーGDX</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0221.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">65~79</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">100</font><br>
+                                スタン攻撃<font color="#ffff00">[55~60]</font>％ <font color="#ffff00">18</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 268<br>
+                                力 380
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                253/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                1600万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>48型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>戦闘用の巨大な金属製の槌
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">スカージGDX</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0223.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">74~81</font>(<font color="#ffff00">1.60</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                スタン攻撃<font color="#ffff00">[65~70]</font>％ <font color="#ffff00">20</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 286<br>
+                                力 394
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                271/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                2000万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>36型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>少し怖そうな鉄の殻竿
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">聖水撒きXLS</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0224.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">73~80</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">100</font><br>
+                                vs アンデッド系キャラクター - ダメージ <font color="#ffff00">+[50~75]</font>％
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 308<br>
+                                力 400<br>
+                                カリスマ 380
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                293/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                1200万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>32型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>聖水を撒く為の道具
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">グレートモールGDX</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0221.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">70~86</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">100</font><br>
+                                スタン攻撃<font color="#ffff00">60</font>％ <font color="#ffff00">19</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 324<br>
+                                力 460
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                309/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                3000万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>48型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>重くて扱いづらいが、それだけの威力を持つ金槌
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">神聖なるホールXLS</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0224.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">76~83</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">100</font><br>
+                                vs アンデッド系キャラクター - ダメージ <font color="#ffff00">+[50~75]</font>％
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 364<br>
+                                力 440<br>
+                                カリスマ 410
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                349/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                2000万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>32型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>皇帝をも凌駕する絶対権力、神の力が宿ったホール
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1" width="95">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6"><a name="3"></a>Ultimate</th>
+                        </tr>
+                        <tr>
+                            <th colspan="6">棍棒Ultimate</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0218.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">50~54</font>(<font color="#ffff00">1.00</font>秒)<br>
+                                射程距離 <font color="#ffff00">85</font><br>
+                                スタン攻撃<font color="#ffff00">50</font>％ <font color="#ffff00">20</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 372<br>
+                                力 470
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                357/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                80万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>24型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>原始的な形の木の棍棒
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">木の棍棒Ultimate</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0218.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">53~58</font>(<font color="#ffff00">1.00</font>秒)<br>
+                                射程距離 <font color="#ffff00">85</font><br>
+                                スタン攻撃<font color="#ffff00">50</font>％ <font color="#ffff00">21</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 394<br>
+                                力 517
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                379/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                100万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>24型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br> 木を適当に削って作った棍棒
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">メイスUltimate</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0219.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">68~74</font>(<font color="#ffff00">1.20</font>秒)<br>
+                                射程距離 <font color="#ffff00">95</font><br>
+                                スタン攻撃<font color="#ffff00">[50~55]</font>％ <font color="#ffff00">23</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 415<br>
+                                力 564
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                400/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                500万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>27型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>鉄槌
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">ホールUltimate</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0225.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">81~91</font>(<font color="#ffff00">1.40</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                vs アンデッド系キャラクター - ダメージ <font color="#ffff00">+50</font>％
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 429<br>
+                                力 573<br>
+                                カリスマ 222
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                リトルウィッチ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                414/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                700万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>63型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>王権の象徴
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">殻竿Ultimate</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0223.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">89~99</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">115</font><br>
+                                スタン攻撃<font color="#ffff00">[70~75]</font>％ <font color="#ffff00">22</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 440<br>
+                                力 620
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                425/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                800万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>51型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>柄と鎖､球で成っている農具
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">領主のホールUltimate</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0225.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">83~93</font>(<font color="#ffff00">1.40</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                vs アンデッド系キャラクター - ダメージ <font color="#ffff00">+50</font>％
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 453<br>
+                                力 625<br>
+                                カリスマ 242
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                リトルウィッチ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                438/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                900万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>63型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>君主の権威を表す象徴
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">強化鉄槌Ultimate</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0219.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">73~82</font>(<font color="#ffff00">1.20</font>秒)<br>
+                                射程距離 <font color="#ffff00">95</font><br>
+                                スタン攻撃<font color="#ffff00">[50~55]</font>％ <font color="#ffff00">24</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 467<br>
+                                力 658
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                452/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                1000万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>48型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>先の部分を強化し、威力を上げた鉄槌
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">モーニングスターUltimate</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0222.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">74~84</font>(<font color="#ffff00">1.20</font>秒)<br>
+                                射程距離 <font color="#ffff00">95</font><br>
+                                スタン攻撃<font color="#ffff00">65</font>％ <font color="#ffff00">26</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br> レベル 469<br>
+                                力 682
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                454/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                2000万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>36型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>鉄の球に棘がいっぱい生えた､鉄槌の一種
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">戦闘用ホールUltimate</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0226.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">88~98</font>(<font color="#ffff00">1.40</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                vs アンデッド系キャラクター - ダメージ <font color="#ffff00">+[50~75]</font>％
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 491<br>
+                                力 677<br>
+                                カリスマ 262
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                リトルウィッチ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                476/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                3000万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>66型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>もっと高威力で丈夫なホール
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">帝王のホールUltimate</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0226.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">91~101</font>(<font color="#ffff00">1.40</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                vs アンデッド系キャラクター - ダメージ <font color="#ffff00">+[50~75]</font>％
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 510<br>
+                                力 729<br>
+                                カリスマ 282
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                リトルウィッチ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                495/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                3600万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>63型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>皇帝の象徴たるホール
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">ハンマーUltimate</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0220.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">78~90</font>(<font color="#ffff00">1.20</font>秒)<br>
+                                射程距離 <font color="#ffff00">95</font><br>
+                                スタン攻撃<font color="#ffff00">[55~60]</font>％ <font color="#ffff00">25</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 513<br>
+                                力 752
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                498/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                4000万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>60型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>金属製の槌。鎧を装備した敵に効果的な武器という
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">モルゲンシュテルンUltimate</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0222.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">82~92</font>(<font color="#ffff00">1.20</font>秒)<br>
+                                射程距離 <font color="#ffff00">95</font><br>
+                                スタン攻撃<font color="#ffff00">70</font>％ <font color="#ffff00">27</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 537<br>
+                                力 776
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                522/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                7000万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>39型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>より多くの長い棘が生えた、重い鉄槌
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">モールUltimate</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0220.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">83~97</font>(<font color="#ffff00">1.20</font>秒)<br>
+                                射程距離 <font color="#ffff00">95</font><br>
+                                スタン攻撃<font color="#ffff00">[55~60]</font>％ <font color="#ffff00">26</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 561<br>
+                                力 893
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                546/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                8000万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>60型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>大きな金槌
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">ウォーハンマーUltimate</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0221.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">97~114</font>(<font color="#ffff00">1.40</font>秒)<br>
+                                射程距離 <font color="#ffff00">105</font><br>
+                                スタン攻撃<font color="#ffff00">[60~65]</font>％ <font color="#ffff00">28</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 586<br>
+                                力 1058
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                571/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                1億6000万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>72型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br> 戦闘用の巨大な金属製の槌
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">スカージUltimate</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0223.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">109~119</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">115</font><br>
+                                スタン攻撃<font color="#ffff00">[70~75]</font>％ <font color="#ffff00">30</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 610<br>
+                                力 1090
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                595/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                2億G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>54型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>少し怖そうな鉄の殻竿
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">聖水撒きUltimate</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0224.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">105~115</font>(<font color="#ffff00">1.40</font>秒)<br>
+                                射程距離 <font color="#ffff00">105</font><br>
+                                vs アンデッド系キャラクター - ダメージ <font color="#ffff00">+[75~100]</font>％
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 640<br>
+                                力 1105<br>
+                                カリスマ 700
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                625/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                2億4000万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>48型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>聖水を撒く為の道具
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">グレートモールUltimate</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0221.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">102~121</font>(<font color="#ffff00">1.40</font>秒)<br>
+                                射程距離 <font color="#ffff00">105</font><br>
+                                スタン攻撃<font color="#ffff00">65</font>％ <font color="#ffff00">29</font>Frame
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 661<br>
+                                力 1246
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                646/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                3億G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>72型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>重くて扱いづらいが、それだけの威力を持つ金槌
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">神聖なるホールUltimate</th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0224.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">108~118</font>(<font color="#ffff00">1.40</font>秒)<br>
+                                射程距離 <font color="#ffff00">105</font><br>
+                                vs アンデッド系キャラクター - ダメージ <font color="#ffff00">+[75~100]</font>％
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 715<br>
+                                力 1199<br>
+                                カリスマ 795
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                ビショップ<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                700/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                4億G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>48型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>皇帝をも凌駕する絶対権力、神の力が宿ったホール
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+        　-->
+
+            </div>
+
+            <a href="" id="view-source" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">トップ
+            </a>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        </div>
+</body>
+
+</html>
