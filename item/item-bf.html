@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+  <!-- Page styles -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+  <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+
+  <style>
+    #view-source {
+        position: fixed;
+        display: block;
+        right: 0;
+        bottom: 0;
+        margin-right: 40px;
+        margin-bottom: 40px;
+        z-index: 900;
+      }
+    </style>
+</head>
+
+<body>
+  <title>赤石の民衆</title>
+  <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <a name="container"></a>
+    <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+      <div class="mdl-layout__header-row">
+        <span class="android-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <!-- Add spacer, to align navigation to the right in desktop -->
+        <div class="android-header-spacer mdl-layout-spacer"></div>
+        <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input placeholder="検索できたら最高" class="mdl-textfield__input" type="text" id="search-field" />
+          </div>
+        </div>
+        <!-- Navigation -->
+        <div class="android-navigation-container">
+          <nav class="android-navigation mdl-navigation">
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/index.html">ホーム</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+          </nav>
+        </div>
+        <span class="android-mobile-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
+          <i class="material-icons">more_vert</i>
+        </button>
+        <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a></li>
+          <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+        </ul>
+
+      </div>
+    </div>
+
+    <div class="android-drawer mdl-layout__drawer">
+      <span class="mdl-layout-title">
+        <h3>メニュー</h3>
+      </span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html"><strong>モンスター</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html"><strong>クエスト</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html"><strong>雑学</strong></a>
+      </nav>
+    </div>
+
+
+    <div class="android-content mdl-layout__content">
+
+      <!--main-->
+      <div class="main-background mdl-typography--text-center">
+        <br>
+        <h3>ブラックファイヤーユニーク</h3>
+        <br>
+        Lv775以上のモンスターからドロップします。<br>
+        鏡の魔法書不可、錬成不可。<br>
+        ※攻撃力の項目はウルフマン、武道家のみ適応されます。<br>
+        <br>
+        <a href="#1">首</a><br>
+        <a href="#2">兜</a><br>
+        <a href="#3">冠</a><br>
+        <a href="#4">イヤリング</a><br>
+        <a href="#5">マント</a>
+        <a href="#6">ベルト</a><br>
+        <a href="#7">グローブ</a><br>
+        <a href="#8">鎧</a><br>
+        <a href="#9">足</a><br>
+        <br>
+        <table id="table1">
+          <colgroup>
+            <col span="1" width="40">
+            <col span="1" width="135">
+            <col span="1" width="135">
+            <col span="2">
+            <col span="1">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="6"><a name="1"></a>首</th>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">国王の結び</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_2633.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                <font color="#ff66ff">装備数制限(</font>
+                <font color="#ffff00">1/1</font>
+                <font color="#ff66ff">)</font><br>
+                致命打 抵抗 <font color="#ffff00">+[45~50]</font>％<br>
+                決定打 抵抗 <font color="#ffff00">+[45~50]</font>％<br>
+                ストレンジ戦闘時、防御力強化 +<font color="#ffff00">15</font>％<br>
+                基本能力値を<font color="#ffff00">15</font>％ほど上げる。<br>
+                CP獲得ボーナス <font color="#ffff00">10</font>％<br>
+                命中率 <font color="#ffff00">+10</font>％<br>
+                力 <font color="#ffff00">+100</font><br>
+                健康 <font color="#ffff00">+150</font><br>
+                スキルレベル <font color="#ffff00">+4</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 775<br>
+                力 250
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                775/50
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                8億4600万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                28型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>エリプトの国王、サウローが使っていた戦争用のタイ。ヴァンパイアキラーと呼ばれていたサウロー王だが、この戦争用のタイには「マンイーター」という血文字が書かれている。<br>
+                <br>
+                <font color="#ff0000">※ ブラックファイヤーユニークは、部位を問わず一つのみ装着可能です。</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">八面鏡</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_2642.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                <font color="#ff66ff">装備数制限(</font>
+                <font color="#ffff00">1/1</font>
+                <font color="#ff66ff">)</font><br>
+                すべてのスキルレベル <font color="#ffff00">+2</font><br>
+                ストレンジ戦闘時、防御力強化 +<font color="#ffff00">15</font>％<br>
+                基本能力値を<font color="#ffff00">15</font>％ほど上げる。<br>
+                ダメージ <font color="#ffff00">+20</font>％<br>
+                防御力 <font color="#ffff00">+25</font>％<br>
+                敵に与えたダメージ <font color="#ffff00">4</font>％を 体力吸収<br>
+                CP獲得ボーナス <font color="#ffff00">15</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 775<br>
+                知恵 180
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>775/50
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                9億G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                30型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>未来に旅立とう、我が意味を求めているのならば。過去に耳を傾けよう、その憂いが知りたければ。現在はすぐ目の前にある。<br>
+                <br>
+                <font color="#ff0000">※ ブラックファイヤーユニークは、部位を問わず一つのみ装着可能です。</font>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table1">
+          <colgroup>
+            <col span="1" width="40">
+            <col span="1" width="135">
+            <col span="1" width="135">
+            <col span="2">
+            <col span="1">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="6"><a name="2"></a>兜</th>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">カーディナルタフト</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_2647.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                <font color="#ff66ff">装備数制限(</font>
+                <font color="#ffff00">1/1</font>
+                <font color="#ff66ff">)</font><br>
+                防御力 <font color="#ffff00">+[28~30]</font><br>
+                致命打 抵抗 <font color="#ffff00">+[28~30]</font>％<br>
+                ストレンジ戦闘時、防御力強化 +<font color="#ffff00">15</font>％<br>
+                基本能力値を<font color="#ffff00">15</font>％ほど上げる。<br>
+                最大ダメージ <font color="#ffff00">+25</font><br>
+                ダメージ <font color="#ffff00">+25</font>％<br>
+                致命打発動確率 <font color="#ffff00">+10</font>％<br>
+                ブロッキング速度 <font color="#ffff00">+50</font>％<br>
+                最大HP <font color="#ffff00">+40</font>％<br>
+                大地属性抵抗 <font color="#ffff00">+35</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 775<br>
+                力 300<br>
+                敏捷 200
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                775/50
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                8億8454万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                35型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>兜の頂点にある飾りは、燃えるような紅色で威嚇的。戦いの最中、炎のように舞い、まるで燃えているようだ。<br>
+                <br>
+                <font color="#ff0000">※ ブラックファイヤーユニークは、部位を問わず一つのみ装着可能です。</font>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table1">
+          <colgroup>
+            <col span="1" width="40">
+            <col span="1" width="135">
+            <col span="1" width="135">
+            <col span="2">
+            <col span="1">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="6"><a name="3"></a>冠</th>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">女術師のコイフ</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_2648.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                <font color="#ff66ff">装備数制限(</font>
+                <font color="#ffff00">1/1</font>
+                <font color="#ff66ff">)</font><br>
+                防御力 <font color="#ffff00">+[24~27]</font><br>
+                すべての状態異常 抵抗 <font color="#ffff00">+[24~27]</font>％<br>
+                ストレンジ戦闘時、防御力強化 +<font color="#ffff00">15</font>％<br>
+                基本能力値を<font color="#ffff00">15</font>％ほど上げる。<br>
+                ターゲットの魔法抵抗を<font color="#ffff00">45</font>％弱化させる。<br>
+                知識 <font color="#ffff00">+100</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 775<br>
+                カリスマ 450
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                775/50
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                4億1427万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                32型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>闇色に塗りつぶされた漆黒のコイフは相手に恐怖を与え、眩く輝く金色のサークレットは敵の脅威を相殺するだろう。<br>
+                <br>
+                <font color="#ff0000">※ ブラックファイヤーユニークは、部位を問わず一つのみ装着可能です。</font>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table1">
+          <colgroup>
+            <col span="1" width="40">
+            <col span="1" width="135">
+            <col span="1" width="135">
+            <col span="2">
+            <col span="1">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="6"><a name="4"></a>イヤリング</th>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">複製特異点</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_2640.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                <font color="#ff66ff">装備数制限(</font>
+                <font color="#ffff00">1/1</font>
+                <font color="#ff66ff">)</font><br>
+                集中力 <font color="#ffff00">+[10~30]</font><br>
+                ストレンジ戦闘時、防御力強化 +<font color="#ffff00">15</font>％<br>
+                基本能力値を<font color="#ffff00">15</font>％ほど上げる。<br>
+                ターゲットの光抵抗を<font color="#ffff00">24</font>％弱化させる。<br>
+                力 <font color="#ffff00">+150</font><br>
+                ダメージ <font color="#ffff00">+30</font>％<br>
+                攻撃速度 <font color="#ffff00">+20</font>％<br>
+                健康 <font color="#ffff00">+1</font>/レベル <font color="#ffff00">6</font><br>
+                ターゲットの火抵抗を<font color="#ffff00">20</font>％弱化させる。
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 775<br>
+                力 300<br>
+                敏捷 200
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                女性キャラクター専用
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                775/50
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                8億8904万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                28型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>絶えず放出し、永遠に吸引するという、特異点に関する報告書がある。この報告書を読んだ者は、戻れない川を渡ってしまうと言われている。<br>
+                <br>
+                <font color="#ff0000">※ ブラックファイヤーユニークは、部位を問わず一つのみ装着可能です。</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">女神の香り</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_2641.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                <font color="#ff66ff">装備数制限(</font>
+                <font color="#ffff00">1/1</font>
+                <font color="#ff66ff">)</font><br>
+                異常状態 抵抗 <font color="#ffff00">+[45~75]</font>％<br>
+                ストレンジ戦闘時、防御力強化 +<font color="#ffff00">15</font>％<br>
+                基本能力値を<font color="#ffff00">15</font>％ほど上げる。<br>
+                最大HP <font color="#ffff00">+30</font>％<br>
+                最大CP <font color="#ffff00">+20</font>％<br>
+                攻撃速度 <font color="#ffff00">+20</font>％<br>
+                集中力 <font color="#ffff00">+30</font>％<br>
+                知識 <font color="#ffff00">+100</font><br>
+                スキルレベル <font color="#ffff00">+3</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 775<br>
+                知識 300<br>
+                カリスマ 200
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                女性キャラクター専用
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>775/50
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                8億9540万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                28型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>苦しいほど清涼な女神の香りは、欲にまみれた人間にとっては毒なのかもしれない。<br>
+                <br>
+                <font color="#ff0000">※ ブラックファイヤーユニークは、部位を問わず一つのみ装着可能です。</font>
+              </td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table1">
+          <colgroup>
+            <col span="1" width="40">
+            <col span="1" width="135">
+            <col span="1" width="135">
+            <col span="2">
+            <col span="1">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="6"><a name="5"></a>マント</th>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">ディザスター</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_2638.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                <font color="#ff66ff">装備数制限(</font>
+                <font color="#ffff00">1/1</font>
+                <font color="#ff66ff">)</font><br>
+                火, 水, 風, 大地 抵抗 <font color="#ffff00">+[12~15]</font>％<br>
+                ストレンジ戦闘時、防御力強化 +<font color="#ffff00">15</font>％<br>
+                基本能力値を<font color="#ffff00">15</font>％ほど上げる。<br>
+                ダメージ <font color="#ffff00">+10</font>％<br>
+                防御力 <font color="#ffff00">+20</font>％<br>
+                目くらまし攻撃 <font color="#ffff00">+2</font>％(<font color="#ffff00">30</font>秒)<br>
+                力 <font color="#ffff00">+150</font><br>
+                スキルレベル <font color="#ffff00">+3</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 775<br>
+                力 300<br>
+                敏捷 200
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                男性キャラクター専用
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                775/50
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                8億2260万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                34型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>ダメルディ大爆発に耐えたという特殊なマント。残念ながら、マントの所有者たちは高熱と嵐に負けてしまったが、このマントだけは残って砂漠の砂に埋もれていたという。<br>
+                <br>
+                <font color="#ff0000">※ ブラックファイヤーユニークは、部位を問わず一つのみ装着可能です。</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">コンテンポラリーアルチザン</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_2639.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                <font color="#ff66ff">装備数制限(</font>
+                <font color="#ffff00">1/1</font>
+                <font color="#ff66ff">)</font><br>
+                火, 水, 風, 大地 抵抗 <font color="#ffff00">+[12~15]</font>％<br>
+                ストレンジ戦闘時、防御力強化 +<font color="#ffff00">15</font>％<br>
+                基本能力値を<font color="#ffff00">15</font>％ほど上げる。<br>
+                魔法攻撃力を<font color="#ffff00">20</font>％強化させる。<br>
+                光属性攻撃力を<font color="#ffff00">15</font>％強化させる。<br>
+                風属性攻撃力を<font color="#ffff00">15</font>％強化させる。<br>
+                大地属性攻撃力を<font color="#ffff00">10</font>％強化させる。<br>
+                知識 <font color="#ffff00">+170</font><br>
+                力 <font color="#ffff00">+200</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 775<br>
+                知識 300<br>
+                カリスマ 200
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                男性キャラクター専用
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>775/50
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                5億7499万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                28型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>今の時代、最も求められるものが何か知っているか？職人を名乗る者たちが溢れきった今、大衆の欲求にこたえられるのは「オリジナリティー」これだけだよ！<br>
+                <br>
+                <font color="#ff0000">※ ブラックファイヤーユニークは、部位を問わず一つのみ装着可能です。</font>
+              </td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table1">
+          <colgroup>
+            <col span="1" width="40">
+            <col span="1" width="135">
+            <col span="1" width="135">
+            <col span="2">
+            <col span="1">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="6"><a name="6"></a>ベルト</th>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">ヘクターの誇り</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_2643.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                <font color="#ff66ff">装備数制限(</font>
+                <font color="#ffff00">1/1</font>
+                <font color="#ff66ff">)</font><br>
+                防御力 <font color="#ffff00">+[23~25]</font><br>
+                スタックアイテム <font color="#ffff00">15</font>個<br>
+                ストレンジ戦闘時、防御力強化 +<font color="#ffff00">15</font>％<br>
+                基本能力値を<font color="#ffff00">15</font>％ほど上げる。<br>
+                力 <font color="#ffff00">+250</font><br>
+                健康 <font color="#ffff00">+250</font><br>
+                防御力 <font color="#ffff00">+30</font><br>
+                減少限界CP <font color="#ffff00">+21</font><br>
+                神獣型キャラクターに追加で<font color="#ffff00">50</font>％のダメージを与える。
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 775<br>
+                力 450
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                775/50
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                9億6230万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                16型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>国と民、そして家族のために、恐れず立ち上がった最高の騎士「ヘクター」に敬意を払って。<br>
+                <br>
+                <font color="#ff0000">※ ブラックファイヤーユニークは、部位を問わず一つのみ装着可能です。</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">ブルーミングコイル</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_2644.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                <font color="#ff66ff">装備数制限(</font>
+                <font color="#ffff00">1/1</font>
+                <font color="#ff66ff">)</font><br>
+                防御力 <font color="#ffff00">+[23~25]</font><br>
+                スタックアイテム <font color="#ffff00">15</font>個<br>
+                ストレンジ戦闘時、防御力強化 +<font color="#ffff00">15</font>％<br>
+                基本能力値を<font color="#ffff00">15</font>％ほど上げる。<br>
+                防御力 <font color="#ffff00">+20</font><br>
+                知識 <font color="#ffff00">+1</font>/レベル <font color="#ffff00">4</font><br>
+                アンデッド型キャラクターに追加で<font color="#ffff00">30</font>％のダメージを与える。<br>
+                悪魔型キャラクターに追加で<font color="#ffff00">35</font>％のダメージを与える。<br>
+                ターゲットの闇抵抗を<font color="#ffff00">20</font>％弱化させる。<br>
+                闇ダメージ <font color="#ffff00">150</font>～<font color="#ffff00">150</font><br>
+                呪い <font color="#ffff00">2</font>秒
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 775<br>
+                健康 450
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>775/50
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                9億540万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                48型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>花咲く春には、お花の服が似合う。世界中のみんなが、春の優しさに満ちて穏やかな気持ちでありますように。<br>
+                <br>
+                <font color="#ff0000">※ ブラックファイヤーユニークは、部位を問わず一つのみ装着可能です。</font>
+              </td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table1">
+          <colgroup>
+            <col span="1" width="40">
+            <col span="1" width="135">
+            <col span="1" width="135">
+            <col span="2">
+            <col span="1">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="6"><a name="7"></a>グローブ</th>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">漢の拳</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_2645.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                <font color="#ff66ff">装備数制限(</font>
+                <font color="#ffff00">1/1</font>
+                <font color="#ff66ff">)</font><br>
+                攻撃力 <font color="#ffff00">4~6</font><br>
+                防御力 <font color="#ffff00">+[10~12]</font><br>
+                ストレンジ戦闘時、防御力強化 +<font color="#ffff00">15</font>％<br>
+                基本能力値を<font color="#ffff00">15</font>％ほど上げる。<br>
+                敏捷 <font color="#ffff00">+40</font><br>
+                ダメージ <font color="#ffff00">+65</font>％<br>
+                風ダメージ <font color="#ffff00">200</font>～<font color="#ffff00">300</font><br>
+                スタン <font color="#ffff00">7</font>Frame<br>
+                攻撃速度 <font color="#ffff00">+25</font>％<br>
+                移動速度 <font color="#ffff00">+20</font>％<br>
+                決定打発動確率 <font color="#ffff00">+10</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                レベル 775<br>
+                力 500
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                775/50
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                1億5000万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                20型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>大きくて堅い拳、それは真の漢の証。<br>
+                <br>
+                <font color="#ff0000">※ ブラックファイヤーユニークは、部位を問わず一つのみ装着可能です。</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">バターフィンガー</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_2646.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                <font color="#ff66ff">装備数制限(</font>
+                <font color="#ffff00">1/1</font>
+                <font color="#ff66ff">)</font><br>
+                攻撃力 <font color="#ffff00">0~1</font><br>
+                防御力 <font color="#ffff00">+[10~12]</font><br>
+                ストレンジ戦闘時、防御力強化 +<font color="#ffff00">15</font>％<br>
+                基本能力値を<font color="#ffff00">15</font>％ほど上げる。<br>
+                最大CP <font color="#ffff00">+40</font>％<br>
+                CP獲得ボーナス <font color="#ffff00">30</font>％<br>
+                攻撃速度 <font color="#ffff00">+40</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 775<br>
+                知識 500
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>775/50
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                7億G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                32型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>バターのように香ばしくて甘い手袋。ダイエット中は装備しない方がいいかも。<br>
+                <br>
+                <font color="#ff0000">※ ブラックファイヤーユニークは、部位を問わず一つのみ装着可能です。</font>
+              </td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table1">
+          <colgroup>
+            <col span="1" width="40">
+            <col span="1" width="135">
+            <col span="1" width="135">
+            <col span="2">
+            <col span="1">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="6"><a name="8"></a>鎧</th>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">タイタンの肩</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_2649.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                <font color="#ff66ff">装備数制限(</font>
+                <font color="#ffff00">1/1</font>
+                <font color="#ff66ff">)</font><br>
+                防御力 <font color="#ffff00">+[50~60]</font><br>
+                ストレンジ戦闘時、防御力強化 +<font color="#ffff00">15</font>％<br>
+                基本能力値を<font color="#ffff00">15</font>％ほど上げる。<br>
+                ダメージ <font color="#ffff00">+20</font>％<br>
+                攻撃速度 <font color="#ffff00">+15</font>％<br>
+                防御力 <font color="#ffff00">+20</font><br>
+                敏捷 <font color="#ffff00">+120</font><br>
+                健康 <font color="#ffff00">+150</font><br>
+                力 <font color="#ffff00">+1</font>/レベル <font color="#ffff00">2</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 775<br>
+                力 400<br>
+                健康 400
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                775/50
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                9424万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                32型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>触れるだけで弾き飛ばされそうな、巨大な肩当て。<br>
+                <br>
+                <font color="#ff0000">※ ブラックファイヤーユニークは、部位を問わず一つのみ装着可能です。</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">色褪せ鎧</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_2634.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                <font color="#ff66ff">装備数制限(</font>
+                <font color="#ffff00">1/1</font>
+                <font color="#ff66ff">)</font><br>
+                防御力 <font color="#ffff00">+[50~60]</font><br>
+                ストレンジ戦闘時、防御力強化 +<font color="#ffff00">15</font>％<br>
+                基本能力値を<font color="#ffff00">15</font>％ほど上げる。<br>
+                防御力 <font color="#ffff00">+250</font>％<br>
+                カリスマ <font color="#ffff00">+365</font><br>
+                知識 <font color="#ffff00">+250</font><br>
+                防御力 <font color="#ffff00">+50</font><br>
+                回避率 <font color="#ffff00">+7</font>％<br>
+                魔法抵抗 <font color="#ffff00">+30</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 775<br>
+                健康 500<br>
+                カリスマ 200
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>775/50
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                8億6446万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                50型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>本来は銀色に輝く、とても美しい鎧だったという。歳月のせいか、度重なる戦闘のせいか、誰かが意図的にやったのか分からないが、錆びて色褪せている。胸の中央には、何かをはぎ取ったような痕跡が残っている。<br>
+                <br>
+                <font color="#ff0000">※ ブラックファイヤーユニークは、部位を問わず一つのみ装着可能です。</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">シックスの狂気</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_2635.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                <font color="#ff66ff">装備数制限(</font>
+                <font color="#ffff00">1/1</font>
+                <font color="#ff66ff">)</font><br>
+                防御力 <font color="#ffff00">+[61~70]</font><br>
+                ストレンジ戦闘時、防御力強化 +<font color="#ffff00">15</font>％<br>
+                基本能力値を<font color="#ffff00">15</font>％ほど上げる。<br>
+                防御力 <font color="#ffff00">+145</font>％<br>
+                知識 <font color="#ffff00">+1</font>/レベル <font color="#ffff00">3</font><br>
+                知恵 <font color="#ffff00">+1</font>/レベル <font color="#ffff00">4</font><br>
+                スキルレベル <font color="#ffff00">+5</font><br>
+                減少限界CP <font color="#ffff00">+50</font><br>
+                最大CP <font color="#ffff00">+150</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 775<br>
+                健康 300<br>
+                知恵 100<br>
+                知識 200
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>775/50
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                9億6856万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                48型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>魔女か、賢者か。シックスは、一般的にレリロープ連盟建国の一等功臣として知られている。しかしその一方で、魔法大戦の元凶ともいわれている。いずれにしても、シックスが魔法を行使するときは、狂気に溢れ、まわりの人々まで狂わせるほどの魔力だったそうだ。<br>
+                <br>
+                <font color="#ff0000">※ ブラックファイヤーユニークは、部位を問わず一つのみ装着可能です。</font>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table1">
+          <colgroup>
+            <col span="1" width="40">
+            <col span="1" width="135">
+            <col span="1" width="135">
+            <col span="2">
+            <col span="1">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="6"><a name="9"></a>足</th>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">ダオリングの護持</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_2636.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                <font color="#ff66ff">装備数制限(</font>
+                <font color="#ffff00">1/1</font>
+                <font color="#ff66ff">)</font><br>
+                攻撃力 <font color="#ffff00">2~17</font><br>
+                防御力 <font color="#ffff00">+[24~25]</font><br>
+                ストレンジ戦闘時、防御力強化 +<font color="#ffff00">15</font>％<br>
+                基本能力値を<font color="#ffff00">15</font>％ほど上げる。<br>
+                命中率 <font color="#ffff00">+10</font>％<br>
+                攻撃速度<font color="#ffff00">-5</font>％<br>
+                移動速度<font color="#ffff00">-5</font>％<br>
+                最大HP <font color="#ffff00">+30</font>％<br>
+                ダメージ <font color="#ffff00">+60</font>％<br>
+                致命打発動確率 <font color="#ffff00">+25</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 775<br>
+                力 450<br>
+                敏捷 320
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                775/50
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                8億654万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                48型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>必衰の存在である人間にとって、地に足をつけて生きていくことは何より大切。人間という存在が、大地から離れないよう、ダオリングがしっかり守ってくれるだろう。<br>
+                <br>
+                <font color="#ff0000">※ ブラックファイヤーユニークは、部位を問わず一つのみ装着可能です。</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">フェノンの壺</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_2637.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                <font color="#ff66ff">装備数制限(</font>
+                <font color="#ffff00">1/1</font>
+                <font color="#ff66ff">)</font><br>
+                攻撃力 <font color="#ffff00">2~13</font><br>
+                防御力 <font color="#ffff00">+[24~25]</font><br>
+                ストレンジ戦闘時、防御力強化 +<font color="#ffff00">15</font>％<br>
+                基本能力値を<font color="#ffff00">15</font>％ほど上げる。<br>
+                ターゲットの魔法抵抗を<font color="#ffff00">15</font>％弱化させる。<br>
+                ターゲットの水抵抗を<font color="#ffff00">15</font>％弱化させる。<br>
+                水属性攻撃力を<font color="#ffff00">25</font>％強化させる。<br>
+                水属性抵抗 <font color="#ffff00">+40</font>％<br>
+                水属性ダメージ吸収 <font color="#ffff00">25</font>％<br>
+                移動速度 <font color="#ffff00">+20</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 775<br>
+                知識 450<br>
+                カリスマ 200
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>775/50
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                8億5121万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                28型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>十四の不思議なエンブレムが刻まれている、半透明な壺の形をした靴。元々は、小さな精霊たちを入れるために作られたという。<br>
+                <br>
+                <font color="#ff0000">※ ブラックファイヤーユニークは、部位を問わず一つのみ装着可能です。</font>
+              </td>
+            </tr>
+
+
+          </tbody>
+        </table>
+
+        <br>
+        <br>
+        <footer class="android-footer mdl-mega-footer">
+          <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+          </font>
+          Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+        </footer>
+        <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+        　-->
+
+      </div>
+
+      <a href="" id="view-source" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">トップ
+      </a>
+      <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    </div>
+</body>
+
+</html>
