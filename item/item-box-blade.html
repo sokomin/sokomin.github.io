@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+    <!-- Page styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+
+    <style>
+        #view-source {
+        position: fixed;
+        display: block;
+        right: 0;
+        bottom: 0;
+        margin-right: 40px;
+        margin-bottom: 40px;
+        z-index: 900;
+      }
+    </style>
+</head>
+
+<body>
+    <title>赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="検索できたら最高" class="mdl-textfield__input" type="text" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-content mdl-layout__content">
+
+            <!--main-->
+            <div class="main-background mdl-typography--text-center">
+                <br>
+                <h3>箱品　両手剣</h3>
+
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="5">
+                                <font color="#00ff00">[火属性攻撃Lv1] </font>
+                                <font color="#6699ff">バスタードソード</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0201.png" width="34" height="34" border="0"></td>
+                            <td colspan="4">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">10~15</font>(<font color="#ffff00">1.20</font>秒)<br>
+                                射程距離 <font color="#ffff00">100</font><br>
+                                火ダメージ <font color="#ffff00">2</font>～<font color="#ffff00">3</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 11<br>
+                                力 35<br>
+                                敏捷 20
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                剣士<br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;箱品番号&gt;</font><br>
+                                6
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>片手でも､両手でも扱える剣
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="5">
+                                <font color="#00ff00">[最高攻撃Lv2] [力Lv3] </font>
+                                <font color="#6699ff">グレートソード</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0202.png" width="34" height="34" border="0"></td>
+                            <td colspan="4">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>攻撃力 <font color="#ffff00">17~26</font>(<font
+                                    color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                最大ダメージ <font color="#ffff00">+3</font><br>
+                                力 <font color="#ffff00">+5</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 31<br>
+                                力 60<br>
+                                敏捷 30
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;箱品番号&gt;</font><br>
+                                29
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>大型の剣。大きい為、両手で持たないと使えない
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="5">
+                                <font color="#00ff00">[攻撃Lv4] </font>
+                                <font color="#6699ff">チャンピオンソード</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0203.png" width="34" height="34" border="0"></td>
+                            <td colspan="4">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>攻撃力 <font color="#ffff00">20~32</font>(<font
+                                    color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                ダメージ <font color="#ffff00">+25</font>％
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 52<br>
+                                力 90<br>
+                                敏捷 40
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;箱品番号&gt;</font><br>
+                                46
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>高度に手慣れた戦士達だけが使っていた両手持ち剣
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="5">
+                                <font color="#00ff00">[CPボーナスLv1] [HP吸収Lv1] </font>
+                                <font color="#6699ff">グレートソードDX</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0202.png" width="34" height="34" border="0"></td>
+                            <td colspan="4">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>攻撃力 <font color="#ffff00">48~57</font>(<font
+                                    color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                CP獲得ボーナス <font color="#ffff00">2</font>％<br>
+                                敵に与えたダメージ <font color="#ffff00">2</font>％を 体力吸収
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 177<br>
+                                力 280<br>
+                                敏捷 150
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>26型
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;箱品番号&gt;</font><br>
+                                92
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>大型の剣。大きい為、両手で持たないと使えない
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="5">
+                                <font color="#00ff00">[攻撃Lv4] [CPボーナスLv3] </font>
+                                <font color="#6699ff">エクゼキューショナーズソードXLS</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0206.png" width="34" height="34" border="0"></td>
+                            <td colspan="4">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>攻撃力 <font color="#ffff00">68~86</font>(<font
+                                    color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">120</font><br>
+                                ターゲット即死確率 <font color="#ffff00">+1</font>％<br>
+                                ダメージ <font color="#ffff00">+25</font>％<br>
+                                CP獲得ボーナス <font color="#ffff00">6</font>％
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 396<br>
+                                力 670<br>
+                                敏捷 255
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>32型
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;箱品番号&gt;</font><br>
+                                138
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>処刑人達が好んで使った､斬撃専用の巨大な剣
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="5">
+                                <font color="#00ff00">[火属性攻撃Lv10] [火属性吸収Lv2] [攻撃Lv4] </font>
+                                <font color="#6699ff">フランベルジュLX</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0205.png" width="34" height="34" border="0"></td>
+                            <td colspan="4">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>攻撃力 <font color="#ffff00">63~79</font>(<font
+                                    color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">120</font><br>
+                                火ダメージ <font color="#ffff00">50</font>～<font color="#ffff00">90</font><br>
+                                火属性ダメージ吸収 <font color="#ffff00">20</font>％<br>
+                                ダメージ <font color="#ffff00">+25</font>％
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 416<br>
+                                力 550<br>
+                                敏捷 225
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>30型
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;箱品番号&gt;</font><br>
+                                120
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>炎の様な形で美しい刃を持つ両手持ち剣
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+        　-->
+
+            </div>
+
+            <a href="" id="view-source" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">トップ
+            </a>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        </div>
+</body>
+
+</html>

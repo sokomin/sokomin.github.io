@@ -1,0 +1,2696 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+    <!-- Page styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+
+    <style>
+        #view-source {
+        position: fixed;
+        display: block;
+        right: 0;
+        bottom: 0;
+        margin-right: 40px;
+        margin-bottom: 40px;
+        z-index: 900;
+      }
+    </style>
+</head>
+
+<body>
+    <title>赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="検索できたら最高" class="mdl-textfield__input" type="text" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-content mdl-layout__content">
+
+            <!--main-->
+            <div class="main-background mdl-typography--text-center">
+                <br>
+                <h3>ユニーク　両手剣</h3>
+
+                <a href="#1">U</a><br>
+                <a href="#2">DXU</a><br>
+                <a href="#3">NxU</a><br>
+                <a href="#4">NxDXU</a><br>
+                <br>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6"><a name="1"></a>U</th>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#ffcc99">ザウバモルダー</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0434.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">18~29</font>(<font color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                ダメージ <font color="#ffff00">+60</font>％<br>
+                                魔法抵抗 <font color="#ffff00">+20</font>％<br>
+                                火属性ダメージ吸収 <font color="#ffff00">10</font>％<br>
+                                水属性ダメージ吸収 <font color="#ffff00">10</font>％<br>
+                                風属性ダメージ吸収 <font color="#ffff00">10</font>％<br>
+                                大地属性ダメージ吸収 <font color="#ffff00">10</font>％<br>
+                                <font color="#ffff00">錬成 可能</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 75<br>
+                                力 75<br>
+                                敏捷 35
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                64/500
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                14万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                魔法を防ぐルーンの文字が刀身いっぱいに刻まれており、ウィザード相手に抜群の能力を発揮する剣
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#ffcc99">ぺディグリード</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0432.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">10~15</font>(<font color="#ffff00">1.20</font>秒)<br>
+                                射程距離 <font color="#ffff00">100</font><br>
+                                ダメージ <font color="#ffff00">+30</font>％<br>
+                                命中率 <font color="#ffff00">+5</font>％<br>
+                                スキルレベル <font color="#ffff00">+3</font><br>
+                                <font color="#ffff00">錬成 可能</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 80<br>
+                                力 35<br>
+                                敏捷 20
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                剣士<br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                72/750
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                1000G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                この剣には、作った職人と彼の師匠、その師匠の師匠らの作品の系譜がいっぱい刻まれてある。すなわち、名品ということなのか？
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#ffcc99">ドラゴンスレイヤー</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0433.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">16~24</font>(<font color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                最大ダメージ <font color="#ffff00">+15</font><br>
+                                ダメージ <font color="#ffff00">+150</font>％<br>
+                                即死攻撃 <font color="#ffff00">+5</font>％<br>
+                                <font color="#ffff00">錬成 可能</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 113<br>
+                                力 45<br>
+                                敏捷 25
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                100/500
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                2万8000G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                3匹のドラゴンを殺した名剣。ドラゴンスレイヤーシリーズを作った職人は、この剣でドラゴンを3匹以上殺せばその剣の持ち主も死ぬという呪いをこの剣に吹き込んだ
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#ffcc99">シュタインハンダー</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0435.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">22~36</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                最小ダメージ <font color="#ffff00">+4</font><br>
+                                ダメージ <font color="#ffff00">+50</font>％<br>
+                                スタン攻撃 <font color="#ffff00">+50</font>％(<font color="#ffff00">1</font>秒)<br>
+                                決定打発動確率 <font color="#ffff00">+15</font>％<br>
+                                <font color="#ffff00">錬成 可能</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 117<br>
+                                力 110<br>
+                                敏捷 45
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                98/500
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                90万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                折れない石を磨いて作った剣。丈夫ではあるが、弾力が無い為に使い難い
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#ffcc99">ゴールデンクリーバー</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0438.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">33~44</font>(<font color="#ffff00">1.80</font>秒)<br>
+                                射程距離 <font color="#ffff00">120</font><br>
+                                決定打 <font color="#ffff00">+[2~4]</font>％<br>
+                                ダメージ <font color="#ffff00">+40</font>％<br>
+                                最小ダメージ <font color="#ffff00">+8</font><br>
+                                決定打発動確率 <font color="#ffff00">+15</font>％<br>
+                                <font color="#ffff00">錬成 可能</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 131<br>
+                                力 150
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                109/500
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                [2~4]×6万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                金色に光る戦闘用の斧。ドワーフ達の王、ロインの宝で、ロインはこの斧で百匹のオルクの頭を割ったという
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#ffcc99">ビッグ・セイジ</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0436.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">27~43</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">120</font><br>
+                                ダメージ <font color="#ffff00">+30</font>％<br>
+                                火ダメージ <font color="#ffff00">41</font>～<font color="#ffff00">67</font><br>
+                                光ダメージ <font color="#ffff00">28</font>～<font color="#ffff00">47</font><br>
+                                <font color="#ffff00">38</font>秒の間 命中, 回避低下<br>
+                                致命打発動確率 <font color="#ffff00">+15</font>％<br>
+                                <font color="#ffff00">錬成 可能</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 156<br>
+                                力 150<br>
+                                敏捷 55
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                131/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                300万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                燃え盛るように強烈な形で装飾された刃はまるで生きている炎の様だ。よく見ると光の屈折によって本当に炎の如く動いている様に見える
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#ffcc99">ガイスターストック</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0437.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">32~50</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">120</font><br>
+                                ターゲット即死確率 <font color="#ffff00">+1</font>％<br>
+                                ダメージ <font color="#ffff00">+133</font>％<br>
+                                闇ダメージ <font color="#ffff00">8</font>～<font color="#ffff00">15</font><br>
+                                呪い <font color="#ffff00">5</font>秒<br>
+                                即死攻撃 <font color="#ffff00">+3</font>％<br>
+                                コールド攻撃+ <font color="#ffff00">50</font>％(<font color="#ffff00">5</font>秒)<br>
+                                <font color="#ffff00">錬成 可能</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 211<br>
+                                力 190<br>
+                                敏捷 65
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                175/500
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                500万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                死と幽霊の戦士達が使う超大型の剣。まるで違う次元にあるものの如く、ぼやけて見える
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#ffcc99">コスウェール</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0439.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">40~55</font>(<font color="#ffff00">1.80</font>秒)<br>
+                                射程距離 <font color="#ffff00">120</font><br>
+                                決定打 <font color="#ffff00">+[3~5]</font>％<br>
+                                ダメージ <font color="#ffff00">+200</font>％<br>
+                                最大ダメージ <font color="#ffff00">+25</font><br>
+                                攻撃速度 <font color="#ffff00">-20</font>％<br>
+                                決定打発動確率 <font color="#ffff00">+5</font>％<br>
+                                ダメージをCPに転換 <font color="#ffff00">25</font>％<br>
+                                <font color="#ffff00">錬成 可能</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 217<br>
+                                力 200
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                180/50
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                [3~5]×30万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                一般人には持ち上げることすら不可能に見える巨大な斧。骨まで砕くこの斧の威力の前に、たくさんの者が屍となって消えて行ったのだろう
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6"><a name="2"></a>DXU</th>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#ffcc99">リアルハイブリッド</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1223.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">57~62</font>(<font color="#ffff00">1.20</font>秒)<br>
+                                射程距離 <font color="#ffff00">100</font><br>
+                                最大HP <font color="#ffff00">+25</font>％<br>
+                                致命打発動確率 <font color="#ffff00">+5</font>％<br>
+                                <font color="#ffff00">6</font>秒 <font color="#ffff00">225</font>～<font color="#ffff00">230</font>
+                                毒ダメージ<br>
+                                致命打抵抗 <font color="#ffff00">+30</font>％<br>
+                                ターゲットの風抵抗を<font color="#ffff00">100</font>％弱化させる。<br>
+                                スキルレベル <font color="#ffff00">+3</font><br>
+                                <font color="#ffff00">錬成 可能</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 414<br>
+                                力 205<br>
+                                敏捷 120
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>剣士<br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                115/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                11万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>22型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                片手でも、両手でも最大の威力が発揮できるように設計された名剣
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#ffcc99">紫檀剣</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1222.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">58~63</font>(<font color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">105</font><br>
+                                ダメージ <font color="#ffff00">+33</font>％<br>
+                                最大ダメージ <font color="#ffff00">+25</font><br>
+                                ターゲットの回避率補正値 無視<br>
+                                CP獲得ボーナス <font color="#ffff00">3</font>％<br>
+                                運 <font color="#ffff00">+80</font><br>
+                                運 <font color="#ffff00">+1</font>/レベル <font color="#ffff00">6</font><br>
+                                <font color="#ffff00">錬成 可能</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 416<br>
+                                力 175<br>
+                                敏捷 105
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                105/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                10万5000G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>28型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                幸運をもたらしてくれるという紫檀を削って作った木刀。鉄剣よりはどうしても硬度が落ちるため主に練習用として使用される
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#ffcc99">土龍震剣</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1224.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">67~75</font>(<font color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                ダメージ <font color="#ffff00">+100</font>％<br>
+                                力 <font color="#ffff00">+66</font><br>
+                                致命打発動確率 <font color="#ffff00">+7</font>％<br>
+                                大地属性攻撃力を<font color="#ffff00">33</font>％強化させる。<br>
+                                ターゲットの大地抵抗を<font color="#ffff00">50</font>％弱化させる。<br>
+                                <font color="#ffff00">錬成 可能</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 443<br>
+                                力 235<br>
+                                敏捷 135
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                131/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                24万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>24型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                グネグネとしている剣身の姿が特徴。この剣で地面を撃つと大地に土龍が通り過ぎたような亀裂ができるという
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#ffcc99">ドラゴンツイスター</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1225.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">68~77</font>(<font color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                ダメージ <font color="#ffff00">+100</font>％<br>
+                                知識 <font color="#ffff00">+140</font><br>
+                                最大CP <font color="#ffff00">+30</font>％<br>
+                                攻撃速度 <font color="#ffff00">+15</font>％<br>
+                                フリーズ攻撃 <font color="#ffff00">+12</font>％(<font color="#ffff00">3</font>秒)<br>
+                                ターゲットの水抵抗を<font color="#ffff00">85</font>％弱化させる。<br>
+                                <font color="#ffff00">錬成 可能</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 465<br>
+                                力 280<br>
+                                敏捷 150
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                145/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                40万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>26型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                ひたすら一つの技を修行した最高の戦士たちのために考案された剣。真の必殺技を目にしたい者はこの大剣で極上の技を試してみるといい
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#ffcc99">グールソード</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1226.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">69~80</font>(<font color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                ダメージ <font color="#ffff00">+120</font>％<br>
+                                知恵 <font color="#ffff00">+25</font><br>
+                                最小ダメージ <font color="#ffff00">+8</font><br>
+                                魔法属性ダメージ吸収 <font color="#ffff00">5</font>％<br>
+                                魔法アイテムドロップ確率 <font color="#ffff00">+8</font>％<br>
+                                <font color="#ffff00">錬成 可能</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 500<br>
+                                力 325<br>
+                                敏捷 165
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                159/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                80万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>28型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                死体を掘り出して食べるという残忍なグールの手に粘土のようにくっ付いていた大きな剣。幽霊の力が転移され、魔法に対する抵抗力が強く、隠された秘密を見つける能力もある
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#ffcc99">ハイランダーソード</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1227.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">71~83</font>(<font color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                最大HP <font color="#ffff00">+200</font><br>
+                                最大HP <font color="#ffff00">+100</font>％<br>
+                                減少限界CP <font color="#ffff00">+15</font><br>
+                                集中力 <font color="#ffff00">+75</font>％<br>
+                                ノックアウト攻撃 <font color="#ffff00">+75</font>％<br>
+                                風属性攻撃力を<font color="#ffff00">80</font>％強化させる。<br>
+                                <font color="#ffff00">錬成 可能</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 503<br>
+                                力 370<br>
+                                敏捷 180
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                183/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                160万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>32型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                死せず、風のように放浪するハイランダーたちの大剣。この武器は彼らの強力な体力を一層増加させてくれるそうだ
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#ffcc99">ガッツグローリー</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1228.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">81~95</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                ダメージ <font color="#ffff00">+120</font>％<br>
+                                健康 <font color="#ffff00">+100</font><br>
+                                防御力 <font color="#ffff00">+37</font><br>
+                                闇ダメージ <font color="#ffff00">80</font>～<font color="#ffff00">80</font><br>
+                                呪い <font color="#ffff00">4</font>秒<br>
+                                CP獲得ボーナス <font color="#ffff00">5</font>％<br>
+                                <font color="#ffff00">錬成 可能</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 578<br>
+                                力 430<br>
+                                敏捷 195
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                207/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                310万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>32型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                辛抱強い根性が最後には勝つと言うのは昔からのことわざであるが、この剣は根性がどのような方策で実現できるのかを見せてくれる
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#ffcc99">フレンジーアックス</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1234.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">103~114</font>(<font color="#ffff00">1.80</font>秒)<br>
+                                射程距離 <font color="#ffff00">120</font><br>
+                                決定打 <font color="#ffff00">+[1~2]</font>％<br>
+                                ダメージ <font color="#ffff00">+120</font>％<br>
+                                敏捷 <font color="#ffff00">+150</font><br>
+                                攻撃速度 <font color="#ffff00">+20</font>％<br>
+                                水ダメージ <font color="#ffff00">40</font>～<font color="#ffff00">57</font><br>
+                                コールド <font color="#ffff00">16</font>Frame<br>
+                                武器破壊攻撃 <font color="#ffff00">+3</font>％(<font color="#ffff00">4</font>秒)<br>
+                                光属性ダメージ吸収 <font color="#ffff00">10</font>％<br>
+                                <font color="#ffff00">錬成 可能</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 579<br>
+                                力 550
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                235/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                370万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>39型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                水が流れるように強力でありながらスピーディな攻撃を目標として設計された斧
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#ffcc99">スローターブレード</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1229.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">83~99</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                ダメージ <font color="#ffff00">+100</font>％<br>
+                                最大HP <font color="#ffff00">+50</font><br>
+                                攻撃速度 <font color="#ffff00">+10</font>％<br>
+                                敵に与えたダメージ <font color="#ffff00">1</font>％を 体力吸収<br>
+                                スキルレベル <font color="#ffff00">+2</font><br>
+                                <font color="#ffff00">錬成 可能</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 598<br>
+                                力 490<br>
+                                敏捷 210
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                229/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                460万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>32型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                数多くの牛や豚、羊を殺して血に滲まれた剣。屠殺された動物たちが殺される際に吐いた呪いと嘆息が、敵の血を吸い取る魔力へと変わったのである
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#ffcc99">クシャンタリパ</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1230.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">86~102</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">120</font><br>
+                                知識 <font color="#ffff00">+120</font><br>
+                                防御力 <font color="#ffff00">+25</font>％<br>
+                                決定打発動確率 <font color="#ffff00">+4</font>％<br>
+                                ポーション回復速度<font color="#ffff00">25</font>％増加<br>
+                                火ダメージ <font color="#ffff00">960</font>～<font color="#ffff00">1000</font><br>
+                                火属性ダメージ吸収 <font color="#ffff00">20</font>％<br>
+                                <font color="#ffff00">錬成 可能</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                                レベル 637<br>
+                                力 550<br>
+                                敏捷 225
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                253/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                610万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>30型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                強力な火の呪いが掛けられている炎の剣。この剣の持主は火炎の聡明さと火花の加護を共にもらえる
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#ffcc99">新月</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1235.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">106~119</font>(<font color="#ffff00">1.80</font>秒)<br>
+                                射程距離 <font color="#ffff00">120</font><br>
+                                決定打 <font color="#ffff00">+[1~2]</font>％<br>
+                                ダメージ <font color="#ffff00">+100</font>％<br>
+                                集中力 <font color="#ffff00">+10</font>％<br>
+                                水ダメージ <font color="#ffff00">60</font>～<font color="#ffff00">67</font><br>
+                                コールド <font color="#ffff00">16</font>Frame<br>
+                                CP獲得ボーナス <font color="#ffff00">10</font>％<br>
+                                ターゲットの風抵抗を<font color="#ffff00">25</font>％弱化させる。<br>
+                                <font color="#ffff00">錬成 可能</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 693<br>
+                                力 610
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                287/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                610万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>41型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                たった今、膨らみ始めた三日月のように刃を薄くした斧。軽いので効率が良く、切り味も良いため、使い手の高揚する気持ちが長く続くと言われる
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#ffcc99">スティールジャスティス</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1231.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">88~106</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">120</font><br>
+                                ダメージ <font color="#ffff00">+150</font>％<br>
+                                力 <font color="#ffff00">+60</font><br>
+                                致命打発動確率 <font color="#ffff00">+8</font>％<br>
+                                集中力 <font color="#ffff00">+40</font>％<br>
+                                火ダメージ <font color="#ffff00">133</font>～<font color="#ffff00">140</font><br>
+                                <font color="#ffff00">錬成 可能</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 696<br>
+                                力 610<br>
+                                敏捷 240
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                289/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                910万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>30型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                断固とした懲罰を主な目的として作られた剣。悪事が見つかった者を容赦なしに切ってしまうのがこの剣の特徴である
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#ffcc99">ミールの戦斧</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1236.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">110~125</font>(<font color="#ffff00">1.80</font>秒)<br>
+                                射程距離 <font color="#ffff00">120</font><br>
+                                決定打 <font color="#ffff00">+[1~3]</font>％<br>
+                                ダメージ <font color="#ffff00">+250</font>％<br>
+                                知恵 <font color="#ffff00">+1</font>/レベル <font color="#ffff00">6</font><br>
+                                ポーション回復速度<font color="#ffff00">10</font>％増加<br>
+                                光属性抵抗 <font color="#ffff00">+50</font>％<br>
+                                闇属性抵抗 <font color="#ffff00">+30</font>％<br>
+                                ターゲットの水抵抗を<font color="#ffff00">80</font>％弱化させる。<br>
+                                <font color="#ffff00">錬成 可能</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 736<br>
+                                力 700
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                339/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                1135万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>43型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                巨大神獣ミールを退治するために作られた戦闘用斧。波立つ龍模様の柄と刃が連結された接合箇所の処理は芸術に近い
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#ffcc99">正宗</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1232.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">91~109</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">120</font><br>
+                                ターゲット即死確率 <font color="#ffff00">+[0~1]</font>％<br>
+                                最大CP <font color="#ffff00">+50</font>％<br>
+                                命中率 <font color="#ffff00">+5</font>％<br>
+                                攻撃者の命中率補正値 無視<br>
+                                光ダメージ <font color="#ffff00">1</font>～<font color="#ffff00">2048</font><br>
+                                <font color="#ffff00">2</font>秒の間 命中, 回避低下<br>
+                                風属性攻撃力を<font color="#ffff00">60</font>％強化させる。<br>
+                                人間型キャラクターに追加で<font color="#ffff00">75</font>％のダメージを与える。<br>
+                                <font color="#ffff00">錬成 可能</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 743<br>
+                                力 670<br>
+                                敏捷 255
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                327/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                1010万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>32型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                先代の名人が作ったと言われる名剣。偽物が多いが本物の切り味はやはり格が違うそうだ
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#ffcc99">ディメンションスレイヤー</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1233.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">94~112</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">120</font><br>
+                                ターゲット即死確率 <font color="#ffff00">+1</font>％<br>
+                                ダメージ <font color="#ffff00">+200</font>％<br>
+                                回避率 <font color="#ffff00">+8</font>％<br>
+                                攻撃速度 <font color="#ffff00">+20</font>％<br>
+                                風属性抵抗 <font color="#ffff00">+25</font>％<br>
+                                攻撃を受けると <font color="#ffff00">10％</font>の確率でダメージの<font color="#ffff00">10</font>％を応急処置<br>
+                                大地属性攻撃力を<font color="#ffff00">33</font>％強化させる。<br>
+                                <font color="#ffff00">錬成 可能</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 775<br>
+                                力 760<br>
+                                敏捷 270
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                353/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                3010万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>32型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                次元の大剣。空間の物理的な要素を切るのではなく空間そのものを切る力がある。その破壊力は想像を超えるものである
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#ffcc99">プラチナアックス</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1237.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">120~141</font>(<font color="#ffff00">1.80</font>秒)<br>
+                                射程距離 <font color="#ffff00">120</font><br>
+                                決定打 <font color="#ffff00">+[2~3]</font>％<br>
+                                力 <font color="#ffff00">+1</font>/レベル <font color="#ffff00">4</font><br>
+                                減少限界CP <font color="#ffff00">+30</font><br>
+                                <font color="#ffff00">10</font>秒 <font color="#ffff00">94</font>～<font color="#ffff00">94</font>
+                                毒ダメージ<br>
+                                ノックアウト攻撃 <font color="#ffff00">+25</font>％<br>
+                                コールド抵抗 <font color="#ffff00">+60</font>％<br>
+                                ターゲットの大地抵抗を<font color="#ffff00">100</font>％弱化させる。<br>
+                                <font color="#ffff00">錬成 可能</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 779<br>
+                                力 820
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                365/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                3760万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>45型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                伝説の黄金斧よりもっと珍しい斧。大地を割る力があるそうだ
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6"><a name="3"></a>NxU</th>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#cc6633">ザウバモルダー[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0434.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">38~56</font>(<font color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                ダメージ <font color="#ffff00">+60</font>％<br>
+                                魔法抵抗 <font color="#ffff00">+30</font>％<br>
+                                火属性ダメージ吸収 <font color="#ffff00">30</font>％<br>
+                                水属性ダメージ吸収 <font color="#ffff00">30</font>％<br>
+                                風属性ダメージ吸収 <font color="#ffff00">30</font>％<br>
+                                大地属性ダメージ吸収 <font color="#ffff00">30</font>％<br>
+                                <br>
+                                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">40</font><br>ダメージ
+                                <font color="#ffff00">+20</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ
+                                <font color="#ffff00">10</font>％ 増加
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                                レベル 190<br>
+                                力 75<br>
+                                敏捷 35
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                64/50
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                14万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                魔法を防ぐルーンの文字が刀身いっぱいに刻まれており、ウィザード相手に抜群の能力を発揮する剣。<br>
+                                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font
+                                    color="#cc99ff">が必要です</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#cc6633">ぺディグリード[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0432.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">45~60</font>(<font color="#ffff00">1.20</font>秒)<br>
+                                射程距離 <font color="#ffff00">100</font><br>
+                                ダメージ <font color="#ffff00">+50</font>％<br>
+                                命中率 <font color="#ffff00">+5</font>％<br>
+                                スキルレベル <font color="#ffff00">+4</font><br>
+                                <br>
+                                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">40</font><br>ダメージ
+                                <font color="#ffff00">+20</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ
+                                <font color="#ffff00">10</font>％ 増加
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                                レベル 160<br>
+                                力 35<br>
+                                敏捷 20
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                剣士<br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                72/80
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                1000G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                この剣には、作った職人と彼の師匠、その師匠の師匠らの作品の系譜がいっぱい刻まれてある。すなわち、名品ということなのか？<br>
+                                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font
+                                    color="#cc99ff">が必要です</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#cc6633">ドラゴンスレイヤー[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0433.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">43~58</font>(<font color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                最大ダメージ <font color="#ffff00">+15</font><br>
+                                ダメージ <font color="#ffff00">+150</font>％<br>
+                                即死攻撃 <font color="#ffff00">+5</font>％<br>
+                                <br>
+                                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">60</font><br>ダメージ
+                                <font color="#ffff00">+30</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ
+                                <font color="#ffff00">10</font>％ 増加
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                                レベル 226<br>
+                                力 45<br>
+                                敏捷 25
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                100/50
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                2万8000G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                3匹のドラゴンを殺した名剣。ドラゴンスレイヤーシリーズを作った職人は、この剣でドラゴンを3匹以上殺せばその剣の持ち主も死ぬという呪いをこの剣に吹き込んだ。<br>
+                                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font
+                                    color="#cc99ff">が必要です</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#cc6633">シュタインハンダー[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0435.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">39~80</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                最小ダメージ <font color="#ffff00">+10</font><br>
+                                ダメージ <font color="#ffff00">+50</font>％<br>
+                                スタン攻撃 <font color="#ffff00">+50</font>％(<font color="#ffff00">1</font>秒)<br>
+                                決定打発動確率 <font color="#ffff00">+15</font>％<br>
+                                <br>
+                                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">60</font><br>ダメージ
+                                <font color="#ffff00">+30</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ
+                                <font color="#ffff00">10</font>％ 増加
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                                レベル 254<br>
+                                力 110<br>
+                                敏捷 45
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                98/50
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                90万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                折れない石を磨いて作った剣。丈夫ではあるが、弾力が無い為に使い難い。<br>
+                                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font
+                                    color="#cc99ff">が必要です</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#cc6633">ゴールデンクリーバー[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0438.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">55~70</font>(<font color="#ffff00">1.80</font>秒)<br>
+                                射程距離 <font color="#ffff00">120</font><br>
+                                決定打 <font color="#ffff00">+[2~4]</font>％<br>
+                                ダメージ <font color="#ffff00">+50</font>％<br>
+                                最小ダメージ <font color="#ffff00">+12</font><br>
+                                決定打発動確率 <font color="#ffff00">+15</font>％<br>
+                                <br>
+                                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">60</font><br>ダメージ
+                                <font color="#ffff00">+30</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ
+                                <font color="#ffff00">10</font>％ 増加
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                                レベル 262<br>
+                                力 150
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                109/50
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                [2~4]×6万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                金色に光る戦闘用の斧。ドワーフ達の王、ロインの宝で、ロインはこの斧で百匹のオルクの頭を割ったという。<br>
+                                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font
+                                    color="#cc99ff">が必要です</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#cc6633">ビッグ・セイジ[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0436.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">50~71</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">120</font><br>
+                                ダメージ <font color="#ffff00">+50</font>％<br>
+                                火ダメージ <font color="#ffff00">301</font>～<font color="#ffff00">607</font><br>
+                                光ダメージ <font color="#ffff00">1</font>～<font color="#ffff00">617</font><br>
+                                <font color="#ffff00">38</font>秒の間 命中, 回避低下<br>
+                                致命打発動確率 <font color="#ffff00">+15</font>％<br>
+                                <br>
+                                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">80</font><br>ダメージ
+                                <font color="#ffff00">+40</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ
+                                <font color="#ffff00">10</font>％ 増加
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                                レベル 315<br>
+                                力 150<br>
+                                敏捷 55
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                131/100
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                300万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                燃え盛るように強烈な形で装飾された刃はまるで生きている炎の様だ。よく見ると光の屈折によって本当に炎の如く動いている様に見える。<br>
+                                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font
+                                    color="#cc99ff">が必要です</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#cc6633">ガイスターストック[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0437.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">40~92</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">120</font><br>
+                                ターゲット即死確率 <font color="#ffff00">+1</font>％<br>
+                                ダメージ <font color="#ffff00">+133</font>％<br>
+                                闇ダメージ <font color="#ffff00">120</font>～<font color="#ffff00">150</font><br>
+                                呪い <font color="#ffff00">5</font>秒<br>
+                                即死攻撃 <font color="#ffff00">+7</font>％<br>
+                                コールド攻撃+ <font color="#ffff00">50</font>％(<font color="#ffff00">5</font>秒)<br>
+                                <br>
+                                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">80</font><br>ダメージ
+                                <font color="#ffff00">+40</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ
+                                <font color="#ffff00">10</font>％ 増加
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                                レベル 389<br>
+                                力 190<br>
+                                敏捷 65
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                175/50
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                500万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                死と幽霊の戦士達が使う超大型の剣。まるで違う次元にあるものの如く、ぼやけて見える。<br>
+                                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font
+                                    color="#cc99ff">が必要です</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#cc6633">コスウェール[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_0439.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">67~80</font>(<font color="#ffff00">1.80</font>秒)<br>
+                                射程距離 <font color="#ffff00">120</font><br>
+                                決定打 <font color="#ffff00">+[3~5]</font>％<br>
+                                ダメージ <font color="#ffff00">+200</font>％<br>
+                                最大ダメージ <font color="#ffff00">+25</font><br>
+                                決定打発動確率 <font color="#ffff00">+5</font>％<br>
+                                ダメージをCPに転換 <font color="#ffff00">25</font>％<br>
+                                <br>
+                                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">80</font><br>ダメージ
+                                <font color="#ffff00">+40</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ
+                                <font color="#ffff00">10</font>％ 増加
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                                レベル 387<br>
+                                力 200
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                180/10
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>
+                                [3~5]×30万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                一般人には持ち上げることすら不可能に見える巨大な斧。骨まで砕くこの斧の威力の前に、たくさんの者が屍となって消えて行ったのだろう。<br>
+                                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font
+                                    color="#cc99ff">が必要です</font>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6"><a name="4"></a>NxDXU</th>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#cc6633">リアルハイブリッド[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1223.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">58~63</font>(<font color="#ffff00">1.20</font>秒)<br>
+                                射程距離 <font color="#ffff00">100</font><br>
+                                最大HP <font color="#ffff00">+25</font>％<br>
+                                致命打発動確率 <font color="#ffff00">+5</font>％<br>
+                                <font color="#ffff00">6</font>秒 <font color="#ffff00">425</font>～<font color="#ffff00">530</font>
+                                毒ダメージ<br>
+                                致命打抵抗 <font color="#ffff00">+30</font>％<br>
+                                ターゲットの風抵抗を<font color="#ffff00">100</font>％弱化させる。<br>
+                                スキルレベル <font color="#ffff00">+4</font><br>
+                                <br>
+                                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">70</font><br>ダメージ
+                                <font color="#ffff00">+50</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ
+                                <font color="#ffff00">10</font>％ 増加
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                                レベル 414<br>
+                                力 205<br>
+                                敏捷 120
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>剣士<br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                10000/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>11万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>22型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                片手でも、両手でも最大の威力が発揮できるように設計された名剣。<br>
+                                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font
+                                    color="#cc99ff">が必要です</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#cc6633">紫檀剣[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1222.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">60~67</font>(<font color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">105</font><br>
+                                ダメージ <font color="#ffff00">+70</font>％<br>
+                                最大ダメージ <font color="#ffff00">+30</font><br>
+                                ターゲットの回避率補正値 無視<br>
+                                CP獲得ボーナス <font color="#ffff00">5</font>％<br>
+                                運 <font color="#ffff00">+100</font><br>
+                                運 <font color="#ffff00">+1</font>/レベル <font color="#ffff00">6</font><br>
+                                <br>
+                                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">70</font><br>ダメージ
+                                <font color="#ffff00">+50</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ
+                                <font color="#ffff00">10</font>％ 増加
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                                レベル 416<br>
+                                力 175<br>
+                                敏捷 105
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                10000/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>10万5000G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>28型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                幸運をもたらしてくれるという紫檀を削って作った木刀。鉄剣よりはどうしても硬度が落ちるため主に練習用として使用される。<br>
+                                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font
+                                    color="#cc99ff">が必要です</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#cc6633">土龍震剣[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1224.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">69~77</font>(<font color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                ダメージ <font color="#ffff00">+120</font>％<br>
+                                力 <font color="#ffff00">+100</font><br>
+                                致命打発動確率 <font color="#ffff00">+7</font>％<br>
+                                大地属性攻撃力を<font color="#ffff00">33</font>％強化させる。<br>
+                                ターゲットの大地抵抗を<font color="#ffff00">50</font>％弱化させる。<br>
+                                <br>
+                                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">70</font><br>ダメージ
+                                <font color="#ffff00">+50</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ
+                                <font color="#ffff00">10</font>％ 増加
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                                レベル 443<br>
+                                力 235<br>
+                                敏捷 135
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                10000/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>24万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>24型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                グネグネとしている剣身の姿が特徴。この剣で地面を撃つと大地に土龍が通り過ぎたような亀裂ができるという。<br>
+                                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font
+                                    color="#cc99ff">が必要です</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#cc6633">ドラゴンツイスター[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1225.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">70~79</font>(<font color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                ダメージ <font color="#ffff00">+120</font>％<br>
+                                知識 <font color="#ffff00">+200</font><br>
+                                最大CP <font color="#ffff00">+40</font>％<br>
+                                攻撃速度 <font color="#ffff00">+20</font>％<br>
+                                フリーズ攻撃 <font color="#ffff00">+12</font>％(<font color="#ffff00">3</font>秒)<br>
+                                ターゲットの水抵抗を<font color="#ffff00">90</font>％弱化させる。<br>
+                                <br>
+                                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">70</font><br>ダメージ
+                                <font color="#ffff00">+50</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ
+                                <font color="#ffff00">10</font>％ 増加
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                                レベル 465<br>
+                                力 280<br>
+                                敏捷 150
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                10000/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>40万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>26型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                ひたすら一つの技を修行した最高の戦士たちのために考案された剣。真の必殺技を目にしたい者はこの大剣で極上の技を試してみるといい。<br>
+                                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font
+                                    color="#cc99ff">が必要です</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#cc6633">グールソード[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1226.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">75~85</font>(<font color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                ダメージ <font color="#ffff00">+140</font>％<br>
+                                知恵 <font color="#ffff00">+125</font><br>
+                                最小ダメージ <font color="#ffff00">+18</font><br>
+                                魔法属性ダメージ吸収 <font color="#ffff00">5</font>％<br>
+                                魔法アイテムドロップ確率 <font color="#ffff00">+15</font>％<br>
+                                <br>
+                                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">90</font><br>ダメージ
+                                <font color="#ffff00">+50</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ
+                                <font color="#ffff00">10</font>％ 増加
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                                レベル 500<br>
+                                力 325<br>
+                                敏捷 165
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                10000/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>80万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>28型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                死体を掘り出して食べるという残忍なグールの手に粘土のようにくっ付いていた大きな剣。幽霊の力が転移され、魔法に対する抵抗力が強く、隠された秘密を見つける能力もある。<br>
+                                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font
+                                    color="#cc99ff">が必要です</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#cc6633">ハイランダーソード[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1227.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">78~88</font>(<font color="#ffff00">1.30</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                最大HP <font color="#ffff00">+250</font><br>
+                                最大HP <font color="#ffff00">+110</font>％<br>
+                                減少限界CP <font color="#ffff00">+15</font><br>
+                                集中力 <font color="#ffff00">+75</font>％<br>
+                                ノックアウト攻撃 <font color="#ffff00">+75</font>％<br>
+                                風属性攻撃力を<font color="#ffff00">90</font>％強化させる。<br>
+                                <br>
+                                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">90</font><br>
+                                魔法致命打 <font color="#ffff00">10</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>魔法致命打
+                                <font color="#ffff00">10</font>％
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                                レベル 503<br>
+                                力 370<br>
+                                敏捷 180
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                10000/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>160万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>32型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                死せず、風のように放浪するハイランダーたちの大剣。この武器は彼らの強力な体力を一層増加させてくれるそうだ。<br>
+                                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font
+                                    color="#cc99ff">が必要です</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#cc6633">ガッツグローリー[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1228.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">99~112</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                ダメージ <font color="#ffff00">+140</font>％<br>
+                                健康 <font color="#ffff00">+150</font><br>
+                                防御力 <font color="#ffff00">+37</font><br>
+                                闇ダメージ <font color="#ffff00">480</font>～<font color="#ffff00">680</font><br>
+                                呪い <font color="#ffff00">4</font>秒<br>
+                                CP獲得ボーナス <font color="#ffff00">10</font>％<br>
+                                <br>
+                                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">90</font><br>ダメージ
+                                <font color="#ffff00">+50</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ
+                                <font color="#ffff00">10</font>％ 増加
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                                レベル 578<br>
+                                力 430<br>
+                                敏捷 195
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                10000/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>310万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>32型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                辛抱強い根性が最後には勝つと言うのは昔からのことわざであるが、この剣は根性がどのような方策で実現できるのかを見せてくれる。<br>
+                                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font
+                                    color="#cc99ff">が必要です</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#cc6633">フレンジーアックス[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1234.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">123~145</font>(<font color="#ffff00">1.80</font>秒)<br>
+                                射程距離 <font color="#ffff00">120</font><br>
+                                決定打 <font color="#ffff00">+[1~2]</font>％<br>
+                                ダメージ <font color="#ffff00">+140</font>％<br>
+                                敏捷 <font color="#ffff00">+200</font><br>
+                                攻撃速度 <font color="#ffff00">+20</font>％<br>
+                                水ダメージ <font color="#ffff00">400</font>～<font color="#ffff00">570</font><br>
+                                コールド <font color="#ffff00">16</font>Frame<br>
+                                武器破壊攻撃 <font color="#ffff00">+3</font>％(<font color="#ffff00">4</font>秒)<br>
+                                光属性ダメージ吸収 <font color="#ffff00">10</font>％<br>
+                                <br>
+                                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">90</font><br>ダメージ
+                                <font color="#ffff00">+50</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ
+                                <font color="#ffff00">10</font>％ 増加
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                                レベル 579<br>
+                                力 550
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                10000/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>370万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>39型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                水が流れるように強力でありながらスピーディな攻撃を目標として設計された斧。<br>
+                                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font
+                                    color="#cc99ff">が必要です</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#cc6633">スローターブレード[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1229.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">105~127</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">110</font><br>
+                                ダメージ <font color="#ffff00">+130</font>％<br>
+                                最大HP <font color="#ffff00">+150</font><br>
+                                攻撃速度 <font color="#ffff00">+15</font>％<br>
+                                敵に与えたダメージ <font color="#ffff00">1</font>％を 体力吸収<br>
+                                スキルレベル <font color="#ffff00">+3</font><br>
+                                <br>
+                                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">90</font><br>ダメージ
+                                <font color="#ffff00">+50</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ
+                                <font color="#ffff00">10</font>％ 増加
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                                レベル 598<br>
+                                力 490<br>
+                                敏捷 210
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                10000/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>460万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>32型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                数多くの牛や豚、羊を殺して血に滲まれた剣。屠殺された動物たちが殺される際に吐いた呪いと嘆息が、敵の血を吸い取る魔力へと変わったのである。<br>
+                                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font
+                                    color="#cc99ff">が必要です</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#cc6633">クシャンタリパ[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1230.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">115~127</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">120</font><br>
+                                知識 <font color="#ffff00">+180</font><br>
+                                防御力 <font color="#ffff00">+30</font>％<br>
+                                決定打発動確率 <font color="#ffff00">+5</font>％<br>
+                                ポーション回復速度<font color="#ffff00">25</font>％増加<br>
+                                火ダメージ <font color="#ffff00">960</font>～<font color="#ffff00">2000</font><br>
+                                火属性ダメージ吸収 <font color="#ffff00">30</font>％<br>
+                                <br>
+                                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">110</font><br>魔法致命打
+                                <font color="#ffff00">10</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>魔法致命打
+                                <font color="#ffff00">10</font>％
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                                レベル 637<br>
+                                力 550<br>
+                                敏捷 225
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                10000/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>610万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>30型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                強力な火の呪いが掛けられている炎の剣。この剣の持主は火炎の聡明さと火花の加護を共にもらえる。<br>
+                                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font
+                                    color="#cc99ff">が必要です</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#cc6633">新月[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1235.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">106~185</font>(<font color="#ffff00">1.80</font>秒)<br>
+                                射程距離 <font color="#ffff00">120</font><br>
+                                決定打 <font color="#ffff00">+[1~2]</font>％<br>
+                                ダメージ <font color="#ffff00">+150</font>％<br>
+                                集中力 <font color="#ffff00">+20</font>％<br>
+                                水ダメージ <font color="#ffff00">360</font>～<font color="#ffff00">467</font><br>
+                                コールド <font color="#ffff00">16</font>Frame<br>
+                                CP獲得ボーナス <font color="#ffff00">15</font>％<br>
+                                ターゲットの風抵抗を<font color="#ffff00">30</font>％弱化させる。<br>
+                                <br>
+                                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">110</font><br>ダメージ
+                                <font color="#ffff00">+50</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ
+                                <font color="#ffff00">10</font>％ 増加
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                                レベル 693<br>
+                                力 610
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                10000/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>610万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>41型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                たった今、膨らみ始めた三日月のように刃を薄くした斧。軽いので効率が良く、切り味も良いため、使い手の高揚する気持ちが長く続くと言われる。<br>
+                                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font
+                                    color="#cc99ff">が必要です</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#cc6633">スティールジャスティス[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1231.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">105~137</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">120</font><br>
+                                ダメージ <font color="#ffff00">+200</font>％<br>
+                                力 <font color="#ffff00">+160</font><br>
+                                致命打発動確率 <font color="#ffff00">+9</font>％<br>
+                                集中力 <font color="#ffff00">+40</font>％<br>
+                                火ダメージ <font color="#ffff00">533</font>～<font color="#ffff00">840</font><br>
+                                <br>
+                                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">110</font><br>ダメージ
+                                <font color="#ffff00">+50</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ
+                                <font color="#ffff00">10</font>％ 増加
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                                レベル 696<br>
+                                力 610<br>
+                                敏捷 240
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                10000/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>910万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>30型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                断固とした懲罰を主な目的として作られた剣。悪事が見つかった者を容赦なしに切ってしまうのがこの剣の特徴である。<br>
+                                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font
+                                    color="#cc99ff">が必要です</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#cc6633">ミールの戦斧[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1236.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">143~145</font>(<font color="#ffff00">1.80</font>秒)<br>
+                                射程距離 <font color="#ffff00">120</font><br>
+                                決定打 <font color="#ffff00">+[1~3]</font>％<br>
+                                ダメージ <font color="#ffff00">+250</font>％<br>
+                                知恵 <font color="#ffff00">+1</font>/レベル <font color="#ffff00">4</font><br>
+                                ポーション回復速度<font color="#ffff00">10</font>％増加<br>
+                                光属性抵抗 <font color="#ffff00">+50</font>％<br>
+                                闇属性抵抗 <font color="#ffff00">+30</font>％<br>
+                                ターゲットの水抵抗を<font color="#ffff00">80</font>％弱化させる。<br>
+                                <br>
+                                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">130</font><br>ダメージ
+                                <font color="#ffff00">+50</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ
+                                <font color="#ffff00">10</font>％ 増加
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                                レベル 736<br>
+                                力 700
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                10000/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>1135万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>43型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                巨大神獣ミールを退治するために作られた戦闘用斧。波立つ龍模様の柄と刃が連結された接合箇所の処理は芸術に近い。<br>
+                                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font
+                                    color="#cc99ff">が必要です</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#cc6633">正宗[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1232.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">105~147</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">120</font><br>
+                                ターゲット即死確率 <font color="#ffff00">+[0~1]</font>％<br>
+                                最大CP <font color="#ffff00">+100</font>％<br>
+                                命中率 <font color="#ffff00">+5</font>％<br>
+                                攻撃者の命中率補正値 無視<br>
+                                光ダメージ <font color="#ffff00">1</font>～<font color="#ffff00">3000</font><br>
+                                <font color="#ffff00">1</font>秒の間 命中, 回避低下<br>
+                                風属性攻撃力を<font color="#ffff00">70</font>％強化させる。<br>
+                                人間型キャラクターに追加で<font color="#ffff00">100</font>％のダメージを与える。<br>
+                                <br>
+                                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">130</font><br>
+                                魔法致命打 <font color="#ffff00">10</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>魔法致命打
+                                <font color="#ffff00">10</font>％
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                                レベル 743<br>
+                                力 670<br>
+                                敏捷 255
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                10000/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>1010万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>32型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                先代の名人が作ったと言われる名剣。偽物が多いが本物の切り味はやはり格が違うそうだ。<br>
+                                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font
+                                    color="#cc99ff">が必要です</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#cc6633">ディメンションスレイヤー[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1233.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">95~167</font>(<font color="#ffff00">1.50</font>秒)<br>
+                                射程距離 <font color="#ffff00">120</font><br>
+                                ターゲット即死確率 <font color="#ffff00">+1</font>％<br>
+                                ダメージ <font color="#ffff00">+220</font>％<br>
+                                回避率 <font color="#ffff00">+8</font>％<br>
+                                攻撃速度 <font color="#ffff00">+25</font>％<br>
+                                風属性抵抗 <font color="#ffff00">+25</font>％<br>
+                                攻撃を受けると <font color="#ffff00">10％</font>の確率でダメージの<font color="#ffff00">10</font>％を応急処置<br>
+                                大地属性攻撃力を<font color="#ffff00">33</font>％強化させる。<br>
+                                <br>
+                                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">130</font><br>ダメージ
+                                <font color="#ffff00">+50</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ
+                                <font color="#ffff00">10</font>％ 増加
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                                レベル 775<br>
+                                力 760<br>
+                                敏捷 270
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                10000/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>3010万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>32型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                次元の大剣。空間の物理的な要素を切るのではなく空間そのものを切る力がある。その破壊力は想像を超えるものである。<br>
+                                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font
+                                    color="#cc99ff">が必要です</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#cc6633">プラチナアックス[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1237.png"></td>
+                            <td colspan="5">
+                                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                                攻撃力 <font color="#ffff00">93~205</font>(<font color="#ffff00">1.80</font>秒)<br>
+                                射程距離 <font color="#ffff00">120</font><br>
+                                決定打 <font color="#ffff00">+[2~3]</font>％<br>
+                                力 <font color="#ffff00">+1</font>/レベル <font color="#ffff00">3</font><br>
+                                減少限界CP <font color="#ffff00">+30</font><br>
+                                <font color="#ffff00">10</font>秒 <font color="#ffff00">694</font>～<font color="#ffff00">994</font>
+                                毒ダメージ<br>
+                                ノックアウト攻撃 <font color="#ffff00">+25</font>％<br>
+                                コールド抵抗 <font color="#ffff00">+60</font>％<br>
+                                ターゲットの大地抵抗を<font color="#ffff00">100</font>％弱化させる。<br>
+                                <br>
+                                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">130</font><br>ダメージ
+                                <font color="#ffff00">+50</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ
+                                <font color="#ffff00">10</font>％ 増加
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                                レベル 779<br>
+                                力 820
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                                戦士<br>
+                                ネクロマンサー
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                                10000/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;価格&gt;</font><br>3760万G
+                            </td>
+                            <td valign="top">
+                                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>45型
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00ffff">&lt;説明&gt;</font><br>
+                                伝説の黄金斧よりもっと珍しい斧。大地を割る力があるそうだ。<br>
+                                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font
+                                    color="#cc99ff">が必要です</font>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+        　-->
+
+            </div>
+
+            <a href="" id="view-source" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">トップ
+            </a>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        </div>
+</body>
+
+</html>
