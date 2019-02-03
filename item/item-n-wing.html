@@ -1,0 +1,1807 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+  <!-- Page styles -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+  <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-133658114-1');
+  </script>
+
+  <style>
+    #view-source {
+        position: fixed;
+        display: block;
+        right: 0;
+        bottom: 0;
+        margin-right: 40px;
+        margin-bottom: 40px;
+        z-index: 900;
+      }
+    </style>
+</head>
+
+<body>
+  <title>赤石の民衆</title>
+  <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <a name="container"></a>
+    <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+      <div class="mdl-layout__header-row">
+        <span class="android-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <!-- Add spacer, to align navigation to the right in desktop -->
+        <div class="android-header-spacer mdl-layout-spacer"></div>
+        <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input placeholder="検索できたら最高" class="mdl-textfield__input" type="text" id="search-field" />
+          </div>
+        </div>
+        <!-- Navigation -->
+        <div class="android-navigation-container">
+          <nav class="android-navigation mdl-navigation">
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/index.html">ホーム</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+          </nav>
+        </div>
+        <span class="android-mobile-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
+          <i class="material-icons">more_vert</i>
+        </button>
+        <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a></li>
+          <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+        </ul>
+
+      </div>
+    </div>
+
+    <div class="android-drawer mdl-layout__drawer">
+      <span class="mdl-layout-title">
+        <h3>メニュー</h3>
+      </span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html"><strong>モンスター</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html"><strong>クエスト</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html"><strong>雑学</strong></a>
+      </nav>
+    </div>
+
+
+    <div class="android-content mdl-layout__content">
+
+      <!--main-->
+      <div class="main-background mdl-typography--text-center">
+        <br>
+        <h3>ノーマル　翼</h3>
+
+        <a href="#1">N</a><br>
+        <a href="#2">DX</a><br>
+        <a href="#3">Ultimate</a><br>
+        <br>
+        <table id="table1">
+          <colgroup>
+            <col span="1" width="40">
+            <col span="1" width="135">
+            <col span="1" width="135">
+            <col span="2">
+            <col span="1">
+</colgroup>
+          <tbody>
+            <tr>
+              <th colspan="6"><a name="1"></a>N</th>
+            </tr>
+            <tr>
+              <th colspan="6">銅の翼</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0227.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">4~8</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">400</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+10</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>知識 15
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                10/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                100G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                -
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                天使の翼を銅で補強する補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">黄銅の翼</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0227.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">5~10</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">400</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+10</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 14<br>
+                知識 20
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                11/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                200G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                -
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                輝く黄銅が、まるで金を思わせる補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">青銅の翼</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0228.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">6~12</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">400</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[10~15]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 18<br>
+                知識 25
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                14/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                [10~15]×40G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                -
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                丈夫だが、毎日磨かなければならない、翼の補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">鉄の翼</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0228.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">7~14</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">400</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[15~20]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 22<br>
+                知識 30
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                17/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                [15~20]×60G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                -
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                人間の金属である鉄で作られた天使の翼の補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">鋼の翼</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0228.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">8~16</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">400</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[15~25]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 29<br>
+                知識 35
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                22/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                [15~25]×150G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                -
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                人間が作れる最上の金属である鋼で作った補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">隕鉄の翼</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0228.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">9~18</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">400</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[20~25]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 35<br>
+                知識 40
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                27/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                [20~25]×300G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                -
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                空から落ちた隕石から採集した鉄で作った補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">銀の翼</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0229.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">10~22</font>(<font color="#ffff00">1.30</font>秒)<br>
+                射程距離 <font color="#ffff00">450</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[25~35]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 43<br>
+                知識 50<br>
+                カリスマ 55
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                33/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                [25~35]×500G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                -
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                かすかな光の照らしが絶品の､銀の補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">黒檀の翼</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0229.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">12~26</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">450</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[35~45]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 57<br>
+                知識 60<br>
+                カリスマ 70
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                44/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                [35~45]×800G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                -
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                木で出来ているが、丈夫で滑らかな仕上げで、大抵の金属補強材より強い
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">金の翼</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0230.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">14~31</font>(<font color="#ffff00">1.30</font>秒)<br>
+                射程距離 <font color="#ffff00">450</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[40~50]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 72<br>
+                知識 70<br>
+                カリスマ 85
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                55/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                [40~50]×1000G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                -
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                黄金で作られた補強材。派手なのは言うまでも無い
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">黒曜石の翼</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0229.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">16~35</font>(<font color="#ffff00">1.30</font>秒)<br>
+                射程距離 <font color="#ffff00">450</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+50</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 86<br>
+                知識 100<br>
+                カリスマ 80
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                66/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                7万5000G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                -
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                黒曜石なので少々重いが、それだけ丈夫な翼補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">プラチナの翼</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0231.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">19~40</font>(<font color="#ffff00">1.30</font>秒)<br>
+                射程距離 <font color="#ffff00">500</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[55~75]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 100<br>
+                知識 90<br>
+                カリスマ 115
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                77/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                [55~75]×2000G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                -
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                白金で作られ､天使の品格を増してくれる翼の補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">チタニウムの翼</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0231.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">22~46</font>(<font color="#ffff00">1.30</font>秒)<br>
+                射程距離 <font color="#ffff00">500</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[70~75]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 114<br>
+                知識 100<br>
+                カリスマ 130
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                88/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                [70~75]×3000G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                -
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                天上の金属と呼ばれる、チタニウムで出来た軽い翼補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">金剛石の翼</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0231.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">26~55</font>(<font color="#ffff00">1.40</font>秒)<br>
+                射程距離 <font color="#ffff00">500</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[70~75]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                レベル 129<br>
+                知識 120<br>
+                カリスマ 145
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                99/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                [70~75]×4000G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                -
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                ダイアモンドで補強した、最上級の補強材。少し重いのが玉にキズ
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table1">
+          <colgroup>
+            <col span="1" width="40">
+            <col span="1" width="135">
+            <col span="1" width="135">
+            <col span="2">
+            <col span="1">
+</colgroup>
+          <tbody>
+            <tr>
+              <th colspan="6"><a name="2"></a>DX</th>
+            </tr>
+            <tr>
+              <th colspan="6">銅の翼DX</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0227.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">33~37</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">400</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+50</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 130<br>
+                知識 130
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                115/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                10万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>18型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                天使の翼を銅で補強する補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">黄銅の翼DX</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0227.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">34~39</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">400</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+50</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 158<br>
+                知識 140
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                143/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                20万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>18型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                輝く黄銅が、まるで金を思わせる補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">青銅の翼LX</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0228.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">35~41</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">400</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[50~52]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 166<br>
+                知識 150
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                151/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                40万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>20型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                丈夫だが、毎日磨かなければならない、翼の補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">鉄の翼LX</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0228.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">36~43</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">400</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[52~55]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 174<br>
+                知識 160
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                159/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                60万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>22型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                人間の金属である鉄で作られた天使の翼の補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">鋼の翼LX</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0228.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">37~45</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">400</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[52~57]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 188<br>
+                知識 170
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                173/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                150万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>24型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                人間が作れる最上の金属である鋼で作った補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">隕鉄の翼LX</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0228.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">38~47</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">400</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[55~57]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 200<br>
+                知識 180
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                185/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                300万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>26型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                空から落ちた隕石から採集した鉄で作った補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">銀の翼LX</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0229.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">41~53</font>(<font color="#ffff00">1.30</font>秒)<br>
+                射程距離 <font color="#ffff00">450</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[57~62]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 216<br>
+                知識 200<br>
+                カリスマ 237
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                201/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                500万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>32型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                かすかな光の照らしが絶品の､銀の補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">黒檀の翼LX</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0229.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">41~55</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">450</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[62~65]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 244<br>
+                知識 220<br>
+                カリスマ 275
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                229/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                800万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>28型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                木で出来ているが、丈夫で滑らかな仕上げで、大抵の金属補強材より強い
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">金の翼GDX</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0230.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">45~62</font>(<font color="#ffff00">1.30</font>秒)<br>
+                射程距離 <font color="#ffff00">450</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[65~70]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 274<br>
+                知識 240<br>
+                カリスマ 312
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                259/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                1000万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>36型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                黄金で作られた補強材。派手なのは言うまでも無い
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">黒曜石の翼GDX</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0229.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">47~66</font>(<font color="#ffff00">1.30</font>秒)<br>
+                射程距離 <font color="#ffff00">450</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[70~72]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 302<br>
+                知識 260<br>
+                カリスマ 350
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                287/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                1500万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>34型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                黒曜石なので少々重いが、それだけ丈夫な翼補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">プラチナの翼GDX</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0231.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">50~71</font>(<font color="#ffff00">1.30</font>秒)<br>
+                射程距離 <font color="#ffff00">500</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[72~82]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 330<br>
+                知識 280<br>
+                カリスマ 387
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                315/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                2000万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>38型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>白金で作られ､天使の品格を増してくれる翼の補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">チタニウムの翼XLS</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0231.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">53~77</font>(<font color="#ffff00">1.30</font>秒)<br>
+                射程距離 <font color="#ffff00">500</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[80~82]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 358<br>
+                知識 300<br>
+                カリスマ 425
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                343/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                3000万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>40型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                天上の金属と呼ばれる、チタニウムで出来た軽い翼補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">金剛石の翼XLS</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0231.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">60~89</font>(<font color="#ffff00">1.40</font>秒)<br>
+                射程距離 <font color="#ffff00">500</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[80~82]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 388<br>
+                知識 340<br>
+                カリスマ 462
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                373/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                4000万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>75型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                ダイアモンドで補強した、最上級の補強材。少し重いのが玉にキズ
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table1">
+          <colgroup>
+            <col span="1" width="40">
+            <col span="1" width="135">
+            <col span="1" width="135">
+            <col span="2">
+            <col span="1">
+</colgroup>
+          <tbody>
+            <tr>
+              <th colspan="6"><a name="3"></a>Ultimate</th>
+            </tr>
+            <tr>
+              <th colspan="6">銅の翼Ultimate</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0227.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">56~69</font>(<font color="#ffff00">1.10</font>秒)<br>
+                射程距離 <font color="#ffff00">420</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+100</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 400<br>
+                知識 375<br>
+                カリスマ 525
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                385/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                100万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>27型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                天使の翼を銅で補強する補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">黄銅の翼Ultimate</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0227.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">57~71</font>(<font color="#ffff00">1.10</font>秒)<br>
+                射程距離 <font color="#ffff00">420</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+100</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 425<br>
+                知識 400<br>
+                カリスマ 558
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                410/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                200万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>27型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                輝く黄銅が、まるで金を思わせる補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">青銅の翼Ultimate</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0228.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">58~73</font>(<font color="#ffff00">1.10</font>秒)<br>
+                射程距離 <font color="#ffff00">440</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[100~104]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 439<br>
+                知識 425<br>
+                カリスマ 590
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                424/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                400万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>30型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                丈夫だが、毎日磨かなければならない、翼の補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">鉄の翼Ultimate</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0228.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">59~75</font>(<font color="#ffff00">1.10</font>秒)<br>
+                射程距離 <font color="#ffff00">440</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[104~110]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 450<br>
+                知識 450<br>
+                カリスマ 623
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                435/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                600万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>33型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                人間の金属である鉄で作られた天使の翼の補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">鋼の翼Ultimate</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0228.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">60~77</font>(<font color="#ffff00">1.10</font>秒)<br>
+                射程距離 <font color="#ffff00">460</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[104~114]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 469<br>
+                知識 475<br>
+                カリスマ 655
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                454/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                1500万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>36型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                人間が作れる最上の金属である鋼で作った補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">隕鉄の翼Ultimate</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0228.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">61~79</font>(<font color="#ffff00">1.10</font>秒)<br>
+                射程距離 <font color="#ffff00">460</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[110~114]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 485<br>
+                知識 500<br>
+                カリスマ 687
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                470/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                3000万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>39型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                空から落ちた隕石から採集した鉄で作った補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">銀の翼Ultimate</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0229.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">66~88</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">480</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[114~124]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 506<br>
+                知識 550<br>
+                カリスマ 753
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                491/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                5000万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>48型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                かすかな光の照らしが絶品の､銀の補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">黒檀の翼Ultimate</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0229.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">64~87</font>(<font color="#ffff00">1.10</font>秒)<br>
+                射程距離 <font color="#ffff00">480</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[124~130]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                レベル 544<br>
+                知識 600<br>
+                カリスマ 819
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                529/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                8000万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>42型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                木で出来ているが、丈夫で滑らかな仕上げで、大抵の金属補強材より強い
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">金の翼Ultimate</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0230.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">70~97</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">490</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[130~140]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 585<br>
+                知識 650<br>
+                カリスマ 884
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                570/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                1億G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>54型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                黄金で作られた補強材。派手なのは言うまでも無い
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">黒曜石の翼Ultimate</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0229.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">72~101</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">490</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[140~144]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 622<br>
+                知識 700<br>
+                カリスマ 948
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                607/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                1億5000万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>51型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                黒曜石なので少々重いが、それだけ丈夫な翼補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">プラチナの翼Ultimate</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0231.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">75~106</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">500</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[144~164]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 660<br>
+                知識 750<br>
+                カリスマ 1012
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                645/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                2億G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>57型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                白金で作られ､天使の品格を増してくれる翼の補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">チタニウムの翼Ultimate</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0231.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">78~112</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">500</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[160~164]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 698<br>
+                知識 800<br>
+                カリスマ 1076
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                683/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                3億G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>60型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>天上の金属と呼ばれる、チタニウムで出来た軽い翼補強材
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">金剛石の翼Ultimate</th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0231.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">87~127</font>(<font color="#ffff00">1.30</font>秒)<br>
+                射程距離 <font color="#ffff00">500</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[160~164]</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 739<br>
+                知識 900<br>
+                カリスマ 1206
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                724/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                4億G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>100型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                ダイアモンドで補強した、最上級の補強材。少し重いのが玉にキズ
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <br>
+        <br>
+        <footer class="android-footer mdl-mega-footer">
+          <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+          </font>
+          Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+        </footer>
+        <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+        　-->
+
+      </div>
+
+      <a href="" id="view-source" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">トップ
+      </a>
+      <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    </div>
+</body>
+
+</html>

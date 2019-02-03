@@ -1,0 +1,2088 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+  <!-- Page styles -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+  <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-133658114-1');
+  </script>
+
+  <style>
+    #view-source {
+        position: fixed;
+        display: block;
+        right: 0;
+        bottom: 0;
+        margin-right: 40px;
+        margin-bottom: 40px;
+        z-index: 900;
+      }
+    </style>
+</head>
+
+<body>
+  <title>赤石の民衆</title>
+  <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <a name="container"></a>
+    <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+      <div class="mdl-layout__header-row">
+        <span class="android-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <!-- Add spacer, to align navigation to the right in desktop -->
+        <div class="android-header-spacer mdl-layout-spacer"></div>
+        <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input placeholder="検索できたら最高" class="mdl-textfield__input" type="text" id="search-field" />
+          </div>
+        </div>
+        <!-- Navigation -->
+        <div class="android-navigation-container">
+          <nav class="android-navigation mdl-navigation">
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/index.html">ホーム</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+          </nav>
+        </div>
+        <span class="android-mobile-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
+          <i class="material-icons">more_vert</i>
+        </button>
+        <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a></li>
+          <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+        </ul>
+
+      </div>
+    </div>
+
+    <div class="android-drawer mdl-layout__drawer">
+      <span class="mdl-layout-title">
+        <h3>メニュー</h3>
+      </span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html"><strong>モンスター</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html"><strong>クエスト</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html"><strong>雑学</strong></a>
+      </nav>
+    </div>
+
+
+    <div class="android-content mdl-layout__content">
+
+      <!--main-->
+      <div class="main-background mdl-typography--text-center">
+        <br>
+        <h3>ユニーク　翼</h3>
+
+        <a href="#1">U</a><br>
+        <a href="#2">DXU</a><br>
+        <a href="#3">NxU</a><br>
+        <a href="#4">NxDXU</a><br>
+        <br>
+        <table id="table1">
+          <colgroup>
+            <col span="1" width="40">
+            <col span="1" width="135">
+            <col span="1" width="135">
+            <col span="2">
+            <col span="1">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="6"><a name="1"></a>U</th>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">精霊の翼</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0458.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">4~8</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">600</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+10</font>％<br>
+                敏捷 <font color="#ffff00">+36</font><br>
+                最大ダメージ <font color="#ffff00">+20</font><br>
+                風ダメージ <font color="#ffff00">16</font>～<font color="#ffff00">29</font><br>
+                スタン <font color="#ffff00">12</font>Frame<br>
+                風属性抵抗 <font color="#ffff00">+48</font>％<br>
+                <font color="#ffff00">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 81<br>
+                知識 15
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                83/750
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                1000G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                -
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                小さな精霊の翼。元々天使にとってこの小さな翼は物足りないかも知れないが、翼を一つ傷めている者には身に余る装備かも知れない
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">エア・ウェイダー</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0459.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">7~14</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">600</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[15~20]</font>％<br>
+                健康 <font color="#ffff00">+48</font><br>
+                ダメージ <font color="#ffff00">+95</font>％<br>
+                移動速度 <font color="#ffff00">+30</font>％<br>
+                <font color="#ffff00">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 101<br>
+                知識 30
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                88/500
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                [15~20]×600G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                -
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                アークエンジェル達が愛用する最新式の翼。加速機能がついており、急用の多いアークエンジェル達から好評を得ているという
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">セフィロスの葉</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0460.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">10~22</font>(<font color="#ffff00">1.30</font>秒)<br>
+                射程距離 <font color="#ffff00">700</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[25~35]</font>％<br>
+                知恵 <font color="#ffff00">+60</font><br>
+                ダメージ <font color="#ffff00">+80</font>％<br>
+                最大HP <font color="#ffff00">+100</font>％<br>
+                復活 <font color="#ffff00">5</font>％<br>
+                <font color="#ffff00">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 143<br>
+                知識 50<br>
+                カリスマ 55
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                123/50
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                [25~35]×5000G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                -
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                命の木、セフィロスの葉を集めて翼の補強材として仕上げた物。微弱ながら、セフィロスの力が込めてある
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">へヴンスエンボィ</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0461.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">14~31</font>(<font color="#ffff00">1.30</font>秒)<br>
+                射程距離 <font color="#ffff00">700</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[40~50]</font>％<br>
+                カリスマ <font color="#ffff00">+72</font><br>
+                ダメージ <font color="#ffff00">+30</font>％<br>
+                光ダメージ <font color="#ffff00">22</font>～<font color="#ffff00">38</font><br>
+                <font color="#ffff00">30</font>秒の間 命中, 回避低下<br>
+                最大HP <font color="#ffff00">+50</font><br>
+                最大CP <font color="#ffff00">+50</font><br>
+                <font color="#ffff00">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 172<br>
+                知識 70<br>
+                カリスマ 85
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                145/750
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                [40~50]×1万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                -
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                この翼をもらった天使は天から認められたものだ。その権力と権能の代理者として相応しい力を持つことになる
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">ケルップの光彩</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0462.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">19~40</font>(<font color="#ffff00">1.40</font>秒)<br>
+                射程距離 <font color="#ffff00">800</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[55~75]</font>％<br>
+                力 <font color="#ffff00">+42</font><br>
+                知識 <font color="#ffff00">+42</font><br>
+                ダメージ <font color="#ffff00">+108</font>％<br>
+                魔法抵抗 <font color="#ffff00">+12</font>％<br>
+                スキルレベル <font color="#ffff00">+1</font><br>
+                <font color="#ffff00">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 179<br>
+                知識 90<br>
+                カリスマ 115
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                148/500
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                [55~75]×4万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                -
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                智天使であるケルビム達が使う翼の補強材。力の小さいエンジェルには扱う事が難しい翼だが、まれに使用することを許されるエンジェルが存在する
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table1">
+          <colgroup>
+            <col span="1" width="40">
+            <col span="1" width="135">
+            <col span="1" width="135">
+            <col span="2">
+            <col span="1">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="6"><a name="2"></a>DXU</th>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">ソニックフレーム</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1275.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">54~58</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">400</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+50</font>％<br>
+                ダメージ <font color="#ffff00">+70</font>％<br>
+                最大ダメージ <font color="#ffff00">+33</font><br>
+                攻撃速度 <font color="#ffff00">+20</font>％<br>
+                風ダメージ <font color="#ffff00">150</font>～<font color="#ffff00">333</font><br>
+                スタン <font color="#ffff00">8</font>Frame<br>
+                コールド抵抗 <font color="#ffff00">+50</font>％<br>
+                悪魔型キャラクターに追加で<font color="#ffff00">60</font>％のダメージを与える。<br>
+                <font color="#ffff00">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 444<br>
+                知識 130
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                115/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                10万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>18型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                強力な音波フレームとして作られ、翼補強材として特殊な魔法処理で音波を一定の形に加工したもの。不安定な状況で中に閉じこめられた音波が、強力なエネルギー形態として発現される
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">ストラタス</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1276.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">55~60</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">400</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+50</font>％<br>
+                力 <font color="#ffff00">+35</font><br>
+                致命打発動確率 <font color="#ffff00">+8</font>％<br>
+                水ダメージ <font color="#ffff00">100</font>～<font color="#ffff00">135</font><br>
+                コールド <font color="#ffff00">6</font>Frame<br>
+                魔法抵抗 <font color="#ffff00">+20</font>％<br>
+                スキルレベル <font color="#ffff00">+2</font><br>
+                悪魔型キャラクターに追加で<font color="#ffff00">140</font>％のダメージを与える。<br>
+                <font color="#ffff00">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 463<br>
+                知識 140
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                143/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                20万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>18型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                霧雲のように幾重にも重ねった模様の翼。ふわふわして派手な感じだが、その模様自体を嫌がる人もいるそうだ
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">アンバーアサイラム</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1277.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">56~62</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">400</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[50~52]</font>％<br>
+                知識 <font color="#ffff00">+85</font><br>
+                最大HP <font color="#ffff00">+150</font><br>
+                決定打発動確率 <font color="#ffff00">+4</font>％<br>
+                魔法抵抗 <font color="#ffff00">+30</font>％<br>
+                すべての異常系抵抗 <font color="#ffff00">+50</font>％<br>
+                悪魔型キャラクターに追加で<font color="#ffff00">180</font>％のダメージを与える。<br>
+                <font color="#ffff00">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 480<br>
+                知識 150
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                151/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                40万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>20型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                自愛でありながら暖かな黄色の光が流れてくる翼。数多くの危険から守ってくれる効果がある
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">ローズマリープルマージュ</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1278.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">57~64</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">400</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[52~55]</font>％<br>
+                知識 <font color="#ffff00">+1</font>/レベル <font color="#ffff00">4</font><br>
+                防御力 <font color="#ffff00">+25</font>％<br>
+                攻撃速度 <font color="#ffff00">+15</font>％<br>
+                ノックアウト攻撃 <font color="#ffff00">+33</font>％<br>
+                闇属性ダメージ吸収 <font color="#ffff00">50</font>％<br>
+                悪魔型キャラクターに追加で<font color="#ffff00">90</font>％のダメージを与える。<br>
+                <font color="#ffff00">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                レベル 501<br>
+                知識 160
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                159/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                60万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>22型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                忠実・貞操・記憶の象徴であるローズマリーを加工して広げた、とても香しい翼
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">ギャラクティックトライアード</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1279.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">58~66</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">400</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[52~57]</font>％<br>
+                ダメージ <font color="#ffff00">+120</font>％<br>
+                減少限界CP <font color="#ffff00">+20</font><br>
+                光ダメージ <font color="#ffff00">1</font>～<font color="#ffff00">540</font><br>
+                <font color="#ffff00">100</font>秒の間 命中, 回避低下<br>
+                光属性ダメージ吸収 <font color="#ffff00">50</font>％<br>
+                ターゲットの光抵抗を<font color="#ffff00">20</font>％弱化させる。<br>
+                悪魔型キャラクターに追加で<font color="#ffff00">30</font>％のダメージを与える。<br>
+                <font color="#ffff00">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 503<br>
+                知識 170
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                173/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                150万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>24型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                天の川の光を集めて編んだ3つでひと組の翼。その光は穏やかだったが、粗かったり細やかだったりした為、善人には祝福を悪人には苦痛を与えるには十分である
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">ロトンウィンド</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1280.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">59~68</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">400</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[55~57]</font>％<br>
+                健康 <font color="#ffff00">+55</font><br>
+                最大CP <font color="#ffff00">+50</font>％<br>
+                <font color="#ffff00">4</font>秒 <font color="#ffff00">64</font>～<font color="#ffff00">64</font> 毒ダメージ<br>
+                コールド攻撃+ <font color="#ffff00">7</font>％(<font color="#ffff00">25</font>秒)<br>
+                魔法アイテムドロップ確率 <font color="#ffff00">+18</font>％<br>
+                悪魔型キャラクターに追加で<font color="#ffff00">160</font>％のダメージを与える。<br>
+                <font color="#ffff00">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 509<br>
+                知識 180
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                185/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                300万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>26型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                墓守天使たちの専用装備。墓地からの腐った風が翼に染み込んでいる。着用感はよくないが敵に対して酷く臭い攻撃が可能となる
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">フェザークライト</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1281.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">65~77</font>(<font color="#ffff00">1.30</font>秒)<br>
+                射程距離 <font color="#ffff00">450</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[57~62]</font>％<br>
+                運 <font color="#ffff00">+1</font>/レベル <font color="#ffff00">6</font><br>
+                致命打発動確率 <font color="#ffff00">+5</font>％<br>
+                攻撃速度 <font color="#ffff00">+50</font>％<br>
+                鎧破壊攻撃 <font color="#ffff00">+9</font>％(<font color="#ffff00">8</font>秒)<br>
+                ターゲットの光抵抗を<font color="#ffff00">10</font>％弱化させる。<br>
+                悪魔型キャラクターに追加で<font color="#ffff00">100</font>％のダメージを与える。<br>
+                <font color="#ffff00">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 568<br>
+                知識 200<br>
+                カリスマ 237
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                201/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                500万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>32型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                天使の羽衣それだけでは輝かないが、天使たちが着るとその光彩は一層輝き、周囲の人たちは目を開けることさえ難しくなるそうだ
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">セレスティアルホーク</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1282.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">62~76</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">450</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[62~65]</font>％<br>
+                ダメージ <font color="#ffff00">+150</font>％<br>
+                力 <font color="#ffff00">+75</font><br>
+                光ダメージ <font color="#ffff00">1</font>～<font color="#ffff00">120</font><br>
+                <font color="#ffff00">6</font>秒の間 命中, 回避低下<br>
+                CP獲得ボーナス <font color="#ffff00">3</font>％<br>
+                魔法属性ダメージ吸収 <font color="#ffff00">5</font>％<br>
+                悪魔型キャラクターに追加で<font color="#ffff00">40</font>％のダメージを与える。<br>
+                <font color="#ffff00">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 584<br>
+                知識 220<br>
+                カリスマ 275
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                229/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                800万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>28型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                天上の鷹の羽を集めて作られた翼。真っ白な羽がとても美しい
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">クリアフェザー</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1283.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">69~86</font>(<font color="#ffff00">1.30</font>秒)<br>
+                射程距離 <font color="#ffff00">450</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[65~70]</font>％<br>
+                知識 <font color="#ffff00">+180</font><br>
+                決定打発動確率 <font color="#ffff00">+6</font>％<br>
+                集中力 <font color="#ffff00">+25</font>％<br>
+                ノックアウト攻撃 <font color="#ffff00">+75</font>％<br>
+                光属性攻撃力を<font color="#ffff00">15</font>％強化させる。<br>
+                悪魔型キャラクターに追加で<font color="#ffff00">120</font>％のダメージを与える。<br>
+                <font color="#ffff00">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 653<br>
+                知識 240<br>
+                カリスマ 312
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                259/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                1000万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>36型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                全体が透明な羽で溢れている幻想的な模様の翼。その上、透明な羽の内部には金色の骨組みが模られており、とてもファンタスティックな雰囲気を演出してくれる
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">パニッシャー</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1284.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">71~90</font>(<font color="#ffff00">1.30</font>秒)<br>
+                射程距離 <font color="#ffff00">450</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[70~72]</font>％<br>
+                力 <font color="#ffff00">+1</font>/レベル <font color="#ffff00">5</font><br>
+                減少限界CP <font color="#ffff00">+40</font><br>
+                命中率 <font color="#ffff00">100％</font><br>
+                即死攻撃 <font color="#ffff00">+5</font>％<br>
+                コールド攻撃+ <font color="#ffff00">15</font>％(<font color="#ffff00">12</font>秒)<br>
+                悪魔型キャラクターに追加で<font color="#ffff00">150</font>％のダメージを与える。<br>
+                <font color="#ffff00">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 696<br>
+                知識 260<br>
+                カリスマ 350
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                287/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                1500万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>34型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                不義の行いや悪を見ると我慢できない正義の天使たちに似合う装備。一度狙った目標は絶対逃がさない
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">闇の翼</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1285.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">74~95</font>(<font color="#ffff00">1.30</font>秒)<br>
+                射程距離 <font color="#ffff00">500</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[72~82]</font>％<br>
+                知識 <font color="#ffff00">+1</font>/レベル <font color="#ffff00">4</font><br>
+                ターゲットの回避率補正値 無視<br>
+                闇ダメージ <font color="#ffff00">340</font>～<font color="#ffff00">340</font><br>
+                呪い <font color="#ffff00">4</font>秒<br>
+                武器破壊攻撃 <font color="#ffff00">+6</font>％(<font color="#ffff00">4</font>秒)<br>
+                スキルレベル <font color="#ffff00">+1</font><br>
+                悪魔型キャラクターに追加で<font color="#ffff00">80</font>％のダメージを与える。<br>
+                <font color="#ffff00">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 731<br>
+                知識 280<br>
+                カリスマ 387
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                315/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                2000万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>38型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                闇の力を持っている翼。闇の力に弱い天使たちが闇に対抗するため人工的に作り出した治安維持用道具
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">反逆の翼</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1286.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">77~101</font>(<font color="#ffff00">1.30</font>秒)<br>
+                射程距離 <font color="#ffff00">500</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[80~82]</font>％<br>
+                ダメージ <font color="#ffff00">+180</font>％<br>
+                最大ダメージ <font color="#ffff00">+50</font><br>
+                攻撃速度 <font color="#ffff00">+25</font>％<br>
+                フリーズ抵抗 <font color="#ffff00">+100</font>％<br>
+                ターゲットの光抵抗を<font color="#ffff00">15</font>％弱化させる。<br>
+                悪魔型キャラクターに追加で<font color="#ffff00">30</font>％のダメージを与える。<br>
+                <font color="#ffff00">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 769<br>
+                知識 300<br>
+                カリスマ 425
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                343/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                3000万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>40型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                今は追放されてしまった追放天使キュルレンの翼。禁断の道具だが威力がとても優れているため天使たちの間で密かに取引されているそうだ
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#ffcc99">祝福の翼</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1287.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">85~114</font>(<font color="#ffff00">1.40</font>秒)<br>
+                射程距離 <font color="#ffff00">500</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[80~82]</font>％<br>
+                ダメージ <font color="#ffff00">+240</font>％<br>
+                知識 <font color="#ffff00">+200</font><br>
+                大地属性抵抗 <font color="#ffff00">+75</font>％<br>
+                ダメージ返し <font color="#ffff00">100</font>％<br>
+                最大HP <font color="#ffff00">+120</font>％<br>
+                スキルレベル <font color="#ffff00">+3</font><br>
+                <font color="#ffff00">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>レベル 818<br>
+                知識 340<br>
+                カリスマ 462
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                373/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                4000万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>75型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                唯一神の祝福が籠められている翼。本当に幸運のある天使や、素晴らしい業績を立てた天使だけがこの恩寵を受ける資格がある
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table1">
+          <colgroup>
+            <col span="1" width="40">
+            <col span="1" width="135">
+            <col span="1" width="135">
+            <col span="2">
+            <col span="1">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="6"><a name="3"></a>NxU</th>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#cc6633">精霊の翼[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0458.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">20~35</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">600</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+10</font>％<br>
+                敏捷 <font color="#ffff00">+136</font><br>
+                最大ダメージ <font color="#ffff00">+30</font><br>
+                風ダメージ <font color="#ffff00">260</font>～<font color="#ffff00">390</font><br>
+                スタン <font color="#ffff00">12</font>Frame<br>
+                風属性抵抗 <font color="#ffff00">+48</font>％<br>
+                <br>
+                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">40</font><br>ダメージ
+                <font color="#ffff00">+30</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ <font
+                  color="#ffff00">10</font>％ 増加
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                レベル 162<br>
+                知識 15
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                83/80
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                1000G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                -
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                小さな精霊の翼。元々天使にとってこの小さな翼は物足りないかも知れないが、翼を一つ傷めている者には身に余る装備かも知れない。<br>
+                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font color="#cc99ff">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#cc6633">エア・ウェイダー[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0459.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">21~37</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">600</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[15~20]</font>％<br>
+                健康 <font color="#ffff00">+148</font><br>
+                ダメージ <font color="#ffff00">+125</font>％<br>
+                移動速度 <font color="#ffff00">+40</font>％<br>
+                <br>
+                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">60</font><br>魔法致命打
+                <font color="#ffff00">5</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>魔法致命打 <font color="#ffff00">10</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                レベル 201<br>
+                知識 30
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                88/50
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                [15~20]×600G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                -
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                アークエンジェル達が愛用する最新式の翼。加速機能がついており、急用の多いアークエンジェル達から好評を得ているという。<br>
+                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font color="#cc99ff">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#cc6633">セフィロスの葉[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0460.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">27~42</font>(<font color="#ffff00">1.30</font>秒)<br>
+                射程距離 <font color="#ffff00">700</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[25~35]</font>％<br>
+                知恵 <font color="#ffff00">+160</font><br>
+                ダメージ <font color="#ffff00">+100</font>％<br>
+                最大HP <font color="#ffff00">+100</font>％<br>
+                復活 <font color="#ffff00">25</font>％<br>
+                <br>
+                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">60</font><br>魔法致命打
+                <font color="#ffff00">5</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>魔法致命打 <font color="#ffff00">10</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                レベル 243<br>
+                知識 50<br>
+                カリスマ 55
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                123/10
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                [25~35]×5000G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                -
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                命の木、セフィロスの葉を集めて翼の補強材として仕上げた物。微弱ながら、セフィロスの力が込めてある。<br>
+                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font color="#cc99ff">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#cc6633">へヴンスエンボィ[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0461.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">40~50</font>(<font color="#ffff00">1.30</font>秒)<br>
+                射程距離 <font color="#ffff00">700</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[40~50]</font>％<br>
+                カリスマ <font color="#ffff00">+172</font><br>
+                ダメージ <font color="#ffff00">+50</font>％<br>
+                光ダメージ <font color="#ffff00">1</font>～<font color="#ffff00">588</font><br>
+                <font color="#ffff00">30</font>秒の間 命中, 回避低下<br>
+                最大HP <font color="#ffff00">+150</font><br>
+                最大CP <font color="#ffff00">+50</font><br>
+                <br>
+                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">80</font><br>ダメージ
+                <font color="#ffff00">+40</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ <font
+                  color="#ffff00">10</font>％ 増加
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                レベル 310<br>
+                知識 70<br>
+                カリスマ 85
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                145/80
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                [40~50]×1万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                -
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                この翼をもらった天使は天から認められたものだ。その権力と権能の代理者として相応しい力を持つことになる。<br>
+                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font color="#cc99ff">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#cc6633">ケルップの光彩[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0462.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">32~54</font>(<font color="#ffff00">1.40</font>秒)<br>
+                射程距離 <font color="#ffff00">800</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[55~75]</font>％<br>
+                力 <font color="#ffff00">+142</font><br>
+                知識 <font color="#ffff00">+242</font><br>
+                ダメージ <font color="#ffff00">+108</font>％<br>
+                魔法抵抗 <font color="#ffff00">+15</font>％<br>
+                スキルレベル <font color="#ffff00">+3</font><br>
+                <br>
+                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">80</font><br>ダメージ
+                <font color="#ffff00">+40</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ <font
+                  color="#ffff00">10</font>％ 増加
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                レベル 321<br>
+                知識 90<br>
+                カリスマ 115
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                148/50
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>
+                [55~75]×4万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>
+                -
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                智天使であるケルビム達が使う翼の補強材。力の小さいエンジェルには扱う事が難しい翼だが、まれに使用することを許されるエンジェルが存在する。<br>
+                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font color="#cc99ff">が必要です</font>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table1">
+          <colgroup>
+            <col span="1" width="40">
+            <col span="1" width="135">
+            <col span="1" width="135">
+            <col span="2">
+            <col span="1">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="6"><a name="4"></a>NxDXU</th>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#cc6633">ソニックフレーム[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1275.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">64~68</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">400</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+50</font>％<br>
+                ダメージ <font color="#ffff00">+100</font>％<br>
+                最大ダメージ <font color="#ffff00">+33</font><br>
+                攻撃速度 <font color="#ffff00">+20</font>％<br>
+                風ダメージ <font color="#ffff00">450</font>～<font color="#ffff00">533</font><br>
+                スタン <font color="#ffff00">8</font>Frame<br>
+                コールド抵抗 <font color="#ffff00">+50</font>％<br>
+                悪魔型キャラクターに追加で<font color="#ffff00">60</font>％のダメージを与える。<br>
+                <br>
+                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">70</font><br>ダメージ
+                <font color="#ffff00">+50</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ <font
+                  color="#ffff00">10</font>％ 増加
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                レベル 444<br>
+                知識 130
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                10000/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>10万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>18型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                強力な音波フレームとして作られ、翼補強材として特殊な魔法処理で音波を一定の形に加工したもの。不安定な状況で中に閉じこめられた音波が、強力なエネルギー形態として発現される。<br>
+                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font color="#cc99ff">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#cc6633">ストラタス[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1276.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">60~70</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">400</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+50</font>％<br>
+                力 <font color="#ffff00">+110</font><br>
+                致命打発動確率 <font color="#ffff00">+10</font>％<br>
+                水ダメージ <font color="#ffff00">300</font>～<font color="#ffff00">435</font><br>
+                コールド <font color="#ffff00">6</font>Frame<br>
+                魔法抵抗 <font color="#ffff00">+30</font>％<br>
+                スキルレベル <font color="#ffff00">+3</font><br>
+                悪魔型キャラクターに追加で<font color="#ffff00">150</font>％のダメージを与える。<br>
+                <br>
+                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">70</font><br>ダメージ
+                <font color="#ffff00">+50</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ <font
+                  color="#ffff00">10</font>％ 増加
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                レベル 463<br>
+                知識 140
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                10000/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>20万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>18型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                霧雲のように幾重にも重ねった模様の翼。ふわふわして派手な感じだが、その模様自体を嫌がる人もいるそうだ。<br>
+                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font color="#cc99ff">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#cc6633">アンバーアサイラム[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1277.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">57~65</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">400</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[50~52]</font>％<br>
+                知識 <font color="#ffff00">+120</font><br>
+                最大HP <font color="#ffff00">+250</font><br>
+                決定打発動確率 <font color="#ffff00">+5</font>％<br>
+                魔法抵抗 <font color="#ffff00">+30</font>％<br>
+                すべての異常系抵抗 <font color="#ffff00">+50</font>％<br>
+                悪魔型キャラクターに追加で<font color="#ffff00">180</font>％のダメージを与える。<br>
+                <br>
+                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">70</font><br>魔法致命打
+                <font color="#ffff00">10</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>魔法致命打 <font color="#ffff00">10</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                レベル 480<br>
+                知識 150
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                10000/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>40万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>20型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                自愛でありながら暖かな黄色の光が流れてくる翼。数多くの危険から守ってくれる効果がある。<br>
+                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font color="#cc99ff">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#cc6633">ローズマリープルマージュ[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1278.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">60~68</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">400</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[52~55]</font>％<br>
+                知識 <font color="#ffff00">+1</font>/レベル <font color="#ffff00">3</font><br>
+                防御力 <font color="#ffff00">+25</font>％<br>
+                攻撃速度 <font color="#ffff00">+20</font>％<br>
+                ノックアウト攻撃 <font color="#ffff00">+33</font>％<br>
+                闇属性ダメージ吸収 <font color="#ffff00">50</font>％<br>
+                悪魔型キャラクターに追加で<font color="#ffff00">90</font>％のダメージを与える。<br>
+                <br>
+                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">90</font><br>魔法致命打
+                <font color="#ffff00">10</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>魔法致命打 <font color="#ffff00">10</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                レベル 501<br>
+                知識 160
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                10000/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>60万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>22型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                忠実・貞操・記憶の象徴であるローズマリーを加工して広げた、とても香しい翼。<br>
+                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font color="#cc99ff">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#cc6633">ギャラクティックトライアード[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1279.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">64~72</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">400</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[52~57]</font>％<br>
+                ダメージ <font color="#ffff00">+150</font>％<br>
+                減少限界CP <font color="#ffff00">+20</font><br>
+                光ダメージ <font color="#ffff00">1</font>～<font color="#ffff00">940</font><br>
+                <font color="#ffff00">100</font>秒の間 命中, 回避低下<br>
+                光属性ダメージ吸収 <font color="#ffff00">50</font>％<br>
+                ターゲットの光抵抗を<font color="#ffff00">30</font>％弱化させる。<br>
+                悪魔型キャラクターに追加で<font color="#ffff00">40</font>％のダメージを与える。<br>
+                <br>
+                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">90</font><br>ダメージ
+                <font color="#ffff00">+50</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ <font
+                  color="#ffff00">10</font>％ 増加
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                レベル 503<br>
+                知識 170
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                10000/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>150万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>24型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                天の川の光を集めて編んだ3つでひと組の翼。その光は穏やかだったが、粗かったり細やかだったりした為、善人には祝福を悪人には苦痛を与えるには十分である。<br>
+                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font color="#cc99ff">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#cc6633">ロトンウィンド[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1280.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">59~79</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">400</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[55~57]</font>％<br>
+                健康 <font color="#ffff00">+155</font><br>
+                最大CP <font color="#ffff00">+50</font>％<br>
+                <font color="#ffff00">4</font>秒 <font color="#ffff00">664</font>～<font color="#ffff00">964</font> 毒ダメージ<br>
+                コールド攻撃+ <font color="#ffff00">7</font>％(<font color="#ffff00">25</font>秒)<br>
+                魔法アイテムドロップ確率 <font color="#ffff00">+25</font>％<br>
+                悪魔型キャラクターに追加で<font color="#ffff00">160</font>％のダメージを与える。<br>
+                <br>
+                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">90</font><br>ダメージ
+                <font color="#ffff00">+50</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ <font
+                  color="#ffff00">10</font>％ 増加
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                レベル 509<br>
+                知識 180
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                10000/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>300万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>26型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                墓守天使たちの専用装備。墓地からの腐った風が翼に染み込んでいる。着用感はよくないが敵に対して酷く臭い攻撃が可能となる。<br>
+                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font color="#cc99ff">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#cc6633">フェザークライト[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1281.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">71~83</font>(<font color="#ffff00">1.30</font>秒)<br>
+                射程距離 <font color="#ffff00">450</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[57~62]</font>％<br>
+                運 <font color="#ffff00">+1</font>/レベル <font color="#ffff00">5</font><br>
+                致命打発動確率 <font color="#ffff00">+6</font>％<br>
+                攻撃速度 <font color="#ffff00">+50</font>％<br>
+                鎧破壊攻撃 <font color="#ffff00">+9</font>％(<font color="#ffff00">8</font>秒)<br>
+                ターゲットの光抵抗を<font color="#ffff00">10</font>％弱化させる。<br>
+                悪魔型キャラクターに追加で<font color="#ffff00">100</font>％のダメージを与える。<br>
+                <br>
+                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">90</font><br>魔法致命打
+                <font color="#ffff00">10</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>魔法致命打 <font color="#ffff00">10</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                レベル 568<br>
+                知識 200<br>
+                カリスマ 237
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                10000/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>500万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>32型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                天使の羽衣それだけでは輝かないが、天使たちが着るとその光彩は一層輝き、周囲の人たちは目を開けることさえ難しくなるそうだ。<br>
+                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font color="#cc99ff">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#cc6633">セレスティアルホーク[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1282.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">75~88</font>(<font color="#ffff00">1.20</font>秒)<br>
+                射程距離 <font color="#ffff00">450</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[62~65]</font>％<br>
+                ダメージ <font color="#ffff00">+180</font>％<br>
+                力 <font color="#ffff00">+145</font><br>
+                光ダメージ <font color="#ffff00">1</font>～<font color="#ffff00">920</font><br>
+                <font color="#ffff00">6</font>秒の間 命中, 回避低下<br>
+                CP獲得ボーナス <font color="#ffff00">5</font>％<br>
+                魔法属性ダメージ吸収 <font color="#ffff00">10</font>％<br>
+                悪魔型キャラクターに追加で<font color="#ffff00">40</font>％のダメージを与える。<br>
+                <br>
+                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">90</font><br>ダメージ
+                <font color="#ffff00">+50</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ <font
+                  color="#ffff00">10</font>％ 増加
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                レベル 584<br>
+                知識 220<br>
+                カリスマ 275
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                10000/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>800万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>28型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                天上の鷹の羽を集めて作られた翼。真っ白な羽がとても美しい。<br>
+                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font color="#cc99ff">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#cc6633">クリアフェザー[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1283.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">75~90</font>(<font color="#ffff00">1.30</font>秒)<br>
+                射程距離 <font color="#ffff00">450</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[65~70]</font>％<br>
+                知識 <font color="#ffff00">+200</font><br>
+                決定打発動確率 <font color="#ffff00">+7</font>％<br>
+                集中力 <font color="#ffff00">+25</font>％<br>
+                ノックアウト攻撃 <font color="#ffff00">+75</font>％<br>
+                光属性攻撃力を<font color="#ffff00">20</font>％強化させる。<br>
+                悪魔型キャラクターに追加で<font color="#ffff00">120</font>％のダメージを与える。<br>
+                <br>
+                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">110</font><br>魔法致命打
+                <font color="#ffff00">10</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>魔法致命打 <font color="#ffff00">10</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                レベル 653<br>
+                知識 240<br>
+                カリスマ 312
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                10000/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>1000万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>36型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                全体が透明な羽で溢れている幻想的な模様の翼。その上、透明な羽の内部には金色の骨組みが模られており、とてもファンタスティックな雰囲気を演出してくれる。<br>
+                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font color="#cc99ff">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#cc6633">パニッシャー[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1284.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">73~93</font>(<font color="#ffff00">1.30</font>秒)<br>
+                射程距離 <font color="#ffff00">450</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[70~72]</font>％<br>
+                力 <font color="#ffff00">+1</font>/レベル <font color="#ffff00">4</font><br>
+                減少限界CP <font color="#ffff00">+40</font><br>
+                命中率 <font color="#ffff00">100％</font><br>
+                即死攻撃 <font color="#ffff00">+7</font>％<br>
+                コールド攻撃+ <font color="#ffff00">15</font>％(<font color="#ffff00">12</font>秒)<br>
+                悪魔型キャラクターに追加で<font color="#ffff00">150</font>％のダメージを与える。<br>
+                <br>
+                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">110</font><br>ダメージ
+                <font color="#ffff00">+50</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ <font
+                  color="#ffff00">10</font>％ 増加
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                レベル 696<br>
+                知識 260<br>
+                カリスマ 350
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                10000/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>1500万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>34型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                不義の行いや悪を見ると我慢できない正義の天使たちに似合う装備。一度狙った目標は絶対逃がさない。<br>
+                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font color="#cc99ff">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#cc6633">闇の翼[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1285.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">74~95</font>(<font color="#ffff00">1.30</font>秒)<br>
+                射程距離 <font color="#ffff00">500</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[72~82]</font>％<br>
+                知識 <font color="#ffff00">+1</font>/レベル <font color="#ffff00">3</font><br>
+                ターゲットの回避率補正値 無視<br>
+                闇ダメージ <font color="#ffff00">640</font>～<font color="#ffff00">840</font><br>
+                呪い <font color="#ffff00">4</font>秒<br>
+                武器破壊攻撃 <font color="#ffff00">+6</font>％(<font color="#ffff00">4</font>秒)<br>
+                スキルレベル <font color="#ffff00">+3</font><br>
+                悪魔型キャラクターに追加で<font color="#ffff00">80</font>％のダメージを与える。<br>
+                <br>
+                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">130</font><br>魔法致命打
+                <font color="#ffff00">10</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>魔法致命打 <font color="#ffff00">10</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                レベル 731<br>
+                知識 280<br>
+                カリスマ 387
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                10000/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>2000万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>38型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                闇の力を持っている翼。闇の力に弱い天使たちが闇に対抗するため人工的に作り出した治安維持用道具。<br>
+                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font color="#cc99ff">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#cc6633">反逆の翼[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1286.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">87~111</font>(<font color="#ffff00">1.30</font>秒)<br>
+                射程距離 <font color="#ffff00">500</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[80~82]</font>％<br>
+                ダメージ <font color="#ffff00">+200</font>％<br>
+                最大ダメージ <font color="#ffff00">+70</font><br>
+                攻撃速度 <font color="#ffff00">+25</font>％<br>
+                フリーズ抵抗 <font color="#ffff00">+100</font>％<br>
+                ターゲットの光抵抗を<font color="#ffff00">30</font>％弱化させる。<br>
+                悪魔型キャラクターに追加で<font color="#ffff00">30</font>％のダメージを与える。<br>
+                <br>
+                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">130</font><br>ダメージ
+                <font color="#ffff00">+50</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>ダブルクリティカルダメージ <font
+                  color="#ffff00">10</font>％ 増加
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                レベル 769<br>
+                知識 300<br>
+                カリスマ 425
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                10000/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>3000万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>40型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                今は追放されてしまった追放天使キュルレンの翼。禁断の道具だが威力がとても優れているため天使たちの間で密かに取引されているそうだ。<br>
+                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font color="#cc99ff">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#cc6633">祝福の翼[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1287.png"></td>
+              <td colspan="5">
+                <font color="#00ffff">&lt;基本情報&gt;</font><br>
+                攻撃力 <font color="#ffff00">95~114</font>(<font color="#ffff00">1.40</font>秒)<br>
+                射程距離 <font color="#ffff00">500</font><br>
+                vs 悪魔系キャラクター - ダメージ <font color="#ffff00">+[80~82]</font>％<br>
+                ダメージ <font color="#ffff00">+250</font>％<br>
+                知識 <font color="#ffff00">+230</font><br>
+                大地属性抵抗 <font color="#ffff00">+75</font>％<br>
+                ダメージ返し <font color="#ffff00">100</font>％<br>
+                最大HP <font color="#ffff00">+120</font>％<br>
+                スキルレベル <font color="#ffff00">+4</font><br>
+                <br>
+                <font color="#00ffff">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#ffff00">150</font><br>魔法致命打
+                <font color="#ffff00">10</font>％<br>最終ダメージ <font color="#ffff00">+10</font>％<br>魔法致命打 <font color="#ffff00">10</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00ffff">&lt;要求能力値&gt;</font><br>
+                レベル 818<br>
+                知識 340<br>
+                カリスマ 462
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;着用可能な職業&gt;</font><br>
+                追放天使<br>
+                ネクロマンサー
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;DropLv/係数&gt;</font><br>
+                10000/1000
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;価格&gt;</font><br>4000万G
+              </td>
+              <td valign="top">
+                <font color="#00ffff">&lt;耐久力減少&gt;</font><br>75型
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00ffff">&lt;説明&gt;</font><br>
+                唯一神の祝福が籠められている翼。本当に幸運のある天使や、素晴らしい業績を立てた天使だけがこの恩寵を受ける資格がある。<br>
+                <br>　<font color="#cc99ff">※ 封印された力を解放するには</font>‘<font color="#ffcc99">封印解放道具箱</font>'<font color="#cc99ff">が必要です</font>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+
+        <br>
+        <br>
+        <footer class="android-footer mdl-mega-footer">
+          <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+          </font>
+          Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+        </footer>
+        <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+        　-->
+
+      </div>
+
+      <a href="" id="view-source" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">トップ
+      </a>
+      <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    </div>
+</body>
+
+</html>
