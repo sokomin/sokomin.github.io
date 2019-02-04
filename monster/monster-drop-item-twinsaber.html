@@ -1,0 +1,579 @@
+<!dOcTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LIceNSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "aS IS" baSIS,
+  WITHOUT WaRRaNTIeS OR cONdITIONS OF aNY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+  <!-- Page styles -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+  <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-133658114-1');
+  </script>
+
+  <style>
+    #view-source {
+        position: fixed;
+        display: block;
+        right: 0;
+        bottom: 0;
+        margin-right: 40px;
+        margin-bottom: 40px;
+        z-index: 900;
+      }
+    </style>
+</head>
+
+<body>
+  <title>赤石の民衆</title>
+  <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <meta name="keywords" content="ReD STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <a name="container"></a>
+    <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+      <div class="mdl-layout__header-row">
+        <span class="android-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <!-- Add spacer, to align navigation to the right in desktop -->
+        <div class="android-header-spacer mdl-layout-spacer"></div>
+        <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input placeholder="検索できたら最高" class="mdl-textfield__input" type="text" id="search-field" />
+          </div>
+        </div>
+        <!-- Navigation -->
+        <div class="android-navigation-container">
+          <nav class="android-navigation mdl-navigation">
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/index.html">ホーム</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+          </nav>
+        </div>
+        <span class="android-mobile-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
+          <i class="material-icons">more_vert</i>
+        </button>
+        <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a></li>
+          <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+        </ul>
+
+      </div>
+    </div>
+
+    <div class="android-drawer mdl-layout__drawer">
+      <span class="mdl-layout-title">
+        <h3>メニュー</h3>
+      </span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html"><strong>モンスター</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html"><strong>クエスト</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html"><strong>雑学</strong></a>
+      </nav>
+    </div>
+
+
+    <div class="android-large-table mdl-layout__content">
+
+      <!--main-->
+      <div class="main-background mdl-typography--text-center korea-content">
+        <br>
+        <h3>双剣 をドロップするmob一覧</h3>
+        <br>
+        <a href="monster-drop-item-list.html">一覧ページへ</a>
+        <br>
+        <br>
+        <table id="table10" style="min-width: 700px; max-width: 1600px;">
+          <colgroup>
+            <col span="1" width="150">
+            <col span="1" width="100">
+          </colgroup>
+          <!--ここに流し込んでね！-->
+          <tr><th><font style="color:#FFFF33;">巨人骸骨</font></th><th>アンデット</th><th>一般2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00cb0003.png" width="120" height="120"></td><td>鈍器(380)</td><td>牙(250)</td><td>矢(380)</td><td>職業鎧(210)</td><td>指輪(190)</td><td>能力向上1(150)</td><td>双剣(250)</td><td>魔弾(380)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">デスナイト</font></th><th>アンデット</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00cb0002.png" width="120" height="120"></td><td>鈍器(390)</td><td>牙(260)</td><td>弾(390)</td><td>鎧(220)</td><td>爪(200)</td><td>能力向上1(160)</td><td>双剣(260)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">リビングデッド</font></th><th>アンデット</th><th>一般1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00cc0000.png" width="120" height="120"></td><td>投擲(410)</td><td>牙(270)</td><td>イベント(410)</td><td>腰(230)</td><td>爪(210)</td><td>帰還(160)</td><td>双剣(270)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ゾンビ</font></th><th>アンデット</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00cc0004.png" width="120" height="120"></td><td>投擲(360)</td><td>牙(240)</td><td>イベント(360)</td><td>兜・帽子(200)</td><td>爪(180)</td><td>帰還(140)</td><td>双剣(240)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">デスピンサー</font></th><th>アンデット</th><th>ボス1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00cc0001.png" width="120" height="120"></td><td>投擲(470)</td><td>牙(310)</td><td>状態異常回復1(470)</td><td>鎧(260)</td><td>爪(240)</td><td>帰還(190)</td><td>双剣(310)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ヴァンパイア</font></th><th>アンデット</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d10000.png" width="120" height="120"></td><td>鞭(360)</td><td>牙(240)</td><td>イベント(360)</td><td>職業鎧(200)</td><td>指輪(180)</td><td>特殊1(140)</td><td>双剣(240)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">古代ヴァンパイア</font></th><th>アンデット</th><th>セミ2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d10002.png" width="120" height="120"></td><td>鞭(420)</td><td>牙(280)</td><td>弾(420)</td><td>職業鎧(230)</td><td>指輪(210)</td><td>特殊1(170)</td><td>双剣(280)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ノースフェラトゥ</font></th><th>アンデット</th><th>ボス2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d10004.png" width="120" height="120"></td><td>鞭(490)</td><td>牙(330)</td><td>HP回復(490)</td><td>職業鎧(270)</td><td>指輪(250)</td><td>特殊1(200)</td><td>双剣(330)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">レッドアイ信奉者</font></th><th>人間</th><th>一般1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d50001.png" width="120" height="120"></td><td>笛(410)</td><td>牙(270)</td><td>イベント(410)</td><td>鎧(230)</td><td>槍投擲機(210)</td><td>十字架(50)</td><td>双剣(270)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">原人</font></th><th>人間</th><th>一般2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d50004.png" width="120" height="120"></td><td>笛(380)</td><td>牙(250)</td><td>イベント(380)</td><td>グローブ(210)</td><td>槍投擲機(190)</td><td>十字架(60)</td><td>双剣(250)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">原始人</font></th><th>人間</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d50000.png" width="120" height="120"></td><td>笛(360)</td><td>牙(240)</td><td>状態異常回復1(360)</td><td>足(200)</td><td>槍投擲機(180)</td><td>十字架(70)</td><td>双剣(240)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">イーター</font></th><th>人間</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d50002.png" width="120" height="120"></td><td>笛(390)</td><td>牙(260)</td><td>状態異常回復1(390)</td><td>グローブ(220)</td><td>槍投擲機(200)</td><td>十字架(80)</td><td>双剣(260)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">呪術者</font></th><th>人間</th><th>ボス1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d50003.png" width="120" height="120"></td><td>笛(470)</td><td>牙(310)</td><td>状態異常回復1(470)</td><td>足(260)</td><td>槍投擲機(240)</td><td>十字架(90)</td><td>双剣(310)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">デビルスカラー</font></th><th>人間</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d90002.png" width="120" height="120"></td><td>鞭(300)</td><td>牙(200)</td><td>cP回復(300)</td><td>腰(170)</td><td>イヤリング(150)</td><td>肩刺青(130)</td><td>双剣(200)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">オーク</font></th><th>人間</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00da0001.png" width="120" height="120"></td><td>鈍器(360)</td><td>牙(240)</td><td>弾(360)</td><td>足(200)</td><td>冠(180)</td><td>帰還(140)</td><td>双剣(240)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ジャイアント</font></th><th>人間</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00da0003.png" width="120" height="120"></td><td>鈍器(390)</td><td>牙(260)</td><td>HP回復(390)</td><td>足(220)</td><td>首(200)</td><td>能力向上1(160)</td><td>双剣(260)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">コロッサス</font></th><th>人間</th><th>ボス1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00da0002.png" width="120" height="120"></td><td>鈍器(470)</td><td>牙(310)</td><td>HP回復(470)</td><td>足(260)</td><td>指輪(240)</td><td>能力向上1(190)</td><td>双剣(310)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">コボルト</font></th><th>悪魔</th><th>一般1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00de0004.png" width="120" height="120"></td><td>牙(410)</td><td>スリング(270)</td><td>弾(410)</td><td>腰(230)</td><td>爪(210)</td><td>肩刺青(120)</td><td>双剣(410)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">グレムリン</font></th><th>悪魔</th><th>一般2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00de0003.png" width="120" height="120"></td><td>牙(380)</td><td>スリング(250)</td><td>弾(380)</td><td>腰(210)</td><td>爪(190)</td><td>肩刺青(130)</td><td>双剣(380)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ゴブリン</font></th><th>悪魔</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00de0002.png" width="120" height="120"></td><td>牙(360)</td><td>スリング(240)</td><td>弾(360)</td><td>腰(200)</td><td>爪(180)</td><td>肩刺青(140)</td><td>双剣(360)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ファミリア</font></th><th>悪魔</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00de0001.png" width="120" height="120"></td><td>牙(300)</td><td>スリング(200)</td><td>弾(300)</td><td>腰(170)</td><td>爪(150)</td><td>肩刺青(150)</td><td>双剣(300)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">インプ</font></th><th>悪魔</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00de0000.png" width="120" height="120"></td><td>牙(390)</td><td>スリング(260)</td><td>弾(390)</td><td>腰(220)</td><td>爪(200)</td><td>肩刺青(160)</td><td>双剣(390)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">レッサーデーモン</font></th><th>悪魔</th><th>一般2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00e30001.png" width="120" height="120"></td><td>鞭(380)</td><td>牙(250)</td><td>矢(380)</td><td>マント(210)</td><td>指輪(190)</td><td>十字架(190)</td><td>双剣(250)</td><td>魔弾(380)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">デビル</font></th><th>悪魔</th><th>セミ3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00e30003.png" width="120" height="120"></td><td>鞭(450)</td><td>牙(300)</td><td>矢(450)</td><td>マント(250)</td><td>指輪(230)</td><td>十字架(210)</td><td>双剣(300)</td><td>魔弾(450)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">野良犬</font></th><th>動物</th><th>一般1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00ee0000.png" width="120" height="120"></td><td>牙(410)</td><td>笛(270)</td><td>鍵(10)</td><td>職業鎧(230)</td><td>槍投擲機(210)</td><td>特殊1(160)</td><td>双剣(410)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ウルフ</font></th><th>動物</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00ee0001.png" width="120" height="120"></td><td>牙(360)</td><td>弓(240)</td><td>状態異常回復1(360)</td><td>マント(200)</td><td>槍投擲機(180)</td><td>特殊1(140)</td><td>双剣(360)</td><td>銃(240)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">レッドアイ警備犬</font></th><th>動物</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00ee0002.png" width="120" height="120"></td><td>牙(390)</td><td>鞭(260)</td><td>鍵(30)</td><td>職業鎧(220)</td><td>槍投擲機(200)</td><td>特殊1(160)</td><td>双剣(390)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ダイアーウルフ</font></th><th>動物</th><th>セミ2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00ee0003.png" width="120" height="120"></td><td>牙(420)</td><td>鈍器(280)</td><td>cP回復(420)</td><td>足(230)</td><td>槍投擲機(210)</td><td>特殊1(170)</td><td>双剣(420)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ヘルハウンド</font></th><th>動物</th><th>ボス2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00ee0004.png" width="120" height="120"></td><td>牙(490)</td><td>両手剣(330)</td><td>鍵(50)</td><td>職業鎧(270)</td><td>槍投擲機(250)</td><td>特殊1(200)</td><td>鎌(330)</td><td>双剣(490)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ブラックベアー</font></th><th>動物</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f00000.png" width="120" height="120"></td><td>牙(360)</td><td>鞭(240)</td><td>状態異常回復1(360)</td><td>グローブ(200)</td><td>爪(180)</td><td>宝石(140)</td><td>双剣(360)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ブラウンベアー</font></th><th>動物</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f00001.png" width="120" height="120"></td><td>牙(300)</td><td>笛(200)</td><td>HP回復(300)</td><td>足(170)</td><td>爪(150)</td><td>宝石(120)</td><td>双剣(300)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">弓張月熊</font></th><th>動物</th><th>ボス3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f00004.png" width="120" height="120"></td><td>牙(510)</td><td>鈍器(340)</td><td>HP回復(510)</td><td>マント(280)</td><td>爪(260)</td><td>宝石(200)</td><td>双剣(510)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ファイアブロアー</font></th><th>神獣</th><th>一般1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f10000.png" width="120" height="120"></td><td>双剣(270)</td><td>スリング(100)</td><td>牙(270)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ブレイジャー</font></th><th>神獣</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f10002.png" width="120" height="120"></td><td>双剣(240)</td><td>スリング(100)</td><td>牙(240)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">火炎悪魔</font></th><th>神獣</th><th>ボス1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f10004.png" width="120" height="120"></td><td>双剣(310)</td><td>スリング(100)</td><td>牙(310)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">オクトパストン</font></th><th>神獣</th><th>一般1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f20000.png" width="120" height="120"></td><td>双剣(270)</td><td>投擲(100)</td><td>牙(270)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">凍破</font></th><th>神獣</th><th>一般2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f20001.png" width="120" height="120"></td><td>双剣(250)</td><td>投擲(100)</td><td>牙(250)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">キャストアイ</font></th><th>神獣</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f20002.png" width="120" height="120"></td><td>双剣(240)</td><td>投擲(100)</td><td>牙(240)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">スノーツリー</font></th><th>神獣</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f20003.png" width="120" height="120"></td><td>双剣(260)</td><td>投擲(100)</td><td>牙(260)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">サーリビラエ</font></th><th>神獣</th><th>ボス1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f20004.png" width="120" height="120"></td><td>双剣(310)</td><td>投擲(100)</td><td>牙(310)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">巨人骸骨Ex</font></th><th>アンデット</th><th>一般2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00cb0003.png" width="120" height="120"></td><td>鈍器(380)</td><td>牙(250)</td><td>矢(380)</td><td>職業鎧(210)</td><td>指輪(190)</td><td>能力向上1(150)</td><td>双剣(250)</td><td>魔弾(380)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">デスナイトEx</font></th><th>アンデット</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00cb0002.png" width="120" height="120"></td><td>鈍器(450)</td><td>牙(300)</td><td>弾(450)</td><td>鎧(250)</td><td>爪(230)</td><td>能力向上1(180)</td><td>双剣(300)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">リビングデッドEx</font></th><th>アンデット</th><th>一般1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00cc0000.png" width="120" height="120"></td><td>投擲(410)</td><td>牙(270)</td><td>イベント(410)</td><td>腰(230)</td><td>爪(210)</td><td>帰還(160)</td><td>双剣(270)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ゾンビEx</font></th><th>アンデット</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00cc0004.png" width="120" height="120"></td><td>投擲(360)</td><td>牙(240)</td><td>イベント(360)</td><td>兜・帽子(200)</td><td>爪(180)</td><td>帰還(140)</td><td>双剣(240)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">デスピンサーEx</font></th><th>アンデット</th><th>ボス1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00cc0001.png" width="120" height="120"></td><td>投擲(1200)</td><td>牙(800)</td><td>状態異常回復1(1200)</td><td>鎧(670)</td><td>爪(600)</td><td>帰還(480)</td><td>双剣(800)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ヴァンパイアEx</font></th><th>アンデット</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d10000.png" width="120" height="120"></td><td>鞭(360)</td><td>牙(240)</td><td>イベント(360)</td><td>職業鎧(200)</td><td>指輪(180)</td><td>ブローチ(200)</td><td>双剣(240)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">古代ヴァンパイアEx</font></th><th>アンデット</th><th>セミ2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d10002.png" width="120" height="120"></td><td>鞭(650)</td><td>牙(430)</td><td>弾(650)</td><td>職業鎧(360)</td><td>指輪(330)</td><td>ブローチ(300)</td><td>双剣(430)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ノースフェラトゥEx</font></th><th>アンデット</th><th>ボス2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d10004.png" width="120" height="120"></td><td>鞭(2000)</td><td>牙(1330)</td><td>HP回復(2000)</td><td>職業鎧(1110)</td><td>指輪(1000)</td><td>ブローチ(500)</td><td>双剣(1330)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">レッドアイ信奉者Ex</font></th><th>人間</th><th>一般1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d50001.png" width="120" height="120"></td><td>笛(410)</td><td>牙(270)</td><td>イベント(410)</td><td>鎧(230)</td><td>槍投擲機(210)</td><td>十字架(50)</td><td>双剣(270)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">原人Ex</font></th><th>人間</th><th>一般2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d50004.png" width="120" height="120"></td><td>笛(380)</td><td>牙(250)</td><td>イベント(380)</td><td>グローブ(210)</td><td>槍投擲機(190)</td><td>十字架(60)</td><td>双剣(250)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">原始人Ex</font></th><th>人間</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d50000.png" width="120" height="120"></td><td>笛(360)</td><td>牙(240)</td><td>状態異常回復1(360)</td><td>足(200)</td><td>槍投擲機(180)</td><td>十字架(70)</td><td>双剣(240)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">イーターEx</font></th><th>人間</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d50002.png" width="120" height="120"></td><td>笛(450)</td><td>牙(300)</td><td>状態異常回復1(450)</td><td>グローブ(250)</td><td>槍投擲機(230)</td><td>十字架(80)</td><td>双剣(300)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">呪術者Ex</font></th><th>人間</th><th>ボス1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d50003.png" width="120" height="120"></td><td>笛(1200)</td><td>牙(800)</td><td>状態異常回復1(1200)</td><td>足(670)</td><td>槍投擲機(600)</td><td>十字架(90)</td><td>双剣(800)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">デビルスカラーEx</font></th><th>人間</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d90002.png" width="120" height="120"></td><td>鞭(300)</td><td>牙(200)</td><td>cP回復(300)</td><td>腰(170)</td><td>イヤリング(150)</td><td>肩刺青(130)</td><td>双剣(200)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">オークEx</font></th><th>人間</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00da0001.png" width="120" height="120"></td><td>鈍器(360)</td><td>牙(240)</td><td>弾(360)</td><td>足(200)</td><td>冠(180)</td><td>帰還(140)</td><td>双剣(240)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ジャイアントEx</font></th><th>人間</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00da0003.png" width="120" height="120"></td><td>鈍器(450)</td><td>牙(300)</td><td>HP回復(450)</td><td>足(250)</td><td>首(230)</td><td>能力向上1(180)</td><td>双剣(300)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">コロッサスEx</font></th><th>人間</th><th>ボス1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00da0002.png" width="120" height="120"></td><td>鈍器(1200)</td><td>牙(800)</td><td>HP回復(1200)</td><td>足(670)</td><td>指輪(600)</td><td>能力向上1(480)</td><td>双剣(800)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">コボルトEx</font></th><th>悪魔</th><th>一般1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00de0004.png" width="120" height="120"></td><td>牙(410)</td><td>スリング(270)</td><td>弾(410)</td><td>腰(230)</td><td>爪(210)</td><td>肩刺青(120)</td><td>双剣(410)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">グレムリンEx</font></th><th>悪魔</th><th>一般2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00de0003.png" width="120" height="120"></td><td>牙(380)</td><td>スリング(250)</td><td>弾(380)</td><td>腰(210)</td><td>爪(190)</td><td>肩刺青(130)</td><td>双剣(380)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ゴブリンEx</font></th><th>悪魔</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00de0002.png" width="120" height="120"></td><td>牙(360)</td><td>スリング(240)</td><td>弾(360)</td><td>腰(200)</td><td>爪(180)</td><td>肩刺青(140)</td><td>双剣(360)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ファミリアEx</font></th><th>悪魔</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00de0001.png" width="120" height="120"></td><td>牙(300)</td><td>スリング(200)</td><td>弾(300)</td><td>腰(170)</td><td>爪(150)</td><td>肩刺青(150)</td><td>双剣(300)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">インプEx</font></th><th>悪魔</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00de0000.png" width="120" height="120"></td><td>牙(450)</td><td>スリング(300)</td><td>弾(450)</td><td>腰(250)</td><td>爪(230)</td><td>肩刺青(160)</td><td>双剣(450)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">レッサーデーモンEx</font></th><th>悪魔</th><th>一般2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00e30001.png" width="120" height="120"></td><td>鞭(380)</td><td>牙(250)</td><td>矢(380)</td><td>マント(210)</td><td>指輪(190)</td><td>十字架(190)</td><td>双剣(250)</td><td>魔弾(380)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">デビルEx</font></th><th>悪魔</th><th>セミ3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00e30003.png" width="120" height="120"></td><td>鞭(800)</td><td>牙(530)</td><td>矢(800)</td><td>マント(440)</td><td>指輪(400)</td><td>十字架(210)</td><td>双剣(530)</td><td>魔弾(800)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">野良犬Ex</font></th><th>動物</th><th>一般1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00ee0000.png" width="120" height="120"></td><td>牙(410)</td><td>笛(270)</td><td>鍵(20)</td><td>職業鎧(230)</td><td>槍投擲機(210)</td><td>特殊1(160)</td><td>双剣(410)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ウルフEx</font></th><th>動物</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00ee0001.png" width="120" height="120"></td><td>牙(360)</td><td>弓(240)</td><td>状態異常回復1(360)</td><td>マント(200)</td><td>槍投擲機(180)</td><td>特殊1(140)</td><td>双剣(360)</td><td>銃(240)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">レッドアイ警備犬Ex</font></th><th>動物</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00ee0002.png" width="120" height="120"></td><td>牙(450)</td><td>鞭(300)</td><td>鍵(60)</td><td>職業鎧(250)</td><td>槍投擲機(230)</td><td>特殊1(180)</td><td>双剣(450)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ダイアーウルフEx</font></th><th>動物</th><th>セミ2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00ee0003.png" width="120" height="120"></td><td>牙(650)</td><td>鈍器(430)</td><td>cP回復(650)</td><td>足(360)</td><td>槍投擲機(330)</td><td>特殊1(260)</td><td>双剣(650)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ヘルハウンドEx</font></th><th>動物</th><th>ボス2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00ee0004.png" width="120" height="120"></td><td>牙(2000)</td><td>両手剣(1330)</td><td>鍵(130)</td><td>職業鎧(1110)</td><td>槍投擲機(1000)</td><td>特殊1(800)</td><td>鎌(1330)</td><td>双剣(2000)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ブラックベアーEx</font></th><th>動物</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f00000.png" width="120" height="120"></td><td>牙(360)</td><td>鞭(240)</td><td>状態異常回復1(360)</td><td>グローブ(200)</td><td>爪(180)</td><td>宝石(140)</td><td>双剣(360)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ブラウンベアーEx</font></th><th>動物</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f00001.png" width="120" height="120"></td><td>牙(300)</td><td>笛(200)</td><td>HP回復(300)</td><td>足(170)</td><td>爪(150)</td><td>宝石(120)</td><td>双剣(300)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">弓張月熊Ex</font></th><th>動物</th><th>ボス3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f00004.png" width="120" height="120"></td><td>牙(2800)</td><td>鈍器(1870)</td><td>HP回復(2800)</td><td>マント(1560)</td><td>爪(1400)</td><td>宝石(1120)</td><td>双剣(2800)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ファイアブロアーEx</font></th><th>神獣</th><th>一般1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f10000.png" width="120" height="120"></td><td>スリング(410)</td><td>牙(270)</td><td>弾(410)</td><td>グローブ(230)</td><td>手首(210)</td><td>能力向上2(160)</td><td>双剣(410)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ブレイジャーEx</font></th><th>神獣</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f10002.png" width="120" height="120"></td><td>スリング(360)</td><td>牙(240)</td><td>弾(360)</td><td>グローブ(200)</td><td>手首(180)</td><td>能力向上2(140)</td><td>双剣(240)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">火炎悪魔Ex</font></th><th>神獣</th><th>ボス1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f10004.png" width="120" height="120"></td><td>スリング(1200)</td><td>牙(800)</td><td>弾(1200)</td><td>グローブ(670)</td><td>手首(600)</td><td>能力向上2(480)</td><td>双剣(800)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">オクトパストンEx</font></th><th>神獣</th><th>一般1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f20000.png" width="120" height="120"></td><td>投擲(410)</td><td>牙(270)</td><td>イベント(410)</td><td>マント(230)</td><td>首(210)</td><td>肩刺青(170)</td><td>双剣(270)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">凍破Ex</font></th><th>神獣</th><th>一般2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f20001.png" width="120" height="120"></td><td>投擲(380)</td><td>牙(250)</td><td>イベント(380)</td><td>マント(210)</td><td>首(190)</td><td>肩刺青(180)</td><td>双剣(250)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">キャストアイEx</font></th><th>神獣</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f20002.png" width="120" height="120"></td><td>投擲(360)</td><td>牙(240)</td><td>イベント(360)</td><td>マント(200)</td><td>首(180)</td><td>肩刺青(190)</td><td>双剣(240)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">スノーツリーEx</font></th><th>神獣</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f20003.png" width="120" height="120"></td><td>投擲(450)</td><td>牙(300)</td><td>イベント(450)</td><td>マント(250)</td><td>首(230)</td><td>肩刺青(200)</td><td>双剣(300)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">サーリビラエEx</font></th><th>神獣</th><th>ボス1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f20004.png" width="120" height="120"></td><td>投擲(1200)</td><td>牙(800)</td><td>イベント(1200)</td><td>マント(670)</td><td>首(600)</td><td>肩刺青(210)</td><td>双剣(800)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">巨人骸骨Zin</font></th><th>アンデット</th><th>一般2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00cb0003.png" width="120" height="120"></td><td>鈍器(1380)</td><td>牙(920)</td><td>矢(1380)</td><td>職業鎧(770)</td><td>指輪(690)</td><td>能力向上1(550)</td><td>双剣(920)</td><td>魔弾(1380)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">デスナイトZin</font></th><th>アンデット</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00cb0002.png" width="120" height="120"></td><td>鈍器(650)</td><td>牙(430)</td><td>弾(650)</td><td>鎧(360)</td><td>爪(330)</td><td>能力向上1(260)</td><td>双剣(430)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">リビングデッドZin</font></th><th>アンデット</th><th>一般1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00cc0000.png" width="120" height="120"></td><td>投擲(1210)</td><td>牙(810)</td><td>イベント(1210)</td><td>腰(670)</td><td>爪(610)</td><td>帰還(480)</td><td>双剣(810)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ゾンビZin</font></th><th>アンデット</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00cc0004.png" width="120" height="120"></td><td>投擲(1560)</td><td>牙(1040)</td><td>イベント(1560)</td><td>兜・帽子(870)</td><td>爪(780)</td><td>帰還(620)</td><td>双剣(1040)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">デスピンサーZin</font></th><th>アンデット</th><th>ボス1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00cc0001.png" width="120" height="120"></td><td>投擲(1000)</td><td>牙(670)</td><td>状態異常回復1(1000)</td><td>鎧(560)</td><td>爪(500)</td><td>帰還(400)</td><td>双剣(670)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ヴァンパイアZin</font></th><th>アンデット</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d10000.png" width="120" height="120"></td><td>鞭(1560)</td><td>牙(1040)</td><td>イベント(1560)</td><td>職業鎧(870)</td><td>指輪(780)</td><td>ブローチ(200)</td><td>双剣(1040)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">古代ヴァンパイアZin</font></th><th>アンデット</th><th>セミ2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d10002.png" width="120" height="120"></td><td>鞭(750)</td><td>牙(500)</td><td>弾(750)</td><td>職業鎧(420)</td><td>指輪(380)</td><td>ブローチ(300)</td><td>双剣(500)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ノースフェラトゥZin</font></th><th>アンデット</th><th>ボス2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d10004.png" width="120" height="120"></td><td>鞭(1100)</td><td>牙(730)</td><td>HP回復(1100)</td><td>職業鎧(610)</td><td>指輪(550)</td><td>ブローチ(500)</td><td>双剣(730)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">レッドアイ信奉者Zin</font></th><th>人間</th><th>一般1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d50001.png" width="120" height="120"></td><td>笛(1210)</td><td>牙(810)</td><td>イベント(1210)</td><td>鎧(670)</td><td>槍投擲機(610)</td><td>十字架(50)</td><td>双剣(810)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">原人Zin</font></th><th>人間</th><th>一般2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d50004.png" width="120" height="120"></td><td>笛(1380)</td><td>牙(920)</td><td>イベント(1380)</td><td>グローブ(770)</td><td>槍投擲機(690)</td><td>十字架(60)</td><td>双剣(920)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">原始人Zin</font></th><th>人間</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d50000.png" width="120" height="120"></td><td>笛(1560)</td><td>牙(1040)</td><td>状態異常回復1(1560)</td><td>足(870)</td><td>槍投擲機(780)</td><td>十字架(70)</td><td>双剣(1040)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">イーターZin</font></th><th>人間</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d50002.png" width="120" height="120"></td><td>笛(650)</td><td>牙(430)</td><td>状態異常回復1(650)</td><td>グローブ(360)</td><td>槍投擲機(330)</td><td>十字架(80)</td><td>双剣(430)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">呪術者Zin</font></th><th>人間</th><th>ボス1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d50003.png" width="120" height="120"></td><td>笛(1000)</td><td>牙(670)</td><td>状態異常回復1(1000)</td><td>足(560)</td><td>槍投擲機(500)</td><td>十字架(90)</td><td>双剣(670)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">デビルスカラーZin</font></th><th>人間</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d90002.png" width="120" height="120"></td><td>鞭(1200)</td><td>牙(800)</td><td>cP回復(1200)</td><td>腰(670)</td><td>イヤリング(600)</td><td>肩刺青(130)</td><td>双剣(800)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">オークZin</font></th><th>人間</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00da0001.png" width="120" height="120"></td><td>鈍器(1560)</td><td>牙(1040)</td><td>弾(1560)</td><td>足(870)</td><td>冠(780)</td><td>帰還(620)</td><td>双剣(1040)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ジャイアントZin</font></th><th>人間</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00da0003.png" width="120" height="120"></td><td>鈍器(650)</td><td>牙(430)</td><td>HP回復(650)</td><td>足(360)</td><td>首(330)</td><td>能力向上1(260)</td><td>双剣(430)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">コロッサスZin</font></th><th>人間</th><th>ボス1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00da0002.png" width="120" height="120"></td><td>鈍器(1000)</td><td>牙(670)</td><td>HP回復(1000)</td><td>足(560)</td><td>指輪(500)</td><td>能力向上1(400)</td><td>双剣(670)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">コボルトZin</font></th><th>悪魔</th><th>一般1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00de0004.png" width="120" height="120"></td><td>牙(1210)</td><td>スリング(810)</td><td>弾(1210)</td><td>腰(670)</td><td>爪(610)</td><td>肩刺青(120)</td><td>双剣(1210)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">グレムリンZin</font></th><th>悪魔</th><th>一般2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00de0003.png" width="120" height="120"></td><td>牙(1380)</td><td>スリング(920)</td><td>弾(1380)</td><td>腰(770)</td><td>爪(690)</td><td>肩刺青(130)</td><td>双剣(1380)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ゴブリンZin</font></th><th>悪魔</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00de0002.png" width="120" height="120"></td><td>牙(1560)</td><td>スリング(1040)</td><td>弾(1560)</td><td>腰(870)</td><td>爪(780)</td><td>肩刺青(140)</td><td>双剣(1560)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ファミリアZin</font></th><th>悪魔</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00de0001.png" width="120" height="120"></td><td>牙(1200)</td><td>スリング(800)</td><td>弾(1200)</td><td>腰(670)</td><td>爪(600)</td><td>肩刺青(150)</td><td>双剣(1200)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">インプZin</font></th><th>悪魔</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00de0000.png" width="120" height="120"></td><td>牙(650)</td><td>スリング(430)</td><td>弾(650)</td><td>腰(360)</td><td>爪(330)</td><td>肩刺青(160)</td><td>双剣(650)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">レッサーデーモンZin</font></th><th>悪魔</th><th>一般2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00e30001.png" width="120" height="120"></td><td>鞭(1380)</td><td>牙(920)</td><td>矢(1380)</td><td>マント(770)</td><td>指輪(690)</td><td>十字架(190)</td><td>双剣(920)</td><td>魔弾(1380)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">デビルZin</font></th><th>悪魔</th><th>セミ3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00e30003.png" width="120" height="120"></td><td>鞭(900)</td><td>牙(600)</td><td>矢(900)</td><td>マント(500)</td><td>指輪(450)</td><td>十字架(210)</td><td>双剣(600)</td><td>魔弾(900)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">野良犬Zin</font></th><th>動物</th><th>一般1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00ee0000.png" width="120" height="120"></td><td>牙(1210)</td><td>笛(810)</td><td>鍵(30)</td><td>職業鎧(670)</td><td>槍投擲機(610)</td><td>特殊1(480)</td><td>双剣(1210)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ウルフZin</font></th><th>動物</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00ee0001.png" width="120" height="120"></td><td>牙(1560)</td><td>弓(1040)</td><td>状態異常回復1(1560)</td><td>マント(870)</td><td>槍投擲機(780)</td><td>特殊1(620)</td><td>双剣(1560)</td><td>銃(1040)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">レッドアイ警備犬Zin</font></th><th>動物</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00ee0002.png" width="120" height="120"></td><td>牙(650)</td><td>鞭(430)</td><td>鍵(50)</td><td>職業鎧(360)</td><td>槍投擲機(330)</td><td>特殊1(260)</td><td>双剣(650)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ダイアーウルフZin</font></th><th>動物</th><th>セミ2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00ee0003.png" width="120" height="120"></td><td>牙(750)</td><td>鈍器(500)</td><td>cP回復(750)</td><td>足(420)</td><td>槍投擲機(380)</td><td>特殊1(300)</td><td>双剣(750)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ヘルハウンドZin</font></th><th>動物</th><th>ボス2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00ee0004.png" width="120" height="120"></td><td>牙(1100)</td><td>両手剣(730)</td><td>鍵(70)</td><td>職業鎧(610)</td><td>槍投擲機(550)</td><td>特殊1(440)</td><td>鎌(730)</td><td>双剣(1100)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ブラックベアーZin</font></th><th>動物</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f00000.png" width="120" height="120"></td><td>牙(1560)</td><td>鞭(1040)</td><td>状態異常回復1(1560)</td><td>グローブ(870)</td><td>爪(780)</td><td>宝石(620)</td><td>双剣(1560)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ブラウンベアーZin</font></th><th>動物</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f00001.png" width="120" height="120"></td><td>牙(1200)</td><td>笛(800)</td><td>HP回復(1200)</td><td>足(670)</td><td>爪(600)</td><td>宝石(480)</td><td>双剣(1200)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">弓張月熊Zin</font></th><th>動物</th><th>ボス3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f00004.png" width="120" height="120"></td><td>牙(1200)</td><td>鈍器(800)</td><td>HP回復(1200)</td><td>マント(670)</td><td>爪(600)</td><td>宝石(480)</td><td>双剣(1200)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ファイアブロアーZin</font></th><th>神獣</th><th>一般1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f10000.png" width="120" height="120"></td><td>スリング(1210)</td><td>牙(810)</td><td>弾(1210)</td><td>グローブ(670)</td><td>手首(610)</td><td>能力向上2(480)</td><td>双剣(810)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ブレイジャーZin</font></th><th>神獣</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f10002.png" width="120" height="120"></td><td>スリング(1560)</td><td>牙(1040)</td><td>弾(1560)</td><td>グローブ(870)</td><td>手首(780)</td><td>能力向上2(620)</td><td>双剣(1040)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">火炎悪魔Zin</font></th><th>神獣</th><th>ボス1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f10004.png" width="120" height="120"></td><td>スリング(1000)</td><td>牙(670)</td><td>弾(1000)</td><td>グローブ(560)</td><td>手首(500)</td><td>能力向上2(400)</td><td>双剣(670)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">オクトパストンZin</font></th><th>神獣</th><th>一般1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f20000.png" width="120" height="120"></td><td>投擲(1210)</td><td>牙(810)</td><td>イベント(1210)</td><td>マント(670)</td><td>首(610)</td><td>肩刺青(170)</td><td>双剣(810)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">凍破Zin</font></th><th>神獣</th><th>一般2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f20001.png" width="120" height="120"></td><td>投擲(1380)</td><td>牙(920)</td><td>イベント(1380)</td><td>マント(770)</td><td>首(690)</td><td>肩刺青(180)</td><td>双剣(920)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">キャストアイZin</font></th><th>神獣</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f20002.png" width="120" height="120"></td><td>投擲(1560)</td><td>牙(1040)</td><td>イベント(1560)</td><td>マント(870)</td><td>首(780)</td><td>肩刺青(190)</td><td>双剣(1040)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">スノーツリーZin</font></th><th>神獣</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f20003.png" width="120" height="120"></td><td>投擲(650)</td><td>牙(430)</td><td>イベント(650)</td><td>マント(360)</td><td>首(330)</td><td>肩刺青(200)</td><td>双剣(430)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">サーリビラエZin</font></th><th>神獣</th><th>ボス1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f20004.png" width="120" height="120"></td><td>投擲(1000)</td><td>牙(670)</td><td>イベント(1000)</td><td>マント(560)</td><td>首(500)</td><td>肩刺青(210)</td><td>双剣(670)</td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01010000.png" width="120" height="120"></td><td>弓(1560)</td><td>片手剣(1040)</td><td>矢(1560)</td><td>グローブ(900)</td><td>手首(780)</td><td>腕刺青(170)</td><td>クロー(1040)</td><td>銃(1560)</td><td>魔弾(1560)</td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ジャイアント骸骨1 Zin</font></th><th>アンデット</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01050001.png" width="120" height="120"></td><td>冠(50)</td><td>鈍器(90)</td><td>牙(160)</td><td>職業鎧(230)</td><td>状態異常回復1(300)</td><td>杖(350)</td><td>本(350)</td><td>双剣(160)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ジャイアント骸骨2 Zin</font></th><th>アンデット</th><th>セミ2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01050002.png" width="120" height="120"></td><td>能力向上2(80)</td><td>職業鎧(140)</td><td>牙(250)</td><td>職業鎧(360)</td><td>ステッキ(470)</td><td>イベント(550)</td><td>双剣(250)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ジャイアント骸骨4 Zin</font></th><th>アンデット</th><th>ボス2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01050004.png" width="120" height="120"></td><td>杖(270)</td><td>マント(450)</td><td>牙(810)</td><td>職業鎧(1170)</td><td>肩刺青(1530)</td><td>杖(1800)</td><td>本(270)</td><td>双剣(810)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">バイキングヘッド Zin</font></th><th>アンデット</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01050100.png" width="120" height="120"></td><td>鍵(30)</td><td>鈍器(50)</td><td>牙(90)</td><td>職業鎧(130)</td><td>状態異常回復1(170)</td><td>イベント(200)</td><td>双剣(90)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">バイキングヘッド3 Zin</font></th><th>アンデット</th><th>ボス2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01050103.png" width="120" height="120"></td><td>能力向上2(270)</td><td>鈍器(450)</td><td>牙(810)</td><td>職業鎧(1170)</td><td>ステッキ(1530)</td><td>杖(1800)</td><td>本(1800)</td><td>双剣(810)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">デスマスク Zin</font></th><th>アンデット</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01050200.png" width="120" height="120"></td><td>宝石(50)</td><td>宝石(90)</td><td>牙(160)</td><td>職業鎧(230)</td><td>肩刺青(300)</td><td>杖(350)</td><td>本(350)</td><td>双剣(160)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">デスマスク2 Zin</font></th><th>アンデット</th><th>ボス1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01050202.png" width="120" height="120"></td><td>冠(150)</td><td>鈍器(250)</td><td>牙(450)</td><td>職業鎧(650)</td><td>ステッキ(850)</td><td>職業鎧(1000)</td><td>双剣(450)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">デスマスク4 Zin</font></th><th>アンデット</th><th>ボス3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01050204.png" width="120" height="120"></td><td>冠(360)</td><td>鈍器(600)</td><td>牙(1080)</td><td>職業鎧(1560)</td><td>ステッキ(2040)</td><td>杖(2400)</td><td>本(2400)</td><td>双剣(1080)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ボーンキメラZin</font></th><th>アンデット</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01070000.png" width="120" height="120"></td><td>片手剣(30)</td><td>首(50)</td><td>牙(90)</td><td>職業鎧(130)</td><td>状態異常回復1(170)</td><td>兜・帽子(200)</td><td>クロー(30)</td><td>双剣(90)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ボーンキメラ2 Zin</font></th><th>アンデット</th><th>セミ2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01070002.png" width="120" height="120"></td><td>片手剣(80)</td><td>首(140)</td><td>牙(250)</td><td>職業鎧(360)</td><td>槍投擲機(470)</td><td>兜・帽子(550)</td><td>クロー(80)</td><td>双剣(250)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ボーンキメラ4 Zin</font></th><th>アンデット</th><th>ボス2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01070004.png" width="120" height="120"></td><td>片手剣(270)</td><td>状態異常回復2(450)</td><td>牙(810)</td><td>職業鎧(1170)</td><td>槍投擲機(1530)</td><td>兜・帽子(1800)</td><td>クロー(270)</td><td>双剣(810)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ブルーエリゲイト1 Zin</font></th><th>アンデット</th><th>セミ2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01070101.png" width="120" height="120"></td><td>宝石(80)</td><td>首(140)</td><td>牙(250)</td><td>職業鎧(360)</td><td>槍投擲機(470)</td><td>イベント(550)</td><td>双剣(250)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ブルーエリゲイト3 Zin</font></th><th>アンデット</th><th>ボス2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01070103.png" width="120" height="120"></td><td>職業鎧(270)</td><td>首(450)</td><td>牙(810)</td><td>十字架(1170)</td><td>状態異常回復1(1530)</td><td>兜・帽子(1800)</td><td>双剣(810)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">装甲ボーンキメラ Zin</font></th><th>アンデット</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01070200.png" width="120" height="120"></td><td>片手剣(30)</td><td>首(50)</td><td>牙(90)</td><td>職業鎧(130)</td><td>状態異常回復1(170)</td><td>HP回復(200)</td><td>クロー(30)</td><td>双剣(90)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">装甲ボーンキメラ2 Zin</font></th><th>アンデット</th><th>セミ3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01070202.png" width="120" height="120"></td><td>能力向上2(110)</td><td>首(180)</td><td>牙(320)</td><td>十字架(460)</td><td>槍投擲機(600)</td><td>兜・帽子(700)</td><td>双剣(320)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">装甲ボーンキメラ4 Zin</font></th><th>アンデット</th><th>ボス3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01070204.png" width="120" height="120"></td><td>宝石(360)</td><td>首(600)</td><td>牙(1080)</td><td>能力向上1(1560)</td><td>槍投擲機(2040)</td><td>宝石(2400)</td><td>双剣(1080)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ならず者1 Zin</font></th><th>人間</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01090001.png" width="120" height="120"></td><td>鍵(50)</td><td>爪(150)</td><td>牙(100)</td><td>笛(80)</td><td>状態異常回復1(20)</td><td>盾(30)</td><td>双剣(100)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ならず者2 Zin</font></th><th>人間</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01090002.png" width="120" height="120"></td><td>投擲(90)</td><td>職業鎧(260)</td><td>牙(180)</td><td>能力向上1(140)</td><td>弓(40)</td><td>盾(50)</td><td>双剣(180)</td><td>銃(40)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ならず者4 Zin</font></th><th>人間</th><th>ボス1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01090004.png" width="120" height="120"></td><td>投擲(250)</td><td>爪(750)</td><td>牙(500)</td><td>笛(400)</td><td>弓(100)</td><td>盾(150)</td><td>双剣(500)</td><td>銃(100)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">襲撃団 Zin</font></th><th>人間</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01090100.png" width="120" height="120"></td><td>鍵(50)</td><td>爪(150)</td><td>牙(100)</td><td>笛(80)</td><td>弓(20)</td><td>HP回復(30)</td><td>双剣(100)</td><td>銃(20)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">襲撃団1 Zin</font></th><th>人間</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01090101.png" width="120" height="120"></td><td>投擲(90)</td><td>爪(260)</td><td>牙(180)</td><td>能力向上2(140)</td><td>弓(40)</td><td>盾(50)</td><td>双剣(180)</td><td>銃(40)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">襲撃団3 Zin</font></th><th>人間</th><th>ボス2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01090103.png" width="120" height="120"></td><td>投擲(450)</td><td>爪(1350)</td><td>牙(900)</td><td>鞭(720)</td><td>両手剣(180)</td><td>イベント(270)</td><td>鎌(180)</td><td>双剣(900)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">格闘家 Zin</font></th><th>人間</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01090200.png" width="120" height="120"></td><td>投擲(90)</td><td>爪(260)</td><td>牙(180)</td><td>マント(140)</td><td>肩刺青(40)</td><td>イベント(50)</td><td>双剣(180)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ルーンファイター Zin</font></th><th>人間</th><th>セミ3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01090202.png" width="120" height="120"></td><td>両手剣(180)</td><td>爪(530)</td><td>牙(350)</td><td>笛(280)</td><td>状態異常回復1(70)</td><td>HP回復(110)</td><td>鎌(180)</td><td>双剣(350)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">武術マスター Zin</font></th><th>人間</th><th>ボス2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01090203.png" width="120" height="120"></td><td>鍵(450)</td><td>爪(1350)</td><td>牙(900)</td><td>能力向上1(720)</td><td>弓(180)</td><td>盾(270)</td><td>双剣(900)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ビッグモンキー Zin</font></th><th>動物</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01110000.png" width="120" height="120"></td><td>冠(70)</td><td>イヤリング(50)</td><td>牙(40)</td><td>十字架(30)</td><td>肩刺青(20)</td><td>翼(10)</td><td>双剣(40)</td><td>水晶(10)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ビッグモンキー2 Zin</font></th><th>動物</th><th>セミ2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01110002.png" width="120" height="120"></td><td>冠(190)</td><td>イヤリング(140)</td><td>牙(110)</td><td>能力向上1(80)</td><td>矢(60)</td><td>翼(30)</td><td>双剣(110)</td><td>水晶(30)</td><td>魔弾(60)</td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ルーンモンキー Zin</font></th><th>動物</th><th>ボス1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01110003.png" width="120" height="120"></td><td>杖(350)</td><td>イヤリング(250)</td><td>牙(200)</td><td>職業鎧(150)</td><td>矢(100)</td><td>HP回復(50)</td><td>本(350)</td><td>双剣(200)</td><td>魔弾(100)</td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">マウンテン戦士 Zin</font></th><th>動物</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01110100.png" width="120" height="120"></td><td>冠(70)</td><td>イヤリング(50)</td><td>牙(40)</td><td>職業鎧(30)</td><td>矢(20)</td><td>イベント(10)</td><td>双剣(40)</td><td>魔弾(20)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">マウンテン戦士4 Zin</font></th><th>動物</th><th>ボス3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01110104.png" width="120" height="120"></td><td>冠(840)</td><td>イヤリング(600)</td><td>牙(480)</td><td>十字架(360)</td><td>矢(240)</td><td>HP回復(120)</td><td>双剣(480)</td><td>魔弾(240)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ウィングコング Zin</font></th><th>動物</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01110200.png" width="120" height="120"></td><td>冠(120)</td><td>イヤリング(90)</td><td>牙(70)</td><td>能力向上2(50)</td><td>肩刺青(40)</td><td>cP回復(20)</td><td>双剣(70)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ウィングコング2 Zin</font></th><th>動物</th><th>セミ3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01110202.png" width="120" height="120"></td><td>冠(250)</td><td>イヤリング(180)</td><td>牙(140)</td><td>cP回復(110)</td><td>肩刺青(70)</td><td>HP回復(40)</td><td>双剣(140)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ウィングコング3 Zin</font></th><th>動物</th><th>ボス2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01110203.png" width="120" height="120"></td><td>能力向上2(630)</td><td>状態異常回復2(450)</td><td>牙(360)</td><td>職業鎧(270)</td><td>矢(180)</td><td>翼(90)</td><td>双剣(360)</td><td>水晶(90)</td><td>魔弾(180)</td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ユニコーン Zin</font></th><th>神獣</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01150000.png" width="120" height="120"></td><td>冠(90)</td><td>マント(130)</td><td>牙(70)</td><td>槍(10)</td><td>弓(20)</td><td>翼(50)</td><td>箒(10)</td><td>双剣(70)</td><td>水晶(50)</td><td>銃(20)</td></tr>
+          <tr><th><font style="color:#FFFF33;">ユニコーン1 Zin</font></th><th>神獣</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01150001.png" width="120" height="120"></td><td>冠(160)</td><td>マント(230)</td><td>牙(120)</td><td>鎧(20)</td><td>肩刺青(40)</td><td>HP回復(90)</td><td>双剣(120)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ユニコーン3 Zin</font></th><th>神獣</th><th>ボス2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01150003.png" width="120" height="120"></td><td>冠(810)</td><td>マント(1170)</td><td>牙(630)</td><td>槍(90)</td><td>cP回復(180)</td><td>イベント(450)</td><td>箒(90)</td><td>双剣(630)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ペガサス1 Zin</font></th><th>神獣</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01150101.png" width="120" height="120"></td><td>杖(160)</td><td>ブローチ(230)</td><td>牙(120)</td><td>槍(20)</td><td>弓(40)</td><td>翼(90)</td><td>本(160)</td><td>箒(20)</td><td>双剣(120)</td><td>水晶(90)</td></tr>
+          <tr><th><font style="color:#FFFF33;">ペガサス4 Zin</font></th><th>神獣</th><th>ボス3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01150104.png" width="120" height="120"></td><td>冠(1080)</td><td>マント(1560)</td><td>牙(840)</td><td>槍(120)</td><td>弓(240)</td><td>cP回復(600)</td><td>箒(120)</td><td>双剣(840)</td><td>銃(240)</td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ブルーウイング1 Zin</font></th><th>神獣</th><th>セミ2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01150201.png" width="120" height="120"></td><td>杖(250)</td><td>状態異常回復2(360)</td><td>牙(190)</td><td>槍(30)</td><td>弓(60)</td><td>翼(140)</td><td>本(250)</td><td>箒(30)</td><td>双剣(190)</td><td>水晶(140)</td></tr>
+          <tr><th><font style="color:#FFFF33;">ブルーウイング2 Zin</font></th><th>神獣</th><th>ボス1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01150202.png" width="120" height="120"></td><td>冠(450)</td><td>マント(650)</td><td>牙(350)</td><td>槍(50)</td><td>弓(100)</td><td>HP回復(250)</td><td>箒(50)</td><td>双剣(350)</td><td>銃(100)</td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ブルーウイング3 Zin</font></th><th>神獣</th><th>ボス2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01150203.png" width="120" height="120"></td><td>冠(810)</td><td>ブローチ(1170)</td><td>牙(630)</td><td>槍(90)</td><td>弓(180)</td><td>翼(450)</td><td>箒(90)</td><td>双剣(630)</td><td>水晶(450)</td><td>銃(180)</td></tr>
+          <tr><th><font style="color:#FFFF33;">ブルーウイング4 Zin</font></th><th>神獣</th><th>ボス3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01150204.png" width="120" height="120"></td><td>能力向上2(1080)</td><td>マント(1560)</td><td>牙(840)</td><td>十字架(120)</td><td>弓(240)</td><td>イベント(600)</td><td>双剣(840)</td><td>銃(240)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ヴァンパイア</font></th><th>アンデット</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d10000.png" width="120" height="120"></td><td>鞭(360)</td><td>牙(240)</td><td>イベント(360)</td><td>職業鎧(200)</td><td>指輪(180)</td><td>特殊1(140)</td><td>双剣(240)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ヴァンパイア伯爵</font></th><th>アンデット</th><th>セミ2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d10002.png" width="120" height="120"></td><td>鞭(420)</td><td>牙(280)</td><td>弾(420)</td><td>職業鎧(230)</td><td>指輪(210)</td><td>特殊1(170)</td><td>双剣(280)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ヴァンパイア君主</font></th><th>アンデット</th><th>ボス2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d10004.png" width="120" height="120"></td><td>鞭(490)</td><td>牙(330)</td><td>HP回復(490)</td><td>職業鎧(270)</td><td>指輪(250)</td><td>特殊1(200)</td><td>双剣(330)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ヴァンパイア Ex</font></th><th>アンデット</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d10000.png" width="120" height="120"></td><td>鞭(360)</td><td>牙(240)</td><td>イベント(360)</td><td>職業鎧(200)</td><td>指輪(180)</td><td>ブローチ(200)</td><td>双剣(240)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ヴァンパイア伯爵 Ex</font></th><th>アンデット</th><th>セミ2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d10002.png" width="120" height="120"></td><td>鞭(650)</td><td>牙(430)</td><td>弾(650)</td><td>職業鎧(360)</td><td>指輪(330)</td><td>ブローチ(300)</td><td>双剣(430)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ヴァンパイア君主 Ex</font></th><th>アンデット</th><th>ボス2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d10004.png" width="120" height="120"></td><td>鞭(2000)</td><td>牙(1330)</td><td>HP回復(2000)</td><td>職業鎧(1110)</td><td>指輪(1000)</td><td>ブローチ(500)</td><td>双剣(1330)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">オクトパス</font></th><th>神獣</th><th>一般1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f20000.png" width="120" height="120"></td><td>双剣(270)</td><td>投擲(100)</td><td>牙(270)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">コルダス</font></th><th>神獣</th><th>一般2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f20001.png" width="120" height="120"></td><td>双剣(250)</td><td>投擲(100)</td><td>牙(250)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">コールドアイ</font></th><th>神獣</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f20002.png" width="120" height="120"></td><td>双剣(240)</td><td>投擲(100)</td><td>牙(240)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">フリーザー</font></th><th>神獣</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f20003.png" width="120" height="120"></td><td>双剣(260)</td><td>投擲(100)</td><td>牙(260)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">クーラー</font></th><th>神獣</th><th>ボス1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f20004.png" width="120" height="120"></td><td>双剣(310)</td><td>投擲(100)</td><td>牙(310)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">オクトパス Ex</font></th><th>神獣</th><th>一般1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f20000.png" width="120" height="120"></td><td>投擲(410)</td><td>牙(270)</td><td>イベント(410)</td><td>マント(230)</td><td>首(210)</td><td>肩刺青(170)</td><td>双剣(270)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">コルダス Ex</font></th><th>神獣</th><th>一般2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f20001.png" width="120" height="120"></td><td>投擲(380)</td><td>牙(250)</td><td>イベント(380)</td><td>マント(210)</td><td>首(190)</td><td>肩刺青(180)</td><td>双剣(250)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">コールドアイ Ex</font></th><th>神獣</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f20002.png" width="120" height="120"></td><td>投擲(360)</td><td>牙(240)</td><td>イベント(360)</td><td>マント(200)</td><td>首(180)</td><td>肩刺青(190)</td><td>双剣(240)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">フリーザー Ex</font></th><th>神獣</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f20003.png" width="120" height="120"></td><td>投擲(450)</td><td>牙(300)</td><td>イベント(450)</td><td>マント(250)</td><td>首(230)</td><td>肩刺青(200)</td><td>双剣(300)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">クーラー Ex</font></th><th>神獣</th><th>ボス1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f20004.png" width="120" height="120"></td><td>投擲(1200)</td><td>牙(800)</td><td>イベント(1200)</td><td>マント(670)</td><td>首(600)</td><td>肩刺青(210)</td><td>双剣(800)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ボーンドラゴン Zin</font></th><th>アンデット</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01070000.png" width="120" height="120"></td><td>片手剣(30)</td><td>首(50)</td><td>牙(90)</td><td>職業鎧(130)</td><td>状態異常回復1(170)</td><td>兜・帽子(200)</td><td>クロー(30)</td><td>双剣(90)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ホワイトゴルゴ Zin</font></th><th>動物</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01110000.png" width="120" height="120"></td><td>冠(70)</td><td>イヤリング(50)</td><td>牙(40)</td><td>十字架(30)</td><td>肩刺青(20)</td><td>翼(10)</td><td>双剣(40)</td><td>水晶(10)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ユニコーン Zin</font></th><th>神獣</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01150000.png" width="120" height="120"></td><td>冠(90)</td><td>マント(130)</td><td>牙(70)</td><td>槍(10)</td><td>弓(20)</td><td>翼(50)</td><td>箒(10)</td><td>双剣(70)</td><td>水晶(50)</td><td>銃(20)</td></tr>
+          <tr><th><font style="color:#FFFF33;">エルフの猟犬 Zin</font></th><th>動物</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00ee0002.png" width="120" height="120"></td><td>牙(650)</td><td>鞭(430)</td><td>鍵(50)</td><td>職業鎧(360)</td><td>槍投擲機(330)</td><td>特殊1(260)</td><td>双剣(650)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">デビルスカラー Ex[2]</font></th><th>人間</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d90002.png" width="120" height="120"></td><td>鞭(300)</td><td>牙(200)</td><td>cP回復(300)</td><td>腰(170)</td><td>イヤリング(150)</td><td>肩刺青(130)</td><td>双剣(200)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ボーンドラゴン Zin</font></th><th>アンデット</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01070000.png" width="120" height="120"></td><td>片手剣(30)</td><td>首(50)</td><td>牙(90)</td><td>職業鎧(130)</td><td>状態異常回復1(170)</td><td>兜・帽子(200)</td><td>クロー(30)</td><td>双剣(90)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ホワイトゴルゴ Zin</font></th><th>動物</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01110000.png" width="120" height="120"></td><td>冠(70)</td><td>イヤリング(50)</td><td>牙(40)</td><td>十字架(30)</td><td>肩刺青(20)</td><td>翼(10)</td><td>双剣(40)</td><td>水晶(10)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ユニコーン Zin</font></th><th>神獣</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01150000.png" width="120" height="120"></td><td>冠(90)</td><td>マント(130)</td><td>牙(70)</td><td>槍(10)</td><td>弓(20)</td><td>翼(50)</td><td>箒(10)</td><td>双剣(70)</td><td>水晶(50)</td><td>銃(20)</td></tr>
+          <tr><th><font style="color:#FFFF33;">ゾンビEv</font></th><th>アンデット</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00cc0004.png" width="120" height="120"></td><td>投擲(1560)</td><td>牙(1040)</td><td>イベント(1560)</td><td>兜・帽子(870)</td><td>爪(780)</td><td>帰還(620)</td><td>双剣(1040)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">巨人骸骨Ev</font></th><th>人間</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00da0001.png" width="120" height="120"></td><td>鈍器(1560)</td><td>牙(1040)</td><td>弾(1560)</td><td>足(870)</td><td>冠(780)</td><td>帰還(620)</td><td>双剣(1040)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">原始人Ev</font></th><th>人間</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d50000.png" width="120" height="120"></td><td>笛(1560)</td><td>牙(1040)</td><td>状態異常回復1(1560)</td><td>足(870)</td><td>槍投擲機(780)</td><td>十字架(70)</td><td>双剣(1040)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ブラックベアーEv</font></th><th>動物</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f00000.png" width="120" height="120"></td><td>牙(1560)</td><td>鞭(1040)</td><td>状態異常回復1(1560)</td><td>グローブ(870)</td><td>爪(780)</td><td>宝石(620)</td><td>双剣(1560)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ゴブリンEv</font></th><th>悪魔</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00de0002.png" width="120" height="120"></td><td>牙(1560)</td><td>スリング(1040)</td><td>弾(1560)</td><td>腰(870)</td><td>爪(780)</td><td>肩刺青(140)</td><td>双剣(1560)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ウルフEv</font></th><th>動物</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00ee0001.png" width="120" height="120"></td><td>牙(1560)</td><td>弓(1040)</td><td>状態異常回復1(1560)</td><td>マント(870)</td><td>槍投擲機(780)</td><td>特殊1(620)</td><td>双剣(1560)</td><td>銃(1040)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ヴァンパイアEv</font></th><th>アンデット</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d10000.png" width="120" height="120"></td><td>鞭(1560)</td><td>牙(1040)</td><td>イベント(1560)</td><td>職業鎧(870)</td><td>指輪(780)</td><td>ブローチ(200)</td><td>双剣(1040)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">キャストアイEv</font></th><th>神獣</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f20002.png" width="120" height="120"></td><td>投擲(1560)</td><td>牙(1040)</td><td>イベント(1560)</td><td>マント(870)</td><td>首(780)</td><td>肩刺青(190)</td><td>双剣(1040)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ブレイジャーEv</font></th><th>神獣</th><th>一般3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f10002.png" width="120" height="120"></td><td>スリング(1560)</td><td>牙(1040)</td><td>弾(1560)</td><td>グローブ(870)</td><td>手首(780)</td><td>能力向上2(620)</td><td>双剣(1040)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ファミリアEv</font></th><th>悪魔</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00de0001.png" width="120" height="120"></td><td>牙(1200)</td><td>スリング(800)</td><td>弾(1200)</td><td>腰(670)</td><td>爪(600)</td><td>肩刺青(150)</td><td>双剣(1200)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">デビルスカラーEv</font></th><th>人間</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d90002.png" width="120" height="120"></td><td>鞭(1200)</td><td>牙(800)</td><td>cP回復(1200)</td><td>腰(670)</td><td>イヤリング(600)</td><td>肩刺青(130)</td><td>双剣(800)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ブラウンベアーEv</font></th><th>動物</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f00001.png" width="120" height="120"></td><td>牙(1200)</td><td>笛(800)</td><td>HP回復(1200)</td><td>足(670)</td><td>爪(600)</td><td>宝石(480)</td><td>双剣(1200)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">古代ヴァンパイアEv</font></th><th>アンデット</th><th>セミ2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d10002.png" width="120" height="120"></td><td>鞭(750)</td><td>牙(500)</td><td>弾(750)</td><td>職業鎧(420)</td><td>指輪(380)</td><td>ブローチ(300)</td><td>双剣(500)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">デビルEv</font></th><th>悪魔</th><th>セミ3</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00e30003.png" width="120" height="120"></td><td>鞭(900)</td><td>牙(600)</td><td>矢(900)</td><td>マント(500)</td><td>指輪(450)</td><td>十字架(210)</td><td>双剣(600)</td><td>魔弾(900)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">火炎悪魔Ev</font></th><th>神獣</th><th>ボス1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00f10004.png" width="120" height="120"></td><td>スリング(1000)</td><td>牙(670)</td><td>弾(1000)</td><td>グローブ(560)</td><td>手首(500)</td><td>能力向上2(400)</td><td>双剣(670)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ヘルハウンドEv</font></th><th>動物</th><th>ボス2</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00ee0004.png" width="120" height="120"></td><td>牙(1100)</td><td>両手剣(730)</td><td>鍵(70)</td><td>職業鎧(610)</td><td>槍投擲機(550)</td><td>特殊1(440)</td><td>鎌(730)</td><td>双剣(1100)</td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ヴァンパイアSp</font></th><th>アンデット</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00d10004.png" width="120" height="120"></td><td>鞭(1500)</td><td>牙(1000)</td><td>イベント(1500)</td><td>職業鎧(900)</td><td>指輪(800)</td><td>ブローチ(200)</td><td>双剣(1000)</td><td></td><td></td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">ペガサスSp</font></th><th>神獣</th><th>セミ1</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/01150104.png" width="120" height="120"></td><td>冠(1080)</td><td>マント(1500)</td><td>牙(900)</td><td>槍(120)</td><td>弓(300)</td><td>cP回復(600)</td><td>箒(120)</td><td>双剣(900)</td><td>銃(300)</td><td></td></tr>
+          <tr><th><font style="color:#FFFF33;">インプSp</font></th><th>悪魔</th><th>一般4</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td><img src="../monster/design/image/monster/00de0003.png" width="120" height="120"></td><td>牙(1200)</td><td>スリング(700)</td><td>弾(600)</td><td>腰(400)</td><td>爪(300)</td><td>肩刺青(700)</td><td>双剣(1200)</td><td></td><td></td><td></td></tr>
+            </table>
+            
+
+
+        <br>
+        <br>
+        <footer class="android-footer mdl-mega-footer">
+          <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+          </font>
+          Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+        </footer>
+        <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+        　-->
+
+      </div>
+
+      <a href="" id="view-source" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">トップ
+      </a>
+      <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    </div>
+</body>
+
+</html>
