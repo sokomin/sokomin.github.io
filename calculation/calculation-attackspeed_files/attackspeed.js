@@ -17,6 +17,8 @@ function init1() {
     document.f.a18.value = 0;
     document.f.a19.value = 0;
     document.f.a20.value = 0;
+    document.f.a21.value = 0;
+    document.f.a22.value = 0;
 
     document.f.b1.value = 0;
     document.f.b2.value = 0;
@@ -91,6 +93,7 @@ function init2() {
     document.f.s6.value = 0;
     document.f.s7.value = 0;
     document.f.s8.value = 0;
+    document.f.s9.value = 0;
 
     document.f.l1.value = 0;
     document.f.l2.value = 0;
@@ -99,11 +102,12 @@ function init2() {
     document.f.l5.value = 0;
     document.f.l6.value = 0;
     document.f.l8.value = 0;
+    document.f.l9.value = 0;
 
 }
 
 function calc1() {
-    var sum1, sum2, skill, R4, R14;
+    var suma1, suma2, sumb1, sumb2, skill, R4, R14;
 
     if (document.f.e[0].checked == true)
         skill = parseInt(document.f.s1.value);
@@ -120,11 +124,13 @@ function calc1() {
     else
         skill = parseInt(document.f.s7.value);
 
-    if (document.f.e[0].checked == true) {
+    if (document.f.sokomin[0].checked == true) {
         skill += parseInt(document.f.s8.value);
+    } else if (document.f.sokomin[1].checked == true) {
+        skill += parseInt(document.f.s9.value);
     }
 
-    sum1 = parseInt(document.f.a1.value) + parseInt(document.f.a5.value) +
+    suma1 = parseInt(document.f.a1.value) + parseInt(document.f.a5.value) +
         parseInt(document.f.a6.value) + parseInt(document.f.a7.value) +
         parseInt(document.f.a8.value) + parseInt(document.f.a9.value) +
         parseInt(document.f.a10.value) + parseInt(document.f.a11.value) +
@@ -132,16 +138,16 @@ function calc1() {
         parseInt(document.f.a14.value) + parseInt(document.f.a15.value) +
         parseInt(document.f.a16.value) + parseInt(document.f.a17.value) +
         parseInt(document.f.a18.value) + parseInt(document.f.a19.value) +
-        parseInt(document.f.a20.value);
-    sum2 = parseInt(sum1) + parseInt(skill) +
+        parseInt(document.f.a20.value) + parseInt(document.f.a21.value) + parseInt(document.f.a22.value);
+    suma2 = parseInt(suma1) + parseInt(skill) +
         parseInt(document.f.b1.value) + parseInt(document.f.b2.value) +
         parseInt(document.f.b3.value) + parseInt(document.f.b4.value) +
         parseInt(document.f.b5.value);
 
     document.f.r1.value = Math.floor(Math.floor(16 * (document.f.a2.value))
-        * 100 / (100 + sum2));
-    document.f.r2.value = sum1;
-    document.f.r3.value = sum2;
+        * 100 / (100 + suma2));
+    document.f.r2.value = suma1;
+    document.f.r3.value = suma2;
 
     R4 = Math.floor(Math.floor(16 * document.f.a2.value) * 100 / (parseInt(document.f.r1.value) + 1) - 100 + 1);
     if (R4 < 0)
@@ -149,11 +155,11 @@ function calc1() {
     else
         document.f.r4.value = R4;
 
-    document.f.r5.value = Math.floor(Math.floor(16 * document.f.a2.value) * 100 / (parseInt(document.f.r1.value)) - 100 + 1) - sum2;
+    document.f.r5.value = Math.floor(Math.floor(16 * document.f.a2.value) * 100 / (parseInt(document.f.r1.value)) - 100 + 1) - suma2;
     document.f.r6.value = 12 / parseInt(document.f.r1.value);
     document.f.r7.value = parseInt(document.f.r1.value) / 12;
 
-    sum11 = parseInt(document.f.a3.value) + parseInt(document.f.a5.value) +
+    sumb1 = parseInt(document.f.a3.value) + parseInt(document.f.a5.value) +
         parseInt(document.f.a6.value) + parseInt(document.f.a7.value) +
         parseInt(document.f.a8.value) + parseInt(document.f.a9.value) +
         parseInt(document.f.a10.value) + parseInt(document.f.a11.value) +
@@ -161,16 +167,16 @@ function calc1() {
         parseInt(document.f.a14.value) + parseInt(document.f.a15.value) +
         parseInt(document.f.a16.value) + parseInt(document.f.a17.value) +
         parseInt(document.f.a18.value) + parseInt(document.f.a19.value) +
-        parseInt(document.f.a20.value);
-    sum12 = parseInt(sum11) + parseInt(skill) +
+        parseInt(document.f.a20.value) + parseInt(document.f.a21.value) + parseInt(document.f.a22.value);;
+    sumb2 = parseInt(sumb1) + parseInt(skill) +
         parseInt(document.f.b1.value) + parseInt(document.f.b2.value) +
         parseInt(document.f.b3.value) + parseInt(document.f.b4.value) +
         parseInt(document.f.b5.value);
 
     document.f.r8.value = Math.floor(Math.floor(16 * (document.f.a4.value))
-        * 100 / (100 + sum12));
-    document.f.r9.value = sum11;
-    document.f.r10.value = sum12;
+        * 100 / (100 + sumb2));
+    document.f.r9.value = sumb1;
+    document.f.r10.value = sumb2;
 
     R14 = Math.floor(Math.floor(16 * document.f.a4.value) * 100 / (parseInt(document.f.r8.value) + 1) - 100 + 1);
     if (R14 < 0)
@@ -178,7 +184,7 @@ function calc1() {
     else
         document.f.r11.value = R14;
 
-    document.f.r12.value = Math.floor(Math.floor(16 * document.f.a4.value) * 100 / (parseInt(document.f.r8.value)) - 100 + 1) - sum12;
+    document.f.r12.value = Math.floor(Math.floor(16 * document.f.a4.value) * 100 / (parseInt(document.f.r8.value)) - 100 + 1) - sumb2;
     document.f.r13.value = 12 / parseInt(document.f.r8.value);
     document.f.r14.value = parseInt(document.f.r8.value) / 12;
 }
@@ -230,4 +236,11 @@ function calcc8() {
         document.f.s8.value = 0;
     else
         document.f.s8.value = 10 + parseInt(document.f.l8.value) * 0.5;
+}
+
+function calcc9() {
+    if (document.f.l9.value == 0)
+        document.f.s9.value = 0;
+    else
+        document.f.s9.value = 10 + parseInt(document.f.l9.value) * 1.0;
 }
