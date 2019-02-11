@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-bo* mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="検索できたら最高" class="mdl-textfield__input" type="text" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+                <h3>ギルド石像一覧</h3>
+                ● 1つの石像を3部位以上作ることで、2つ目以降の効果が有効になります。<br>
+                ● ギルド石像は各属性の元素を集めて作れます。各部位を作るのに200個の各元素が必要です。<br>
+                ● 元素は元素抽出機をカバンに入れて敵を倒すことで、低確率で手に入ります。<br>
+                ● 元素抽出機は、ギルドホールの石像パーツ管理人から無料で入手できます。<br>
+                ● 複数所持の場合は、一番右下の元素抽出機が有効になります。<br>
+                ● [元素抽出機Lv * 100 ]レベル以上の敵を倒すと0.1%程度の確率で元素を入手できます。<br>
+                ● ただし、2レベル以上の石像を作る場合、攻城戦で勝ってGH Rankを該当レベルまで上げる必要があります。<br>
+                ● 200個集まったら、ギルドマスターが古都ブルンネンシュティグ バウマン(MAP右下)に話しかけて作成できます。<br>
+                <br>
+                <br>
+                <br>
+                <h4>各レベルの元素入手方法</h4>
+                <table id="table10">
+                    <tr>
+                        <th></th>
+                        <th>Lv1</th>
+                        <th>Lv2</th>
+                        <th>Lv3</th>
+                        <th>Lv4</th>
+                        <th>Lv5</th>
+                    </tr>
+                    <tr>
+                        <th>名称</th>
+                        <td>元素</td>
+                        <td>結晶</td>
+                        <td>破片</td>
+                        <td>かけら</td>
+                        <td>清水</td>
+                    </tr>
+                    <tr>
+                        <th>要求される最小敵Lv</th>
+                        <td>100</td>
+                        <td>200</td>
+                        <td>300</td>
+                        <td>400</td>
+                        <td>500</td>
+                    </tr>
+                    <tr>
+                        <th>およその確率</th>
+                        <td>0.10%</td>
+                        <td>0.05%</td>
+                        <td>0.03%</td>
+                        <td>0.03%</td>
+                        <td>0.02%</td>
+                    </tr>
+                </table>
+
+                <br>
+                <br>
+                <h4>各石像の詳細</h4>
+
+                <table id="table10" style="max-width:1200px">
+                    <colgroup>
+                        <col span="1" width="20%">
+                        <col span="1" width="40%">
+                        <col span="1" width="8%">
+                        <col span="1" width="8%">
+                        <col span="1" width="8%">
+                        <col span="1" width="8%">
+                        <col span="1" width="8%">
+                    </colgroup>
+                    <tr>
+                        <th colspan="7">ナルの神像</th>
+                    </tr>
+                    <tr>
+                        <th>パーツ</th>
+                        <th>効果 / レベル</th>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">頭部<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0032.png"></th>
+                        <td>火ダメージ吸収(%)</td>
+                        <td>+1</td>
+                        <td>+2</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                        <td>+5</td>
+                    </tr>
+                    <tr>
+                        <td>攻城戦で敵に与えるダメージ増加(%)</td>
+                        <td>+1</td>
+                        <td>+2</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                        <td>+5</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">胴体<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0033.png"></th>
+                        <td>火ダメージ抵抗(%)</td>
+                        <td>+1</td>
+                        <td>+2</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                        <td>+5</td>
+                    </tr>
+                    <tr>
+                        <td>フィールド火抵抗力ペナルティー減少<br>(%)</td>
+                        <td>3</td>
+                        <td>6</td>
+                        <td>9</td>
+                        <td>12</td>
+                        <td>15</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="5">翼<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0034.png"></th>
+                        <td>防御力(%)</td>
+                        <td>+1</td>
+                        <td>+2</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                        <td>+5</td>
+                    </tr>
+                    <tr>
+                        <td>力の魔法エンチャント水晶</td>
+                        <td colspan="5">2万 Gold</td>
+                    </tr>
+                    <tr>
+                        <td>運の魔法エンチャント水晶</td>
+                        <td colspan="5">2万 Gold</td>
+                    </tr>
+                    <tr>
+                        <td>光抵抗の魔法エンチャント水晶</td>
+                        <td colspan="5">200万 Gold</td>
+                    </tr>
+                    <tr>
+                        <td>大地攻撃のエンチャント水晶</td>
+                        <td colspan="5">100万 Gold</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">尻尾<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0035.png"></th>
+                        <td>ギルドペット・オビティアン数</td>
+                        <td>+2</td>
+                        <td>+4</td>
+                        <td>+6</td>
+                        <td>+8</td>
+                        <td>+10</td>
+                    </tr>
+                    <tr>
+                        <td>ギルドペット・オビティアン数</td>
+                        <td>+1</td>
+                        <td>+2</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                        <td>+5</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">台座<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0036.png"></th>
+                        <td>決定打抵抗(%)</td>
+                        <td>+2</td>
+                        <td>+4</td>
+                        <td>+6</td>
+                        <td>+8</td>
+                        <td>+10</td>
+                    </tr>
+                    <tr>
+                        <td>最大副ギルドマスター数</td>
+                        <td>+1</td>
+                        <td>+1</td>
+                        <td>+2</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                    </tr>
+                    <tr>
+                        <th colspan="7">ネーンの杯</th>
+                    </tr>
+                    <tr>
+                        <th>パーツ</th>
+                        <th>効果 / レベル</th>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">蓋<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0037.png"></th>
+                        <td>水ダメージ吸収(%)</td>
+                        <td>+1</td>
+                        <td>+2</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                        <td>+5</td>
+                    </tr>
+                    <tr>
+                        <td>攻城戦で敵から受けるダメージ減少<br>(％)</td>
+                        <td>+1</td>
+                        <td>+2</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                        <td>+5</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">器<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0038.png"></th>
+                        <td>水ダメージ抵抗(%)</td>
+                        <td>+1</td>
+                        <td>+2</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                        <td>+5</td>
+                    </tr>
+                    <tr>
+                        <td>フィールド水抵抗力ペナルティー減少<br>(%)</td>
+                        <td>3</td>
+                        <td>6</td>
+                        <td>9</td>
+                        <td>12</td>
+                        <td>15</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="4">受け皿<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0039.png"></th>
+                        <td>攻撃速度(%)</td>
+                        <td>+2</td>
+                        <td>+4</td>
+                        <td>+6</td>
+                        <td>+8</td>
+                        <td>+10</td>
+                    </tr>
+                    <tr>
+                        <td>敏捷性の魔法エンチャント水晶</td>
+                        <td colspan="5">2万 Gold</td>
+                    </tr>
+                    <tr>
+                        <td>火攻撃の魔法エンチャント水晶</td>
+                        <td colspan="5">100万 Gold</td>
+                    </tr>
+                    <tr>
+                        <td>水抵抗の魔法エンチャント水晶</td>
+                        <td colspan="5">200万 Gold</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">取っ手<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0040.png"></th>
+                        <td>ギルドペットクリスタルウォーター数</td>
+                        <td>+2</td>
+                        <td>+4</td>
+                        <td>+6</td>
+                        <td>+8</td>
+                        <td>+10</td>
+                    </tr>
+                    <tr>
+                        <td>ギルドペットクリスタルウォーター数</td>
+                        <td>+1</td>
+                        <td>+2</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                        <td>+5</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">盆<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0041.png"></th>
+                        <td>呪い抵抗(%)</td>
+                        <td>+2</td>
+                        <td>+4</td>
+                        <td>+6</td>
+                        <td>+8</td>
+                        <td>+10</td>
+                    </tr>
+                    <tr>
+                        <td>最大ギルド委員数</td>
+                        <td>+2</td>
+                        <td>+2</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                        <td>+5</td>
+                    </tr>
+                    <tr>
+                        <th colspan="7">スルの杖</th>
+                    </tr>
+                    <tr>
+                        <th>パーツ</th>
+                        <th>効果 / レベル</th>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">グリップ<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0042.png"></th>
+                        <td>風ダメージ吸収(%)</td>
+                        <td>+1</td>
+                        <td>+2</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                        <td>+5</td>
+                    </tr>
+                    <tr>
+                        <td>ギルドペット攻撃/アクション速度増加<br>(秒)</td>
+                        <td>+0.1</td>
+                        <td>+0.2</td>
+                        <td>+0.3</td>
+                        <td>+0.4</td>
+                        <td>+0.5</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">シャフト<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0043.png"></th>
+                        <td>風ダメージ抵抗(%)</td>
+                        <td>+1</td>
+                        <td>+2</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                        <td>+5</td>
+                    </tr>
+                    <tr>
+                        <td>フィールド風抵抗力ペナルティー減少<br>(%)</td>
+                        <td>3</td>
+                        <td>6</td>
+                        <td>9</td>
+                        <td>12</td>
+                        <td>15</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="5">杖先<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0044.png"></th>
+                        <td>移動速度(%)</td>
+                        <td>+4</td>
+                        <td>+8</td>
+                        <td>+12</td>
+                        <td>+16</td>
+                        <td>+20</td>
+                    </tr>
+                    <tr>
+                        <td>知恵の魔法エンチャント水晶</td>
+                        <td colspan="5">2万 Gold</td>
+                    </tr>
+                    <tr>
+                        <td>ダメージの魔法エンチャント水晶</td>
+                        <td colspan="5">20万 Gold</td>
+                    </tr>
+                    <tr>
+                        <td>風攻撃の魔法エンチャント水晶</td>
+                        <td colspan="5">100万 Gold</td>
+                    </tr>
+                    <tr>
+                        <td>闇抵抗の魔法エンチャント水晶</td>
+                        <td colspan="5">200万 Gold</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">ストラップ<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0045.png"></th>
+                        <td>ギルドペット・アストロボウ数</td>
+                        <td>+2</td>
+                        <td>+4</td>
+                        <td>+6</td>
+                        <td>+8</td>
+                        <td>+10</td>
+                    </tr>
+                    <tr>
+                        <td>ギルドペット・アストロボウ数</td>
+                        <td>+1</td>
+                        <td>+2</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                        <td>+5</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">ヘッド飾り<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0046.png"></th>
+                        <td>異常系抵抗(%)</td>
+                        <td>+2</td>
+                        <td>+4</td>
+                        <td>+6</td>
+                        <td>+8</td>
+                        <td>+10</td>
+                    </tr>
+                    <tr>
+                        <td>ギルドペット・アストロボウ ダメージ増加(%)</td>
+                        <td>+1</td>
+                        <td>+2</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                        <td>+5</td>
+                    </tr>
+                    <tr>
+                        <th colspan="7">ケーメンの冠</th>
+                    </tr>
+                    <tr>
+                        <th>パーツ</th>
+                        <th>効果 / レベル</th>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                    </tr>
+
+                    <tr>
+                        <th rowspan="2">中央の宝石<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0047.png"></th>
+                        <td>大地ダメージ吸収(%)</td>
+                        <td>+1</td>
+                        <td>+2</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                        <td>+5</td>
+                    </tr>
+                    <tr>
+                        <td>ギルド戦略ポイント攻撃/防御効率増加<br>(%)</td>
+                        <td>+2</td>
+                        <td>+4</td>
+                        <td>+6</td>
+                        <td>+8</td>
+                        <td>+10</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">本体<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0048.png"></th>
+                        <td>大地ダメージ抵抗(%)</td>
+                        <td>+1</td>
+                        <td>+2</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                        <td>+5</td>
+                    </tr>
+                    <tr>
+                        <td>フィールド大地抵抗力ペナルティー減少<br>(%)</td>
+                        <td>+3</td>
+                        <td>+6</td>
+                        <td>+9</td>
+                        <td>+12</td>
+                        <td>+15</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="6">枠飾り<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0049.png"></th>
+                        <td>物理、魔法抵抗(%)</td>
+                        <td>+1</td>
+                        <td>+2</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                        <td>+5</td>
+                    </tr>
+                    <tr>
+                        <td>健康の魔法エンチャント水晶</td>
+                        <td colspan="5">2万 Gold</td>
+                    </tr>
+                    <tr>
+                        <td>水攻撃の魔法エンチャント水晶</td>
+                        <td colspan="5">100万 Gold</td>
+                    </tr>
+                    <tr>
+                        <td>火抵抗の魔法エンチャント水晶</td>
+                        <td colspan="5">200万 Gold</td>
+                    </tr>
+                    <tr>
+                        <td>CPの魔法エンチャント水晶</td>
+                        <td colspan="5">40万 Gold</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6"><font style="color:#FF0033;">※物理、魔法抵抗と書いてあるが、実際はダメージ増加。</font></td>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">冠の装飾<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0050.png"></th>
+                        <td>ギルドペットダッシュブレード</td>
+                        <td>+2</td>
+                        <td>+4</td>
+                        <td>+6</td>
+                        <td>+8</td>
+                        <td>+10</td>
+                    </tr>
+                    <tr>
+                        <td>ギルドペットダッシュブレード</td>
+                        <td>+1</td>
+                        <td>+2</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                        <td>+5</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">冠の台<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0051.png"></th>
+                        <td>低下系抵抗(%)</td>
+                        <td>+2</td>
+                        <td>+4</td>
+                        <td>+6</td>
+                        <td>+8</td>
+                        <td>+10</td>
+                    </tr>
+                    <tr>
+                        <td>ギルドペット・ダッシュブレード ダメージ増加(%)</td>
+                        <td>+1</td>
+                        <td>+2</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                        <td>+5</td>
+                    </tr>
+
+                    <tr>
+                        <th colspan="7">ラークの刀</th>
+                    </tr>
+                    <tr>
+                        <th>パーツ</th>
+                        <th>効果 / レベル</th>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">柄頭<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0052.png"></th>
+                        <td>光ダメージ吸収(%)</td>
+                        <td>+1</td>
+                        <td>+2</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                        <td>+5</td>
+                    </tr>
+                    <tr>
+                        <td>攻城戦の城門攻撃/防御効率増加<br>(%)</td>
+                        <td>+1</td>
+                        <td>+2</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                        <td>+5</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">刀身<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0053.png"></th>
+                        <td>光ダメージ抵抗(%)</td>
+                        <td>+1</td>
+                        <td>+2</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                        <td>+5</td>
+                    </tr>
+                    <tr>
+                        <td>フィールド光抵抗力ペナルティー減少<br>(%)</td>
+                        <td>+3</td>
+                        <td>+6</td>
+                        <td>+9</td>
+                        <td>+12</td>
+                        <td>+15</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="5">柄<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0054.png"></th>
+                        <td>命中率(%)</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>+1</td>
+                        <td>+1</td>
+                        <td>+2</td>
+                    </tr>
+                    <tr>
+                        <td>知識の魔法エンチャント水晶</td>
+                        <td colspan="5">2万 Gold</td>
+                    </tr>
+                    <tr>
+                        <td>防御力の魔法エンチャント水晶</td>
+                        <td colspan="5">20万 Gold</td>
+                    </tr>
+                    <tr>
+                        <td>光攻撃の魔法エンチャント水晶</td>
+                        <td colspan="5">100万 Gold</td>
+                    </tr>
+                    <tr>
+                        <td>大地抵抗の魔法エンチャント水晶</td>
+                        <td colspan="5">200万 Gold</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">刀紐<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0055.png"></th>
+                        <td>ギルドガーディアン数</td>
+                        <td>+2</td>
+                        <td>+4</td>
+                        <td>+6</td>
+                        <td>+8</td>
+                        <td>+10</td>
+                    </tr>
+                    <tr>
+                        <td>ギルドガーディアン数</td>
+                        <td>+1</td>
+                        <td>+2</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                        <td>+5</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">鞘<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0056.png"></th>
+                        <td>フィールド魔法抵抗力ペナルティー減少<br>(%)</td>
+                        <td>+5</td>
+                        <td>+10</td>
+                        <td>+15</td>
+                        <td>+20</td>
+                        <td>+25</td>
+                    </tr>
+                    <tr>
+                        <td>ギルドガーディアン視野増加</td>
+                        <td>+32</td>
+                        <td>+64</td>
+                        <td>+96</td>
+                        <td>+128</td>
+                        <td>+160</td>
+                    </tr>
+                    <tr>
+                        <th colspan="7">シロイオのホール</th>
+                    </tr>
+                    <tr>
+                        <th>パーツ</th>
+                        <th>効果 / レベル</th>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">先端<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0057.png"></th>
+                        <td>闇ダメージ吸収(%)</td>
+                        <td>+1</td>
+                        <td>+2</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                        <td>+5</td>
+                    </tr>
+                    <tr>
+                        <td>ギルド紋章攻撃/防御効率増加<br>(%)</td>
+                        <td>+2</td>
+                        <td>+4</td>
+                        <td>+6</td>
+                        <td>+8</td>
+                        <td>+10</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">本体<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0058.png"></th>
+                        <td>闇ダメージ抵抗(%)</td>
+                        <td>+1</td>
+                        <td>+2</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                        <td>+5</td>
+                    </tr>
+                    <tr>
+                        <td>フィールド闇抵抗力ペナルティー減少<br>(%)</td>
+                        <td>+3</td>
+                        <td>+6</td>
+                        <td>+9</td>
+                        <td>+12</td>
+                        <td>+15</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="5">先端の宝石<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0059.png"></th>
+                        <td>回避率(%)</td>
+                        <td>+0</td>
+                        <td>+1</td>
+                        <td>+2</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                    </tr>
+                    <tr>
+                        <td>カリスマの魔法エンチャント水晶</td>
+                        <td colspan="5">2万 Gold</td>
+                    </tr>
+                    <tr>
+                        <td>体力の魔法エンチャント水晶</td>
+                        <td colspan="5">40万 Gold</td>
+                    </tr>
+                    <tr>
+                        <td>闇攻撃の魔法エンチャント水晶</td>
+                        <td colspan="5">100万 Gold</td>
+                    </tr>
+                    <tr>
+                        <td>風抵抗の魔法エンチャント水晶</td>
+                        <td colspan="5">200万 Gold</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="3">後端<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0060.png"></th>
+                        <td>ギルドホール内販売アイテム価格割引<br>(%)</td>
+                        <td>+1</td>
+                        <td>+2</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                        <td>+5</td>
+                    </tr>
+                    <tr>
+                        <td>ギルドペット射程距離/爆発範囲増加<br>(%)</td>
+                        <td>+5</td>
+                        <td>+10</td>
+                        <td>+15</td>
+                        <td>+20</td>
+                        <td>+25</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" style="text-align:left;">エンチャント水晶以外が対象。<br>
+                    チャーム称号は本スキルで割引した値段を元に適用される。</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">紐<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0061.png"></th>
+                        <td>死亡ペナルティー減少(%)</td>
+                        <td>+3</td>
+                        <td>+6</td>
+                        <td>+9</td>
+                        <td>+12</td>
+                        <td>+15</td>
+                    </tr>
+                    <tr>
+                        <td>最大メンバー数</td>
+                        <td>+3</td>
+                        <td>+4</td>
+                        <td>+6</td>
+                        <td>+8</td>
+                        <td>+10</td>
+                    </tr>
+                </table>
+                <br clear="left">
+                <br>
+                <br>
+                <h4>全部完成すると</h4>
+                <img src="guild_image/sekizou1.png"><img src="guild_image/sekizou2.png">
+                <br clear="left">
+                <br>
+                完成した石像のパーツ部分には色が付きます。<br>
+                <br>
+                <img src="guild_image/sekizou_all.png">
+                <br color="left">
+                <br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+
+            <a href="" id="view-source"
+                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">トップ
+            </a>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        </div>
+</body>
+
+</html>
