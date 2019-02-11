@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-bo* mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="検索できたら最高" class="mdl-textfield__input" type="text" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+                <h3>ギルドスキル一覧</h3>
+                <br>
+                ● ギルドスキルポイント(GSP)はギルドLv1上昇につき1追加される。<br>
+                ● メインクエスト Season1 天上界報酬「天上の殿堂」で、最大+40まで上昇可能。<br>
+                ● ステータス上昇はギルド内の職位が上がるほど恩恵を得られる。<br>
+                ● GvGアリーナワールドではGHLv1状態で計算する必要あり。<br>
+                ● 括弧内は[新人, 一般・元老, 副マス, GM]の補正値を意味しています。<br>
+                <br>
+                【例】 力強化がLv2の時、力+[Lv * 10 12 15 18] <br>
+                (1) 一般ギルド員およびギルド元老 2 * 12 = 力+24<br>
+                (2) 副ギルドマスター 2 * 15 = 力+30<br>
+                端数は切り捨て。<br>
+
+                <table id="table10" style="max-width:1200px">
+                    <colgroup>
+                        <col span="1" width="90">
+                        <col span="1" width="150">
+                        <col span="1" width="300">
+                        <col span="1" width="130">
+                        <col span="1" width="260">
+                    </colgroup>
+                    <tr>
+                        <th>スキル名<br>(限界Lv)</th>
+                        <th>効果</th>
+                        <th>説明</th>
+                        <th>必要条件</th>
+                        <th>備考</th>
+                    </tr>
+                    <tr>
+                        <th>広告学<br>
+                            (Max 19)<br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0027.png">
+                        </th>
+                        <td>最大ギルドメンバー数<br>
+                            +[Lv * 10]<br></td>
+                        <td>ギルドを大勢に広告する技術。<br>
+                            より多くのギルドメンバーを募集する事ができる。
+                            200人まで可能。<br>
+                        </td>
+                        <td>なし</td>
+                        <td>- ギルドホール内「派遣官ベルント」より最大人数を50人追加できる。<br>
+                            - 200人まではギルド石像「シロイオのホール,ホールの紐」と重複。
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>経営学<br>(Max 9)
+                            <br>
+                            <br>
+                            <img src="design/image/skill/iconGuildSkill_0028.png"><br>
+                        </th>
+                        <td>最大副ギルドマスター数<br> +[Lv * 1]</td>
+                        <td>ギルド経営に関する学問を研究してサブギルドマスターの数を増やす事ができる。<br>
+                            ギルドメンバー募集の上限数を超えて増やす事は出来ない。<br>
+                            さらに、政治学が高く、広告学が低い場合は制限がかかる場合もある。</td>
+                        <td>なし</td>
+                        <td>- ギルド石像「ナルの神像,台座」で<br>
+                            +[Lv * 0.5](切り上げ)人数増やせる。(最大9人)</td>
+                    </tr>
+                    <tr>
+                        <th>政治学<br>(Lv6)<br><br>
+                            <img src="design/image/skill/iconGuildSkill_0029.png"><br>
+                        </th>
+                        <td>最大ギルド委員数<br> +[Lv * 5]</td>
+                        <td>政治に関して研究してギルド委員の数を増やす事ができる。 <br>
+                            ギルドメンバー募集の上限数を超えて増やす事は出来ない。<br>
+                            さらに、経営学が高く、広告学が低い場合は制限がかかる場合もある。<br>
+                        </td>
+                        <td>なし</td>
+                        <td>- 2019.2現在 未実装
+                            - Lvは上げられるが委員に任命不可</td>
+                    </tr>
+                    <tr>
+                        <th>不動産<br>(Lv6)<br><br>
+                            <img src="design/image/skill/iconGuildSkill_0030.png"><br>
+                        </th>
+                        <td>古都以外の縁故地数<br> +[Lv * 1]</td>
+                        <td>不動産を研究してギルドの縁故地を増やす事ができる。<br>
+                            縁故地が増えるとギルドホールに接近できる町が増える。<br>
+                            縁故地に支払う土地代金も別途必要になる。<br></td>
+                        <td>スキルアップ時 1000万Gold<br>
+                            土地代金 1億Gold～<br></td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv1まで<br>
+                            GHLv1 Lv2まで<br>
+                            GHLv2 Lv3まで<br>
+                            GHLv3 Lv4まで<br>
+                            GHLv4 Lv5まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>倉庫業<br>(Lv10)<br><br>
+                            <img src="design/image/skill/iconGuildSkill_0031.png"><br></th>
+                        <td>ギルド倉庫 +[Lv * 20]</td>
+                        <td>ギルドに倉庫を開設することができる。
+                            倉庫はギルドメンバーが共同で使用することができる。
+                            倉庫制作費がかかるのが他のスキルと違うところだ。</td>
+                        <td>GHランク1以上<br>
+                            スキルアップ時 100万Gold</td>
+                        <td>- 倉庫は最大20億Goldまで保管可能。<br>
+                            - 取り出し設定はギルドマスターが行う。
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>ボディービルディング<br>(Lv5)<br>
+                            <img src="design/image/skill/iconGuildSkill_0000.png"><br></th>
+                        <td>HP+[Lv * 50 60 80 100]</td>
+                        <td>
+                            ギルドメンバーの肉体を鍛錬できるスキル。<br>
+                            ギルドメンバーの最大HPが増加する。<br>
+                        </td>
+                        <td>なし</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv3まで<br>
+                            GHLv1 Lv4まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>精神修養<br>(Lv5)<br>
+                            <img src="design/image/skill/iconGuildSkill_0001.png"><br></th>
+                        <td>CP+[Lv * 30 40 60 80]</td>
+                        <td>ギルドメンバーの精神を鍛錬できるスキル。<br>
+                            ギルドメンバーの最大CPが増加する。 </td>
+                        <td>なし</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv3まで<br>
+                            GHLv1 Lv4まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>攻撃基礎修練<br>(Lv5)<br>
+                            <img src="design/image/skill/iconGuildSkill_0002.png"><br></th>
+                        <td>命中率<br>
+                            +[Lv * 0.5 1.0 1.5 2.0](%)</td>
+                        <td>ギルドメンバーの攻撃正確度を鍛錬できるスキル。<br>ギルドメンバーの命中率が増加する。</td>
+                        <td>なし</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv3まで<br>
+                            GHLv1 Lv4まで<br></td>
+                    </tr>
+                    <tr>
+                        <th>戦士の目修練<br>(Lv5)<br>
+                            <img src="design/image/skill/iconGuildSkill_0003.png"><br></th>
+                        <td>回避率<br>+[Lv * 0.5 1.0 1.5 2.0](%)</td>
+                        <td>ギルドメンバーの戦士としての目を鍛錬できるスキル。<br>ギルドメンバーの回避率が増加する。</td>
+                        <td>なし</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv3まで<br>
+                            GHLv1 Lv4まで<br></td>
+                    </tr>
+                    <tr>
+                        <th>力強化<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0004.png"><br></th>
+                        <td>力+[Lv * 10 12 15 18]</td>
+                        <td>ギルドメンバーの力が増加する。</td>
+                        <td>なし</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>敏捷強化<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0005.png"><br></th>
+                        <td>敏捷+[Lv * 10 12 15 18]</td>
+                        <td>ギルドメンバーの敏捷が増加する。</td>
+                        <td>なし</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>健康増加<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0006.png"><br></th>
+                        <td>健康+[Lv * 10 12 15 18]</td>
+                        <td>ギルドメンバーの健康が増加する。</td>
+                        <td>なし</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>知識増加<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0007.png"><br></th>
+                        <td>知識+[Lv * 10 12 15 18]</td>
+                        <td>ギルドメンバーの知識が増加する。</td>
+                        <td>なし</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>知恵増加<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0008.png"><br></th>
+                        <td>知恵+[Lv * 10 12 15 18]</td>
+                        <td>ギルドメンバーの知恵が増加する。</td>
+                        <td>なし</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>カリスマ増加<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0009.png"><br></th>
+                        <td>カリスマ+[Lv * 10 12 15 18]</td>
+                        <td>ギルドメンバーのカリスマが増加する。</td>
+                        <td>なし</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>運増加<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0010.png"><br></th>
+                        <td>運+[Lv * 10 12 15 18]</td>
+                        <td>ギルドメンバーの運が増加する。</td>
+                        <td>なし</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>騎士道<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0011.png"><br></th>
+                        <td>剣士 slv+[Lv / 5 3 2 1]</td>
+                        <td>ギルドメンバーの剣士スキルレベルが増加する。</td>
+                        <td>スキルマスター称号<br>攻撃基礎修練 Lv1<br>力強化 Lv1</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv1まで<br>
+                            GHLv1: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>戦術<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0012.png"><br></th>
+                        <td>戦士 slv+[Lv / 5 3 2 1]</td>
+                        <td>ギルドメンバーの戦士スキルレベルが増加する。</td>
+                        <td>スキルマスター称号<br>ボディービルディング Lv1<br>力強化 Lv1</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv1まで<br>
+                            GHLv1: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>ウィザードリィ<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0013.png"><br></th>
+                        <td>ウィザード slv+[Lv / 5 3 2 1]</td>
+                        <td>ギルドメンバーのウィザードスキルレベルが増加する。</td>
+                        <td>スキルマスター称号<br>精神修養 Lv1<br>知識強化 Lv1</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv1まで<br>
+                            GHLv1: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>ライカントロフィー<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0014.png"><br></th>
+                        <td>ウルフマン slv+[Lv / 5 3 2 1]</td>
+                        <td>ギルドメンバーのウルフマンスキルレベルが増加する。</td>
+                        <td>スキルマスター称号<br>戦士の目修練 Lv1<br>健康増加 Lv1</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv1まで<br>
+                            GHLv1: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>狂神<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0015.png"><br></th>
+                        <td>ビショップ slv+[Lv / 5 3 2 1]</td>
+                        <td>ギルドメンバーのビショップスキルレベルが増加する。</td>
+                        <td>スキルマスター称号<br>ボディービルディング Lv1<br>知恵増加 Lv1</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv1まで<br>
+                            GHLv1: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>天使階級学<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0016.png"><br></th>
+                        <td>追放天使 slv+[Lv / 5 3 2 1]</td>
+                        <td>ギルドメンバーの追放天使スキルレベルが増加する。</td>
+                        <td>スキルマスター称号<br>精神修養 Lv1<br>カリスマ増加 Lv1</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv1まで<br>
+                            GHLv1: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>七つ道具<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0017.png"><br></th>
+                        <td>シーフ slv+[Lv / 5 3 2 1]</td>
+                        <td>ギルドメンバーのシー符スキルレベルが増加する。</td>
+                        <td>スキルマスター称号<br>攻撃基礎修練 Lv1<br>運増加 Lv1</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv1まで<br>
+                            GHLv1: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>気功術<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0018.png"><br></th>
+                        <td>武道家 slv+[Lv / 5 3 2 1]</td>
+                        <td>ギルドメンバーのシーフスキルレベルが増加する。</td>
+                        <td>スキルマスター称号<br>攻撃基礎修練 Lv1<br>運増加 Lv1</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv1まで<br>
+                            GHLv1: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>偵察術<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0019.png"><br></th>
+                        <td>アーチャー slv+[Lv / 5 3 2 1]</td>
+                        <td>ギルドメンバーアーチャースキルレベルが増加する。</td>
+                        <td>スキルマスター称号<br>攻撃基礎修練 Lv1<br>敏捷増加 Lv1</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv1まで<br>
+                            GHLv1: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>傭兵術<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0020.png"><br></th>
+                        <td>ランサー slv+[Lv / 5 3 2 1]</td>
+                        <td>ギルドメンバーランサースキルレベルが増加する。</td>
+                        <td>スキルマスター称号<br>戦士の目修練 Lv1<br>敏捷増加 Lv1</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv1まで<br>
+                            GHLv1: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>精神学<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0021.png"><br></th>
+                        <td>サマナー slv+[Lv / 5 3 2 1]</td>
+                        <td>ギルドメンバーサマナースキルレベルが増加する。</td>
+                        <td>スキルマスター称号<br>精神修養 Lv1<br>知恵増加 Lv1</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv1まで<br>
+                            GHLv1: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>調練学<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0022.png"><br></th>
+                        <td>ビーストテイマー slv+[Lv / 5 3 2 1]</td>
+                        <td>ギルドメンバービーストテイマースキルレベルが増加する。</td>
+                        <td>スキルマスター称号<br>戦士の目修練 Lv1<br>健康増加 Lv1</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv1まで<br>
+                            GHLv1: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>宮廷礼法<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0023.png"><br></th>
+                        <td>プリンセス slv+[Lv / 5 3 2 1]</td>
+                        <td>ギルドメンバープリンセススキルレベルが増加する。</td>
+                        <td>スキルマスター称号<br>攻撃基礎修練 Lv1<br>カリスマ増加 Lv1</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv1まで<br>
+                            GHLv1: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>天文学<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0024.png"><br></th>
+                        <td>リトルウィッチ slv+[Lv / 5 3 2 1]</td>
+                        <td>ギルドメンバーリトルウィッチスキルレベルが増加する。</td>
+                        <td>スキルマスター称号<br>精神修養 Lv1<br>運増加 Lv1</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv1まで<br>
+                            GHLv1: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>降神術<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0025.png"><br></th>
+                        <td>ネクロマンサー slv+[Lv / 5 3 2 1]</td>
+                        <td>ギルドメンバーネクロマンサースキルレベルが増加する。</td>
+                        <td>スキルマスター称号<br>戦士の目修練 Lv1<br>知識増加 Lv1</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv1まで<br>
+                            GHLv1: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>悪魔学<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0026.png"><br></th>
+                        <td>悪魔 slv+[Lv / 5 3 2 1]</td>
+                        <td>ギルドメンバー悪魔スキルレベルが増加する。</td>
+                        <td>スキルマスター称号<br>ボディービルディング Lv1<br>運増加 Lv1</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv1まで<br>
+                            GHLv1: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>心霊術<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0062.png"><br></th>
+                        <td>霊術師 slv+[Lv / 5 3 2 1]</td>
+                        <td>ギルドメンバー霊術師スキルレベルが増加する。</td>
+                        <td>スキルマスター称号<br>精神修養 Lv1<br>カリスマ増加 Lv1</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv1まで<br>
+                            GHLv1: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>闘魂学<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0063.png"><br></th>
+                        <td>闘士 slv+[Lv / 5 3 2 1]</td>
+                        <td>ギルドメンバー闘士スキルレベルが増加する。</td>
+                        <td>スキルマスター称号<br>精神修養 Lv1<br>健康増加 Lv1</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv1まで<br>
+                            GHLv1: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>分光学<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0064.png"><br></th>
+                        <td>光奏師 slv+[Lv / 5 3 2 1]</td>
+                        <td>ギルドメンバー光奏師スキルレベルが増加する。</td>
+                        <td>スキルマスター称号<br>力強化 Lv1<br>知識増加 Lv1</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv1まで<br>
+                            GHLv1: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>掃除技術<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0065.png"><br></th>
+                        <td>光奏師 slv+[Lv / 5 3 2 1]</td>
+                        <td>ギルドメンバーメイドスキルレベルが増加する。</td>
+                        <td>スキルマスター称号<br>力強化 Lv1<br>運増加 Lv1</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv1まで<br>
+                            GHLv1: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>双剣術<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0066.png"><br></th>
+                        <td>光奏師 slv+[Lv / 5 3 2 1]</td>
+                        <td>ギルドメンバー獣人スキルレベルが増加する。</td>
+                        <td>スキルマスター称号<br>力強化 Lv1<br>知識増加 Lv1</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv1まで<br>
+                            GHLv1: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>闇魔法学<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0067.png"><br></th>
+                        <td>光奏師 slv+[Lv / 5 3 2 1]</td>
+                        <td>ギルドメンバー黒魔術師スキルレベルが増加する。</td>
+                        <td>スキルマスター称号<br>カリスマ増加 Lv1<br>知識増加 Lv1</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv1まで<br>
+                            GHLv1: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>射撃術<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0068.png"><br></th>
+                        <td>光奏師 slv+[Lv / 5 3 2 1]</td>
+                        <td>ギルドメンバーマスケッティアスキルレベルが増加する。</td>
+                        <td>スキルマスター称号<br>攻撃基礎修練 Lv1<br>戦士の目修練 Lv1</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv1まで<br>
+                            GHLv1: Lv2まで<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>ポーション調合術<br>(Lv3)<br>
+                            <img src="design/image/skill/iconGuildSkill_0077.png"><br></th>
+                        <td>光奏師 slv+[Lv / 5 3 2 1]</td>
+                        <td>ギルドメンバーアルケミストスキルレベルが増加する。</td>
+                        <td>スキルマスター称号<br>精神修養 Lv1<br>知識増加 Lv1</td>
+                        <td>[実適用レベル]<br>
+                            GH無し: Lv1まで<br>
+                            GHLv1: Lv2まで<br>
+                        </td>
+                    </tr>
+                </table>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+
+            <a href="" id="view-source"
+                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">トップ
+            </a>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        </div>
+</body>
+
+</html>
