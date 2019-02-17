@@ -71,24 +71,3 @@ else if (document.getElementById)
   window.onload=setformobjects   
 if (document.getElementById)   
   window.onunload=saveformvalues
-/*
-     FILE ARCHIVED ON 04:54:00 Jan 26, 2017 AND RETRIEVED FROM THE
-     INTERNET ARCHIVE ON 15:16:57 Jan 18, 2019.
-     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
-
-     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
-     SECTION 108(a)(3)).
-*/
-/*
-playback timings (ms):
-  LoadShardBlock: 80.287 (3)
-  esindex: 0.007
-  captures_list: 102.873
-  CDXLines.iter: 11.286 (3)
-  PetaboxLoader3.datanode: 58.294 (5)
-  exclusion.robots: 0.182
-  exclusion.robots.policy: 0.169
-  RedisCDXSource: 8.075
-  PetaboxLoader3.resolve: 118.235 (4)
-  load_resource: 126.574
-*/
