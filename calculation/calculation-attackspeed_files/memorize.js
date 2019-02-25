@@ -1,8 +1,5 @@
-// ƒeƒLƒXƒgƒ{ƒbƒNƒX‚É“ü—Í‚µ‚½ƒf[ƒ^‚Ì•Û‘¶ŠúŠÔ‚ğw’è‚µ‚Ü‚·B   
-// —áF 100 days    
-// ƒŠƒZƒbƒg‚·‚é‚Æ‚«‚ÍˆÙ‚È‚é•Û‘¶ŠúŠÔ‚ğw’è‚µ‚Ü‚·B   
-// —áF 101 days   
-var memoryduration="100 days"  
+//100æ—¥ä¿å­˜ã—ã¦ãã‚Œã‚‹
+var memoryduration = "100 days"  
 
 function setformobjects(){   
   var theforms=document.forms   
