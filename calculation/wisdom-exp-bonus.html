@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=960">
+  <!-- Page styles -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+  <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+  <script language="JavaScript" src="js/exp-bonus.js"></script>
+  <script language="JavaScript" src="calculation-attackspeed_files/memorize.js"></script>
+
+  <style>
+    #view-source {
+      position: fixed;
+      display: block;
+      right: 0;
+      bottom: 0;
+      margin-right: 40px;
+      margin-bottom: 40px;
+      z-index: 900;
+    }
+  </style>
+</head>
+
+<body onload="init1(); init2()" leftmargin="0" topmargin="0" crossriderapp0002258="true" marginheight="0"
+  marginwidth="0">
+  <title>赤石の民衆</title>
+  <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <a name="container"></a>
+    <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+      <div class="mdl-layout__header-row">
+        <span class="android-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <!-- Add spacer, to align navigation to the right in desktop -->
+        <div class="android-header-spacer mdl-layout-spacer"></div>
+        <div
+          class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input placeholder="検索できたら最高" class="mdl-textfield__input" type="text" id="search-field" />
+          </div>
+        </div>
+        <!-- Navigation -->
+        <div class="android-navigation-container">
+          <nav class="android-navigation mdl-navigation">
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/index.html">ホーム</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/calculator.html">計算機</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/history.html">赤石史</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/link.html">リンク</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+          </nav>
+        </div>
+        <span class="android-mobile-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+          id="more-button">
+          <i class="material-icons">more_vert</i>
+        </button>
+        <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/calculator.html">計算機</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/history.html">赤石史</a></li>
+          <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/link.html">リンク</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+        </ul>
+
+      </div>
+    </div>
+
+    <div class="android-drawer mdl-layout__drawer">
+      <span class="mdl-layout-title">
+        <h3>メニュー</h3>
+      </span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html"><strong>モンスター</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html"><strong>クエスト</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-friend"
+          href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-info"
+          href="../information/information.html"><strong>雑学</strong></a>
+      </nav>
+    </div>
+
+
+    <div class="android-large-table mdl-layout__content">
+
+      <!--main-->
+      <div class="main-background mdl-typography--text-center">
+        <br>
+        <br>
+        <h3>知恵による経験値ボーナス計算機</h3>
+        <a href="#1">知恵による経験値ボーナス計算機</a><br>
+        <a href="#2">知恵ボーナス早見表</a><br>
+        <br>
+        <br>
+        各項目には全て数値を入力してください。<br>
+        <br>
+        <a name="1"></a><br>
+        <form name="f">
+          <table id="table8">
+            <tbody>
+              <tr>
+                <th>知恵による経験値ボーナス計算機</th>
+              </tr>
+              <tr>
+                <td>
+                  <table id="table9">
+                    <table id="table9">
+                      <colgroup>
+                        <col span="1" width="13%">
+                        <col span="1" width="20%">
+                        <col span="1" width="13%">
+                        <col span="1" width="20%">
+                        <col span="1" width="13%">
+                        <col span="1" width="21%">
+                      </colgroup>
+                      <tbody>
+                        <tr>
+                          <td></td>
+                          <td></td>
+                          <td>知恵</td>
+                          <td><input type="text" class="memorize" name="a1" size="8"></td>
+                          <!-- <td>比較用１</td>
+                          <td><input type="text" class="memorize" name="a2" size="6"></td>
+                          <td>比較用２</td>
+                          <td><input type="text" class="memorize" name="a3" size="6"></td> -->
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td>ベルセルク</td>
+                          <td><input type="text" class="memorize" name="a4" size="6">Lv</td>
+                          <td>補正値</td>
+                          <td><input type="text" class="memorize" name="a5" size="6">％</td>
+                          <td></td>
+                          <!-- <td><input type="text" class="memorize" name="a6" size="6">％</td> -->
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>ステ低下</td>
+                          <td><input type="text" class="memorize" name="a7" size="6">％</td>
+                          <!-- ここ、ギルドレベルから％出したい -->
+                          <!-- <td><input type="text" class="memorize" name="a9" size="6">％</td> -->
+                          <td>低下回復</td>
+                          <td><input type="text" class="memorize" name="a8" size="6">％</td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td colspan="6">その他特殊補正系</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>天球</td>
+                          <td>+<input type="text" class="memorize" name="a10" size="6"></td>
+                          <td>その他補正</td>
+                          <td>+<input type="text" class="memorize" name="a11" size="6"></td>
+                          <!-- 天使の計算％以外で、新仕様対策として何か足したい時にどうぞ。 -->
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td></td>
+                          <td>キャラクター</td>
+                          <td><select class="memorize" name="b1">
+                              <option value="0">通常</option>
+                              <option value="1">追放天使</option>
+                              <!-- <option value="40">EMそこみん</option> -->
+                            </select>
+                          </td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <br>
+                    <table id="table9">
+                      <colgroup>
+                        <col span="1" width="6%">
+                        <col span="1" width="18%">
+                        <col span="1" width="10%">
+                        <col span="1" width="20%">
+                        <col span="1" width="12%">
+                        <col span="1" width="13%">
+                        <col span="1" width="12%">
+                        <col span="1" width="13%">
+                      </colgroup>
+                      <tbody>
+                        <tr>
+                          <td colspan="7"><br>
+                            <input type="button" value="計算" onclick="calc1()"><br>
+                            <br>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <br>
+                    <table id="table9">
+                      <colgroup>
+                      </colgroup>
+                      <tbody>
+                        <tr>
+                          <td></td>
+                          <td>【知恵通常】<input type="text" class="memorize" name="r1" size="15"> 
+                            【経験値ボーナス】<input type="text" class="memorize" name="r2" size="15"> ％<br>
+                            <br>
+                            【低下込知恵】<input type="text" class="memorize" name="r3" size="15"> 
+                            【低下込経験値ボーナス】<input type="text" class="memorize" name="r4" size="15"> ％<br>
+                            <br>
+                            【ベルセ知恵】<input type="text" class="memorize" name="r5" size="15"> 
+                            【ベルセ時ボーナス】<input type="text" class="memorize" name="r6" size="15"> ％<br>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+        <a name="2"></a><br>
+        <h4>知恵ボーナス早見表</h4><br>
+        <table id="table8" style="max-width: 600px">
+          <colgroup>
+          </colgroup>
+          <tbody>
+            <tr>
+              <th>知恵</th>
+              <th>経験値ボーナス(％)</th>
+            </tr>
+            <tr>
+              <td align="center">0～99</td>
+              <td align="center">0</td>
+            </tr>
+            <tr>
+              <td align="center">100～119</td>
+              <td align="center">5</td>
+            </tr>
+            <tr>
+              <td align="center">120～139</td>
+              <td align="center">6</td>
+            </tr>
+            <tr>
+              <td align="center">140～159</td>
+              <td align="center">7</td>
+            </tr>
+            <tr>
+              <td align="center">160～179</td>
+              <td align="center">8</td>
+            </tr>
+            <tr>
+              <td align="center">180～199</td>
+              <td align="center">9</td>
+            </tr>
+            <tr>
+              <td align="center">
+                <span class="color-image1">200～239</span>
+              </td>
+              <td align="center">
+                <span class="color-image1">10</span>
+              </td>
+            </tr>
+            <tr>
+              <td align="center">240～279</td>
+              <td align="center">11</td>
+            </tr>
+            <tr>
+              <td align="center">280～319</td>
+              <td align="center">12</td>
+            </tr>
+            <tr>
+              <td align="center">320～359</td>
+              <td align="center">13</td>
+            </tr>
+            <tr>
+              <td align="center">360～399</td>
+              <td align="center">14</td>
+            </tr>
+            <tr>
+              <td align="center">400</td>
+              <td align="center">15</td>
+            </tr>
+            <tr>
+              <td align="center">
+                <span class="color-image1">401～479</span>
+              </td>
+              <td align="center">
+                <span class="color-image1">20</span>
+              </td>
+            </tr>
+            <tr>
+              <td align="center">480～559</td>
+              <td align="center">21</td>
+            </tr>
+            <tr>
+              <td align="center">560～639</td>
+              <td align="center">22</td>
+            </tr>
+            <tr>
+              <td align="center">640～719</td>
+              <td align="center">23</td>
+            </tr>
+            <tr>
+              <td align="center">720～799</td>
+              <td align="center">24</td>
+            </tr>
+            <tr>
+              <td align="center">800</td>
+              <td align="center">25</td>
+            </tr>
+            <tr>
+              <td align="center">
+                <span class="color-image1">801～959</span>
+              </td>
+              <td align="center">
+                <span class="color-image1">30</span>
+              </td>
+            </tr>
+            <tr>
+              <td align="center">960～1119</td>
+              <td align="center">31</td>
+            </tr>
+            <tr>
+              <td align="center">1120～1279</td>
+              <td align="center">32</td>
+            </tr>
+            <tr>
+              <td align="center">1280～1439</td>
+              <td align="center">33</td>
+            </tr>
+            <tr>
+              <td align="center">1440～1599</td>
+              <td align="center">34</td>
+            </tr>
+            <tr>
+              <td align="center">1600</td>
+              <td align="center">35</td>
+            </tr>
+            <tr>
+              <td align="center">
+                <span class="color-image1">1601～1919</span>
+              </td>
+              <td align="center">
+                <span class="color-image1">40</span>
+              </td>
+            </tr>
+            <tr>
+              <td align="center">1920～2239</td>
+              <td align="center">41</td>
+            </tr>
+            <tr>
+              <td align="center">2240～2559</td>
+              <td align="center">42</td>
+            </tr>
+            <tr>
+              <td align="center">2560～2879</td>
+              <td align="center">43</td>
+            </tr>
+            <tr>
+              <td align="center">2880～3199</td>
+              <td align="center">44</td>
+            </tr>
+            <tr>
+              <td align="center">3200</td>
+              <td align="center">45</td>
+            </tr>
+            <tr>
+              <td align="center">
+                <span class="color-image1">3201～3839</span>
+              </td>
+              <td align="center">
+                <span class="color-image1">50</span>
+              </td>
+            </tr>
+            <tr>
+              <td align="center">3840～4479</td>
+              <td align="center">51</td>
+            </tr>
+            <tr>
+              <td align="center">4480～5119</td>
+              <td align="center">52</td>
+            </tr>
+            <tr>
+              <td align="center">5120～5759</td>
+              <td align="center">53</td>
+            </tr>
+            <tr>
+              <td align="center">5760～6399</td>
+              <td align="center">54</td>
+            </tr>
+            <tr>
+              <td align="center">6400</td>
+              <td align="center">55</td>
+            </tr>
+            <tr>
+              <td align="center">
+                <span class="color-image1">6401～7679</span>
+              </td>
+              <td align="center">
+                <span class="color-image1">60</span>
+              </td>
+            </tr>
+            <tr>
+              <td align="center">7680～8959</td>
+              <td align="center">61</td>
+            </tr>
+            <tr>
+              <td align="center">8960～10239</td>
+              <td align="center">62</td>
+            </tr>
+            <tr>
+              <td align="center">10240～11519</td>
+              <td align="center">63</td>
+            </tr>
+            <tr>
+              <td align="center">11520～12799</td>
+              <td align="center">64</td>
+            </tr>
+            <tr>
+              <td align="center">12800</td>
+              <td align="center">65</td>
+            </tr>
+            <tr>
+              <td align="center">
+                <span class="color-image1">12801～15359</span>
+              </td>
+              <td align="center">
+                <span class="color-image1">70</span>
+              </td>
+            </tr>
+            <tr>
+              <td align="center">15360～17919</td>
+              <td align="center">71</td>
+            </tr>
+            <tr>
+              <td align="center">17920～20479</td>
+              <td align="center">72</td>
+            </tr>
+            <tr>
+              <td align="center">20480～23039</td>
+              <td align="center">73</td>
+            </tr>
+            <tr>
+              <td align="center">23040～25599</td>
+              <td align="center">74</td>
+            </tr>
+            <tr>
+              <td align="center">25600</td>
+              <td align="center">75</td>
+            </tr>
+            <tr>
+              <td align="center">
+                <span class="color-image1">25601～30719</span>
+              </td>
+              <td align="center">
+                <span class="color-image1">80</span>
+              </td>
+            </tr>
+            <tr>
+              <td align="center">30720～35839</td>
+              <td align="center">81</td>
+            </tr>
+            <tr>
+              <td align="center">35840～40959</td>
+              <td align="center">82</td>
+            </tr>
+            <tr>
+              <td align="center">40960～46079</td>
+              <td align="center">83</td>
+            </tr>
+            <tr>
+              <td align="center">46080～51199</td>
+              <td align="center">84</td>
+            </tr>
+            <tr>
+              <td align="center">51200</td>
+              <td align="center">85</td>
+            </tr>
+            <tr>
+              <td align="center">
+                <span class="color-image1">51201～61439</span>
+              </td>
+              <td align="center">
+                <span class="color-image1">90</span>
+              </td>
+            </tr>
+            <tr>
+              <td align="center">61440～71679</td>
+              <td align="center">91</td>
+            </tr>
+            <tr>
+              <td align="center">71680～81919</td>
+              <td align="center">92</td>
+            </tr>
+            <tr>
+              <td align="center">81920～92159</td>
+              <td align="center">93</td>
+            </tr>
+            <tr>
+              <td align="center">92160～102399</td>
+              <td align="center">94</td>
+            </tr>
+            <tr>
+              <td align="center">102400</td>
+              <td align="center">95</td>
+            </tr>
+            <tr>
+              <td align="center">
+                <span class="color-image1">102401～</span>
+              </td>
+              <td align="center">
+                <span class="color-image1">100</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+
+        <h4>計算式</h4>
+        <!-- 逆算作りてえな -->
+        ● 追放天使は知恵が3%加算される仕様になっています。<br>
+        ● 他のステータスの計算機としても使える用に作ってはいます。<br>
+        ● 他のステータスの計算機として使う場合、クリーチャーの補正を除外して計算、最後に加算するとステ低下にも対応できます。<br>
+        <!-- ● 他の補正によって、知恵ボーナスが上限まで上昇しない可能性あり。<br> -->
+        <br>
+        <br>
+
+        <footer class="android-footer mdl-mega-footer">
+          <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+          </font>
+          Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+        </footer>
+        <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+      </div>
+
+      <a href="" id="view-source"
+        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">トップ
+      </a>
+      <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    </div>
+</body>
+
+</html>
