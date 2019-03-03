@@ -41,10 +41,15 @@ function calc1() {
     var a7 = parseInt(document.f.a7.value) ? parseInt(document.f.a7.value) : 0;
     var a8 = parseInt(document.f.a8.value) ? parseInt(document.f.a8.value) : 0;
     var a9 = parseInt(document.f.a9.value) ? parseInt(document.f.a9.value) : 0;
+    //武器攻撃力
     var a10 = parseInt(document.f.a10.value) ? parseInt(document.f.a10.value) : 0;
+    //石像補正
     var a11 = parseInt(document.f.a11.value) ? parseInt(document.f.a11.value) : 0;
+    //スキルレベル
     var a12 = parseInt(document.f.a12.value) ? parseInt(document.f.a12.value) : 0;
+    //神秘水
     var a13 = parseInt(document.f.a13.value) ? parseInt(document.f.a13.value) : 0;
+    //刃油
     var a14 = parseInt(document.f.a14.value) ? parseInt(document.f.a14.value) : 0;
     var b1 = parseInt(document.f.b1.value) ? parseInt(document.f.b1.value) : 0;
 
@@ -86,7 +91,7 @@ function calc1() {
     } else if (b1 === 1) {
         min_damage = a1 * (1 + (a3 / 200));
         min_damage = min_damage * ((100 + a4) / 100);
-        min_damage = min_damage * ((100 - a6 + a5) / 100);
+        min_damage = Math.floor(min_damage * ((100 - a6 + a5) / 100));
         if (min_damage <= 0) {
             min_damage = 0;
         }
@@ -96,9 +101,10 @@ function calc1() {
         if (min_damage <= 0) {
             min_damage = 0;
         }
+
         max_damage = a2 * (1 + (a3 / 200));
         max_damage = max_damage * ((100 + a4) / 100);
-        max_damage = max_damage * ((100 - a6 + a5) / 100);
+        max_damage = Math.floor(max_damage * ((100 - a6 + a5) / 100));
         if (max_damage <= 0) {
             max_damage = 0;
         }
@@ -109,11 +115,13 @@ function calc1() {
             max_damage = 0;
         }
     } else if (b1 === 2) {
+        //ドラツイ君
+        //最小ダメージ側（関数化しろよ感）
         min_damage = (1+a10) * (1 + (a3 / 200)) * 0.5;
         min_damage = min_damage * (1 + (0.6 * a14 /100));
         min_damage = min_damage * ((100 + a11 + a13) / 100);
         min_damage = min_damage * ((100 + a4 + a12) / 100);
-        min_damage = min_damage * ((100 - a6 + a5) / 100);
+        min_damage = Math.floor(min_damage * ((100 - a6 + a5) / 100));
         if (min_damage <= 0) {
             min_damage = 0;
         }
@@ -123,11 +131,12 @@ function calc1() {
         if (min_damage <= 0) {
             min_damage = 0;
         }
+        //最大ダメージ側
         max_damage = (1+a10) * (1 + (a3 / 200)) * 0.5;
         max_damage = max_damage * (1 + (0.6 * a14 /100));
         max_damage = max_damage * ((100 + a11 + a13) / 100);
         max_damage = max_damage * ((100 + a4 + a12) / 100);
-        max_damage = max_damage * ((100 - a6 + a5) / 100);
+        max_damage = Math.floor(max_damage * ((100 - a6 + a5) / 100));
         if (max_damage <= 0) {
             max_damage = 0;
         }
