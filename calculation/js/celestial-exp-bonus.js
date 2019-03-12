@@ -1813,7 +1813,7 @@ function def_celestial_sup(lv) {
         return (3.1 - (lv - 850) * 0.01);
     }
     if (lv >= 1160) {
-        return 0;
+        return 1;
     }
 }
 
