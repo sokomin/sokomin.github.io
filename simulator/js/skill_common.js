@@ -18,6 +18,8 @@ function SkillReset() {
   AwakeText.innerHTML = "なし"
   // AwakeText_M.innerHTML = "なし"
   Rebirth.selectedIndex = 0;
+  MQ1Skill.selectedIndex = 0;
+  MQ2Skill.selectedIndex = 0;
 
   for (num = 1; num <= 68; num = num + 1) {
     document.getElementById("id" + num).selectedIndex = 0;
@@ -121,7 +123,9 @@ function SlvSum() {
       break;
   }
   //TODO 天上ボーナス差し引き
+  Total = CalcMQ1Skill(Total);
   //TODO MQ2ボーナス差し引き
+  Total = CalcMQ2Skill(Total);
   if (Total >= 5049) { //100Lv超の時の計算式
     CharaLevel = 100;
     SkillPoint = 5149;
@@ -147,6 +151,29 @@ function SlvSum() {
   SkillLvText.innerHTML = (CharaLevel);
   document.getElementById("SkillPointText_M").innerHTML = (sum - 1);
   document.getElementById("SkillLvText_M").innerHTML = (CharaLevel);
+};
+
+function CalcMQ1Skill(total) {
+  var num = MQ1Skill.selectedIndex ? MQ1Skill.selectedIndex : 0;
+  return total - (num * 100);
+};
+
+function CalcMQ2Skill(total) {
+  var num = MQ2Skill.selectedIndex ? MQ2Skill.selectedIndex : 0;
+  total = total - num * 1000;
+  if (num >= 5) {
+    total = total - 4000;    
+  }
+  if (num >= 10) {
+    total = total - 4000;    
+  }
+  if (num >= 15) {
+    total = total - 4000;    
+  }
+  if (num >= 20) {
+    total = total - 4000;    
+  }
+  return total;
 };
 
 function LvMax(num) {
