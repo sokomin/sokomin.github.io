@@ -16,7 +16,7 @@ var TransPoint = [0, 0, 0, 0];
 function SkillReset() {
   AwakeSwitch = 0;
   AwakeText.innerHTML = "なし"
-  AwakeText_M.innerHTML = "なし"
+  // AwakeText_M.innerHTML = "なし"
   Rebirth.selectedIndex = 0;
 
   for (num = 1; num <= 68; num = num + 1) {
