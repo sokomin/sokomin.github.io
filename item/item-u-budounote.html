@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="検索できたら最高" class="mdl-textfield__input" type="text" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-content mdl-layout__content">
+
+            <!--main-->
+            <div class="main-background mdl-typography--text-center">
+                <br>
+                <h3>ユニーク ナックル</h3>
+
+                <a href="#1">U</a><br>
+                <a href="#2">DXU</a><br>
+                <!-- <a href="#3">NxU</a><br>
+                <a href="#4">NxDXU</a><br> -->
+                <br>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6"><a name="1"></a>U</th>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">真意</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_3266.png"></td>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                格闘武器<br>
+                                攻撃力 <font color="#f8f800">11~13</font>(<font color="#f8f800">0.50</font>秒)<br>
+                                射程距離 <font color="#f8f800">75</font><br>
+                                ミニペットエサ分類 <font color="#f8f800">精霊型</font><br>
+                                ダメージ <font color="#f8f800">+20</font>％<br>
+                                火ダメージ <font color="#f8f800">3</font>～<font color="#f8f800">5</font><br>
+                                <!-- <font color="#f8f800">錬成 可能</font> -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>レベル 39<br>
+                                力 20<br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                                - 武道家 <br> - ネクロマンサー<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                真意とは何か。それを問い続け迷うことなかれ。相手と直接拳を交わし、生命のやり取りを行う中にこそ答えがある。
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">影罠</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_3268.png"></td>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                格闘武器<br>
+                                攻撃力 <font color="#f8f800">23~28</font>(<font color="#f8f800">0.70</font>秒)<br>
+                                射程距離 <font color="#f8f800">95</font><br>
+                                ミニペットエサ分類 <font color="#f8f800">精霊型</font><br>
+
+                                命中率 <font color="#f8f800">+[2~4]</font>％<br>
+                                致命打発動確率 <font color="#f8f800">+10</font>％<br>
+                                命中率 <font color="#f8f800">+5</font>％<br>
+                                <!-- <font color="#f8f800">錬成 可能</font> -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>レベル 87<br>
+                                力 60<br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>- 武道家 <br> - ネクロマンサー<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                一度捕らえた敵は逃さない。　敵を覆う影は、深い泥沼のように抜け出せない罠となる。
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">蒼き猛獣の炎</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_3281.png"></td>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                格闘武器<br>
+                                攻撃力 <font color="#f8f800">26~32</font>(<font color="#f8f800">0.60</font>秒)<br>
+                                射程距離 <font color="#f8f800">85</font><br>
+                                ミニペットエサ分類 <font color="#f8f800">精霊型</font><br>
+                                防御力 <font color="#f8f800"> +[2~5]</font><br>
+                                火属性攻撃力を <font color="#f8f800">20％</font>強化させる。<br>
+                                防御力 <font color="#f8f800"> +7</font><br>
+                                <!-- <font color="#f8f800">錬成 可能</font> -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>レベル 95<br>
+                                力 35<br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>- 武道家 <br> - ネクロマンサー<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                樹葉の舞う異国、蒼き猛獣の異名を持つ体術の達人が愛用していた包帯。湧き上がる闘志の炎を感じる。
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">風の残像</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_3270.png"></td>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                格闘武器<br>
+
+                                攻撃力 <font color="#f8f800">28~31</font>(<font color="#f8f800">0.60</font>秒)<br>
+                                射程距離 <font color="#f8f800">90</font><br>
+                                ミニペットエサ分類 <font color="#f8f800">精霊型</font><br>
+                                決定打 <font color="#f8f800"> +[1~2]</font>％<br>
+
+                                風属性攻撃力を <font color="#f8f800">15％</font>強化させる。<br>
+                                最大CP <font color="#f8f800"> +50</font><br>
+                                <!-- <font color="#f8f800">錬成 可能</font> -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>レベル 120<br>
+                                力 70<br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>- 武道家 <br> - ネクロマンサー<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                しびれる痛みを与える刃物。まるで風に切られたかのような傷跡とその痛みから、人々はこの武器を風の残像と呼んだ。
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">羅刹</font>
+                                <!-- RS2っぽさある -->
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_3272.png"></td>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                格闘武器<br>
+                                攻撃力 <font color="#f8f800">29~35</font>(<font color="#f8f800">0.50</font>秒)<br>
+                                射程距離 <font color="#f8f800">100</font><br>
+                                ミニペットエサ分類 <font color="#f8f800">精霊型</font><br>
+                                敏捷 <font color="#f8f800"> +[6~12]</font><br>
+                                火属性攻撃力を <font color="#f8f800">17％</font>強化させる。<br>
+                                集中力 <font color="#f8f800"> +10</font>％<br>
+                                <!-- <font color="#f8f800">錬成 可能</font> -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>レベル 140<br>
+                                力 100<br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>- 武道家 <br> - ネクロマンサー<br>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                闘志に燃える武道家は誰にも止められない。その闘志は武道家の所作の一つ一つに力となって宿り、燃え盛る鬼神のオーラとなる。
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">挑戦本能</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_3271.png"></td>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                格闘武器<br>
+                                攻撃力 <font color="#f8f800">36~42</font>(<font color="#f8f800">0.80</font>秒)<br>
+                                射程距離 <font color="#f8f800">85</font><br>
+                                ミニペットエサ分類 <font color="#f8f800">精霊型</font><br>
+                                クリティカル <font color="#f8f800"> +[2~4]</font>％<br>
+                                最小HP <font color="#f8f800">+10</font>％<br>
+                                敏捷 <font color="#f8f800">+30</font><br>
+                                <!-- <font color="#f8f800">錬成 可能</font> -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>レベル 143<br>
+                                力 115<br>
+                                健康 15<br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>- 武道家 <br> - ネクロマンサー<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                強い相手と戦いたいという本能は武道家に備わった基本の心得と言える。相手を倒すためには万全の準備と気構えが必要だ。
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">甘露</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_3269.png"></td>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                格闘武器<br>
+                                攻撃力 <font color="#f8f800">32~38</font>(<font color="#f8f800">0.70</font>秒)<br>
+                                射程距離 <font color="#f8f800">75</font><br>
+                                ミニペットエサ分類 <font color="#f8f800">精霊型</font><br>
+                                攻撃速度 <font color="#f8f800"> +[2~3]</font>％<br>
+                                
+                                攻撃速度 <font color="#f8f800"> +20</font>％<br>
+                                最大ダメージ <font color="#f8f800">+5</font><br>
+                                <!-- <font color="#f8f800">錬成 可能</font> -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>レベル 161<br>
+                                力 90<br>
+                                敏捷 19
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>- 武道家 <br> - ネクロマンサー<br>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                見た目には騙され甘味だけを追いかけてはならない。その甘さの裏には鉄拳の苦みが潜んでいる。
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">虎視眈眈</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_3273.png"></td>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                格闘武器<br>
+                                攻撃力 <font color="#f8f800">38~45</font>(<font color="#f8f800">0.75</font>秒)<br>
+                                射程距離 <font color="#f8f800">85</font><br>
+                                ミニペットエサ分類 <font color="#f8f800">精霊型</font><br>
+                                クリティカル <font color="#f8f800"> +[2~4]</font>％<br>
+
+                                ダメージ <font color="#f8f800">+50</font>％<br>
+                                攻撃速度 <font color="#f8f800"> -10</font>％<br>
+                                <!-- <font color="#f8f800">錬成 可能</font> -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>レベル 187<br>
+                                力 154<br>
+                                健康 24<br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>- 武道家 <br> - ネクロマンサー<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                戦いの中で、主導権が誰の手にあるのかは重要な問題である。隙を伺いチャンスを狙い、素早く襲い掛かる武道家の姿は、まるで得物を見つけた虎のようだ。
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6"><a name="2"></a>DXU</th>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">起死回生</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_3274.png"></td>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                格闘武器<br>
+                                攻撃力 <font color="#f8f800">44~48</font>(<font color="#f8f800">0.75</font>秒)<br>
+                                射程距離 <font color="#f8f800">80</font><br>
+                                ミニペットエサ分類 <font color="#f8f800">精霊型</font><br>
+                                攻撃速度 <font color="#f8f800"> +5</font>％<br>
+
+                                最大HP <font color="#f8f800">+15</font>％<br>
+                                移動速度 <font color="#f8f800">+10</font>％<br>
+                                <!-- <font color="#f8f800">錬成 可能</font> -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>レベル 438<br>
+                                力 120<br>
+                                敏捷 24<br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>- 武道家 <br> - ネクロマンサー<br>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                古人いわく。危機は最上の武器なり。死地において一瞬の好機を逃さず形勢を覆すことは、武道家に求められる重要な戦闘感覚である。
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">騎虎の勢い</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_3275.png"></td>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                格闘武器<br>
+                                攻撃力 <font color="#f8f800">50~54</font>(<font color="#f8f800">0.70</font>秒)<br>
+                                射程距離 <font color="#f8f800">80</font><br>
+                                ミニペットエサ分類 <font color="#f8f800">精霊型</font><br>
+                                クリティカル <font color="#f8f800">+6</font>％<br>
+
+                                ターゲットの火抵抗を <font color="#f8f800">12</font>％弱化させる<br>
+                                運 <font color="#f8f800">+40</font><br>
+                                <!-- <font color="#f8f800">錬成 可能</font> -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>レベル 488<br>
+                                力 167<br>
+                                健康 40<br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>- 武道家 <br> - ネクロマンサー<br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                                105/1000
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                160万G
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                強敵を前に決して後には引かない決意で勝負に挑む武道家たちに苛烈な熱気を感じる。
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">声東撃西</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_3276.png"></td>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                格闘武器<br>
+                                攻撃力 <font color="#f8f800">46~53</font>(<font color="#f8f800">0.55</font>秒)<br>
+                                射程距離 <font color="#f8f800">95</font><br>
+                                ミニペットエサ分類 <font color="#f8f800">精霊型</font><br>
+                                決定打 <font color="#f8f800"> +[1~2]</font>％<br>
+
+                                ダメージ <font color="#f8f800">+40</font>％<br>
+                                スタン抵抗 <font color="#f8f800">+25</font>％<br>
+                                <!-- <font color="#f8f800">錬成 可能</font> -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>レベル 586<br>
+                                力 241<br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>- 武道家 <br> - ネクロマンサー<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                硬化鋼で作られた小ぶりの刃物で、奇襲に特化した格闘武器。この武器を隠し持った武道家と対戦する際は、不意打ちに気を付けること。
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">神出鬼没</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_3277.png"></td>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                格闘武器<br>
+                                攻撃力 <font color="#f8f800">47~57</font>(<font color="#f8f800">0.55</font>秒)<br>
+                                射程距離 <font color="#f8f800">85</font><br>
+                                ミニペットエサ分類 <font color="#f8f800">精霊型</font><br>
+
+                                防御力 <font color="#f8f800">+10</font><br>
+                                ターゲットの風抵抗を <font color="#f8f800">10％</font>弱化させる。<br>
+                                風属性攻撃力を <font color="#f8f800">+5％</font>強化させる。<br>
+                                <!-- <font color="#f8f800">錬成 可能</font> -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>レベル 640<br>
+                                力 305<br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>- 武道家 <br> - ネクロマンサー<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                武器の名称については様々な仮説がある。最初の持ち主の武道家の異名という噂もあれば、使うことで対戦相手の虚を突くことができるからとされる。
+                                いずれにせよこの武器を使用すると自由自在に動けることは確かである。
+                                <!-- そこみんもよく神出鬼没って言われるぞ！！！！！ -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">狂拳士の禍</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_3278.png"></td>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                格闘武器<br>
+                                攻撃力 <font color="#f8f800">48~58</font>(<font color="#f8f800">0.45</font>秒)<br>
+                                射程距離 <font color="#f8f800">80</font><br>
+                                ミニペットエサ分類 <font color="#f8f800">精霊型</font><br>
+
+                                敏捷 <font color="#f8f800">30</font><br>
+                                クリティカルダメージ <font color="#f8f800">9</font>％増加<br>
+                                ターゲットの回避率補正値 無視<br>
+                                <!-- <font color="#f8f800">錬成 可能</font> -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                                レベル 676<br>
+                                力 340<br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>- 武道家 <br> - ネクロマンサー<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                戦いと血に酔い、すっかり武徳を失った武道家がいた。無謀な戦いの末、息途絶え瞳の光が？った頃、武道家の武器に宿っていた狂気は消えたと言う。
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">彷徨者の伝承</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_3279.png"></td>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                格闘武器<br>
+                                攻撃力 <font color="#f8f800">52~59</font>(<font color="#f8f800">0.55</font>秒)<br>
+                                射程距離 <font color="#f8f800">95</font><br>
+                                ミニペットエサ分類 <font color="#f8f800">精霊型</font><br>
+
+                                決定打 <font color="#f8f800">+2</font>％<br>
+                                致命打発動確率 <font color="#f8f800">+10</font>％<br>
+                                カリスマ <font color="#f8f800">+50</font><br>
+                                <!-- <font color="#f8f800">錬成 可能</font> -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>レベル 727<br>
+                                力 457<br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>- 武道家 <br> - ネクロマンサー<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                フランデル大陸を旅した武道家が、自分の経験を基に考案した格闘武器。戦いと勝負を楽しむのはよいが、怒りに身を任せてはいけない。武道家の残した最後の言葉だった。
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+
+            <a href="" id="view-source"
+                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">トップ
+            </a>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        </div>
+</body>
+
+</html>
