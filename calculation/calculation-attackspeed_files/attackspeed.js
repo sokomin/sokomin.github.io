@@ -95,7 +95,7 @@ function init2() {
     document.f.s6.value = 0;
     document.f.s7.value = 0;
     document.f.s8.value = 0;
-    document.f.s9.value = 0;
+    //document.f.s9.value = 0;
 
     document.f.l1.value = 0;
     document.f.l2.value = 0;
@@ -104,7 +104,7 @@ function init2() {
     document.f.l5.value = 0;
     document.f.l6.value = 0;
     document.f.l8.value = 0;
-    document.f.l9.value = 0;
+    //document.f.l9.value = 0;
 
 }
 
@@ -126,11 +126,11 @@ function calc1() {
     else
         skill = parseInt(document.f.s7.value);
 
-    if (document.f.sokomin[0].checked == true) {
+    // if (document.f.sokomin[0].checked == true) {
         skill += parseInt(document.f.s8.value);
-    } else if (document.f.sokomin[1].checked == true) {
-        skill += parseInt(document.f.s9.value);
-    }
+    // } else if (document.f.sokomin[1].checked == true) {
+    //     skill += parseInt(document.f.s9.value);
+    // }
 
     suma1 = parseInt(document.f.a1.value) + parseInt(document.f.a5.value) +
         parseInt(document.f.a6.value) + parseInt(document.f.a7.value) +
