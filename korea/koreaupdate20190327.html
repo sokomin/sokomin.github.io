@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="検索できたら最高" class="mdl-textfield__input" type="text" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="mdl-layout__content">
+
+            <!--main-->
+            <div class="korea-content main-background">
+                <br>
+                <h3>韓国 2019/3/27アップデート</h3>
+                <h5>
+                    <font color="#ff0000"><strong>[重要！] 韓国公式の情報を基にしています。<br>
+                            誤訳や韓国独自仕様の可能性もありますので、予めご了承下さい。</strong></font><br>
+                </h5>
+                <br>
+                <a href="#1">クリーチャーパッシブ変更</a><br>
+                <a href="#2">新規PvP武器、DXU追加</a><br>
+                <a href="#3">新規エピソードクエスト追加</a><br>
+                <a href="#4">復帰者向けコンテンツ改善</a><br>
+                <a href="#5">レベリング改善</a><br>
+                <a href="#6">その他アップデート</a><br>
+                <br>
+                <br>
+                <a name="1"></a>
+                <font color="#e95388">
+                    <h4>クリーチャー毎の特殊効果変更</h4>
+                </font>
+                既存のクリーチャーの特殊パッシブが既存のものからクリーチャーパッシブに変更されます。<br>
+                クリーチャーパッシブは<span class="color-image4">[効果レベル * [n]]</span>のスキルレベル方式になります。<br>
+
+                例）[既存]攻撃速度8％ -> [変更] 攻撃速度LV 8<br>
+
+                - パッシブレベルに応じて、効果が上昇し、レベルが高くなると効果が追加されることもあります。(1スキルにつき最大50レベルまで)<br>
+
+                - クリーチャーパッシブはクリーチャー配置方法に応じて、メインパッシブ1つ・サブパッシブ2つの合計3つに分かれます。<br>
+
+                - メインクリーチャー欄に配置すると、メインパッシブ・サブパッシブの両方が適用されて、サブクリーチャー欄に配置すると、サブパッシブのみ適用されます、<br>
+
+                -メインクリーチャー欄には1匹、サブパッシブ欄には3匹のクリーチャーを登録できます。<br>
+
+                -同じ効果を持つパッシブ効果は累積されてスキルレベルが上昇します。<br>
+
+                例）メインクリーチャーのメインパッシブ効果：攻撃速度Lv2、サブクリーチャーのサブパッシブ効果：攻撃速度Lv1 <br>
+                ->攻撃速度Lv3の効果を得られます。<br>
+                <br>
+                - サブクリーチャーは同じクリーチャーを登録できません。<br>
+                メインクリーチャー欄に登録されたクリーチャーは、サブクリーチャーに登録できます。<br>
+
+
+                <br>
+                <br>
+                <br>
+                <a name="2"></a>
+                <font color="#e95388">
+                    <h4>新規PvP武器、DXU追加</h4>
+                </font>
+                新規 PVP武器や既存のULTユニークとDXユニークの中間性能を持つ新規 DXユニークアイテムが追加されます。<br>
+
+                - 全ブレイブ武器共通で対人ダメ200%に統一<br>
+                - 要求レベルは800<br>
+                - 新規PVP武器40種追加、新規DXユニーク156種追加<br>
+
+                <h4><a href="http://rscolor.web.fc2.com/update-20190327.html">各アイテムの性能はこちら</a></h4>
+                （こがれ氏作）<br>
+
+                <br>
+                <br>
+                <br>
+                <a name="3"></a>
+                <font color="#e95388">
+                    <h4>新規エピソードクエスト追加</h4>
+                </font>
+                チュートリアルクエスト担当NPC「ダリン」「デリン」に関係するオリジナルストーリーのエピソードクエストが受託できるようになります。
+                <br>
+
+                <table id="table10" style="max-width:1040px">
+                    <tr>
+                        <th colspan="2">エピソードクエストプロローグ</th>
+                    </tr>
+                    <tr>
+                        <td>悪魔ハンターダナ、第疲れを追跡になった冒険家。<br>
+                            冒険は悪魔のハンターの第疲労を追跡している途中、<br>
+                            悪魔ハンターダナが未来から来たの付いたあったことを知ることになる。<br>
+                            将来の付いたにすべての事実を聞いた冒険は、将来を変えることを決意する... 。<br>
+                        </td>
+                        <td>악마 사냥꾼 다나, 제피로를 추적하게 된 모험가.<br>
+                            모험가는 악마 사냥꾼 중 제피로를 추적하다가 악마 사냥꾼 다나가<br>
+                            미래에서 온 달린이었다는 것을 알게 된다.<br>
+                            미래의 달린에게 모든 사실을 듣게 된 모험가는 미래를 바꾸기로 결심하는데…..<br></td>
+                        <!-- 訳せる気がしないから訳前載せとく、、、、、 -->
+                    </tr>
+                </table>
+                <br>
+                新規エピソードクエストは冒険者協会バー(77、45)のNPCギブソンから受託できます。(700Lv～)<br>
+                <span class="color-image1">※本クエストの受託はダリン・デリンからはないようです。</span><br>
+                <br>
+                <br>
+                <br>
+                <a name="4"></a>
+                <font color="#e95388">
+                    <h4>復帰者向けコンテンツ改善</h4>
+                </font>
+                <br>
+                - 復帰者称号の効果が向上します。<br>
+                <table id="table10" style="max-width:1040px">
+                    <tr>
+                        <th colspan="2">復帰者称号改善</th>
+                    </tr>
+                    <tr>
+                        <td>既存</td>
+                        <td>アプデ以降</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            ※キャラクター単位<br>
+                            PT経験値ボーナス10％<br>
+                            個人の経験値ボーナス20％<br>
+                        </td>
+                        <td>アカウント単位で<br>
+                            PT経験値ボーナス50％<br>
+                            個人の経験値ボーナス200％<br>
+                            個人のアイテムドロップ率100％<br>
+                            赤い宝石の機運のアムサンイン使用時にコクーン関連アイテムのドロップ確率2％増加<br>
+                    </tr>
+                    <!-- これ下手に毎日ログインするより休眠した方がレベルあがりやすいんじゃないの -->
+                </table>
+
+
+                さらに、復帰者チュートリアルが新規追加されます。<br>
+                復帰者の称号取得対象時、最初に接続するキャラクターに復帰者のチュートリアルを進めることができるNPCが紹介されます。（最初の1回のみ。）<br>
+                新規復帰者チュートリアルは、古都ブルンネンシュティグの座標(93, 110)のNPC「復帰者担当官」や冒険家協会ブルンネンシュティグ本部(56, 54)のNPC「復帰者担当官を」介して受託できます。<br>
+                [注意] 復帰者称号が消える場合、復帰者チュートリアルクエストも自動的に削除されます。<br>
+                <br>
+                - 復帰者チュートリアルクエストはキャンセルできません。<br>
+                - 復帰者チュートリアルクエストは、アカウントごとに1度のみ行えます。<br>
+                - 既存の復帰者の称号を持っているキャラクターの場合は、そのキャラクターで接続時から復帰者の称号の効果が14日間持続します。<br>
+                <br>
+                他にも復帰者出席チェック受領方式と補償が変更されます。<br>
+                既存のNPC「復帰者担当官」を通じた出席チェックではなく、接続時UIを介して復帰者の出席チェックができるように変更されました。<br>
+
+                <br>
+                <span class="color-image1">※韓国では「復帰者ログインチェック」が既に実装されており、今回のアプデで変更される形となります。</span><br>
+                <table id="table10" style="max-width:960px">
+                    <colgroup>
+                        <col span="1" width="100">
+                        <col span="1">
+                        <col span="1" width="100">
+                        <col span="1">
+                    </colgroup>
+                    <tr>
+                        <th colspan="4">変更された復帰者ログインチェック</th>
+                    </tr>
+                    <tr>
+                        <td>1日目</td>
+                        <td>復帰を歓迎パッケージ1個</td>
+                        <td>2日目</td>
+                        <td>コスミックストーン1個<br>
+                            有効時間：72時間</td>
+                    </tr>
+                    <tr>
+                        <td>3日目</td>
+                        <td>ポータルスフィアパワーキット[1日版]<br>
+                            有効時間：24時間</td>
+                        <td>4日目</td>
+                        <td>パインベリー 2個</td>
+                    </tr>
+                    <tr>
+                        <td>5日目</td>
+                        <td>ソーラーコクーン[E] 1個</td>
+                        <td>6日目</td>
+                        <td>コスミックストーン1個<br>
+                            有効時間：72時間</td>
+                    </tr>
+                    <tr>
+                        <td>7日目</td>
+                        <td>リフレクティングシャード[E] 1個</td>
+                        <td>8日目</td>
+                        <td>パインベリー2個</td>
+                    </tr>
+                    <tr>
+                        <td>9日目</td>
+                        <td>ソーラーチェリー 3個</td>
+                        <td>10日目</td>
+                        <td>コスミックストーン1個<br>
+                            有効時間：72時間</td>
+                    </tr>
+                    <tr>
+                        <td>11日目</td>
+                        <td>パインベリー 3個</td>
+                        <td>12日目</td>
+                        <td>ソーラーコクーン[E] 1個</td>
+                    </tr>
+                    <tr>
+                        <td>13日目</td>
+                        <td>ポータルスフィアパワーキット[1日版]<br>
+                            有効時間：24時間</td>
+                        <td>14日目</td>
+                        <td>リフレクティングシャード[E] 1個</td>
+                    </tr>
+                </table>
+
+                ※ 注意事項<br>
+                - 補償は接続当日の日付とは無関係に順番に表示されます。（1日目補償受領後、数日後、接続しても 2日目の報酬の受領）<br>
+                <!-- - 出席チェックからの復帰を歓迎パッケージが提供され、既存のボグィ歓迎のパッケージと同じです。<br> -->
+                - 出席日数は、アカウント単位で共有されます。（1日目の報酬を文字Aに受けた場合は、次の日キャラクターB接続時2日目の報酬受領）<br>
+
+                <br>
+                <br>
+                <br>
+                <a name="5"></a>
+                <font color="#e95388">
+                    <h4>レベリング改善</h4>
+                </font>
+                <br>
+                キャラクターの成長がよりスムーズになるように改善されます。<br>
+                850～1000レベル区間のレベルアップ難易度が緩和され、フィールド狩り関連コンテンツが追加されます。<br>
+                さらに、成長の改善のためにイベントとアイテム販売が行われます。<br>
+                <br>
+                <b>1）「赤い宝石の機運」</b><br>
+                <br>
+                - 「赤い宝石の機運」はモンスターとキャラクターのレベル差が50以内であるモンスターを倒した時、一定確率で生成され、少なくとも8分のサイクルを持っています。<br>
+                - 「赤い宝石の機運」は、そのオーラを生成させたキャラクターのみ恩恵を受けられます。<br>
+                - ただし、「赤い宝石の機運」は秘密のダンジョンと、いくつかの特殊なフィールド（レイドフィールド、クエスト用のフィールドなど）は生成されません。<br>
+                <!-- つまり最高狩場適正+50なったら恩恵うけられねぇな？？？？ -->
+                <br>
+                <br>
+                <b>2）「赤い宝石の機運」の獲得</b><br>
+                <br>
+                - 「赤い宝石の機運」は、そのオーラを生成させたキャラクターだけ獲得できます。<br>
+                - 1mの距離以内で、[スペースバー]ボタンを使用して、キー入力ウィンドウをアクティブにすることができます。<br>
+                - キー入力ウィンドウに表示された方向キーの組み合わせを表記どおりに順番に入力する必要が獲得することができます。<br>
+                - キー入力成功時、赤い宝石のオーラを獲得して効果を得ることができます。<br>
+                - 失敗した場合、入力ウィンドウが自動的に閉じられ、[スペースバー]ボタンを使用して再度有効にする必要があります。<br>
+                -獲得に失敗しても「赤い宝石の機運」は消えません。<br>
+                <!-- つまり、コマンド入力DA -->
+                <!-- 真面目な話すると、韓国ではマクロ横行してて上位が使いまくってるからその対策の一環かと。 -->
+                <br>
+                <br>
+                <b>3）「赤い宝石の機運」の効果</b><br>
+                <br>
+                <table id="table10" style="max-width:960px">
+                    <tr>
+                        <th>分類</th>
+                        <th>効果</th>
+                        <th>説明</th>
+                        <th>持続時間</th>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">基本効果</th>
+                        <td>経験値増加</td>
+                        <td>対象キャラクターの経験値500％増加</td>
+                        <td>300 秒</td>
+                    </tr>
+                    <tr>
+                        <!-- <th></th> -->
+                        <td>ユニークアイテムドロップ率</td>
+                        <td>キャラクターにユニークアイテムドロップ率+30％</td>
+                        <td>300 秒</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="5">ランダム効果</th>
+                        <td>ゴールド獲得量増加</td>
+                        <td>プレイヤーにゴールド獲得量+ 400％</td>
+                        <td>300 秒</td>
+                    </tr>
+                    <tr>
+                        <!-- <th></th> -->
+                        <td>モンスター出現時間の短縮</td>
+                        <td>フィールド内のモンスター出現時間15秒の減少（LAを取ったモンスターのみ）</td>
+                        <td>300 秒</td>
+                    </tr>
+                    <tr>
+                        <!-- <th></th> -->
+                        <td>宝アムサンイン</td>
+                        <td>狩りの時「アムサンインボックス」をドロップし、攻撃時、低確率で「ゴールドポケット」を獲得できます。</td>
+                        <td>80 秒</td>
+                    </tr>
+                    <tr>
+                        <!-- <th></th> -->
+                        <td>コクーンアムサンイン</td>
+                        <td>狩りの時ペブルコクーンと低い確率でソーラーコクーンをさらにドロップし、攻撃時、低確率で「ゴールドポケット」を獲得できます。</td>
+                        <td>80 秒</td>
+                    </tr>
+                    <tr>
+                        <!-- <th></th> -->
+                        <td>プレフィックスアムサンイン</td>
+                        <td>狩りの時のプレフィックスボックスをドロップし、攻撃時、低確率で「ゴールドポケット」を獲得できます。</td>
+                        <td>80 秒</td>
+                    </tr>
+                </table>
+
+                <br>
+                <br>
+                <b>4）「赤い宝石の機運」の消滅</b><br>
+                - キャラクターが紅い宝石の機運を獲得しないままの場合、1分後に消滅します。<br>
+                - キャラクターがキーを入力していても制限時間が経過すると消滅します。<br>
+                <br>
+                <br>
+
+
+                <b>5）休憩の植木鉢改善</b><br>
+
+                - 既存の休憩の植木鉢を通じた実獲得時間が改善されました。<br>
+
+
+                <table id="table10" style="max-width:600px">
+                    <tr>
+                        <th>区分</th>
+                        <th>基本</th>
+                        <th>変更</th>
+                    </tr>
+                    <tr>
+                        <th>サンフラワー</th>
+                        <td>22 時間</td>
+                        <td>5 時間</td>
+                    </tr>
+                    <tr>
+                        <th>ムーンフラワー</th>
+                        <td>36 時間</td>
+                        <td>10 時間</td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                    </tr>
+
+                    <a name="6"></a>
+                    <font color="#e95388">
+                        <h4>その他アップデート</h4>
+                    </font>
+                    - 悪魔「ヘルプリズン」スキル変更<br>
+                    - カートアイテムを最大3,960個に拡張<br>
+                    - リトルウィッチ「愛の伝書鳩」の店が利用不可だった現象を修正<br>
+                    - いくつかの魔法ダメージテキストが白く出る現象を修正<br>
+                    - リング類アイテムを右クリック時のダウン現象を修正<br>
+                    - カップリングツールチップの出力時のクライアントの終了現象を修正<br>
+                    - [Shift +右クリック]でプレーヤー関連メニューの呼び出しのヒントゲームの開始時に出力されるように修正<br>
+                    - 冒険レポートクエスト1に関連した完了不可現象を修正<br>
+                    - 耐久度0アイテム修理をしたにもかかわらず、耐久0の現象を修正<br>
+                    - 姫「武器変身」スキル使用によってパーティーメンバーに生成された武器が着用されていない現象を修正<br>
+                    - バフ効果を提供する宝石・原石におけるオプションが表示されない問題を修正<br>
+                    <br>
+                    <br>
+                    以上です。
+                    <br>
+                    <br>
+                    <footer class="android-footer mdl-mega-footer">
+                        <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                        </font>
+                        Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                    </footer>
+                    <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+
+            <a href="" id="view-source"
+                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">トップ
+            </a>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        </div>
+</body>
+
+</html>
