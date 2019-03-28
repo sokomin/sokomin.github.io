@@ -41,6 +41,41 @@ function calc1() {
     sum_pt += stage5;
     document.f.r5.value = Math.floor(sum_pt);
 
+    //平均出力用
+    // var sum_ave = 0;
+    // var ave_stage1 = testCalcStage1();
+    // var ave_stage2 = testCalcStage2();
+    // var ave_stage3 = testCalcStage3();
+    // var ave_stage5 = testCalcStage5();
+    // document.f.r6.value = Math.floor(ave_stage1);
+    // sum_ave = ave_stage1 + ave_stage2;
+    // document.f.r7.value = Math.floor(sum_ave);
+    // sum_ave += ave_stage3;
+    // document.f.r8.value = Math.floor(sum_ave);
+    // sum_ave += stage4;
+    // document.f.r9.value = Math.floor(sum_ave);
+    // sum_ave += ave_stage5;
+    // document.f.r10.value = Math.floor(sum_ave);
+}
+
+// sinon使えば乱数テストできるんだよねぇ
+function testCalcStage1() {
+    var level_sum = 0;
+    level_sum += (14 * 215);
+    level_sum += (9 * 235);
+    level_sum += (13 * 225);
+    level_sum += (11 * 155);
+    level_sum += (7 * 175);
+    level_sum += (15 * 165);
+    level_sum += (16 * 240);
+    level_sum += 240;
+    level_sum += 180;
+    level_sum += (14 * 185);
+    level_sum += (10 * 203);
+    level_sum += 180;
+    level_sum += (15 * 193);
+
+    return level_sum * 80;
 }
 
 
@@ -95,12 +130,53 @@ function calcStage1() {
     return level_sum * 80;
 }
 
+function testCalcStage2() {
+    var level_sum = 0;
+    level_sum += 275;
+    level_sum += 275;
+    // FIXME これ数あってるっけ？
+    // level_sum += 350;
+    level_sum += 400;
+    level_sum += 400;
+    level_sum += 400;
+    level_sum += 400;
+    level_sum += 310;
+    level_sum += 310;
+    level_sum += 310;
+    level_sum += 340;
+    level_sum += 430;
+    level_sum += 430;
+    level_sum += 430;
+    level_sum += 430;
+
+    level_sum += (10 * 333);
+    level_sum += (12 * 383);
+    level_sum += (10 * 393);
+    level_sum += 280;
+
+    level_sum += (12 * 303);
+    level_sum += (4 * 303);
+    level_sum += (9 * 273);
+    level_sum += (8 * 318);
+    level_sum += 340;
+    level_sum += 340;
+    level_sum += 340;
+    level_sum += 340;
+    level_sum += (8 * 258);
+    level_sum += (11 * 288);
+    level_sum += 430;
+    level_sum += 310;
+
+
+    return level_sum * 80;
+}
+
 function calcStage2() {
     //そんなコードで大丈夫か？
     var level_sum = 0;
     level_sum += 275;
     level_sum += 275;
-    level_sum += 400;
+    // level_sum += 350;
     level_sum += 400;
     level_sum += 400;
     level_sum += 400;
@@ -166,6 +242,25 @@ function calcStage2() {
     return level_sum * 80;
 }
 
+function testCalcStage3() {
+    var level_sum = 0;
+    level_sum += 450;
+    level_sum += 460;
+
+    level_sum += (10 * 435);
+    level_sum += (10 * 460);
+    level_sum += (10 * 455);
+    level_sum += 470;
+
+    level_sum += (17 * 465);
+    level_sum += (10 * 445);
+    level_sum += (10 * 445);
+    level_sum += 450;
+    level_sum += 450;
+
+
+    return level_sum * 80;
+}
 function calcStage3() {
     //そんなコードで大丈夫か？
     var level_sum = 0;
@@ -222,6 +317,14 @@ function calcStage4() {
     return level_sum * 80;
 }
 
+function testCalcStage5() {
+    var level_sum = 0;
+    level_sum += 2400;
+    
+
+    return level_sum * 80 + 31550;
+}
+
 function calcStage5() {
     //神は言っている
     var level_sum = 0;
@@ -229,8 +332,10 @@ function calcStage5() {
     level_sum += 600;
     level_sum += 600;
     level_sum += 600;
-
+    // 秒数？
+    var additional = 31400 + Math.floor(Math.random() * 31) * 10;
+    // level_sum += 180;
 
     // ここで死ぬ定めではないと…
-    return level_sum * 80;
+    return (level_sum * 80 + additional);
 }
