@@ -16,9 +16,10 @@ function tweet() {
         return;
     }
     var text = "ポイント戦シミュレータで、" + parseInt(document.f.r5.value) + "点ゲットしました！";
+    var url = "https://sokomin.github.io/calculation/guild-point-war.html"
     var hashtags = "赤石の民衆"
 	window.open(
-        'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&hashtags=' + encodeURIComponent(hashtags),
+        'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) +'&url='+ url + '&hashtags=' + encodeURIComponent(hashtags),
 		'share window','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600'
 	);
 	return !1;
