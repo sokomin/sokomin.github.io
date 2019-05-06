@@ -1,5 +1,5 @@
 function init1() {
-    document.f.a1.value = 0;
+    document.f.a1.value = 1;
     document.f.a2.value = 0;
     document.f.a3.value = 0;
 
@@ -41,14 +41,14 @@ function calc1() {
         result10 = Math.sqrt(a1) * Math.sqrt(((a2p10-a3)*(-0.00000003*(a2p10-a3)*(a2p10-a3)+ 0.0045)) + 1);
         result20 = Math.sqrt(a1) * Math.sqrt(((a2p20-a3)*(-0.00000003*(a2p20-a3)*(a2p20-a3)+ 0.0045)) + 1);
     } else {
-        result = a1 * (((a2-a3)*(-0.00000003*(a2-a3)*(a2-a3)+ 0.0045)) + 1);
-        result10 = a1 * (((a2p10-a3)*(-0.00000003*(a2p10-a3)*(a2p10-a3)+ 0.0045)) + 1);
-        result20 = a1 * (((a2p20-a3)*(-0.00000003*(a2p20-a3)*(a2p20-a3)+ 0.0045)) + 1);
+        result = a1 * Math.sqrt(((a2-a3)*(-0.00000003*(a2-a3)*(a2-a3)+ 0.0045)) + 1);
+        result10 = a1 * Math.sqrt(((a2p10-a3)*(-0.00000003*(a2p10-a3)*(a2p10-a3)+ 0.0045)) + 1);
+        result20 = a1 * Math.sqrt(((a2p20-a3)*(-0.00000003*(a2p20-a3)*(a2p20-a3)+ 0.0045)) + 1);
     }
 
-    document.f.r1.value = Math.floor(result);
-    document.f.r2.value = Math.floor(result10);
-    document.f.r3.value = Math.floor(result20);
+    document.f.r1.value = Math.floor(result*100)/100;
+    document.f.r2.value = Math.floor(result10*100)/100;
+    document.f.r3.value = Math.floor(result20*100)/100;
 
 }
 
