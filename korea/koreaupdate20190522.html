@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="検索できたら最高" class="mdl-textfield__input" type="text" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="mdl-layout__content">
+
+            <!--main-->
+            <div class="korea-content main-background">
+                <br>
+                <h3>韓国 2019/3/27アップデート</h3>
+                <h5>
+                    <font color="#ff0000"><strong>[重要！] 韓国公式の情報を基にしています。<br>
+                            誤訳や韓国独自仕様の可能性もありますので、予めご了承下さい。</strong></font><br>
+                </h5>
+                <br>
+                <a href="#1">ウィザード バランスパッチ</a><br>
+                <a href="#2">闘士 バランスパッチ</a><br>
+                <a href="#3">クリーチャーシステム追加・変更</a><br>
+                <a href="#4">魔法のカーペット改善</a><br>
+                <a href="#5">魔力注入システム改善</a><br>
+                <a href="#6">その他アップデート</a><br>
+                <a href="#7">16周年イベント</a><br>
+                <a href="#8">16周年セール</a><br>
+                <br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/70412e42a3718b886d3300dee10cbdb7d0777b1a.10.2.9.2.png"
+                    border=0 name="insertImg" width="960px" /><br><br>
+                <a name="1"></a>
+                <font color="#e95388">
+                    <h4>ウィザード バランスパッチ</h4>
+                </font>
+                <br>
+                <font style="font-size:24px;color:#FF0033;"><a href="koreaupdate20190522-wiz.html">こちら</a></font>
+                にて実装日時点(2019/5/22)での変更内容をまとめます。
+                <br>
+                <br>
+
+                <a name="2"></a>
+                <font color="#e95388">
+                    <h4>闘士 バランスパッチ</h4>
+                </font>
+                <br>
+                <font style="font-size:24px;color:#FF0033;"><a href="koreaupdate20190522-fighter.html">こちら</a></font>
+                にて実装日時点(2019/5/22)での変更内容をまとめます。
+                <br>
+                <br>
+
+                <a name="3"></a>
+                <font color="#e95388">
+                    <h4>クリーチャーシステム追加・変更</h4>
+                </font>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/fef0747eb74dd6151b3f59ca52878593ab06f3a7.10.2.9.2.png"
+                    border=0 name="insertImg" /><br><br>
+                <br>
+
+                <a name="4"></a>
+                <font color="#e95388">
+                    <h4>魔法のカーペット改善</h4>
+                </font>
+                <br>
+
+                <a name="5"></a>
+                <font color="#e95388">
+                    <h4>魔力注入システム改善</h4>
+                </font>
+                <br>
+
+                <br>
+                <h5>新規追加魔力注入 2種</h5>
+                <br>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="50">
+                    </colgroup>
+                    <colgroup>
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6"><img src="../item/design/image/item/iconItem_2864.png" border="0"> <a
+                                    name="4"></a>魔力注入セットアイテム スペシャル</th>
+                        </tr>
+                        <tr>
+                            <th colspan="6"><img src="../item/design/image/designation_icon/designation_icon_0062.png"
+                                    width="23" height="32" border="0"> 図案書‘欲望’</th>
+                        </tr>
+                        <tr>
+                            <th>セット数</th>
+                            <th>欲望:1段</th>
+                            <th>欲望:2段</th>
+                            <th>欲望:3段</th>
+                            <th>欲望:4段</th>
+                            <th>ダンテの刻印</th>
+                        </tr>
+                        <tr>
+                            <td align="center">2個</td>
+                            <td>スキルレベル <font color="#f8f800">+1</font>
+                            </td>
+                            <td>スキルレベル <font color="#f8f800">+1</font>
+                            </td>
+                            <td>スキルレベル <font color="#f8f800">+2</font>
+                            </td>
+                            <td>スキルレベル <font color="#f8f800">+2</font>
+                            </td>
+                            <td>スキルレベル <font color="#f8f800">+3</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">4個</td>
+                            <td>スキルレベル <font color="#f8f800">+1</font><br>
+                                防御力 <font color="#f8f800">+5</font>％<br>
+                                運 <font color="#f8f800">+100</font>
+                            </td>
+                            <td>スキルレベル <font color="#f8f800">+1</font><br>
+                                防御力 <font color="#f8f800">+7</font>
+                                ％<br>運
+                                <font color="#f8f800">+150</font>
+                            </td>
+                            <td>スキルレベル <font color="#f8f800">+2</font><br>
+                                防御力 <font color="#f8f800">+10</font>
+                                ％<br>
+                                運
+                                <font color="#f8f800">+200</font>
+                            </td>
+                            <td>スキルレベル <font color="#f8f800">+2</font><br>
+                                防御力 <font color="#f8f800">+20</font>
+                                ％<br>運
+                                <font color="#f8f800">+300</font>
+                            </td>
+                            <td>スキルレベル <font color="#f8f800">+3</font><br>
+                                防御力 <font color="#f8f800">+30</font>
+                                ％<br>運
+                                <font color="#f8f800">+600</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" rowspan="2">5個</td>
+                            <td valign="top">スキルレベル <font color="#f8f800">+1</font><br>防御力 <font color="#f8f800">+10
+                                </font>％<br>運
+                                <font color="#f8f800">+100</font><br>
+                                最大HP <font color="#f8f800">+3</font>％</td>
+                            <td valign="top">スキルレベル <font color="#f8f800">+1</font><br>防御力 <font color="#f8f800">+12
+                                </font>％<br>運
+                                <font color="#f8f800">+150</font><br>最大HP <font color="#f8f800">+5</font>％
+                            </td>
+                            <td valign="top">スキルレベル <font color="#f8f800">+2</font><br>防御力 <font color="#f8f800">+15
+                                </font>％<br>運
+                                <font color="#f8f800">+200</font><br>
+                                最大HP <font color="#f8f800">+7</font>％
+                            </td>
+                            <td valign="top">スキルレベル <font color="#f8f800">+2</font><br>防御力 <font color="#f8f800">+20
+                                </font>％<br>運
+                                <font color="#f8f800">+350</font><br>
+                                最大HP <font color="#f8f800">+15</font>％
+                            </td>
+                            <td valign="top">スキルレベル <font color="#f8f800">+4</font><br>
+                                防御力 <font color="#f8f800">+40</font>％<br>運
+                                <font color="#f8f800">+700</font><br>
+                                最大HP <font color="#f8f800">+30</font>％<br>
+                                回避率 <font color="#f8f800">+10</font>％<br>
+                        </tr>
+                        <tr>
+                            <td colspan="5">ダメージを受けた時、<font color="#f8f800">50</font>％の確率で受けるダメージを<font color="#f8f800">
+                                    10</font>％減少</td>
+                        </tr>
+                        <tr>
+                            <th colspan="6"><img src="../item/design/image/designation_icon/designation_icon_0063.png"
+                                    width="23" height="32" border="0"> 図案書‘おこ’</th>
+                        </tr>
+                        <tr>
+                            <th>セット数</th>
+                            <th>おこ:1段</th>
+                            <th>おこ:2段</th>
+                            <th>おこ:3段</th>
+                            <th>おこ:4段</th>
+                            <th>マクスウェルの刻印</th>
+                        </tr>
+                        <tr>
+                            <td align="center">2個</td>
+                            <td>スキルレベル <font color="#f8f800">+1</font>
+                            </td>
+                            <td>スキルレベル <font color="#f8f800">+1</font>
+                            </td>
+                            <td>スキルレベル <font color="#f8f800">+2</font>
+                            </td>
+                            <td>スキルレベル <font color="#f8f800">+2</font>
+                            </td>
+                            <td>スキルレベル <font color="#f8f800">+3</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">4個</td>
+                            <td>スキルレベル <font color="#f8f800">+1</font><br>健康 <font color="#f8f800">+100</font>
+                                <br>
+                                最大HP <font color="#f8f800">+10</font>％
+                            </td>
+                            <td>スキルレベル <font color="#f8f800">+1</font><br>健康 <font color="#f8f800">+150</font>
+                                <br>
+                                最大HP <font color="#f8f800">+16</font>％
+                            </td>
+                            <td>スキルレベル <font color="#f8f800">+2</font><br>健康 <font color="#f8f800">+200</font>
+                                <br>
+                                最大HP <font color="#f8f800">+24</font>％
+                            </td>
+                            <td>スキルレベル <font color="#f8f800">+2</font><br>健康 <font color="#f8f800">+300</font>
+                                <br>
+                                最大HP <font color="#f8f800">+40</font>％<br>
+                            </td>
+                            <td>スキルレベル <font color="#f8f800">+3</font><br>
+                                健康 <font color="#f8f800">+600</font>
+                                <br>
+                                最大HP <font color="#f8f800">+60</font>％<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" rowspan="2">5個</td>
+                            <td valign="top">スキルレベル <font color="#f8f800">+1</font><br>
+                                健康 <font color="#f8f800">
+                                    +100</font><br>
+                                最大HP <font color="#f8f800">+100</font><br>
+                                最大HP <font color="#f8f800">+5</font>％<br>
+                            </td>
+                            <td valign="top">スキルレベル <font color="#f8f800">+1</font><br>
+                                健康 <font color="#f8f800">
+                                    +150</font><br>
+                                最大HP <font color="#f8f800">+16</font>％<br>
+                                最大HP <font color="#f8f800">+150</font><br>
+                            </td>
+                            <td valign="top">スキルレベル <font color="#f8f800">+2</font><br>
+                                健康 <font color="#f8f800">
+                                    +200</font><br>
+                                最大HP <font color="#f8f800">+24</font>％<br>
+
+                                最大HP <font color="#f8f800">+200</font><br>
+                            </td>
+                            <td valign="top">スキルレベル <font color="#f8f800">+2</font><br>
+                                健康 <font color="#f8f800">
+                                    +300</font><br>
+                                最大HP <font color="#f8f800">+40</font>％<br>
+
+                                最大HP <font color="#f8f800">+300</font><br>
+                            </td>
+                            <td valign="top">スキルレベル <font color="#f8f800">+4</font><br>
+                                健康 <font color="#f8f800">
+                                    +700</font><br>
+                                最大HP <font color="#f8f800">+70</font>％<br>
+                                最大HP <font color="#f8f800">+300</font><br>
+                                魔法強打 <font color="#f8f800">10</font>％<br>
+                                健康 <font color="#f8f800">+1</font>/レベル<font color="#f8f800">2</font> <br />
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">スキル命中時<font color="#f8f800">40</font>％以上の確率で自分の最大HPの<font color="#f8f800">
+                                    100
+                                </font>％追加ダメージ</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <h5>既存魔力注入改良 3種</h5>
+                ※5段階効果が変更されています。
+                <br>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="50">
+                    </colgroup>
+                    <colgroup>
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6"><img src="../item/design/image/item/iconItem_2921.png" border="0"> <a
+                                    name="3"></a>魔力注入セットアイテム レア</th>
+                        </tr>
+                        <tr>
+                            <th colspan="6"><img src="../item/design/image/designation_icon/designation_icon_0074.png"
+                                    width="23" height="32" border="0"> 図案書‘ファミリアの報恩’</th>
+                        </tr>
+                        <tr>
+                            <th>セット数</th>
+                            <th>訓練:1段</th>
+                            <th>訓練:2段</th>
+                            <th>訓練:3段</th>
+                            <th>訓練:4段</th>
+                            <th>訓練:5段</th>
+                        </tr>
+                        <tr>
+                            <td align="center">2個</td>
+                            <td>スキルレベル <font color="#f8f800">+1</font>
+                            </td>
+                            <td>スキルレベル <font color="#f8f800">+1</font>
+                            </td>
+                            <td>スキルレベル <font color="#f8f800">+1</font>
+                            </td>
+                            <td>スキルレベル <font color="#f8f800">+2</font>
+                            </td>
+                            <td>スキルレベル <font color="#f8f800">+3</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">4個</td>
+                            <td>スキルレベル <font color="#f8f800">+1</font><br>
+                                すべての召喚獣最大HP <font color="#f8f800">+2</font>％</td>
+                            <td>スキルレベル <font color="#f8f800">+1</font><br>すべての召喚獣最大HP <font color="#f8f800">+4
+                                </font>％</td>
+                            <td>スキルレベル <font color="#f8f800">+1</font><br>すべての召喚獣最大HP <font color="#f8f800">+6
+                                </font>％</td>
+                            <td>スキルレベル <font color="#f8f800">+2</font><br>すべての召喚獣最大HP <font color="#f8f800">+9
+                                </font>％</td>
+                            <td>スキルレベル <font color="#f8f800">+3</font><br>すべての召喚獣最大HP <font color="#f8f800">+15
+                                </font>％</td>
+                        </tr>
+                        <tr>
+                            <td align="center" rowspan="2">5個</td>
+                            <td valign="top">スキルレベル <font color="#f8f800">+1</font><br>
+                                すべての召喚獣最大HP <font color="#f8f800">+2</font>％<br>すべての召喚獣ダメージ <font color="#f8f800">+2
+                                </font>％</td>
+                            <td valign="top">スキルレベル <font color="#f8f800">+1</font><br>すべての召喚獣最大HP <font
+                                    color="#f8f800">+4</font>％<br>すべての召喚獣ダメージ
+                                <font color="#f8f800">+4</font>％</td>
+                            <td valign="top">スキルレベル <font color="#f8f800">+1</font><br>すべての召喚獣最大HP <font
+                                    color="#f8f800">+6</font>％<br>すべての召喚獣ダメージ
+                                <font color="#f8f800">+6</font>％</td>
+                            <td valign="top">スキルレベル <font color="#f8f800">+2</font><br>すべての召喚獣最大HP <font
+                                    color="#f8f800">+9</font>％<br>すべての召喚獣ダメージ
+                                <font color="#f8f800">+12</font>％</td>
+                            <td valign="top">スキルレベル <font color="#f8f800">+3</font><br>すべての召喚獣最大HP <font
+                                    color="#f8f800">+15</font>％<br>すべての召喚獣ダメージ
+                                <font color="#f8f800">+20</font>％</td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <s> すべての召喚獣が敵討伐時に自身および召喚獣のHPを<font color="#f8f800">7</font>％回復し、<font color="#f8f800">5
+                                    </font>分間召喚獣の攻撃力<font color="#f8f800">10</font>％増加</s>
+                                <br>
+                                <span class="color-image1">
+                                    すべての召喚獣が敵討伐時に自身および召喚獣のHPを<font color="#f8f800">7</font>％回復し、<font color="#f8f800">5
+                                    </font>分間召喚獣の攻撃力・および魔法攻撃力<font color="#f8f800">20</font>％増加</td>
+                            </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="50">
+                    </colgroup>
+                    <colgroup>
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6"><img src="../item/design/image/item/iconItem_2864.png" border="0"> <a
+                                    name="4"></a>魔力注入セットアイテム スペシャル</th>
+                        </tr>
+                        <tr>
+                            <th colspan="6"><img src="../item/design/image/designation_icon/designation_icon_0064.png"
+                                    width="23" height="32" border="0"> 図案書‘反転’</th>
+                        </tr>
+                        <tr>
+                            <th>セット数</th>
+                            <th>反転:1段</th>
+                            <th>反転:2段</th>
+                            <th>反転:3段</th>
+                            <th>反転:4段</th>
+                            <th>マデュコスの刻印</th>
+                        </tr>
+                        <tr>
+                            <td align="center">2個</td>
+                            <td>スキルレベル <font color="#f8f800">+1</font>
+                            </td>
+                            <td>スキルレベル <font color="#f8f800">+1</font>
+                            </td>
+                            <td>スキルレベル <font color="#f8f800">+2</font>
+                            </td>
+                            <td>スキルレベル <font color="#f8f800">+2</font>
+                            </td>
+                            <td>スキルレベル <font color="#f8f800">+3</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">4個</td>
+                            <td>スキルレベル <font color="#f8f800">+1</font><br>
+                                攻撃速度 <font color="#f8f800">+5</font>％<br>
+                                すべての召喚獣最大HP <font color="#f8f800">+3</font>％</td>
+                            <td>スキルレベル <font color="#f8f800">+1</font><br>
+                                攻撃速度 <font color="#f8f800">+7</font>％<br>
+                                すべての召喚獣最大HP <font color="#f8f800">+5</font>％</td>
+                            <td>スキルレベル <font color="#f8f800">+2</font><br>
+                                攻撃速度 <font color="#f8f800">+10</font>％<br>
+                                すべての召喚獣最大HP <font color="#f8f800">+7</font>％</td>
+                            <td>スキルレベル <font color="#f8f800">+2</font><br>
+                                攻撃速度 <font color="#f8f800">+20</font>％<br>
+                                すべての召喚獣最大HP <font color="#f8f800">+10</font>％</td>
+                            <td>スキルレベル <font color="#f8f800">+3</font><br>
+                                攻撃速度 <font color="#f8f800">+30</font>％<br>
+                                すべての召喚獣最大HP <font color="#f8f800">+15</font>％</td>
+                        </tr>
+                        <tr>
+                            <td align="center" rowspan="2">5個</td>
+                            <td valign="top">スキルレベル <font color="#f8f800">+1</font><br>
+                                攻撃速度 <font color="#f8f800">+5</font>％<br>
+                                すべての召喚獣最大HP <font color="#f8f800">+3</font>％<br>
+                                すべての召喚獣ダメージ <font color="#f8f800">+5</font>％</td>
+                            <td valign="top">スキルレベル <font color="#f8f800">+1</font><br>
+                                攻撃速度 <font color="#f8f800">+7</font>％<br>
+                                すべての召喚獣最大HP <font color="#f8f800">+5</font>％<br>
+                                すべての召喚獣ダメージ <font color="#f8f800">+7</font>％</td>
+                            <td valign="top">スキルレベル <font color="#f8f800">+2</font><br>
+                                攻撃速度 <font color="#f8f800">+10</font>％<br>
+                                すべての召喚獣最大HP <font color="#f8f800">+7</font>％<br>
+                                すべての召喚獣ダメージ <font color="#f8f800">+10</font>％</td>
+                            <td valign="top">スキルレベル <font color="#f8f800">+2</font><br>
+                                攻撃速度 <font color="#f8f800">+20</font>％<br>
+                                すべての召喚獣最大HP <font color="#f8f800">+10</font>％<br>
+                                すべての召喚獣ダメージ <font color="#f8f800">+20</font>％</td>
+                            <td valign="top">スキルレベル <font color="#f8f800">+4</font><br>
+                                攻撃速度 <font color="#f8f800">+40</font>％<br>
+                                すべての召喚獣最大HP <font color="#f8f800">+20</font>％<br>
+                                すべての召喚獣ダメージ <font color="#f8f800">+30</font>％<br>
+                                すべての召喚獣攻撃速度 <font color="#f8f800">+30</font>％</td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <s>
+                                    召喚獣が敵討伐時に自身および召喚獣のHPを<font color="#f8f800">10</font>％回復し、<font color="#f8f800">5
+                                    </font>分間召喚獣の攻撃力<font color="#f8f800">20</font>％増加
+                                </s>
+                                <br>
+                                <span class="color-image1">
+                                    召喚獣が敵討伐時に自身および召喚獣のHPを<font color="#f8f800">10</font>％回復し、<font color="#f8f800">5
+                                    </font>分間召喚獣の攻撃力・魔法攻撃力を<font color="#f8f800">40</font>％増加
+                                </span>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6"><img src="../item/design/image/designation_icon/designation_icon_0076.png">
+                                図案書‘循環’
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>セット数</th>
+                            <th>循環:1段</th>
+                            <th>循環:2段</th>
+                            <th>循環:3段</th>
+                            <th>循環:4段</th>
+                            <th>アミルの刻印</th>
+                        </tr>
+                        <tr>
+                            <td align="center">2個</td>
+                            <td>スキルレベル <font color="#f8f800">+1</font>
+                            </td>
+                            <td>スキルレベル <font color="#f8f800">+1</font>
+                            </td>
+                            <td>スキルレベル <font color="#f8f800">+2</font>
+                            </td>
+                            <td>スキルレベル <font color="#f8f800">+2</font>
+                            </td>
+                            <td>スキルレベル <font color="#f8f800">+3</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">4個</td>
+                            <td>スキルレベル <font color="#f8f800">+1</font><br>
+                                最大HP <font color="#f8f800">+10</font>％<br>CP獲得ボーナス <font color="#f8f800">2
+                                </font>％</td>
+                            <td>スキルレベル <font color="#f8f800">+1</font><br>最大HP <font color="#f8f800">+16</font>
+                                ％<br>CP獲得ボーナス <font color="#f8f800">3</font>％</td>
+                            <td>スキルレベル <font color="#f8f800">+2</font><br>最大HP <font color="#f8f800">+24</font>
+                                ％<br>CP獲得ボーナス <font color="#f8f800">4</font>％</td>
+                            <td>スキルレベル <font color="#f8f800">+2</font><br>最大HP <font color="#f8f800">+40</font>
+                                ％<br>CP獲得ボーナス <font color="#f8f800">6</font>％</td>
+                            <td>スキルレベル <font color="#f8f800">+3</font><br>最大HP <font color="#f8f800">+60</font>
+                                ％<br>CP獲得ボーナス <font color="#f8f800">10</font>％</td>
+                        </tr>
+                        <tr>
+                            <td align="center" rowspan="2">5個</td>
+                            <td valign="top">スキルレベル <font color="#f8f800">+1</font><br>
+                                最大HP <font color="#f8f800">+10</font>％<br>CP獲得ボーナス <font color="#f8f800">2
+                                </font>％<br>CP <font color="#f8f800">+100</font>
+                            </td>
+                            <td valign="top">スキルレベル <font color="#f8f800">+1</font><br>最大HP <font color="#f8f800">+16
+                                </font>％<br>CP獲得ボーナス <font color="#f8f800">3</font>
+                                ％<br>CP <font color="#f8f800">+150</font>
+                            </td>
+                            <td valign="top">スキルレベル <font color="#f8f800">+2</font><br>最大HP <font color="#f8f800">+24
+                                </font>％<br>CP獲得ボーナス <font color="#f8f800">4</font>
+                                ％<br>CP <font color="#f8f800">+200</font>
+                            </td>
+                            <td valign="top">スキルレベル <font color="#f8f800">+2</font><br>最大HP <font color="#f8f800">+40
+                                </font>％<br>CP獲得ボーナス <font color="#f8f800">6</font>
+                                ％<br>CP <font color="#f8f800">+300</font>
+                            </td>
+                            <td valign="top">スキルレベル <font color="#f8f800">+3</font><br>最大HP <font color="#f8f800">+60
+                                </font>％<br>CP獲得ボーナス <font color="#f8f800">10</font>
+                                ％<br>CP <font color="#f8f800">+700</font><br>
+                                健康 <font color="#f8f800">+1</font>/レベル <font color="#f8f800">2</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <s>
+                                    スキル使用時、<font color="#f8f800">20</font>％の確率で消費CPの<font color="#f8f800">50
+                                    </font>％を獲得
+                                </s>
+                                <span class="color-image1">
+                                    スキル使用時、<font color="#f8f800">40</font>％の確率で消費CPの<font color="#f8f800">50
+                                    </font>％を獲得
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+
+                <a name="6"></a>
+                <font color="#e95388">
+                    <h4>その他アップデート</h4>
+                </font>
+                <h5>修正と変更</h5>
+                <br />
+                - 冒険レポート（12）を完了することができない現象<br />
+                - 「アルゴスの瞳[Nx]アイテム着用ステータスが間違って表記された現象<br />
+                - 「巨神の鉄壁」、「巨神のベルーガ[Nx]」アイテムのオプションが間違って表記された現象<br />
+                - 「捨てられた地下墓地B1階」で目に見えないタイルが適用されている現象<br />
+                - 「忍苦の実」、「忍苦の実[Nx] '、'人魚の涙」、「人魚の涙[Nx]」のアイテムのオプションがPvP時誤って適用される現象<br />
+                - 「神リンのおもちゃDX [E]」アイテムが断続的に使用されない現象<br />
+                - 断続的にギルド倉庫を利用することができない現象<br />
+                - 「ヴァンパイアリッククロー」スキルが異常に適用される現象<br />
+                - ミニペットの攻撃スキルがすべて外れる現象<br />
+                - アイテム習得時、断続的に習得ディレイが発生している現象<br />
+                - 「激しい風爆撃」スキルが物理ダメージに適用される現象<br />
+                - 「ジャンプ」スキルがアイテムスキルレベルアップ効果を受けない現象<br />
+                - 優美クエスト進行中前世進行が可能なように修正<br />
+                - カート再オープン可能時間が5秒に変更されます。<br />
+                - 友達リストウィンドウ友人の情報ツールチップで転生回数情報が表示されます。<br />
+                <br />
+                <br />
+                <br />
+                <a name="7"></a>
+                <font color="#e95388">
+                    <h4>16周年記念イベント</h4>
+                </font>
+                <br />
+                - 16周年を記念してイベントが進行されます。<br />
+
+                <br />
+                <a href="http://redstone.logickorea.co.kr/notice/noticeboard/view.aspx?sqn=6833">ソース</a>
+                ※詳細は以下。
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/2ba6b3fb0b81bff649a5050aafa85060cbd52bfd.10.2.9.2.png"
+                    border=0 name="insertImg" width="960px" /><br><br>
+
+
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/bc3a71d855819e7cb6e2111c120c655525d2c680.10.2.9.2.png"
+                    border=0 name="insertImg" /><br><br>
+
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/6712a58f009e008c0433099d1b7ef15c2e0ff2d2.10.2.9.2.png"
+                    border=0 name="insertImg" /><br><br>
+
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/948d0c789ac314c6be1f44a9d26732962d43f7e3.10.2.9.2.png"
+                    border="0" alt="" name="insertImg" /><br><br>
+
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/06513d1049e181a01c330fc098ea5d8e762fbc8d.10.2.9.2.png"
+                    border="0" alt="" name="insertImg" /><br><br>
+
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/7817dd7e2c0794af23d720ee0e72ce0eb5aa1821.10.2.9.2.png"
+                    border=0 name="insertImg" /><br><br>
+
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/660f61d0547d0de1ecfd6ce4e1d0d7e1fa793d7c.10.2.9.2.png"
+                    border=0 name="insertImg" /><br><br>
+                <br />
+                <br />
+
+                <a name="8"></a>
+                <font color="#e95388">
+                    <h4>限定商品のご案内</h4>
+                </font>
+                <br />
+                - イベント期間中、特定の商品が限定販売されます。<br />
+                <br />
+                <a href="http://redstone.logickorea.co.kr/notice/noticeboard/view.aspx?sqn=6834">ソース</a><br />
+                <br />
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/ab1c39f02c8540357624f7edf4f18a61715fdfa1.10.2.9.2.png"
+                    border=0 name="insertImg" /><br><br>
+
+
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/4f9dfaf4be79f80b81ddf340774ca5c19523089e.10.2.9.2.png"
+                    border=0 name="insertImg" /><br><br><img
+                    src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/260d724c229c9cb6b564f0f20a67cbcec90bde18.10.2.9.2.png"
+                    border=0 name="insertImg" /><br><br><img
+                    src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/d9c35f8dc7524b5489d796afe114368041da5c28.10.2.9.2.png"
+                    border=0 name="insertImg" /><br><br>
+
+                <br />
+                <br>
+                以上です。<br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/5430da63b83428209d01d6c1625c0763ba5f1a36.10.2.9.2.png"
+                    border=0 name="insertImg" /><br><br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+
+            <a href="" id="view-source"
+                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">トップ
+            </a>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        </div>
+</body>
+
+</html>
