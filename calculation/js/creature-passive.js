@@ -297,7 +297,7 @@ function searchPassiveSkill() {
     tmpSkill.skillLv = match.best_slv;
     skillset.push(tmpSkill);
     var resultRes3 = "[該当スキルを所持しているクリーチャー]\n" + nameList + "\n\n"
-    resultRes3 = resultRes3 + "最大効果は" + match.best + "を組み合わせることで\n SLv" + match.best_slv + "が得られます。\n"
+    resultRes3 = resultRes3 + "最大効果は" + match.best + "] を組み合わせることで\n SLv" + match.best_slv + "が得られます。\n"
 
     document.optionlist.res3.value = resultRes3;
     // オプション効果も引っ張ってきちゃう
@@ -719,7 +719,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 12) {
-        result += '- 命中率 +<span class="color-image11">' + (slv * 0.5) + '</span>％<br>';
+        result += '- 命中率 +<span class="color-image11">' + Math.round(slv * 0.5) + '</span>％<br>';
         if (slv >= 50) {
             result += '- 敏捷 +<span class="color-image11">90</span><br>'
             result += '- 運 +<span class="color-image11">？</span><br>'
@@ -733,7 +733,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 13) {
-        result += '- 回避率 +<span class="color-image11">' + (slv * 0.2) + '</span>％<br>';
+        result += '- 回避率 +<span class="color-image11">' + Math.round(slv * 0.2) + '</span>％<br>';
         if (slv >= 50) {
             result += '- 敏捷 +<span class="color-image11">90</span><br>'
             result += '- 運 +<span class="color-image11">？</span><br>'
