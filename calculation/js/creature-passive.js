@@ -229,6 +229,7 @@ var skillData = [
     { name: "シッティングダイル", id: 175, mainId: "攻撃速度", mainLv: 24, sub1Id: "クリティカルダメージ", sub1IdLv: 12, sub2Id: "回避率", sub2IdLv: 12 },
     { name: "シーウォーカー", id: 177, mainId: "最大体力", mainLv: 24, sub1Id: "ダブルクリティカルダメージ", sub1IdLv: 3, sub2Id: "最大体力", sub2IdLv: 12 },
     { name: "クレア", id: 179, mainId: "攻撃力", mainLv: 24, sub1Id: "クリティカルダメージ減少", sub1IdLv: 12, sub2Id: "ドロップ率", sub2IdLv: 12 },
+    { name: "サキュバスヴェラ", id: 183, mainId: "スキル", mainLv: 24, sub1Id: "経験値", sub1IdLv: 12, sub2Id: "上級スキル", sub2IdLv: 3 },
     { name: "インキュバス", id: 98, mainId: "上級スキル", mainLv: 10, sub1Id: "魔法攻撃力低下", sub1IdLv: 5, sub2Id: "闇強化", sub2IdLv: 16 },
     { name: "吸血姫", id: 99, mainId: "体力吸収", mainLv: 32, sub1Id: "スキル", sub1IdLv: 16, sub2Id: "上級攻撃力", sub2IdLv: 5 },
     { name: "アイスクイーン", id: 100, mainId: "ペット&召喚獣強化", mainLv: 32, sub1Id: "PVP防御力", sub1IdLv: 5, sub2Id: "人間型魔法ダメージ", sub2IdLv: 5 },
