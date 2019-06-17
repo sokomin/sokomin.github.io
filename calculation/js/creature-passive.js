@@ -1,5 +1,7 @@
 function init1() {
-    // TODO
+    skillIdMap.forEach(function (e, index) {
+        document.optionlist.a2.options[index] = new Option(e.value, e.value);
+    });
 }
 
 function init2() {
@@ -84,7 +86,7 @@ var skillIdMap = [
 
 
 var skillData = [
-    { name: "赤の火炎犬", id: 0, mainId: "攻撃力", mainLv: 8, sub1Id: "経験値", sub1IdLv: 4, sub2Id: "体力吸収", sub2IdLv: 4 },
+    { name: "ブリザード火炎犬", id: 0, mainId: "攻撃力", mainLv: 8, sub1Id: "経験値", sub1IdLv: 4, sub2Id: "体力吸収", sub2IdLv: 4 },
     { name: "青の火炎犬", id: 1, mainId: "ドロップ率", mainLv: 8, sub1Id: "回避率", sub1IdLv: 4, sub2Id: "ドロップ率", sub2IdLv: 4 },
     { name: "緑の火炎犬", id: 2, mainId: "火低下", mainLv: 8, sub1Id: "被ダメージ反射", sub1IdLv: 4, sub2Id: "火強化", sub2IdLv: 4 },
     { name: "紫の火炎犬", id: 3, mainId: "火抵抗力", mainLv: 8, sub1Id: "火強化", sub1IdLv: 4, sub2Id: "抵抗力低下防止", sub2IdLv: 4 },
@@ -259,48 +261,109 @@ var skillData = [
 
 
 
-function calc1() {
-    var sum_item_1 = 0;
-    var a1 = parseInt(document.f.a1.value) ? parseInt(document.f.a1.value) : 0;
-    var a2 = parseInt(document.f.a2.value) ? parseInt(document.f.a2.value) : 0;
-    var a3 = parseInt(document.f.a3.value) ? parseInt(document.f.a3.value) : 0;
-    var a4 = parseInt(document.f.a4.value) ? parseInt(document.f.a4.value) : 0;
-    var a5 = parseInt(document.f.a5.value) ? parseInt(document.f.a5.value) : 0;
-    var a6 = parseInt(document.f.a6.value) ? parseInt(document.f.a6.value) : 0;
-    var b1 = parseInt(document.f.b1.value) ? parseInt(document.f.b1.value) : 0;
-
-    var test = new Array(a4, a5, a6);
-    test.sort(function (a, b) {
-        return (parseInt(a) > parseInt(b)) ? 1 : -1;
+function searchPassiveSkill() {
+    var a2 = document.optionlist.a2.value ? document.optionlist.a2.value : "";
+    if (!a2) {
+        alert("何も選ばれてないよ");
+        return;
+    }
+    var memo_main = [];
+    var memo_sub = [];
+    var skillset = [];
+    var nameList = "";
+    var tmpSkill = {
+        skillName: a2,
+        skillLv: 0,
+    }
+    skillData.forEach(function (e) {
+        if (e.mainId === a2) {
+            memo_main.push(e);
+            nameList += e.name
+            nameList += ", "
+        }
+        if (e.sub1Id === a2) {
+            memo_sub.push(e);
+            nameList += e.name
+            nameList += ", "
+        }
+        if (e.sub2Id === a2) {
+            memo_sub.push(e);
+            nameList += e.name
+            nameList += ", "
+        }
     });
-    a4 = test[2];
-    a5 = test[1];
-    a6 = test[0];
+    var match = matchSkill(memo_main, memo_sub, a2);
+    tmpSkill.skillLv = match.best_slv;
+    skillset.push(tmpSkill);
+    var resultRes3 = "[該当スキルを所持しているクリーチャー]\n" + nameList + "\n\n"
+    resultRes3 = resultRes3 + "最大効果は" + match.best + "を組み合わせることで\n SLv" + match.best_slv + "が得られます。\n"
 
-    sum_item_1 = a1 - a2 - a3;
-    if (sum_item_1 < 0) {
-        sum_item_1 = 0;
-    }
-    if (b1 === 1) {
-        if (a5 === 0 && a6 === 0) {
-            sum_item_1 = sum_item_1 + a4;
-        } else if (a6 === 0) {
-            sum_item_1 = sum_item_1 + Math.floor(a4 * 3 / 4) + Math.floor(a5 * 1 / 4);
-        } else {
-            sum_item_1 = sum_item_1 + Math.floor(a4 * 3 / 4) + Math.floor(a5 * 1 / 4) + Math.floor(a6 * 1 / 20);
-        }
-    } else {
-        if (a5 === 0 && a6 === 0) {
-            sum_item_1 = sum_item_1 + a4;
-        } else if (a6 === 0) {
-            sum_item_1 = sum_item_1 + a4 + Math.floor(a5 * 2 / 3);
-        } else {
-            sum_item_1 = sum_item_1 + a4 + Math.floor(a5 * 2 / 3) + Math.floor(a6 * 1 / 3);
-        }
-    }
+    document.optionlist.res3.value = resultRes3;
+    // オプション効果も引っ張ってきちゃう
+    var greet4 = document.getElementById('passive_state2');
+    greet4.innerHTML = '<p style="text-align: left">' + output2(skillset) + '</p>';
 
-    document.f.r1.value = Math.floor(sum_item_1);
 }
+
+function matchSkill(main, sub, name) {
+    var result = {
+        matched: [], // その他(ロジック上出せる範囲で)
+        best: "[ ", //最大値
+        best_main: null,
+        best3: null,
+        best_slv: 0,
+    }
+    //メインは最大値を取るように選ぶ(それ以外は選ばない)
+    if (main.length > 0) {
+        var tmp_b = "";
+        main.forEach(function (e, index) {
+            if (e.mainLv > result.best_slv) {
+                result.best_slv = e.mainLv;
+                tmp_b = e.name;
+            }
+        });
+        result.best += (tmp_b + ", ");
+    }
+    //メインは確定したので、サブだけで組む。（ロジック上同じの２匹は選ばれない）
+    var best3 = [{ id:-1, name:"", slv: 0 }, { id:-1, name:"", slv: 0 }, { id:-1, name:"", slv: 0 }];
+    sub.forEach(function (e, index) {
+        if (e.sub1Id === name) {
+            if (e.sub1IdLv > best3[0].slv) {
+                best3[0] = { id: e.id, name: e.name, slv: e.sub1IdLv };
+                best3.sort(function (a, b) {
+                    if (a.slv > b.slv) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                });
+            }
+        }
+        if (e.sub2Id === name) {
+            if (e.sub2IdLv > best3[0].slv) {
+                best3[0] = { id: e.id, name: e.name, slv: e.sub2IdLv };
+                best3.sort(function (a, b) {
+                    if (a.slv > b.slv) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                });
+            }
+        }
+    });
+
+    //結果出力
+    result.best3 = best3;
+    best3.forEach(function (e) { 
+        if (e.id !== -1) {
+            result.best += (e.name + ", ");
+            result.best_slv += parseInt(e.slv);
+        }
+    });
+    return result;
+};
+
 
 
 var cnt = 0;
@@ -1073,7 +1136,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 50) {
-        result += '- クリティカルダメージ増加 +<span class="color-image11">' + Math.round( 9 + slv * 0.8) + '</span>％<br>';
+        result += '- クリティカルダメージ増加 +<span class="color-image11">' + Math.round(9 + slv * 0.8) + '</span>％<br>';
         if (slv >= 50) {
             result += '- クリティカル +<span class="color-image11">？</span>％<br>'
             result += '- ダブルクリティカルダメージ増加 +<span class="color-image11">？</span>％<br>'
@@ -1088,7 +1151,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 51) {
-        result += '- ダブルクリティカルダメージ増加 +<span class="color-image11">' + Math.round( 9 + slv * 0.8) + '</span>％<br>';
+        result += '- ダブルクリティカルダメージ増加 +<span class="color-image11">' + Math.round(9 + slv * 0.8) + '</span>％<br>';
         if (slv >= 50) {
             result += '- 不明<br>'
             result += '- 不明<br>'
@@ -1103,7 +1166,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 52) {
-        result += '- クリティカル確率 +<span class="color-image11">' + Math.round( 1 + slv * 0.5) + '</span>％<br>';
+        result += '- クリティカル確率 +<span class="color-image11">' + Math.round(1 + slv * 0.5) + '</span>％<br>';
         if (slv >= 50) {
             result += '- 物理攻撃力 +<span class="color-image11">？</span>％<br>'
             result += '- ダブルクリティカルダメージ増加 +<span class="color-image11">？</span>％<br>'
@@ -1118,7 +1181,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 53) {
-        result += '- クリティカルダメージ減少 +<span class="color-image11">' + Math.round( 10 + slv * 0.5) + '</span>％<br>';
+        result += '- クリティカルダメージ減少 +<span class="color-image11">' + Math.round(10 + slv * 0.5) + '</span>％<br>';
         if (slv >= 50) {
             result += '- 最大HP +<span class="color-image11">40</span>％<br>'
             result += '- ダブルクリティカルダメージ減少 +<span class="color-image11">？</span>％<br>'
@@ -1133,7 +1196,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 76) {
-        result += '- 敵の致命打抵抗減少 +<span class="color-image11">' + Math.round( 5 + slv * 0.5) + '</span>％<br>';
+        result += '- 敵の致命打抵抗減少 +<span class="color-image11">' + Math.round(5 + slv * 0.5) + '</span>％<br>';
         if (slv >= 50) {
             result += '- クリティカルダメージ増加 +<span class="color-image11">？</span>％<br>'
             result += '- 不明<br>'
@@ -1163,7 +1226,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 78) {
-        result += '- 能力値低下防止 +<span class="color-image11">' + Math.round(slv * 0.2)  + '</span>％<br>';
+        result += '- 能力値低下防止 +<span class="color-image11">' + Math.round(slv * 0.2) + '</span>％<br>';
         if (slv >= 50) {
             result += '- 抵抗値低下防止 +<span class="color-image11">4</span>％<br>'
             result += '- すべての能力値 +<span class="color-image11">60</span>上昇<br>'
@@ -1178,7 +1241,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 79) {
-        result += '- 人間型キャラクターに追加で +<span class="color-image11">' + parseInt(5 + slv * 1)  + '</span>％の魔法ダメージを与える。<br>';
+        result += '- 人間型キャラクターに追加で +<span class="color-image11">' + parseInt(5 + slv * 1) + '</span>％の魔法ダメージを与える。<br>';
         if (slv >= 50) {
             result += '- 不明<br>'
             result += '- 不明<br>'
@@ -1191,7 +1254,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 80) {
-        result += '- 魔法強打 +<span class="color-image11">' + parseInt(slv * 1)  + '</span>％増加<br>';
+        result += '- 魔法強打 +<span class="color-image11">' + parseInt(slv * 1) + '</span>％増加<br>';
         if (slv >= 50) {
             result += '- 不明<br>'
             result += '- 不明<br>'
@@ -1204,7 +1267,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 81) {
-        result += '- 魔法の攻撃力を +<span class="color-image11">' + parseInt(1 + slv * 2)  + '</span>％強化させる。<br>';
+        result += '- 魔法の攻撃力を +<span class="color-image11">' + parseInt(1 + slv * 2) + '</span>％強化させる。<br>';
         if (slv >= 50) {
             result += '- ターゲットの魔法抵抗を <span class="color-image11">20</span>％弱化させる。<br>'
             result += '- 不明<br>'
@@ -1218,7 +1281,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 82) {
-        result += '- ターゲットの魔法抵抗を <span class="color-image11">' + Math.round(slv * 0.5)  + '</span>％弱化させる。<br>';
+        result += '- ターゲットの魔法抵抗を <span class="color-image11">' + Math.round(slv * 0.5) + '</span>％弱化させる。<br>';
         if (slv >= 50) {
             result += '- 不明<br>'
             result += '- 不明<br>'
@@ -1232,7 +1295,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 83) {
-        result += '- 魔法致命打 <span class="color-image11">' + Math.round(5 + slv * 0.4)  + '</span>％<br>';
+        result += '- 魔法致命打 <span class="color-image11">' + Math.round(5 + slv * 0.4) + '</span>％<br>';
         if (slv >= 50) {
             result += '- 魔法攻撃力を +<span class="color-image11">40</span>％強化させる。<br>'
             result += '- 不明<br>'
@@ -1245,7 +1308,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 84) {
-        result += '- 強打率 <span class="color-image11">' + Math.round(5 + slv * 0.3)  + '</span>％<br>';
+        result += '- 強打率 <span class="color-image11">' + Math.round(5 + slv * 0.3) + '</span>％<br>';
         if (slv >= 50) {
             result += '- 運比率上昇 +<span class="color-image11">？</span><br>'
             result += '- 不明<br>'
@@ -1258,7 +1321,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 101) {
-        result += '- ダメージをCPに変換 <span class="color-image11">' + Math.round(1 + slv * 0.5)  + '</span>％<br>';
+        result += '- ダメージをCPに変換 <span class="color-image11">' + Math.round(1 + slv * 0.5) + '</span>％<br>';
         if (slv >= 50) {
             result += '- 最大CP +<span class="color-image11">？</span>％<br>'
             result += '- 不明<br>'
@@ -1272,7 +1335,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 102) {
-        result += '- ダメージ反射 <span class="color-image11">' + parseInt(slv * 2)  + '</span>％<br>';
+        result += '- ダメージ反射 <span class="color-image11">' + parseInt(slv * 2) + '</span>％<br>';
         if (slv >= 50) {
             result += '- 健康 +<span class="color-image11">80</span><br>'
             result += '- 最大HP +<span class="color-image11">30</span>％<br>'
@@ -1288,7 +1351,7 @@ function searchOption(cid, slv) {
     }
     if (cid === 103) {
         // 魔法吸収なんだけど、わからん。
-        result += '- 魔法属性ダメージ吸収 <span class="color-image11">' + Math.round(2 + slv * 0.2)  + '</span>％<br>';
+        result += '- 魔法属性ダメージ吸収 <span class="color-image11">' + Math.round(2 + slv * 0.2) + '</span>％<br>';
         if (slv >= 50) {
             result += '- 不明<br>'
             result += '- 不明<br>'
@@ -1302,22 +1365,22 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 104) {
-        result += '- 物理攻撃力増加 <span class="color-image11">' + parseInt(40 + slv * 1)  + '</span>％<br>';
+        result += '- 物理攻撃力増加 <span class="color-image11">' + parseInt(40 + slv * 1) + '</span>％<br>';
         if (slv >= 50) {
-            result += '- 敵に与えたダメージの <span class="color-image11">' + (5)  + '</span>％をHP吸収<br>';
+            result += '- 敵に与えたダメージの <span class="color-image11">' + (5) + '</span>％をHP吸収<br>';
             result += '- クリティカルダメージ +<span class="color-image11">？</span>％増加<br>'
         } else if (slv >= 40) {
-            result += '- 敵に与えたダメージの <span class="color-image11">' + (4)  + '</span>％をHP吸収<br>';
+            result += '- 敵に与えたダメージの <span class="color-image11">' + (4) + '</span>％をHP吸収<br>';
             result += '- クリティカルダメージ +<span class="color-image11">？</span>％増加<br>'
         } else if (slv >= 30) {
-            result += '- 敵に与えたダメージの <span class="color-image11">' + (3)  + '</span>％をHP吸収<br>';
+            result += '- 敵に与えたダメージの <span class="color-image11">' + (3) + '</span>％をHP吸収<br>';
             result += '- クリティカルダメージ +<span class="color-image11">10</span>％増加<br>'
         } else if (slv >= 20) {
-            result += '- 敵に与えたダメージの <span class="color-image11">' + (2)  + '</span>％をHP吸収<br>';
+            result += '- 敵に与えたダメージの <span class="color-image11">' + (2) + '</span>％をHP吸収<br>';
         }
     }
     if (cid === 105) {
-        result += '- <span class="color-image11">' + parseInt(slv * 1)  + '</span>％の確率で魔法ダメージの2％をHP吸収<br>';
+        result += '- <span class="color-image11">' + parseInt(slv * 1) + '</span>％の確率で魔法ダメージの2％をHP吸収<br>';
         if (slv >= 50) {
             result += '- 不明<br>'
             result += '- 不明<br>'
@@ -1331,7 +1394,7 @@ function searchOption(cid, slv) {
     }
     if (cid === 199) {
         // これもわからん
-        result += '- 状態異常抵抗 + <span class="color-image11">' + parseInt(slv * 1)  + '</span>％<br>';
+        result += '- 状態異常抵抗 + <span class="color-image11">' + parseInt(slv * 1) + '</span>％<br>';
         if (slv >= 50) {
             result += '- ノックバック抵抗 +<span class="color-image11">？</span>％<br>'
             result += '- 不明<br>'
@@ -1347,7 +1410,7 @@ function searchOption(cid, slv) {
     }
     if (cid === 200) {
         // これもわからん
-        result += '- 魔法抵抗 + <span class="color-image11">' + parseInt(slv * 1)  + '</span>％<br>';
+        result += '- 魔法抵抗 + <span class="color-image11">' + parseInt(slv * 1) + '</span>％<br>';
         if (slv >= 50) {
             result += '- 不明<br>'
             result += '- 不明<br>'
@@ -1360,7 +1423,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 299) {
-        result += '- スキルレベル + <span class="color-image11">' + Math.round(0.1 * slv)  + '</span><br>';
+        result += '- スキルレベル + <span class="color-image11">' + Math.round(0.1 * slv) + '</span><br>';
         if (slv >= 50) {
             result += '- 全ての能力値 +<span class="color-image11">80</span><br>'
             result += '- 不明<br>'
@@ -1375,7 +1438,7 @@ function searchOption(cid, slv) {
 
     //ここから上級
     if (cid === 300) {
-        result += '- スキルレベル + <span class="color-image11">' + Math.round(2 + 0.2 * slv)  + '</span><br>';
+        result += '- スキルレベル + <span class="color-image11">' + Math.round(2 + 0.2 * slv) + '</span><br>';
         if (slv >= 50) {
             result += '- 不明<br>'
             result += '- 不明<br>'
@@ -1388,7 +1451,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 301) {
-        result += '- 攻撃力 + <span class="color-image11">' + parseInt(94 + 6 * slv)  + '</span><br>';
+        result += '- 攻撃力 + <span class="color-image11">' + parseInt(94 + 6 * slv) + '</span><br>';
         if (slv >= 50) {
             result += '- 不明<br>'
             result += '- 不明<br>'
@@ -1403,7 +1466,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 302) {
-        result += '- 防御力 + <span class="color-image11">' + parseInt(50 + 4 * slv)  + '</span><br>';
+        result += '- 防御力 + <span class="color-image11">' + parseInt(50 + 4 * slv) + '</span><br>';
         if (slv >= 50) {
             result += '- 不明<br>'
             result += '- 不明<br>'
@@ -1416,7 +1479,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 303) {
-        result += '- 最大HP + <span class="color-image11">' + parseInt(50 + 2 * slv)  + '</span><br>';
+        result += '- 最大HP + <span class="color-image11">' + parseInt(50 + 2 * slv) + '</span><br>';
         if (slv >= 50) {
             result += '- 不明<br>'
             result += '- 不明<br>'
@@ -1429,7 +1492,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 304) {
-        result += '- 最大CP + <span class="color-image11">' + parseInt(100 * slv)  + '</span><br>';
+        result += '- 最大CP + <span class="color-image11">' + parseInt(100 * slv) + '</span><br>';
         if (slv >= 50) {
             result += '- 不明<br>'
             result += '- 不明<br>'
@@ -1442,7 +1505,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 305) {
-        result += '- 状態異常抵抗 + <span class="color-image11">' + parseInt(2 * slv)  + '</span><br>';
+        result += '- 状態異常抵抗 + <span class="color-image11">' + parseInt(2 * slv) + '</span><br>';
         if (slv >= 50) {
             result += '- 不明<br>'
             result += '- 不明<br>'
@@ -1457,7 +1520,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 306) {
-        result += '- 攻撃速度 + <span class="color-image11">' + parseInt(50 + 3 * slv)  + '</span><br>';
+        result += '- 攻撃速度 + <span class="color-image11">' + parseInt(50 + 3 * slv) + '</span><br>';
         if (slv >= 50) {
             result += '- 不明<br>'
             result += '- 不明<br>'
@@ -1488,63 +1551,3 @@ function merge(skillset, sub) {
     }
     return result;
 }
-
-//これはわかりにくーい
-var database = [
-    // ノーマル
-    { id: 0, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 1, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 2, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 3, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 4, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 5, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 6, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 7, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 8, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 9, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 10, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 11, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 12, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 13, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 14, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 15, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 16, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 17, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 18, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 19, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 20, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 21, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 22, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 23, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 24, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 25, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 26, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 27, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 28, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 29, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 30, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 31, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 32, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 33, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 34, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 35, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 36, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 37, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 38, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 39, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 40, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 41, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 42, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 43, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 44, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 45, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 46, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 47, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 48, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 49, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 50, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 51, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 52, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 53, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-    { id: 54, mainId: 42, mainLv: 8, sub1Id: 9, sub1IdLv: 4, sub2Id: 104, sub2IdLv: 4 },
-];
