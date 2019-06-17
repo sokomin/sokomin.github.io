@@ -8,8 +8,6 @@ function init2() {
     //TODO localstorage辺りから引っ張ってきたい。
 }
 
-
-
 // 裏でも多分こんな感じで管理してるんでないの。
 var skillIdMap = [
     { id: 0, value: "PVP攻撃力" },
@@ -506,9 +504,6 @@ function calc() {
     document.keisannormal.res1.value = output1(mobname);
     var greet3 = document.getElementById('passive_state');
     greet3.innerHTML = '<p style="text-align: left">' + output2(skillset) + '</p>';
-
-    // document.keisannormal.res2.value = output2(skillset);
-    // console.log(JSON.stringify(skillset));
 
 }
 
@@ -1452,7 +1447,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 301) {
-        result += '- 攻撃力 + <span class="color-image11">' + parseInt(94 + 6 * slv) + '</span><br>';
+        result += '- 攻撃力 + <span class="color-image11">' + parseInt(94 + 6 * slv) + '</span>％<br>';
         if (slv >= 50) {
             result += '- 不明<br>'
             result += '- 不明<br>'
@@ -1467,7 +1462,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 302) {
-        result += '- 防御力 + <span class="color-image11">' + parseInt(50 + 4 * slv) + '</span><br>';
+        result += '- 防御力 + <span class="color-image11">' + parseInt(50 + 4 * slv) + '</span>％<br>';
         if (slv >= 50) {
             result += '- 不明<br>'
             result += '- 不明<br>'
@@ -1480,7 +1475,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 303) {
-        result += '- 最大HP + <span class="color-image11">' + parseInt(50 + 2 * slv) + '</span><br>';
+        result += '- 最大HP + <span class="color-image11">' + parseInt(50 + 2 * slv) + '</span>％<br>';
         if (slv >= 50) {
             result += '- 不明<br>'
             result += '- 不明<br>'
@@ -1506,7 +1501,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 305) {
-        result += '- 状態異常抵抗 + <span class="color-image11">' + parseInt(2 * slv) + '</span><br>';
+        result += '- 状態異常抵抗 + <span class="color-image11">' + parseInt(2 * slv) + '</span>％<br>';
         if (slv >= 50) {
             result += '- 不明<br>'
             result += '- 不明<br>'
@@ -1521,7 +1516,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 306) {
-        result += '- 攻撃速度 + <span class="color-image11">' + parseInt(50 + 3 * slv) + '</span><br>';
+        result += '- 攻撃速度 + <span class="color-image11">' + parseInt(50 + 3 * slv) + '</span>％<br>';
         if (slv >= 50) {
             result += '- 不明<br>'
             result += '- 不明<br>'
