@@ -935,6 +935,143 @@ function searchOption(cid, slv) {
             result += '- 闇属性攻撃力を<span class="color-image11">' + (5) + '</span>％強化させる。<br>';
         }
     }
+    if (cid === 33) {
+        result += '- ペット&召喚獣の魔法攻撃力 +<span class="color-image11">' + parseInt(1 * SLv) + '</span>％<br>';
+        if (slv >= 50) {
+            result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (40) + '</span>％<br>';
+            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">50</span>％<br>';
+        } else if (slv >= 40) {
+            result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (30) + '</span>％<br>';
+            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">50</span>％<br>';
+        } else if (slv >= 30) {
+            result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (20) + '</span>％<br>';
+            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">50</span>％<br>';
+        } else if (slv >= 20) {
+            result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (10) + '</span>％<br>';
+        }
+    }
+    if (cid === 34) {
+        result += '- ペット&召喚獣の攻撃力 +<span class="color-image11">' + parseInt(2 * SLv) + '</span>％<br>';
+        if (slv >= 50) {
+            result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (40) + '</span>％<br>';
+            result += '- 不明<br>'
+        } else if (slv >= 40) {
+            result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (30) + '</span>％<br>';
+            result += '- 不明<br>'
+        } else if (slv >= 30) {
+            result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (20) + '</span>％<br>';
+            result += '- 不明<br>'
+        } else if (slv >= 20) {
+            result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (10) + '</span>％<br>';
+        }
+    }
+    if (cid === 35) {
+        result += '- ペット&召喚獣の異常状態抵抗増加 +<span class="color-image11">' + parseInt(1 * SLv) + '</span>％<br>';
+        if (slv >= 50) {
+            result += '- ペット&召喚獣の最大体力 +<span class="color-image11">' + '？' + '</span>％<br>';
+            result += '- 不明<br>'
+        } else if (slv >= 40) {
+            result += '- ペット&召喚獣の最大体力 +<span class="color-image11">' + '？' + '</span>％<br>';
+            result += '- 不明<br>'
+        } else if (slv >= 30) {
+            result += '- ペット&召喚獣の最大体力 +<span class="color-image11">' + '？' + '</span>％<br>';
+            result += '- 不明<br>'
+        } else if (slv >= 20) {
+            result += '- ペット&召喚獣の最大体力 +<span class="color-image11">' + (5) + '</span>％<br>';
+        }
+    }
+    if (cid === 36) {
+        result += '- ペット&召喚獣のすべてのステータス +<span class="color-image11">' + parseInt(10 * SLv) + '</span><br>';
+        if (slv >= 50) {
+            result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (40) + '</span>％<br>';
+            result += '- ペット/召喚獣の最大体力「 +<span class="color-image11">？</span>％<br>';
+        } else if (slv >= 40) {
+            result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (30) + '</span>％<br>';            result += '- ペット/召喚獣の最大体力「 +<span class="color-image11">5</span>％<br>';
+            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">？</span>％<br>';
+        } else if (slv >= 30) {
+            result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (20) + '</span>％<br>';
+            result += '- ペット/召喚獣の最大体力「 +<span class="color-image11">5</span>％<br>';
+        } else if (slv >= 20) {
+            result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (10) + '</span>％<br>';
+        }
+    }
+    if (cid === 37) {
+        result += '- ペット&召喚獣の最大体力 +<span class="color-image11">' + parseInt(1 * SLv) + '</span>％<br>';
+        if (slv >= 50) {
+            result += '- ペット&召喚獣の攻撃力 +<span class="color-image11">' + '？' + '</span>％<br>';
+            result += '- 不明<br>'
+        } else if (slv >= 40) {
+            result += '- ペット&召喚獣の攻撃力 +<span class="color-image11">' + '？' + '</span>％<br>';
+            result += '- 不明<br>'
+        } else if (slv >= 30) {
+            result += '- ペット&召喚獣の攻撃力 +<span class="color-image11">' + '？' + '</span>％<br>';
+            result += '- 不明<br>'
+        } else if (slv >= 20) {
+            result += '- ペット&召喚獣の攻撃力 +<span class="color-image11">' + (20) + '</span>％<br>';
+        }
+    }
+    // ペット系は全部青だった
+
+    if (cid === 40) {
+        result += '- 最大HP +<span class="color-image11">' + (slv * 1) + '</span>％<br>';
+        if (slv >= 50) {
+            result += '- 防御力 +<span class="color-image11">20</span>％<br>'
+            result += '- 健康 +<span class="color-image11">？</span><br>'
+        } else if (slv >= 40) {
+            result += '- 防御力 +<span class="color-image11">15</span>％<br>'
+            result += '- 健康 +<span class="color-image11">？</span><br>'
+        } else if (slv >= 30) {
+            result += '- 防御力 +<span class="color-image11">10</span>％<br>'
+            result += '- 健康 +<span class="color-image11">60</span><br>'
+        } else if (slv >= 20) {
+            result += '- 防御力 +<span class="color-image11">5</span>％<br>'
+        }
+    }
+    if (cid === 41) {
+        result += '- 最大CP +<span class="color-image11">' + (slv * 50) + '</span><br>';
+        if (slv >= 50) {
+            result += '- 不明<br>'
+            result += '- 不明<br>'
+        } else if (slv >= 40) {
+            result += '- 不明<br>'
+            result += '- 不明<br>'
+        } else if (slv >= 30) {
+            result += '- 不明<br>'
+            result += '- 不明<br>'
+        } else if (slv >= 20) {
+            result += '- 不明<br>'
+        }
+    }
+    if (cid === 42) {
+        result += '- 攻撃力 +<span class="color-image11">' + (6 + slv * 4) + '</span>％<br>';
+        if (slv >= 50) {
+            result += '- クリティカル +<span class="color-image11">14</span>％<br>'
+            result += '- 攻撃速度 +<span class="color-image11">30</span>％<br>'
+        } else if (slv >= 40) {
+            result += '- クリティカル +<span class="color-image11">11</span>％<br>'
+            result += '- 攻撃速度 +<span class="color-image11">20</span>％<br>'
+        } else if (slv >= 30) {
+            result += '- クリティカル +<span class="color-image11">8</span>％<br>'
+            result += '- 攻撃速度 +<span class="color-image11">10</span>％<br>'
+        } else if (slv >= 20) {
+            result += '- クリティカル +<span class="color-image11">5</span>％<br>'
+        }
+    }
+    if (cid === 43) {
+        result += '- 防御力 +<span class="color-image11">' + (slv * 2) + '</span>％<br>';
+        if (slv >= 50) {
+            result += '- 最大HP +<span class="color-image11">20</span>％<br>'
+            result += '- 健康 +<span class="color-image11">？</span><br>'
+        } else if (slv >= 40) {
+            result += '- 最大HP +<span class="color-image11">15</span>％<br>'
+            result += '- 健康 +<span class="color-image11">？</span><br>'
+        } else if (slv >= 30) {
+            result += '- 最大HP +<span class="color-image11">10</span>％<br>'
+            result += '- 健康 +<span class="color-image11">60</span><br>'
+        } else if (slv >= 20) {
+            result += '- 最大HP +<span class="color-image11">5</span>％<br>'
+        }
+    }
 
 
     return result;
