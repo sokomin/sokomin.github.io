@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <script language="JavaScript" src="js/creature-passive.js"></script>
+    <script language="JavaScript" src="calculation-attackspeed_files/memorize.js"></script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body leftmargin="0" topmargin="0" crossriderapp0002258="true" marginheight="0" marginwidth="0">
+    <title>赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="検索できたら最高" class="mdl-textfield__input" type="text" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <div class="main-background mdl-typography--text-center">
+                <br>
+                <br>
+                <h3>クリーチャーパッシブシミュレータ</h3>
+                下の一覧からクリーチャーを選ぶとメイン->サブ１->サブ2->サブ3の順に登録されます。<br>
+                選ぶと自動的に結果がでてきます。(全部埋まったら何も反応しなくなります。)<br>
+                リセットは個別にクリックするか、[リセット]ボタンを押してください。<br>
+                <br>
+                本家ではサブクリーチャーについての着用制限などがありますが、本シュミレーターではつけてません。<br>
+                (調整等でいつ制限が外れるかわからないので、フリーにしてます。)<br>
+                パッシブ効果は判明してる所まで記載。相違点はマシュマロまでご報告ください。<br>
+                <!-- (誰かクリーチャーアイコンクリックしたら全クリーチャーアイコン一覧表示するモジュールぱっと作れたりしますか…) -->
+                <a name="1"></a><br>
+                <div id="dokuzetu_nashi">
+                    <form name="keisannormal">
+                        <table id="table8">
+                            <tbody>
+                                <tr>
+                                    <th>結果出力</th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <table id="table9">
+                                            <tbody>
+                                                <tr>
+                                                    <td>メイン</td>
+                                                    <td>
+                                                    </td>
+                                                    <td></td>
+                                                    <td id="main_c">
+                                                        <input onclick="setCreature(-1, 0)" type="image"
+                                                            src="../calculation/image//interface2_0767.png" title="メイン">
+                                                        <!-- ここにメインクリーチャー君がはいる。画像変わるけどﾕﾙｼﾃ -->
+                                                    </td>
+                                                    <td>覚醒(未実装)</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>
+                                                        サブ１
+                                                    </td>
+                                                    <td></td>
+                                                    <td>
+                                                        サブ２
+                                                    </td>
+                                                    <td></td>
+                                                    <td>
+                                                        サブ３
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>サブ</td>
+                                                    <td id="sub_c1">
+                                                        <input onclick="reset(-1, 1)" type="image"
+                                                            src="../calculation/image//interface2_0767-1.png"
+                                                            title="サブ１">
+                                                        <!-- ここにサブクリーチャー君１がはいる -->
+                                                    </td>
+                                                    <td>覚醒(未実装)</td>
+                                                    <td id="sub_c2">
+                                                        <input onclick="reset(-1, 2)" type="image"
+                                                            src="../calculation/image//interface2_0767-1.png"
+                                                            title="サブ２">
+                                                        <!-- ここにサブクリーチャー君２がはいる -->
+                                                    </td>
+                                                    <td>覚醒(未実装)</td>
+                                                    <td id="sub_c3">
+                                                        <input onclick="reset(-1, 3)" type="image"
+                                                            src="../calculation/image//interface2_0767-1.png"
+                                                            title="サブ３">
+                                                        <!-- ここにサブクリーチャー君３がはいる -->
+                                                    </td>
+                                                    <td>覚醒(未実装)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="center" colspan="7"><br>
+                                                        <input onclick="resetCreature()" type="button" value="リセット"><br>
+                                                        <br>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="center" colspan="7">セットしたクリーチャー</td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="center" colspan="7"><textarea name="res1" rows="7"
+                                                            cols="80"></textarea></td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="center" colspan="7">パッシブ状態</td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="center" colspan="7"><textarea name="res2" rows="10"
+                                                            cols="80"></textarea></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <br>
+                <table id="table8">
+                    <colgroup>
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="12">N ノーマル</th>
+                        </tr>
+                        <tr>
+                            <td><input onclick="setCreature('0000')" type="image"
+                                    src="../information/creature2_files/creature_0000.png" title=""></td>
+                            <td><input onclick="setCreature('0001')" type="image"
+                                    src="../information/creature2_files/creature_0001.png" title=""></td>
+                            <td><input onclick="setCreature('0002')" type="image"
+                                    src="../information/creature2_files/creature_0002.png" title=""></td>
+                            <td><input onclick="setCreature('0003')" type="image"
+                                    src="../information/creature2_files/creature_0003.png" title=""></td>
+                            <td><input onclick="setCreature('0004')" type="image"
+                                    src="../information/creature2_files/creature_0004.png" title=""></td>
+                            <td><input onclick="setCreature('0005')" type="image"
+                                    src="../information/creature2_files/creature_0005.png" title=""></td>
+                            <td><input onclick="setCreature('0006')" type="image"
+                                    src="../information/creature2_files/creature_0006.png" title=""></td>
+                            <td><input onclick="setCreature('0007')" type="image"
+                                    src="../information/creature2_files/creature_0007.png" title=""></td>
+                            <td><input onclick="setCreature('0008')" type="image"
+                                    src="../information/creature2_files/creature_0008.png" title=""></td>
+                            <td><input onclick="setCreature('0009')" type="image"
+                                    src="../information/creature2_files/creature_0009.png" title=""></td>
+                            <td><input onclick="setCreature('0010')" type="image"
+                                    src="../information/creature2_files/creature_0010.png" title=""></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><input onclick="setCreature('0011')" type="image"
+                                    src="../information/creature2_files/creature_0011.png" title=""></td>
+                            <td><input onclick="setCreature('0012')" type="image"
+                                    src="../information/creature2_files/creature_0012.png" title=""></td>
+                            <td><input onclick="setCreature('0013')" type="image"
+                                    src="../information/creature2_files/creature_0013.png" title=""></td>
+                            <td><input onclick="setCreature('0014')" type="image"
+                                    src="../information/creature2_files/creature_0014.png" title=""></td>
+                            <td><input onclick="setCreature('0015')" type="image"
+                                    src="../information/creature2_files/creature_0015.png" title=""></td>
+                            <td><input onclick="setCreature('0016')" type="image"
+                                    src="../information/creature2_files/creature_0016.png" title=""></td>
+                            <td><input onclick="setCreature('0017')" type="image"
+                                    src="../information/creature2_files/creature_0017.png" title=""></td>
+                            <td><input onclick="setCreature('0018')" type="image"
+                                    src="../information/creature2_files/creature_0018.png" title=""></td>
+                            <td><input onclick="setCreature('0019')" type="image"
+                                    src="../information/creature2_files/creature_0019.png" title=""></td>
+                            <td><input onclick="setCreature('0020')" type="image"
+                                    src="../information/creature2_files/creature_0020.png" title=""></td>
+                            <td><input onclick="setCreature('0021')" type="image"
+                                    src="../information/creature2_files/creature_0021.png" title=""></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><input onclick="setCreature('0022')" type="image"
+                                    src="../information/creature2_files/creature_0022.png" title=""></td>
+                            <td><input onclick="setCreature('0023')" type="image"
+                                    src="../information/creature2_files/creature_0023.png" title=""></td>
+                            <td><input onclick="setCreature('0024')" type="image"
+                                    src="../information/creature2_files/creature_0024.png" title=""></td>
+                            <td><input onclick="setCreature('0025')" type="image"
+                                    src="../information/creature2_files/creature_0025.png" title=""></td>
+                            <td><input onclick="setCreature('0026')" type="image"
+                                    src="../information/creature2_files/creature_0026.png" title=""></td>
+                            <td><input onclick="setCreature('0027')" type="image"
+                                    src="../information/creature2_files/creature_0027.png" title=""></td>
+                            <td><input onclick="setCreature('0028')" type="image"
+                                    src="../information/creature2_files/creature_0028.png" title=""></td>
+                            <td><input onclick="setCreature('0029')" type="image"
+                                    src="../information/creature2_files/creature_0029.png" title=""></td>
+                            <td><input onclick="setCreature('0030')" type="image"
+                                    src="../information/creature2_files/creature_0030.png" title=""></td>
+                            <td><input onclick="setCreature('0031')" type="image"
+                                    src="../information/creature2_files/creature_0031.png" title=""></td>
+                            <td><input onclick="setCreature('0032')" type="image"
+                                    src="../information/creature2_files/creature_0032.png" title=""></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><input onclick="setCreature('0033')" type="image"
+                                    src="../information/creature2_files/creature_0033.png" title=""></td>
+                            <td><input onclick="setCreature('0034')" type="image"
+                                    src="../information/creature2_files/creature_0034.png" title=""></td>
+                            <td><input onclick="setCreature('0035')" type="image"
+                                    src="../information/creature2_files/creature_0035.png" title=""></td>
+                            <td><input onclick="setCreature('0036')" type="image"
+                                    src="../information/creature2_files/creature_0036.png" title=""></td>
+                            <td><input onclick="setCreature('0037')" type="image"
+                                    src="../information/creature2_files/creature_0037.png" title=""></td>
+                            <td><input onclick="setCreature('0038')" type="image"
+                                    src="../information/creature2_files/creature_0038.png" title=""></td>
+                            <td><input onclick="setCreature('0039')" type="image"
+                                    src="../information/creature2_files/creature_0039.png" title=""></td>
+                            <td><input onclick="setCreature('0040')" type="image"
+                                    src="../information/creature2_files/creature_0040.png" title=""></td>
+                            <td><input onclick="setCreature('0041')" type="image"
+                                    src="../information/creature2_files/creature_0041.png" title=""></td>
+                            <td><input onclick="setCreature('0042')" type="image"
+                                    src="../information/creature2_files/creature_0042.png" title=""></td>
+                            <td><input onclick="setCreature('0043')" type="image"
+                                    src="../information/creature2_files/creature_0043.png" title=""></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><input onclick="setCreature('0044')" type="image"
+                                    src="../information/creature2_files/creature_0044.png" title=""></td>
+                            <td><input onclick="setCreature('0045')" type="image"
+                                    src="../information/creature2_files/creature_0045.png" title=""></td>
+                            <td><input onclick="setCreature('0046')" type="image"
+                                    src="../information/creature2_files/creature_0046.png" title=""></td>
+                            <td><input onclick="setCreature('0047')" type="image"
+                                    src="../information/creature2_files/creature_0047.png" title=""></td>
+                            <td><input onclick="setCreature('0048')" type="image"
+                                    src="../information/creature2_files/creature_0048.png" title=""></td>
+                            <td><input onclick="setCreature('0049')" type="image"
+                                    src="../information/creature2_files/creature_0049.png" title=""></td>
+                            <td><input onclick="setCreature('0050')" type="image"
+                                    src="../information/creature2_files/creature_0050.png" title=""></td>
+                            <td><input onclick="setCreature('0051')" type="image"
+                                    src="../information/creature2_files/creature_0051.png" title=""></td>
+                            <td><input onclick="setCreature('0052')" type="image"
+                                    src="../information/creature2_files/creature_0052.png" title=""></td>
+                            <td><input onclick="setCreature('0053')" type="image"
+                                    src="../information/creature2_files/creature_0053.png" title=""></td>
+                            <td><input onclick="setCreature('0054')" type="image"
+                                    src="../information/creature2_files/creature_0054.png" title=""></td>
+                            <td></td>
+                        </tr>
+
+
+                        <!--ここからR（レア）-->
+                        <tr>
+                            <th colspan="12">
+                                <font color="#00F800">R レア</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td><input onclick="setCreature('0055')" type="image"
+                                    src="../information/creature2_files/creature_0055.png" title=""></td>
+                            <td><input onclick="setCreature('0056')" type="image"
+                                    src="../information/creature2_files/creature_0056.png" title=""></td>
+                            <td><input onclick="setCreature('0057')" type="image"
+                                    src="../information/creature2_files/creature_0057.png" title=""></td>
+                            <td><input onclick="setCreature('0058')" type="image"
+                                    src="../information/creature2_files/creature_0058.png" title=""></td>
+                            <td><input onclick="setCreature('0059')" type="image"
+                                    src="../information/creature2_files/creature_0059.png" title=""></td>
+                            <td><input onclick="setCreature('0060')" type="image"
+                                    src="../information/creature2_files/creature_0060.png" title=""></td>
+                            <td><input onclick="setCreature('0061')" type="image"
+                                    src="../information/creature2_files/creature_0061.png" title=""></td>
+                            <td><input onclick="setCreature('0062')" type="image"
+                                    src="../information/creature2_files/creature_0062.png" title=""></td>
+                            <td><input onclick="setCreature('0063')" type="image"
+                                    src="../information/creature2_files/creature_0063.png" title=""></td>
+                            <td><input onclick="setCreature('0064')" type="image"
+                                    src="../information/creature2_files/creature_0064.png" title=""></td>
+                            <td><input onclick="setCreature('0065')" type="image"
+                                    src="../information/creature2_files/creature_0065.png" title=""></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><input onclick="setCreature('0066')" type="image"
+                                    src="../information/creature2_files/creature_0066.png" title=""></td>
+                            <td><input onclick="setCreature('0067')" type="image"
+                                    src="../information/creature2_files/creature_0067.png" title=""></td>
+                            <td><input onclick="setCreature('0068')" type="image"
+                                    src="../information/creature2_files/creature_0068.png" title=""></td>
+                            <td><input onclick="setCreature('0069')" type="image"
+                                    src="../information/creature2_files/creature_0069.png" title=""></td>
+                            <td><input onclick="setCreature('0070')" type="image"
+                                    src="../information/creature2_files/creature_0070.png" title=""></td>
+                            <td><input onclick="setCreature('0071')" type="image"
+                                    src="../information/creature2_files/creature_0071.png" title=""></td>
+                            <td><input onclick="setCreature('0072')" type="image"
+                                    src="../information/creature2_files/creature_0072.png" title=""></td>
+                            <td><input onclick="setCreature('0073')" type="image"
+                                    src="../information/creature2_files/creature_0073.png" title=""></td>
+                            <td><input onclick="setCreature('0074')" type="image"
+                                    src="../information/creature2_files/creature_0074.png" title=""></td>
+                            <td><input onclick="setCreature('0075')" type="image"
+                                    src="../information/creature2_files/creature_0075.png" title=""></td>
+                            <td><input onclick="setCreature('0076')" type="image"
+                                    src="../information/creature2_files/creature_0076.png" title=""></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><input onclick="setCreature('0077')" type="image"
+                                    src="../information/creature2_files/creature_0077.png" title=""></td>
+                            <td><input onclick="setCreature('0078')" type="image"
+                                    src="../information/creature2_files/creature_0078.png" title=""></td>
+                            <td><input onclick="setCreature('0079')" type="image"
+                                    src="../information/creature2_files/creature_0079.png" title=""></td>
+                            <td><input onclick="setCreature('0080')" type="image"
+                                    src="../information/creature2_files/creature_0080.png" title=""></td>
+                            <td><input onclick="setCreature('0081')" type="image"
+                                    src="../information/creature2_files/creature_0081.png" title=""></td>
+                            <td><input onclick="setCreature('0082')" type="image"
+                                    src="../information/creature2_files/creature_0082.png" title=""></td>
+                            <td><input onclick="setCreature('0083')" type="image"
+                                    src="../information/creature2_files/creature_0083.png" title=""></td>
+                            <td><input onclick="setCreature('0084')" type="image"
+                                    src="../information/creature2_files/creature_0084.png" title=""></td>
+                            <td><input onclick="setCreature('0085')" type="image"
+                                    src="../information/creature2_files/creature_0085.png" title=""></td>
+                            <td><input onclick="setCreature('0086')" type="image"
+                                    src="../information/creature2_files/creature_0086.png" title=""></td>
+                            <td><input onclick="setCreature('0087')" type="image"
+                                    src="../information/creature2_files/creature_0087.png" title=""></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><input onclick="setCreature('0117')" type="image"
+                                    src="../information/creature2_files/creature_0117.png" title=""></td>
+                            <td><input onclick="setCreature('0118')" type="image"
+                                    src="../information/creature2_files/creature_0118.png" title=""></td>
+                            <td><input onclick="setCreature('0119')" type="image"
+                                    src="../information/creature2_files/creature_0119.png" title=""></td>
+                            <td><input onclick="setCreature('0120')" type="image"
+                                    src="../information/creature2_files/creature_0120.png" title=""></td>
+                            <td><input onclick="setCreature('0123')" type="image"
+                                    src="../information/creature2_files/creature_0123.png" title=""></td>
+                            <td><input onclick="setCreature('0124')" type="image"
+                                    src="../information/creature2_files/creature_0124.png" title=""></td>
+                            <td><input onclick="setCreature('0125')" type="image"
+                                    src="../information/creature2_files/creature_0125.png" title=""></td>
+                            <td><input onclick="setCreature('0126')" type="image"
+                                    src="../information/creature2_files/creature_0126.png" title=""></td>
+                            <td><input onclick="setCreature('0135')" type="image"
+                                    src="../information/creature2_files/creature_0135.png" title=""></td>
+                            <td><input onclick="setCreature('0136')" type="image"
+                                    src="../information/creature2_files/creature_0136.png" title=""></td>
+                            <td><input onclick="setCreature('0137')" type="image"
+                                    src="../information/creature2_files/creature_0137.png" title=""></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><input onclick="setCreature('0138')" type="image"
+                                    src="../information/creature2_files/creature_0138.png" title=""></td>
+                            <td><input onclick="setCreature('0141')" type="image"
+                                    src="../information/creature2_files/creature_0141.png" title=""></td>
+                            <td><input onclick="setCreature('0142')" type="image"
+                                    src="../information/creature2_files/creature_0142.png" title=""></td>
+                            <td><input onclick="setCreature('0143')" type="image"
+                                    src="../information/creature2_files/creature_0143.png" title=""></td>
+                            <td><input onclick="setCreature('0144')" type="image"
+                                    src="../information/creature2_files/creature_0144.png" title=""></td>
+                            <td><input onclick="setCreature('0145')" type="image"
+                                    src="../information/creature2_files/creature_0145.png" title=""></td>
+                            <td><input onclick="setCreature('0146')" type="image"
+                                    src="../information/creature2_files/creature_0146.png" title=""></td>
+                            <td><input onclick="setCreature('0147')" type="image"
+                                    src="../information/creature2_files/creature_0147.png" title=""></td>
+                            <td><input onclick="setCreature('0148')" type="image"
+                                    src="../information/creature2_files/creature_0148.png" title=""></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><input onclick="setCreature('0153')" type="image"
+                                    src="../information/creature2_files/creature_0153.png" title=""></td>
+                            <td><input onclick="setCreature('0154')" type="image"
+                                    src="../information/creature2_files/creature_0154.png" title=""></td>
+                            <td><input onclick="setCreature('0155')" type="image"
+                                    src="../information/creature2_files/creature_0155.png" title=""></td>
+                            <td><input onclick="setCreature('0156')" type="image"
+                                    src="../information/creature2_files/creature_0156.png" title=""></td>
+                            <td><input onclick="setCreature('0157')" type="image"
+                                    src="../information/creature2_files/creature_0157.png" title=""></td>
+                            <td><input onclick="setCreature('0158')" type="image"
+                                    src="../information/creature2_files/creature_0158.png" title=""></td>
+                            <td><input onclick="setCreature('0159')" type="image"
+                                    src="../information/creature2_files/creature_0159.png" title=""></td>
+                            <td><input onclick="setCreature('0160')" type="image"
+                                    src="../information/creature2_files/creature_0160.png" title=""></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <!-- <tr>
+                        <td><input onclick="setCreature('0165')" type="image" src="../information/creature2_files/creature_0165.png" title=""></td>
+                        <td><input onclick="setCreature('0166')" type="image" src="../information/creature2_files/creature_0166.png" title=""></td>
+                        <td><input onclick="setCreature('0167')" type="image" src="../information/creature2_files/creature_0167.png" title=""></td>
+                        <td><input onclick="setCreature('0168')" type="image" src="../information/creature2_files/creature_0168.png" title=""></td>
+                        <td><input onclick="setCreature('0169')" type="image" src="../information/creature2_files/creature_0169.png" title=""></td>
+                        <td><input onclick="setCreature('0170')" type="image" src="../information/creature2_files/creature_0170.png" title=""></td>
+                        <td><input onclick="setCreature('0171')" type="image" src="../information/creature2_files/creature_0171.png" title=""></td>
+                        <td><input onclick="setCreature('0172')" type="image" src="../information/creature2_files/creature_0172.png" title=""></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr> -->
+                        <tr>
+                            <th colspan="12">
+                                <font color="#50A0F8">HR ハイレア</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td><input onclick="setCreature('0088')" type="image"
+                                    src="../information/creature2_files/creature_0088.png" title=""></td>
+                            <td><input onclick="setCreature('0089')" type="image"
+                                    src="../information/creature2_files/creature_0089.png" title=""></td>
+                            <td><input onclick="setCreature('0090')" type="image"
+                                    src="../information/creature2_files/creature_0090.png" title=""></td>
+                            <td><input onclick="setCreature('0091')" type="image"
+                                    src="../information/creature2_files/creature_0091.png" title=""></td>
+                            <td><input onclick="setCreature('0092')" type="image"
+                                    src="../information/creature2_files/creature_0092.png" title=""></td>
+                            <td><input onclick="setCreature('0093')" type="image"
+                                    src="../information/creature2_files/creature_0093.png" title=""></td>
+                            <td><input onclick="setCreature('0094')" type="image"
+                                    src="../information/creature2_files/creature_0094.png" title=""></td>
+                            <td><input onclick="setCreature('0095')" type="image"
+                                    src="../information/creature2_files/creature_0095.png" title=""></td>
+                            <td><input onclick="setCreature('0096')" type="image"
+                                    src="../information/creature2_files/creature_0096.png" title=""></td>
+                            <td><input onclick="setCreature('0097')" type="image"
+                                    src="../information/creature2_files/creature_0097.png" title=""></td>
+                            <td><input onclick="setCreature('0105')" type="image"
+                                    src="../information/creature2_files/creature_0105.png" title=""></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><input onclick="setCreature('0106')" type="image"
+                                    src="../information/creature2_files/creature_0106.png" title=""></td>
+                            <td><input onclick="setCreature('0108')" type="image"
+                                    src="../information/creature2_files/creature_0108.png" title=""></td>
+                            <td><input onclick="setCreature('0109')" type="image"
+                                    src="../information/creature2_files/creature_0109.png" title=""></td>
+                            <td><input onclick="setCreature('0113')" type="image"
+                                    src="../information/creature2_files/creature_0113.png" title=""></td>
+                            <td><input onclick="setCreature('0114')" type="image"
+                                    src="../information/creature2_files/creature_0114.png" title=""></td>
+                            <td><input onclick="setCreature('0121')" type="image"
+                                    src="../information/creature2_files/creature_0121.png" title=""></td>
+                            <td><input onclick="setCreature('0127')" type="image"
+                                    src="../information/creature2_files/creature_0127.png" title=""></td>
+                            <td><input onclick="setCreature('0139')" type="image"
+                                    src="../information/creature2_files/creature_0139.png" title=""></td>
+                            <td><input onclick="setCreature('0149')" type="image"
+                                    src="../information/creature2_files/creature_0149.png" title=""></td>
+                            <td><input onclick="setCreature('0150')" type="image"
+                                    src="../information/creature2_files/creature_0150.png" title=""></td>
+                            <td><input onclick="setCreature('0161')" type="image"
+                                    src="../information/creature2_files/creature_0161.png" title=""></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <!--TODOテーブル2個減らす-->
+                            <td><input onclick="setCreature('0173')" type="image"
+                                    src="../information/creature2_files/creature_0173.png" title=""></td>
+                            <td><input onclick="setCreature('0174')" type="image"
+                                    src="../information/creature2_files/creature_0174.png" title=""></td>
+                            <td><input onclick="setCreature('0175')" type="image"
+                                    src="../information/creature2_files/creature_0175.png" title=""></td>
+                            <!-- <td><input onclick="setCreature('0176')" type="image" src="../information/creature2_files/creature_0176.png" title=""></td> -->
+                            <td><input onclick="setCreature('0177')" type="image"
+                                    src="../information/creature2_files/creature_0177.png" title=""></td>
+                            <!-- <td><input onclick="setCreature('0178')" type="image" src="../information/creature2_files/creature_0178.png" title=""></td> -->
+                            <td><input onclick="setCreature('0179')" type="image"
+                                    src="../information/creature2_files/creature_0179.png" title=""></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th colspan="12">
+                                <font color="#D080F8">SR スーパーレア</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td><input onclick="setCreature('0098')" type="image"
+                                    src="../information/creature2_files/creature_0098.png" title=""></td>
+                            <td><input onclick="setCreature('0099')" type="image"
+                                    src="../information/creature2_files/creature_0099.png" title=""></td>
+                            <td><input onclick="setCreature('0100')" type="image"
+                                    src="../information/creature2_files/creature_0100.png" title=""></td>
+                            <td><input onclick="setCreature('0101')" type="image"
+                                    src="../information/creature2_files/creature_0101.png" title=""></td>
+                            <td><input onclick="setCreature('0102')" type="image"
+                                    src="../information/creature2_files/creature_0102.png" title=""></td>
+                            <td><input onclick="setCreature('0107')" type="image"
+                                    src="../information/creature2_files/creature_0107.png" title=""></td>
+                            <td><input onclick="setCreature('0110')" type="image"
+                                    src="../information/creature2_files/creature_0110.png" title=""></td>
+                            <td><input onclick="setCreature('0111')" type="image"
+                                    src="../information/creature2_files/creature_0111.png" title=""></td>
+                            <td><input onclick="setCreature('0115')" type="image"
+                                    src="../information/creature2_files/creature_0115.png" title=""></td>
+                            <td><input onclick="setCreature('0116')" type="image"
+                                    src="../information/creature2_files/creature_0116.png" title=""></td>
+                            <td><input onclick="setCreature('0122')" type="image"
+                                    src="../information/creature2_files/creature_0122.png" title=""></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><input onclick="setCreature('0128')" type="image"
+                                    src="../information/creature2_files/creature_0128.png" title=""></td>
+                            <td><input onclick="setCreature('0129')" type="image"
+                                    src="../information/creature2_files/creature_0129.png" title=""></td>
+                            <td><input onclick="setCreature('0130')" type="image"
+                                    src="../information/creature2_files/creature_0130.png" title=""></td>
+                            <td><input onclick="setCreature('0131')" type="image"
+                                    src="../information/creature2_files/creature_0131.png" title=""></td>
+                            <td><input onclick="setCreature('0132')" type="image"
+                                    src="../information/creature2_files/creature_0132.png" title=""></td>
+                            <td><input onclick="setCreature('0140')" type="image"
+                                    src="../information/creature2_files/creature_0140.png" title=""></td>
+                            <td><input onclick="setCreature('0151')" type="image"
+                                    src="../information/creature2_files/creature_0151.png" title=""></td>
+                            <td><input onclick="setCreature('0162')" type="image"
+                                    src="../information/creature2_files/creature_0162.png" title=""></td>
+                            <td><input onclick="setCreature('0163')" type="image"
+                                    src="../information/creature2_files/creature_0163.png" title=""></td>
+                            <td><input onclick="setCreature('0180')" type="image"
+                                    src="../information/creature2_files/creature_0180.png" title=""></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th colspan="12">
+                                <font color="#E8C898">LR レジェンドレア</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td><input onclick="setCreature('0103')" type="image"
+                                    src="../information/creature2_files/creature_0103.png" title=""></td>
+                            <td><input onclick="setCreature('0104')" type="image"
+                                    src="../information/creature2_files/creature_0104.png" title=""></td>
+                            <td><input onclick="setCreature('0112')" type="image"
+                                    src="../information/creature2_files/creature_0112.png" title=""></td>
+                            <td><input onclick="setCreature('0133')" type="image"
+                                    src="../information/creature2_files/creature_0133.png" title=""></td>
+                            <td><input onclick="setCreature('0134')" type="image"
+                                    src="../information/creature2_files/creature_0134.png" title=""></td>
+                            <td><input onclick="setCreature('0152')" type="image"
+                                    src="../information/creature2_files/creature_0152.png" title=""></td>
+                            <td><input onclick="setCreature('0164')" type="image"
+                                    src="../information/creature2_files/creature_0164.png" title=""></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                メモ：時間あるときにクリーチャーを選ぶモーダル作りたい。<br>
+                メモ：「経験値Lv50にできるペットの組み合わせ」みたいなシミュレータも出したい。<br>
+                <br>
+                <br>
+
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        </div>
+</body>
+
+</html>
