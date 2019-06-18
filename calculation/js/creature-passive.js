@@ -1263,7 +1263,7 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 81) {
-        result += '- 魔法の攻撃力を +<span class="color-image11">' + parseInt(1 + slv * 2) + '</span>％強化させる。<br>';
+        result += '- 魔法の攻撃力を +<span class="color-image11">' + parseInt(2 + slv * 1) + '</span>％強化させる。<br>';
         if (slv >= 50) {
             result += '- ターゲットの魔法抵抗を <span class="color-image11">20</span>％弱化させる。<br>'
             result += '- 不明<br>'
