@@ -1,6 +1,26 @@
 function init1() {
+    var d1dom = document.getElementById("sub_d1");
+    var d2dom = document.getElementById("sub_d2");
+    var d3dom = document.getElementById("sub_d3");
+    // var d2dom = document.getElementByClassName("d2");
+    // var d3dom = document.getElementByClassName("d3");
     skillIdMap.forEach(function (e, index) {
         document.optionlist.a2.options[index] = new Option(e.value, e.value);
+        // .options[index] = new Option(e.value, e.value);
+        var element1 = document.createElement('option');
+        element1.setAttribute('value', e.value);
+        element1.innerHTML =  e.value;
+        d1dom.appendChild( element1 );
+        var element2 = document.createElement('option');
+        element2.setAttribute('value', e.value);
+        element2.innerHTML =  e.value;
+        d2dom.appendChild( element2 );
+        var element3 = document.createElement('option');
+        element3.setAttribute('value', e.value);
+        element3.innerHTML =  e.value;
+        d3dom.appendChild( element3 );
+        // document.keisannormal.d2.options[index] = new Option(e.value, e.value);
+        // document.keisannormal.d3.options[index] = new Option(e.value, e.value);
     });
 }
 
@@ -260,6 +280,11 @@ var skillData = [
     { name: "ライダー", id: 134, mainId: "魔法強打", mainLv: 20, sub1Id: "与魔法ダメージ吸収", sub1IdLv: 10, sub2Id: "上級スキル", sub2IdLv: 10 },
     { name: "グラビティアナ", id: 152, mainId: "PVP攻撃力", mainLv: 20, sub1Id: "強打", sub1IdLv: 10, sub2Id: "ダブルクリティカルダメージ", sub2IdLv: 10 },
     { name: "タナトス", id: 164, mainId: "魔法攻撃力強化", mainLv: 20, sub1Id: "魔法致命打", sub1IdLv: 10, sub2Id: "魔法攻撃力低下", sub2IdLv: 10 },
+    //ここからは覚醒クリーチャー用
+    { name: "メイン1", id: 9996, used: false, mainId: "test", mainLv: 20, sub1Id: "test", sub1IdLv: 10, sub2Id: "test", sub2IdLv: 10 },
+    { name: "サブ１", id: 9997, used: false, mainId: "test", mainLv: 20, sub1Id: "test", sub1IdLv: 10, sub2Id: "test", sub2IdLv: 10 },
+    { name: "サブ２", id: 9998, used: false, mainId: "test", mainLv: 20, sub1Id: "test", sub1IdLv: 10, sub2Id: "test", sub2IdLv: 10 },
+    { name: "サブ３", id: 9999, used: false, mainId: "test", mainLv: 20, sub1Id: "test", sub1IdLv: 10, sub2Id: "test", sub2IdLv: 10 },
 ];
 
 
@@ -371,8 +396,58 @@ function matchSkill(main, sub, name) {
     return result;
 };
 
+function translateTubo(num) {
+    if (crnt_num === 10000) {
+        console.log("これ以上登録できません。");
+        return num;
+    }
+    if (crnt_num >= 9996 && crnt_num <= 9999) {
+    // formの中で入力してonclickしてDOM書き換えるとバグってリロードされちゃうから無理矢理回避してます。
+    var d1dom = document.getElementById("sub_d1");
+        var d2dom = document.getElementById("sub_d2");
+        var d3dom = document.getElementById("sub_d3");    
+        var e1dom = document.getElementById("sub_e1");
+        var e2dom = document.getElementById("sub_e2");
+        var e3dom = document.getElementById("sub_e3");    
+        var d1 = d1dom.value ? d1dom.value : "";
+        var d2 = d2dom.value ? d2dom.value : "";
+        var d3 = d3dom.value ? d3dom.value : "";
+        var e1 = e1dom.value ? parseInt(e1dom.value) : 0;
+        var e2 = e2dom.value ? parseInt(e2dom.value) : 0;
+        var e3 = e3dom.value ? parseInt(e3dom.value) : 0;
 
+        skillData.forEach(function (e, index) {
+            if (e.id === crnt_num) {
+                var name = "";
+                if (crnt_num === 9996) {
+                    name = "自作メインクリーチャー"
+                } else if (crnt_num === 9997){
+                    name = "自作サブクリーチャー１"
+                } else if (crnt_num === 9998){
+                    name = "自作サブクリーチャー２"
+                } else if (crnt_num === 9999){
+                    name = "自作サブクリーチャー３"
+                }
+                skillData[index] = {
+                    name: name,
+                    id: crnt_num,
+                    used: true,
+                    mainId: d1,
+                    mainLv: e1,
+                    sub1Id: d2,
+                    sub1IdLv: e2,
+                    sub2Id: d3,
+                    sub2IdLv: e3
+                }
+                console.log(skillData[index]);
+            }
+        });
+        crnt_num++;
+    }
+    return (crnt_num-1);
+}
 
+var crnt_num = 9996;
 var cnt = 0;
 var set_c = [-1, -1, -1, -1];
 
@@ -382,6 +457,7 @@ function setCreature(num, pos) {
             var greet = document.getElementById('main_c');
             greet.innerHTML = '<input onclick="setCreature(-1, 0)" type="image"src="../calculation/image//interface2_0767.png" title="メイン">';
             cnt = 0;
+            crnt_num = 9996;
             set_c[0] = -1;
             calc();
             return;
@@ -390,6 +466,7 @@ function setCreature(num, pos) {
             var greet = document.getElementById('sub_c1');
             greet.innerHTML = '<input onclick="setCreature(-1, 1)" type="image"src="../calculation/image//interface2_0767-1.png" title="サブ１">';
             cnt = 1;
+            crnt_num = 9997;
             set_c[1] = -1;
             calc();
             return;
@@ -398,6 +475,7 @@ function setCreature(num, pos) {
             var greet = document.getElementById('sub_c2');
             greet.innerHTML = '<input onclick="setCreature(-1, 2)" type="image"src="../calculation/image//interface2_0767-1.png" title="サブ２">';
             cnt = 2;
+            crnt_num = 9998;
             set_c[2] = -1;
             calc();
             return;
@@ -406,15 +484,20 @@ function setCreature(num, pos) {
             var greet = document.getElementById('sub_c3');
             greet.innerHTML = '<input onclick="setCreature(-1, 3)" type="image"src="../calculation/image//interface2_0767-1.png" title="サブ３">';
             cnt = 3;
+            crnt_num = 9999;
             set_c[3] = -1;
             calc();
             return;
         }
     }
+    if (parseInt(num) === 9999) {
+        num = translateTubo(num);
+    }
     if (cnt === 0 && set_c[0] === -1) {
         var greet = document.getElementById('main_c');
         greet.innerHTML = '<input onclick="setCreature(-1, 0)" type="image"src="../information/creature2_files/creature_' + num + '.png" title="メイン">';
         cnt = 1;
+        crnt_num = 9997;
         set_c[0] = parseInt(num);
         calc();
         return;
@@ -423,6 +506,7 @@ function setCreature(num, pos) {
         var greet = document.getElementById('sub_c1');
         greet.innerHTML = '<input onclick="setCreature(-1, 1)" type="image"src="../information/creature2_files/creature_' + num + '.png" title="サブ１">';
         cnt = 2;
+        crnt_num = 9998;
         set_c[1] = parseInt(num);
         calc();
         return;
@@ -431,6 +515,7 @@ function setCreature(num, pos) {
         var greet = document.getElementById('sub_c2');
         greet.innerHTML = '<input onclick="setCreature(-1, 2)" type="image"src="../information/creature2_files/creature_' + num + '.png" title="サブ２">';
         cnt = 3;
+        crnt_num = 9999;
         set_c[2] = parseInt(num);
         calc();
         return;
@@ -439,6 +524,7 @@ function setCreature(num, pos) {
         var greet = document.getElementById('sub_c3');
         greet.innerHTML = '<input onclick="setCreature(-1, 3)" type="image"src="../information/creature2_files/creature_' + num + '.png" title="サブ３">';
         cnt = 4;
+        crnt_num = 10000;
         set_c[3] = parseInt(num);
         calc();
         return;
@@ -458,6 +544,7 @@ function resetCreature() {
     var greet3 = document.getElementById('sub_c3');
     greet3.innerHTML = '<input onclick="setCreature(-1, 3)" type="image"src="../calculation/image//interface2_0767-1.png" title="サブ３">';
     cnt = 0;
+    crnt_num = 9996;
     set_c = [-1, -1, -1, -1];
     calc();
 }
@@ -512,7 +599,7 @@ function calc() {
     //ここまででパッシブ一覧が出来てるはずなので出力するよ
     document.keisannormal.res1.value = output1(mobname);
     var greet3 = document.getElementById('passive_state');
-    greet3.innerHTML = '<p style="text-align: left">' + output2(skillset) + '</p>';
+    greet3.innerHTML = ('<p style="text-align: left">' + output2(skillset) + '</p>');
 
 }
 
