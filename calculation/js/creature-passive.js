@@ -47,6 +47,7 @@ var skillIdMap = [
     { id: 35, value: "ペット&召喚獣状態異常抵抗" },
     { id: 36, value: "ペット&召喚獣全てのステータス" },
     { id: 37, value: "ペット&召喚獣体力" },
+    { id: 38, value: "ペット&召喚獣魔法致命打確率" },//合成
     { id: 40, value: "最大体力" },
     { id: 41, value: "最大CP" },
     { id: 42, value: "攻撃力" },
@@ -298,7 +299,11 @@ function searchPassiveSkill() {
     tmpSkill.skillLv = match.best_slv;
     skillset.push(tmpSkill);
     var resultRes3 = "[該当スキルを所持しているクリーチャー]\n" + nameList + "\n\n"
-    resultRes3 = resultRes3 + "最大効果は" + match.best + "] を組み合わせることで\n SLv" + match.best_slv + "が得られます。\n"
+    if (match.best_slv > 0) {
+        resultRes3 = resultRes3 + "最大効果は" + match.best + "] を組み合わせることで\n SLv" + match.best_slv + "が得られます。\n"
+    } else {
+        resultRes3 = resultRes3 + "このパッシブはクリーチャーパッシブ変換スキルでのみ入手できます。\n"
+    }
 
     document.optionlist.res3.value = resultRes3;
     // オプション効果も引っ張ってきちゃう
@@ -1086,6 +1091,22 @@ function searchOption(cid, slv) {
             result += '- ペット&召喚獣の攻撃力 +<span class="color-image11">' + (20) + '</span>％<br>';
         }
     }
+    //合成専門で、青
+    if (cid === 38) {
+        result += '- ペット&召喚獣の魔法致命打増加 +<span class="color-image11">' + "？" + '</span>％<br>';
+        if (slv >= 50) {
+            result += '- 不明<br>'
+            result += '- 不明<br>'
+        } else if (slv >= 40) {
+            result += '- 不明<br>'
+            result += '- 不明<br>'
+        } else if (slv >= 30) {
+            result += '- 不明<br>'
+            result += '- 不明<br>'
+        } else if (slv >= 20) {
+            result += '- 不明<br>'
+        }
+    }
     // ペット系は全部青だった
 
     if (cid === 40) {
@@ -1459,18 +1480,18 @@ function searchOption(cid, slv) {
 
     // 合成・覚醒専門
     if (cid === 210) {
-        result += '- すべての能力値 + <span class="color-image11">' + Math.round(4 * slv) + '</span><br>';
+        // LV17で68、LV43で146
+        result += '- すべての能力値 + <span class="color-image11">' + Math.round(17 + 3 * slv) + '</span><br>';
         if (slv >= 50) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- アイテム着用レベル ー<span class="color-image11">？</span><br>'
+            result += '- 能力値低下防止 <span class="color-image11">？</span>％増加<br>'
         } else if (slv >= 40) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- アイテム着用レベル ー<span class="color-image11">60</span><br>'
+            result += '- 能力値低下防止 <span class="color-image11">3</span>％増加<br>'
         } else if (slv >= 30) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- アイテム着用レベル ー<span class="color-image11">40</span><br>'
         } else if (slv >= 20) {
-            result += '- 不明<br>'
+            result += '- アイテム着用レベル ー<span class="color-image11">20</span><br>'
         }
     }
 
@@ -1492,14 +1513,14 @@ function searchOption(cid, slv) {
     if (cid === 300) {
         result += '- スキルレベル + <span class="color-image11">' + Math.round(2 + 0.2 * slv) + '</span><br>';
         if (slv >= 50) {
-            result += '- 不明<br>'
+            result += '- 全ての能力値 +<span class="color-image11">250</span><br>'
             result += '- 不明<br>'
         } else if (slv >= 40) {
-            result += '- 不明<br>'
+            result += '- 全ての能力値 +<span class="color-image11">200</span><br>'
         } else if (slv >= 30) {
-            result += '- 不明<br>'
+            result += '- 全ての能力値 +<span class="color-image11">150</span><br>'
         } else if (slv >= 20) {
-            result += '- 不明<br>'
+            result += '- 全ての能力値 +<span class="color-image11">100</span><br>'
         }
     }
     if (cid === 301) {
