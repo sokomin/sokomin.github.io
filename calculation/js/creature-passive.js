@@ -678,7 +678,7 @@ function searchOption(cid, slv) {
             result += '- 最大CP <span class="color-image11">+800</span><br>'
             result += '- スキルレベル <span class="color-image11">+3</span><br>'
         } else {
-            let sl = slv * 1 <= 25 ? slv : 25
+            let sl = slv * 1 < 24 ? slv : 25
             result += '- スキルクールタイム <span class="color-image11">' + sl + '</span>％ 減少<br>';
             if (slv >= 40) {
                 result += '- 最大CP <span class="color-image11">+650</span><br>'
@@ -935,25 +935,28 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 21) {
-        result += '- 火属性攻撃力を<span class="color-image11">' + (2 + slv * 1) + '</span>％強化させる。<br>';
         if (slv >= 50) {
-            result += '- ターゲットの火の抵抗を<span class="color-image11">' + (8) + '</span>％弱化させる。<br>';
-            result += '- 不明<br>'
-        } else if (slv >= 40) {
-            result += '- ターゲットの火の抵抗を<span class="color-image11">' + (7) + '</span>％弱化させる。<br>';
-            result += '- 不明<br>'
-        } else if (slv >= 30) {
-            result += '- ターゲットの火の抵抗を<span class="color-image11">' + (6) + '</span>％弱化させる。<br>';
-        } else if (slv >= 20) {
-            result += '- ターゲットの火の抵抗を<span class="color-image11">' + (5) + '</span>％弱化させる。<br>';
+            result += '- 火属性攻撃力を<span class="color-image11">' + 55 + '</span>％強化させる。<br>';
+            result += '- ターゲットの火抵抗を<span class="color-image11">' + 10 + '</span>％弱化させる。<br>';
+            result += '- 魔法致命打 <span class="color-image11">' + (5) + '</span>％<br>';
+        } else {
+            result += '- 火属性攻撃力を<span class="color-image11">' + (2 + slv * 1) + '</span>％強化させる。<br>';
+            if (slv >= 40) {
+                result += '- ターゲットの火抵抗を<span class="color-image11">' + (7) + '</span>％弱化させる。<br>';
+                result += '- 魔法致命打 <span class="color-image11">' + (3) + '</span>％<br>';
+            } else if (slv >= 30) {
+                result += '- ターゲットの火抵抗を<span class="color-image11">' + (6) + '</span>％弱化させる。<br>';
+            } else if (slv >= 20) {
+                result += '- ターゲットの火抵抗を<span class="color-image11">' + (5) + '</span>％弱化させる。<br>';
+            }
         }
     }
     if (cid === 22) {
         // Lv8で7%だった
-        result += '- ターゲットの火の抵抗を<span class="color-image11">' + Math.round(2.6 + 0.6 * slv) + '</span>％弱化させる。<br>';
+        result += '- ターゲットの火抵抗を<span class="color-image11">' + Math.round(2.6 + 0.6 * slv) + '</span>％弱化させる。<br>';
         if (slv >= 50) {
             result += '- 火属性攻撃力を<span class="color-image11">' + (20) + '</span>％強化させる。<br>';
-            result += '- 魔法致命打 <span class="color-image11">？</span>％<br>';
+            result += '- 魔法致命打 <span class="color-image11">5</span>％<br>';
         } else if (slv >= 40) {
             result += '- 火属性攻撃力を<span class="color-image11">' + (15) + '</span>％強化させる。<br>';
             result += '- 魔法致命打 <span class="color-image11">' + (3) + '</span>％<br>';
@@ -964,24 +967,27 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 23) {
-        result += '- 水属性攻撃力を<span class="color-image11">' + (2 + slv * 1) + '</span>％強化させる。<br>';
         if (slv >= 50) {
-            result += '- ターゲットの水の抵抗を<span class="color-image11">' + (8) + '</span>％弱化させる。<br>';
-            result += '- 不明<br>'
-        } else if (slv >= 40) {
-            result += '- ターゲットの水の抵抗を<span class="color-image11">' + (7) + '</span>％弱化させる。<br>';
-            result += '- 不明<br>'
-        } else if (slv >= 30) {
-            result += '- ターゲットの水の抵抗を<span class="color-image11">' + (6) + '</span>％弱化させる。<br>';
-        } else if (slv >= 20) {
-            result += '- ターゲットの水の抵抗を<span class="color-image11">' + (5) + '</span>％弱化させる。<br>';
+            result += '- 水属性攻撃力を<span class="color-image11">' + 55 + '</span>％強化させる。<br>';
+            result += '- ターゲットの水抵抗を<span class="color-image11">' + 10 + '</span>％弱化させる。<br>';
+            result += '- 魔法致命打 <span class="color-image11">' + (5) + '</span>％<br>';
+        } else {
+            result += '- 水属性攻撃力を<span class="color-image11">' + (2 + slv * 1) + '</span>％強化させる。<br>';
+            if (slv >= 40) {
+                result += '- ターゲットの水抵抗を<span class="color-image11">' + (7) + '</span>％弱化させる。<br>';
+                result += '- 魔法致命打 <span class="color-image11">' + (3) + '</span>％<br>';
+            } else if (slv >= 30) {
+                result += '- ターゲットの水抵抗を<span class="color-image11">' + (6) + '</span>％弱化させる。<br>';
+            } else if (slv >= 20) {
+                result += '- ターゲットの水抵抗を<span class="color-image11">' + (5) + '</span>％弱化させる。<br>';
+            }
         }
     }
     if (cid === 24) {
-        result += '- ターゲットの水の抵抗を<span class="color-image11">' + Math.round(2.6 + 0.6 * slv) + '</span>％弱化させる。<br>';
+        result += '- ターゲットの水抵抗を<span class="color-image11">' + Math.round(2.6 + 0.6 * slv) + '</span>％弱化させる。<br>';
         if (slv >= 50) {
             result += '- 水属性攻撃力を<span class="color-image11">' + (20) + '</span>％強化させる。<br>';
-            result += '- 魔法致命打 <span class="color-image11">？</span>％<br>';
+            result += '- 魔法致命打 <span class="color-image11">5</span>％<br>';
         } else if (slv >= 40) {
             result += '- 水属性攻撃力を<span class="color-image11">' + (15) + '</span>％強化させる。<br>';
             result += '- 魔法致命打 <span class="color-image11">' + (3) + '</span>％<br>';
@@ -992,24 +998,27 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 25) {
-        result += '- 風属性攻撃力を<span class="color-image11">' + (2 + slv * 1) + '</span>％強化させる。<br>';
         if (slv >= 50) {
-            result += '- ターゲットの風の抵抗を<span class="color-image11">' + (8) + '</span>％弱化させる。<br>';
-            result += '- 不明<br>'
-        } else if (slv >= 40) {
-            result += '- ターゲットの風の抵抗を<span class="color-image11">' + (7) + '</span>％弱化させる。<br>';
-            result += '- 不明<br>'
-        } else if (slv >= 30) {
-            result += '- ターゲットの風の抵抗を<span class="color-image11">' + (6) + '</span>％弱化させる。<br>';
-        } else if (slv >= 20) {
-            result += '- ターゲットの風の抵抗を<span class="color-image11">' + (5) + '</span>％弱化させる。<br>';
+            result += '- 風属性攻撃力を<span class="color-image11">' + 55 + '</span>％強化させる。<br>';
+            result += '- ターゲットの風抵抗を<span class="color-image11">' + 10 + '</span>％弱化させる。<br>';
+            result += '- 魔法致命打 <span class="color-image11">' + (5) + '</span>％<br>';
+        } else {
+            result += '- 風属性攻撃力を<span class="color-image11">' + (2 + slv * 1) + '</span>％強化させる。<br>';
+            if (slv >= 40) {
+                result += '- ターゲットの風抵抗を<span class="color-image11">' + (7) + '</span>％弱化させる。<br>';
+                result += '- 魔法致命打 <span class="color-image11">' + (3) + '</span>％<br>';
+            } else if (slv >= 30) {
+                result += '- ターゲットの風抵抗を<span class="color-image11">' + (6) + '</span>％弱化させる。<br>';
+            } else if (slv >= 20) {
+                result += '- ターゲットの風抵抗を<span class="color-image11">' + (5) + '</span>％弱化させる。<br>';
+            }
         }
     }
     if (cid === 26) {
-        result += '- ターゲットの風の抵抗を<span class="color-image11">' + Math.round(2.6 + 0.6 * slv) + '</span>％弱化させる。<br>';
+        result += '- ターゲットの風抵抗を<span class="color-image11">' + Math.round(2.6 + 0.6 * slv) + '</span>％弱化させる。<br>';
         if (slv >= 50) {
             result += '- 風属性攻撃力を<span class="color-image11">' + (20) + '</span>％強化させる。<br>';
-            result += '- 魔法致命打 <span class="color-image11">？</span>％<br>';
+            result += '- 魔法致命打 <span class="color-image11">5</span>％<br>';
         } else if (slv >= 40) {
             result += '- 風属性攻撃力を<span class="color-image11">' + (15) + '</span>％強化させる。<br>';
             result += '- 魔法致命打 <span class="color-image11">' + (3) + '</span>％<br>';
@@ -1020,24 +1029,27 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 27) {
-        result += '- 大地属性攻撃力を<span class="color-image11">' + (2 + slv * 1) + '</span>％強化させる。<br>';
         if (slv >= 50) {
-            result += '- ターゲットの大地の抵抗を<span class="color-image11">' + (8) + '</span>％弱化させる。<br>';
-            result += '- 不明<br>'
-        } else if (slv >= 40) {
-            result += '- ターゲットの大地の抵抗を<span class="color-image11">' + (7) + '</span>％弱化させる。<br>';
-            result += '- 不明<br>'
-        } else if (slv >= 30) {
-            result += '- ターゲットの大地の抵抗を<span class="color-image11">' + (6) + '</span>％弱化させる。<br>';
-        } else if (slv >= 20) {
-            result += '- ターゲットの大地の抵抗を<span class="color-image11">' + (5) + '</span>％弱化させる。<br>';
+            result += '- 大地属性攻撃力を<span class="color-image11">' + 55 + '</span>％強化させる。<br>';
+            result += '- ターゲットの大地抵抗を<span class="color-image11">' + 10 + '</span>％弱化させる。<br>';
+            result += '- 魔法致命打 <span class="color-image11">' + (5) + '</span>％<br>';
+        } else {
+            result += '- 大地属性攻撃力を<span class="color-image11">' + (2 + slv * 1) + '</span>％強化させる。<br>';
+            if (slv >= 40) {
+                result += '- ターゲットの大地抵抗を<span class="color-image11">' + (7) + '</span>％弱化させる。<br>';
+                result += '- 魔法致命打 <span class="color-image11">' + (3) + '</span>％<br>';
+            } else if (slv >= 30) {
+                result += '- ターゲットの大地抵抗を<span class="color-image11">' + (6) + '</span>％弱化させる。<br>';
+            } else if (slv >= 20) {
+                result += '- ターゲットの大地抵抗を<span class="color-image11">' + (5) + '</span>％弱化させる。<br>';
+            }
         }
     }
     if (cid === 28) {
-        result += '- ターゲットの大地の抵抗を<span class="color-image11">' + Math.round(2.6 + 0.6 * slv) + '</span>％弱化させる。<br>';
+        result += '- ターゲットの大地抵抗を<span class="color-image11">' + Math.round(2.6 + 0.6 * slv) + '</span>％弱化させる。<br>';
         if (slv >= 50) {
             result += '- 大地属性攻撃力を<span class="color-image11">' + (20) + '</span>％強化させる。<br>';
-            result += '- 魔法致命打 <span class="color-image11">？</span>％<br>';
+            result += '- 魔法致命打 <span class="color-image11">5</span>％<br>';
         } else if (slv >= 40) {
             result += '- 大地属性攻撃力を<span class="color-image11">' + (15) + '</span>％強化させる。<br>';
             result += '- 魔法致命打 <span class="color-image11">' + (3) + '</span>％<br>';
@@ -1048,24 +1060,27 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 29) {
-        result += '- 光属性攻撃力を<span class="color-image11">' + (2 + slv * 1) + '</span>％強化させる。<br>';
         if (slv >= 50) {
-            result += '- ターゲットの光の抵抗を<span class="color-image11">' + (8) + '</span>％弱化させる。<br>';
-            result += '- 不明<br>'
-        } else if (slv >= 40) {
-            result += '- ターゲットの光の抵抗を<span class="color-image11">' + (7) + '</span>％弱化させる。<br>';
-            result += '- 不明<br>'
-        } else if (slv >= 30) {
-            result += '- ターゲットの光の抵抗を<span class="color-image11">' + (6) + '</span>％弱化させる。<br>';
-        } else if (slv >= 20) {
-            result += '- ターゲットの光の抵抗を<span class="color-image11">' + (5) + '</span>％弱化させる。<br>';
+            result += '- 光属性攻撃力を<span class="color-image11">' + 55 + '</span>％強化させる。<br>';
+            result += '- ターゲットの光抵抗を<span class="color-image11">' + 10 + '</span>％弱化させる。<br>';
+            result += '- 魔法致命打 <span class="color-image11">' + (5) + '</span>％<br>';
+        } else {
+            result += '- 光属性攻撃力を<span class="color-image11">' + (2 + slv * 1) + '</span>％強化させる。<br>';
+            if (slv >= 40) {
+                result += '- ターゲットの光抵抗を<span class="color-image11">' + (7) + '</span>％弱化させる。<br>';
+                result += '- 魔法致命打 <span class="color-image11">' + (3) + '</span>％<br>';
+            } else if (slv >= 30) {
+                result += '- ターゲットの光抵抗を<span class="color-image11">' + (6) + '</span>％弱化させる。<br>';
+            } else if (slv >= 20) {
+                result += '- ターゲットの光抵抗を<span class="color-image11">' + (5) + '</span>％弱化させる。<br>';
+            }
         }
     }
     if (cid === 30) {
         result += '- ターゲットの光の抵抗を<span class="color-image11">' + Math.round(2.6 + 0.6 * slv) + '</span>％弱化させる。<br>';
         if (slv >= 50) {
             result += '- 光属性攻撃力を<span class="color-image11">' + (20) + '</span>％強化させる。<br>';
-            result += '- 魔法致命打 <span class="color-image11">？</span>％<br>';
+            result += '- 魔法致命打 <span class="color-image11">5</span>％<br>';
         } else if (slv >= 40) {
             result += '- 光属性攻撃力を<span class="color-image11">' + (15) + '</span>％強化させる。<br>';
             result += '- 魔法致命打 <span class="color-image11">' + (3) + '</span>％<br>';
@@ -1076,24 +1091,28 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 31) {
-        result += '- 闇属性攻撃力を<span class="color-image11">' + (2 + slv * 1) + '</span>％強化させる。<br>';
         if (slv >= 50) {
-            result += '- ターゲットの闇の抵抗を<span class="color-image11">' + (8) + '</span>％弱化させる。<br>';
-            result += '- 不明<br>'
-        } else if (slv >= 40) {
-            result += '- ターゲットの闇の抵抗を<span class="color-image11">' + (7) + '</span>％弱化させる。<br>';
-            result += '- 不明<br>'
-        } else if (slv >= 30) {
-            result += '- ターゲットの闇の抵抗を<span class="color-image11">' + (6) + '</span>％弱化させる。<br>';
-        } else if (slv >= 20) {
-            result += '- ターゲットの闇の抵抗を<span class="color-image11">' + (5) + '</span>％弱化させる。<br>';
+            result += '- 闇属性攻撃力を<span class="color-image11">' + 55 + '</span>％強化させる。<br>';
+            result += '- ターゲットの闇抵抗を<span class="color-image11">' + 10 + '</span>％弱化させる。<br>';
+            result += '- 魔法致命打 <span class="color-image11">' + (5) + '</span>％<br>';
+        } else {
+            result += '- 闇属性攻撃力を<span class="color-image11">' + (2 + slv * 1) + '</span>％強化させる。<br>';
+            if (slv >= 40) {
+                result += '- ターゲットの闇抵抗を<span class="color-image11">' + (7) + '</span>％弱化させる。<br>';
+                result += '- 魔法致命打 <span class="color-image11">' + (3) + '</span>％<br>';
+            } else if (slv >= 30) {
+                result += '- ターゲットの闇抵抗を<span class="color-image11">' + (6) + '</span>％弱化させる。<br>';
+            } else if (slv >= 20) {
+                result += '- ターゲットの闇抵抗を<span class="color-image11">' + (5) + '</span>％弱化させる。<br>';
+            }
         }
+
     }
     if (cid === 32) {
         result += '- ターゲットの闇の抵抗を<span class="color-image11">' + Math.round(2.6 + 0.6 * slv) + '</span>％弱化させる。<br>';
         if (slv >= 50) {
             result += '- 闇属性攻撃力を<span class="color-image11">' + (20) + '</span>％強化させる。<br>';
-            result += '- 魔法致命打 <span class="color-image11">？</span>％<br>';
+            result += '- 魔法致命打 <span class="color-image11">5</span>％<br>';
         } else if (slv >= 40) {
             result += '- 闇属性攻撃力を<span class="color-image11">' + (15) + '</span>％強化させる。<br>';
             result += '- 魔法致命打 <span class="color-image11">' + (3) + '</span>％<br>';
@@ -1229,7 +1248,7 @@ function searchOption(cid, slv) {
     if (cid === 42) {
         result += '- 攻撃力 +<span class="color-image11">' + (6 + slv * 4) + '</span>％<br>';
         if (slv >= 50) {
-            result += '- クリティカル +<span class="color-image11">14</span>％<br>'
+            result += '- クリティカル +<span class="color-image11">？</span>％<br>'
             result += '- 攻撃速度 +<span class="color-image11">30</span>％<br>'
         } else if (slv >= 40) {
             result += '- クリティカル +<span class="color-image11">11</span>％<br>'
@@ -1323,7 +1342,7 @@ function searchOption(cid, slv) {
     if (cid === 76) {
         result += '- 敵の致命打抵抗減少 +<span class="color-image11">' + Math.round(4.5 + slv * 0.5) + '</span>％<br>';
         if (slv >= 50) {
-            result += '- クリティカルダメージ増加 +<span class="color-image11">30</span>％<br>'
+            result += '- クリティカルダメージ増加 +<span class="color-image11">25</span>％<br>'
             result += '- ダブルクリティカルダメージ増加 +<span class="color-image11">？</span>％<br>'
         } else if (slv >= 40) {
             result += '- クリティカルダメージ増加 +<span class="color-image11">20</span>％<br>'
@@ -1338,7 +1357,7 @@ function searchOption(cid, slv) {
     if (cid === 77) {
         result += '- 抵抗値低下防止 +<span class="color-image11">' + Math.round(slv * 0.2) + '</span>％<br>';
         if (slv >= 50) {
-            result += '- 能力値低下防止 +<span class="color-image11">4</span>％<br>'
+            result += '- 能力値低下防止 +<span class="color-image11">？</span>％<br>'
             result += '- 不明<br>'
         } else if (slv >= 40) {
             result += '- 能力値低下防止 +<span class="color-image11">3</span>％<br>'
@@ -1712,8 +1731,8 @@ function searchOption(cid, slv) {
     }
     // 合成専用
     if (cid === 308) {
-        // Lv15で2%
-        result += '- 着用時、モンスター討伐経験値 + <span class="color-image11">' + parseInt(20 + 3 * slv) + '</span>％ 追加獲得<br>';
+        // Lv18で74%　Lv8で64%
+        result += '- 着用時、モンスター討伐経験値 + <span class="color-image11">' + parseInt(54 + 1 * slv) + '</span>％ 追加獲得<br>';
         if (slv >= 50) {
             result += '- 不明<br>'
             result += '- 不明<br>'
