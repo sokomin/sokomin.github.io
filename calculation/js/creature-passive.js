@@ -9,16 +9,16 @@ function init1() {
         // .options[index] = new Option(e.value, e.value);
         var element1 = document.createElement('option');
         element1.setAttribute('value', e.value);
-        element1.innerHTML =  e.value;
-        d1dom.appendChild( element1 );
+        element1.innerHTML = e.value;
+        d1dom.appendChild(element1);
         var element2 = document.createElement('option');
         element2.setAttribute('value', e.value);
-        element2.innerHTML =  e.value;
-        d2dom.appendChild( element2 );
+        element2.innerHTML = e.value;
+        d2dom.appendChild(element2);
         var element3 = document.createElement('option');
         element3.setAttribute('value', e.value);
-        element3.innerHTML =  e.value;
-        d3dom.appendChild( element3 );
+        element3.innerHTML = e.value;
+        d3dom.appendChild(element3);
         // document.keisannormal.d2.options[index] = new Option(e.value, e.value);
         // document.keisannormal.d3.options[index] = new Option(e.value, e.value);
     });
@@ -30,84 +30,84 @@ function init2() {
 
 // 裏でも多分こんな感じで管理してるんでないの。
 var skillIdMap = [
-    { id: 0, value: "PVP攻撃力", passive_rank:1 },
-    { id: 1, value: "PVP防御力", passive_rank:1 },
-    { id: 2, value: "スキルクールタイム減少", passive_rank:2 },
-    { id: 3, value: "アンデッド型ダメージ", passive_rank:2 },
-    { id: 4, value: "人間型ダメージ", passive_rank:1 },
-    { id: 5, value: "悪魔型ダメージ", passive_rank:2 },
-    { id: 6, value: "動物型ダメージ", passive_rank:2 },
-    { id: 7, value: "神獣型ダメージ", passive_rank:2 },
-    { id: 8, value: "ドロップ率", passive_rank:2 },
-    { id: 9, value: "経験値", passive_rank:2 },
-    { id: 10, value: "移動速度", passive_rank:2 },
-    { id: 11, value: "攻撃速度", passive_rank:2 },
-    { id: 12, value: "命中率", passive_rank:2 },
-    { id: 13, value: "回避率", passive_rank:2 },
-    { id: 14, value: "火抵抗力", passive_rank:2 },
-    { id: 15, value: "水抵抗力", passive_rank:2 },
-    { id: 16, value: "風抵抗力", passive_rank:2 },
-    { id: 17, value: "大地抵抗力", passive_rank:2 },
-    { id: 18, value: "光抵抗力", passive_rank:2 },
-    { id: 19, value: "闇抵抗力", passive_rank:2 },
-    { id: 21, value: "火強化", passive_rank:2 },
-    { id: 22, value: "火低下", passive_rank:2 },
-    { id: 23, value: "水強化", passive_rank:2 },
-    { id: 24, value: "水低下", passive_rank:2 },
-    { id: 25, value: "風強化", passive_rank:2 },
-    { id: 26, value: "風低下", passive_rank:2 },
-    { id: 27, value: "大地強化", passive_rank:2 },
-    { id: 28, value: "大地低下", passive_rank:2 },
-    { id: 29, value: "光強化", passive_rank:2 },
-    { id: 30, value: "光低下", passive_rank:2 },
-    { id: 31, value: "闇強化", passive_rank:2 },
-    { id: 32, value: "闇低下", passive_rank:2 },
-    { id: 33, value: "ペット&召喚獣強化", passive_rank:2 },
-    { id: 34, value: "ペット&召喚獣攻撃力", passive_rank:2 },
-    { id: 35, value: "ペット&召喚獣状態異常抵抗", passive_rank:2 },
-    { id: 36, value: "ペット&召喚獣全てのステータス", passive_rank:2 },
-    { id: 37, value: "ペット&召喚獣体力", passive_rank:2 },
-    { id: 38, value: "ペット&召喚獣の魔法致命打確率", passive_rank:2 },//合成
-    { id: 39, value: "ペット&召喚獣の強打確率", passive_rank:2 },//合成
-    { id: 40, value: "最大体力", passive_rank:2 },
-    { id: 41, value: "最大CP", passive_rank:2 },
-    { id: 42, value: "攻撃力", passive_rank:2 },
-    { id: 43, value: "防御力", passive_rank:2 },
-    { id: 50, value: "クリティカルダメージ", passive_rank:2 },
-    { id: 51, value: "ダブルクリティカルダメージ", passive_rank:1 },
-    { id: 52, value: "クリティカル確率", passive_rank:2 },
-    { id: 53, value: "クリティカルダメージ減少", passive_rank:2 },
-    { id: 76, value: "敵致命打減少", passive_rank:1 },
-    { id: 77, value: "抵抗力低下防止", passive_rank:2 },
-    { id: 78, value: "能力値低下防止", passive_rank:2 },
-    { id: 79, value: "人間型魔法ダメージ", passive_rank:1 },
-    { id: 80, value: "魔法強打", passive_rank:1 },
-    { id: 81, value: "魔法攻撃力強化", passive_rank:1 },
-    { id: 82, value: "魔法攻撃力低下", passive_rank:1 },
-    { id: 83, value: "魔法致命打", passive_rank:1 },
-    { id: 84, value: "強打", passive_rank:1 },
-    { id: 101, value: "被ダメージCPに変換", passive_rank:2 },
-    { id: 102, value: "被ダメージ反射", passive_rank:2 },
-    { id: 103, value: "被魔法ダメージ吸収", passive_rank:2 },
-    { id: 104, value: "体力吸収", passive_rank:2 },
-    { id: 105, value: "与魔法ダメージ吸収", passive_rank:1 },
-    { id: 106, value: "獲得CP増加", passive_rank:2 },//合成
-    { id: 107, value: "魔法ダメージ吸収", passive_rank:1 },//合成
-    { id: 199, value: "状態異常抵抗力", passive_rank:2 },
-    { id: 200, value: "全ての属性抵抗", passive_rank:2 },
-    { id: 201, value: "人間型ダメージ抵抗", passive_rank:1 },
-    { id: 210, value: "全ての能力値増加", passive_rank:2 }, //合成
-    { id: 299, value: "スキル", passive_rank:2 },
-    { id: 300, value: "上級スキル", passive_rank:1 },
-    { id: 301, value: "上級攻撃力", passive_rank:1 },
-    { id: 302, value: "上級防御力", passive_rank:1 },
-    { id: 303, value: "上級体力", passive_rank:1 },
-    { id: 304, value: "上級最大CP", passive_rank:1 },
-    { id: 305, value: "上級状態異常抵抗力", passive_rank:1 },
-    { id: 306, value: "上級攻撃速度", passive_rank:1 },
-    { id: 307, value: "最終ダメージ", passive_rank:1 }, // 合成
-    { id: 308, value: "上級経験値", passive_rank:1 }, //合成
-    { id: 309, value: "上級ドロップ", passive_rank:1 }, //合成
+    { id: 0, value: "PVP攻撃力", passive_rank: 1 },
+    { id: 1, value: "PVP防御力", passive_rank: 1 },
+    { id: 2, value: "スキルクールタイム減少", passive_rank: 2 },
+    { id: 3, value: "アンデッド型ダメージ", passive_rank: 2 },
+    { id: 4, value: "人間型ダメージ", passive_rank: 1 },
+    { id: 5, value: "悪魔型ダメージ", passive_rank: 2 },
+    { id: 6, value: "動物型ダメージ", passive_rank: 2 },
+    { id: 7, value: "神獣型ダメージ", passive_rank: 2 },
+    { id: 8, value: "ドロップ率", passive_rank: 2 },
+    { id: 9, value: "経験値", passive_rank: 2 },
+    { id: 10, value: "移動速度", passive_rank: 2 },
+    { id: 11, value: "攻撃速度", passive_rank: 2 },
+    { id: 12, value: "命中率", passive_rank: 2 },
+    { id: 13, value: "回避率", passive_rank: 2 },
+    { id: 14, value: "火抵抗力", passive_rank: 2 },
+    { id: 15, value: "水抵抗力", passive_rank: 2 },
+    { id: 16, value: "風抵抗力", passive_rank: 2 },
+    { id: 17, value: "大地抵抗力", passive_rank: 2 },
+    { id: 18, value: "光抵抗力", passive_rank: 2 },
+    { id: 19, value: "闇抵抗力", passive_rank: 2 },
+    { id: 21, value: "火強化", passive_rank: 2 },
+    { id: 22, value: "火低下", passive_rank: 2 },
+    { id: 23, value: "水強化", passive_rank: 2 },
+    { id: 24, value: "水低下", passive_rank: 2 },
+    { id: 25, value: "風強化", passive_rank: 2 },
+    { id: 26, value: "風低下", passive_rank: 2 },
+    { id: 27, value: "大地強化", passive_rank: 2 },
+    { id: 28, value: "大地低下", passive_rank: 2 },
+    { id: 29, value: "光強化", passive_rank: 2 },
+    { id: 30, value: "光低下", passive_rank: 2 },
+    { id: 31, value: "闇強化", passive_rank: 2 },
+    { id: 32, value: "闇低下", passive_rank: 2 },
+    { id: 33, value: "ペット&召喚獣強化", passive_rank: 2 },
+    { id: 34, value: "ペット&召喚獣攻撃力", passive_rank: 2 },
+    { id: 35, value: "ペット&召喚獣状態異常抵抗", passive_rank: 2 },
+    { id: 36, value: "ペット&召喚獣全てのステータス", passive_rank: 2 },
+    { id: 37, value: "ペット&召喚獣体力", passive_rank: 2 },
+    { id: 38, value: "ペット&召喚獣の魔法致命打確率", passive_rank: 2 },//合成
+    { id: 39, value: "ペット&召喚獣の強打確率", passive_rank: 2 },//合成
+    { id: 40, value: "最大体力", passive_rank: 2 },
+    { id: 41, value: "最大CP", passive_rank: 2 },
+    { id: 42, value: "攻撃力", passive_rank: 2 },
+    { id: 43, value: "防御力", passive_rank: 2 },
+    { id: 50, value: "クリティカルダメージ", passive_rank: 2 },
+    { id: 51, value: "ダブルクリティカルダメージ", passive_rank: 1 },
+    { id: 52, value: "クリティカル確率", passive_rank: 2 },
+    { id: 53, value: "クリティカルダメージ減少", passive_rank: 2 },
+    { id: 76, value: "敵致命打減少", passive_rank: 1 },
+    { id: 77, value: "抵抗力低下防止", passive_rank: 2 },
+    { id: 78, value: "能力値低下防止", passive_rank: 2 },
+    { id: 79, value: "人間型魔法ダメージ", passive_rank: 1 },
+    { id: 80, value: "魔法強打", passive_rank: 1 },
+    { id: 81, value: "魔法攻撃力強化", passive_rank: 1 },
+    { id: 82, value: "魔法攻撃力低下", passive_rank: 1 },
+    { id: 83, value: "魔法致命打", passive_rank: 1 },
+    { id: 84, value: "強打", passive_rank: 1 },
+    { id: 101, value: "被ダメージCPに変換", passive_rank: 2 },
+    { id: 102, value: "被ダメージ反射", passive_rank: 2 },
+    { id: 103, value: "被魔法ダメージ吸収", passive_rank: 2 },
+    { id: 104, value: "体力吸収", passive_rank: 2 },
+    { id: 105, value: "与魔法ダメージ吸収", passive_rank: 1 },
+    { id: 106, value: "獲得CP増加", passive_rank: 2 },//合成
+    { id: 107, value: "魔法ダメージ吸収", passive_rank: 1 },//合成
+    { id: 199, value: "状態異常抵抗力", passive_rank: 2 },
+    { id: 200, value: "全ての属性抵抗", passive_rank: 2 },
+    { id: 201, value: "人間型ダメージ抵抗", passive_rank: 1 },
+    { id: 210, value: "全ての能力値増加", passive_rank: 2 }, //合成
+    { id: 299, value: "スキル", passive_rank: 2 },
+    { id: 300, value: "上級スキル", passive_rank: 1 },
+    { id: 301, value: "上級攻撃力", passive_rank: 1 },
+    { id: 302, value: "上級防御力", passive_rank: 1 },
+    { id: 303, value: "上級体力", passive_rank: 1 },
+    { id: 304, value: "上級最大CP", passive_rank: 1 },
+    { id: 305, value: "上級状態異常抵抗力", passive_rank: 1 },
+    { id: 306, value: "上級攻撃速度", passive_rank: 1 },
+    { id: 307, value: "最終ダメージ", passive_rank: 1 }, // 合成
+    { id: 308, value: "上級経験値", passive_rank: 1 }, //合成
+    { id: 309, value: "上級ドロップ", passive_rank: 1 }, //合成
 ];
 
 
@@ -406,13 +406,13 @@ function translateTubo(num) {
         return num;
     }
     if (crnt_num >= 9996 && crnt_num <= 9999) {
-    // formの中で入力してonclickしてDOM書き換えるとバグってリロードされちゃうから無理矢理回避してます。
-    var d1dom = document.getElementById("sub_d1");
+        // formの中で入力してonclickしてDOM書き換えるとバグってリロードされちゃうから無理矢理回避してます。
+        var d1dom = document.getElementById("sub_d1");
         var d2dom = document.getElementById("sub_d2");
-        var d3dom = document.getElementById("sub_d3");    
+        var d3dom = document.getElementById("sub_d3");
         var e1dom = document.getElementById("sub_e1");
         var e2dom = document.getElementById("sub_e2");
-        var e3dom = document.getElementById("sub_e3");    
+        var e3dom = document.getElementById("sub_e3");
         var d1 = d1dom.value ? d1dom.value : "";
         var d2 = d2dom.value ? d2dom.value : "";
         var d3 = d3dom.value ? d3dom.value : "";
@@ -425,11 +425,11 @@ function translateTubo(num) {
                 var name = "";
                 if (crnt_num === 9996) {
                     name = "自作メインクリーチャー"
-                } else if (crnt_num === 9997){
+                } else if (crnt_num === 9997) {
                     name = "自作サブクリーチャー１"
-                } else if (crnt_num === 9998){
+                } else if (crnt_num === 9998) {
                     name = "自作サブクリーチャー２"
-                } else if (crnt_num === 9999){
+                } else if (crnt_num === 9999) {
                     name = "自作サブクリーチャー３"
                 }
                 skillData[index] = {
@@ -448,7 +448,7 @@ function translateTubo(num) {
         });
         crnt_num++;
     }
-    return (crnt_num-1);
+    return (crnt_num - 1);
 }
 
 var crnt_num = 9996;
@@ -641,7 +641,7 @@ function output2(skillset) {
 //色付け用
 function searchaPassiveRank(value) {
     var prank = 0;
-    for (var i = 0; i < skillIdMap.length; i++) { 
+    for (var i = 0; i < skillIdMap.length; i++) {
         if (skillIdMap[i].value === value) {
             prank = skillIdMap[i].passive_rank;
             break;
@@ -803,18 +803,21 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 8) {
-        result += '- アイテムドロップ率<span class="color-image11">' + Math.round(10 + slv * 0.5) + '</span>％<br>';
         if (slv >= 50) {
+            result += '- アイテムドロップ率<span class="color-image11">' + 35 + '</span>％<br>';
             result += '- ユニークアイテムドロップ確率 +<span class="color-image11">40</span>%<br>'
             result += '- 着用時、モンスター討伐経験値 <span class="color-image11">30</span>％ 追加獲得<br>'
-        } else if (slv >= 40) {
-            result += '- ユニークアイテムドロップ確率 +<span class="color-image11">30</span>%<br>'
-            result += '- 着用時、モンスター討伐経験値 <span class="color-image11">20</span>％ 追加獲得<br>'
-        } else if (slv >= 30) {
-            result += '- ユニークアイテムドロップ確率 +<span class="color-image11">20</span>%<br>'
-            result += '- 着用時、モンスター討伐経験値 <span class="color-image11">10</span>％ 追加獲得<br>'
-        } else if (slv >= 20) {
-            result += '- ユニークアイテムドロップ確率 +<span class="color-image11">10</span>%<br>'
+        } else {
+            result += '- アイテムドロップ率<span class="color-image11">' + Math.round(10 + slv * 0.5) + '</span>％<br>';
+            if (slv >= 40) {
+                result += '- ユニークアイテムドロップ確率 +<span class="color-image11">30</span>%<br>'
+                result += '- 着用時、モンスター討伐経験値 <span class="color-image11">20</span>％ 追加獲得<br>'
+            } else if (slv >= 30) {
+                result += '- ユニークアイテムドロップ確率 +<span class="color-image11">20</span>%<br>'
+                result += '- 着用時、モンスター討伐経験値 <span class="color-image11">10</span>％ 追加獲得<br>'
+            } else if (slv >= 20) {
+                result += '- ユニークアイテムドロップ確率 +<span class="color-image11">10</span>%<br>'
+            }
         }
     }
     if (cid === 9) {
@@ -837,38 +840,46 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 10) {
-        result += '- 移動速度 +<span class="color-image11">' + (slv * 2) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- 移動速度 +<span class="color-image11">' + (slv * 2) + '</span>％<br>';
+
+        }
         if (slv >= 50) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- 移動速度 +<span class="color-image11">' + 100 % + '</span>％<br>';
+            result += '- 力 +<span class="color-image11">100</span><br>'
+            result += '- 回避率 +<span class="color-image11">５</span>％<br>'
         } else if (slv >= 40) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- 力 +<span class="color-image11">70</span><br>'
         } else if (slv >= 30) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- 力 +<span class="color-image11">50</span><br>'
         } else if (slv >= 20) {
-            result += '- 不明<br>'
+            result += '- 力 +<span class="color-image11">30</span><br>'
         }
     }
     if (cid === 11) {
-        result += '- 攻撃速度 +<span class="color-image11">' + (11 + slv * 1) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- 攻撃速度 +<span class="color-image11">' + (11 + slv * 1) + '</span>％<br>';
+        }
         if (slv >= 50) {
-            result += '- 敏捷 +<span class="color-image11">90</span><br>'
-            result += '- 不明<br>'
+            result += '- 攻撃速度 +<span class="color-image11">' + 70 + '</span>％<br>';
+            result += '- 敏捷 +<span class="color-image11">100</span><br>'
+            result += '- 運 +<span class="color-image11">150</span><br>'
         } else if (slv >= 40) {
             result += '- 敏捷 +<span class="color-image11">70</span><br>'
-            result += '- 不明<br>'
+            result += '- 運 +<span class="color-image11">50</span><br>'
         } else if (slv >= 30) {
             result += '- 敏捷 +<span class="color-image11">50</span><br>'
         } else if (slv >= 20) {
         }
     }
     if (cid === 12) {
-        result += '- 命中率 +<span class="color-image11">' + Math.round(slv * 0.5) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- 命中率 +<span class="color-image11">' + Math.round(slv * 0.5) + '</span>％<br>';
+        }
         if (slv >= 50) {
-            result += '- 敏捷 +<span class="color-image11">90</span><br>'
-            result += '- 運 +<span class="color-image11">？</span><br>'
+            result += '- 命中率 +<span class="color-image11">' + 30 + '</span>％<br>';
+            result += '- 敏捷 +<span class="color-image11">100</span><br>'
+            result += '- 運 +<span class="color-image11">150</span><br>'
         } else if (slv >= 40) {
             result += '- 敏捷 +<span class="color-image11">70</span><br>'
             result += '- 運 +<span class="color-image11">50</span><br>'
@@ -881,10 +892,12 @@ function searchOption(cid, slv) {
     if (cid === 13) {
         // Lv12で3%だった
         // Lv24で5%と敏捷+30
-        result += '- 回避率 +<span class="color-image11">' + Math.round(0.2 + slv * 0.2) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- 回避率 +<span class="color-image11">' + Math.round(0.2 + slv * 0.2) + '</span>％<br>';
+        }
         if (slv >= 50) {
-            result += '- 敏捷 +<span class="color-image11">90</span><br>'
-            result += '- 運 +<span class="color-image11">？</span><br>'
+            result += '- 敏捷 +<span class="color-image11">100</span><br>'
+            result += '- 運 +<span class="color-image11">150</span><br>'
         } else if (slv >= 40) {
             result += '- 敏捷 +<span class="color-image11">70</span><br>'
             result += '- 運 +<span class="color-image11">50</span><br>'
@@ -896,87 +909,107 @@ function searchOption(cid, slv) {
     }
     // 意外と20作れなかった
     if (cid === 14) {
-        result += '- 火抵抗 +<span class="color-image11">' + (4 + slv * 1) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- 火抵抗 +<span class="color-image11">' + (4 + slv * 1) + '</span>％<br>';
+        }
         if (slv >= 50) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- 火抵抗 +<span class="color-image11">' + 55 + '</span>％<br>';
+            result += '- 知恵 +<span class="color-image11">100</span><br>'
+            result += '- 健康 +<span class="color-image11">150</span><br>'
         } else if (slv >= 40) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- 知恵 +<span class="color-image11">70</span><br>'
+            result += '- 健康 +<span class="color-image11">50</span><br>'
         } else if (slv >= 30) {
-            result += '- 不明<br>'
+            result += '- 知恵 +<span class="color-image11">50</span><br>'
         } else if (slv >= 20) {
-            result += '- 不明<br>'
+            result += '- 知恵 +<span class="color-image11">30</span><br>'
         }
     }
     if (cid === 15) {
-        result += '- 水抵抗 +<span class="color-image11">' + (4 + slv * 1) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- 水抵抗 +<span class="color-image11">' + (4 + slv * 1) + '</span>％<br>';
+        }
         if (slv >= 50) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- 水抵抗 +<span class="color-image11">' + 55 + '</span>％<br>';
+            result += '- 知恵 +<span class="color-image11">100</span><br>'
+            result += '- 健康 +<span class="color-image11">150</span><br>'
         } else if (slv >= 40) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- 知恵 +<span class="color-image11">70</span><br>'
+            result += '- 健康 +<span class="color-image11">50</span><br>'
         } else if (slv >= 30) {
-            result += '- 不明<br>'
+            result += '- 知恵 +<span class="color-image11">50</span><br>'
         } else if (slv >= 20) {
-            result += '- 不明<br>'
+            result += '- 知恵 +<span class="color-image11">30</span><br>'
         }
     }
     if (cid === 16) {
-        result += '- 風抵抗 +<span class="color-image11">' + (4 + slv * 1) + '</span>％<br>';
-        if (slv >= 50) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
-        } else if (slv >= 40) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
-        } else if (slv >= 30) {
-            result += '- 不明<br>'
-        } else if (slv >= 20) {
-            result += '- 不明<br>'
+        if (slv < 50) {
+            result += '- 風抵抗 +<span class="color-image11">' + (4 + slv * 1) + '</span>％<br>';
         }
+        if (slv >= 50) {
+            result += '- 風抵抗 +<span class="color-image11">' + 55 + '</span>％<br>';
+            result += '- 知恵 +<span class="color-image11">100</span><br>'
+            result += '- 健康 +<span class="color-image11">150</span><br>'
+        } else if (slv >= 40) {
+            result += '- 知恵 +<span class="color-image11">70</span><br>'
+            result += '- 健康 +<span class="color-image11">50</span><br>'
+        } else if (slv >= 30) {
+            result += '- 知恵 +<span class="color-image11">50</span><br>'
+        } else if (slv >= 20) {
+            result += '- 知恵 +<span class="color-image11">30</span><br>'
+        }
+
     }
     if (cid === 17) {
-        result += '- 大地抵抗 +<span class="color-image11">' + (4 + slv * 1) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- 大地抵抗 +<span class="color-image11">' + (4 + slv * 1) + '</span>％<br>';
+        }
         if (slv >= 50) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- 大地抵抗 +<span class="color-image11">' + 55 + '</span>％<br>';
+            result += '- 知恵 +<span class="color-image11">100</span><br>'
+            result += '- 健康 +<span class="color-image11">150</span><br>'
         } else if (slv >= 40) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- 知恵 +<span class="color-image11">70</span><br>'
+            result += '- 健康 +<span class="color-image11">50</span><br>'
         } else if (slv >= 30) {
-            result += '- 不明<br>'
+            result += '- 知恵 +<span class="color-image11">50</span><br>'
         } else if (slv >= 20) {
-            result += '- 不明<br>'
+            result += '- 知恵 +<span class="color-image11">30</span><br>'
         }
     }
     if (cid === 18) {
-        result += '- 光抵抗 +<span class="color-image11">' + (4 + slv * 1) + '</span>％<br>';
-        if (slv >= 50) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
-        } else if (slv >= 40) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
-        } else if (slv >= 30) {
-            result += '- 不明<br>'
-        } else if (slv >= 20) {
-            result += '- 不明<br>'
+        if (slv < 50) {
+            result += '- 光抵抗 +<span class="color-image11">' + (4 + slv * 1) + '</span>％<br>';
         }
+        if (slv >= 50) {
+            result += '- 光抵抗 +<span class="color-image11">' + 55 + '</span>％<br>';
+            result += '- 知恵 +<span class="color-image11">100</span><br>'
+            result += '- 健康 +<span class="color-image11">150</span><br>'
+        } else if (slv >= 40) {
+            result += '- 知恵 +<span class="color-image11">70</span><br>'
+            result += '- 健康 +<span class="color-image11">50</span><br>'
+        } else if (slv >= 30) {
+            result += '- 知恵 +<span class="color-image11">50</span><br>'
+        } else if (slv >= 20) {
+            result += '- 知恵 +<span class="color-image11">30</span><br>'
+        }
+
     }
     if (cid === 19) {
-        result += '- 闇抵抗 +<span class="color-image11">' + (4 + slv * 1) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- 闇抵抗 +<span class="color-image11">' + (4 + slv * 1) + '</span>％<br>';
+        }
         if (slv >= 50) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- 闇抵抗 +<span class="color-image11">' + 55 + '</span>％<br>';
+            result += '- 知恵 +<span class="color-image11">100</span><br>'
+            result += '- 健康 +<span class="color-image11">150</span><br>'
         } else if (slv >= 40) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- 知恵 +<span class="color-image11">70</span><br>'
+            result += '- 健康 +<span class="color-image11">50</span><br>'
         } else if (slv >= 30) {
-            result += '- 不明<br>'
+            result += '- 知恵 +<span class="color-image11">50</span><br>'
         } else if (slv >= 20) {
-            result += '- 不明<br>'
+            result += '- 知恵 +<span class="color-image11">30</span><br>'
         }
     }
     if (cid === 21) {
@@ -998,8 +1031,11 @@ function searchOption(cid, slv) {
     }
     if (cid === 22) {
         // Lv8で7%だった
-        result += '- ターゲットの火抵抗を<span class="color-image11">' + Math.round(2.6 + 0.6 * slv) + '</span>％弱化させる。<br>';
+        if (slv < 50) {
+            result += '- ターゲットの火抵抗を<span class="color-image11">' + Math.round(2.6 + 0.6 * slv) + '</span>％弱化させる。<br>';
+        }
         if (slv >= 50) {
+            result += '- ターゲットの火抵抗を<span class="color-image11">' + 35 + '</span>％弱化させる。<br>';
             result += '- 火属性攻撃力を<span class="color-image11">' + (20) + '</span>％強化させる。<br>';
             result += '- 魔法致命打 <span class="color-image11">5</span>％<br>';
         } else if (slv >= 40) {
@@ -1029,8 +1065,11 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 24) {
-        result += '- ターゲットの水抵抗を<span class="color-image11">' + Math.round(2.6 + 0.6 * slv) + '</span>％弱化させる。<br>';
+        if (slv < 50) {
+            result += '- ターゲットの水抵抗を<span class="color-image11">' + Math.round(2.6 + 0.6 * slv) + '</span>％弱化させる。<br>';
+        }
         if (slv >= 50) {
+            result += '- ターゲットの水抵抗を<span class="color-image11">' + 35 + '</span>％弱化させる。<br>';
             result += '- 水属性攻撃力を<span class="color-image11">' + (20) + '</span>％強化させる。<br>';
             result += '- 魔法致命打 <span class="color-image11">5</span>％<br>';
         } else if (slv >= 40) {
@@ -1060,8 +1099,11 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 26) {
-        result += '- ターゲットの風抵抗を<span class="color-image11">' + Math.round(2.6 + 0.6 * slv) + '</span>％弱化させる。<br>';
+        if (slv < 50) {
+            result += '- ターゲットの風抵抗を<span class="color-image11">' + Math.round(2.6 + 0.6 * slv) + '</span>％弱化させる。<br>';
+        }
         if (slv >= 50) {
+            result += '- ターゲットの風抵抗を<span class="color-image11">' + 35 + '</span>％弱化させる。<br>';
             result += '- 風属性攻撃力を<span class="color-image11">' + (20) + '</span>％強化させる。<br>';
             result += '- 魔法致命打 <span class="color-image11">5</span>％<br>';
         } else if (slv >= 40) {
@@ -1091,8 +1133,11 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 28) {
-        result += '- ターゲットの大地抵抗を<span class="color-image11">' + Math.round(2.6 + 0.6 * slv) + '</span>％弱化させる。<br>';
+        if (slv < 50) {
+            result += '- ターゲットの大地抵抗を<span class="color-image11">' + Math.round(2.6 + 0.6 * slv) + '</span>％弱化させる。<br>';
+        }
         if (slv >= 50) {
+            result += '- ターゲットの大地抵抗を<span class="color-image11">' + 35 + '</span>％弱化させる。<br>';
             result += '- 大地属性攻撃力を<span class="color-image11">' + (20) + '</span>％強化させる。<br>';
             result += '- 魔法致命打 <span class="color-image11">5</span>％<br>';
         } else if (slv >= 40) {
@@ -1122,8 +1167,11 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 30) {
-        result += '- ターゲットの光の抵抗を<span class="color-image11">' + Math.round(2.6 + 0.6 * slv) + '</span>％弱化させる。<br>';
+        if (slv < 50) {
+            result += '- ターゲットの光の抵抗を<span class="color-image11">' + Math.round(2.6 + 0.6 * slv) + '</span>％弱化させる。<br>';
+        }
         if (slv >= 50) {
+            result += '- ターゲットの光の抵抗を<span class="color-image11">' + 35 + '</span>％弱化させる。<br>';
             result += '- 光属性攻撃力を<span class="color-image11">' + (20) + '</span>％強化させる。<br>';
             result += '- 魔法致命打 <span class="color-image11">5</span>％<br>';
         } else if (slv >= 40) {
@@ -1154,8 +1202,11 @@ function searchOption(cid, slv) {
 
     }
     if (cid === 32) {
-        result += '- ターゲットの闇の抵抗を<span class="color-image11">' + Math.round(2.6 + 0.6 * slv) + '</span>％弱化させる。<br>';
+        if (slv < 50) {
+            result += '- ターゲットの闇の抵抗を<span class="color-image11">' + Math.round(2.6 + 0.6 * slv) + '</span>％弱化させる。<br>';
+        }
         if (slv >= 50) {
+            result += '- ターゲットの闇の抵抗を<span class="color-image11">' + 35 + '</span>％弱化させる。<br>';
             result += '- 闇属性攻撃力を<span class="color-image11">' + (20) + '</span>％強化させる。<br>';
             result += '- 魔法致命打 <span class="color-image11">5</span>％<br>';
         } else if (slv >= 40) {
@@ -1168,13 +1219,16 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 33) {
-        result += '- ペット&召喚獣の魔法攻撃力 +<span class="color-image11">' + parseInt(1 * slv) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- ペット&召喚獣の魔法攻撃力 +<span class="color-image11">' + parseInt(1 * slv) + '</span>％<br>';
+        }
         if (slv >= 50) {
+            result += '- ペット&召喚獣の魔法攻撃力 +<span class="color-image11">' + 50 + '</span>％<br>';
             result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (40) + '</span>％<br>';
-            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">50</span>％<br>';
+            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">200</span>％<br>';
         } else if (slv >= 40) {
             result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (30) + '</span>％<br>';
-            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">50</span>％<br>';
+            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">100</span>％<br>';
         } else if (slv >= 30) {
             result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (20) + '</span>％<br>';
             result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">50</span>％<br>';
@@ -1183,91 +1237,128 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 34) {
-        result += '- ペット&召喚獣の攻撃力 +<span class="color-image11">' + parseInt(2 * slv) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- ペット&召喚獣の攻撃力 +<span class="color-image11">' + parseInt(2 * slv) + '</span>％<br>';
+        }
         if (slv >= 50) {
+            result += '- ペット&召喚獣の攻撃力 +<span class="color-image11">' + 100 + '</span>％<br>';
             result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (40) + '</span>％<br>';
-            result += '- 不明<br>'
+            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">200</span>％<br>';
         } else if (slv >= 40) {
             result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (30) + '</span>％<br>';
-            result += '- 不明<br>'
+            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">100</span>％<br>';
         } else if (slv >= 30) {
             result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (20) + '</span>％<br>';
-            result += '- 不明<br>'
+            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">50</span>％<br>';
         } else if (slv >= 20) {
             result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (10) + '</span>％<br>';
         }
     }
     if (cid === 35) {
-        result += '- ペット&召喚獣の異常状態抵抗増加 +<span class="color-image11">' + parseInt(1 * slv) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- ペット&召喚獣の異常状態抵抗増加 +<span class="color-image11">' + parseInt(1 * slv) + '</span>％<br>';
+        }
         if (slv >= 50) {
-            result += '- ペット&召喚獣の最大体力 +<span class="color-image11">' + '？' + '</span>％<br>';
-            result += '- 不明<br>'
+            result += '- ペット&召喚獣の異常状態抵抗増加 +<span class="color-image11">' + 50 + '</span>％<br>';
+            result += '- ペット&召喚獣の最大体力 +<span class="color-image11">' + '15' + '</span>％<br>';
+            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">200</span>％<br>';
         } else if (slv >= 40) {
-            result += '- ペット&召喚獣の最大体力 +<span class="color-image11">' + '？' + '</span>％<br>';
-            result += '- 不明<br>'
+            result += '- ペット&召喚獣の最大体力 +<span class="color-image11">' + '11' + '</span>％<br>';
+            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">100</span>％<br>';
         } else if (slv >= 30) {
-            result += '- ペット&召喚獣の最大体力 +<span class="color-image11">' + '？' + '</span>％<br>';
-            result += '- 不明<br>'
+            result += '- ペット&召喚獣の最大体力 +<span class="color-image11">' + '8' + '</span>％<br>';
+            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">50</span>％<br>';
         } else if (slv >= 20) {
-            result += '- ペット&召喚獣の最大体力 +<span class="color-image11">' + (5) + '</span>％<br>';
+            result += '- ペット&召喚獣の最大体力 +<span class="color-image11">' + '5' + '</span>％<br>';
         }
     }
     if (cid === 36) {
-        result += '- ペット&召喚獣のすべてのステータス +<span class="color-image11">' + parseInt(10 * slv) + '</span><br>';
+        if (slv < 50) {
+            result += '- ペット&召喚獣のすべてのステータス +<span class="color-image11">' + parseInt(10 * slv) + '</span><br>';
+        }
         if (slv >= 50) {
+            result += '- ペット&召喚獣のすべてのステータス +<span class="color-image11">' + 500 + '</span><br>';
             result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (40) + '</span>％<br>';
-            result += '- ペット/召喚獣の最大体力「 +<span class="color-image11">？</span>％<br>';
+            result += '- ペット/召喚獣の最大体力 +<span class="color-image11">20</span>％<br>';
         } else if (slv >= 40) {
             result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (30) + '</span>％<br>';
-            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">？</span>％<br>';
+            result += '- ペット/召喚獣の最大体力 +<span class="color-image11">10</span>％<br>';
         } else if (slv >= 30) {
             result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (20) + '</span>％<br>';
-            result += '- ペット/召喚獣の最大体力「 +<span class="color-image11">5</span>％<br>';
+            result += '- ペット/召喚獣の最大体力 +<span class="color-image11">5</span>％<br>';
         } else if (slv >= 20) {
             result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (10) + '</span>％<br>';
         }
     }
     if (cid === 37) {
-        result += '- ペット&召喚獣の最大体力 +<span class="color-image11">' + parseInt(1 * slv) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- ペット&召喚獣の最大体力 +<span class="color-image11">' + parseInt(1 * slv) + '</span>％<br>';
+        }
         if (slv >= 50) {
-            result += '- ペット&召喚獣の攻撃力 +<span class="color-image11">' + '？' + '</span>％<br>';
-            result += '- 不明<br>'
+            result += '- ペット&召喚獣の最大体力 +<span class="color-image11">' + parseInt(1 * slv) + '</span>％<br>';
+            result += '- ペット&召喚獣の攻撃力 +<span class="color-image11">' + '50' + '</span>％<br>';
+            result += '- ペット&召喚獣の異常状態抵抗増加 +<span class="color-image11">' + 20 + '</span>％<br>';
         } else if (slv >= 40) {
-            result += '- ペット&召喚獣の攻撃力 +<span class="color-image11">' + '？' + '</span>％<br>';
-            result += '- 不明<br>'
+            result += '- ペット&召喚獣の攻撃力 +<span class="color-image11">' + '40' + '</span>％<br>';
+            result += '- ペット&召喚獣の異常状態抵抗増加 +<span class="color-image11">' + 10 + '</span>％<br>';
         } else if (slv >= 30) {
-            result += '- ペット&召喚獣の攻撃力 +<span class="color-image11">' + '？' + '</span>％<br>';
-            result += '- 不明<br>'
+            result += '- ペット&召喚獣の攻撃力 +<span class="color-image11">' + '30' + '</span>％<br>';
+            result += '- ペット&召喚獣の異常状態抵抗増加 +<span class="color-image11">' + 5 + '</span>％<br>';
         } else if (slv >= 20) {
             result += '- ペット&召喚獣の攻撃力 +<span class="color-image11">' + (20) + '</span>％<br>';
         }
     }
     //合成専門で、青
     if (cid === 38) {
-        result += '- ペット&召喚獣の魔法致命打増加 +<span class="color-image11">' + "？" + '</span>％<br>';
+        if (slv < 50) {
+            result += '- ペット&召喚獣の魔法致命打増加 +<span class="color-image11">' + "？" + '</span>％<br>';
+        }
         if (slv >= 50) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- ペット&召喚獣の魔法致命打増加 +<span class="color-image11">' + "？" + '</span>％<br>';
+            result += '- ターゲットの魔法抵抗弱化 +<span class="color-image11">' + (10) + '</span>％<br>';
+            result += '- スキルレベル +<span class="color-image11">3</span><br>'
         } else if (slv >= 40) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- ターゲットの魔法抵抗弱化 +<span class="color-image11">' + (7) + '</span>％<br>';
+            result += '- スキルレベル +<span class="color-image11">2</span><br>'
         } else if (slv >= 30) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- ターゲットの魔法抵抗弱化 +<span class="color-image11">' + (6) + '</span>％<br>';
+            result += '- スキルレベル +<span class="color-image11">1</span><br>'
         } else if (slv >= 20) {
-            result += '- 不明<br>'
+            result += '- ターゲットの魔法抵抗弱化 +<span class="color-image11">' + (5) + '</span>％<br>';
+        }
+    }
+    //合成専門
+    if (cid === 39) {
+        if (slv < 50) {
+            result += '- ペット&召喚獣の魔法致命打増加 +<span class="color-image11">' + "？" + '</span>％<br>';
+        }
+        if (slv >= 50) {
+            result += '- ペット&召喚獣の魔法致命打増加 +<span class="color-image11">' + "？" + '</span>％<br>';
+            result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (40) + '</span>％<br>';
+            result += '- スキルレベル +<span class="color-image11">3</span><br>'
+        } else if (slv >= 40) {
+            result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (30) + '</span>％<br>';
+            result += '- スキルレベル +<span class="color-image11">2</span><br>'
+        } else if (slv >= 30) {
+            result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (20) + '</span>％<br>';
+            result += '- スキルレベル +<span class="color-image11">1</span><br>'
+        } else if (slv >= 20) {
+            result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (10) + '</span>％<br>';
         }
     }
     // ペット系は全部青だった
 
     if (cid === 40) {
-        result += '- 最大HP +<span class="color-image11">' + (slv * 1) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- 最大HP +<span class="color-image11">' + (slv * 1) + '</span>％<br>';
+        }
         if (slv >= 50) {
+            result += '- 最大HP +<span class="color-image11">' + 50 + '</span>％<br>';
             result += '- 防御力 +<span class="color-image11">20</span>％<br>'
-            result += '- 健康 +<span class="color-image11">？</span><br>'
+            result += '- 健康 +<span class="color-image11">100</span><br>'
         } else if (slv >= 40) {
             result += '- 防御力 +<span class="color-image11">15</span>％<br>'
-            result += '- 健康 +<span class="color-image11">？</span><br>'
+            result += '- 健康 +<span class="color-image11">80</span><br>'
         } else if (slv >= 30) {
             result += '- 防御力 +<span class="color-image11">10</span>％<br>'
             result += '- 健康 +<span class="color-image11">60</span><br>'
@@ -1276,24 +1367,30 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 41) {
-        result += '- 最大CP +<span class="color-image11">' + (slv * 50) + '</span><br>';
+        if (slv < 50) {
+            result += '- 最大CP +<span class="color-image11">' + (slv * 50) + '</span><br>';
+        }
         if (slv >= 50) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- 最大CP +<span class="color-image11">' + 3000 + '</span><br>';
+            result += '- カリスマ +<span class="color-image11">100</span><br>'
+            result += '- 最大CP +<span class="color-image11">20</span>％<br>'
         } else if (slv >= 40) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- カリスマ +<span class="color-image11">70</span><br>'
+            result += '- 最大CP +<span class="color-image11">10</span>％<br>'
         } else if (slv >= 30) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- カリスマ +<span class="color-image11">50</span><br>'
+            result += '- 最大CP +<span class="color-image11">5</span>％<br>'
         } else if (slv >= 20) {
-            result += '- 不明<br>'
+            result += '- カリスマ +<span class="color-image11">30</span><br>'
         }
     }
     if (cid === 42) {
-        result += '- 攻撃力 +<span class="color-image11">' + (6 + slv * 4) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- 攻撃力 +<span class="color-image11">' + (6 + slv * 4) + '</span>％<br>';
+        }
         if (slv >= 50) {
-            result += '- クリティカル +<span class="color-image11">？</span>％<br>'
+            result += '- 攻撃力 +<span class="color-image11">' + 210 + '</span>％<br>';
+            result += '- クリティカル +<span class="color-image11">20</span>％<br>'
             result += '- 攻撃速度 +<span class="color-image11">30</span>％<br>'
         } else if (slv >= 40) {
             result += '- クリティカル +<span class="color-image11">11</span>％<br>'
@@ -1306,13 +1403,16 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 43) {
-        result += '- 防御力 +<span class="color-image11">' + (slv * 2) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- 防御力 +<span class="color-image11">' + (slv * 2) + '</span>％<br>';
+        }
         if (slv >= 50) {
+            result += '- 防御力 +<span class="color-image11">' + 100 + '</span>％<br>';
             result += '- 最大HP +<span class="color-image11">20</span>％<br>'
-            result += '- 健康 +<span class="color-image11">？</span><br>'
+            result += '- 健康 +<span class="color-image11">100</span><br>'
         } else if (slv >= 40) {
             result += '- 最大HP +<span class="color-image11">15</span>％<br>'
-            result += '- 健康 +<span class="color-image11">？</span><br>'
+            result += '- 健康 +<span class="color-image11">80</span><br>'
         } else if (slv >= 30) {
             result += '- 最大HP +<span class="color-image11">10</span>％<br>'
             result += '- 健康 +<span class="color-image11">60</span><br>'
@@ -1340,43 +1440,52 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 51) {
-        result += '- ダブルクリティカルダメージ増加 +<span class="color-image11">' + Math.round(9 + slv * 0.8) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- ダブルクリティカルダメージ増加 +<span class="color-image11">' + Math.round(9 + slv * 0.8) + '</span>％<br>';
+        }
         if (slv >= 50) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- ダブルクリティカルダメージ増加 +<span class="color-image11">' + 20 + '</span>％<br>';
+            result += '- クリティカル +<span class="color-image11">30</span>％<br>'
+            result += '- 敵致命打減少 +<span class="color-image11">10</span>％<br>'
         } else if (slv >= 40) {
-            result += '- 不明<br>'
+            result += '- クリティカル +<span class="color-image11">20</span>％<br>'
             result += '- 不明<br>'
         } else if (slv >= 30) {
-            result += '- 不明<br>'
+            result += '- クリティカル +<span class="color-image11">15</span>％<br>'
             result += '- 不明<br>'
         } else if (slv >= 20) {
-            result += '- 不明<br>'
+            result += '- クリティカル +<span class="color-image11">10</span>％<br>'
         }
     }
     if (cid === 52) {
-        result += '- クリティカル確率 +<span class="color-image11">' + Math.round(1 + slv * 0.5) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- クリティカル確率 +<span class="color-image11">' + Math.round(1 + slv * 0.5) + '</span>％<br>';
+        }
         if (slv >= 50) {
-            result += '- 物理攻撃力 +<span class="color-image11">？</span>％<br>'
-            result += '- ダブルクリティカルダメージ増加 +<span class="color-image11">？</span>％<br>'
+            result += '- クリティカル確率 +<span class="color-image11">' + 30 + '</span>％<br>';
+            result += '- 物理攻撃力 +<span class="color-image11">25</span>％<br>'
+            result += '- ダブルクリティカルダメージ増加 +<span class="color-image11">10</span>％<br>'
         } else if (slv >= 40) {
-            result += '- 物理攻撃力 +<span class="color-image11">？</span>％<br>'
-            result += '- ダブルクリティカルダメージ増加 +<span class="color-image11">？</span>％<br>'
+            result += '- 物理攻撃力 +<span class="color-image11">20</span>％<br>'
+            result += '- ダブルクリティカルダメージ増加 +<span class="color-image11">7</span>％<br>'
         } else if (slv >= 30) {
             result += '- 物理攻撃力 +<span class="color-image11">15</span>％<br>'
             result += '- ダブルクリティカルダメージ増加 +<span class="color-image11">5</span>％<br>'
         } else if (slv >= 20) {
-            result += '- 物理攻撃力 +<span class="color-image11">？</span>％<br>'
+            result += '- 物理攻撃力 +<span class="color-image11">10</span>％<br>'
         }
     }
     if (cid === 53) {
-        result += '- クリティカルダメージ減少 +<span class="color-image11">' + Math.round(10 + slv * 0.5) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- クリティカルダメージ減少 +<span class="color-image11">' + Math.round(10 + slv * 0.5) + '</span>％<br>';
+        }
         if (slv >= 50) {
+            result += '- クリティカルダメージ減少 +<span class="color-image11">' + 40 + '</span>％<br>';
             result += '- 最大HP +<span class="color-image11">40</span>％<br>'
-            result += '- ダブルクリティカルダメージ減少 +<span class="color-image11">？</span>％<br>'
+            result += '- ダブルクリティカルダメージ減少 +<span class="color-image11">15</span>％<br>'
         } else if (slv >= 40) {
             result += '- 最大HP +<span class="color-image11">30</span>％<br>'
-            result += '- ダブルクリティカルダメージ減少 +<span class="color-image11">？</span>％<br>'
+            result += '- ダブルクリティカルダメージ減少 +<span class="color-image11">10</span>％<br>'
         } else if (slv >= 30) {
             result += '- 最大HP +<span class="color-image11">20</span>％<br>'
             result += '- ダブルクリティカルダメージ減少 +<span class="color-image11">5</span>％<br>'
@@ -1385,40 +1494,51 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 76) {
-        result += '- 敵の致命打抵抗減少 +<span class="color-image11">' + Math.round(4.5 + slv * 0.5) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- 敵の致命打抵抗減少 +<span class="color-image11">' + Math.round(4.5 + slv * 0.5) + '</span>％<br>';
+        }
         if (slv >= 50) {
-            result += '- クリティカルダメージ増加 +<span class="color-image11">25</span>％<br>'
-            result += '- ダブルクリティカルダメージ増加 +<span class="color-image11">？</span>％<br>'
+            result += '- 敵の致命打抵抗減少 +<span class="color-image11">' + 30 + '</span>％<br>';
+            result += '- クリティカルダメージ増加 +<span class="color-image11">30</span>％<br>'
+            result += '- ダブルクリティカルダメージ増加 +<span class="color-image11">20</span>％<br>'
         } else if (slv >= 40) {
             result += '- クリティカルダメージ増加 +<span class="color-image11">20</span>％<br>'
-            result += '- ダブルクリティカルダメージ増加 +<span class="color-image11">？</span>％<br>'
+            result += '- ダブルクリティカルダメージ増加 +<span class="color-image11">10</span>％<br>'
         } else if (slv >= 30) {
             result += '- クリティカルダメージ増加 +<span class="color-image11">15</span>％<br>'
-            result += '- ダブルクリティカルダメージ増加 +<span class="color-image11">7</span>％<br>'
+            // 7%かもしれない
+            result += '- ダブルクリティカルダメージ増加 +<span class="color-image11">5</span>％<br>'
         } else if (slv >= 20) {
             result += '- クリティカルダメージ増加 +<span class="color-image11">10</span>％<br>'
         }
     }
     if (cid === 77) {
-        result += '- 抵抗値低下防止 +<span class="color-image11">' + Math.round(slv * 0.2) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- 抵抗値低下防止 +<span class="color-image11">' + Math.round(slv * 0.2) + '</span>％<br>';
+        }
         if (slv >= 50) {
-            result += '- 能力値低下防止 +<span class="color-image11">？</span>％<br>'
-            result += '- 不明<br>'
+            result += '- 抵抗値低下防止 +<span class="color-image11">' + 15 + '</span>％<br>';
+            // 5%かもしれない。違ったらごめん
+            result += '- 能力値低下防止 +<span class="color-image11">10</span>％<br>'
+            result += '- すべての能力値 +<span class="color-image11">80</span>上昇<br>'
         } else if (slv >= 40) {
             result += '- 能力値低下防止 +<span class="color-image11">3</span>％<br>'
-            result += '- 不明<br>'
+            result += '- すべての能力値 +<span class="color-image11">40</span>上昇<br>'
         } else if (slv >= 30) {
             result += '- 能力値低下防止 +<span class="color-image11">2</span>％<br>'
-            result += '- 不明<br>'
+            result += '- すべての能力値 +<span class="color-image11">20</span>上昇<br>'
         } else if (slv >= 20) {
             result += '- 能力値低下防止 +<span class="color-image11">1</span>％<br>'
         }
     }
     if (cid === 78) {
-        result += '- 能力値低下防止 +<span class="color-image11">' + Math.round(slv * 0.2) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- 能力値低下防止 +<span class="color-image11">' + Math.round(slv * 0.2) + '</span>％<br>';
+        }
         if (slv >= 50) {
-            result += '- 抵抗値低下防止 +<span class="color-image11">4</span>％<br>'
-            result += '- すべての能力値 +<span class="color-image11">60</span>上昇<br>'
+            result += '- 能力値低下防止 +<span class="color-image11">' + 10 + '</span>％<br>';
+            result += '- 抵抗値低下防止 +<span class="color-image11">5</span>％<br>'
+            result += '- すべての能力値 +<span class="color-image11">80</span>上昇<br>'
         } else if (slv >= 40) {
             result += '- 抵抗値低下防止 +<span class="color-image11">3</span>％<br>'
             result += '- すべての能力値 +<span class="color-image11">40</span>上昇<br>'
@@ -1430,39 +1550,49 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 79) {
-        result += '- 人間型キャラクターに追加で +<span class="color-image11">' + parseInt(5 + slv * 1) + '</span>％の魔法ダメージを与える。<br>';
+        if (slv < 50) {
+            result += '- 人間型キャラクターに追加で +<span class="color-image11">' + parseInt(5 + slv * 1) + '</span>％の魔法ダメージを与える。<br>';
+        }
         if (slv >= 50) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- 人間型キャラクターに追加で +<span class="color-image11">' + 55 + '</span>％の魔法ダメージを与える。<br>';
+            result += '- 魔法強化 +<span class="color-image11">30</span>％<br>'
+            result += '- 最終ダメージ +<span class="color-image11">5</span>％<br>'
         } else if (slv >= 40) {
-            result += '- 不明<br>'
+            result += '- 魔法強化 +<span class="color-image11">20</span>％<br>'
         } else if (slv >= 30) {
-            result += '- 不明<br>'
+            result += '- 魔法強化 +<span class="color-image11">15</span>％<br>'
         } else if (slv >= 20) {
-            result += '- 不明<br>'
+            result += '- 魔法強化 +<span class="color-image11">10</span>％<br>'
         }
     }
+    // TODO　この辺りソートして見やすくしたいですね
     if (cid === 80) {
-        result += '- 魔法強打 +<span class="color-image11">' + parseInt(slv * 1) + '</span>％増加<br>';
+        if (slv < 50) {
+            result += '- 魔法強打 +<span class="color-image11">' + parseInt(slv * 1) + '</span>％増加<br>';
+        }
         if (slv >= 50) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- 魔法強打 +<span class="color-image11">' + 16 + '</span>％増加<br>';
+            result += '- 運 <span class="color-image11">1</span>/ レベル<span class="color-image11">3</span><br>'
+            result += '- 最終ダメージ +<span class="color-image11">5</span>％<br>'
         } else if (slv >= 40) {
-            result += '- 不明<br>'
+            result += '- 運 <span class="color-image11">1</span>/ レベル<span class="color-image11">4</span><br>'
         } else if (slv >= 30) {
-            result += '- 不明<br>'
+            result += '- 運 <span class="color-image11">1</span>/ レベル<span class="color-image11">5</span><br>'
         } else if (slv >= 20) {
-            result += '- 不明<br>'
+            result += '- 運 <span class="color-image11">1</span>/ レベル<span class="color-image11">6</span><br>'
         }
     }
     if (cid === 81) {
-        result += '- 魔法の攻撃力を +<span class="color-image11">' + parseInt(2 + slv * 1) + '</span>％強化させる。<br>';
+        if (slv < 50) {
+            result += '- 魔法の攻撃力を +<span class="color-image11">' + parseInt(2 + slv * 1) + '</span>％強化させる。<br>';
+        }
         if (slv >= 50) {
+            result += '- 魔法の攻撃力を +<span class="color-image11">' + 55 + '</span>％強化させる。<br>';
             result += '- ターゲットの魔法抵抗を <span class="color-image11">20</span>％弱化させる。<br>'
-            result += '- 不明<br>'
+            result += '- <span class="color-image11">' + 20 + '</span>％の確率で魔法ダメージの3％をHP吸収<br>';
         } else if (slv >= 40) {
             result += '- ターゲットの魔法抵抗を <span class="color-image11">15</span>％弱化させる。<br>'
-            result += '- 不明<br>'
+            result += '- <span class="color-image11">' + 10 + '</span>％の確率で魔法ダメージの3％をHP吸収<br>';
         } else if (slv >= 30) {
             result += '- ターゲットの魔法抵抗を <span class="color-image11">10</span>％弱化させる。<br>'
         } else if (slv >= 20) {
@@ -1470,24 +1600,30 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 82) {
-        result += '- ターゲットの魔法抵抗を <span class="color-image11">' + Math.round(slv * 0.5) + '</span>％弱化させる。<br>';
+        if (slv < 50) {
+            result += '- ターゲットの魔法抵抗を <span class="color-image11">' + Math.round(slv * 0.5) + '</span>％弱化させる。<br>';
+        }
         if (slv >= 50) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- ターゲットの魔法抵抗を <span class="color-image11">' + 30+ '</span>％弱化させる。<br>';
+            result += '- 魔法の攻撃力を +<span class="color-image11">' + 30 + '</span>％強化させる。<br>';
+            result += '- <span class="color-image11">' + 20 + '</span>％の確率で魔法ダメージの3％をHP吸収<br>';
         } else if (slv >= 40) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- 魔法の攻撃力を +<span class="color-image11">' + 20 + '</span>％強化させる。<br>';
+            result += '- <span class="color-image11">' + 10 + '</span>％の確率で魔法ダメージの3％をHP吸収<br>';
         } else if (slv >= 30) {
-            result += '- 不明<br>'
+            result += '- 魔法の攻撃力を +<span class="color-image11">' + 15 + '</span>％強化させる。<br>';
         } else if (slv >= 20) {
-            result += '- 不明<br>'
+            result += '- 魔法の攻撃力を +<span class="color-image11">' + 10 + '</span>％強化させる。<br>';
         }
     }
     if (cid === 83) {
-        result += '- 魔法致命打 <span class="color-image11">' + Math.round(5 + slv * 0.4) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- 魔法致命打 <span class="color-image11">' + Math.round(5 + slv * 0.4) + '</span>％<br>';
+        }
         if (slv >= 50) {
+            result += '- 魔法致命打 <span class="color-image11">' + 25 + '</span>％<br>';
             result += '- 魔法攻撃力を +<span class="color-image11">40</span>％強化させる。<br>'
-            result += '- 不明<br>'
+            result += '- 魔法強打 <span class="color-image11">' + 5 + '</span>％<br>';
         } else if (slv >= 40) {
             result += '- 魔法攻撃力を +<span class="color-image11">30</span>％強化させる。<br>'
         } else if (slv >= 30) {
@@ -1497,35 +1633,44 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 84) {
-        result += '- 強打率 <span class="color-image11">' + Math.round(5 + slv * 0.3) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- 強打率 <span class="color-image11">' + Math.round(5 + slv * 0.3) + '</span>％<br>';
+        }
         if (slv >= 50) {
-            result += '- 運 <span class="color-image11">？</span><br>'
-            result += '- 不明<br>'
+            result += '- 強打率 <span class="color-image11">' + 20 + '</span>％<br>';
+            result += '- 運 <span class="color-image11">1</span>/ レベル<span class="color-image11">3</span><br>'
+            result += '- 最終ダメージ +<span class="color-image11">5</span>％<br>'
         } else if (slv >= 40) {
-            result += '- 運 <span class="color-image11">？</span><br>'
+            result += '- 運 <span class="color-image11">1</span>/ レベル<span class="color-image11">4</span><br>'
         } else if (slv >= 30) {
-            result += '- 運 <span class="color-image11">？</span><br>'
+            result += '- 運 <span class="color-image11">1</span>/ レベル<span class="color-image11">5</span><br>'
         } else if (slv >= 20) {
             result += '- 運 <span class="color-image11">1</span>/ レベル<span class="color-image11">6</span><br>'
         }
     }
     if (cid === 101) {
-        result += '- ダメージをCPに変換 <span class="color-image11">' + Math.round(1 + slv * 0.5) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- ダメージをCPに変換 <span class="color-image11">' + Math.round(1 + slv * 0.5) + '</span>％<br>';
+        }
         if (slv >= 50) {
-            result += '- 最大CP +<span class="color-image11">？</span>％<br>'
-            result += '- 不明<br>'
+            result += '- ダメージをCPに変換 <span class="color-image11">' + 30 + '</span>％<br>';
+            result += '- 最大CP +<span class="color-image11">30</span>％<br>'
+            result += '- CP獲得ボーナス +<span class="color-image11">5</span>％<br>'
         } else if (slv >= 40) {
-            result += '- 最大CP +<span class="color-image11">？</span>％<br>'
-            result += '- 不明<br>'
+            result += '- 最大CP +<span class="color-image11">25</span>％<br>'
+            result += '- CP獲得ボーナス +<span class="color-image11">3</span>％<br>'
         } else if (slv >= 30) {
-            result += '- 最大CP +<span class="color-image11">？</span>％<br>'
+            result += '- 最大CP +<span class="color-image11">20</span>％<br>'
         } else if (slv >= 20) {
             result += '- 最大CP +<span class="color-image11">15</span>％<br>'
         }
     }
     if (cid === 102) {
-        result += '- ダメージ反射 <span class="color-image11">' + parseInt(slv * 2) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- ダメージ反射 <span class="color-image11">' + parseInt(slv * 2) + '</span>％<br>';
+        }
         if (slv >= 50) {
+            result += '- ダメージ反射 <span class="color-image11">' + 100 + '</span>％<br>';
             result += '- 健康 +<span class="color-image11">80</span><br>'
             result += '- 最大HP +<span class="color-image11">30</span>％<br>'
         } else if (slv >= 40) {
@@ -1539,28 +1684,33 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 103) {
-        // 魔法吸収なんだけど、わからん。
-        result += '- 魔法属性ダメージ吸収 <span class="color-image11">' + Math.round(2 + slv * 0.2) + '</span>％<br>';
+        // 謎の一般スキル。バグってOPが正常に適用されてないかもしれない。
+        if (slv < 50) {
+            // result += '- 魔法属性ダメージ吸収 <span class="color-image11">' + Math.round(2 + slv * 0.2) + '</span>％<br>';
+        }
         if (slv >= 50) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- 魔法属性ダメージ吸収 <span class="color-image11">' + 12+ '</span>％<br>';
+            result += '- 魔法の攻撃力を +<span class="color-image11">' + 10 + '</span>％強化させる。<br>';
         } else if (slv >= 40) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- 魔法属性ダメージ吸収 <span class="color-image11">' + 10 + '</span>％<br>';
+            result += '- 魔法の攻撃力を +<span class="color-image11">' + 5 + '</span>％強化させる。<br>';
         } else if (slv >= 30) {
-            result += '- 不明<br>'
+            result += '- 魔法属性ダメージ吸収 <span class="color-image11">' + 8 + '</span>％<br>';
         } else if (slv >= 20) {
-            result += '- 不明<br>'
+            result += '- 魔法属性ダメージ吸収 <span class="color-image11">' + 6 + '</span>％<br>';
         }
     }
     if (cid === 104) {
-        result += '- 物理攻撃力増加 <span class="color-image11">' + parseInt(40 + slv * 1) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- 物理攻撃力増加 <span class="color-image11">' + parseInt(40 + slv * 1) + '</span>％<br>';
+        }
         if (slv >= 50) {
+            result += '- 物理攻撃力増加 <span class="color-image11">' + 100 + '</span>％<br>';
             result += '- 敵に与えたダメージの <span class="color-image11">' + (5) + '</span>％をHP吸収<br>';
-            result += '- クリティカルダメージ +<span class="color-image11">？</span>％増加<br>'
+            result += '- クリティカルダメージ +<span class="color-image11">30</span>％増加<br>'
         } else if (slv >= 40) {
             result += '- 敵に与えたダメージの <span class="color-image11">' + (4) + '</span>％をHP吸収<br>';
-            result += '- クリティカルダメージ +<span class="color-image11">？</span>％増加<br>'
+            result += '- クリティカルダメージ +<span class="color-image11">20</span>％増加<br>'
         } else if (slv >= 30) {
             result += '- 敵に与えたダメージの <span class="color-image11">' + (3) + '</span>％をHP吸収<br>';
             result += '- クリティカルダメージ +<span class="color-image11">10</span>％増加<br>'
@@ -1569,46 +1719,91 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 105) {
-        result += '- <span class="color-image11">' + parseInt(slv * 1) + '</span>％の確率で魔法ダメージの2％をHP吸収<br>';
+        if (slv < 50) {
+            result += '- <span class="color-image11">' + parseInt(slv * 1) + '</span>％の確率で魔法ダメージの2％をHP吸収<br>';
+        }
         if (slv >= 50) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- <span class="color-image11">' + 50 + '</span>％の確率で魔法ダメージの5％をHP吸収<br>';
+            result += '- 魔法の攻撃力を +<span class="color-image11">' + 30 + '</span>％強化させる。<br>';
+            result += '- 運 <span class="color-image11">1</span>/ レベル<span class="color-image11">2</span><br>'
         } else if (slv >= 40) {
-            result += '- 不明<br>'
+            result += '- 魔法の攻撃力を +<span class="color-image11">' + 20 + '</span>％強化させる。<br>';
         } else if (slv >= 30) {
-            result += '- 不明<br>'
+            result += '- 魔法の攻撃力を +<span class="color-image11">' + 15 + '</span>％強化させる。<br>';
         } else if (slv >= 20) {
-            result += '- 不明<br>'
+            result += '- 魔法の攻撃力を +<span class="color-image11">' + 10 + '</span>％強化させる。<br>';
+        }
+    }
+    if (cid === 106) {
+        if (slv < 50) {
+            result += '- CP獲得ボーナス <span class="color-image11">' + Math.round(5 + slv * 0.5) + '</span>％<br>';
+        }
+        if (slv >= 50) {
+            result += '- CP獲得ボーナス <span class="color-image11">' + 35 + '</span>％<br>';
+            result += '- 最大HP +<span class="color-image11">50</span>％<br>'
+            result += '- 最大CP +<span class="color-image11">40</span>％<br>'
+        } else if (slv >= 40) {
+            result += '- 最大HP +<span class="color-image11">30</span>％<br>'
+            result += '- 最大CP +<span class="color-image11">20</span>％<br>'
+        } else if (slv >= 30) {
+            result += '- 最大HP +<span class="color-image11">20</span>％<br>'
+            result += '- 最大CP +<span class="color-image11">10</span>％<br>'
+        } else if (slv >= 20) {
+            result += '- 最大HP +<span class="color-image11">10</span>％<br>'
+        }
+    }
+    if (cid === 107) {
+        if (slv < 50) {
+            // 多分何かの設定ミス。修正されるんじゃないかな。
+            result += '- 魔法属性ダメージ <span class="color-image11">' + slv * 0.06 + '</span>％吸収<br>';
+        }
+        if (slv >= 50) {
+            // 多分何かの設定ミス。修正されるんじゃないかな。
+            result += '- CP獲得ボーナス <span class="color-image11">' + 3 + '</span>％<br>';
+            result += '- 魔法強打 +<span class="color-image11">15</span>％<br>'
+            result += '- 知識 <span class="color-image11">1</span>/ レベル<span class="color-image11">2</span><br>'
+        } else if (slv >= 40) {
+            result += '- 魔法強打 +<span class="color-image11">10</span>％<br>'
+        } else if (slv >= 30) {
+            result += '- 魔法強打 +<span class="color-image11">5</span>％<br>'
+        } else if (slv >= 20) {
         }
     }
     if (cid === 199) {
         // これもわからん
-        result += '- 状態異常抵抗 + <span class="color-image11">' + parseInt(slv * 1) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- 状態異常抵抗 + <span class="color-image11">' + parseInt(slv * 1) + '</span>％<br>';
+        }
         if (slv >= 50) {
-            result += '- ノックバック抵抗 +<span class="color-image11">？</span>％<br>'
-            result += '- 不明<br>'
+            result += '- 状態異常抵抗 + <span class="color-image11">' + 55 + '</span>％<br>';
+            result += '- ノックバック抵抗 +<span class="color-image11">30</span>％<br>'
+            result += '- 運 +<span class="color-image11">150</span><br>'
         } else if (slv >= 40) {
-            result += '- ノックバック抵抗 +<span class="color-image11">？</span>％<br>'
-            result += '- 不明<br>'
+            result += '- ノックバック抵抗 +<span class="color-image11">20</span>％<br>'
+            result += '- 運 +<span class="color-image11">100</span><br>'
         } else if (slv >= 30) {
-            result += '- ノックバック抵抗 +<span class="color-image11">？</span>％<br>'
-            result += '- 不明<br>'
+            result += '- ノックバック抵抗 +<span class="color-image11">15</span>％<br>'
+            result += '- 運 +<span class="color-image11">50</span><br>'
         } else if (slv >= 20) {
             result += '- ノックバック抵抗 +<span class="color-image11">10</span>％<br>'
         }
     }
     if (cid === 200) {
         // これもわからん
-        result += '- 魔法抵抗 + <span class="color-image11">' + parseInt(slv * 1) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- 魔法抵抗 + <span class="color-image11">' + parseInt(slv * 1) + '</span>％<br>';
+        }
         if (slv >= 50) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- 魔法抵抗 + <span class="color-image11">' + parseInt(slv * 1) + '</span>％<br>';
+            result += '- 状態異常抵抗 + <span class="color-image11">' + 40 + '</span>％<br>';
+            result += '- 抵抗低下防止 + <span class="color-image11">' + 5 + '</span>％<br>';
         } else if (slv >= 40) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- 状態異常抵抗 + <span class="color-image11">' + 30 + '</span>％<br>';
+            result += '- 抵抗低下防止 + <span class="color-image11">' + 3 + '</span>％<br>';
         } else if (slv >= 30) {
-            result += '- 不明<br>'
+            result += '- 状態異常抵抗 + <span class="color-image11">' + 20 + '</span>％<br>';
         } else if (slv >= 20) {
+            result += '- 状態異常抵抗 + <span class="color-image11">' + 10 + '</span>％<br>';
         }
     }
     if (cid === 201) {
@@ -1632,10 +1827,13 @@ function searchOption(cid, slv) {
     // 合成・覚醒専門
     if (cid === 210) {
         // LV17で68、LV43で146
-        result += '- すべての能力値 + <span class="color-image11">' + Math.round(17 + 3 * slv) + '</span><br>';
+        if (slv < 50) {
+            result += '- すべての能力値 + <span class="color-image11">' + Math.round(17 + 3 * slv) + '</span><br>';
+        }
         if (slv >= 50) {
-            result += '- アイテム着用レベル ー<span class="color-image11">？</span><br>'
-            result += '- 能力値低下防止 <span class="color-image11">？</span>％増加<br>'
+            result += '- すべての能力値 + <span class="color-image11">' + 200 + '</span><br>';
+            result += '- アイテム着用レベル ー<span class="color-image11">80</span><br>'
+            result += '- 能力値低下防止 <span class="color-image11">5</span>％増加<br>'
         } else if (slv >= 40) {
             result += '- アイテム着用レベル ー<span class="color-image11">60</span><br>'
             result += '- 能力値低下防止 <span class="color-image11">3</span>％増加<br>'
@@ -1647,10 +1845,13 @@ function searchOption(cid, slv) {
     }
 
     if (cid === 299) {
-        result += '- スキルレベル + <span class="color-image11">' + Math.round(0.1 * slv) + '</span><br>';
+        if (slv < 50) {
+            result += '- スキルレベル + <span class="color-image11">' + Math.round(0.1 * slv) + '</span><br>';
+        }
         if (slv >= 50) {
+            result += '- スキルレベル + <span class="color-image11">' + 5 + '</span><br>';
             result += '- 全ての能力値 +<span class="color-image11">80</span><br>'
-            result += '- 不明<br>'
+            result += '- スキルレベル + <span class="color-image11">' + 2 + '</span><br>';
         } else if (slv >= 40) {
             result += '- 全ての能力値 +<span class="color-image11">60</span><br>'
         } else if (slv >= 30) {
@@ -1662,10 +1863,13 @@ function searchOption(cid, slv) {
 
     //ここから上級
     if (cid === 300) {
-        result += '- スキルレベル + <span class="color-image11">' + Math.round(2 + 0.2 * slv) + '</span><br>';
+        if (slv < 50) {
+            result += '- スキルレベル + <span class="color-image11">' + Math.round(2 + 0.15 * slv) + '</span><br>';
+        }
         if (slv >= 50) {
+            result += '- スキルレベル + <span class="color-image11">' + 10 + '</span><br>';
             result += '- 全ての能力値 +<span class="color-image11">250</span><br>'
-            result += '- 不明<br>'
+            result += '- スキルレベル + <span class="color-image11">' + 5 + '</span><br>';
         } else if (slv >= 40) {
             result += '- 全ての能力値 +<span class="color-image11">200</span><br>'
         } else if (slv >= 30) {
@@ -1675,78 +1879,96 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 301) {
-        result += '- 攻撃力 + <span class="color-image11">' + parseInt(94 + 6 * slv) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- 攻撃力 + <span class="color-image11">' + parseInt(94 + 6 * slv) + '</span>％<br>';
+        }
         if (slv >= 50) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- 攻撃力 + <span class="color-image11">' + 400 + '</span>％<br>';
+            result += '- クリティカルダメージ増加 +<span class="color-image11">60</span>％<br>'
+            result += '- 強打 +<span class="color-image11">8</span>％<br>'
         } else if (slv >= 40) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- クリティカルダメージ増加 +<span class="color-image11">40</span>％<br>'
+            result += '- 強打 +<span class="color-image11">5</span>％<br>'
         } else if (slv >= 30) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- クリティカルダメージ増加 +<span class="color-image11">30</span>％<br>'
+            result += '- 強打 +<span class="color-image11">3</span>％<br>'
         } else if (slv >= 20) {
-            result += '- 不明<br>'
+            result += '- クリティカルダメージ増加 +<span class="color-image11">20</span>％<br>'
         }
     }
     if (cid === 302) {
-        result += '- 防御力 + <span class="color-image11">' + parseInt(50 + 4 * slv) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- 防御力 + <span class="color-image11">' + parseInt(50 + 4 * slv) + '</span>％<br>';
+        }
         if (slv >= 50) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- 防御力 + <span class="color-image11">' + 250 + '</span>％<br>';
+            result += '- 最大HP +<span class="color-image11">60</span>％<br>'
+            result += '- 健康 <span class="color-image11">1</span>/ レベル<span class="color-image11">2</span><br>'
         } else if (slv >= 40) {
-            result += '- 不明<br>'
+            result += '- 最大HP +<span class="color-image11">40</span>％<br>'
         } else if (slv >= 30) {
-            result += '- 不明<br>'
+            result += '- 最大HP +<span class="color-image11">30</span>％<br>'
         } else if (slv >= 20) {
-            result += '- 不明<br>'
+            result += '- 最大HP +<span class="color-image11">20</span>％<br>'
         }
     }
     if (cid === 303) {
-        result += '- 最大HP + <span class="color-image11">' + parseInt(50 + 2 * slv) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- 最大HP + <span class="color-image11">' + parseInt(50 + 2 * slv) + '</span>％<br>';
+        }
         if (slv >= 50) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- 最大HP + <span class="color-image11">' + 150 + '</span>％<br>';
+            result += '- 防御力 +<span class="color-image11">100</span>％<br>'
+            result += '- 健康 <span class="color-image11">1</span>/ レベル<span class="color-image11">2</span><br>'
         } else if (slv >= 40) {
-            result += '- 不明<br>'
+            result += '- 防御力 +<span class="color-image11">80</span>％<br>'
         } else if (slv >= 30) {
-            result += '- 不明<br>'
+            result += '- 防御力 +<span class="color-image11">60</span>％<br>'
         } else if (slv >= 20) {
-            result += '- 不明<br>'
+            result += '- 防御力 +<span class="color-image11">40</span>％<br>'
         }
     }
     if (cid === 304) {
         // LV18で66%
-        result += '- 最大CP + <span class="color-image11">' + parseInt(12 * slv * 3) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- 最大CP + <span class="color-image11">' + parseInt(12 * slv * 3) + '</span>％<br>';
+        }
         if (slv >= 50) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- 最大CP + <span class="color-image11">' + 200 + '</span>％<br>';
+            result += '- CP獲得ボーナス <span class="color-image11">' + 30 + '</span>％<br>';
+            result += '- 威厳 <span class="color-image11">1</span>/ レベル<span class="color-image11">2</span><br>'
         } else if (slv >= 40) {
-            result += '- 不明<br>'
+            result += '- CP獲得ボーナス <span class="color-image11">' + 20 + '</span>％<br>';
         } else if (slv >= 30) {
-            result += '- 不明<br>'
+            result += '- CP獲得ボーナス <span class="color-image11">' + 15 + '</span>％<br>';
         } else if (slv >= 20) {
-            result += '- 不明<br>'
+            result += '- CP獲得ボーナス <span class="color-image11">' + 10 + '</span>％<br>';
         }
     }
     if (cid === 305) {
-        result += '- 状態異常抵抗 + <span class="color-image11">' + parseInt(2 * slv) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- 状態異常抵抗 + <span class="color-image11">' + parseInt(2 * slv) + '</span>％<br>';
+        }
         if (slv >= 50) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- 状態異常抵抗 + <span class="color-image11">' + 120 + '</span>％<br>';
+            result += '- ノックバック抵抗 +<span class="color-image11">60</span>％<br>'
+            result += '- 全ての能力値 +<span class="color-image11">300</span><br>'
         } else if (slv >= 40) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- ノックバック抵抗 +<span class="color-image11">40</span>％<br>'
+            result += '- 全ての能力値 +<span class="color-image11">200</span><br>'
         } else if (slv >= 30) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- ノックバック抵抗 +<span class="color-image11">30</span>％<br>'
+            result += '- 全ての能力値 +<span class="color-image11">100</span><br>'
         } else if (slv >= 20) {
-            result += '- 不明<br>'
+            result += '- ノックバック抵抗 +<span class="color-image11">20</span>％<br>'
         }
     }
     if (cid === 306) {
-        result += '- 攻撃速度 + <span class="color-image11">' + parseInt(50 + 3 * slv) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- 攻撃速度 + <span class="color-image11">' + parseInt(50 + 3 * slv) + '</span>％<br>';
+        }
         if (slv >= 50) {
+            result += '- 攻撃速度 + <span class="color-image11">' + 200 + '</span>％<br>';
             result += '- クリティカルダメージ <span class="color-image11">40</span>％増加<br>'
             result += '- 運 <span class="color-image11">1</span>/ レベル<span class="color-image11">2</span><br>'
         } else if (slv >= 40) {
@@ -1760,40 +1982,66 @@ function searchOption(cid, slv) {
     // 合成専用
     if (cid === 307) {
         // Lv15で2%
-        result += '- 最終ダメージ + <span class="color-image11">' + parseInt(0.5 + 0.1 * slv) + '</span>％<br>';
+        if (slv < 50) {
+            result += '- 最終ダメージ + <span class="color-image11">' + parseInt(0.5 + 0.1 * slv) + '</span>％<br>';
+        }
         if (slv >= 50) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- 最終ダメージ + <span class="color-image11">' + 20 + '</span>％<br>';
+            result += '- スキルレベル + <span class="color-image11">' + 10 + '</span><br>';
+            result += '- 敵致命打減少 + <span class="color-image11">' + 8 + '</span>％<br>';
         } else if (slv >= 40) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- スキルレベル + <span class="color-image11">' + 8 + '</span><br>';
+            result += '- 敵致命打減少 + <span class="color-image11">' + 5 + '</span>％<br>';
         } else if (slv >= 30) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- スキルレベル + <span class="color-image11">' + 6 + '</span><br>';
+            result += '- 敵致命打減少 + <span class="color-image11">' + 3 + '</span>％<br>';
         } else if (slv >= 20) {
-            result += '- 不明<br>'
+            result += '- スキルレベル + <span class="color-image11">' + 4 + '</span><br>';
         }
     }
     // 合成専用
     if (cid === 308) {
         // Lv18で74%　Lv8で64%
-        result += '- 着用時、モンスター討伐経験値 + <span class="color-image11">' + parseInt(54 + 1 * slv) + '</span>％ 追加獲得<br>';
+        if (slv < 50) {
+            result += '- 着用時、モンスター討伐経験値 + <span class="color-image11">' + parseInt(54 + 1 * slv) + '</span>％ 追加獲得<br>';
+        }
         if (slv >= 50) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- 着用時、モンスター討伐経験値 + <span class="color-image11">' + 120 + '</span>％ 追加獲得<br>';
+            result += '- スキルレベル + <span class="color-image11">' + 6 + '</span><br>';
+            result += '- 最終ダメージ + <span class="color-image11">' + 3 + '</span>％<br>';
         } else if (slv >= 40) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- スキルレベル + <span class="color-image11">' + 4 + '</span><br>';
+            result += '- 最終ダメージ + <span class="color-image11">' + 2 + '</span>％<br>';
         } else if (slv >= 30) {
-            result += '- 不明<br>'
-            result += '- 不明<br>'
+            result += '- スキルレベル + <span class="color-image11">' + 3 + '</span><br>';
+            result += '- 最終ダメージ + <span class="color-image11">' + 1 + '</span>％<br>';
         } else if (slv >= 20) {
-            result += '- 不明<br>'
+            result += '- スキルレベル + <span class="color-image11">' + 2 + '</span><br>';
+        }
+    }
+    // 合成専用
+    if (cid === 309) {
+        if (slv < 50) {
+            result += '- アイテムドロップ率 + <span class="color-image11">' + parseInt(50 + 1 * slv) + '</span>％<br>';
+        }
+        if (slv >= 50) {
+            result += '- アイテムドロップ率 + <span class="color-image11">' + 100 + '</span>％<br>';
+            result += '- ユニークドロップ率 + <span class="color-image11">' + 60 + '</span>％<br>';
+            result += '- 最終ダメージ + <span class="color-image11">' + 3 + '</span>％<br>';
+        } else if (slv >= 40) {
+            result += '- ユニークドロップ率 + <span class="color-image11">' + 40 + '</span>％<br>';
+            result += '- 最終ダメージ + <span class="color-image11">' + 2 + '</span>％<br>';
+        } else if (slv >= 30) {
+            result += '- ユニークドロップ率 + <span class="color-image11">' + 30 + '</span>％<br>';
+            result += '- 最終ダメージ + <span class="color-image11">' + 1 + '</span>％<br>';
+        } else if (slv >= 20) {
+            result += '- ユニークドロップ率 + <span class="color-image11">' + 20 + '</span>％<br>';
         }
     }
 
     return result;
 }
+// TODO 補正値の合計とかやりたい
 
 // upsertくん
 function merge(skillset, sub) {
