@@ -564,32 +564,38 @@ function calc() {
                 mobname.push(skillData[j].name);
                 //パッシブ展開だ！！！！
                 if (i === 0) {
+                    // ここでリネームしてるの悪い設計だなあ…。
                     var mainSkill = {
                         skillName: skillData[j].mainId,
                         skillLv: skillData[j].mainLv,
+                        passive_rank: skillData[j].passive_rank,
                     }
                     //初っ端だから必ず空
                     skillset.push(mainSkill);
                     var sub1 = {
                         skillName: skillData[j].sub1Id,
                         skillLv: skillData[j].sub1IdLv,
+                        passive_rank: skillData[j].passive_rank,
                     }
                     // 勇気のゴーレムみたいにメインとサブで同じパッシブ持ってるのいるんで
                     merge(skillset, sub1);
                     var sub2 = {
                         skillName: skillData[j].sub2Id,
                         skillLv: skillData[j].sub2IdLv,
+                        passive_rank: skillData[j].passive_rank,
                     }
                     merge(skillset, sub2);
                 } else {
                     var sub1 = {
                         skillName: skillData[j].sub1Id,
                         skillLv: skillData[j].sub1IdLv,
+                        passive_rank: skillData[j].passive_rank,
                     }
                     merge(skillset, sub1);
                     var sub2 = {
                         skillName: skillData[j].sub2Id,
                         skillLv: skillData[j].sub2IdLv,
+                        passive_rank: skillData[j].passive_rank,
                     }
                     merge(skillset, sub2);
                 }
@@ -614,8 +620,16 @@ function output2(skillset) {
     var result = skillset.map(function (e) {
         var creatureId = searchID(e.skillName);
         var options = searchOption(creatureId, e.skillLv);
-        // 赤と青の違いがわからなかった。レアか通常か…？全部赤くしとくね。色は背景加味したものっす。
-        return '＜<span class="color-image1">' + e.skillName + '</span> Lv <span class="color-image11">' + e.skillLv + '</span>＞<br>' + options;
+        if (e.passive_rank === 1) {
+            // 上級スキル
+            return '＜<span class="color-image1">' + e.skillName + '</span> Lv <span class="color-image11">' + e.skillLv + '</span>＞<br>' + options;
+        } else if (e.passive_rank === 2) {
+            //　一般スキル
+            return '＜<span class="color-image2">' + e.skillName + '</span> Lv <span class="color-image11">' + e.skillLv + '</span>＞<br>' + options;
+        } else {
+            //その他(ないけど一応赤くしておくよ)
+            return '＜<span class="color-image1">' + e.skillName + '</span> Lv <span class="color-image11">' + e.skillLv + '</span>＞<br>' + options;
+        }
     });
     return result;
 }
