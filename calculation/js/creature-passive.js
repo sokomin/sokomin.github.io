@@ -30,80 +30,84 @@ function init2() {
 
 // 裏でも多分こんな感じで管理してるんでないの。
 var skillIdMap = [
-    { id: 0, value: "PVP攻撃力" },
-    { id: 1, value: "PVP防御力" },
-    { id: 2, value: "スキルクールタイム減少" },
-    { id: 3, value: "アンデッド型ダメージ" },
-    { id: 4, value: "人間型ダメージ" },
-    { id: 5, value: "悪魔型ダメージ" },
-    { id: 6, value: "動物型ダメージ" },
-    { id: 7, value: "神獣型ダメージ" },
-    { id: 8, value: "ドロップ率" },
-    { id: 9, value: "経験値" },
-    { id: 10, value: "移動速度" },
-    { id: 11, value: "攻撃速度" },
-    { id: 12, value: "命中率" },
-    { id: 13, value: "回避率" },
-    { id: 14, value: "火抵抗力" },
-    { id: 15, value: "水抵抗力" },
-    { id: 16, value: "風抵抗力" },
-    { id: 17, value: "大地抵抗力" },
-    { id: 18, value: "光抵抗力" },
-    { id: 19, value: "闇抵抗力" },
-    { id: 21, value: "火強化" },
-    { id: 22, value: "火低下" },
-    { id: 23, value: "水強化" },
-    { id: 24, value: "水低下" },
-    { id: 25, value: "風強化" },
-    { id: 26, value: "風低下" },
-    { id: 27, value: "大地強化" },
-    { id: 28, value: "大地低下" },
-    { id: 29, value: "光強化" },
-    { id: 30, value: "光低下" },
-    { id: 31, value: "闇強化" },
-    { id: 32, value: "闇低下" },
-    { id: 33, value: "ペット&召喚獣強化" },
-    { id: 34, value: "ペット&召喚獣攻撃力" },
-    { id: 35, value: "ペット&召喚獣状態異常抵抗" },
-    { id: 36, value: "ペット&召喚獣全てのステータス" },
-    { id: 37, value: "ペット&召喚獣体力" },
-    { id: 38, value: "ペット&召喚獣魔法致命打確率" },//合成
-    { id: 40, value: "最大体力" },
-    { id: 41, value: "最大CP" },
-    { id: 42, value: "攻撃力" },
-    { id: 43, value: "防御力" },
-    { id: 50, value: "クリティカルダメージ" },
-    { id: 51, value: "ダブルクリティカルダメージ" },
-    { id: 52, value: "クリティカル確率" },
-    { id: 53, value: "クリティカルダメージ減少" },
-    { id: 76, value: "敵致命打減少" },
-    { id: 77, value: "抵抗力低下防止" },
-    { id: 78, value: "能力値低下防止" },
-    { id: 79, value: "人間型魔法ダメージ" },
-    { id: 80, value: "魔法強打" },
-    { id: 81, value: "魔法攻撃力強化" },
-    { id: 82, value: "魔法攻撃力低下" },
-    { id: 83, value: "魔法致命打" },
-    { id: 84, value: "強打" },
-    { id: 101, value: "被ダメージCPに変換" },
-    { id: 102, value: "被ダメージ反射" },
-    { id: 103, value: "被魔法ダメージ吸収" },
-    { id: 104, value: "体力吸収" },
-    { id: 105, value: "与魔法ダメージ吸収" },
-    { id: 199, value: "状態異常抵抗力" },
-    { id: 200, value: "全ての属性抵抗" },
-    { id: 201, value: "人間型ダメージ抵抗" },
-    { id: 210, value: "全ての能力値増加" }, //合成
-    { id: 299, value: "スキル" },
-    { id: 300, value: "上級スキル" },
-    { id: 301, value: "上級攻撃力" },
-    { id: 302, value: "上級防御力" },
-    { id: 303, value: "上級体力" },
-    { id: 304, value: "上級最大CP" },
-    { id: 305, value: "上級状態異常抵抗力" },
-    { id: 306, value: "上級攻撃速度" },
-    { id: 307, value: "最終ダメージ" }, // 合成
-    { id: 308, value: "上級経験値" }, //合成
+    { id: 0, value: "PVP攻撃力", passive_rank:1 },
+    { id: 1, value: "PVP防御力", passive_rank:1 },
+    { id: 2, value: "スキルクールタイム減少", passive_rank:2 },
+    { id: 3, value: "アンデッド型ダメージ", passive_rank:2 },
+    { id: 4, value: "人間型ダメージ", passive_rank:1 },
+    { id: 5, value: "悪魔型ダメージ", passive_rank:2 },
+    { id: 6, value: "動物型ダメージ", passive_rank:2 },
+    { id: 7, value: "神獣型ダメージ", passive_rank:2 },
+    { id: 8, value: "ドロップ率", passive_rank:2 },
+    { id: 9, value: "経験値", passive_rank:2 },
+    { id: 10, value: "移動速度", passive_rank:2 },
+    { id: 11, value: "攻撃速度", passive_rank:2 },
+    { id: 12, value: "命中率", passive_rank:2 },
+    { id: 13, value: "回避率", passive_rank:2 },
+    { id: 14, value: "火抵抗力", passive_rank:2 },
+    { id: 15, value: "水抵抗力", passive_rank:2 },
+    { id: 16, value: "風抵抗力", passive_rank:2 },
+    { id: 17, value: "大地抵抗力", passive_rank:2 },
+    { id: 18, value: "光抵抗力", passive_rank:2 },
+    { id: 19, value: "闇抵抗力", passive_rank:2 },
+    { id: 21, value: "火強化", passive_rank:2 },
+    { id: 22, value: "火低下", passive_rank:2 },
+    { id: 23, value: "水強化", passive_rank:2 },
+    { id: 24, value: "水低下", passive_rank:2 },
+    { id: 25, value: "風強化", passive_rank:2 },
+    { id: 26, value: "風低下", passive_rank:2 },
+    { id: 27, value: "大地強化", passive_rank:2 },
+    { id: 28, value: "大地低下", passive_rank:2 },
+    { id: 29, value: "光強化", passive_rank:2 },
+    { id: 30, value: "光低下", passive_rank:2 },
+    { id: 31, value: "闇強化", passive_rank:2 },
+    { id: 32, value: "闇低下", passive_rank:2 },
+    { id: 33, value: "ペット&召喚獣強化", passive_rank:2 },
+    { id: 34, value: "ペット&召喚獣攻撃力", passive_rank:2 },
+    { id: 35, value: "ペット&召喚獣状態異常抵抗", passive_rank:2 },
+    { id: 36, value: "ペット&召喚獣全てのステータス", passive_rank:2 },
+    { id: 37, value: "ペット&召喚獣体力", passive_rank:2 },
+    { id: 38, value: "ペット&召喚獣の魔法致命打確率", passive_rank:2 },//合成
+    { id: 39, value: "ペット&召喚獣の強打確率", passive_rank:2 },//合成
+    { id: 40, value: "最大体力", passive_rank:2 },
+    { id: 41, value: "最大CP", passive_rank:2 },
+    { id: 42, value: "攻撃力", passive_rank:2 },
+    { id: 43, value: "防御力", passive_rank:2 },
+    { id: 50, value: "クリティカルダメージ", passive_rank:2 },
+    { id: 51, value: "ダブルクリティカルダメージ", passive_rank:1 },
+    { id: 52, value: "クリティカル確率", passive_rank:2 },
+    { id: 53, value: "クリティカルダメージ減少", passive_rank:2 },
+    { id: 76, value: "敵致命打減少", passive_rank:1 },
+    { id: 77, value: "抵抗力低下防止", passive_rank:2 },
+    { id: 78, value: "能力値低下防止", passive_rank:2 },
+    { id: 79, value: "人間型魔法ダメージ", passive_rank:1 },
+    { id: 80, value: "魔法強打", passive_rank:1 },
+    { id: 81, value: "魔法攻撃力強化", passive_rank:1 },
+    { id: 82, value: "魔法攻撃力低下", passive_rank:1 },
+    { id: 83, value: "魔法致命打", passive_rank:1 },
+    { id: 84, value: "強打", passive_rank:1 },
+    { id: 101, value: "被ダメージCPに変換", passive_rank:2 },
+    { id: 102, value: "被ダメージ反射", passive_rank:2 },
+    { id: 103, value: "被魔法ダメージ吸収", passive_rank:2 },
+    { id: 104, value: "体力吸収", passive_rank:2 },
+    { id: 105, value: "与魔法ダメージ吸収", passive_rank:1 },
+    { id: 106, value: "獲得CP増加", passive_rank:2 },//合成
+    { id: 107, value: "魔法ダメージ吸収", passive_rank:1 },//合成
+    { id: 199, value: "状態異常抵抗力", passive_rank:2 },
+    { id: 200, value: "全ての属性抵抗", passive_rank:2 },
+    { id: 201, value: "人間型ダメージ抵抗", passive_rank:1 },
+    { id: 210, value: "全ての能力値増加", passive_rank:2 }, //合成
+    { id: 299, value: "スキル", passive_rank:2 },
+    { id: 300, value: "上級スキル", passive_rank:1 },
+    { id: 301, value: "上級攻撃力", passive_rank:1 },
+    { id: 302, value: "上級防御力", passive_rank:1 },
+    { id: 303, value: "上級体力", passive_rank:1 },
+    { id: 304, value: "上級最大CP", passive_rank:1 },
+    { id: 305, value: "上級状態異常抵抗力", passive_rank:1 },
+    { id: 306, value: "上級攻撃速度", passive_rank:1 },
+    { id: 307, value: "最終ダメージ", passive_rank:1 }, // 合成
+    { id: 308, value: "上級経験値", passive_rank:1 }, //合成
+    { id: 309, value: "上級ドロップ", passive_rank:1 }, //合成
 ];
 
 
@@ -568,34 +572,34 @@ function calc() {
                     var mainSkill = {
                         skillName: skillData[j].mainId,
                         skillLv: skillData[j].mainLv,
-                        passive_rank: skillData[j].passive_rank,
+                        passive_rank: searchaPassiveRank(skillData[j].mainId),
                     }
                     //初っ端だから必ず空
                     skillset.push(mainSkill);
                     var sub1 = {
                         skillName: skillData[j].sub1Id,
                         skillLv: skillData[j].sub1IdLv,
-                        passive_rank: skillData[j].passive_rank,
+                        passive_rank: searchaPassiveRank(skillData[j].mainId),
                     }
                     // 勇気のゴーレムみたいにメインとサブで同じパッシブ持ってるのいるんで
                     merge(skillset, sub1);
                     var sub2 = {
                         skillName: skillData[j].sub2Id,
                         skillLv: skillData[j].sub2IdLv,
-                        passive_rank: skillData[j].passive_rank,
+                        passive_rank: searchaPassiveRank(skillData[j].mainId),
                     }
                     merge(skillset, sub2);
                 } else {
                     var sub1 = {
                         skillName: skillData[j].sub1Id,
                         skillLv: skillData[j].sub1IdLv,
-                        passive_rank: skillData[j].passive_rank,
+                        passive_rank: searchaPassiveRank(skillData[j].mainId),
                     }
                     merge(skillset, sub1);
                     var sub2 = {
                         skillName: skillData[j].sub2Id,
                         skillLv: skillData[j].sub2IdLv,
-                        passive_rank: skillData[j].passive_rank,
+                        passive_rank: searchaPassiveRank(skillData[j].mainId),
                     }
                     merge(skillset, sub2);
                 }
@@ -632,6 +636,18 @@ function output2(skillset) {
         }
     });
     return result;
+}
+
+//色付け用
+function searchaPassiveRank(value) {
+    var prank = 0;
+    for (var i = 0; i < skillIdMap.length; i++) { 
+        if (skillIdMap[i].value === value) {
+            prank = skillIdMap[i].passive_rank;
+            break;
+        }
+    };
+    return prank;
 }
 
 function searchID(value) {
@@ -706,69 +722,84 @@ function searchOption(cid, slv) {
         }
     }
     if (cid === 3) {
-        result += '- アンデッド型キャラクターに追加で<span class="color-image11">' + Math.round(19 + slv * 1.5) + '</span>％のダメージを与える。<br>';
         if (slv >= 50) {
-            result += '- ダメージ +<span class="color-image11">？</span>%<br>'
-            result += '- 不明<br>'
-        } else if (slv >= 40) {
-            result += '- ダメージ +<span class="color-image11">？</span>%<br>'
-        } else if (slv >= 30) {
-            result += '- ダメージ +<span class="color-image11">？</span>%<br>'
-        } else if (slv >= 20) {
-            result += '- ダメージ +<span class="color-image11">10</span>%<br>'
+            result += '- アンデッド型キャラクターに追加で<span class="color-image11">' + 100 + '</span>％のダメージを与える。<br>';
+            result += '- ダメージ +<span class="color-image11">50</span>%<br>'
+            result += '- クリティカル率 +<span class="color-image11">3</span>%<br>'
+        } else {
+            result += '- アンデッド型キャラクターに追加で<span class="color-image11">' + Math.round(19 + slv * 1.5) + '</span>％のダメージを与える。<br>';
+            if (slv >= 40) {
+                result += '- ダメージ +<span class="color-image11">30</span>%<br>'
+            } else if (slv >= 30) {
+                result += '- ダメージ +<span class="color-image11">20</span>%<br>'
+            } else if (slv >= 20) {
+                result += '- ダメージ +<span class="color-image11">10</span>%<br>'
+            }
         }
     }
     if (cid === 4) {
         // LV14で40%
-        result += '- 人間型キャラクターに追加で<span class="color-image11">' + Math.round(19 + slv * 1.5) + '</span>％のダメージを与える。<br>';
         if (slv >= 50) {
+            result += '- 人間型キャラクターに追加で<span class="color-image11">' + 100 + '</span>％のダメージを与える。<br>';
             result += '- ダメージ +<span class="color-image11">100</span>%<br>'
-            result += '- 不明<br>'
-        } else if (slv >= 40) {
-            result += '- ダメージ +<span class="color-image11">80</span>%<br>'
-        } else if (slv >= 30) {
-            result += '- ダメージ +<span class="color-image11">60</span>%<br>'
-        } else if (slv >= 20) {
-            result += '- ダメージ +<span class="color-image11">40</span>%<br>'
+            result += '- 最終ダメージ +<span class="color-image11">5</span>%<br>'
+        } else {
+            result += '- 人間型キャラクターに追加で<span class="color-image11">' + Math.round(19 + slv * 1.5) + '</span>％のダメージを与える。<br>';
+            if (slv >= 40) {
+                result += '- ダメージ +<span class="color-image11">80</span>%<br>'
+            } else if (slv >= 30) {
+                result += '- ダメージ +<span class="color-image11">60</span>%<br>'
+            } else if (slv >= 20) {
+                result += '- ダメージ +<span class="color-image11">40</span>%<br>'
+            }
         }
     }
     if (cid === 5) {
-        result += '- 悪魔型キャラクターに追加で<span class="color-image11">' + Math.round(19 + slv * 1.5) + '</span>％のダメージを与える。<br>';
         if (slv >= 50) {
-            result += '- ダメージ +<span class="color-image11">？</span>%<br>'
-            result += '- 不明<br>'
-        } else if (slv >= 40) {
-            result += '- ダメージ +<span class="color-image11">？</span>%<br>'
-        } else if (slv >= 30) {
-            result += '- ダメージ +<span class="color-image11">？</span>%<br>'
-        } else if (slv >= 20) {
-            result += '- ダメージ +<span class="color-image11">10</span>%<br>'
+            result += '- 悪魔型キャラクターに追加で<span class="color-image11">' + 100 + '</span>％のダメージを与える。<br>';
+            result += '- ダメージ +<span class="color-image11">50</span>%<br>'
+            result += '- クリティカル率 +<span class="color-image11">3</span>%<br>'
+        } else {
+            result += '- 悪魔型キャラクターに追加で<span class="color-image11">' + Math.round(19 + slv * 1.5) + '</span>％のダメージを与える。<br>';
+            if (slv >= 40) {
+                result += '- ダメージ +<span class="color-image11">30</span>%<br>'
+            } else if (slv >= 30) {
+                result += '- ダメージ +<span class="color-image11">20</span>%<br>'
+            } else if (slv >= 20) {
+                result += '- ダメージ +<span class="color-image11">10</span>%<br>'
+            }
         }
     }
     if (cid === 6) {
-        result += '- 動物型キャラクターに追加で<span class="color-image11">' + Math.round(19 + slv * 1.5) + '</span>％のダメージを与える。<br>';
         if (slv >= 50) {
-            result += '- ダメージ +<span class="color-image11">？</span>%<br>'
-            result += '- 不明<br>'
-        } else if (slv >= 40) {
-            result += '- ダメージ +<span class="color-image11">？</span>%<br>'
-        } else if (slv >= 30) {
-            result += '- ダメージ +<span class="color-image11">？</span>%<br>'
-        } else if (slv >= 20) {
-            result += '- ダメージ +<span class="color-image11">10</span>%<br>'
+            result += '- 動物型キャラクターに追加で<span class="color-image11">' + 100 + '</span>％のダメージを与える。<br>';
+            result += '- ダメージ +<span class="color-image11">50</span>%<br>'
+            result += '- クリティカル率 +<span class="color-image11">3</span>%<br>'
+        } else {
+            result += '- 動物型キャラクターに追加で<span class="color-image11">' + Math.round(19 + slv * 1.5) + '</span>％のダメージを与える。<br>';
+            if (slv >= 40) {
+                result += '- ダメージ +<span class="color-image11">30</span>%<br>'
+            } else if (slv >= 30) {
+                result += '- ダメージ +<span class="color-image11">20</span>%<br>'
+            } else if (slv >= 20) {
+                result += '- ダメージ +<span class="color-image11">10</span>%<br>'
+            }
         }
     }
     if (cid === 7) {
-        result += '- 神獣型キャラクターに追加で<span class="color-image11">' + Math.round(19 + slv * 1.5) + '</span>％のダメージを与える。<br>';
         if (slv >= 50) {
-            result += '- ダメージ +<span class="color-image11">？</span>%<br>'
-            result += '- 不明<br>'
-        } else if (slv >= 40) {
-            result += '- ダメージ +<span class="color-image11">？</span>%<br>'
-        } else if (slv >= 30) {
-            result += '- ダメージ +<span class="color-image11">？</span>%<br>'
-        } else if (slv >= 20) {
-            result += '- ダメージ +<span class="color-image11">10</span>%<br>'
+            result += '- 神獣型キャラクターに追加で<span class="color-image11">' + 100 + '</span>％のダメージを与える。<br>';
+            result += '- ダメージ +<span class="color-image11">50</span>%<br>'
+            result += '- クリティカル率 +<span class="color-image11">3</span>%<br>'
+        } else {
+            result += '- 神獣型キャラクターに追加で<span class="color-image11">' + Math.round(19 + slv * 1.5) + '</span>％のダメージを与える。<br>';
+            if (slv >= 40) {
+                result += '- ダメージ +<span class="color-image11">30</span>%<br>'
+            } else if (slv >= 30) {
+                result += '- ダメージ +<span class="color-image11">20</span>%<br>'
+            } else if (slv >= 20) {
+                result += '- ダメージ +<span class="color-image11">10</span>%<br>'
+            }
         }
     }
     if (cid === 8) {
