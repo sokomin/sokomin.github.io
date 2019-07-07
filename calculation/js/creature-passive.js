@@ -263,7 +263,7 @@ var skillData = [
     { name: "ラミア", id: 102, mainId: "クリティカルダメージ", mainLv: 32, sub1Id: "PVP攻撃力", sub1IdLv: 5, sub2Id: "回避率", sub2IdLv: 16 },
     { name: "サンタレビット", id: 107, mainId: "ドロップ率", mainLv: 32, sub1Id: "強打", sub1IdLv: 5, sub2Id: "最大体力", sub2IdLv: 16 },
     { name: "レオフォールド", id: 110, mainId: "ペット&召喚獣全てのステータス", mainLv: 32, sub1Id: "PVP防御力", sub1IdLv: 5, sub2Id: "ペット&召喚獣状態異常抵抗", sub2IdLv: 16 },
-    { name: "メリアス", id: 111, mainId: "強打", mainLv: 10, sub1Id: "上級体力", sub1IdLv: 5, sub2Id: "大地強化", sub2IdLv: 15 },
+    { name: "メリアス", id: 111, mainId: "強打", mainLv: 10, sub1Id: "上級体力", sub1IdLv: 5, sub2Id: "大地強化", sub2IdLv: 16 },
     { name: "コモルコクーン", id: 115, mainId: "能力値低下防止", mainLv: 32, sub1Id: "人間型ダメージ抵抗", sub1IdLv: 5, sub2Id: "移動速度", sub2IdLv: 16 },
     { name: "マートン所長", id: 116, mainId: "クリティカル確率", mainLv: 32, sub1Id: "敵致命打減少", sub1IdLv: 16, sub2Id: "上級攻撃速度", sub2IdLv: 5 },
     { name: "スペクター", id: 122, mainId: "能力値低下防止", mainLv: 32, sub1Id: "上級防御力", sub1IdLv: 5, sub2Id: "命中率", sub2IdLv: 16 },
@@ -1225,13 +1225,13 @@ function searchOption(cid, slv) {
         if (slv >= 50) {
             result += '- ペット&召喚獣の魔法攻撃力 +<span class="color-image11">' + 50 + '</span>％<br>';
             result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (40) + '</span>％<br>';
-            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">200</span>％<br>';
+            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">200</span><br>';
         } else if (slv >= 40) {
             result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (30) + '</span>％<br>';
-            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">100</span>％<br>';
+            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">100</span><br>';
         } else if (slv >= 30) {
             result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (20) + '</span>％<br>';
-            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">50</span>％<br>';
+            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">50</span><br>';
         } else if (slv >= 20) {
             result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (10) + '</span>％<br>';
         }
@@ -1243,13 +1243,13 @@ function searchOption(cid, slv) {
         if (slv >= 50) {
             result += '- ペット&召喚獣の攻撃力 +<span class="color-image11">' + 100 + '</span>％<br>';
             result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (40) + '</span>％<br>';
-            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">200</span>％<br>';
+            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">200</span><br>';
         } else if (slv >= 40) {
             result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (30) + '</span>％<br>';
-            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">100</span>％<br>';
+            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">100</span><br>';
         } else if (slv >= 30) {
             result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (20) + '</span>％<br>';
-            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">50</span>％<br>';
+            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">50</span><br>';
         } else if (slv >= 20) {
             result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (10) + '</span>％<br>';
         }
@@ -1261,13 +1261,13 @@ function searchOption(cid, slv) {
         if (slv >= 50) {
             result += '- ペット&召喚獣の異常状態抵抗増加 +<span class="color-image11">' + 50 + '</span>％<br>';
             result += '- ペット&召喚獣の最大体力 +<span class="color-image11">' + '15' + '</span>％<br>';
-            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">200</span>％<br>';
+            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">200</span><br>';
         } else if (slv >= 40) {
             result += '- ペット&召喚獣の最大体力 +<span class="color-image11">' + '11' + '</span>％<br>';
-            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">100</span>％<br>';
+            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">100</span><br>';
         } else if (slv >= 30) {
             result += '- ペット&召喚獣の最大体力 +<span class="color-image11">' + '8' + '</span>％<br>';
-            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">50</span>％<br>';
+            result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">50</span><br>';
         } else if (slv >= 20) {
             result += '- ペット&召喚獣の最大体力 +<span class="color-image11">' + '5' + '</span>％<br>';
         }
