@@ -1464,13 +1464,13 @@ function searchOption(cid, slv) {
         if (slv >= 50) {
             result += '- クリティカル確率 +<span class="color-image11">' + 30 + '</span>％<br>';
             result += '- 物理攻撃力 +<span class="color-image11">25</span>％<br>'
-            result += '- ダブルクリティカルダメージ増加 +<span class="color-image11">10</span>％<br>'
+            result += '- クリティカルダメージ増加 +<span class="color-image11">10</span>％<br>'
         } else if (slv >= 40) {
             result += '- 物理攻撃力 +<span class="color-image11">20</span>％<br>'
-            result += '- ダブルクリティカルダメージ増加 +<span class="color-image11">7</span>％<br>'
+            result += '- クリティカルダメージ増加 +<span class="color-image11">7</span>％<br>'
         } else if (slv >= 30) {
             result += '- 物理攻撃力 +<span class="color-image11">15</span>％<br>'
-            result += '- ダブルクリティカルダメージ増加 +<span class="color-image11">5</span>％<br>'
+            result += '- クリティカルダメージ増加 +<span class="color-image11">5</span>％<br>'
         } else if (slv >= 20) {
             result += '- 物理攻撃力 +<span class="color-image11">10</span>％<br>'
         }
