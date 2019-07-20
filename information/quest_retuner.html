@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+                <h3>復帰者クエでもらえるアイテム一覧</h3>
+                <!-- (´壺ω壺｀) -->
+                <a href="#base">基本システム</a><br>
+                <a href="#1">クエストチャート</a><br>
+                <a href="#2">報酬一覧</a><br>
+                <a href="#info">雑学</a><br>
+
+                <a name="base"></a>
+                <h4>基本システム</h4>
+
+                魔神召喚の壺とはモンスターを召喚できるアイテムです。<br>
+                使用することでモンスターが召喚され、一定時間以内に召喚されたモンスターを討伐すると褒賞を獲得できます。<br>
+                壺には<a href="#1">不思議な紺碧の壺(一般壺)</a>と<a href="#2">奇妙な紫苑の壺(上級壺)</a>の2種類があります。<br>
+                <br>
+                <a href="#1"><img src="tubo/i072.png"></a>
+                <a href="#2"><img src="tubo/i073.png"></a><br>
+                <h5>壺の入手方法</h5>
+                壺は<a href="#3-1">一部の秘密ダンジョン</a>、<a href="#3-2">ギルドダンジョン</a>、<a
+                    href="#3-3">パーティボスモンスターの討伐</a>により、一定確率で獲得できます。<br>
+                各条件下において、上級壺は普通の壺と比較して1/1000程度のドロップ率で入手できます。<br>
+                入手時、一定確率でインベントリに自動的に入ってきます。(インベントリが空いてない場合、所有権がある状態でフィールドにドロップします。)<br>
+                <br>
+                この他にも、各種ボックスドロップイベントやキャンペーン、<a
+                    href="http://members.redsonline.jp/news/news_body.asp?ntc_num=7884">PortTownBox</a>・<a
+                    href="../monster/pt-bonus2018.html">地図システム(特殊バフ3段階)</a>などからも一定確率で入手可能です。<br>
+                取引可能な壺であれば、露店から購入・取引することもできます。<br>
+                ※ 2018年頃から壺を銀行に保管・重ね置き(20個まで)できるようになりました。<br>
+                <br>
+                入手場所の詳細については、<a href="#3">壺の入手方法一覧</a>より御覧ください。<br>
+                <br>
+                <h5>壺の使い方</h5>
+                <br>
+                壺は町や村・特殊マップ以外のフィールドで使用できます。<br>
+                インベントリ内にある壺をダブルクリック、もしくは右クリックから「使う」コマンドを選択します。<br>
+                <br>
+                <img src="tubo/i074.png"><br>
+                <br>
+                使用後、3秒のカウントダウン後にモンスターがランダムで登場します。<br>
+                一般壺の場合は召喚者のレベルとに最も近い200～999Lvのモンスターが出現します。<br>
+                上級壺の場合は999Lv固定です。<br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/9204cc66c34976e37bc5645142769324f449a991.10.2.9.2.gif"
+                    border=0 name="insertImg" /><br><br>
+                モンスターを制限時間以内に討伐します。(一般壺：60秒・上級壺：150秒/600秒)<br>
+                <span class="color-image1">※ 同じ場所に何体も同時に召喚すると、稀にモンスターが出現しない不具合が発生します。(2018現在)</span><br>
+                制限時間内に討伐すると、褒賞を獲得できます。<br>
+                <br>
+                <table id="table10" style="max-width:760px">
+                    <colgroup>
+                        <col width="40" span="1">
+                        <col span="1">
+                        <col span="1" width="480">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="3">一般壺 褒賞<img src="../item/design/image/item/iconItem_2036.png" width="34"
+                                    height="34" border="0">
+                            </th>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                            </td>
+                            <td align="center">経験値</td>
+                            <td align="center">
+                                (26200 + 6500 * mobLv) * (各種補正)<br>
+                                ※ボス3(Zin)モンスターの約4.5倍の基礎経験値<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><img src="../item/design/image/item/iconItem_2038.png" width="34"
+                                    height="34" border="0">
+                            </td>
+                            <td align="center">紺碧の宝石箱</td>
+                            <td align="center">
+                                ランダムで経験値増加に関係するベリー系アイテムを1つ入手<br>
+                                <a href="#1-2">紺碧の宝石箱から入手可能なアイテム</a><br>
+                                土日は20%の確率で2個入手<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="3">上級壺 褒賞<img src="../item/design/image/item/iconItem_2037.png" width="34"
+                                    height="34" border="0"></th>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                            </td>
+                            <td align="center">経験値</td>
+                            <td align="center">
+                                (1) * (各種補正)<br>
+                                ※攻撃命中時に確定で入手<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><img src="../item/design/image/item/iconItem_2038.png" width="34"
+                                    height="34" border="0">
+                            </td>
+                            <td align="center">紺碧の宝石箱(1段階)</td>
+                            <td align="center">
+                                ランダムで経験値増加に関係するベリー系アイテムを1つ入手<br>
+                                <a href="#1-2">紺碧の宝石箱から入手可能なアイテム</a><br>
+                                土日は20%の確率で2個入手<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><img src="../item/design/image/item/iconItem_2039.png" width="34"
+                                    height="34" border="0">
+                            </td>
+                            <td align="center">紫苑の宝石箱(2段階)</td>
+                            <td align="center">
+                                ランダムで錬成などに関係するアイテムを1つ入手<br>
+                                <a href="#2-2">紫苑の宝石箱から入手可能なアイテム</a><br>
+                                ※ 攻撃参加者のいるPTの中から最大100人程度までのインベに入る<br>
+                                土日は20%の確率で2個入手<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                制限時間内にモンスターを討伐できなかった場合、モンスターは消滅します。<br>
+                <br>
+                <img src="tubo/i075.png"><br>
+                <br>
+                <br>
+                <a name="1"></a>
+                <h4>不思議な紺碧の壺</h4>
+                <br>
+                - 制限時間60秒<br>
+                - 壺使用者と同レベルmob(最小200、最大999)が出現<br>
+                - モンスターは非アクティブZinモンスター(セミ1～ボス3)<br>
+                - モンスターの種類に依らず、獲得経験値は同じ<br>
+                - 報酬は壺使用者のPTメンバーで共有されます。<br>
+                - 転生者は、パーティー内にLv差が100以上のメンバーがいると討伐時の基礎経験値が1になります。<br>
+                - 参考として、900Lv召喚されたモンスターの一例(<a href="">参考：四つ葉日記</a>)<br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/96350bfd57694a3ef6c79fbf2a6aad17cdbdddd7.10.2.9.2.jpeg"
+                    border=0 name="insertImg" /><br><br>
+                <h5>モンスターの攻撃スキル注意点</h5>
+                以下の2体はアンテイム(味方ペットを敵化する)を使ってくる可能性があります。<br>
+                タゲ取り時に注意。<br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/69f11472f31e01276e4af0b709e6ccb055546be5.10.2.9.2.gif"
+                    border=0 name="insertImg" /><img
+                    src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/3a10c07fd08fe3c6d9944b6d409ef77f98720bbf.10.2.9.2.gif"
+                    border=0 name="insertImg" /><br><br>
+                <br>
+                マモンは召喚時に強制終了が発生しやすいです。(2018現在)<br>
+                壺PT時などで強制終了が発生してもいいように対策を。<br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/9c105463e918bece64b6808c7455dcd3c9ffcd4d.10.2.9.2.gif"
+                    border=0 name="insertImg" /><br><br>
+                <br>
+                レイジストやマモンなどは火抵抗が高く、メテオをはじめとする魔法攻撃だけでは討伐するのに手こずるモンスターがいます。<br>
+                (属性弱化/魔法弱化を相当数積むことで対応可能)<br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/250acc673e2751a3ff9824824b079b68311f5eb2.10.2.9.2.gif"
+                    border=0 name="insertImg" /><br><br>
+                <br>
+                <a name="1-2"></a>
+                <h5>紺碧の宝石箱から入手可能なアイテム</h5>
+                <img src="tubo/i076.png"><br>
+                <br>
+
+                ※<a
+                    href="http://members.redsonline.jp/news/maintenance_body.asp?ntc_num=12517">2018年10月10日アップデート</a>より、宝石箱の出現アイテムがリニューアルされました。<br>
+                - 紺碧の宝石箱は100個までスタック可能。(旧5個)<br>
+                - 宝石箱は銀行取引のみ可能ですが、使用時に出てきたアイテムは全て銀行取引も不可。<br>
+                - 各アイテムにおいて、有効期限なしです。<br>
+                - 出現するベリー系アイテムのスタック数は育成剤が10個、他は20個(旧5個)に変更されました。<br>
+                <br>
+                <br>
+                <table id="table10" style="max-width: 640px">
+                    <colgroup>
+                        <col width="40" span="1">
+                        <col width="200" span="1">
+                        <col width="400" span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="3">
+                                <font color="#00ff00">紺碧の宝石箱 出現アイテム</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th colspan="2">アイテム</th>
+                            <th>持続時間</th>
+                        </tr>
+                        <tr>
+                            <td><img src="../item/design/image/item/iconItem_1931.png" width="34" height="34"
+                                    border="0"></td>
+                            <td align="center">ソラの育成剤[ゴールド]</td>
+                            <td>
+                                <font color="#ff66ff">取引不可アイテム</font><br>
+                                植木鉢の成長率を <span class="color-image11">51％～99%</span> に変更
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img src="../item/design/image/item/iconItem_2041.png" width="34" height="34"
+                                    border="0"></td>
+                            <td align="center">紺碧のサンベリー</td>
+                            <td>
+                                <font color="#ff66ff">取引不可アイテム</font><br>
+                                狩りでの獲得経験値 <span class="color-image11">20分間 110％</span> 増加
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img src="../item/design/image/item/iconItem_2042.png" width="34" height="34"
+                                    border="0"></td>
+                            <td align="center">
+                                新鮮な紺碧のサンベリー
+                            </td>
+                            <td>
+                                <font color="#ff66ff">取引不可アイテム</font><br>
+                                狩りでの獲得経験値 <span class="color-image11">20分間 140％</span> 増加
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img src="../item/design/image/item/iconItem_2420.png" width="34" height="34"
+                                    border="0"></td>
+                            <td align="center">サンチェリー</td>
+                            <td>
+                                <font color="#ff66ff">取引不可アイテム</font><br>
+                                狩りでの獲得経験値 <span class="color-image11">60分間 140％</span> 増加
+                                ※他ベリーの効果を上書き<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img src="../item/design/image/item/iconItem_2453.png" width="34" height="34"
+                                    border="0"></td>
+                            <td align="center">新鮮なパインベリー</td>
+                            <td>
+                                <font color="#ff66ff">取引不可アイテム</font><br>
+                                狩りでの獲得経験値 <span class="color-image11">60分間 150％</span> 増加<br>
+                                ※他ベリーに効果を上乗せ(重複)可能 <br>
+                                -> [EXP 290%]という倍率用に使えます。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <a name="1-3"></a>
+                <h5>出現モンスター一覧</h5>
+                <a href="https://plaza.rakuten.co.jp/redstoneteikou/diary/201807020000/">[こちら]</a>にてまとめました。<br>
+                <br>
+                <br>
+                <a name="2"></a>
+                <h4>奇妙な紫苑の壺</h4>
+                <br>
+                <br>
+                <a name="2-2"></a>
+                <h5>紫苑の宝石箱から入手可能なアイテム</h5>
+                <img src="tubo/i079.png"><br>
+                <br>
+                ※<a
+                    href="http://members.redsonline.jp/news/maintenance_body.asp?ntc_num=12517">2018年10月10日アップデート</a>より、宝石箱の出現アイテムがリニューアルされました。<br>
+                - 紺碧の宝石箱は100個までスタック可能。(旧5個)<br>
+                - 宝石箱は銀行取引のみ可能ですが、使用時に出てきたアイテムは全て銀行取引も不可。<br>
+                - 各アイテムにおいて、有効期限なしです。<br>
+                <br>
+                <table id="table10" style="min-width:840px">
+                    <colgroup>
+                        <col width="40" span="1">
+                        <col span="1" width="100">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="3">
+                                <font color="#00ff00">復帰者クエスト 獲得アイテム</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th colspan="2">アイテム</th>
+                            <th>説明</th>
+                        </tr>
+                        <tr>
+                            <td align="center"><img src="../item/design/image/item/iconItem_1824.png" width="34"
+                                    height="34" border="0"></td>
+                            <td align="center">
+                                <font color="#ff0000">コスチューム10日版</font><br>
+                                <br>
+                                表裏職1つずつ
+                            </td>
+                            <td>レアコスチューム</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><img src="../item/design/image/item/iconItem_1825.png" width="34"
+                                    height="34" border="0"></td>
+                            <td align="center">
+                                <font color="#6699ff">断熱石</font><br>
+                                <br>
+                                30個
+                            </td>
+                            <td>炎の石を製作するための材料の一つ。発火石と合わせて使うことで、黒き炎の力を引き出せる。<br>
+                                <br> ※ レベル差が少ないモンスターを倒した時に、モンスターが落とすことがあります</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><img src="../item/design/image/item/iconItem_1826.png" width="34"
+                                    height="34" border="0"></td>
+                            <td align="center">黒き炎の欠片<br>
+                                <br>
+                                20個</td>
+                            <td>神秘的な力を持った黒い炎の小さな欠片。<br>
+                                ほんのひと滴ほどの大きさだが、その中に秘められている力は膨大で、装備の錬成材料に最適。<br>
+                                <br> ※ 1日クエストで入手可能</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><img src="../item/design/image/item/iconItem_0533.png" width="34"
+                                    height="34" border="0"></td>
+                            <td align="center">
+                                <span class="color-image11">神秘の石</span><br>
+                                <br>
+                                1個 or 5個
+                            </td>
+                            <td>古代都市タティリスの力が封じ込められている神秘的な石で、強烈なエネルギーを発している。<br>
+                                ギルドホールにいる考古学者グラン、古美術商ネネに渡すと様々なアイテムと交換してくれる。<br>
+                                <br>※ 古代都市タティリスの遺跡で入手できる他、ユニーク以上のアイテム分解でも入手可能</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><img src="../item/design/image/item/iconItem_1437.png" width="34"
+                                    height="34" border="0"></td>
+                            <td align="center">
+                                <span class="color-image11">結晶石</span><br>
+                                <br>
+                                1個 or 3個
+                            </td>
+                            <td>タティリス秘伝の破壊の力で、ユニークアイテムを分解した時に、稀に取り出すことができる美しい石で、<br>
+                                古代タティリス人は‘魂が宿る石’という意味で‘ソウルストーン’とも呼んでいたらしい。<br>
+                                <br>※ ユニークアイテムを分解することで入手可能</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><img src="../item/design/image/item/iconItem_1829.png" width="34"
+                                    height="34" border="0"></td>
+                            <td align="center">
+                                <font color="#ff0000">炎の石</font>
+                            </td>
+                            <td>断熱石を加工して作った小さな型の中に、発火石と黒き炎の欠片を1：1の割合で混ぜ合わせて作った炎の石。<br>
+                                強力な火力を持つため小さな石しか作ることができず、何かに使用する場合には、さらに加工が必要だが、<br>
+                                現状でも非常に高価。<br>
+                                <br> ※ 錬成材料の購入に使用できます。<br>
+                                ※ ランディスが、炎の石に大変興味を持っているとの噂がある・・・</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><img src="../item/design/image/item/iconItem_0619.png" width="34"
+                                    height="34" border="0"></td>
+                            <td align="center">再錬成剤</td>
+                            <td>錬成されたアイテムに使用すると、解放された神秘的な能力を封印し、<br>
+                                元のアイテムに戻す再錬成を行う特殊な薬品。称号は変動しない</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../item/design/image/item/iconItem_1922.png" width="34" height="34"
+                                    border="0"></td>
+                            <td align="center">黄金のチケット</td>
+                            <td>黄金の泉より出現するといわれる金色に輝くチケット。本物の黄金かは分からないが、<br>
+                                古都ブルンネンシュティグの鑑定士ティレンと武器職人サナがこのチケットを集めているという噂がある。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img src="../item/design/image/item/iconItem_1827.png" width="34" height="34"
+                                    border="0"></td>
+                            <td align="center">揮発性の炎の錬成剤</td>
+                            <td>神秘に満ちた黒き炎の欠片を浸して作った浄水。これを使って装備を強化することができる。<br>
+                                密封されていないため取引不可。<br>
+                                <br>
+                                ※ 錬成剤のみで錬成する場合、称号は引き継がれませんが、<br>
+                                特殊な補助剤を購入して錬成剤と一緒に使用すれば称号を引き継げます。<br>
+                                <font color="#ff0000">※ 取引不可アイテム</font>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                ※黄金のチケットは、古都ブルンネンシュティグ「鑑定士ティレン」（90.109）や「武器商人サナ」(98.53)に渡すと、交換するキャラクターの職業に応じたランダムな番号の<a
+                    href="../item/item-gambler.html">賭博師武器</a>のかけらと交換できます。<br>
+                <br>
+                <h5>出現モンスター一覧</h5>
+                [1段階目]<br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/b8f8d038b969d590af95361c78a8d15f5b77ef8b.10.2.9.2.gif"
+                    border=0 name="insertImg" />
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/9aed5cb618596f7a70d150925890bcc97cce86ce.10.2.9.2.gif"
+                    border=0 name="insertImg" /><br><br>
+                <br>
+
+                [2段階目]<br>
+                <br>
+                <img src="../monster/design/image/monster/01010000.png" width="200" height="200">
+                <img src="../monster/design/image/monster/01020000.png" width="200" height="200"><br>
+                <img src="../monster/design/image/monster/01210000.png" width="200" height="200">
+                <img src="../monster/design/image/monster/01220000.png" width="200" height="200"><br>
+                <br>
+                <br>
+                <br>
+                <a name="3"></a>
+                <h4>壺の入手方法一覧</h4>
+
+                <a name="3-1"></a>
+                <table id="table10" style="max-width:640px">
+                    <colgroup>
+                        <col span="1">
+                        <col span="1" width="100">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="2">
+                                <font color="#00ff00">壺を入手可能な秘密ダンジョン</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>秘密ダンジョン</th>
+                            <th>制限Lv</th>
+                        </tr>
+                        <tr>
+                            <td align="center"><a href="../secret/secretdgn160-200.html">河口ダンジョンの隠された宝物部屋</a></td>
+                            <td align="center">160～200</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><a href="../secret/secretdgn190-230.html">ソルティケーブの混沌の空間</a>
+                            </td>
+                            <td align="center">190～230</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><a href="../secret/secretdgn195-235.html">呪いの墓に建つ呪われし塔</a>
+                            </td>
+                            <td align="center">195～235</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><a href="../secret/secretdgn250-290.html">過ぎし栄光の展示場にある遺物保管所</a></td>
+                            <td align="center">250～290</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><a href="../secret/secretdgn260-300.html">キングクラブの巣</a></td>
+                            <td align="center">260～300</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><a href="../secret/secretdgn290-310.html">ハイランド洞窟の堕落した部族</a>
+                            </td>
+                            <td align="center">290～310</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><a href="../secret/secretdgn290-330.html">ダークソウルの封印場所</a>
+                            </td>
+                            <td align="center">290～330</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><a href="../secret/secretdgn320-345.html">レッドアイの隠されたアジト</a>
+                            </td>
+                            <td align="center">320～345</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><a href="../secret/secretdgn340-360.html">レッドアイ特殊エージェントのアジト</a></td>
+                            <td align="center">340～360</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><a href="../secret/secretdgn355-405.html">フォーリン望楼の隠された地下監獄</a></td>
+                            <td align="center">355～405</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><a href="../secret/secretdgn405-435.html">カダーム・ギガスの寺院</a>
+                            </td>
+                            <td align="center">405～435</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><a href="../secret/secretdgn440-490.html">ダークエルフ王宮の隠された倉庫</a>
+                            </td>
+                            <td align="center">440～490</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><a href="../secret/secretdgn450-500.html">スパインホールのミステリーゾーン</a></td>
+                            <td align="center">450～500</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><a href="../secret/secretdgn500-550.html">呪いを受けたミズナ洞窟の隠された洞窟</a></td>
+                            <td align="center">500～550</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><a href="../secret/secretdgn535-585.html">名も無き遺跡のデーモンキングのねぐら</a></td>
+                            <td align="center">535～585</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><a href="../secret/secretdgn550-600.html">ヘソパルの洞窟</a></td>
+                            <td align="center">550～600</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><a href="../secret/secretdgn580-620.html">モリネルタワーの隠された研究所</a>
+                            </td>
+                            <td align="center">580～620</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><a href="../secret/secretdgn600-640.html">ビックマウスダンジョンのラットキング区域</a></td>
+                            <td align="center">600～640</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><a href="../secret/secretdgn651-680.html">閉鎖された時空研究所</a></td>
+                            <td align="center">651～680</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><a href="../secret/secretdgn681-710.html">ヴァンパイア・キングダム</a>
+                            </td>
+                            <td align="center">681～710</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <a name="3-2"></a><br>
+                <table id="table10" style="max-width:700px">
+                    <colgroup>
+                        <col span="1" width="175">
+                        <col span="2" width="80">
+                    </colgroup>
+                    <colgroup>
+
+
+
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="4">
+                                <font color="#00ff00">壺を入手可能なギルドダンジョン</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>ギルドダンジョン</th>
+                            <th>適正Lv</th>
+                            <th>ホールランク</th>
+                            <th>入場条件</th>
+                        </tr>
+                        <tr>
+                            <td align="center">古代都市タティリス遺跡 入口</td>
+                            <td align="center">1～100</td>
+                            <td align="center">1以上</td>
+                            <td align="center">-</td>
+                        </tr>
+                        <tr>
+                            <td align="center">古代都市タティリス遺跡 B1</td>
+                            <td align="center">101～200</td>
+                            <td align="center">1以上</td>
+                            <td align="center">入場券 （タティリス遺跡のかけら20個）</td>
+                        </tr>
+                        <tr>
+                            <td align="center">古代都市タティリス遺跡 B2</td>
+                            <td align="center">201～300</td>
+                            <td align="center">2以上</td>
+                            <td align="center">入場券 （タティリス遺跡のかけら40個）</td>
+                        </tr>
+                        <tr>
+                            <td align="center">古代都市タティリス遺跡 B3</td>
+                            <td align="center">301～400</td>
+                            <td align="center">2以上</td>
+                            <td align="center">入場券 （タティリス遺跡のかけら60個）</td>
+                        </tr>
+                        <tr>
+                            <td align="center">古代都市タティリス遺跡 B4</td>
+                            <td align="center">401～500</td>
+                            <td align="center">3以上</td>
+                            <td align="center">入場券 （タティリス遺跡のかけら80個）</td>
+                        </tr>
+                        <tr>
+                            <td align="center">古代都市タティリス遺跡 B5</td>
+                            <td align="center">501～600</td>
+                            <td align="center">3以上</td>
+                            <td align="center">入場券 （修復済みのタティリス遺跡の出土品1個）</td>
+                        </tr>
+                        <tr>
+                            <td align="center">古代都市タティリス遺跡 B6</td>
+                            <td align="center">601～700</td>
+                            <td align="center">4以上</td>
+                            <td align="center">入場券 （修復済みのタティリス遺跡の出土品2個）</td>
+                        </tr>
+                        <tr>
+                            <td align="center">古代都市タティリス遺跡 B7</td>
+                            <td align="center">701～800</td>
+                            <td align="center">4以上</td>
+                            <td align="center">入場券 （修復済みのタティリス遺跡の出土品2個）</td>
+                        </tr>
+                        <tr>
+                            <td align="center">古代都市タティリス遺跡 B8</td>
+                            <td align="center">801～900</td>
+                            <td align="center">5以上</td>
+                            <td align="center">入場券 （修復済みのタティリス遺跡の出土品5個）</td>
+                        </tr>
+                        <tr>
+                            <td align="center">古代都市タティリス遺跡 B9</td>
+                            <td align="center">-</td>
+                            <td align="center">-</td>
+                            <td align="center">コスミックストーン （土日のみ） <font color="#ff0000">※</font>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                ※B9はギルドホールランク5の場合、リーダーのみコスミックストーンが必要です。<br>
+                　他のパーティーメンバーはコスミックストーンを所持していなくても入場可能。<br>
+                ギルドホールランク4以下の場合は、パーティーメンバー全員がコスミックストーンを所持している必要があります。<br>
+                <br>
+                <a name="3-3"></a>
+                <h5>壺を入手可能なPTボス</h5>
+                <br>
+                壺を入手可能なPTボスは、現在<a href="../secret/mirror-teleporter.html#ptboss-list">全てのPTボスモンスター</a>が対象です。
+                <br>
+                <a name="info"></a>
+                <h4>雑学</h4>
+                ベリー系アイテムの効果説明文。<br>
+                <img src="tubo/i077.png"><img src="tubo/i078.png"><br>
+                <br>
+                <br>
+                <br>
+                <br>
+                [参考] <a href="http://service.redsonline.jp/library/191">公式サイト</a><br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+        </div>
+</body>
+
+</html>
