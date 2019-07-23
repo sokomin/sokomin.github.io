@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+                <h3>一般クエスト　Lv700～899</h3>
+                <a href="normalquest700.html#1">反撃の始まり</a>
+                <a href="normalquest700.html#2">ヴァンパイア討伐</a>　<a href="normalquest700.html#3">犠牲者の捜索</a>　<a
+                    href="normalquest700.html#4">隠された目的</a>　<a href="normalquest700.html#5">古代悪魔研究所</a>　<a
+                    href="normalquest700.html#6">白馬討伐隊捜索</a><br>
+                <br>
+                <br>
+                <table id="table14" style="text-align: left">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="2"><a name="1"></a>
+                                <font color="#00ff00">反撃の始まり</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: left">
+                                <br>ネルバは強化したアイテムの性能を確認するため、ストレンジの欠片が必要だという。ストレンジを倒し、ストレンジの欠片を集めよう。<br>
+                                <br>ストレンジの欠片を十分集めた。ネルバのところへ戻ろう。<br>
+                                <br>性能は確認できたが、さらに赤黒い鉱石が必要だそうだ。汚染された天使を倒して赤黒い鉱石を採取しよう。<br>
+                                <br>赤黒い鉱石を全て集めた。ネルバのところへ戻ろう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td>
+                                <span class="color-image3">ブラックファイヤー外郭　ネルバ（7.153）</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td>
+                                <span class="color-image3">Lv750</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td>
+                                <span class="color-image3">経験値約2億8200万　異界の強化石</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <span class="color-image2">ブラックファイヤー外郭<br>
+                                    深淵の地底湖外郭<br>
+                                    ブラックファイヤー中心地<br>
+                                    ブラックファイヤー洞窟<br>
+                                    荒野の要塞<br>
+                                    荒野の要塞入口<br>
+                                    ブラックファイヤー隠されたダンジョン<br>
+                                    古代悪魔研究所</span>
+                            </td>
+                            <td>
+                                <span class="color-image1">連作クエスト</span><br>
+                                <font color="#666666">反撃の始まり</font>　→<br>
+                                <a href="normalquest700.html#2">ヴァンパイア討伐</a>　<a
+                                    href="normalquest700.html#3">犠牲者の捜索</a>　<a
+                                    href="normalquest700.html#4">隠された目的</a>　<a
+                                    href="normalquest700.html#5">古代悪魔研究所</a>　<a
+                                    href="normalquest700.html#6">白馬討伐隊捜索</a><br>
+                                <br>
+                                <span class="color-image9">モンスター</span>を倒す
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <span class="color-image2">ブラックファイヤー外郭</span>
+                            </td>
+                            <td>
+                                <span class="color-image4">ネルバ</span>へ<br>
+                                <br>
+                                <span class="color-image9">汚染された天使</span>（Lv800）を倒す、魔法抵抗が非常に高い。<br>
+                                <br>
+                                <span class="color-image4">ネルバ</span>へ<br>
+                                <br>
+                                <!-- TODO　沸き位置マップ追記したい -->
+                                <!-- <img src="./normalquest700_files/n700-001.gif" width="299" height="105" border="0"> -->
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+                <table id="table14">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="2"><a name="2"></a>
+                                <font color="#00ff00">ヴァンパイア討伐</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: left">
+                                <br>ストレンジに気を取られていた間を狙って、ヴァンパイアたちが正規軍の居住区域を占領したという。深淵の地底湖外郭に討伐に行こう。<br>
+                                <br>ヴァンパイアをすべて討伐した。 キルラに状況を報告しよう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td>
+                                <span class="color-image3">漆黒の城　キルラ（309.266）</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td>
+                                <span class="color-image3">Lv775</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td>
+                                <span class="color-image3">経験値約3億280万　異界の強化石</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <span class="color-image2">深淵の地底湖外郭</span>
+                            </td>
+                            <td>
+                                <span class="color-image1">連作クエスト</span><br>
+                                <a href="normalquest700.html#1">反撃の始まり</a>　→<br>
+                                <font color="#666666">ヴァンパイア討伐</font>　<a href="normalquest700.html#3">犠牲者の捜索</a>　<a
+                                    href="normalquest700.html#4">隠された目的</a>　<a
+                                    href="normalquest700.html#5">古代悪魔研究所</a>　<a
+                                    href="normalquest700.html#6">白馬討伐隊捜索</a><br>
+                                <br>
+                                <span class="color-image9">ヴァンパイア</span>（Lv800）Zinを60匹倒す
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <span class="color-image2">漆黒の城</span>
+                            </td>
+                            <td>
+                                <span class="color-image4">キルラ</span>へ
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+                <table id="table14">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="2"><a name="3"></a>
+                                <font color="#00ff00">犠牲者の捜索</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: left">
+                                <br>ブラックファイヤー外郭北側に、犠牲となった将兵を捜索している兵士たちがいるらしい。訪ねてみよう。<br>
+                                <br>ストレンジのせいで、戦場で命を落とした将兵たちの捜索に難航しているようだ。ストレンジと戦闘し、時間を稼いであげよう。<br>
+                                <br>犠牲となった将兵たちの捜索に成功した。イレーネにところに行き、この事実を報告しよう。<br>
+                                <br>ブラックファイヤー中心地でも犠牲となった者たちの捜索が行われているという。訪ねてみよう。<br>
+                                <br>ストレンジのせいで、戦場で命を落とした将兵たちの捜索に難航しているようだ。兵士たちを助け、ストレンジを倒そう。<br>
+                                <br>犠牲となった将兵たちの捜索に成功した。イレーネにところに行き、この事実を報告しよう。 <br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td>
+                                <span class="color-image3">ブラックファイヤー外郭　イレーネ（14.146）</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td>
+                                <span class="color-image3">Lv800</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td>
+                                <span class="color-image3">経験値約3億6300万　異界の強化石</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <span class="color-image2">ブラックファイヤー外郭</span>
+                            </td>
+                            <td>
+                                <span class="color-image1">連作クエスト</span><br>
+                                <a href="normalquest700.html#1">反撃の始まり</a>　→<br>
+                                <a href="normalquest700.html#2">ヴァンパイア討伐</a>　
+                                <font color="#666666">犠牲者の捜索</font>　<a href="normalquest700.html#4">隠された目的</a>　<a
+                                    href="normalquest700.html#5">古代悪魔研究所</a>　<a
+                                    href="normalquest700.html#6">白馬討伐隊捜索</a><br>
+                                <br>
+                                <span class="color-image4">聖騎士</span>（7.69）（24.114）（47.71）へ<br>
+                                <br>
+                                <span class="color-image9">汚染パンプキン</span>（Lv800）、
+                                <span class="color-image9">汚染された天使</span>（Lv800）、
+                                <span class="color-image9">汚染狂魔</span>（Lv775）、
+                                <span class="color-image9">汚染骸骨戦士</span>（Lv775）、
+                                <span class="color-image9">汚染サキュバス</span>（Lv800）を倒す<br>
+                                <br>
+                                <span class="color-image4">イレーネ</span>へ
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <span class="color-image2">ブラックファイヤー中心地</span>
+                            </td>
+                            <td>
+                                <span class="color-image4">聖騎士</span>（10.98）へ<br>
+                                <br>
+                                <span class="color-image9">汚染パンプキン</span>（Lv850）、
+                                <span class="color-image9">汚染地獄狂魔</span>（Lv850）、
+                                <span class="color-image9">汚染斧戦士</span>（Lv825）、
+                                <span class="color-image9">汚染双剣戦士</span>（Lv850）、
+                                <span class="color-image9">汚染ワーカー</span>（Lv850）、
+                                <span class="color-image9">汚染インプ</span>（Lv825）、
+                                <span class="color-image9">汚染ピエンド</span>（Lv850）を倒す
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <span class="color-image2">ブラックファイヤー外郭</span>
+                            </td>
+                            <td>
+                                <span class="color-image4">イレーネ</span>へ
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+                <table id="table14">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="2"><a name="4"></a>
+                                <font color="#00ff00">隠された目的</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: left"><br>
+                                イッスンは今後、悪魔が人間に害を及ぼすと考えているようだ。
+                                まずはイッスンの言うとおりブラックファイヤー外郭とブラックファイヤー中心地にある、魔法陣が描かれた建物を探そう。<br>
+                                <br>ブラックファイヤー外郭とブラックファイヤー中心地の主な建物を全て把握した。イッスンに報告しよう。<br>
+                                <br>イッスンはストレンジに汚染された悪魔を利用し、悪魔の弱点を見つけ出そうとしている。悪魔の中でも特に強力な汚染吸血鬼の弱点を把握して欲しいということなので、該当モンスターを退治しよう。<br>
+                                <br>戦闘にて汚染吸血鬼の弱点を把握できた。イッスンに報告しよう。<br>
+                                <br>
+                                イッスンはさらに悪魔の弱点を調べる必要があると言っている。悪魔の中でも特に強力である汚染ピエンドの弱点を把握して欲しいということなので、該当モンスターを退治しよう。<br>
+                                <br>
+                                戦闘にて汚染ピエンドの弱点を把握できた。イッスンに報告しよう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td>
+                                <span class="color-image3">漆黒の城　イッスン（338.271）</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td>
+                                <span class="color-image3">Lv800</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td>
+                                <span class="color-image3">経験値約3億6300万　異界の強化石</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <span class="color-image2">ブラックファイヤー外郭</span>
+                            </td>
+                            <td>
+                                <span class="color-image1">連作クエスト</span><br>
+                                <a href="normalquest700.html#1">反撃の始まり</a>　→<br>
+                                <a href="normalquest700.html#2">ヴァンパイア討伐</a>　<a href="normalquest700.html#3">犠牲者の捜索</a>　
+                                <font color="#666666">隠された目的</font>　<a href="normalquest700.html#5">古代悪魔研究所</a>　<a
+                                    href="normalquest700.html#6">白馬討伐隊捜索</a><br>
+                                <br>
+                                <span class="color-image12">魔法陣</span>（28.5）（172.2）をクリック<br>
+                                <br>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/43e362bf6d5917b6c750d9b131d5caa3c29e60e9.10.2.9.2.png" border=0 name="insertImg" /><br><br>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/9e59edc0faf77305fd68fc382812bac1d5e74bc3.10.2.9.2.png" border=0 name="insertImg" /><br>
+                                                        </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <span class="color-image2">ブラックファイヤー中心地</span>
+                            </td>
+                            <td>
+                                <span class="color-image12">魔法陣</span>（120.44）（178.31）をクリック<br>
+                                <br>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/5f7a9caf37d33fb9e18a68dd6d484506aa1b90c5.10.2.9.2.png" border=0 name="insertImg" /><br><br>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/d8dffb4fe6d37bc31ee37724627c5092aa83e900.10.2.9.2.png" border="0" alt="" name="insertImg" /><br><br>
+                                                        </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <span class="color-image2">漆黒の城</span>
+                            </td>
+                            <td>
+                                <span class="color-image4">イッスン</span>へ
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <span class="color-image2">漆黒の城<br>
+                                    ブラックファイヤー中心地</span>
+                            </td>
+                            <td>
+                                <span class="color-image9">汚染吸血鬼</span>（Lv850）を倒す
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <span class="color-image2">漆黒の城</span>
+                            </td>
+                            <td>
+                                <span class="color-image4">イッスン</span>へ
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <span class="color-image2">漆黒の城<br>
+                                    ブラックファイヤー中心地</span>
+                            </td>
+                            <td>
+                                <span class="color-image9">汚染ピエンド</span>（Lv850）を倒す
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <span class="color-image2">漆黒の城</span>
+                            </td>
+                            <td>
+                                <span class="color-image4">イッスン</span>へ
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+                <table id="table14">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+
+
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="2"><a name="5"></a>
+                                <font color="#00ff00">古代悪魔研究所</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: left">
+                                <br>ストレンジを研究していた悪魔たちが研究所に取り残されたという。研究所に行き彼らの無事を確認しよう。<br>
+                                <br>研究所で安全に研究が進むよう、研究所内のストレンジを退治しよう。<br>
+                                <br>彼らは残って研究を続けると言っている。この事実をパールに伝えよう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td>
+                                <span class="color-image3">ブラックファイヤー外郭　パール（30.146）</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td>
+                                <span class="color-image3">Lv800</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td>
+                                <span class="color-image3">経験値約3億6300万　異界の強化石</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <span class="color-image2">古代悪魔研究所</span>
+                            </td>
+                            <td>
+                                <span class="color-image1">連作クエスト</span><br>
+                                <a href="normalquest700.html#1">反撃の始まり</a>　→<br>
+                                <a href="normalquest700.html#2">ヴァンパイア討伐</a>　<a
+                                    href="normalquest700.html#3">犠牲者の捜索</a>　<a href="normalquest700.html#4">隠された目的</a>　
+                                <font color="#666666">古代悪魔研究所</font>　<a href="normalquest700.html#6">白馬討伐隊捜索</a><br>
+                                <br>
+                                <span class="color-image4">アスペロ</span>（49.108）へ<br>
+                                <br>
+                                <span class="color-image9">モンスター</span>（Lv950）を100匹倒す<br>
+                                <br>
+                                <span class="color-image4">アスペロ</span>へ
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <span class="color-image2">ブラックファイヤー外郭</span>
+                            </td>
+                            <td>
+                                <span class="color-image4">パール</span>へ
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+                <table id="table14">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+
+
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="2"><a name="6"></a>
+                                <font color="#00ff00">白馬討伐隊捜索</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: left">
+                                <br>各国家重要人物の子弟で構成された白馬討伐隊が行方不明になったという。彼らは荒野の要塞の方に出征したようだ。荒野の要塞を捜索しよう。<br>
+                                <br>幸い、一部白馬討伐隊員を見つけた。 残りの隊員は西南方向に移動したというので、該当区域を調べてみよう。<br>
+                                <br>他の隊員をみつけた。残りの隊員は古代悪魔研究所の方に移動したというので、該当区域を調べてみよう。<br>
+                                <br>
+                                白馬討伐隊全員が生きているという報告を受けた。さらに負傷などで既に死んだと思われた隊員たちも見つけて欲しいと言われた。彼らは荒野の要塞入口北東方向にいると言うので、該当区域を調べてみよう。<br>
+                                <br>
+                                すべての白馬討伐隊員を見つけた。 ユリシスのところに戻り、この状況を報告しよう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td>
+                                <span class="color-image3">ブラックファイヤー外郭　ユリシス（16.154）</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td>
+                                <span class="color-image3">Lv800</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td>
+                                <span class="color-image3">経験値約3億6300万　異界の強化石</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <span class="color-image2">荒野の要塞</span>
+                            </td>
+                            <td>
+                                <span class="color-image1">連作クエスト</span><br>
+                                <a href="normalquest700.html#1">反撃の始まり</a>　→<br>
+                                <a href="normalquest700.html#2">ヴァンパイア討伐</a>　<a
+                                    href="normalquest700.html#3">犠牲者の捜索</a>　<a
+                                    href="normalquest700.html#4">隠された目的</a>　<a href="normalquest700.html#5">古代悪魔研究所</a>　
+                                <font color="#666666">白馬討伐隊捜索</font><br>
+                                <br>
+                                <span class="color-image4">ティアナン</span>（280.103）へ<br>
+                                <br>
+                                <span class="color-image4">ネラー</span>（20.252）へ<br>
+                                <br>
+                                <span class="color-image4">ドミニック</span>（23.25）へ
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <span class="color-image2">荒野の要塞入口</span>
+                            </td>
+                            <td>
+                                <span class="color-image4">アンキス</span>（3.27）へ
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <span class="color-image2">ブラックファイヤー外郭</span>
+                            </td>
+                            <td>
+                                <span class="color-image4">ユリシス</span>へ
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <br>
+                <br>
+                <br>
+                [参考] <a
+                    href="https://yotsuba000.github.io/YotsubaDataBase/QuestDataBase/QuestDataBaseIndex.html">Yotsuba
+                    Quest DataBase</a><br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+        </div>
+</body>
+
+</html>
