@@ -66,6 +66,7 @@ function findReturnerLv(exp, b) {
                 cnt++;
             }
         }
+        cnt--;
         for (var i = 910; i <= 1000; i++) {
             if (exp < exp_sum_2011array[i - 910]) {
                 var rest = i >= 910 ? exp - exp_sum_2011array[i - 911] : exp - exp_sum_2017array[i - 1];
@@ -87,6 +88,7 @@ function findReturnerLv(exp, b) {
                 cnt++;
             }
         }
+        cnt--;
         for (var i = 910; i <= 1000; i++) {
             if (exp < exp_sum_2015array[i - 910]) {
                 var rest = i >= 910 ? exp - exp_sum_2015array[i - 911] : exp - exp_sum_2017array[i - 1];
@@ -108,11 +110,12 @@ function findReturnerLv(exp, b) {
                 cnt++;
             }
         }
+        cnt--;
         for (var i = 851; i <= 1500; i++) {
             if (exp < exp_sum_2019array[i - 851]) {
                 var rest = i >= 852 ? exp - exp_sum_2019array[i - 852] : exp - exp_sum_2017array[i - 1];
                 if (i >= 1000) {
-                    ret.per = parseInt((rest * 100 / exp_2019array[i]) * 10000) / 10000;
+                    ret.per = parseInt((rest * 100 / exp_2017array[i - 1]) * 10000) / 10000;
                 } else {
                     ret.per = parseInt((rest * 100 / exp_2019array[i - 851]) * 10000) / 10000;
                 }
