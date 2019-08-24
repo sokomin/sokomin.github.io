@@ -42,11 +42,13 @@ function findReturnerLv(exp, b) {
     var ret = {
         lv: 1,
         per: 0,
+        rest: 0,
     };
     if (b === 4) {
         for (var i = 0; i <= 1500; i++) {
             if (exp < exp_sum_2017array[i]) {
                 var rest = exp - exp_sum_2017array[i - 1];
+                ret.rest = rest;
                 ret.per = parseInt((rest * 100 / exp_2017array[i]) * 10000) / 10000;
                 ret.lv = cnt;
                 return ret;
@@ -59,6 +61,7 @@ function findReturnerLv(exp, b) {
         for (var i = 1; i <= 909; i++) {
             if (exp < exp_sum_2017array[i - 1]) {
                 var rest = i >= 1 ? exp - exp_sum_2017array[i - 2] : 250;
+                ret.rest = rest;
                 ret.per = parseInt((rest * 100 / exp_2017array[i -1]) * 10000) / 10000;
                 ret.lv = cnt;
                 return ret;
@@ -70,6 +73,7 @@ function findReturnerLv(exp, b) {
         for (var i = 910; i <= 1000; i++) {
             if (exp < exp_sum_2011array[i - 910]) {
                 var rest = i >= 910 ? exp - exp_sum_2011array[i - 911] : exp - exp_sum_2017array[i - 1];
+                ret.rest = rest;
                 ret.per = parseInt((rest * 100 / exp_2011array[i - 910]) * 10000) / 10000;
                 ret.lv = cnt;
                 return ret;
@@ -81,6 +85,7 @@ function findReturnerLv(exp, b) {
         for (var i = 1; i <= 909; i++) {
             if (exp < exp_sum_2017array[i - 1]) {
                 var rest = i >= 1 ? exp - exp_sum_2017array[i - 2] : 250;
+                ret.rest = rest;
                 ret.per = parseInt((rest * 100 / exp_2017array[i -1]) * 10000) / 10000;
                 ret.lv = cnt;
                 return ret;
@@ -92,6 +97,7 @@ function findReturnerLv(exp, b) {
         for (var i = 910; i <= 1000; i++) {
             if (exp < exp_sum_2015array[i - 910]) {
                 var rest = i >= 910 ? exp - exp_sum_2015array[i - 911] : exp - exp_sum_2017array[i - 1];
+                ret.rest = rest;
                 ret.per = parseInt((rest * 100 / exp_2015array[i - 910]) * 10000) / 10000;
                 ret.lv = cnt;
                 return ret;
@@ -103,6 +109,7 @@ function findReturnerLv(exp, b) {
         for (var i = 1; i <= 850; i++) {
             if (exp < exp_sum_2017array[i - 1]) {
                 var rest = i >= 1 ? exp - exp_sum_2017array[i - 2] : 250;
+                ret.rest = rest;
                 ret.per = parseInt((rest * 100 / exp_2017array[i - 1]) * 10000) / 10000;
                 ret.lv = cnt;
                 return ret;
@@ -114,6 +121,7 @@ function findReturnerLv(exp, b) {
         for (var i = 851; i <= 1500; i++) {
             if (exp < exp_sum_2019array[i - 851]) {
                 var rest = i >= 852 ? exp - exp_sum_2019array[i - 852] : exp - exp_sum_2017array[i - 1];
+                ret.rest = rest;
                 if (i >= 1000) {
                     ret.per = parseInt((rest * 100 / exp_2017array[i - 1]) * 10000) / 10000;
                 } else {
@@ -134,7 +142,7 @@ function calc1() {
     var r2 = {};
     var r3 = {};
     var a1 = parseInt(document.f.a1.value) ? parseInt(document.f.a1.value) : 0;
-    // var a2 = parseInt(document.f.a2.value) ? parseInt(document.f.a2.value) : 0;
+    var a2 = parseFloat(document.f.a2.value) ? parseFloat(document.f.a2.value) : 0;
     var b1 = parseInt(document.f.b1.value) ? parseInt(document.f.b1.value) : 0;
     document.f.r1.value = "";
     document.f.r2.value = "";
@@ -143,6 +151,10 @@ function calc1() {
     document.f.r12.value = "";
     document.f.r13.value = "";
 
+    if (a2 < 0 || a2 >= 100) {
+        alert("％以下は0以上100未満で入力してください。");
+        return;
+    }
     if (a1 < 600) {
         document.f.r1.value = "600Lvから転生できます。";
         return;
@@ -153,16 +165,17 @@ function calc1() {
             document.f.r1.value = "最高レベルは1500です。";
             return;
         }
-        var exp1 = exp_sum_2017array[a1 - 2] - exp_300_600_2017;
+        var per = parseInt(exp_2017array[a1 - 1] * a2 / 100);
+        var exp1 = exp_sum_2017array[a1 - 2] + per - exp_300_600_2017;
         r1 = findReturnerLv(exp1, b1);
-        var exp2 = r1.lv >= 600 ? exp1 - exp_300_600_2017 : 0;
+        var exp2 = r1.lv >= 600 ? (exp1 + r1.rest - exp_300_600_2017) : 0;
         if (exp2 <= 0) {
             r2.lv = "Lv不足で転生できません。";
             r2.per = "";
         } else {
             r2 = findReturnerLv(exp2, b1);
         }
-        var exp3 = r2.lv >= 600 ? exp2 - exp_300_600_2017 : 0;
+        var exp3 = r2.lv >= 600 ? (exp2 + r2.rest - exp_300_600_2017) : 0;
         if (exp3 <= 0) {
             r3.lv = "Lv不足で転生できません。";
             r3.per = "";
@@ -184,16 +197,21 @@ function calc1() {
             document.f.r1.value = "最高レベルは1000です。";
             return;
         }
-        var exp1 = a1 < 910 ? (exp_sum_2017array[a1 - 2] - exp_300_600_2011) : (exp_sum_2011array[a1 - 2] - exp_300_600_2011);
+        if (a1 < 909) {
+            per = parseInt(exp_2017array[a1 - 1] * a2 / 100);
+        } else { 
+            per = parseInt(exp_2011array[a1 - 909] * a2 / 100);
+        }
+        var exp1 = a1 < 910 ? (exp_sum_2017array[a1 - 2] + per - exp_300_600_2011) : (exp_sum_2011array[a1 - 910] + per - exp_300_600_2011);
         r1 = findReturnerLv(exp1, b1);
-        var exp2 = r1.lv >= 600 ? exp1 - exp_300_600_2011 : 0;
+        var exp2 = r1.lv >= 600 ? (exp1 + r1.rest - exp_300_600_2011) : 0;
         if (exp2 <= 0) {
             r2.lv = "Lv不足で転生できません。";
             r2.per = "";
         } else {
             r2 = findReturnerLv(exp2, b1);
         }
-        var exp3 = r2.lv >= 600 ? exp2 - exp_300_600_2011 : 0;
+        var exp3 = r2.lv >= 600 ? (exp2 + r2.rest - exp_300_600_2011) : 0;
         if (exp3 <= 0) {
             r3.lv = "Lv不足で転生できません。";
             r3.per = "";
@@ -210,16 +228,22 @@ function calc1() {
             document.f.r1.value = "最高レベルは1000です。";
             return;
         }
-        var exp1 = a1 < 910 ? (exp_sum_2017array[a1 - 2] - exp_300_600_2011) : (exp_sum_2015array[a1 - 2] - exp_300_600_2011);
+        var per = 0;
+        if (a1 < 909) {
+            per = parseInt(exp_2017array[a1 - 1] * a2 / 100);
+        } else { 
+            per = parseInt(exp_2015array[a1 - 909] * a2 / 100);
+        }
+        var exp1 = a1 < 910 ? (exp_sum_2017array[a1 - 2] + per - exp_300_600_2011) : (exp_sum_2015array[a1 - 910] + per - exp_300_600_2011);
         r1 = findReturnerLv(exp1, b1);
-        var exp2 = r1.lv >= 600 ? exp1 - exp_300_600_2011 : 0;
+        var exp2 = r1.lv >= 600 ? (exp1 + r1.rest - exp_300_600_2011) : 0;
         if (exp2 <= 0) {
             r2.lv = "Lv不足で転生できません。";
             r2.per = "";
         } else {
             r2 = findReturnerLv(exp2, b1);
         }
-        var exp3 = r2.lv >= 600 ? exp2 - exp_300_600_2011 : 0;
+        var exp3 = r2.lv >= 600 ? (exp2 + r2.rest - exp_300_600_2011) : 0;
         if (exp3 <= 0) {
             r3.lv = "Lv不足で転生できません。";
             r3.per = "";
@@ -236,16 +260,24 @@ function calc1() {
             document.f.r21.value = "最高レベルは1500です。";
             return;
         }
-        var exp1 = a1 <= 850 ? (exp_sum_2017array[a1 - 2] - exp_300_600_2017) : (exp_sum_2019array[a1 - 851] - exp_300_600_2017);
+        var per = 0;
+        if (a1 < 850 || a1 >= 1000) {
+            per = parseInt(exp_2017array[a1 - 1] * a2 / 100);
+        } else { 
+            per = parseInt(exp_2019array[a1 - 850] * a2 / 100);
+        }
+        var exp1 = a1 <= 850 ? (exp_sum_2017array[a1 - 2] + per - exp_300_600_2017) : (exp_sum_2019array[a1 - 851] + per - exp_300_600_2017);
         r1 = findReturnerLv(exp1, b1);
-        var exp2 = r1.lv >= 600 ? exp1 - exp_300_600_2017 : 0;
+        //ここから2転の計算
+        var exp2 = r1.lv >= 600 ? (exp1 + r1.rest - exp_300_600_2017) : 0;
         if (exp2 <= 0) {
             r2.lv = "Lv不足で転生できません。";
             r2.per = "";
         } else {
             r2 = findReturnerLv(exp2, b1);
         }
-        var exp3 = r2.lv >= 600 ? exp2 - exp_300_600_2017 : 0;
+        //ここから3転の計算
+        var exp3 = r2.lv >= 600 ? (exp2 + r2.rest - exp_300_600_2017) : 0;
         if (exp3 <= 0) {
             r3.lv = "Lv不足で転生できません。";
             r3.per = "";
@@ -256,20 +288,6 @@ function calc1() {
         console.log(exp1);
         console.log(exp2);
         console.log(exp3);
-
-        // var a1_2 = 0;
-        // var a2_2 = 0;
-        // if (a1 <= 850) {
-        //     a1_2 = a1 >= 2 ? exp_sum_2017array[a1 - 2] : 0;
-        // } else if (a1 <= 1500) {
-        //     a1_2 = exp_sum_2019array[a1 - 851];
-        // }
-        // if (a2 <= 850) {
-        //     a2_2 = a2 >= 2 ? exp_sum_2017array[a2 - 2] : 0;
-        // } else if (a2 <= 1500) {
-        //     a2_2 = exp_sum_2019array[a2 - 851];
-        // }
-        // r1 = a2_2 - a1_2;
     } else {
         //ここ通らないはずです。
         console.log("ｚｚｚ");
@@ -300,8 +318,6 @@ function calc2() {
     }
     if (b1 === 4) {
         if (a1 > 1500 || a2 > 1500) {
-            //1500までで計算するならこれ
-            // r1 = exp_sum_2017array[1499] - exp_sum_2017array[a1 - 2];
             document.f.r21.value = "最高レベルは1500です。";
             return;
         }
