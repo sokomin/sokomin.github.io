@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <script language="JavaScript" src="js/common_function.js"></script>
+    <script language="JavaScript" src="js/exp-table.js"></script>
+    <script language="JavaScript" src="js/tubo_level.js"></script>
+
+    <style>
+        #view-source {
+            s position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body onload="init1(); init2()" leftmargin="0" topmargin="0" crossriderapp0002258="true" marginheight="0"
+    marginwidth="0">
+    <title>赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <div class="main-background mdl-typography--text-center">
+                <br>
+                <br>
+                <h3>壺PTシミュレータ</h3>
+                <a href="#1">壺PTシミュレータ(シンプル)</a><br>
+                <a href="#2">[逆算]壺PTシミュレータ</a><br>
+                <a href="#3">壺PTシミュレータ(カスタム)</a><br>
+                <br>
+                壺PTに入ってどの程度レベルが上がるのか計算します。<br>
+                目安としてお使いください。<br>
+                <br>
+                <span class="color-image1">※注意※　壺モンスターのレベルは200～999までです。1000Lv以降はレベル上昇値がかなり減少します。</span>　
+                <br>
+                <a name="1"></a><br>
+                <form name="f">
+                    <table id="table8">
+                        <tbody>
+                            <tr>
+                                <th>壺PTシミュレータ(最小限)</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table id="table9">
+                                        <table id="table9">
+                                            <colgroup>
+                                                <col span="1" width="6%">
+                                                <col span="1" width="15%">
+                                                <col span="1" width="20%">
+                                                <col span="1" width="20%">
+                                                <col span="1" width="20%">
+                                                <col span="1" width="19%">
+                                            </colgroup>
+                                            <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>キャラレベル</td>
+                                                    <td><input type="text" class="memorize" name="a21" size="8">Lv</td>
+                                                    <td><input type="text" class="memorize" name="a22" size="8">％</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>1体当たりの経験値<br>(直接入力)</td>
+                                                    <td><input type="text" class="memorize" name="a25" size="12">Exp
+                                                    </td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>開封壺数</td>
+                                                    <td><input type="text" class="memorize" name="a23" size="8">個</td>
+                                                    <td>PT人数</td>
+                                                    <td><input type="text" class="memorize" name="a24" size="8">人</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>経験値テーブル</td>
+                                                    <td><select class="memorize" name="b1">
+                                                        </select>
+                                                    </td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <br>
+                                        <table id="table9">
+                                            <colgroup>
+                                                <col span="1" width="6%">
+                                                <col span="1" width="18%">
+                                                <col span="1" width="10%">
+                                                <col span="1" width="20%">
+                                                <col span="1" width="12%">
+                                                <col span="1" width="13%">
+                                                <col span="1" width="12%">
+                                                <col span="1" width="13%">
+                                            </colgroup>
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="7"><br>
+                                                        <input type="button" value="計算" onclick="calc2()"><br>
+                                                        <br>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <br>
+                                        <table id="table9">
+                                            <colgroup>
+                                            </colgroup>
+                                            <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>【壺PT完了時レベル】<input type="text" class="memorize" name="r21"
+                                                            size="20">Lv　<input type="text" class="memorize" name="r24"
+                                                            size="20">％<br>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>【壺インベ消費数】<input type="text" class="memorize" name="r23"
+                                                            size="8">マス /
+                                                        【列数】<input type="text" class="memorize" name="r22" size="8">列
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>【壺ベリー獲得数】<input type="text" class="memorize" name="r25"
+                                                            size="10">個 /
+                                                        【土日獲得期待値】<input type="text" class="memorize" name="r26"
+                                                            size="10">個<br>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <br>
+                    <a name="2"></a><br>
+                    <table id="table8">
+                        <tbody>
+                            <tr>
+                                <th>[逆算]壺PTシミュレータ</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table id="table9">
+                                        <table id="table9">
+                                            <colgroup>
+                                                <col span="1" width="6%">
+                                                <col span="1" width="10%">
+                                                <col span="1" width="20%">
+                                                <col span="1" width="20%">
+                                                <col span="1" width="30%">
+                                                <col span="1" width="14%">
+                                            </colgroup>
+                                            <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>今のLv</td>
+                                                    <td><input type="text" class="memorize" name="a1" size="8">Lv</td>
+                                                    <td><input type="text" class="memorize" name="a2" size="8">％</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>壺PT後希望Lv</td>
+                                                    <td><input type="text" class="memorize" name="a10" size="8">Lv</td>
+                                                    <td><input type="text" class="memorize" name="a11" size="8">％</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>1体当たりの経験値<br>(直接入力)</td>
+                                                    <td><input type="text" class="memorize" name="a5" size="12">Exp
+                                                    <td>PT人数 <input type="text" class="memorize" name="a4" size="8">人
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>計算式バージョン</td>
+                                                    <td><select class="memorize" name="b2">
+                                                        </select>
+                                                    </td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <br>
+                                        <table id="table9">
+                                            <colgroup>
+                                                <col span="1" width="6%">
+                                                <col span="1" width="18%">
+                                                <col span="1" width="10%">
+                                                <col span="1" width="20%">
+                                                <col span="1" width="12%">
+                                                <col span="1" width="13%">
+                                                <col span="1" width="12%">
+                                                <col span="1" width="13%">
+                                            </colgroup>
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="7"><br>
+                                                        <input type="button" value="計算" onclick="calc1()"><br>
+                                                        <br>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <br>
+                                        <table id="table9">
+                                            <colgroup>
+                                            </colgroup>
+                                            <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>【必要壺数】<input type="text" class="memorize" name="r31"
+                                                            size="20">個<br>
+                                                        <input type="text" class="memorize" name="r34"
+                                                            size="15">個以上の壺PTが必要<br>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <br>
+                    <a name="3"></a><br>
+                    <table id="table8">
+                        <tbody>
+                            <tr>
+                                <th>壺PTシミュレータ(カスタム)</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table id="table9">
+                                        <table id="table9">
+                                            <colgroup>
+                                                <col span="1" width="6%">
+                                                <col span="1" width="5%">
+                                                <col span="1" width="25%">
+                                                <col span="1" width="25%">
+                                                <col span="1" width="29%">
+                                                <col span="1" width="10%">
+                                            </colgroup>
+                                            <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>キャラレベル</td>
+                                                    <td><input type="text" class="memorize" name="a41" size="8">Lv</td>
+                                                    <td><input type="text" class="memorize" name="a42" size="8">％</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>スフィア <select class="memorize" name="b4"></select></td>
+                                                    <td>パワキ <select class="memorize" name="b8"></select></td>
+                                                    <td>バッジ <select class="memorize" name="b5"></select></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>経験値バフ <select class="memorize" name="b7"></select>段階</td>
+                                                    <td>復帰者 <select class="memorize" name="b6"></select></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>経験値イベ <input type="text" class="memorize" name="a46" size="8">倍
+                                                    </td>
+                                                    <td>PTボーナスイベ <select class="memorize" name="b9"></select></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>
+                                                        ベリー補正 <input type="text" class="memorize" name="a47" size="4">%
+                                                    </td>
+                                                    <td>知恵 <input type="text" class="memorize" name="a48" size="4">
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>ギルドスキル <input type="text" class="memorize" name="a49" size="4">%
+                                                        <!-- 転生回数次第なので％にしないとダメ -->
+                                                    <td>ギルド旗バフ <select class="memorize" name="b12"></select> Lv
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2">クリーチャ</td>
+                                                    <td>
+                                                        経験値 Lv<input type="text" class="memorize" name="a50" size="4">
+                                                    </td>
+                                                    <td>
+                                                        上級経験値 Lv<input type="text" class="memorize" name="a51" size="4">
+                                                    </td>
+                                                    <td>
+                                                        ドロップ率 Lv<input type="text" class="memorize" name="a52" size="4">
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>
+                                                        EXP指補正合計 <input type="text" class="memorize" name="a53"
+                                                            size="4">%
+                                                    </td>
+                                                    <td>PT平均Lv差 <input type="text" class="memorize" name="a54"
+                                                        size="4">Lv
+                                                    </td>
+                                                    <td>その他 <input type="text" class="memorize" name="a55"
+                                                        size="4">%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>開封壺数　<input type="text" class="memorize" name="a43" size="8">個
+                                                        <br>
+                                                        <br>
+                                                    </td>
+                                                    <td>PT人数　<input type="text" class="memorize" name="a44" size="8">人
+                                                        <br>
+                                                        <br>
+
+                                                    </td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>経験値テーブル</td>
+                                                    <td><select class="memorize" name="b3">
+                                                        </select>
+                                                    </td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <br>
+                                        <table id="table9">
+                                            <colgroup>
+                                                <col span="1" width="6%">
+                                                <col span="1" width="18%">
+                                                <col span="1" width="10%">
+                                                <col span="1" width="20%">
+                                                <col span="1" width="12%">
+                                                <col span="1" width="13%">
+                                                <col span="1" width="12%">
+                                                <col span="1" width="13%">
+                                            </colgroup>
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="7"><br>
+                                                        <input type="button" value="計算" onclick="calc3()"><br>
+                                                        <br>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <br>
+                                        <table id="table9">
+                                            <colgroup>
+                                            </colgroup>
+                                            <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>【壺PT完了時レベル】<input type="text" class="memorize" name="r41"
+                                                            size="20">Lv　<input type="text" class="memorize" name="r44"
+                                                            size="20">％<br>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>【壺インベ消費数】<input type="text" class="memorize" name="r43"
+                                                            size="8">マス /
+                                                        【列数】<input type="text" class="memorize" name="r42" size="8">列
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>【壺ベリー獲得数】<input type="text" class="memorize" name="r45"
+                                                            size="10">個 /
+                                                        【土日獲得期待値】<input type="text" class="memorize" name="r46"
+                                                            size="10">個<br>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>1体当たりの経験値 /
+                                                        <input type="text" class="memorize" name="a45" size="12">Exp
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <br>
+                </form>
+                <a name="20"></a><br>
+                <h4>壺1体当たりの経験値　概算早見用</h4>
+                <!-- <p align="left">test</p><br> -->
+                <table id="table8">
+                    <colgroup>
+                        <col span="1" width="10%">
+                        <col span="1" width="15%">
+                        <col span="1" width="10%">
+                        <col span="8">
+                        <col span="1" width="10%">
+                    </colgroup>
+
+                    <tr>
+                        <th>補正</th>
+                        <th>経験値</th>
+                        <th>EXP</th>
+                        <th>Lv</th>
+                        <th>知恵</th>
+                        <th>スフィア・パワキ</th>
+                        <th>バッジ</th>
+                        <th>経験値イベ</th>
+                        <th>EXP指</th>
+                        <th>バフ</th>
+                        <th>復帰者</th>
+                        <th>その他</th>
+                    </tr>
+                    <tr>
+                        <th>補正少な目</th>
+                        <td>80000000</td>
+                        <td>80M</td>
+                        <td>900</td>
+                        <td>1601</td>
+                        <td>アリ</td>
+                        <td>ナシ</td>
+                        <td>3倍</td>
+                        <td>Lv30*2</td>
+                        <td>0段階</td>
+                        <td>ナシ</td>
+                        <td>ベリー<br>Gバフなど</td>
+                    </tr>
+                    <tr>
+                        <th>バッジ有</th>
+                        <td>160000000</td>
+                        <td>160M</td>
+                        <td>900</td>
+                        <td>1601</td>
+                        <td>アリ</td>
+                        <td>アリ</td>
+                        <td>3倍</td>
+                        <td>Lv30*2</td>
+                        <td>0段階</td>
+                        <td>ナシ</td>
+                        <td>ベリー<br>Gバフなど</td>
+                    </tr>
+                    <tr>
+                        <th>バフ有り</th>
+                        <td>500000000</td>
+                        <td>500M</td>
+                        <td>900</td>
+                        <td>1601</td>
+                        <td>アリ</td>
+                        <td>アリ</td>
+                        <td>3倍</td>
+                        <td>Lv30*2</td>
+                        <td>5段階</td>
+                        <td>ナシ</td>
+                        <td>ベリー<br>Gバフなど</td>
+                    </tr>
+                    <tr>
+                        <th>色々補正込</th>
+                        <td>1500000000</td>
+                        <td>1500M</td>
+                        <td>900</td>
+                        <td>3201</td>
+                        <td>アリ</td>
+                        <td>アリ</td>
+                        <td>3倍</td>
+                        <td>Lv30*2</td>
+                        <td>5段階</td>
+                        <td>アリ</td>
+                        <td>ベリー<br>Gバフなど</td>
+                    </tr>
+                </table>
+                「壺PTシミュレータ(簡易版)」の1体当たりの経験値欄にコピペする用にお使いください。<br>
+                <br>
+                <h4>補足</h4>
+                * PTボーナスは経験値+50%相当<br>
+                * 復帰者は2019.2後の補正で計算<br>
+                * 早見表にはクリーチャーパッシブ補正が入ってません。<br>
+                * 8人PTで経験値*50%になりますが、復帰者補正やREDSTONE探偵などのPTボーナス補正で打ち消すこともできます。<br>
+                * <b>獲得経験値の計算式は実測値に基づいて暫定的に割り出したものです。実際の獲得経験値と異なる可能性があります。</b><br>
+                * EXP指Lv30が2つで合計補正は70%になります。<br>
+                * クリーチャー補正は記載されてるスキルレベルを入力してください。<br>
+                * PT平均LV差はmobとのレベル差判定用。(75-mobLV差)/75 だけ獲得経験値が減少します。<br>
+                * 復帰者PTボーナス50%はPTにて反映された状態で開催されたものとします。<br>
+                <br>
+                <br>
+                <a name="20"></a><br>
+                <h4>計算式参考</h4>
+                <a href="https://plaza.rakuten.co.jp/redstoneteikou/3004/">GMの抵抗ワショーイ(2017～経験値テーブル)</a><br>
+
+                <br>
+                <br>
+
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        </div>
+</body>
+
+</html>
