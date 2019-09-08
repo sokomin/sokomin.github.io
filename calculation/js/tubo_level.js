@@ -115,7 +115,7 @@ function findReturnerLv(exp, b, sokomin) {
                 var sup_exp = 1;
                 //TODO こんな方法で上位レベルの壺PTどうにかする方法聞いたことないぞ。。。
                 if (sokomin && i > 999) {
-                    sup_exp = (i < 1075 && (75 / (1075 - i)) < 50) ? Math.sqrt(Math.sqrt(75 / (1075 - i))) : 50;
+                    sup_exp = (i < 1075) ? Math.sqrt(Math.sqrt(75 / (1075 - i))) : 75;
                 }
                 var rest = exp - parseInt(exp_sum_2017array[i - 1] * sup_exp);
                 ret.rest = rest;
@@ -123,6 +123,10 @@ function findReturnerLv(exp, b, sokomin) {
                 ret.lv = cnt;
                 return ret;
             } else {
+                if (i === 1500) {
+                    ret.lv = 1500;
+                    ret.per = 0;
+                }
                 cnt++;
             }
         }
@@ -192,7 +196,7 @@ function findReturnerLv(exp, b, sokomin) {
             //FIXME こんな方法で上位レベルの壺PTどうにかする方法聞いたことないぞ。。。
             var sup_exp = 1;
             if (sokomin && i > 999) {
-                sup_exp = (i < 1075 && (75 / (1075 - i)) < 50) ? Math.sqrt(Math.sqrt(75 / (1075 - i))) : 50;
+                sup_exp = (i < 1075) ? Math.sqrt(Math.sqrt(75 / (1075 - i))) : 75;
             }
             if (exp < parseInt(exp_sum_2019array[i - 851] * sup_exp)) {
                 var rest = i >= 852 ? exp - parseInt(exp_sum_2019array[i - 852] * sup_exp) : exp - exp_sum_2017array[i - 1];
@@ -206,6 +210,10 @@ function findReturnerLv(exp, b, sokomin) {
                 ret.lv = cnt;
                 return ret;
             } else {
+                if (i === 1500) {
+                    ret.lv = 1500;
+                    ret.per = 0;
+                }
                 cnt++;
             }
         }
