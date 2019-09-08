@@ -101,7 +101,7 @@ function init2() {
 }
 
 //TODO 転生って名前だけどレベルとEXP計算できる汎用化関数だよねこれ共通化しなきゃ
-function findReturnerLv(exp, b) {
+function findReturnerLv(exp, b, sokomin) {
     //厳密には598とかで満たすことあるけど、今回は計算にいれない。
     var cnt = 1;
     var ret = {
@@ -112,7 +112,12 @@ function findReturnerLv(exp, b) {
     if (b === 4) {
         for (var i = 0; i <= 1500; i++) {
             if (exp < exp_sum_2017array[i]) {
-                var rest = exp - exp_sum_2017array[i - 1];
+                var sup_exp = 1;
+                //TODO こんな方法で上位レベルの壺PTどうにかする方法聞いたことないぞ。。。
+                if (sokomin && i > 999) {
+                    sup_exp = (i < 1075 && (75 / (1075 - i)) < 50) ? Math.sqrt(Math.sqrt(75 / (1075 - i))) : 50;
+                }
+                var rest = exp - parseInt(exp_sum_2017array[i - 1] * sup_exp);
                 ret.rest = rest;
                 ret.per = parseInt((rest * 100 / exp_2017array[i]) * 10000) / 10000;
                 ret.lv = cnt;
@@ -184,11 +189,17 @@ function findReturnerLv(exp, b) {
         }
         cnt--;
         for (var i = 851; i <= 1500; i++) {
-            if (exp < exp_sum_2019array[i - 851]) {
-                var rest = i >= 852 ? exp - exp_sum_2019array[i - 852] : exp - exp_sum_2017array[i - 1];
+            //FIXME こんな方法で上位レベルの壺PTどうにかする方法聞いたことないぞ。。。
+            var sup_exp = 1;
+            if (sokomin && i > 999) {
+                sup_exp = (i < 1075 && (75 / (1075 - i)) < 50) ? Math.sqrt(Math.sqrt(75 / (1075 - i))) : 50;
+            }
+            if (exp < parseInt(exp_sum_2019array[i - 851] * sup_exp)) {
+                var rest = i >= 852 ? exp - parseInt(exp_sum_2019array[i - 852] * sup_exp) : exp - exp_sum_2017array[i - 1];
                 ret.rest = rest;
                 if (i >= 1000) {
-                    ret.per = parseInt((rest * 100 / exp_2017array[i - 2]) * 10000) / 10000;
+                    ret.per = (parseInt((rest * 100 / exp_2017array[i - 2]) * 10000) / 10000) > 0 ?
+                        (parseInt((rest * 100 / exp_2017array[i - 2]) * 10000) / 10000) : 0;
                 } else {
                     ret.per = parseInt((rest * 100 / exp_2019array[i - 851]) * 10000) / 10000;
                 }
@@ -625,7 +636,7 @@ function calc3() {
         }
         var per = parseInt(exp_2017array[a1 - 1] * a2 / 100);
         var exp1 = exp_sum_2017array[a1 - 2] + per + tubo_exp;
-        r1 = findReturnerLv(exp1, b1);
+        r1 = findReturnerLv(exp1, b1, true);
         console.log(exp1);
     } else if (b1 === 1) {
         document.f.r41.value = a1;
@@ -674,7 +685,7 @@ function calc3() {
         }
         //簡易計算機だし、直接足し算でOK(1000以降なら直接EXP調整してね。)
         var exp1 = a1 <= 850 ? (exp_sum_2017array[a1 - 2] + per + tubo_exp) : (exp_sum_2019array[a1 - 851] + per + tubo_exp);
-        r1 = findReturnerLv(exp1, b1);
+        r1 = findReturnerLv(exp1, b1, true);
         console.log(exp1);
     } else {
         //ここ通らないはずです。
