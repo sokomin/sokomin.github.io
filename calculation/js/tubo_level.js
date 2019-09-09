@@ -68,7 +68,10 @@ function init1() {
     //PTボーナス(何段階かあるけど、その違い判る人誰かいます？)
     document.f.b9.options[0] = new Option('無し', 0, 1, 1);
     document.f.b9.options[1] = new Option('有', 1);
-    // document.f.b8.options[2] = new Option('ULT', 2);
+    // document.f.b8.options[2] = new Option('プチ', 0.5);
+    // 
+    document.f.b13.options[0] = new Option('無し', 0, 1, 1);
+    document.f.b13.options[1] = new Option('有', 0.5);
 
     document.f.a47.value = 0;
     document.f.a48.value = 0;
@@ -79,13 +82,6 @@ function init1() {
     document.f.a53.value = 0;
     document.f.a54.value = 0;
     document.f.a55.value = 0;
-    //ギルドスキル
-    // document.f.b10.options[0] = new Option('0', 0, 1, 1);
-    // document.f.b10.options[1] = new Option('1', 0.05);
-    // document.f.b10.options[2] = new Option('2', 0.1);
-    // document.f.b10.options[3] = new Option('3', 0.15);
-    // document.f.b10.options[4] = new Option('4', 0.2);
-    // document.f.b10.options[5] = new Option('5', 0.25);
     //ギルド旗バフ
     document.f.b12.options[0] = new Option('0', 0, 1, 1);
     document.f.b12.options[1] = new Option('1', 0.05);
@@ -541,6 +537,7 @@ function calc3() {
     var b9 = parseInt(document.f.b9.value) ? parseInt(document.f.b9.value) : 0;
     // var b10 = parseInt(document.f.b10.value) ? parseInt(document.f.b10.value) : 0;
     var b12 = parseInt(document.f.b12.value) ? parseInt(document.f.b12.value) : 0;
+    var b13 = parseInt(document.f.b13.value) ? parseInt(document.f.b13.value) : 0;
     // この数の変数をバリデーションかけるのは無理なので各自でバリデーションしてください。
     document.f.r41.value = "";
     document.f.r44.value = "";
@@ -576,12 +573,13 @@ function calc3() {
     var guild_buff = 1 + a49 / 100 + b12;
     //スフィアとパワキ、後EXP指もこの辺りかも
     //共通関数より知恵補正計算を召喚
+    //ネカフェ補正も確かここ。
     //TODO これもっと入れ子になってるので直したい
-    a5 = a5 * (1 + b4 + b8 + pt_bonus + a53 / 100 + calcIntOption(a48) / 100);
+    a5 = a5 * (1 + b4 + b8 + + b13 + pt_bonus + a53 / 100 + calcIntOption(a48) / 100);
     //バッジ
     a5 = a5 * (1 + b5);
-    //復帰者(PT50%は8人PTの50%と打ち消し計算かもしれない？ってことで0.5のほう削っておくね。つまりPT人数計算ははどっかいった。)
-    a5 = a5 * (1 + b6);
+    //復帰者
+    // a5 = a5 * (1 + b6);
     // 経験値イベ
     a5 = a5 * a46;
     //経験値バフを召喚
@@ -608,7 +606,9 @@ function calc3() {
     } else if (a52 >= 30) {
         creature_exp3 = 20;
     }
-    a5 = a5 * (1 + (creature_exp1 + creature_exp2 + creature_exp3) / 100);
+    //b6が復帰者(PT50%は8人PTの50%と打ち消し計算かもしれない？ってことで0.5のほう削っておくね。つまりPT人数計算ははどっかいった。)
+    //クリーチャーの経験値補正調べた時、ここ加算じゃね？となったので。
+    a5 = a5 * (1 + b6 + (creature_exp1 + creature_exp2 + creature_exp3) / 100);
     //PT平均レベル差：Excelだともう少し複雑なことできるけど、シミュレータで入力するの苦痛でしかないので平均Lv項目だけ掲載
     var lv_diff = (75 - a54) / 75 > 0.01 ? (75 - a54) / 75 : 0.01;
     a5 = parseInt(a5 * lv_diff);
