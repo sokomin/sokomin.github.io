@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>赤石の民衆　イベント指</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-content mdl-layout__content">
+
+            <!--main-->
+            <a href="../index.html">トップ</a> >> <a href="../item/item.html">アイテム</a><br>
+            <div class="main-background mdl-typography--text-center">
+                <br>
+                <h3>イベント　ユニーク　指</h3>
+                <br>
+
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">10th Anniversaryリング</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1856.png"></td>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- <font color="#ae5dae">取引不可アイテム</font>
+                                <br>-
+                                <font color="#ae5dae">装備数制限(</font>
+                                <font color="#f8f800">1/1</font>
+                                <font color="#ae5dae">)</font><br>
+                                - 全てのスキルレベル <font color="#f8f800">+3</font><br>
+                                - 光ダメージ <font color="#f8f800">1~3000</font><br>
+                                - <font color="#f8f800">3</font>秒間、命中、回避低下<br>
+                                - 火の恩寵 接続時間<font color="#f8f800">+30</font>秒<br>
+                                - 水の恩寵 接続時間<font color="#f8f800">+30</font>秒<br>
+                                - 風の恩寵 接続時間<font color="#f8f800">+30</font>秒<br>
+                                - 大地の恩寵 接続時間<font color="#f8f800">+30</font>秒<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                                -
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                10周年の神秘な記憶を持つ指輪。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00f8f8">&lt;入手方法&gt;</font><br>
+                                <a href="http://members.redsonline.jp/news/news_body.asp?ntc_num=8134">10th～12th
+                                    ワードコレクションイベント</a>などで入手可能
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">10th Birthdayリング</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_1856.png"></td>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- <font color="#ae5dae">取引不可アイテム</font>
+                                <br>-
+                                <font color="#ae5dae">装備数制限(</font>
+                                <font color="#f8f800">1/1</font>
+                                <font color="#ae5dae">)</font><br>
+                                - 座っている時、回復速度が <font color="#f8f800">+100</font>％増加する。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                                -
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                10周年の神秘な記憶を持つ指輪。<br>
+                                <br>
+                                <span class="color-image1">※ 着用すると特殊エフェクト効果が発動します。</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00f8f8">&lt;入手方法&gt;</font><br>
+                                <a href="http://members.redsonline.jp/campaign/10th/">10thイベント</a>などで入手可能
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">13th Anniversaryリング</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_3172.png"></td>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- <font color="#ae5dae">取引不可アイテム</font>
+                                <br>-
+                                <font color="#ae5dae">装備数制限(</font>
+                                <font color="#f8f800">1/1</font>
+                                <font color="#ae5dae">)</font><br>
+                                - 全てのスキルレベル <font color="#f8f800">+3</font><br>
+                                - 敵に与えたダメージの <font color="#f8f800">1</font>％をHP吸収<br>
+                                - 攻撃速度+<font color="#f8f800">5</font>％<br>
+                                - 火の恩寵 接続時間<font color="#f8f800">+30</font>秒<br>
+                                - 水の恩寵 接続時間<font color="#f8f800">+30</font>秒<br>
+                                - 風の恩寵 接続時間<font color="#f8f800">+30</font>秒<br>
+                                - 大地の恩寵 接続時間<font color="#f8f800">+30</font>秒<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                                -
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                13年間の様々な記憶を秘めた強い魔力を持つ神秘的なリング。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00f8f8">&lt;入手方法&gt;</font><br>
+                                <a href="http://members.redsonline.jp/news/news_body.asp?ntc_num=11948">13th
+                                    ワードコレクションイベント</a>などで入手可能
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">永遠の指輪</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_2845.png"></td>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                - <font color="#ae5dae">取引不可アイテム</font>
+                                <br>-
+                                <font color="#ae5dae">装備数制限(</font>
+                                <font color="#f8f800">1/1</font>
+                                <font color="#ae5dae">)</font><br>
+                                - 最大ダメージ <font color="#f8f800">+8</font><br>
+                                - 最小ダメージ <font color="#f8f800">+4</font><br>
+                                - 攻撃速度 <font color="#f8f800">+7</font>％<br>
+                                - 魔法攻撃力を<font color="#f8f800">5</font>％強化させる。<br>
+                                - 最終ダメージ<font color="#f8f800">+5</font>％<br>
+                                - 光ダメージ <font color="#f8f800">1~3000</font><br>
+                                - <font color="#f8f800">3</font>秒間、命中、回避低下<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                                - レベル 1
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                永遠に変わることのない高貴さを秘めている指輪。<br>
+                                指輪を着用すると強力な力が得られ、どんなに卑しい者にも気品が備わる。<br>
+                                <br>
+                                <span class="color-image1">※ 着用すると特殊エフェクト効果が発動します。</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00f8f8">&lt;入手方法&gt;</font><br>
+                                <a href="http://members.redsonline.jp/campaign/14th/">14th ワードコレクションイベント</a>などで入手可能
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">クリーチャー力の指輪</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_2831.png"></td>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                - <font color="#ae5dae">装備数制限(</font>
+                                <font color="#f8f800">1/1</font>
+                                <font color="#ae5dae">)</font><br>
+                                - 装着時、活性化されているクリーチャー経験値 <font color="#f8f800">+1</font><br>
+                                - 攻撃速度 <font color="#f8f800">+5</font>％<br>
+                                - 知恵 <font color="#f8f800">+50</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                                - レベル 1
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                - ネフォンクリーチャーイベントで獲得できる指輪。ネフォ ンクリーチャーの力の源を刺激し、その成長を促進してく れる貴重な指輪だ。<br>
+                                <br>
+                                ※ モンスターを狩った際に時に、活性化状態のクリーチ ャーの経験値が1ずつ増加する。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00f8f8">&lt;入手方法&gt;</font><br>
+                                - <a href="../quest/mq2_reward.html">MQ2報酬</a><br>
+                                <a href="http://members.redsonline.jp/news/news_body.asp?ntc_num=12865">栄光の箱 ドロップイベント</a>などで入手可能
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">14th Anniversaryリング</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="design/image/item/iconItem_3291.png"></td>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                - <font color="#ae5dae">取引不可アイテム</font>
+                                <br>-
+                                <font color="#ae5dae">装備数制限(</font>
+                                <font color="#f8f800">1/1</font>
+                                <font color="#ae5dae">)</font><br>
+                                - 全てのスキルレベル <font color="#f8f800">+3</font><br>
+                                - 移動速度 <font color="#f8f800">+10</font>％<br>
+                                - 石化攻撃<font color="#f8f800">+10</font>%(<font color="#f8f800">5</font>秒)<br>
+                                - 火の恩寵 接続時間<font color="#f8f800">+30</font>秒<br>
+                                - 水の恩寵 接続時間<font color="#f8f800">+30</font>秒<br>
+                                - 風の恩寵 接続時間<font color="#f8f800">+30</font>秒<br>
+                                - 大地の恩寵 接続時間<font color="#f8f800">+30</font>秒<br>
+                                - 光の恩寵 接続時間<font color="#f8f800">+30</font>秒<br>
+                                - 闇の恩寵 接続時間<font color="#f8f800">+30</font>秒<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                                -
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                                -
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                14年間の様々な記憶を秘めた強い魔力を持つ神秘的なリング。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+                                <font color="#00f8f8">&lt;入手方法&gt;</font><br>
+                                <a href="http://members.redsonline.jp/campaign/14th/">14th ワードコレクションイベント</a>などで入手可能
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        </div>
+</body>
+
+</html>
