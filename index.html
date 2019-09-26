@@ -1,531 +1,80 @@
-<!DOCTYPE html>
-<!--
-  Material Design Lite
-  Copyright 2015 Google Inc. All rights reserved.
-
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-      https://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License
--->
-
-<html lang="en">
-
-<head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=960">
-  <!-- <meta name="viewport" content="width=320, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"> -->
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
-  <link rel="stylesheet" href="styles_top.css" />
-  <link rel="icon" href="design/RedStoneLogo.png" sizes="32x32" />
-  <link rel="icon" href="design/RedStoneLogo.png" sizes="192x192" />
-  <link rel="apple-touch-icon-precomposed" href="design/RedStoneLogo.png" />
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-
-    gtag('config', 'UA-133658114-1');
-  </script>
-  <script type="text/javascript" src="design/jquery-3.4.1.min.js"></script>
-  <script>
-    function enter() {
-      if (window.event.keyCode == 13) {
-        var last_keyword = $('#search-field').val();
-        window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
-      }
-    }
-  </script>
-  <style>
-    #view-source {
-      position: fixed;
-      display: block;
-      right: 0;
-      bottom: 0;
-      margin-right: 40px;
-      margin-bottom: 40px;
-      z-index: 900;
-    }
-  </style>
-</head>
-
-<body>
-  <title>赤石の民衆</title>
-  <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
-  <meta http-equiv="Content-Style-Type" content="text/css" />
-  <meta http-equiv="Content-Script-Type" content="text/javascript" />
-  <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
-  <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
-
-  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-    <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
-      <div class="mdl-layout__header-row">
-        <span class="android-title mdl-layout-title">
-          <a href="https://sokomin.github.io/index.html">
-            <img class="android-logo-image" src="design/logo3.png" />
-          </a>
-        </span>
-        <!-- Add spacer, to align navigation to the right in desktop -->
-        <div class="android-header-spacer mdl-layout-spacer"></div>
-        <div
-          class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
-          <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
-            <i class="material-icons">search</i>
-          </label>
-          <div class="mdl-textfield__expandable-holder">
-            <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text" onkeypress="enter();"
-              id="search-field" />
-          </div>
-        </div>
-        <!-- Navigation -->
-        <div class="android-navigation-container">
-          <nav class="android-navigation mdl-navigation">
-            <a class="mdl-navigation__link mdl-typography--text-uppercase"
-              href="https://sokomin.github.io/index.html">ホーム</a>
-            <a class="mdl-navigation__link mdl-typography--text-uppercase"
-              href="https://sokomin.github.io/calculator.html">計算機</a>
-            <a class="mdl-navigation__link mdl-typography--text-uppercase"
-              href="https://sokomin.github.io/history.html">赤石史</a>
-            <a class="mdl-navigation__link mdl-typography--text-uppercase"
-              href="https://sokomin.github.io/link.html">リンク</a>
-            <a class="mdl-navigation__link mdl-typography--text-uppercase"
-              href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
-          </nav>
-        </div>
-        <span class="android-mobile-title mdl-layout-title">
-          <img class="android-logo-image" src="design/logo3.png" />
-        </span>
-        <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
-          id="more-button">
-          <i class="material-icons">more_vert</i>
-        </button>
-        <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
-          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
-              href="https://sokomin.github.io/calculator.html">計算機</a></li>
-          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
-              href="https://sokomin.github.io/history.html">赤石史</a></li>
-          <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
-              href="https://sokomin.github.io/link.html">リンク</a></li>
-          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
-              href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
-        </ul>
-
-      </div>
-    </div>
-
-    <div class="android-drawer mdl-layout__drawer">
-      <span class="mdl-layout-title">
-        <h3>メニュー</h3>
-      </span>
-      <nav class="mdl-navigation">
-        <a class="mdl-navigation__link sokomin-layout-item" href="item/item.html"><strong>アイテム</strong></a>
-        <a class="mdl-navigation__link sokomin-layout-skill" href="skill/skill.html"><strong>スキル</strong></a>
-        <a class="mdl-navigation__link sokomin-layout-pt" href="monster/monster.html"><strong>モンスター</strong></a>
-        <a class="mdl-navigation__link sokomin-layout-pt" href="secret/secret.html"><strong>秘密ダンジョン</strong></a>
-        <a class="mdl-navigation__link sokomin-layout-quest" href="quest/quest.html"><strong>クエスト</strong></a>
-        <a class="mdl-navigation__link sokomin-layout-guild" href="guild/guild.html"><strong>ギルド</strong></a>
-        <a class="mdl-navigation__link sokomin-layout-friend" href="korea/korea-update.html"><strong>韓国情報</strong></a>
-        <a class="mdl-navigation__link sokomin-layout-info" href="information/information.html"><strong>雑学</strong></a>
-      </nav>
-    </div>
-
-    <!--main-->
-    <div class="android-content mdl-layout__content">
-      <div class="main-background mdl-typography--text-center">
-        <section class="top1">
-          <br>
-          <h3>お知らせ</h3>
-          攻略情報の追加・修正・意見要望などは、<a href="https://marshmallow-qa.com/sokoranominnsyu" target="_blank">マシュマロ</a>よりご報告下さい。<br>
-          <br>
-          バナーは以下のものをお使いください。<br>
-          <IMG SRC="design/banner_by_miruri.png" alt="miruri"><br>
-          画像提供：<a href="https://twitter.com/ilovetamer_0317/">ミルリ</a>様<br>
-          <br>
-          <table id="table6" style="max-width:960px;background-color:peachpuff">
-            <colgroup>
-              <col span="1" width="25%" />
-              <col span="1" width="25%" />
-              <col span="1" width="25%" />
-              <col span="1" width="25%" />
-            <tbody>
-              <tr>
-                <td class="mdl-navigation__link sokomin-layout-item"><a href="item/item.html"><strong>
-                      <font size="3">アイテム</font>
-                    </strong></a></td>
-                <td class="mdl-navigation__link sokomin-layout-skill"><a href="skill/skill.html"><strong>
-                      <font size="3">スキル</font>
-                    </strong></a></td>
-                <td class="mdl-navigation__link sokomin-layout-pt"><a href="monster/monster.html"><strong>
-                      <font size="3">モンスター</font>
-                    </strong></a></td>
-                <td class="mdl-navigation__link sokomin-layout-pt"><a href="secret/secret.html"><strong>
-                      <font size="3">秘密Ｄ・マップ</font>
-                    </strong></a></td>
-              </tr>
-              <tr>
-                <td class="mdl-navigation__link sokomin-layout-quest"><a href="quest/quest.html"><strong>
-                      <font size="3">クエスト</font>
-                    </strong></a></td>
-                <td class="mdl-navigation__link sokomin-layout-guild"><a href="guild/guild.html"><strong>
-                      <font size="3">ギルド</font>
-                    </strong></a></td>
-                <td class="mdl-navigation__link sokomin-layout-friend"><a href="korea/korea-update.html"><strong>
-                      <font size="3">韓国情報</font>
-                    </strong></a></td>
-                <td class="mdl-navigation__link sokomin-layout-info"><a href="information/information.html"><strong>
-                      <font size="3">雑学</font>
-                    </strong></a></td>
-              </tr>
-            </tbody>
-            </colgroup>
-          </table>
-          <br>
-          <h5>人気のページ</h5>
-          <table id="table6" style="max-width:960px;background-color:peachpuff">
-            <colgroup>
-              <col span="1" width="25%" />
-              <col span="1" width="25%" />
-              <col span="1" width="25%" />
-              <col span="1" width="25%" />
-            <tbody>
-              <tr>
-                <td class="mdl-navigation__link">
-                  <a href="item/item-weapon.html"><strong>
-                      <font size="3">アイテム(武器)一覧</font>
-                    </strong></a>
-                  <a href="item/item-800-weapon.html"><strong>
-                      <font size="2">800DXU武器</font>
-                    </strong></a>
-                  <a href="item/item-umu-weapon.html"><strong>
-                      <font size="2">UMU武器</font>
-                    </strong></a>
-                </td>
-                <td class="mdl-navigation__link">
-                  <a href="item/item-protector.html"><strong>
-                      <font size="3">アイテム(防具)一覧</font>
-                    </strong></a>
-                  <a href="item/item-800-protector.html"><strong>
-                      <font size="2">800DXU防具</font>
-                    </strong></a>
-                  <a href="item/item-umu-protector.html"><strong>
-                      <font size="2">UMU防具</font>
-                    </strong></a>
-                </td>
-                <td class="mdl-navigation__link">
-                  <a href="information/creature.html"><strong>
-                      <font size="3">クリーチャー情報</font>
-                    </strong></a>
-                  <a href="information/creature3.html"><strong>
-                      <font size="2">パッシブ一覧</font>
-                    </strong></a>
-                  <a href="calculation/creature-passive-simulator.html"><strong>
-                      <font size="2">パッシブシミュレータ</font>
-                    </strong></a>
-                </td>
-                <td class="mdl-navigation__link">
-                  <a href="skill/2018skill.html"><strong>
-                      <font size="3">2018スキル一覧</font>
-                    </strong></a>
-                </td>
-              </tr>
-              <tr>
-                <td class="mdl-navigation__link">
-                  <a href="skill/trans-skill.html"><strong>
-                      <font size="3">超越スキル</font>
-                    </strong></a>
-                </td>
-                <td>
-                  <a href="item/item-umu-protector.html"><strong>
-                      <font size="3">BFU防具</font>
-                    </strong></a>
-                </td>
-                <td class="mdl-navigation__link">
-                  <a href="secret/mirror-teleporter.html"><strong>
-                      <font size="3">ミラーテレポーター</font>
-                    </strong></a>
-                </td>
-                <td class="mdl-navigation__link">
-                  <a href="information/costume2.html"><strong>
-                      <font size="3">コスチューム一覧</font>
-                    </strong></a>
-                </td>
-
-              </tr>
-            </tbody>
-            </colgroup>
-          </table>
-        </section>
-        <section class="top2">
-          <h4>更新履歴</h4>
-          <table id="table2">
-            <colgroup>
-              <col span="1" width="20%" />
-              <col span="1" width="80%" />
-            </colgroup>
-            <tbody>
-                <tr>
-                    <td valign="top">2019/09/26</td>
-                    <td valign="top">
-                      <a href="https://sokomin.github.io/korea/koreaupdate20190925.html">韓国2019/9/25アプデ</a> 情報追加<br>
-                    </td>
-                  </tr>
-                  <tr>
-                <td valign="top">2019/09/25</td>
-                <td valign="top">
-                  <a href="https://sokomin.github.io/korea/korea-update-fix.html">韓国不具合修正・仕様変更 情報まとめぺージ</a> 追加<br>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">2019/09/10</td>
-                <td valign="top">
-                  <a href="https://sokomin.github.io/item/item-protector.html">イベントで入手可能な防具</a> 追加<br>
-                </td>
-              </tr>
-
-              <tr>
-                <td valign="top">2019/09/08</td>
-                <td valign="top">
-                  <a href="https://sokomin.github.io/calculation/tubo_calc.html">壺PTシミュレータ</a> 追加<br>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">2019/08/22</td>
-                <td valign="top">
-                  <a href="https://sokomin.github.io/calculation/returner_calc.html">転生経験値計算機</a>、
-                  <a href="https://sokomin.github.io/calculation/next-exp-hint.html">レベル間で必要になる経験値計算機</a>追加<br>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">2019/08/14</td>
-                <td valign="top">
-                  <a
-                    href="https://sokomin.github.io/skill/champion_n_skill20190626.html">闘士(2019/6/26)覚醒スキル一覧</a>情報追加<br>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">2019/08/12</td>
-                <td valign="top">
-                  <a
-                    href="https://sokomin.github.io/skill/champion_n_skill20190626.html">闘士(2019/6/26)通常スキル一覧</a>情報追加<br>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">2019/08/09</td>
-                <td valign="top">
-                  WIZスキル改変情報反映<br>
-                  <a href="https://sokomin.github.io/skill/wiz_n_skill20190626.html">通常(2019/6/26)</a> / <a
-                    href="https://sokomin.github.io/skill/wiz_awake_skill20190626.html">覚醒(2019/6/26)</a> <br>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">2019/08/07</td>
-                <td valign="top">
-                  <a href="https://sokomin.github.io/secret/mirror-teleporter.html#ptboss-list">PTボス</a>　ステータス詳細追記<br>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">2019/07/29</td>
-                <td valign="top">
-                  <a href="https://sokomin.github.io/korea/koreaupdate20190729.html">韓国7/29アプデ</a><br>
-                  メイドスキル改変・マスケアルケミ覚醒情報追加<br>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">2019/07/24</td>
-                <td valign="top">
-                  <a href="https://sokomin.github.io/information/bfoption.html">ブラックファイヤー装備強化システム</a> 情報追加<br>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">2019/07/18</td>
-                <td valign="top">
-                  <a href="https://sokomin.github.io/information/tubo.html">壺システム</a> 一般壺/上級壺の情報追加<br>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">2019/07/17</td>
-                <td valign="top">
-                  <a href="https://sokomin.github.io/information/incusedring.html">クロネの指輪</a> 使い方含めて情報追加<br>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">2019/07/10</td>
-                <td valign="top">
-                  <a href="https://sokomin.github.io/secret/secretdgn651-680.html">モリ6秘密</a>、<a
-                    href="https://sokomin.github.io/secret/secretdgn681-710.html">時森秘密</a>情報追加<br>
-                </td>
-              </tr>
-
-              <tr>
-                <td valign="top">2019/07/09</td>
-                <td valign="top">
-                  <a href="https://sokomin.github.io/item/item-custom-set-scroll.html">魔力注入システム</a>解説を追加＋
-                  アプデ対応<br>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">2019/07/03</td>
-                <td valign="top">
-                  <a href="https://sokomin.github.io/information/creature-picture-book.html">図鑑に登録可能なクリーチャー情報</a>追加<br>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">2019/07/02</td>
-                <td valign="top">
-                  <a href="https://sokomin.github.io/information/creature-exptable.html">クリーチャー経験値テーブル</a>追加<br>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">2019/07/01</td>
-                <td valign="top">
-                  <a href="https://sokomin.github.io/information/creature.html">クリーチャー情報</a>改修<br>
-                  <a href="information/creature.html#3">合成</a> / <a href="information/creature.html#4">強化</a> / <a
-                    href="information/creature3.html#9">転送</a> / <a href="information/creature3.html#10">覚醒</a> / <a
-                    href="information/creature.html#11">パッシブ変換</a>など。<br>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">2019/06/29</td>
-                <td valign="top">
-                  <a
-                    href="https://sokomin.github.io/information/creature3.html#option">クリーチャーパッシブ一覧</a>　覚醒スキル含めて全て追加。<br>
-                  シミュレータも対応させときました。情報提供ありがとうございました！！
-                  <br>
-                </td>
-              </tr>
-
-              <tr>
-                <td valign="top">2019/06/26</td>
-                <td valign="top">
-                  <a href="https://sokomin.github.io/calculation/creature-passive-simulator.html">クリーチャーパッシブシミュレータ</a>
-                  <br>
-                  クリーチャー覚醒対応用フォーム追加。パッシブ加筆・修正。<br>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">2019/06/25</td>
-                <td valign="top">
-                  <a href="https://sokomin.github.io/secret/secretdgn700-1000.html">放棄された地下監獄</a>、<a
-                    href="https://sokomin.github.io/secret/secretdgn900-975.html">逃亡者たちの山</a>、<a
-                    href="https://sokomin.github.io/secret/secretdgn950-1000.html">崩壊した地下遺跡</a>(秘密ダンジョン)追加<br>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">2019/06/17</td>
-                <td valign="top">
-                  <a
-                    href="https://sokomin.github.io/calculation/creature-passive-simulator.html">クリーチャーパッシブシミュレータ</a>追加<br>
-                  ※逆引き機能もつけました。　(効果詳細部分情報募集中！)<br>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">2019/06/16</td>
-                <td valign="top">
-                  <a href="https://sokomin.github.io/calculation/calculation-tame.html">ペットテイム関連計算機</a>追加<br>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">2019/06/15</td>
-                <td valign="top">
-                  <a href="https://sokomin.github.io/monster/setboss-list.html">セットアイテムボス出現位置一覧</a> 全マップ情報追加<br>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">2019/06/13</td>
-                <td valign="top">
-                  <a href="https://sokomin.github.io/secret/mirror-teleporter.html#ptboss-list">PTボス出現位置一覧</a>全マップ対応<br>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">2019/06/12</td>
-                <td valign="top">
-                  <a
-                    href="https://sokomin.github.io/secret/mirror-teleporter.html#ptboss-list">PTボス出現位置一覧</a>400レベル辺りまで追加<br>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">2019/06/07</td>
-                <td valign="top">
-                  <a href="https://sokomin.github.io/skill/callingslv.html">マップ間のコルに必要なスキルレベル一覧</a>追加<br>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">2019/06/06</td>
-                <td valign="top">
-                  <a href="https://sokomin.github.io/item/item-u-musket.html">マスケッティアU武器一覧</a>追加<br>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">2019/06/05</td>
-                <td valign="top">
-                  <a href="https://sokomin.github.io/skill/beasttamer_awake_skill2018.html">ビーストテイマー 覚醒スキル一覧</a>情報追加<br>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">2019/06/03</td>
-                <td valign="top">
-                  <a href="https://sokomin.github.io/skill/beasttamer_n_skill2018.html">ビーストテイマー 通常スキル一覧</a>情報追加<br>
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">2019/06/02</td>
-                <td valign="top">
-                  <a href="https://sokomin.github.io/item/item-u-stone.html">アルケミ武器</a>、<a
-                    href="https://sokomin.github.io/item/item-u-catalyststone.html">アルケミ補助武器</a>一覧ひとまず追加<br>
-                  <!-- Nxが欠けてたり、色々足りないけど継ぎ足し中… -->
-                </td>
-              </tr>
-              <tr>
-                <td valign="top">2019/06/01</td>
-                <td valign="top">
-                  <a href="https://sokomin.github.io/item/item-800-weapon.html">800DXU武器一覧</a>作成<br>
-                  （情報提供ありがとうございました！）
-                </td>
-              </tr>
-              <tr>
-                <td valign="top"></td>
-                <td valign="top"><br>
-                  <a href="sokomin_history.html">過去の更新履歴</a></td>
-              </tr>
-            </tbody>
-          </table>
-
-
-        </section>
-        <br>
-        <br>
-        公式サイトはこちら。<br>
-        <a href="http://members.redsonline.jp/"><IMG SRC="design/redfan_150_50.gif"><br></a>
-        <br>
-        <br>
-        <br>
-        <!--main-->
-        <footer class="android-footer mdl-mega-footer">
-          <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
-            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
-          </font>
-          Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
-        </footer>
-        <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
-          Copyright (c) This site is created by Sokomin. All Rights Reserved.
-     -->
-      </div>
-
-      <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-    </div>
-</body>
-
-</html>
+<table id="table10" style="max-width:640px" >
+    <tbody>
+    <tr >
+    <th >
+    <b>区分</b></th>
+    <th >
+    <b>強化時N</b></th>
+    <th >
+    <b>強化時R</b></th>
+    <th >
+    <b>強化時HR</b></th>
+    <th >
+    <b>強化時SR</b></th>
+    <th >
+    <b>強化時LR</b></th></tr>
+    <tr >
+    <th >
+    ベースがN</th>
+    <td >
+    5</td>
+    <td >
+    10</td>
+    <td >
+    20</td>
+    <td >
+    50</td>
+    <td >
+    150</td></tr>
+    <tr >
+    <th >
+    ベースがR</th>
+    <td >
+    - </td>
+    <td >
+    10</td>
+    <td >
+    25</td>
+    <td >
+    90</td>
+    <td >
+    270</td></tr>
+    <tr >
+    <th >
+    ベースがHR</th>
+    <td >
+    - </td>
+    <td >
+    - </td>
+    <td >
+    25</td>
+    <td >
+    100</td>
+    <td >
+    300</td></tr>
+    <tr >
+    <th >
+    ベースがSR</th>
+    <td >
+    - </td>
+    <td >
+    - </td>
+    <td >
+    - </td>
+    <td >
+    500</td>
+    <td >
+    1500</td></tr>
+    <tr >
+    <th >
+    ベースがLR</th>
+    <td >
+    - </td>
+    <td >
+    - </td>
+    <td >
+    - </td>
+    <td >
+    - </td>
+    <td >
+    5000</td></tr></tbody></table>
