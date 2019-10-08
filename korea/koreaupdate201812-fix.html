@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <div class="korea-content main-background">
+                <br>
+                <h3>韓国 2018/11～12 変更・修正</h3>
+                <h5>
+                    <font color="#ff0000"><strong>[重要！] 韓国公式の情報を基にしています。<br>
+                            誤訳や韓国独自仕様の可能性もありますので、予めご了承下さい。</strong></font><br>
+                </h5>
+                <br>
+                <a href="#3">2018/11/28</a><br>
+                <a href="#3">2018/12/05</a><br>
+                <a href="#4">2018/12/19</a><br>
+                <a href="#5">2018/12/26</a><br>
+                <br>
+                <br>
+                <a name="2"></a>
+                <font color="#e95388">
+                    <h4>2018/11/28</h4>
+                </font>
+                修正
+                <br>
+
+
+                <br>
+
+                - 武道家専用武器の耐久度の数値を増加
+                <br>
+
+
+                <br>
+
+                - 武道家覚醒時のスキルダメージが現象するバグを修正
+                <br>
+
+
+                <br>
+
+                - 武道家スキル「急所攻撃」の説明を修正
+                <br>
+
+
+                <br>
+
+                - 武道家パッシブ「煙幕」時移動速度増加効果と素早い足取りのバッジ効果が重複する現象を修正
+                <br>
+
+
+                <br>
+
+                - 武道家「ダイヤモンドアームズ」覚醒のパッシブスキル「闘魂」がシーフの「スローイングダガー」、「ポイゾネスダガー」、「ダブルターゲット」に適用された現象を修正
+                <br>
+
+
+                <br>
+
+                - フィールド移動時のクールタイムがあるスキルが初期化されているバグを修正
+                <br>
+
+
+                <br>
+
+                - 武道家スキル「爆裂回し蹴り」ツールチップの修正
+                <br>
+
+
+                <br>
+
+                - 武道家「煙幕」スキル、移動速度増加、ツールチップの最大値を適用されなかった現象を修正
+                <br>
+
+
+                <br>
+
+                -アーチャースキル「テイルチェイサー」ダメージが正常に適用されない（PVE、PVP）現象を修正
+                <br>
+
+
+                <br>
+
+                - 一部のキャラクターのゲーム内の接続不可現象を修正
+                <br>
+
+
+                <br>
+
+                - クエスト「つながる心」の受諾可能レベルが正しくない症状を修正。
+                <br>
+
+
+                <br>
+
+                - 武道家スキル「絶招」を使用した後シーフ変身時に「絶招」の効果と協会支援が消える現象を修正
+                <br>
+
+
+                <br>
+
+                - 戦闘状況終了直後のフィールド移動時の移動不可現象を修正<br>
+
+                <br>
+                <br>
+                <a name="3"></a>
+                <font color="#e95388">
+                    <h4>2018/12/05</h4>
+                </font>
+                修正
+                <br>
+
+
+                <br>
+
+
+                <br>
+
+                -練金石、触媒石、格闘武器の耐久度が急速に減少する問題を修正
+                <br>
+
+
+                <br>
+
+                - 武道家クリティカルスキルでモンスター討伐時、クエストモンスター討伐した判定にならなかった問題を修正
+                <br>
+
+
+                <br>
+
+                - ユーザのスキルクイックスロットや友人の関連データの安定化
+                <br>
+
+
+                <br>
+
+                - エリアボスの戦利品ボックス[一般]で獲得可能な「オプションお守りボックス」が取引可能であった問題を修正<br>
+
+                <br>
+                <br>
+                <a name="4"></a>
+                <font color="#e95388">
+                    <h4>2018/12/19</h4>
+                </font>
+                修正
+                <br>
+
+
+                <br>
+
+                - [協会]消滅の魔法書 / ポータルスフィア[7日]を銀行取引不可になるよう変更
+                <br>
+
+
+                <br>
+
+                - 紛失した冒険団ボックスを取引不可能変更
+                <br>
+
+
+                <br>
+
+                -ミニペット「召喚解除」の表記名を「別れる」に変更（別れる時、ミニペットが消滅します。）
+                <br>
+
+
+                <br>
+
+                -転生時調教ペットのレベルダウン機能を削除します。
+                <br>
+
+
+                ：飼育の記録を使用する場合は、その飼育記録書を作成するときのプレイヤーのレベルよりも現在のプレーヤーのレベルが低く、<br>
+                飼育記録書のペットのレベルよりもプレイヤーのレベルが低い場合は、飼育記録書のペットのレベルがプレイヤーと同じになるよう調整しました。<br>
+                <br>
+
+
+                <br>
+
+                -古都ブルンネンシュティグの一部の地域に移動不可な現象を修正
+                <br>
+
+
+                <br>
+
+                -特定の状況でスキルクイックスロットが初期化される現象を修正
+                <br>
+
+
+                <br>
+
+                -ミッションブクアイコンをクリック時にエラーが発生する現象を修正
+                <br>
+
+
+                <br>
+
+                -悪魔「ブラッディクロス」をPT狩り時に吸血効果が発動しない現象を修正
+                <br>
+
+
+                <br>
+
+                -転生完了後転生者称号だけ受けて初期化/転生表示がされない現象を修正
+                <br>
+
+
+                <br>
+
+                -ギルドバフ（80分）のうち、10分経過した後に効果が適用されなくなる現象を修正
+                <br>
+
+
+                <br>
+
+                -獣人のスキル「スパイラルホーン」、「ヘリカルホーン」スキルの攻撃時、ターゲットの体力に比例した追加ダメージ効果がモンスターのダメージ補正に影響を受けない現象を修正
+                <br>
+
+
+                <br>
+
+                -武道家スキル使用時、ダブルクリティカル発生率が非常に高くなる現象を修正
+                <br>
+
+
+                <br>
+
+                -エリアボス挑戦時に討伐時の残り時間を表示するように修正
+                <br>
+
+
+                <br>
+
+                -悪魔「ブラッディクロス」の回復効果が異常に高い点を修正
+                <br>
+
+
+                <br>
+
+                -悪魔「ブラッディクロス」回復効果の数値表示がない点を修正<br>
+                <br>
+                <br>
+                <b>イベントのご案内</b>
+                <br>
+
+
+                <br>
+
+                -ボスラング撮り一枚？（12/19〜1/9）
+                <br>
+
+
+                <br>
+
+                -クリスマス出席チェックイベント（12/19〜1/2）
+                <br>
+
+
+                <br>
+
+
+                <br>
+
+
+                <br>
+
+                <b>限定販売のご案内</b>
+                <br>
+
+
+                <br>
+
+                -キャラクター育成パッケージ限定販売（12/19〜1/2）
+                <br>
+
+
+                <br>
+
+                -無限のスキル/ステータス再分配巻物限定販売（12/19〜1/2）
+                <br>
+
+
+                <br>
+
+                -クリスマスコスチュームパッケージ限定販売（12/19〜1/23）
+                <br>
+
+
+                <br>
+
+                -クリスマスコクーン限定販売（12/19〜1/23）
+                <br>
+
+
+                <br>
+
+                -魔法が込められた鍛冶トング/ハンマー（12/19〜1/2）<br>
+
+
+                <br>
+                <br>
+                <a name="5"></a>
+                <font color="#e95388">
+                    <h4>2018/12/26</h4>
+                </font>
+                - サーバー安定化
+                <br>
+
+
+                <br>
+
+                - スキルポイント異常時のクライアント終了現象を修正
+                <br>
+
+
+                <br>
+
+                - 一部のクリーチャー確定製作において、N等級のクリーチャー製作に問題があった部分を修正<br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/9ccdb79ba6d8a4e510001e6153ad7bd564f99a17.10.2.9.2.jpeg"
+                    border=0 name="insertImg" /><br><br>
+                <br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        </div>
+</body>
+
+</html>
