@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>インフィニティ武器　赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <a href="../index.html">トップ</a> >> <a href="../item/item.html">アイテム</a> >> <a
+                href="../information/infinityweapon.html"></a>インフィニティ武器</a><br>
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+                <h3>インフィニティ武器</h3>
+                <a href="#base">基本システム</a><br>
+                <a href="#1">強化方法</a><br>
+                <a href="#2">関連アイテム</a><br>
+                <a href="#3">インフィニティULTシリーズ</a><br>
+                <a href="#info">雑学</a><br>
+
+                <a name="base"></a>
+                <h4>基本システム</h4>
+
+                「インフィニティ武器」は「古代都市タティリス遺跡」に関するアイテムを使用して各職業に応じた武器を10段階まで強化できます。 <br>
+                <span class="color-image1">古都ブルンネンシュティグ　武器職人サナ（98.53）</span>または、冒険家協会ブルンネンシュティグ本部　武器職人セリー（64.21）にて<br>
+                1段階を<span class="color-image1">神秘の石4個</span>(=神秘の石のかけら400個)で購入可能です。<br>
+                2段階目以降は専用のアイテムなどを使って強化していくことになります。<br>
+                <br>
+                ※「神秘の石」はギルドダンジョン「古代都市タティリス遺跡」にて入手できるアイテムです。<br>
+                ※ インフィニティシリーズは取引可能。協会オプション付与可能。<br>
+                ※　異次元や下級、金エンチャ・増幅再構成などは一部の段階で利用可能。<br>
+                ※　鏡不可。<br>
+                ※ 8段階目、およびIFULT[極]は錬成・および封印解放ができます。<br>
+                <br>
+                <img src="../information/tubo/i168.gif">
+                <img src="../information/tubo/i170.gif"><br>
+                <br>
+                <br>
+                <a name="1"></a>
+                <h4>強化方法</h4>
+                インフィニティ武器と強化のための材料を用意します。<br>
+                <a
+                    href="http://members.redsonline.jp/update/201812_trinity/">2018年12月19日</a>より強化成功確率の大幅上昇、必要素材の軽減が行われています。<br>
+                旧情報は<a href="infinityweapon-old.html">こちら</a><br>
+                現在は1段階から2段階への成功確率は100%です。(「強化」ボタンを押したら必ず進化できます。)<br>
+                <br>
+                <table id="table10">
+                    <colgroup>
+                        <col span="4">
+                        <col span="1" width="40">
+                        <col span="1">
+                        <col span="1" width="40">
+                        <col span="1">
+                        <col span="1" width="40">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th rowspan="2">インフィニティ武器のレベル</th>
+                            <th colspan="2">失敗時のレベル</th>
+                            <th colspan="7">強化材料</th>
+                        </tr>
+                        <tr>
+                            <th>インフィニティガードあり</th>
+                            <th>インフィニティガードなし</th>
+                            <th>ゴールド</th>
+                            <th><img src="../item/design/image/item/iconItem_0533.png">
+                            </th>
+                            <th>
+                                <font color="#ffcc99">神秘の石</font>
+                            </th>
+                            <th><img src="../item/design/image/item/iconItem_0329.png">
+                            </th>
+                            <th>
+                                <font color="#ffcc99">修復済みタティリス遺跡の出土品</font>
+                            </th>
+                            <th><img src="../item/design/image/item/iconItem_1437.png">
+                            </th>
+                            <th>
+                                <font color="#ffcc99">結晶石</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td align="center">1</td>
+                            <td align="center">-</td>
+                            <td align="center">-</td>
+                            <td align="center">10万G</td>
+                            <td colspan="2" align="center" rowspan="3">-</td>
+                            <td colspan="2" align="center" rowspan="3">-</td>
+                            <td colspan="2" align="center" rowspan="3">-</td>
+                        </tr>
+                        <tr>
+                            <td align="center">2</td>
+                            <td align="center">2</td>
+                            <td align="center">1</td>
+                            <td align="center">30万G</td>
+                        </tr>
+                        <tr>
+                            <td align="center">3</td>
+                            <td align="center">3</td>
+                            <td align="center">2</td>
+                            <td align="center">50万G</td>
+                        </tr>
+                        <tr>
+                            <td align="center">4</td>
+                            <td align="center">4</td>
+                            <td align="center">3</td>
+                            <td align="center" rowspan="2">100万G</td>
+                            <td colspan="2" align="center" rowspan="3">1個</td>
+                            <td colspan="2" align="center" rowspan="1">-</td>
+                            <td colspan="2" align="center" rowspan="4">-</td>
+                        </tr>
+                        <tr>
+                            <td align="center">5</td>
+                            <td align="center">5</td>
+                            <td align="center">4</td>
+                            <td colspan="2" align="center" rowspan="2">1個</td>
+                        </tr>
+                        <tr>
+                            <td align="center">6</td>
+                            <td align="center">6</td>
+                            <td align="center">5</td>
+                            <td align="center">200万G</td>
+                        </tr>
+                        <tr>
+                            <td align="center">7</td>
+                            <td align="center">6</td>
+                            <td align="center">1</td>
+                            <td align="center" rowspan="1">300万G</td>
+                            <td colspan="2" align="center" rowspan="3">2個</td>
+                            <td colspan="2" align="center" rowspan="3">2個</td>
+                        </tr>
+                        <tr>
+                            <td align="center">8</td>
+                            <td align="center">7</td>
+                            <td align="center">1</td>
+                            <td align="center" rowspan="1">400万G</td>
+                            <td colspan="2" align="center" rowspan="1">1個</td>
+                        </tr>
+                        <tr>
+                            <td align="center">9</td>
+                            <td align="center">8</td>
+                            <td align="center">1</td>
+                            <td align="center" rowspan="1">500万G</td>
+                            <td colspan="2" align="center" rowspan="1">2個</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                強化依頼時は、以下の画面の通りに進行します。<br>
+                ※<a href="http://service.redsonline.jp/library/190">公式サイト</a>より。<br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/f40160483fd32c05ddda14a728be1e09c7b349fa.10.2.9.2.jpeg"
+                    border=0 name="insertImg" /><br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/020ee6fbfd5989b70dcf3a086350d26afafaa3bf.10.2.9.2.jpeg"
+                    border=0 name="insertImg" /><br><br>
+                <br>
+                ※　<a href="http://mall.redsonline.jp/items/10001">コスミックストーン</a>シリーズや<a
+                    href="http://mall.redsonline.jp/items/1338">コスミック・ポータル・スフィアー</a>シリーズを所持していると、武器強化時の成功確率が上昇します。<br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/bec989731ba8f6137f77324ea2b2dcc5f1b8d775.10.2.9.2.png"
+                    border=0 name="insertImg" /><br><br>
+                [3日版]2個セットや[7日版]2個セットだけでなく、<a
+                    href="http://members.redsonline.jp/news/news_body.asp?curpage=&ntc_num=3726">キャンペーン</a>で[30日版]が販売されることもあります。<br>
+                ※2個セットで販売されている理由は、過去にコスミックストーンを利用しても正常にギルドダンジョンに入場できない現象などが頻発したためです。<br>
+                <br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/d88219ef3486359bf311ba7de21c74f4661b46ca.10.2.9.2.png"
+                    border=0 name="insertImg" /><br><br>
+                [1日～14日]まで様々な種類があります。<br>
+                <br>
+                <br>
+                <br>
+                <a name="2">
+                    <h4>関連アイテム</h4>
+                </a>
+                <h5>各職業のインフィニティ武器</h5>
+
+                各職業のインフィニティシリーズは、ゲーム内からも確認できます。<br>
+                以下に性能一覧を掲載します。<br>
+                <br>
+                <table id="table10" style="width: 560px">
+                    <colgroup>
+                        <col span="1" width="200">
+                        <col span="1" width="40">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th>剣士</th>
+                            <td><a href="../item/item-infinitysword.html"><IMG
+                                        src="../item/design/image/item/iconItem_0982.png"></a>
+                            </td>
+                            <td><a href="../item/item-infinitysword.html">インフィニティソード</a></td>
+                        </tr>
+                        <tr>
+                            <th>戦士</th>
+                            <td><a href="../item/item-infinityblade.html"><IMG
+                                        src="../item/design/image/item/iconItem_0983.png"></a>
+                            </td>
+                            <td><a href="../item/item-infinityblade.html">インフィニティブレード</a></td>
+                        </tr>
+                        <tr>
+                            <th>ランサー</th>
+                            <td><a href="../item/item-infinitylance.html"><IMG
+                                        src="../item/design/image/item/iconItem_0988.png"></a>
+                            </td>
+                            <td><a href="../item/item-infinitylance.html">インフィニティスピア</a></td>
+                        </tr>
+                        <tr>
+                            <th>アーチャー</th>
+                            <td><a href="../item/item-infinitybow.html"><IMG
+                                        src="../item/design/image/item/iconItem_0989.png"></a></td>
+                            <td><a href="../item/item-infinitybow.html">インフィニティボウ</a></td>
+                        </tr>
+                        <tr>
+                            <th>ウィザード</th>
+                            <td><a href="../item/item-infinitywiz.html"><IMG
+                                        src="../item/design/image/item/iconItem_0984.png"></a></td>
+                            <td><a href="../item/item-infinitywiz.html">インフィニティワンド</a></td>
+                        </tr>
+                        <tr>
+                            <th>ウルフマン</th>
+                            <td><a href="../item/item-infinityfang.html"><IMG
+                                        src="../item/design/image/item/iconItem_0985.png"></a>
+                            </td>
+                            <td><a href="../item/item-infinityfang.html">インフィニティファング</a></td>
+                        </tr>
+                        <tr>
+                            <th>ビショップ</th>
+                            <td><a href="../item/item-infinitycrusher.html"><IMG
+                                        src="../item/design/image/item/iconItem_0986.png"></a>
+                            </td>
+                            <td><a href="../item/item-infinitycrusher.html">インフィニティクラッシャー</a></td>
+                        </tr>
+                        <tr>
+                            <th>追放天使</th>
+                            <td><a href="../item/item-infinitywing.html"><IMG
+                                        src="../item/design/image/item/iconItem_0987.png"></a>
+                            </td>
+                            <td><a href="../item/item-infinitywing.html">インフィニティウィング</a></td>
+                        </tr>
+                        <tr>
+                            <th>ビーストテイマー</th>
+                            <td><a href="../item/item-infinityflute.html"><IMG
+                                        src="../item/design/image/item/iconItem_0990.png"></a>
+                            </td>
+                            <td><a href="../item/item-infinityflute.html">インフィニティフルート</a></td>
+                        </tr>
+                        <tr>
+                            <th>サマナー</th>
+                            <td><a href="../item/item-infinityflute.html"><IMG
+                                        src="../item/design/image/item/iconItem_0990.png"></a>
+                            </td>
+                            <td><a href="../item/item-infinityflute.html">インフィニティフルート</a></td>
+                        </tr>
+                        <tr>
+                            <th>シーフ</th>
+                            <td><a href="../item/item-infinitydagger.html"><IMG
+                                        src="../item/design/image/item/iconItem_0991.png"></a>
+                            </td>
+                            <td><a href="../item/item-infinitydagger.html">インフィニティダガー</a></td>
+                        </tr>
+                        <tr>
+                            <th>武道家</th>
+                            <td><a href="../item/item-infinityglove.html"><IMG
+                                        src="../item/design/image/item/iconItem_1497.png"></a>
+                            </td>
+                            <td><a href="../item/item-infinityglove.html">インフィニティグローブ</a></td>
+                        </tr>
+                        <tr>
+                            <th>プリンセス</th>
+                            <td><a href="../item/item-infinitysling.html"><IMG
+                                        src="../item/design/image/item/iconItem_0992.png"></a>
+                            </td>
+                            <td><a href="../item/item-infinitysling.html">インフィニティスリング</a></td>
+                        </tr>
+                        <tr>
+                            <th>リトルウィッチ</th>
+                            <td><a href="../item/item-infinityrod.html"><IMG
+                                        src="../item/design/image/item/iconItem_0993.png"></a></td>
+                            <td><a href="../item/item-infinityrod.html">インフィニティロッド</a></td>
+                        </tr>
+                        <tr>
+                            <th>ネクロマンサー</th>
+                            <td><a href="../item/item-infinitywhip.html"><IMG
+                                        src="../item/design/image/item/iconItem_0994.png"></a>
+                            </td>
+                            <td><a href="../item/item-infinitywhip.html">インフィニティウィップ</a></td>
+                        </tr>
+                        <tr>
+                            <th>悪魔</th>
+                            <td><a href="../item/item-infinitytail.html"><IMG
+                                        src="../item/design/image/item/iconItem_0994.png"></a>
+                            </td>
+                            <td><a href="../item/item-infinitytail.html">インフィニティテイル</a></td>
+                        </tr>
+                        <tr>
+                            <th>霊術師</th>
+                            <td><a href="../item/item-infinityscythe.html"><IMG
+                                        src="../item/design/image/item/iconItem_1819.png"></a>
+                            </td>
+                            <td><a href="../item/item-infinityscythe.html">インフィニティサイズ</a></td>
+                        </tr>
+                        <tr>
+                            <th>闘士</th>
+                            <td><a href="../item/item-infinityclaw.html"><IMG
+                                        src="../item/design/image/item/iconItem_1670.png"></a>
+                            </td>
+                            <td><a href="../item/item-infinityclaw.html">インフィニティクロー</a></td>
+                        </tr>
+                        <tr>
+                            <th>光奏師(魔法特化)</th>
+                            <td><a href="../item/item-infinitybible.html"><IMG
+                                        src="../item/design/image/item/iconItem_1959.png"></a>
+                            </td>
+                            <td><a href="../item/item-infinitybible.html">インフィニティバイブル</a></td>
+                        </tr>
+                        <tr>
+                            <th>光奏師(物理特化)</th>
+                            <td><a href="../item/item-infinitycode.html"><IMG
+                                        src="../item/design/image/item/iconItem_1960.png"></a>
+                            </td>
+                            <td><a href="../item/item-infinitycode.html">インフィニティコード</a></td>
+                        </tr>
+                        <tr>
+                            <th>獣人</th>
+                            <td><a href="../item/item-infinitytwinsaber.html"><IMG
+                                        src="../item/design/image/item/iconItem_2097.png"></a></td>
+                            <td><a href="../item/item-infinitytwinsaber.html">インフィニティツインサーベル</a></td>
+                        </tr>
+                        <tr>
+                            <th>メイド</th>
+                            <td><a href="../item/item-infinitybroom.html"><IMG
+                                        src="../item/design/image/item/iconItem_2011.png"></a>
+                            </td>
+                            <td><a href="../item/item-infinitybroom.html">インフィニティブルーム</a></td>
+                        </tr>
+                        <tr>
+                            <th>黒魔術師</th>
+                            <td><a href="../item/item-infinitydarkcore.html"><img
+                                        src="../item/design/image/item/iconItem_2227.png"></a>
+                            </td>
+                            <td><a href="../item/item-infinitydarkcore.html">インフィニティダークコア</a></td>
+                        </tr>
+                        <tr>
+                            <th>マスケッティア</th>
+                            <td><a href="../item/item-infinitymusket.html"><img
+                                        src="../item/design/image/item/iconItem_2740.png"></a>
+                            </td>
+                            <td><a href="../item/item-infinitymusket.html">インフィニティマスケット</a></td>
+                        </tr>
+                        <tr>
+                            <th>アルケミスト</th>
+                            <td><a href="../item/item-infinitystone.html"><img
+                                        src="../item/design/image/item/iconItem_3090.png"></a>
+                            </td>
+                            <td><a href="../item/item-infinitystone.html">インフィニティストーン</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <h5>強化関連</h5>
+                インフィニティガード<br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/fdb41bfd1d7224f0b631d83b25eac01d1d27c3f2.10.2.9.2.png"
+                    border=0 name="insertImg" /><br>
+                6段階以上の強化失敗時に、1段階に戻ってしまう影響を防止するのに便利です。<br>
+                <br>
+                インフィニティアップ<br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/341e35ceb6c4ad0eae7ad027b13e4b739ed51783.10.2.9.2.png"
+                    border=0 name="insertImg" /><br>
+                強化の成功確率を上昇させます。武器職人サナより1000万Gで購入できます。<br>
+                <br>
+                インフィニティアップDX<br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/18317be30c2a3a20726f9e9c7af78b01c580d1f5.10.2.9.2.png"
+                    border=0 name="insertImg" /><br>
+                強化の成功確率をインフィニティアップの2倍上昇させます。ロトボックスやキャンペーン・イベントなどから入手可能。<br>
+                <br>
+                インフィニティアップULT<br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/d83553a300dd1cd3f344a00405154da9edbe34bb.10.2.9.2.png"
+                    border=0 name="insertImg" /><br>
+                強化の成功確率をインフィニティアップの？倍上昇させます。プレミアムロトボックスなどから入手可能。<br>
+                <br>
+                <br>
+                <br>
+                <a name="3"></a>
+                <h3>インフィニティULTシリーズ</h3>
+                IF10を更に強化してインフィニティULT装備にできる武器強化システムです。<br>
+                <br>
+                <a name="3-1"></a>
+                <br>
+                <table id="table10">
+                    <colgroup>
+                        <col width="40" span="1">
+                        <col span="1" width="130">
+
+                    </colgroup>
+                    <colgroup>
+
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="2">強化関連アイテム</th>
+                            <th>入手方法</th>
+                        </tr>
+                        <tr>
+                            <td align="center"><img src="../item/design/image/item/iconItem_3170.png" border="0"></td>
+                            <th align="center">
+                                <font color="#f8f800">謎の錬成日誌</font>
+                            </th>
+                            <td>キャラクターLv-100以上のモンスターを討伐時、稀にドロップ<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><img src="../item/design/image/item/iconItem_3169.png" border="0"></td>
+                            <th align="center">
+                                <font color="#f8f800">ユニーク錬成秘法書</font>
+                            </th>
+                            <td>
+                                <font style="color:#ff0000">- 取引不可アイテム</font><br>
+                                インフィニティULT強化に必要なユニークレシピ。<br>
+                                謎の錬成日誌を入手して、古都ブルンネンシュティグ 武器職人サナ（98.53）または冒険家協会ブルンネンシュティグ本部
+                                武器職人セリー（64.21）に話すと、クエスト「武器職人の恩返し」を受諾、クエスト報酬として獲得できる。
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                ※「武器職人の恩返し」クエストで魔力インク2000個とLv-50のモンスター300匹の討伐が必要になります。<br>
+                <br>
+                ユニーク錬成秘法書を使用してIF10やIF10[Nx]を強化するには、同種の武器のDXユニーク1個とユニーク1個が必要です。<br>
+                <br> 例) インフィニティソード‘勇気’(IF10)を強化するには、DXユニーク片手剣とユニーク片手剣も使います。<br>
+                <br>
+                <img src="../option/if-ult-info/uniqe_03.jpg">
+                <br clear="left">
+                IF10[Nx]を強化してもインフィニティULT[Nx]にはならず、インフィニティULTになります。<br>
+                強化に失敗すると、IF10は保持されますが、DXユニークとユニークアイテムは消滅します。<br>
+                成功しても失敗しても、すべてのオプション・ブラックファイヤー装備強化オプションが削除されます。<br>
+                <br>
+                ユニークレシピを使用して強化すると、3タイプいずれかのインフィニティULTになります。<br>
+                武器ダメージとオプション数値の両方強化されたインフィニティULTのみ錬成可能です。<br>
+                <font style="color:#FF0033;">両方強化されたインフィニティULTのみ、「異次元ボックス」「金のエンチャント文書」を使用可能。</font><br>
+                「金色の魔力増幅魔法書」、「金色の再構成魔法書」は使用不可。（※金増幅・金再構成については韓国情報のため、要検証）<br>
+                鏡の魔法書は使用不可。<br>
+                <br>
+                [参考] <a
+                    href="http://members.redsonline.jp/news/maintenance_body.asp?curpage=1&ntc_num=11952">2018/2/21(水)14:00
+                    定期メンテナンス終了
+                    ver0.0686アップデート適用のお知らせ</a></br>
+                <br>
+                <table id="table10" style="max-width:760px">
+                    <colgroup>
+                        <col width="40" span="1">
+                        <col width="600" span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="2">インフィニティULTの種類</th>
+                        </tr>
+                        <tr>
+                            <td align="center"><img src="../item/design/image/item/iconItem_3112.png" border="0"></td>
+                            <td align="center">武器ダメージが約30％増加したインフィニティULT</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><img src="../item/design/image/item/iconItem_3113.png" border="0"></td>
+                            <td align="center">オプション数値が約30％増加したインフィニティULT</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><img src="../item/design/image/item/iconItem_3111.png" border="0"></td>
+                            <td align="center">武器ダメージとオプション数値の両方が約24％増加したインフィニティULT</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+
+                <a name="3-2"></a>
+                <h5>IFULTの一例</h5>
+                <img src="../option/if-ult-info/sample-ifult.png"><br>
+                2018.12アプデで協会OPなども付与できるようになりました。<br>
+                ULT装備扱いのため、装備要求Lv計算はULT装備計算で行われます。<br>
+                <br>
+                <a name="3-3"></a>
+                <h4>インフィニティULT一覧</h4>
+                <a href="../option/if-ult-info.html#3">こちら</a>より閲覧できます。<br>
+                <br>
+                <br>
+
+                <a name="info"></a>
+                <h4>雑学</h4>
+                <br>
+                <br>
+                <br>
+                <br>
+                [参考] <a href="http://service.redsonline.jp/library/190">公式サイト</a><br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+        </div>
+</body>
+
+</html>
