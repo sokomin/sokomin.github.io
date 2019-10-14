@@ -1,0 +1,3766 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=960">
+  <!-- Page styles -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+  <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-133658114-1');
+  </script>
+  <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+  <script>
+    function enter() {
+      if (window.event.keyCode == 13) {
+        var last_keyword = $('#search-field').val();
+        window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+      }
+    }
+  </script>
+
+  <style>
+    #view-source {
+      position: fixed;
+      display: block;
+      right: 0;
+      bottom: 0;
+      margin-right: 40px;
+      margin-bottom: 40px;
+      z-index: 900;
+    }
+  </style>
+</head>
+
+<body>
+  <title>赤石の民衆</title>
+  <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <a name="container"></a>
+    <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+      <div class="mdl-layout__header-row">
+        <span class="android-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <!-- Add spacer, to align navigation to the right in desktop -->
+        <div class="android-header-spacer mdl-layout-spacer"></div>
+        <div
+          class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text" onkeypress="enter();"
+              id="search-field" />
+          </div>
+        </div>
+        <!-- Navigation -->
+        <div class="android-navigation-container">
+          <nav class="android-navigation mdl-navigation">
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/index.html">ホーム</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/calculator.html">計算機</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/history.html">赤石史</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/link.html">リンク</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+          </nav>
+        </div>
+        <span class="android-mobile-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+          id="more-button">
+          <i class="material-icons">more_vert</i>
+        </button>
+        <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/calculator.html">計算機</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/history.html">赤石史</a></li>
+          <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/link.html">リンク</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+        </ul>
+
+      </div>
+    </div>
+
+    <div class="android-drawer mdl-layout__drawer">
+      <span class="mdl-layout-title">
+        <h3>メニュー</h3>
+      </span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html"><strong>モンスター</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html"><strong>クエスト</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-friend"
+          href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-info"
+          href="../information/information.html"><strong>雑学</strong></a>
+      </nav>
+    </div>
+
+
+    <div class="android-large-table mdl-layout__content">
+
+      <!--main-->
+      <a href="../index.html">トップ</a> >> <a href="../quest/quest.html">クエスト</a> >> <a
+        href="../quest/normalquest_list.html">一般クエスト</a><br>
+      <div class="main-background mdl-typography--text-center korea-content">
+        <br>
+        <h3>一般クエスト　Lv600～699</h3>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="1"></a><span color="#00ff00">ガネスト家のプライド</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">ベルン・ガネスト</span>から<span
+                  class="color-image14">ブレイザーの結晶体カバン</span>を預かった。モリネルタワー　地上５階にいるブレイザーを退治して、<span
+                  class="color-image14">ブレイザーの結晶体カバン</span>に結晶体を入れよう。<br>
+                <br>
+                <span class="color-image4">ベルン・ガネスト</span>に渡された<span
+                  class="color-image14">ブレイザーの結晶体カバン</span>に、必要な分の結晶体をすべて入れた。モリネルタワー　地上２階で待っている<span
+                  class="color-image4">ベルン・ガネスト</span>に<span class="color-image14">ブレイザーの結晶体カバン</span>を持って行こう。<br>
+                <br>
+                <span class="color-image4">ベルン・ガネスト</span>から<span
+                  class="color-image14">ボーンキメラの骨カバン</span>を預かった。モリネルタワー　地上６階にいるボーンキメラを退治して、<span
+                  class="color-image14">ボーンキメラの骨カバン</span>に骨を入れよう。<br>
+                <br>
+                <span class="color-image4">ベルン・ガネスト</span>に渡された<span
+                  class="color-image14">ボーンキメラの骨カバン</span>に、必要な分の骨をすべて入れた。モリネルタワー　地上２階で待っている<span
+                  class="color-image4">ベルン・ガネスト</span>に<span class="color-image14">ボーンキメラの骨カバン</span>を持って行こう。<br>
+                <br>
+                <span class="color-image4">ベルン・ガネスト</span>に預かった<span
+                  class="color-image14">伝染病ワクチン</span>を荒廃都市ダメルで待っている<span
+                  class="color-image4">リベルゲート</span>のところに持って行こう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">モリネルタワー　地上２階　ベルン・ガネスト（78.166）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv620</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">経験値560万</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">モリネルタワー　地上５階</span></td>
+              <td><span class="color-image1">ブレイザー</span>（Lv630)Zinを20匹倒す</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">モリネルタワー　地上２階</span></td>
+              <td><span class="color-image4">ベルン・ガネスト</span>へ</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">モリネルタワー　地上６階</span></td>
+              <td><span class="color-image1">ボーンキメラ</span>（Lv650)Zinを10匹倒す</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">モリネルタワー　地上２階</span></td>
+              <td><span class="color-image4">ベルン・ガネスト</span>へ</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">荒廃都市ダメル</span></td>
+              <td><span class="color-image4">リベルゲート</span>（36.31）へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="2"></a><span color="#00ff00">価値ある犠牲</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>モリネルタワー　地上６階にいるモンスターの中で、レオンの分身を除いたモンスターを退治して、<span
+                  class="color-image4">魔法師レオン</span>の精神力を回復させよう。強いモンスターを退治するほど、レオンの精神力が大幅に回復する。<br>
+                <br>
+                <span class="color-image4">魔法師レオン</span>の精神力が大幅に回復した。さらに、敵を退治して<span
+                  class="color-image4">魔法師レオン</span>の精神力を回復させよう。<br>
+                <br>
+                <span class="color-image4">魔法師レオン</span>の精神力が少し回復した。もう少し敵を退治して<span
+                  class="color-image4">魔法師レオン</span>の精神力をすべて回復させよう。<br>
+                <br>
+                <span class="color-image4">魔法師レオン</span>の精神力がすべて回復した。<span
+                  class="color-image4">魔法師レオン</span>のところに戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">モリネルタワー　地上６階　魔法師レオン（107.98）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv630</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">経験値400万</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">モリネルタワー　地上６階</span></td>
+              <td><span class="color-image1">レオンの分身</span>以外の<span class="color-image1">モンスター</span>（Lv650）Zinを倒す。<br>
+                <span class="color-image1">レオンの分身</span>を10匹以上倒してしまうと、報酬なしでクエスト終了。<br>
+                <br>
+                <span class="color-image4">魔法師レオン</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="3"></a><span color="#00ff00">失踪した生態学者</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ１の<span color="#f8f800">探査隊ベースキャンプ</span>にいる<span
+                  class="color-image4">ビリシュ・タウル</span>に、キメラ研究のため<span color="#f8f800">キメラ生息地</span>へ調査に出かけてから戻ってこない<span
+                  class="color-image4">ドリュー</span>の行方について調査してほしいと頼まれた。<span
+                  class="color-image4">ビリシュ・タウル</span>の話では、<span color="#f8f800">キメラ生息地</span>で失踪したドリューの痕跡は、<span
+                  color="#d080f8">ボーンキメラ</span>や<span color="#d080f8">ガルビーカ</span>から手に入れることができるはずだという。<br>
+                <br>
+                <span color="#f8f800">キメラ生息地</span>で、<span class="color-image14">ドリューの日記帳</span>を見つけた。<span
+                  color="#f8f800">探査隊ベースキャンプ</span>にいる<span class="color-image4">ビリシュ・タウル</span>の所に戻ろう。<br>
+                <br>
+                <span class="color-image14">ドリューの日記帳</span>から、<span class="color-image4">ドリュー</span>が<span
+                  color="#d080f8">ボーンキメラ</span>と<span color="#d080f8">ガルビーカ</span>に追われて<span
+                  color="#f8f800">ビッグラットマン生息地</span>まで逃げ、そこで足取りが途絶えたことが分かった。<span
+                  color="#f8f800">ビッグラットマン生息地</span>で、<span class="color-image4">ドリュー</span>の痕跡を探し出そう。<br>
+                <br>
+                <span color="#f8f800">ビッグラットマン生息地</span>で、<span class="color-image14">ドリューの破れた洋服</span>を見つけた。<span
+                  color="#f8f800">探査隊ベースキャンプ</span>にいる<span class="color-image4">ビリシュ・タウル</span>の所に戻ろう。<br>
+                <br>
+                <span color="#f8f800">探査隊ベースキャンプ</span>の<span class="color-image4">ビリシュ・タウル</span>に、<span
+                  class="color-image14">ドリューの日記帳</span>を修復してほしいと頼まれた。<span
+                  class="color-image14">ドリューの日記帳</span>に入るページは、神秘の洞窟　Ｂ１のラットマンから手に入れることができる。<br>
+                <span color="#00b8b8">ドリューの日記帳の修復度が100％になると、ビリシュ・タウルと話してクエストを進行することができます。</span><br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">神秘の洞窟　Ｂ１　ビリシュ・タウル（68.252）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv645　キャンセル不可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">経験値3500万</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">神秘の洞窟　Ｂ１</span></td>
+              <td><span class="color-image1">ボーンキメラ</span>（Lv680)Zin、<span
+                  class="color-image1">ガルビーカ</span>（Lv680)Zinを倒す<br>
+                <br>
+                <span class="color-image4">ビリシュ・タウル</span>へ<br>
+                <br>
+                <span class="color-image1">汚染ラットマン</span>（Lv680)Zin、<span
+                  class="color-image1">ビッグラットマン</span>（Lv680)Zin、<span
+                  class="color-image1">アズラットマン</span>（Lv680)Zinを倒す<br>
+                <br>
+                <span class="color-image4">ビリシュ・タウル</span>へ<br>
+                <br>
+                <span class="color-image1">汚染ラットマン</span>（Lv680)Zin、<span
+                  class="color-image1">ビッグラットマン</span>（Lv680)Zin、<span
+                  class="color-image1">アズラットマン</span>（Lv680)Zinを倒す。<br>
+                <a href="drewdiary.html">ドリューの日記帳</a>の各ページを右クリック「使う」、<a href="drewdiary.html">ドリューの日記帳</a>を選択して保存する。<br>
+                <br>
+                <span class="color-image4">ビリシュ・タウル</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="4"></a><span color="#00ff00">失くした植物辞典</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ１の<span color="#f8f800">探査隊ベースキャンプ</span>にいる<span
+                  class="color-image4">植物学者コパン</span>が、<span
+                  color="#d080f8">ホップリザード</span>の襲撃を受けて破れた植物辞典のページを見つけてほしいと依頼してきた。<span
+                  color="#d080f8">ホップリザード</span>は、<span color="#f8f800">ホップリザード生息地</span>に出現する。<br>
+                <br>
+                <span color="#d080f8">ホップリザード</span>が持っていた植物辞典の破れたページをすべて見つけた。<span
+                  color="#f8f800">探査隊ベースキャンプ</span>の<span class="color-image4">植物学者コパン</span>の所に戻ろう。<br>
+                <br>神秘の洞窟　Ｂ１の<span color="#f8f800">探査隊ベースキャンプ</span>にいる<span class="color-image4">植物学者コパン</span>に、<span
+                  color="#f8f800">湿地植物群落帯</span>で<span
+                  class="color-image14">アポルロシア</span>と呼ばれる幻の植物の見本を10個くらい採集してきてほしいと頼まれた。<br>
+                <br>
+                <span color="#f8f800">湿地植物群落帯</span>で<span class="color-image14">アポルロシア</span>と呼ばれる幻の植物の見本
+                10個をすべて採集した。<span color="#f8f800">探査隊ベースキャンプ</span>の<span class="color-image4">植物学者コパン</span>の所に戻ろう。<br>
+                <br>神秘の洞窟　Ｂ１の<span color="#f8f800">探査隊ベースキャンプ</span>にいる<span class="color-image4">植物学者コーハン</span>に、<span
+                  color="#f8f800">アイン族の居住地区</span>で<span
+                  class="color-image14">とんがりキノコ</span>と呼ばれる珍しいキノコの見本を15個くらい採集してきてほしいと頼まれた。<br>
+                <br>
+                <span color="#f8f800">アイン族の居住地区</span>で<span class="color-image14">とんがりキノコ</span>と呼ばれる珍しいキノコの見本
+                15個をすべて採集した。<span color="#f8f800">探査隊ベースキャンプ</span>の<span class="color-image4">植物学者コパン</span>の所に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">神秘の洞窟　Ｂ１　植物学者コパン（63.248）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv645</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">経験値3050万</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">神秘の洞窟　Ｂ１</span></td>
+              <td><span class="color-image1">ホップリザード</span>（Lv660)Zin、<span
+                  class="color-image1">ホップラパックス</span>（Lv680)Zinを倒す<br>
+                <br>
+                <span class="color-image4">植物学者コパン</span>へ<br>
+                <br>
+                <span class="color-image20">○</span><span color="#ffff86">植物</span>をクリック<br>
+                （164.89）（169.58）（176.64）（195.102）（196.54）（206.115）（213.99）（216.51）（219.76）（241.62）<br>
+                の10箇所あるが、少し時間が経つと何度でもクリックできる。<br>
+                <br>
+                <img src="./normalquest600_files/n600-021.gif" width="102" height="93" border="0"><br>
+                <br>
+                <span class="color-image4">植物学者コパン</span>へ<br>
+                <br>
+                <span class="color-image1">○</span><span color="#ffff86">キノコを</span>クリック<br>
+                （133.209）（135.191）（143.174）（148.218）（150.175）（150.190）（158.234）（161.251）（169.242）（188.196）<br>
+                の10箇所あるが、少し時間が経つと何度でもクリックできる。<br>
+                <br>
+                <img src="./normalquest600_files/n600-022.gif" width="66" height="61" border="0"><br>
+                <br>
+                <img src="./normalquest600_files/n600-023-map493.gif" width="400" height="175" border="0"><br>
+                <br>
+                <span class="color-image4">植物学者コパン</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="5"></a><span color="#00ff00">ウシロツノカエルの卵の標本</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ１の<span color="#f8f800">探査隊ベースキャンプ</span>にいる<span
+                  class="color-image4">弱虫ビルロンド</span>に、ウシロツノカエルを調査するのに必要な<span class="color-image14">ウシロツノカエルの卵</span>
+                20個を手に入れてほしいと頼まれた。<span class="color-image14">ウシロツノカエルの卵</span>は、<span
+                  color="#f8f800">ウシロツノカエル分布地</span>の<span color="#d080f8">ウシロツノカエル</span>と<span
+                  color="#d080f8">ウシロツノキング</span>から手に入れることができる。<br>
+                <br>
+                <span class="color-image4">弱虫ビルロンド</span>に頼まれた<span class="color-image14">ウシロツノカエルの卵</span>
+                20個をすべて集めた。<span color="#f8f800">探査隊ベースキャンプ</span>に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">神秘の洞窟　Ｂ１　弱虫ビルロンド（86.265）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv645</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">経験値1600万</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">神秘の洞窟　Ｂ１</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <span color="#666666">ウシロツノカエルの卵の標本</span>　→　<a href="normalquest600.html#6">ウシロツノカエルの卵の標本、再び</a><br>
+                <br>
+                <span class="color-image1">ウシロツノカエル</span>（Lv660）Zin、<span
+                  class="color-image1">ウシロツノキング</span>（Lv680）Zinを倒す<br>
+                <br>
+                <span class="color-image4">弱虫ビルロンド</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="6"></a><span color="#00ff00">ウシロツノカエルの卵の標本、再び</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ１の<span color="#f8f800">探査隊ベースキャンプ</span>にいる<span
+                  class="color-image4">弱虫ビルロンド</span>に、ウシロツノカエルを調査するのに必要な<span
+                  class="color-image14">ウシロツノカエルの卵[追加分]</span> 20個を手に入れてほしいと頼まれた。<span
+                  class="color-image14">ウシロツノカエルの卵</span>は、<span color="#f8f800">ウシロツノカエル分布地</span>の<span
+                  color="#d080f8">ウシロツノカエル</span>と<span color="#d080f8">ウシロツノキング</span>から手に入れることができる。<br>
+                <br>
+                <span class="color-image4">弱虫ビルロンド</span>に頼まれた<span class="color-image14">ウシロツノカエルの卵[追加分]</span>
+                20個をすべて集めた。<span color="#f8f800">探査隊ベースキャンプ</span>に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">神秘の洞窟　Ｂ１　弱虫ビルロンド（86.265）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv645　繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石</a><span class="color-image20">3個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">神秘の洞窟　Ｂ１</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#5">ウシロツノカエルの卵の標本</a>　→　<span color="#666666">ウシロツノカエルの卵の標本、再び</span><br>
+                <br>
+                <span class="color-image1">ウシロツノカエル</span>（Lv660）Zin、<span
+                  class="color-image1">ウシロツノキング</span>（Lv680）Zinを倒す<br>
+                <br>
+                <span class="color-image4">弱虫ビルロンド</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="7"></a><span color="#00ff00">古代亀の甲羅</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ１の<span color="#f8f800">探査隊ベースキャンプ</span>にいる<span
+                  class="color-image4">亀博士ジョージ</span>に、古代亀を調査するのに必要な<span class="color-image14">古代亀の甲羅</span>
+                20個を手に入れてほしいと頼まれた。<span class="color-image14">古代亀の甲羅</span>は、<span color="#f8f800">古代亀の生息地</span>の<span
+                  color="#d080f8">古代亀</span>と<span color="#d080f8">暴れ古代亀</span>から手に入れることができる。<br>
+                <br>
+                <span class="color-image4">亀博士ジョージ</span>に頼まれた<span class="color-image14">古代亀の甲羅</span> 20個をすべて集めた。<span
+                  color="#f8f800">探査隊ベースキャンプ</span>に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">神秘の洞窟　Ｂ１　亀博士ジョージ（65.274）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv645</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">経験値1600万</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">神秘の洞窟　Ｂ１</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <span color="#666666">古代亀の甲羅</span>　→　<a href="normalquest600.html#8">古代亀の甲羅、再び</a><br>
+                <br>
+                <span class="color-image1">古代亀</span>（Lv670）Zin、<span class="color-image1">暴れ古代亀</span>（Lv675）Zinを倒す<br>
+                <br>
+                <span class="color-image4">亀博士ジョージ</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="8"></a><span color="#00ff00">古代亀の甲羅、再び</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ１の<span color="#f8f800">探査隊ベースキャンプ</span>にいる<span
+                  class="color-image4">亀博士ジョージ</span>に、古代亀を調査するのに必要な<span class="color-image14">古代亀の甲羅[追加分]</span>
+                20個を手に入れてほしいと頼まれた。<span class="color-image14">古代亀の甲羅</span>は、<span color="#f8f800">古代亀の生息地</span>の<span
+                  color="#d080f8">古代亀</span>と<span color="#d080f8">暴れ古代亀</span>から手に入れることができる。<br>
+                <br>
+                <span class="color-image4">亀博士ジョージ</span>に頼まれた<span class="color-image14">古代亀の甲羅[追加分]</span>
+                20個をすべて集めた。<span color="#f8f800">探査隊ベースキャンプ</span>に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">神秘の洞窟　Ｂ１　亀博士ジョージ（65.274）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv645　繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石</a><span class="color-image20">3個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">神秘の洞窟　Ｂ１</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#7">古代亀の甲羅</a>　→　<span color="#666666">古代亀の甲羅、再び</span><br>
+                <br>
+                <span class="color-image1">古代亀</span>（Lv670）Zin、<span class="color-image1">暴れ古代亀</span>（Lv675）Zinを倒す<br>
+                <br>
+                <span class="color-image4">亀博士ジョージ</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="9"></a><span color="#00ff00">猛毒の研究</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ１の<span color="#f8f800">探査隊ベースキャンプ</span>にいる<span
+                  class="color-image4">毒博士ハブ</span>が猛毒を作るために、必要となる<span class="color-image14">神秘の洞窟の猛毒</span>
+                20個を手に入れてほしいと頼んできた。<span class="color-image14">神秘の洞窟の猛毒</span>は、<span
+                  color="#f8f800">猛毒地帯</span>に生息する<span color="#d080f8">猛毒湿地スパイダ</span>と<span
+                  color="#d080f8">猛毒湿地サソリ</span>から手に入れることができる。<br>
+                <br>
+                <span class="color-image4">毒博士ハブ</span>に頼まれた<span class="color-image14">神秘の洞窟の猛毒</span> 20個をすべて集めた。<span
+                  color="#f8f800">探査隊ベースキャンプ</span>に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">神秘の洞窟　Ｂ１　毒博士ハブ（95.269）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv645</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">経験値1600万</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">神秘の洞窟　Ｂ１</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <span color="#666666">猛毒の研究</span>　→　<a href="normalquest600.html#10">猛毒の研究、再び</a><br>
+                <br>
+                <span class="color-image1">猛毒湿地スパイダ</span>（Lv660）Zin、<span
+                  class="color-image1">猛毒湿地サソリ</span>（Lv665）Zinを倒す<br>
+                <br>
+                <span class="color-image4">毒博士ハブ</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="10"></a><span color="#00ff00">猛毒の研究、再び</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ１の<span color="#f8f800">探査隊ベースキャンプ</span>にいる<span
+                  class="color-image4">毒博士ハブ</span>が猛毒を作るために、必要となる<span class="color-image14">神秘の洞窟の猛毒[追加分]</span>
+                20個を手に入れてほしいと頼んできた。<span class="color-image14">神秘の洞窟の猛毒</span>は、<span
+                  color="#f8f800">猛毒地帯</span>に生息する<span color="#d080f8">猛毒湿地スパイダ</span>と<span
+                  color="#d080f8">猛毒湿地サソリ</span>から手に入れることができる。<br>
+                <br>
+                <span class="color-image4">毒博士ハブ</span>に頼まれた<span class="color-image14">神秘の洞窟の猛毒[追加分]</span>
+                20個をすべて集めた。<span color="#f8f800">探査隊ベースキャンプ</span>に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">神秘の洞窟　Ｂ１　毒博士ハブ（95.269）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv645　繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石</a><span class="color-image20">3個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">神秘の洞窟　Ｂ１</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#9">猛毒の研究</a>　→　<span color="#666666">猛毒の研究、再び</span><br>
+                <br>
+                <span class="color-image1">猛毒湿地スパイダ</span>（Lv660）Zin、<span
+                  class="color-image1">猛毒湿地サソリ</span>（Lv665）Zinを倒す<br>
+                <br>
+                <span class="color-image4">毒博士ハブ</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="11"></a><span color="#00ff00">湿地カマキリ退治</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ１の<span color="#f8f800">探査隊ベースキャンプ</span>にいる<span
+                  class="color-image4">用心棒ハモン</span>に、神秘の洞窟　Ｂ１で学者と冒険家たちを襲う湿地カマキリを退治し、その証拠として<span
+                  class="color-image14">湿地カマキリの薄い羽</span> 30枚を手に入れてほしいと頼まれた。<br>
+                <br>
+                <span class="color-image4">用心棒ハモン</span>に頼まれた湿地カマキリを退治し、その証拠として<span
+                  class="color-image14">湿地カマキリの薄い羽</span> 30枚をすべて集めた。<span color="#f8f800">探査隊ベースキャンプ</span>に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">神秘の洞窟　Ｂ１　用心棒ハモン（75.256）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv645</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">経験値1600万</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">神秘の洞窟　Ｂ１</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <span color="#666666">湿地カマキリ退治</span>　→　<a href="normalquest600.html#12">湿地カマキリ退治、再び</a>　<a
+                  href="normalquest600.html#13">本日の懸賞付き指名手配：…</a><br>
+                <br>
+                <span class="color-image1">湿地カマキリ雄</span>（Lv665)Zin、<span
+                  class="color-image1">湿地カマキリ雌</span>（Lv665)Zin、<span
+                  class="color-image1">湿地カマキリ子</span>（Lv660)Zinを倒す<br>
+                <br>
+                <span class="color-image4">用心棒ハモン</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="12"></a><span color="#00ff00">湿地カマキリ退治、再び</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ１の<span color="#f8f800">探査隊ベースキャンプ</span>にいる<span
+                  class="color-image4">用心棒ハモン</span>に、神秘の洞窟　Ｂ１で学者と冒険家たちを襲う湿地カマキリを退治し、その証拠として<span
+                  class="color-image14">湿地カマキリの薄い羽[追加分]</span> 30枚を手に入れてほしいと頼まれた。<br>
+                <br>
+                <span class="color-image4">用心棒ハモン</span>に頼まれた湿地カマキリを退治し、その証拠として<span
+                  class="color-image14">湿地カマキリの薄い羽[追加分]</span> 30枚をすべて集めた。<span
+                  color="#f8f800">探査隊ベースキャンプ</span>に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">神秘の洞窟　Ｂ１　用心棒ハモン（75.256）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv645　繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石</a><span class="color-image20">3個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">神秘の洞窟　Ｂ１</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#11">湿地カマキリ退治</a>　→　<span color="#666666">湿地カマキリ退治、再び</span>　<a
+                  href="normalquest600.html#13">本日の懸賞付き指名手配：…</a><br>
+                <br>
+                <span class="color-image1">湿地カマキリ雄</span>（Lv665)Zin、<span
+                  class="color-image1">湿地カマキリ雌</span>（Lv665)Zin、<span
+                  class="color-image1">湿地カマキリ子</span>（Lv660)Zinを倒す<br>
+                <br>
+                <span class="color-image4">用心棒ハモン</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="13"></a><span color="#00ff00">本日の懸賞付き指名手配：ホップラパックス</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ１の<span color="#f8f800">探査隊ベースキャンプ</span>にいる<span
+                  class="color-image4">用心棒ゼンド</span>に、<span color="#d080f8">ホップリザード</span>のボスの<span
+                  color="#d080f8">ホップラパックス</span>を退治してほしいと頼まれた。<br>
+                <span color="#f80000">ホップラパックスは、ホップリザードを退治していると、たまに出現するらしい。</span><br>
+                <br>ホップリザード出没地から<span color="#d080f8">ホップラパックス</span>を退治した。<span color="#f8f800">探査隊ベースキャンプ</span>の<span
+                  class="color-image4">用心棒ゼンド</span>の所に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="2"><span color="#00ff00">本日の懸賞付き指名手配：アルタラーク</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ１の<span color="#f8f800">探査隊ベースキャンプ</span>にいる<span
+                  class="color-image4">用心棒ゼンド</span>に、<span color="#d080f8">アルタラーク</span>を退治してほしいと頼まれた。<br>
+                <span color="#f80000">アルタラークは、古代亀の生息地の古代亀と暴れ古代亀を退治していると、たまに出現するらしい。</span><br>
+                <br>古代亀の生息地で<span color="#d080f8">アルタラーク</span>を退治した。<span color="#f8f800">探査隊ベースキャンプ</span>にいる<span
+                  class="color-image4">用心棒ゼンド</span>の所に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="2"><span color="#00ff00">本日の懸賞付き指名手配：アルタウス</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ１の<span color="#f8f800">探査隊ベースキャンプ</span>にいる<span
+                  class="color-image4">用心棒ゼンド</span>にアイン族のボスの<span color="#d080f8">アルタウス</span>を退治してほしいと頼まれた。<br>
+                <span color="#f80000">アルタウスは、アイン族の居住地区でアイン種を退治していると、たまに出現するらしい。</span><br>
+                <br>アイン族の居住地区で<span color="#d080f8">アルタウス</span>を退治した。<span color="#f8f800">探査隊ベースキャンプ</span>にいる<span
+                  class="color-image4">用心棒ゼンド</span>の所に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="2"><span color="#00ff00">本日の懸賞付き指名手配：アズラットマン</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ１の<span color="#f8f800">探査隊ベースキャンプ</span>にいる<span
+                  class="color-image4">用心棒ゼンド</span>に、<span color="#d080f8">アズラットマン</span>を退治してほしいと頼まれた。<br>
+                <span color="#f80000">アズラットマンは、ビッグラットマン生息地にいるビッグラットマンと汚染ラットマンを退治していると、たまに出現するらしい。</span><br>
+                <br>ビッグラットマン生息地で<span color="#d080f8">アズラットマン</span>を退治した。<span
+                  color="#f8f800">探査隊ベースキャンプ</span>にいる<span class="color-image4">用心棒ゼンド</span>の所に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">神秘の洞窟　Ｂ１　用心棒ゼンド（63.263）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv645～725　1日1回繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">経験値800万</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">神秘の洞窟　Ｂ１</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#11">湿地カマキリ退治</a>　→　<a href="normalquest600.html#12">湿地カマキリ退治、再び</a>　<span
+                  color="#666666">本日の懸賞付き指名手配：…</span><br>
+                <br>
+                (1)～(4)のクエストをランダムで受諾。<br>
+                好きな対象モンスターになるまでキャンセルして受け直し可能。<br>
+                <br>
+                (1)<span class="color-image1">ホップラパックス</span>（Lv680)Zinを倒す<br>
+                (2)<span class="color-image1">アルタラーク</span>（Lv680)Zinを倒す<br>
+                (3)<span class="color-image1">アルタウス</span>（Lv680)Zinを倒す<br>
+                (4)<span class="color-image1">アズラットマン</span>（Lv680)Zinを倒す<br>
+                <br>
+                <span class="color-image4">用心棒ゼンド</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="14"></a><span color="#00ff00">打倒！ブルースビストロ！</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ１の<span color="#f8f800">探査隊ベースキャンプ</span>にいる<span
+                  class="color-image4">料理人オーフィス</span>に、料理を作る時に必要な材料の<span class="color-image14">ホップリザードの後ろ足</span>
+                10個を集めてきてほしいと頼まれた。<span color="#d080f8">ホップリザード</span>は、<span
+                  color="#f8f800">ホップリザード生息地</span>でよく発見される。<br>
+                <br>
+                <span class="color-image4">料理人オーフィス</span>に頼まれた<span class="color-image14">ホップリザードの後ろ足</span>
+                10個をすべて集めた。<span color="#f8f800">探査隊ベースキャンプ</span>に戻ろう。<br>
+                <br>神秘の洞窟　Ｂ１の<span color="#f8f800">探査隊ベースキャンプ</span>にいる<span
+                  class="color-image4">料理人オーフィス</span>に、料理を作る時に必要な材料である<span class="color-image14">クラーケンの透明な触手</span>
+                12個を集めてきてほしいと頼まれた。クラーケン達は、<span color="#f8f800">クラーケン生息地</span>でよく発見される。<br>
+                <br>
+                <span class="color-image4">料理人オーフィス</span>に頼まれた<span class="color-image14">クラーケンの透明な触手</span>
+                12個をすべて集めた。<span color="#f8f800">探査隊ベースキャンプ</span>に戻ろう。<br>
+                <br>神秘の洞窟　Ｂ１の<span color="#f8f800">探査隊ベースキャンプ</span>にいる<span
+                  class="color-image4">料理人オーフィス</span>に、料理を作る時に必要な材料である<span class="color-image14">古代亀の卵</span>
+                16個を集めてきてほしいと頼まれた。<span class="color-image14">古代亀の卵</span>は、<span
+                  color="#f8f800">古代亀の生息地</span>でよく発見される。<br>
+                <br>
+                <span class="color-image4">料理人オーフィス</span>に頼まれた<span class="color-image14">古代亀の卵</span> 16個をすべて集めた。<span
+                  color="#f8f800">探査隊ベースキャンプ</span>に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">神秘の洞窟　Ｂ１　料理人オーフィス（72.267）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv645</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">経験値3050万</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">神秘の洞窟　Ｂ１</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <span color="#666666">打倒！ブルースビストロ！</span>　→　<a href="normalquest600.html#15">本日の料理：…</a><br>
+                <br>
+                <span class="color-image1">ホップリザード</span>（Lv660)Zinを倒す<br>
+                <br>
+                <span class="color-image4">料理人オーフィス</span>へ<br>
+                <br>
+                <span class="color-image1">リトルクラーケン</span>（Lv675)Zin、<span
+                  class="color-image1">ビッグクラーケン</span>（Lv680)Zinを倒す<br>
+                <br>
+                <span class="color-image4">料理人オーフィス</span>へ<br>
+                <br>
+                <span class="color-image1">古代亀</span>（Lv670)Zin、<span class="color-image1">暴れ古代亀</span>（Lv675)Zinを倒す<br>
+                <br>
+                <span class="color-image4">料理人オーフィス</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="15"></a><span color="#00ff00">本日の料理：ホップリザードの駆け足スープ！</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ１の<span color="#f8f800">探査隊ベースキャンプ</span>にいる<span
+                  class="color-image4">オーフィスの息子</span>に、料理を作る時に必要な材料を手に入れてきてほしいと頼まれた。ホップリザードの駆け足スープという料理の材料である<span
+                  class="color-image14">ホップリザードのしっぽ</span> 20個を手に入れてこよう。<br>
+                <br>
+                <span class="color-image14">ホップリザードのしっぽ</span> 20個をすべて集めた。<span color="#f8f800">探査隊ベースキャンプ</span>の<span
+                  class="color-image4">オーフィスの息子</span>の所に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="2"><span color="#00ff00">本日の料理：肉汁いっぱいのカエル天ぷら！</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ１の<span color="#f8f800">探査隊ベースキャンプ</span>にいる<span
+                  class="color-image4">オーフィスの息子ジンフィス</span>に、料理を作る時に必要な材料を手に入れてきてほしいと頼まれた。肉汁いっぱいのカエル天ぷらの材料である<span
+                  class="color-image14">ウシロツノカエルの肉</span> 20個を手に入れてこよう。<br>
+                <br>
+                <span class="color-image14">ウシロツノカエルの肉</span> 20個をすべて集めた。<span color="#f8f800">探査隊ベースキャンプ</span>の<span
+                  class="color-image4">オーフィスの息子</span>の所に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="2"><span color="#00ff00">本日の料理：柔らかクラーケン蒸し！</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ１の<span color="#f8f800">探査隊ベースキャンプ</span>にいる<span
+                  class="color-image4">オーフィスの息子</span>に、料理を作る時に必要な材料を手に入れてきてほしいと頼まれた。柔らかクラーケン蒸しという料理の材料である<span
+                  class="color-image14">ヌメヌメとしたクラーケン触手</span> 20個を手に入れてこよう。<br>
+                <br>
+                <span class="color-image14">ヌメヌメとしたクラーケン触手</span> 20個をすべて集めた。<span
+                  color="#f8f800">探査隊ベースキャンプ</span>の<span class="color-image4">オーフィスの息子</span>の所に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="2"><span color="#00ff00">本日の料理：ビックリビッグ干し肉！</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ１の<span color="#f8f800">探査隊ベースキャンプ</span>にいる<span
+                  class="color-image4">オーフィスの息子</span>に、料理を作る時に必要な材料を手に入れてきてほしいと頼まれた。ビックリビッグ干し肉という料理の材料である<span
+                  class="color-image14">ラットマンの肉</span> 20個を手に入れてこよう。<br>
+                <br>
+                <span class="color-image14">ラットマンの肉</span> 20個をすべて集めた。<span color="#f8f800">探査隊ベースキャンプ</span>の<span
+                  class="color-image4">オーフィスの息子</span>の所に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="2"><span color="#00ff00">本日の料理：柔らかサソリ焼き！</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ１の<span color="#f8f800">探査隊ベースキャンプ</span>にいる<span
+                  class="color-image4">オーフィスの息子</span>に料理を作る時に必要な材料を手に入れてきてほしいと頼まれた。柔らかサソリ焼きという料理の材料である<span
+                  class="color-image14">猛毒湿地サソリのハサミ</span> 20個を手に入れてこよう。<br>
+                <br>
+                <span class="color-image14">猛毒湿地サソリキのハサミ</span> 20個をすべて集めた。<span color="#f8f800">探査隊ベースキャンプ</span>の<span
+                  class="color-image4">オーフィスの息子</span>の所に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">神秘の洞窟　Ｂ１　オーフィスの息子（74.269）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv645～725　1日1回繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">経験値800万</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">神秘の洞窟　Ｂ１</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#14">打倒！ブルースビストロ！</a>　→　<span color="#666666">本日の料理：…</span><br>
+                <br>
+                (1)～(5)のクエストをランダムで受諾。<br>
+                好きな対象モンスターになるまでキャンセルして受け直し可能。<br>
+                <br>
+                (1)<span class="color-image1">ホップリザード</span>（Lv660)Zinを倒す<br>
+                (2)<span class="color-image1">ウシロツノカエル</span>（Lv660)Zinを倒す<br>
+                (3)<span class="color-image1">リトルクラーケン</span>（Lv675)Zin、<span
+                  class="color-image1">ビッグクラーケン</span>（Lv680)Zinを倒す<br>
+                (4)<span class="color-image1">ビッグラットマン</span>（Lv680)Zin、<span
+                  class="color-image1">汚染ラットマン</span>（Lv680)Zin、<span
+                  class="color-image1">アズラットマン</span>（Lv680)Zinを倒す<br>
+                (5)<span class="color-image1">猛毒湿地サソリ</span>（Lv665)Zinを倒す<br>
+                <br>
+                <span class="color-image4">オーフィスの息子</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="28"></a><span color="#00ff00">森カエルの卵</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>疑問の森 <span color="#f8f800">南東部</span>にいる<span
+                  class="color-image4">バラド</span>は、森カエルの調査のために<span class="color-image14">森カエルの卵</span>が50個必要だ。<span
+                  class="color-image14">森カエルの卵</span>は、<span color="#f8f800">森カエル生息地</span>から手に入る。<br>
+                <br>
+                <span class="color-image4">バラド</span>から頼まれた<span class="color-image14">森カエルの卵</span>を50個を全部集めた。<span
+                  color="#f8f800">南東部安全地域</span>に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 南東部　バラド（235.299）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">3個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 南東部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <span color="#666666">森カエルの卵</span>　→　<a href="normalquest600.html#29">森カエルの卵[反復]</a><br>
+                <br>
+                <span class="color-image1">森カエル</span>（Lv665)Zinを倒す<br>
+                <br>
+                <span class="color-image4">バラド</span>へ</td>
+            </tr>
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="29"></a><span color="#00ff00">森カエルの卵[反復]</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>疑問の森 <span color="#f8f800">南東部</span>にいる<span
+                  class="color-image4">バラド</span>は森カエルの調査に必要な<span class="color-image14">森カエルの卵</span>50個が必要だ。<span
+                  class="color-image14">森カエルの卵</span>は、<span color="#f8f800">森カエル生息地</span>から手に入る。<br>
+                <br>
+                <span class="color-image4">バラド</span>に頼まれた<span class="color-image14">森カエルの卵</span>50個を全部集めた。<span
+                  color="#f8f800">南東部安全地域</span>に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 南東部　バラド（235.299）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700　繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">3個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 南東部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#28">森カエルの卵</a>　→　<span color="#666666">森カエルの卵[反復]</span><br>
+                <br>
+                <span class="color-image1">森カエル</span>（Lv665)Zinを倒す<br>
+                <br>
+                <span class="color-image4">バラド</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="30"></a><span color="#00ff00">盗まれた物品</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>疑問の森 <span color="#f8f800">南東部</span>にいる<span
+                  class="color-image4">ポーター</span>は、北東部の自警団本部に物品を配達している最中に、サティロスの襲撃を受け、配達品を盗まれたようだ。ポーターは<span
+                  color="#d080f8">サティロス</span>を退治し、<span class="color-image14">盗まれた物品</span>30個を探して欲しいと言っている。<span
+                  class="color-image14">盗まれた物品</span>は<span color="#f8f800">サティロス生息地</span>で手に入る。<br>
+                <br>ポーターから頼まれた<span class="color-image14">盗まれた物品</span>30個を全部集めた。<span
+                  color="#f8f800">南東部安全地域</span>に戻って渡そう。<br>
+                <br>盗まれたものは全て回収したが、今後の被害が心配だ。<span color="#d080f8">サティロス</span>を30匹退治してから戻ろう。<br>
+                <br>
+                <span color="#d080f8">サティロス</span>を全部退治した。<span color="#f8f800">南東部安全地域</span>に戻り、伝えよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 南東部　ポーター（243.261）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">5個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 南東部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <span color="#666666">盗まれた物品</span>　→　<a href="normalquest600.html#31">盗まれた物品[反復]</a><br>
+                <br>
+                <span class="color-image1">サティロス</span>（Lv680)Zinを倒す<br>
+                <br>
+                <span class="color-image4">ポーター</span>へ<br>
+                <br>
+                <span class="color-image1">サティロス</span>（Lv680)Zinを30匹倒す<br>
+                <br>
+                <span class="color-image4">ポーター</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="31"></a><span color="#00ff00">盗まれた物品[反復]</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>疑問の森 <span color="#f8f800">南東部</span>にいる<span
+                  class="color-image4">ポーター</span>は、北東部の自警団本部に物品を配達している最中に、サティロスの襲撃を受け、配達品を盗まれたようだ。ポーターは<span
+                  color="#d080f8">サティロス</span>を退治し、<span class="color-image14">盗まれた物品</span>30個を探して欲しい。<span
+                  class="color-image14">盗まれた物品</span>は<span color="#f8f800">サティロス生息地</span>から手に入る。<br>
+                <br>ポーターから頼まれた<span class="color-image14">盗まれた物品</span>30個を全部集めた。<span
+                  color="#f8f800">南東部安全地域</span>に戻って渡そう。<br>
+                <br>盗まれたものは全て回収できたけど、今後の被害が心配だ。<span color="#d080f8">サティロス</span>を30匹退治してから戻ろう。<br>
+                <br>
+                <span color="#d080f8">サティロス</span>を全部退治した。<span color="#f8f800">南東部安全地域</span>に戻り、伝えよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 南東部　ポーター（243.261）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700　繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">5個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 南東部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#30">盗まれた物品</a>　→　<span color="#666666">盗まれた物品[反復]</span><br>
+                <br>
+                <span class="color-image1">サティロス</span>（Lv680)Zinを倒す<br>
+                <br>
+                <span class="color-image4">ポーター</span>へ<br>
+                <br>
+                <span class="color-image1">サティロス</span>（Lv680)Zinを30匹倒す<br>
+                <br>
+                <span class="color-image4">ポーター</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="32"></a><span color="#00ff00">少年団員クナン</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">クナン</span>の話通り<span
+                  color="#d080f8">バファロ</span>の数はとてつもなく多いらしい。急いで数を減らさないと冒険家や学者たちに被害が及ぶかも知れない。<br>
+                <br>
+                <span color="#d080f8">バファロ</span>を全部退治した。<span color="#f8f800">コケの湖</span>にいる<span
+                  class="color-image4">クナン</span>の所に戻り、伝えよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 南東部　自警団員クナン（37.284）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">2個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 南東部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <span color="#666666">少年団員クナン</span>　→　<a href="normalquest600.html#33">少年団員クナン[反復]</a><br>
+                <br>
+                <span class="color-image1">スパイクバファロ</span>（Lv680)Zinを50匹倒す<br>
+                <br>
+                <span class="color-image4">自警団員クナン</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="33"></a><span color="#00ff00">少年団員クナン[反復]</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">クナン</span>の話通り<span
+                  color="#d080f8">バファロ</span>の数はとてつもなく多いらしい。急いで数を減らさないと冒険家や学者たちに被害が及ぶかも知れない。<br>
+                <br>
+                <span color="#d080f8">バファロ</span>を全部退治した。<span color="#f8f800">コケの湖</span>にいる<span
+                  class="color-image4">クナン</span>の所に戻りこれを伝えよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 南東部　自警団員クナン（37.284）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700　繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">2個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 南東部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#32">少年団員クナン</a>　→　<span color="#666666">少年団員クナン[反復]</span><br>
+                <br>
+                <span class="color-image1">スパイクバファロ</span>（Lv680)Zinを50匹倒す<br>
+                <br>
+                <span class="color-image4">自警団員クナン</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="34"></a><span color="#00ff00">水質テスト</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">水質学者ディマ</span>は疑問の森全域の湖や泉から<span
+                  class="color-image14">水質テスト用コケ</span>を採集してきて欲しい。森が広いため、それぞれのフィールドから採集しなければならない。<br>
+                <br>
+                <span class="color-image14">水質テスト用コケ</span>を全部採取した。<span color="#f8f800">コケの湖</span>にいる<span
+                  class="color-image4">水質学者ディマ</span>に伝達しよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 南東部　水質学者 ディマ（31.286）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">8個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 南東部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <span color="#666666">水質テスト</span>　→　<a href="normalquest600.html#35">水質テスト[反復]</a><br>
+                <br>
+                <span color="#ffff86">石コケ</span>をクリックして、各マップから20個ずつ集める。<br>
+                少し時間が経つと何度でもクリックできる。<br>
+                （9.278）（10.276）（19.308）（24.312）（38.317）（40.314）（148.284）（150.275）（154.281）（186.295）（194.301）（230.297）（236.302）の13箇所<br>
+                <br>
+                <img src="./normalquest600_files/n600-024.gif" width="105" height="81" border="0"><br>
+                <br>
+                <img src="./normalquest600_files/n600-025-map517.gif" width="400" height="244" border="0"></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 北東部</span></td>
+              <td>
+                （2.178）（9.174）（41.115）（46.130）（97.251）（106.265）（107.248）（120.39）（132.54）（140.32）（235.29）（248.36）の12箇所<br>
+                <br>
+                <img src="./normalquest600_files/n600-026-map518.gif" width="400" height="244" border="0"></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 北西部</span></td>
+              <td>
+                （104.8）（104.84）（105.92）（124.3）（203.168）（213.172）（219.196）（230.211）（235.57）（239.184）（243.214）（244.54）（253.177）（266.262）の14箇所<br>
+                <br>
+                <img src="./normalquest600_files/n600-027-map519.gif" width="400" height="244" border="0"></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 南西部</span></td>
+              <td>（79.211）（88.215）（96.311）（108.322）（126.151）（133.204）（145.154）（153.50）（164.49）（186.192）の10箇所<br>
+                <br>
+                <img src="./normalquest600_files/n600-028-map520.gif" width="400" height="244" border="0"></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 南東部</span></td>
+              <td><span class="color-image4">水質学者 ディマ</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="35"></a><span color="#00ff00">水質テスト[反復]</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">水質学者ディマ</span>は疑問の森全体にいる湖や泉から<span
+                  class="color-image14">水質テスト用コケ</span>を採集してきて欲しい。森が広いため、それぞれのフィールドから採集しなければならない。<br>
+                <br>
+                <span class="color-image14">水質テスト用コケ</span>を全部採取した。<span color="#f8f800">コケの湖</span>にいる<span
+                  class="color-image4">水質学者ディマ</span>に伝達しよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 南東部　水質学者 ディマ（31.286）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700　繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">8個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 南東部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#34">水質テスト</a>　→　<span color="#666666">水質テスト[反復]</span><br>
+                <br>
+                <span color="#ffff86">石コケ</span>をクリックして、各マップから20個ずつ集める。<br>
+                少し時間が経つと何度でもクリックできる。<br>
+                （9.278）（10.276）（19.308）（24.312）（38.317）（40.314）（148.284）（150.275）（154.281）（186.295）（194.301）（230.297）（236.302）の13箇所<br>
+                <br>
+                <img src="./normalquest600_files/n600-024.gif" width="105" height="81" border="0"><br>
+                <br>
+                <img src="./normalquest600_files/n600-025-map517.gif" width="400" height="244" border="0"></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 北東部</span></td>
+              <td>
+                （2.178）（9.174）（41.115）（46.130）（97.251）（106.265）（107.248）（120.39）（132.54）（140.32）（235.29）（248.36）の12箇所<br>
+                <br>
+                <img src="./normalquest600_files/n600-026-map518.gif" width="400" height="244" border="0"></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 北西部</span></td>
+              <td>
+                （104.8）（104.84）（105.92）（124.3）（203.168）（213.172）（219.196）（230.211）（235.57）（239.184）（243.214）（244.54）（253.177）（266.262）の14箇所<br>
+                <br>
+                <img src="./normalquest600_files/n600-027-map519.gif" width="400" height="244" border="0"></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 南西部</span></td>
+              <td>（79.211）（88.215）（96.311）（108.322）（126.151）（133.204）（145.154）（153.50）（164.49）（186.192）の10箇所<br>
+                <br>
+                <img src="./normalquest600_files/n600-028-map520.gif" width="400" height="244" border="0"></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 南東部</span></td>
+              <td><span class="color-image4">水質学者 ディマ</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="36"></a><span color="#00ff00">ザディンのお願い</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">傭兵ザディン</span>は、自分に怪我を負わせた疑問の森の<span
+                  color="#d080f8">野原猿</span>に復讐したいそうだ。腕を怪我したザディンの代わりに、<span color="#d080f8">野原猿</span>を50匹退治し、<span
+                  class="color-image14">野原猿の毛</span>20個を証拠として持って行こう。<br>
+                <br>
+                <span color="#d080f8">野原猿</span>を50匹倒し、<span class="color-image14">野原猿の毛</span>20個も全部集めた。<span
+                  color="#f8f800">南東部安全地域</span>にいる<span class="color-image4">傭兵ザディン</span>に伝えよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 南東部　傭兵ザディン（251.268）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">3個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 南東部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <span color="#666666">ザディンのお願い</span>　→　<a href="normalquest600.html#37">ザディンのお願い[反復]</a><br>
+                <br>
+                <span class="color-image1">野原猿</span>（Lv665)Zinを倒す。<br>
+                非アクティブ。疑問の森全域に湧くが、対象は南東部の<span class="color-image1">野原猿</span>のみ。<br>
+                <br>
+                <span class="color-image4">傭兵ザディン</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="37"></a><span color="#00ff00">ザディンのお願い[反復]</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">傭兵ザディン</span>は、自分に怪我を負わせた疑問の森の<span
+                  color="#d080f8">野原猿</span>に復讐したい。腕を怪我したザディンの代わりに、<span color="#d080f8">野原猿</span>を50匹退治し、<span
+                  class="color-image14">野原猿の毛</span>20個を証拠として持って行こう。<br>
+                <br>
+                <span color="#d080f8">野原猿</span>を50匹倒し、<span class="color-image14">野原猿の毛</span>20個も全部集めた。<span
+                  color="#f8f800">南東部安全地域</span>にいる<span class="color-image4">傭兵ザディン</span>に伝達しよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 南東部　傭兵ザディン（251.268）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700　繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">3個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 南東部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#36">ザディンのお願い</a>　→　<span color="#666666">ザディンのお願い[反復]</span><br>
+                <br>
+                <span class="color-image1">野原猿</span>（Lv665)Zinを倒す。<br>
+                非アクティブ。疑問の森全域に湧くが、対象は南東部の<span class="color-image1">野原猿</span>のみ。<br>
+                <br>
+                <span class="color-image4">傭兵ザディン</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="38"></a><span color="#00ff00">チャンスをつかめ！ - 鎧猿</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">巡査団員ティモン</span>は疑問の森で暴れている<span
+                  color="#d080f8">鎧猿</span>を退治し、自警団から認められたい。<span class="color-image4">ティモン</span>を助け、<span
+                  color="#d080f8">鎧猿</span>を30匹倒してから戻ろう。<br>
+                <br>
+                <span class="color-image4">ティモン</span>に頼まれた<span color="#d080f8">鎧猿</span>30匹を全部退治した。<span
+                  color="#f8f800">巡察地域</span>に戻って、 <span class="color-image4">ティモン</span>に知らせよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 北東部　巡察団員ティモン（236.258）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">2個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 北東部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <span color="#666666">チャンスをつかめ！ - 鎧猿</span>　→　<a href="normalquest600.html#39">チャンスをつかめ！ -
+                  鎧猿[反復]</a><br>
+                <a href="normalquest600.html#40">チャンスをつかめ！ - 草毒蜘蛛</a>　→　<a href="normalquest600.html#41">チャンスをつかめ！ -
+                  草毒蜘蛛 [反復]</a><br>
+                <br>
+                初回は<span color="#666666">鎧猿</span>か<a href="normalquest600.html#40">草毒蜘蛛</a>をランダムで受諾。<br>
+                両方クリア後、<a href="normalquest600.html#39">鎧猿[反復]</a>と<a href="normalquest600.html#41">草毒蜘蛛
+                  [反復]</a>をランダムで受諾できる。<br>
+                <br>
+                <span class="color-image1">鎧猿</span>（Lv665)Zinを30匹倒す<br>
+                <br>
+                <span class="color-image4">巡察団員ティモン</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="39"></a><span color="#00ff00">チャンスをつかめ！ - 鎧猿[反復]</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">巡査団員ティモン</span>は疑問の森で暴れている<span
+                  color="#d080f8">鎧猿</span>を退治し、自警団から認められたい。<span class="color-image4">ティモン</span>を助け、<span
+                  color="#d080f8">鎧猿</span>を30匹倒してから戻ろう。<br>
+                <br>
+                <span class="color-image4">ティモン</span>に頼まれた<span color="#d080f8">鎧猿</span>30匹を全て退治した。<span
+                  color="#f8f800">巡察地域</span>に戻って、 <span class="color-image4">ティモン</span>に知らせよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 北東部　巡察団員ティモン（236.258）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700　繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">2個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 北東部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#38">チャンスをつかめ！ - 鎧猿</a>　→　<span color="#666666">チャンスをつかめ！ -
+                  鎧猿[反復]</span><br>
+                <a href="normalquest600.html#40">チャンスをつかめ！ - 草毒蜘蛛</a>　→　<a href="normalquest600.html#41">チャンスをつかめ！ -
+                  草毒蜘蛛 [反復]</a><br>
+                <br>
+                <span class="color-image1">鎧猿</span>（Lv665)Zinを30匹倒す<br>
+                <br>
+                <span class="color-image4">巡察団員ティモン</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="40"></a><span color="#00ff00">チャンスをつかめ！ - 草毒蜘蛛</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">巡査団員ティモン</span>は疑問の森で暴れている<span
+                  color="#d080f8">草毒蜘蛛</span>を退治し、自警団から認められたい。<span class="color-image4">ティモン</span>を助け、<span
+                  color="#d080f8">草毒蜘蛛</span>を50匹倒してから戻ろう。<br>
+                <br>
+                <span class="color-image4">ティモン</span>に頼まれた<span color="#d080f8">草毒蜘蛛</span>50匹を全部退治した。<span
+                  color="#f8f800">巡察地域</span>に戻って、 <span class="color-image4">ティモン</span>に知らせよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 北東部　巡察団員ティモン（236.258）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">2個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 北東部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#38">チャンスをつかめ！ - 鎧猿</a>　→　<a href="normalquest600.html#39">チャンスをつかめ！ -
+                  鎧猿[反復]</a><br>
+                <span color="#666666">チャンスをつかめ！ - 草毒蜘蛛</span>　→　<a href="normalquest600.html#41">チャンスをつかめ！ - 草毒蜘蛛
+                  [反復]</a><br>
+                <br>
+                初回は<a href="normalquest600.html#38">鎧猿</a>か<span color="#666666">草毒蜘蛛</span>をランダムで受諾。<br>
+                両方クリア後、<a href="normalquest600.html#39">鎧猿[反復]</a>と<a href="normalquest600.html#41">草毒蜘蛛
+                  [反復]</a>をランダムで受諾できる。<br>
+                <br>
+                <span class="color-image1">草毒蜘蛛</span>（Lv665)Zinを50匹倒す<br>
+                <br>
+                <span class="color-image4">巡察団員ティモン</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="41"></a><span color="#00ff00">チャンスをつかめ！ - 草毒蜘蛛 [反復]</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">巡査団員ティモン</span>は疑問の森で暴れている<span
+                  color="#d080f8">草毒蜘蛛</span>を退治し、自警団から認められたい。<span class="color-image4">ティモン</span>を助け、<span
+                  color="#d080f8">草毒蜘蛛</span>を50匹倒してから戻ろう。<br>
+                <br>
+                <span class="color-image4">ティモン</span>に頼まれた<span color="#d080f8">草毒蜘蛛</span>50匹を全部退治した。<span
+                  color="#f8f800">巡察地域</span>に戻って、<span class="color-image4">ティモン</span>に知らせよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 北東部　巡察団員ティモン（236.258）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700　繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">2個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 北東部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#38">チャンスをつかめ！ - 鎧猿</a>　→　<a href="normalquest600.html#39">チャンスをつかめ！ -
+                  鎧猿[反復]</a><br>
+                <a href="normalquest600.html#40">チャンスをつかめ！ - 草毒蜘蛛</a>　→　<span color="#666666">チャンスをつかめ！ - 草毒蜘蛛
+                  [反復]</span><br>
+                <br>
+                <span class="color-image1">草毒蜘蛛</span>（Lv665)Zinを50匹倒す<br>
+                <br>
+                <span class="color-image4">巡察団員ティモン</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="42"></a><span color="#00ff00">救急患者</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span color="#f8f800">自警団本部</span>にいる<span class="color-image4">医療員ティージ</span>から毒にやられた団員を治すため、<span
+                  color="#d080f8">草毒蜘蛛</span>を倒し、<span class="color-image14">猛毒サンプル</span>を30個持ってきて欲しいとお願いされた。<span
+                  class="color-image14">猛毒サンプル</span>は<span color="#f8f800">蜘蛛の森</span>から入手できる。<br>
+                <br>
+                <span class="color-image14">猛毒サンプル</span>を30個全部集めた。急いで<span color="#f8f800">自警団本部</span>の<span
+                  class="color-image4">医療員ティージ</span>に渡そう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 北東部　医療員ティージ（228.37）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">4個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 北東部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <span color="#666666">救急患者</span>　→　<a href="normalquest600.html#43">救急患者[反復]</a><br>
+                <br>
+                <span class="color-image1">草毒蜘蛛</span>（Lv665)Zinを倒す<br>
+                <br>
+                <span class="color-image4">医療員ティージ</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="43"></a><span color="#00ff00">救急患者[反復]</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span color="#f8f800">自警団本部</span>にいる<span class="color-image4">医療員ティージ</span>は毒にやられた団員を治すため、<span
+                  color="#d080f8">草毒蜘蛛</span>を倒し、<span class="color-image14">猛毒サンプル</span>を30個持ってきて欲しいとお願いしている。<span
+                  class="color-image14">猛毒サンプル</span>は<span color="#f8f800">蜘蛛の森</span>から入手できる。<br>
+                <br>
+                <span class="color-image14">猛毒サンプル</span>30個を全部集めた。急いで<span color="#f8f800">自警団本部</span>の<span
+                  class="color-image4">医療員ティージ</span>に渡そう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 北東部　医療員ティージ（228.37）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700　繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">4個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 北東部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#42">救急患者</a>　→　<span color="#666666">救急患者[反復]</span><br>
+                <br>
+                <span class="color-image1">草毒蜘蛛</span>（Lv665)Zinを倒す<br>
+                <br>
+                <span class="color-image4">医療員ティージ</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="44"></a><span color="#00ff00">団長の悩み</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>自警団の<span
+                  class="color-image4">副団長ハクン</span>は団長ハモンスが疑問の森で勢力を広めているゴブリンを心配していると言い、ゴブリン討伐を頼んできた。<span
+                  color="#d080f8">森ゴブリン</span>を50匹退治し、<span class="color-image14">ゴブリン部族の証</span>を25個集め、ハクンの所に戻ろう。<br>
+                <br>
+                <span color="#d080f8">森ゴブリン</span>50匹を全部退治し、<span class="color-image14">ゴブリン部族の証</span>25個も全部集めた。<span
+                  color="#f8f800">自警団本部</span>の<span class="color-image4">副団長ハクン</span>に伝えよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 北東部　副団長ハクン（246.50）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">5個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 北東部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <span color="#666666">団長の悩み</span>　→　<a href="normalquest600.html#45">団長の悩み[反復]</a><br>
+                <br>
+                <span class="color-image1">森ゴブリン</span>（Lv665)Zinを倒す<br>
+                <br>
+                <span class="color-image4">副団長ハクン</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="45"></a><span color="#00ff00">団長の悩み[反復]</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>自警団の<span
+                  class="color-image4">副団長ハクン</span>は団長ハモンスが疑問の森で勢力を広めているゴブリンを心配していると言い、ゴブリン討伐を頼んできた。<span
+                  color="#d080f8">森ゴブリン</span>を50匹退治し、<span class="color-image14">ゴブリン部族の証</span>を25個集め、ハクンの所に戻ろう。<br>
+                <br>
+                <span color="#d080f8">森ゴブリン</span>50匹を全部退治し、<span class="color-image14">ゴブリン部族の証</span>25個も全部集めた。<span
+                  color="#f8f800">自警団本部</span>の<span class="color-image4">副団長ハクン</span>に伝達しよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 北東部　副団長ハクン（246.50）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700　繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">5個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 北東部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#44">団長の悩み</a>　→　<span color="#666666">団長の悩み[反復]</span><br>
+                <br>
+                <span class="color-image1">森ゴブリン</span>（Lv665)Zinを倒す<br>
+                <br>
+                <span class="color-image4">副団長ハクン</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="46"></a><span color="#00ff00">特異変種</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>生態学者バロンの助手<span
+                  class="color-image4">研究員アルドリン</span>は猿の襲撃により研究地から追い出された。バロンの指示により自警団にも助けを求めたが、自警団だけでは退治しきれないらしい。彼を手伝って<span
+                  color="#d080f8">変種野原猿</span>60匹倒そう。必ず<span color="#f8f800">猿の生息地</span>にいる変種野原猿を退治しなければならない。<br>
+                <br>
+                <span color="#d080f8">野原猿</span>60匹を全部退治した。<span color="#f8f800">自警団本部</span>の<span
+                  class="color-image4">研究員アルドリン</span>の所に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 北東部　研究員アルドリン（242.53）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">3個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 北東部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <span color="#666666">特異変種</span>　→　<a href="normalquest600.html#47">特異変種[反復]</a><br>
+                <br>
+                <span class="color-image1">変種野原猿</span>（Lv700)Zinを60匹倒す、非アクティブ<br>
+                <br>
+                <span class="color-image4">研究員アルドリン</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="47"></a><span color="#00ff00">特異変種[反復]</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>生態学者バロンの助手<span
+                  class="color-image4">研究員アルドリン</span>は猿の襲撃により研究地から追い出された。バロンの指示により自警団にも助けを求めたが、自警団だけでは退治しきれないらしい。彼を手伝って<span
+                  color="#d080f8">変種野原猿</span>600匹倒そう。必ず<span color="#f8f800">猿の生息地</span>にいる変種野原猿を退治しなければならない。<br>
+                <br>
+                <span color="#d080f8">野原猿</span>60匹を全部退治した。<span color="#f8f800">自警団本部</span>の<span
+                  class="color-image4">研究員アルドリン</span>に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 北東部　研究員アルドリン（242.53）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700　繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">3個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 北東部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#46">特異変種</a>　→　<span color="#666666">特異変種[反復]</span><br>
+                <br>
+                <span class="color-image1">変種野原猿</span>（Lv700)Zinを60匹倒す、非アクティブ。クエスト情報欄の600匹は誤り。<br>
+                <br>
+                <span class="color-image4">研究員アルドリン</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="48"></a><span color="#00ff00">猛毒の調査</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">毒専門家ハイル</span>から、疑問の森の<span color="#d080f8">毒亀</span>もしくは<span
+                  color="#d080f8">毒子亀</span>を倒し、<span class="color-image14">亀の毒</span>30個集めて欲しい。と頼まれた。<span
+                  class="color-image14">亀の毒</span>は<span color="#f8f800">猛毒の森</span>から入手できる。<br>
+                <br>
+                <span class="color-image14">亀の毒</span>30個を全部集めた。<span color="#f8f800">北西部安全地域</span>の<span
+                  class="color-image4">毒専門家ハイル</span>に伝えよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 北西部　毒専門家ハイル（184.236）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">2個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 北西部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <span color="#666666">猛毒の調査</span>　→　<a href="normalquest600.html#49">猛毒の調査[反復]</a><br>
+                <br>
+                <span class="color-image1">毒亀</span>（Lv680)Zin、<span class="color-image1">毒子亀</span>（Lv680)Zinを倒す<br>
+                <br>
+                <span class="color-image4">毒専門家ハイル</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="49"></a><span color="#00ff00">猛毒の調査[反復]</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">毒専門家ハイル</span>から、疑問の森の<span color="#d080f8">毒亀</span>もしくは<span
+                  color="#d080f8">毒子亀</span>を倒し、<span class="color-image14">亀の毒</span>30個集めて欲しい。と頼まれた。<span
+                  class="color-image14">亀の毒</span>は<span color="#f8f800">猛毒の森</span>から手に入る。<br>
+                <br>
+                <span class="color-image14">亀の毒</span>30個を全部集めた。<span color="#f8f800">北西部安全地域</span>の<span
+                  class="color-image4">毒専門家ハイル</span>に伝えよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 北西部　毒専門家ハイル（184.236）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700　繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">2個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 北西部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#48">猛毒の調査</a>　→　<span color="#666666">猛毒の調査[反復]</span><br>
+                <br>
+                <span class="color-image1">毒亀</span>（Lv680)Zin、<span class="color-image1">毒子亀</span>（Lv680)Zinを倒す<br>
+                <br>
+                <span class="color-image4">毒専門家ハイル</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="50"></a><span color="#00ff00">友情を取り戻せ</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">ラニス</span>は逃げたことを反省している。友達に自分の勇気を示したいので、森のダークベアーとカスルベアーを倒し、その証として<span
+                  class="color-image14">熊の爪</span>を20個集め、渡して欲しい。<br>
+                <br>
+                <span class="color-image4">ラニス</span>に頼まれた<span class="color-image14">熊の爪</span>20個を全部集めた。<span
+                  color="#f8f800">北西部安全地域</span>の<span class="color-image4">ラニス</span>に伝えよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 北西部　ラニス（199.254）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">3個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 北西部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <span color="#666666">友情を取り戻せ</span>　→　<a href="normalquest600.html#51">友情を取り戻せ[反復]</a><br>
+                <br>
+                <span class="color-image1">ダークベアー</span>（Lv680)Zin、<span
+                  class="color-image1">カスルベアー</span>（Lv680)Zinを倒す<br>
+                <br>
+                <span class="color-image4">ラニス</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="51"></a><span color="#00ff00">友情を取り戻せ[反復]</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">ラニス</span>は逃げ出したことを反省している。友達に自分の勇気を示したいので、森のダークベアーとカスルベアーを倒し、その証として<span
+                  class="color-image14">熊の爪</span>を20個集め、渡して欲しい。<br>
+                <br>
+                <span class="color-image4">ラニス</span>に頼まれた<span class="color-image14">熊の爪</span>20個を全部集めた。<span
+                  color="#f8f800">北西部安全地域</span>の<span class="color-image4">ラニス</span>に伝達しよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 北西部　ラニス（199.254）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700　繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">3個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 北西部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#50">友情を取り戻せ</a>　→　<span color="#666666">友情を取り戻せ[反復]</span><br>
+                <br>
+                <span class="color-image1">ダークベアー</span>（Lv680)Zin、<span
+                  class="color-image1">カスルベアー</span>（Lv680)Zinを倒す<br>
+                <br>
+                <span class="color-image4">ラニス</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="52"></a><span color="#00ff00">富商への夢</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">商人ピンス</span>は富を求め疑問の森を訪ねたが、<span
+                  color="#d080f8">森オーガ</span>の襲撃で、全財産を払って購入した物品を盗まれた。<span color="#d080f8">森オーガ</span>を退治し、<span
+                  class="color-image14">失った物品</span>20個を取り戻してあげよう。<br>
+                <br>
+                <span color="#d080f8">森オーガ</span>を全部退治し、<span class="color-image14">失った物品</span>も全部集めた。<span
+                  color="#f8f800">北西部安全地域</span>にいる<span class="color-image4">商人ピンス</span>に伝達しよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 北西部　商人ピンス（27.209）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">3個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 北西部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <span color="#666666">富商への夢</span>　→　<a href="normalquest600.html#53">富商への夢[反復]</a><br>
+                <br>
+                <span class="color-image1">森オーガ</span>（Lv700)Zinを倒す<br>
+                <br>
+                <span class="color-image4">商人ピンス</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="53"></a><span color="#00ff00">富商への夢[反復]</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">商人ピンス</span>は富を求め疑問の森を訪ねたが、<span
+                  color="#d080f8">森オーガ</span>の襲撃で、全財産を払って購入した物品を盗まれた。<span color="#d080f8">森オーガ</span>を退治し、<span
+                  class="color-image14">失った物品</span>20個を取り戻してあげよう。<br>
+                <br>
+                <span color="#d080f8">森オーガ</span>を全部退治し、<span class="color-image14">失った物品</span>も全部集めた。<span
+                  color="#f8f800">北西部安全地域</span>にいる<span class="color-image4">商人ピンス</span>に伝達しよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 北西部　商人ピンス（27.209）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700　繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">3個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 北西部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#52">富商への夢</a>　→　<span color="#666666">富商への夢[反復]</span><br>
+                <br>
+                <span class="color-image1">森オーガ</span>（Lv700)Zinを倒す<br>
+                <br>
+                <span class="color-image4">商人ピンス</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="54"></a><span color="#00ff00">征服の夢</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>自警団の<span
+                  class="color-image4">副団長ザクン</span>は弟の副団長ハクンとは正反対の性格だ。ザクンは疑問の森の征服を夢見て、北西部に生息する<span
+                  color="#d080f8">トリエント</span>の30匹退治を指示した。<br>
+                <br>
+                <span class="color-image4">副団長ザクン</span>に頼まれた<span color="#d080f8">トリエント</span>30匹を全部退治した。<span
+                  color="#f8f800">北西部巡査地</span>に戻り、<span class="color-image4">副団長ザクン</span>に知らせよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 北西部　副団長ザクン（21.188）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">5個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 北西部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <span color="#666666">征服の夢</span>　→　<a href="normalquest600.html#55">征服の夢[反復]</a><br>
+                <br>
+                <span class="color-image1">トリエント</span>（Lv680)Zinを30匹倒す<br>
+                <br>
+                <span class="color-image4">副団長ザクン</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="55"></a><span color="#00ff00">征服の夢[反復]</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>自警団の<span
+                  class="color-image4">副団長ザクン</span>は弟の副団長ハクンとは正反対の性格だ。ザクンは疑問の森の征服を夢見て、北西部に生息する<span
+                  color="#d080f8">トリエント</span>の30匹退治を指示した。<br>
+                <br>
+                <span class="color-image4">副団長ザクン</span>に頼まれた<span color="#d080f8">トリエント</span>30匹を全部退治した。<span
+                  color="#f8f800">北西部巡査地</span>に戻り、<span class="color-image4">副団長ザクン</span>に知らせよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 北西部　副団長ザクン（21.188）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700　繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">5個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 北西部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#54">征服の夢</a>　→　<span color="#666666">征服の夢[反復]</span><br>
+                <br>
+                <span class="color-image1">トリエント</span>（Lv680)Zinを30匹倒す<br>
+                <br>
+                <span class="color-image4">副団長ザクン</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="56"></a><span color="#00ff00">古代種研究</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">古代種博士ビル</span>は研究のため、<span class="color-image14">古代種の体液</span>が60個欲しい。<span
+                  class="color-image14">古代種の体液</span>は<span color="#f8f800">古代種の森-北部</span>と<span
+                  color="#f8f800">古代種の森-南部</span>に出没する<span color="#d080f8">古代種</span>モンスターを倒すと獲得できる。<br>
+                <br>
+                <span class="color-image4">古代種博士ビル</span>に頼まれた<span class="color-image14">古代種の体液</span>を全部獲得した。<span
+                  color="#f8f800">自警団臨時本部</span>に戻り、<span class="color-image4">古代種博士ビル</span>に渡そう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 南西部　古代種博士ビル（140.308）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">3個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 南西部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <span color="#666666">古代種研究</span>　→　<a href="normalquest600.html#57">古代種の研究[反復]</a><br>
+                <br>
+                <span class="color-image1">古代種イフリィト</span>（Lv665)Zin、<span
+                  class="color-image1">古代種デスアイ</span>（Lv665)Zin、<span
+                  class="color-image1">古代種ファントム</span>（Lv700)Zinを倒す<br>
+                <br>
+                <span class="color-image4">古代種博士ビル</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="57"></a><span color="#00ff00">古代種の研究[反復]</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">古代種博士ビル</span>は研究のため、<span class="color-image14">古代種の体液</span>が60個欲しい。<span
+                  class="color-image14">古代種の体液</span>は<span color="#f8f800">古代種の森-北部</span>と<span
+                  color="#f8f800">古代種の森-南部</span>に出没する<span color="#d080f8">古代種</span>モンスターを倒すと獲得できる。<br>
+                <br>
+                <span class="color-image4">古代種博士ビル</span>に頼まれた<span class="color-image14">古代種の体液</span>を全部獲得した。<span
+                  color="#f8f800">自警団臨時本部</span>に戻り、<span class="color-image4">古代種博士ビル</span>に渡そう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 南西部　古代種博士ビル（140.308）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700　繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">3個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 南西部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#56">古代種研究</a>　→　<span color="#666666">古代種の研究[反復]</span><br>
+                <br>
+                <span class="color-image1">古代種イフリィト</span>（Lv665)Zin、<span
+                  class="color-image1">古代種デスアイ</span>（Lv665)Zin、<span
+                  class="color-image1">古代種ファントム</span>（Lv700)Zinを倒す<br>
+                <br>
+                <span class="color-image4">古代種博士ビル</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="58"></a><span color="#00ff00">観測調査</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">観測士カールン</span>は鷲戦士の襲撃で失くした装備を探している。<span
+                  color="#d080f8">鷲戦士</span>を倒し、カールンが失くした装備を探してあげよう。<span class="color-image14">カールンの装備</span>は<span
+                  color="#f8f800">丘の森</span>の<span color="#d080f8">鷲戦士</span>を退治すると手に入る。<br>
+                <br>
+                <span class="color-image14">カールンの装備</span>を全部集めた。<span color="#f8f800">自警団臨時本部</span>の<span
+                  class="color-image4">観測士カールン</span>に伝達しよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 南西部　観測士カールン（129.301）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">4個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 南西部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <span color="#666666">観測調査</span>　→　<a href="normalquest600.html#59">観測調査[反復]</a><br>
+                <br>
+                <span class="color-image1">鷲戦士</span>（Lv680)Zinを倒す<br>
+                <br>
+                <span class="color-image4">観測士カールン</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="59"></a><span color="#00ff00">観測調査[反復]</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">観測士カールン</span>は鷲戦士の襲撃で失くした装備を探している。<span
+                  color="#d080f8">鷲戦士</span>を倒し、カールンが失くした装備を探してあげよう。<span class="color-image14">カールンの装備</span>は<span
+                  color="#f8f800">丘の森</span>の<span color="#d080f8">鷲戦士</span>を退治すると手に入る。<br>
+                <br>
+                <span class="color-image14">カールンの装備</span>を全部集めた。<span color="#f8f800">自警団臨時本部</span>の<span
+                  class="color-image4">観測士カールン</span>に伝達しよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 南西部　観測士カールン（129.301）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700　繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">4個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 南西部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#58">観測調査</a>　→　<span color="#666666">観測調査[反復]</span><br>
+                <br>
+                <span class="color-image1">鷲戦士</span>（Lv680)Zinを倒す<br>
+                <br>
+                <span class="color-image4">観測士カールン</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="60"></a><span color="#00ff00">家族の復讐</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">自警団員エイル</span>は弟の復讐を誓った。<span color="#f8f800">霧の森</span>に生息する<span
+                  color="#d080f8">丘蜘蛛</span>を60匹倒したあと戻ろう。<br>
+                <br>
+                <span color="#d080f8">丘蜘蛛</span>を全部退治した！<span color="#f8f800">南西部 巡察地域</span>に戻って、 <span
+                  class="color-image4">自警団員エイル</span>に知らせよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 南西部　自警団員エイル（21.150）<br>
+                </span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">2個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 南西部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <span color="#666666">家族の復讐</span>　→　<a href="normalquest600.html#61">家族の復讐[反復]</a><br>
+                <br>
+                <span class="color-image1">丘蜘蛛</span>（Lv700)Zinを60匹倒す<br>
+                <br>
+                <span class="color-image4">自警団員エイル</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+
+              </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="61"></a><span color="#00ff00">家族の復讐[反復]</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">自警団員エイル</span>は家族の復讐を誓った。<span color="#f8f800">霧の森</span>に生息する<span
+                  color="#d080f8">丘蜘蛛</span>を60匹倒したあと戻ろう。<br>
+                <br>
+                <span color="#d080f8">丘蜘蛛</span>を全部退治した！<span color="#f8f800">南西部 巡察地域</span>に戻って、<span
+                  class="color-image4">自警団員エイル</span>に知らせよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">疑問の森 南西部　自警団員エイル（21.150）<br>
+                </span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv650～700　繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><a href="../information/magicstone.html">魔法の石（疑問の森）</a><span class="color-image20">2個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">疑問の森 南西部</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#60">家族の復讐</a>　→　<span color="#666666">家族の復讐[反復]</span><br>
+                <br>
+                <span class="color-image1">丘蜘蛛</span>（Lv700)Zinを60匹倒す<br>
+                <br>
+                <span class="color-image4">自警団員エイル</span>へ</td>
+            </tr>
+
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="16"></a><span color="#00ff00">失われた故郷</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ２のパナディルにいる若き王<span
+                  class="color-image4">カタフ</span>に、パナディルの王の証である<span
+                  class="color-image14">巨大なカボチャの杖</span>を取り戻してほしいと頼まれた。<span
+                  class="color-image14">巨大なカボチャの杖</span>は、ミステリー地域の<span color="#d080f8">リトルデビルアイ</span>が持っているそうだ。<br>
+                <br>神秘の洞窟　Ｂ２のパナディルにいる若き王<span class="color-image4">カタフ</span>に頼まれた<span
+                  class="color-image14">巨大なカボチャの杖</span>を取り戻した。<span class="color-image4">カタフ</span>のところに戻ろう。<br>
+                <br>神秘の洞窟　Ｂ２のパナディルにいる若き王<span class="color-image4">カタフ</span>に、パナディルが強くなるために必要な<span
+                  class="color-image14">原始巨大亀の卵</span> 15個を手に入れてきて欲しいと頼まれた。<span
+                  color="#d080f8">原始巨大亀</span>は、パナディル段丘で見かけることができるそうだ。<br>
+                <br>神秘の洞窟　Ｂ２のパナディルにいる若き王<span class="color-image4">カタフ</span>に頼まれた<span
+                  class="color-image14">原始巨大亀の卵</span> 15個をすべて手に入れた。<span class="color-image4">カタフ</span>のところに戻ろう。<br>
+                <br>神秘の洞窟　Ｂ２のパナディルにいる若き王<span class="color-image4">カタフ</span>に、再びパナディルが素晴らしい故郷となるのに邪魔となるミステリー地域の<span
+                  color="#d080f8">スカルデビルアイ</span>を退治してきてほしいと頼まれた。<br>
+                <br>神秘の洞窟　Ｂ２のパナディルにいる若き王<span class="color-image4">カタフ</span>に頼まれたミステリー地域の <span
+                  color="#d080f8">スカルデビルアイ</span>退治が完了した。<span class="color-image4">カタフ</span>のところに戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">神秘の洞窟　Ｂ２　カタフ（157.118）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv675</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">経験値2560万</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">神秘の洞窟　Ｂ２</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <span color="#666666">失われた故郷</span> → <a href="normalquest600.html#17">パナディル：デビルアイを退治せよ！</a> <a
+                  href="normalquest600.html#18">パナディル：ポロナが食べたい！</a><br>
+                <br>
+                <span class="color-image1">リトルデビルアイ</span>（Lv685)Zinを倒す<br>
+                <br>
+                <span class="color-image4">カタフ</span>へ<br>
+                <br>
+                <span class="color-image1">原始巨大亀</span>（Lv710)Zinを倒す<br>
+                <br>
+                <span class="color-image4">カタフ</span>へ<br>
+                <br>
+                <span class="color-image1">スカルデビルアイ</span>（Lv690)Zinを30匹倒す<br>
+                <br>
+                <span class="color-image4">カタフ</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="17"></a><span color="#00ff00">パナディル：デビルアイを退治せよ！</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ２のパナディルにいる若き王<span class="color-image4">カタフ</span>に、<span
+                  color="#f8f800">ミステリー地域</span>にいる<span color="#d080f8">リトルデビルアイ</span>、<span
+                  color="#d080f8">ビッグデビルアイ</span>、<span color="#d080f8">スカルデビルアイ</span>を退治してきてほしいと頼まれた。<br>
+                <br>神秘の洞窟　Ｂ２のパナディルにいる若き王<span class="color-image4">カタフ</span>の依頼通り、<span
+                  color="#f8f800">ミステリー地域</span>に出没するデビルアイ一族をすべて退治した。<span class="color-image4">カタフ</span>のところに戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">神秘の洞窟　Ｂ２　カタフ（157.118）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv675　1日1回繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">Lv675～725　経験値428万　</span><a
+                  href="../information/goldcoin.html">黄金硬貨</a><span class="color-image20">1個<br>
+                  Lv726～</span>　　　<a href="../information/goldcoin.html">黄金硬貨</a><span class="color-image20">2個</span>
+              </td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">神秘の洞窟　Ｂ２</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#16">失われた故郷</a> → <span color="#666666">パナディル：デビルアイを退治せよ！</span> <a
+                  href="normalquest600.html#18">パナディル：ポロナが食べたい！</a><br>
+                <br>
+                <span class="color-image1">リトルデビルアイ</span>（Lv685)Zin、<span
+                  class="color-image1">ビッグデビルアイ</span>（Lv690)Zin、<span
+                  class="color-image1">スカルデビルアイ</span>（Lv690)Zinを100匹倒す<br>
+                <br>
+                <span class="color-image4">カタフ</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="18"></a><span color="#00ff00">パナディル：ポロナが食べたい！</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ２のパナディルにいる<span class="color-image4">コルタ</span>に<span
+                  color="#f8f800">ミステリー地域</span>にいる<span color="#d080f8">リトルデビルアイ</span>、<span
+                  color="#d080f8">ビッグデビルアイ</span>、<span color="#d080f8">スカルデビルアイ</span>から、<span
+                  class="color-image14">新鮮なポロナ</span>を手に入れて欲しいと頼まれた。<br>
+                <br>神秘の洞窟　Ｂ２のパナディルにいる<span class="color-image4">コルタ</span>の依頼通り、<span
+                  color="#f8f800">ミステリー地域</span>に出没するデビルアイ一族から<span class="color-image14">新鮮なポロナ</span>をすべて手に入れた。<span
+                  class="color-image4">コルタの所に戻ろう。</span><br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">神秘の洞窟　Ｂ２　コルタ（161.131）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv675　1日1回繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">Lv675～725　経験値428万　</span><a
+                  href="../information/goldcoin.html">黄金硬貨</a><span class="color-image20">1個<br>
+                  Lv726～</span>　　　<a href="../information/goldcoin.html">黄金硬貨</a><span class="color-image20">2個</span>
+              </td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">神秘の洞窟　Ｂ２</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#16">失われた故郷</a> → <a href="normalquest600.html#17">パナディル：デビルアイを退治せよ！</a>
+                <span color="#666666">パナディル：ポロナが食べたい！</span><br>
+                <br>
+                <span class="color-image1">リトルデビルアイ</span>（Lv685)Zin、<span
+                  class="color-image1">ビッグデビルアイ</span>（Lv690)Zin、<span
+                  class="color-image1">スカルデビルアイ</span>（Lv690)Zinを倒す<br>
+                <br>
+                <span class="color-image4">コルタ</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="19"></a><span color="#00ff00">鶏たちの戦争</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>チキチャカ族 危険地域のチキチャカ族の<span
+                  class="color-image4">チキフーコ</span>に、矢を作るに必要な<span class="color-image14">アンガーツリーの枝</span>
+                20本を手に入れてきて欲しいと頼まれた。<span class="color-image14">アンガーツリーの枝</span>は、<span
+                  color="#d080f8">アンガーツリー</span>から手に入れることができる。枯れ木地帯に行くと見つかるそうだ。<br>
+                <br>チキチャカ族 危険地域のチキチャカ族の<span class="color-image4">チキフーコ</span>に頼まれた<span
+                  class="color-image14">アンガーツリーの枝</span> 20本をすべて集めた。<span class="color-image4">チキフーコ</span>の所に戻ろう。<br>
+                <br>チキチャカ族 危険地域のチキチャカ族の<span class="color-image4">チキフーコ</span>に、内戦中の他のチキチャカ族を助けるためにパナディル段丘の<span
+                  color="#d080f8">オオダコ</span>、<span color="#d080f8">泥ゴーレム</span>、<span
+                  color="#d080f8">原始巨大亀</span>を退治してきてほしいと頼まれた。証として、それぞれから戦利品を 20個ずつ手に入れよう。<br>
+                <br>チキチャカ族 危険地域のチキチャカ族の<span class="color-image4">チキフーコ</span>に頼まれたパナディル段丘の敵を退治して、すべての戦利品を手に入れた。<span
+                  class="color-image4">チキフーコ</span>の所に戻ろう。<br>
+                <br>チキチャカ族 危険地域のチキチャカ族の<span
+                  class="color-image4">チキフーコ</span>に、内戦中の他のチキチャカ族を退治して、証として戦利品を手に入れてくるよう頼まれた。<span
+                  color="#d080f8">チキチャカ兵</span>、<span color="#d080f8">チキチャカ戦士</span>、<span
+                  color="#d080f8">チキチャカ族長</span>を退治し、それぞれの羽を手に入れよう。<br>
+                <br>チキチャカ族 危険地域のチキチャカ族の<span class="color-image4">チキフーコ</span>の依頼通り、<span
+                  color="#d080f8">チキチャカ兵</span>、<span color="#d080f8">チキチャカ戦士</span>、<span
+                  color="#d080f8">チキチャカ族長</span>を退治し、その証となる戦利品をすべて集めた。<span class="color-image4">チキフーコ</span>の所に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">神秘の洞窟　Ｂ２　チキフーコ（203.309）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv675</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">経験値2560万</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">神秘の洞窟　Ｂ２</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <span color="#666666">鶏たちの戦争</span>　→　<a href="normalquest600.html#20">チキチャカ：敵の羽を抜け！</a>　<a
+                  href="normalquest600.html#21">チキチャカ：敵の卵を奪え！</a><br>
+                <br>
+                <span class="color-image1">アンガーツリー</span>（Lv700）Zinを倒す<br>
+                <br>
+                <span class="color-image4">チキフーコ</span>へ<br>
+                <br>
+                <span class="color-image1">オオダコ</span>（Lv705)Zin、<span class="color-image1">泥ゴーレム</span>（Lv710)Zin、<span
+                  class="color-image1">原始巨大亀</span>（Lv710)Zinを倒す<br>
+                <br>
+                <span class="color-image4">チキフーコ</span>へ<br>
+                <br>
+                <span class="color-image1">チキチャカ兵</span>（Lv695)Zin、<span
+                  class="color-image1">チキチャカ戦士</span>（Lv700)Zin、<span
+                  class="color-image1">チキチャカ族長</span>（Lv700)Zinを倒す<br>
+                <br>
+                <span class="color-image4">チキフーコ</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="20"></a><span color="#00ff00">チキチャカ：敵の羽を抜け！</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ２のチキチャカ族 危険地域にいる<span
+                  class="color-image4">チキフーコ</span>に、<span color="#f8f800">チキチャカ族 危険地域</span>にいる<span
+                  color="#d080f8">チキチャカ兵</span>、<span color="#d080f8">チキチャカ戦士</span>、<span
+                  color="#d080f8">チキチャカ族長</span>を退治して、彼らの羽を抜いてきてほしいと頼まれた。<br>
+                <br>神秘の洞窟　Ｂ２のチキチャカ族 危険地域にいる<span class="color-image4">チキフーコ</span>の依頼通り、<span color="#f8f800">チキチャカ族
+                  危険地域</span>で内戦中の<span color="#d080f8">チキチャカ兵</span>、<span color="#d080f8">チキチャカ戦士</span>、<span
+                  color="#d080f8">チキチャカ族長</span>を退治して羽を抜いた。<span class="color-image4">チキフーコ</span>の所に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">神秘の洞窟　Ｂ２　チキフーコ（203.309）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv675　1日1回繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">Lv675～725　経験値428万　</span><a
+                  href="../information/goldcoin.html">黄金硬貨</a><span class="color-image20">1個<br>
+                  Lv726～</span>　　　<a href="../information/goldcoin.html">黄金硬貨</a><span class="color-image20">2個</span>
+              </td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">神秘の洞窟　Ｂ２</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#19">鶏たちの戦争</a>　→　<span color="#666666">チキチャカ：敵の羽を抜け！</span>　<a
+                  href="normalquest600.html#21">チキチャカ：敵の卵を奪え！</a><br>
+                <br>
+                <span class="color-image1">チキチャカ兵</span>（Lv695)Zin、<span
+                  class="color-image1">チキチャカ戦士</span>（Lv700)Zin、<span
+                  class="color-image1">チキチャカ族長</span>（Lv700)Zinを100匹倒す<br>
+                <br>
+                <span class="color-image4">チキフーコ</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="21"></a><span color="#00ff00">チキチャカ：敵の卵を奪え！</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ２のチキチャカ族 危険地域にいる<span
+                  class="color-image4">ポコチャ</span>に、<span color="#f8f800">チキチャカ族 危険地域</span>にいる<span
+                  color="#d080f8">チキチャカ族長</span>を退治して、<span class="color-image14">チキチャカ族長の卵</span>
+                25個を手に入れてきて欲しいと頼まれた。<br>
+                <br>神秘の洞窟　Ｂ２のチキチャカ族 危険地域にいる<span class="color-image4">ポコチャ</span>に頼まれた<span
+                  color="#d080f8">チキチャカ族長の卵</span> 25個をすべて集めた。<span class="color-image4">ポコチャ</span>の所に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">神秘の洞窟　Ｂ２　ポコチャ（201.302）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv675　1日1回繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">Lv675～725　経験値428万　</span><a
+                  href="../information/goldcoin.html">黄金硬貨</a><span class="color-image20">1個<br>
+                  Lv726～</span>　　　<a href="../information/goldcoin.html">黄金硬貨</a><span class="color-image20">2個</span>
+              </td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">神秘の洞窟　Ｂ２</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#19">鶏たちの戦争</a>　→　<a href="normalquest600.html#20">チキチャカ：敵の羽を抜け！</a>　<span
+                  color="#666666">チキチャカ：敵の卵を奪え！</span><br>
+                <br>
+                <span class="color-image1">チキチャカ族長</span>（Lv700)Zinを倒す<br>
+                <br>
+                <span class="color-image4">ポコチャ</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="22"></a><span color="#00ff00">悪魔の臭いがする！</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">セリネル</span>に、<span
+                  color="#f8f800">古代文明の遺跡</span>に棲む悪魔の一族である三日月一族の<span color="#d080f8">三日月一族の亡霊</span>、<span
+                  color="#d080f8">古代遺跡の守護者</span>、<span color="#d080f8">三日月邪臣</span>を倒し、それぞれから<span
+                  class="color-image14">三日月一族下級印</span> 10個、<span class="color-image14">三日月一族中級印</span> 10個、<span
+                  class="color-image14">三日月一族上級印</span> 10個を手に入れてきて欲しいと頼まれた。<br>
+                <br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">セリネル</span>に頼まれた三日月一族の印をすべて集めた。<span
+                  class="color-image4">セリネル</span>の所に戻ろう。<br>
+                <br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">セリネル</span>に、<span
+                  color="#f8f800">ミステリー地域</span>に棲む悪魔の一族であるデビルアイ一族の<span color="#d080f8">リトルデビルアイ</span>、<span
+                  color="#d080f8">ビッグデビルアイ</span>、<span color="#d080f8">スカルデビルアイ</span>を倒し、それぞれから<span
+                  class="color-image14">デビルアイ一族下級印</span> 12個、<span class="color-image14">デビルアイ一族中級印</span> 12個、<span
+                  class="color-image14">デビルアイ一族上級印</span> 12個を手に入れてきて欲しいと頼まれた。<br>
+                <br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">セリネル</span>に頼まれたデビルアイ一族の印をすべて集めた。<span
+                  class="color-image4">セリネル</span>の所に戻ろう。<br>
+                <br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">セリネル</span>に<span
+                  color="#f8f800">赤き血の遺跡</span>に棲む悪魔の一族である赤き血の一族の<span color="#d080f8">赤き血の番人</span>、<span
+                  color="#d080f8">赤き血の隊長</span>、<span color="#d080f8">赤き血の狂戦士</span>を倒し、それぞれから<span
+                  class="color-image14">赤き血の一族下級印</span> 15個、<span class="color-image14">赤き血の一族中級印</span> 15個、<span
+                  class="color-image14">赤き血の一族上級印</span> 15個を手に入れてきて欲しいと頼まれた。<br>
+                <br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">セリネル</span>に頼まれた赤き血の一族の印をすべて集めた。<span
+                  class="color-image4">セリネル</span>の所に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">神秘の洞窟　Ｂ２　セリネル（17.79）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv675</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">経験値2560万</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">神秘の洞窟　Ｂ２</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <span color="#666666">悪魔の臭いがする！</span>　→　<a href="normalquest600.html#23">本日の悪魔狩り：…</a><br>
+                <br>
+                <span class="color-image1">三日月一族の亡霊</span>（Lv685)Zin、<span
+                  class="color-image1">古代遺跡の守護者</span>（Lv690)Zin、<span
+                  class="color-image1">三日月邪臣</span>（Lv690)Zinを倒す<br>
+                <br>
+                <span class="color-image4">セリネル</span>へ<br>
+                <br>
+                <span class="color-image1">リトルデビルアイ</span>（Lv685)Zin、<span
+                  class="color-image1">ビッグデビルアイ</span>（Lv690)Zin、<span
+                  class="color-image1">スカルデビルアイ</span>（Lv690)Zinを倒す<br>
+                <br>
+                <span class="color-image4">セリネル</span>へ<br>
+                <br>
+                <span class="color-image1">赤き血の番人</span>（Lv705)Zin、<span
+                  class="color-image1">赤き血の隊長</span>（Lv710)Zin、<span
+                  class="color-image1">赤き血の狂戦士</span>（Lv710)Zinを倒す<br>
+                <br>
+                <span class="color-image4">セリネル</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="23"></a><span color="#00ff00">本日の悪魔狩り：三日月一族</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">セリネル</span>に、<span
+                  color="#f8f800">古代文明の遺跡</span>に棲む悪魔の一族である三日月一族の<span color="#d080f8">三日月一族の亡霊</span>、<span
+                  color="#d080f8">古代遺跡の守護者</span>、<span color="#d080f8">三日月邪臣</span>を倒し、それぞれから<span
+                  class="color-image14">三日月一族下級紋章</span> 15個、<span class="color-image14">三日月一族中級紋章</span> 15個、<span
+                  class="color-image14">三日月一族上級紋章</span> 15個を手に入れてきて欲しいと頼まれた。<br>
+                <br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">セリネル</span>に頼まれた三日月一族の紋章をすべて集めた。<span
+                  class="color-image4">セリネル</span>の所に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="2"><span color="#00ff00">本日の悪魔狩り：デビルアイ一族</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">セリネル</span>に、<span
+                  color="#f8f800">ミステリー地域</span>に棲む悪魔の一族であるデビルアイ一族の<span color="#d080f8">リトルデビルアイ</span>、<span
+                  color="#d080f8">ビッグデビルアイ</span>、<span color="#d080f8">スカルデビルアイ</span>を倒し、それぞれから<span
+                  class="color-image14">デビルアイ一族下級紋章</span> 15個、<span class="color-image14">デビルアイ一族中級紋章</span> 15個、<span
+                  class="color-image14">デビルアイ一族上級紋章</span> 15個を手に入れてきて欲しいと頼まれた。<br>
+                <br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">セリネル</span>に頼まれたデビルアイ一族の紋章をすべて集めた。<span
+                  class="color-image4">セリネル</span>の所に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="2"><span color="#00ff00">本日の悪魔狩り：赤き血の一族</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">セリネル</span>に<span
+                  color="#f8f800">赤き血の遺跡</span>に棲む悪魔の一族である赤き血の一族の<span color="#d080f8">赤き血の番人</span>、<span
+                  color="#d080f8">赤き血の隊長</span>、<span color="#d080f8">赤き血の狂戦士</span>を倒し、それぞれから<span
+                  class="color-image14">赤き血の一族下級紋章</span> 15個、<span class="color-image14">赤き血の一族中級紋章</span> 15個、<span
+                  class="color-image14">赤き血の一族上級紋章</span> 15個を手に入れてきて欲しいと頼まれた。<br>
+                <br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">セリネル</span>に頼まれた赤き血の一族の紋章をすべて集めた。<span
+                  class="color-image4">セリネル</span>の所に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">神秘の洞窟　Ｂ２　セリネル（17.79）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv675　1日1回繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">Lv675～725　経験値428万　</span><a
+                  href="../information/goldcoin.html">黄金硬貨</a><span class="color-image20">1個<br>
+                  Lv726～</span>　　　<a href="../information/goldcoin.html">黄金硬貨</a><span class="color-image20">2個</span>
+              </td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">神秘の洞窟　Ｂ２</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#22">悪魔の臭いがする！</a>　→　<span color="#666666">本日の悪魔狩り：…</span><br>
+                <br>
+                (1)～(3)のクエストをランダムで受諾。<br>
+                好きな対象モンスターになるまでキャンセルして受け直し可能。<br>
+                <br>
+                (1)<span class="color-image1">三日月一族の亡霊</span>（Lv685)Zin、<span
+                  class="color-image1">古代遺跡の守護者</span>（Lv690)Zin、<span
+                  class="color-image1">三日月邪臣</span>（Lv690)Zinを倒す<br>
+                (2)<span class="color-image1">リトルデビルアイ</span>（Lv685)Zin、<span
+                  class="color-image1">ビッグデビルアイ</span>（Lv690)Zin、<span
+                  class="color-image1">スカルデビルアイ</span>（Lv690)Zinを倒す<br>
+                (3)<span class="color-image1">赤き血の番人</span>（Lv705)Zin、<span
+                  class="color-image1">赤き血の隊長</span>（Lv710)Zin、<span
+                  class="color-image1">赤き血の狂戦士</span>（Lv710)Zinを倒す<br>
+                <br>
+                <span class="color-image4">セリネル</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="24"></a><span color="#00ff00">騎士アタゴンの討伐任務</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">騎士アタゴン</span>に、<span
+                  color="#f8f800">古代文明の遺跡</span>にいる<span color="#d080f8">三日月一族の亡霊</span>、<span
+                  color="#d080f8">古代遺跡の守護者</span>、<span color="#d080f8">三日月邪臣</span>を退治してきてほしいと頼まれた。<br>
+                <br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">騎士アタゴン</span>に頼まれた<span
+                  color="#f8f800">古代文明の遺跡</span>の敵をすべて退治した。<span class="color-image4">騎士アタゴン</span>の所に戻ろう。<br>
+                <br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">騎士アタゴン</span>に、<span
+                  color="#f8f800">ミステリー地域</span>にいる<span color="#d080f8">リトルデビルアイ</span>、<span
+                  color="#d080f8">ビッグデビルアイ</span>、<span color="#d080f8">スカルデビルアイ</span>を退治してきてほしいと頼まれた。<br>
+                <br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">騎士アタゴン</span>に頼まれた<span
+                  color="#f8f800">ミステリー地域</span>の敵をすべて退治した。<span class="color-image4">騎士アタゴン</span>の所に戻ろう。<br>
+                <br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">騎士アタゴン</span>に、<span color="#f8f800">チキチャカ族
+                  危険地域</span>にいる<span color="#d080f8">チキチャカ兵</span>、<span color="#d080f8">チキチャカ戦士</span>、<span
+                  color="#d080f8">チキチャカ族長</span>を退治してきてほしいと頼まれた。<br>
+                <br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">騎士アタゴン</span>に頼まれた<span color="#f8f800">チキチャカ族
+                  危険地域</span>の敵をすべて退治した。<span class="color-image4">騎士アタゴン</span>の所に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">神秘の洞窟　Ｂ２　騎士アタゴン（16.65）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv675</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">経験値2560万</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">神秘の洞窟　Ｂ２</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <span color="#666666">騎士アタゴンの討伐任務</span>　→　<a href="normalquest600.html#25">本日の討伐任務：…</a><br>
+                <br>
+                <span class="color-image1">三日月一族の亡霊</span>（Lv685)Zin、<span
+                  class="color-image1">古代遺跡の守護者</span>（Lv690)Zin、<span
+                  class="color-image1">三日月邪臣</span>（Lv690)Zinを100匹倒す<br>
+                <br>
+                <span class="color-image4">騎士アタゴン</span>へ<br>
+                <br>
+                <span class="color-image1">リトルデビルアイ</span>（Lv685)Zin、<span
+                  class="color-image1">ビッグデビルアイ</span>（Lv690)Zin、<span
+                  class="color-image1">スカルデビルアイ</span>（Lv690)Zinを100匹倒す<br>
+                <br>
+                <span class="color-image4">騎士アタゴン</span>へ<br>
+                <br>
+                <span class="color-image1">チキチャカ兵</span>（Lv695)Zin、<span
+                  class="color-image1">チキチャカ戦士</span>（Lv700)Zin、<span
+                  class="color-image1">チキチャカ族長</span>（Lv700)Zinを100匹倒す<br>
+                <br>
+                <span class="color-image4">騎士アタゴン</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="25"></a><span color="#00ff00">本日の討伐任務：枯れ木地帯</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">騎士アタゴン</span>に、<span
+                  color="#f8f800">枯れ木地帯</span>にいる<span color="#d080f8">ロッテンツリー</span>、<span
+                  color="#d080f8">アンガーツリー</span>、<span color="#d080f8">歩く鎧人形</span>を退治してきてほしいと頼まれた。<br>
+                <br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">騎士アタゴン</span>に頼まれた<span
+                  color="#f8f800">枯れ木地帯</span>の敵をすべて退治した。<span class="color-image4">騎士アタゴン</span>の所に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="2"><span color="#00ff00">本日の討伐任務：チキチャカ族 危険地域</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">騎士アタゴン</span>に、<span
+                  color="#f8f800">チキチャカ族 危険地域</span>にいる<span color="#d080f8">チキチャカ兵</span>、<span
+                  color="#d080f8">チキチャカ戦士</span>、<span color="#d080f8">チキチャカ族長</span>を退治してきてほしいと頼まれた。<br>
+                <br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">騎士アタゴン</span>に頼まれた<span color="#f8f800">チキチャカ族
+                  危険地域</span>の敵をすべて退治した。<span class="color-image4">騎士アタゴン</span>の所に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="2"><span color="#00ff00">本日の討伐任務：パナディル段丘</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">騎士アタゴン</span>に、<span
+                  color="#f8f800">パナディル段丘</span>にいる<span color="#d080f8">オオダコ</span>、<span
+                  color="#d080f8">泥ゴーレム</span>、<span color="#d080f8">原始巨大亀</span>を退治してきてほしいと頼まれた。<br>
+                <br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">騎士アタゴン</span>に頼まれた<span
+                  color="#f8f800">パナディル段丘</span>の敵をすべて退治した。<span class="color-image4">騎士アタゴン</span>の所に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="2"><span color="#00ff00">本日の討伐任務：赤き血の遺跡</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">騎士アタゴン</span>に、<span
+                  color="#f8f800">赤き血の遺跡</span>にいる<span color="#d080f8">赤き血の番人</span>、<span
+                  color="#d080f8">赤き血の隊長</span>、<span color="#d080f8">赤き血の狂戦士</span>、<span
+                  color="#d080f8">赤き血の囚人</span>を退治してきてほしいと頼まれた。<br>
+                <br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">騎士アタゴン</span>に頼まれた<span
+                  color="#f8f800">赤き血の遺跡</span>の敵をすべて退治した。<span class="color-image4">騎士アタゴン</span>の所に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">神秘の洞窟　Ｂ２　騎士アタゴン（16.65）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv675　1日1回繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">Lv675～725　経験値428万　</span><a
+                  href="../information/goldcoin.html">黄金硬貨</a><span class="color-image20">1個<br>
+                  Lv726～</span>　　　<a href="../information/goldcoin.html">黄金硬貨</a><span class="color-image20">2個</span>
+              </td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">神秘の洞窟　Ｂ２</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#24">騎士アタゴンの討伐任務</a>　→　<span color="#666666">本日の討伐任務：…</span><br>
+                <br>
+                (1)～(4)のクエストをランダムで受諾。<br>
+                好きな対象モンスターになるまでキャンセルして受け直し可能。<br>
+                <br>
+                (1)<span class="color-image1">ロッテンツリー</span>（Lv695)Zin、<span
+                  class="color-image1">アンガーツリー</span>（Lv700)Zin、<span
+                  class="color-image1">歩く鎧人形</span>（Lv700)Zinを100匹倒す<br>
+                (2)<span class="color-image1">チキチャカ兵</span>（Lv695)Zin、<span
+                  class="color-image1">チキチャカ戦士</span>（Lv700)Zin、<span
+                  class="color-image1">チキチャカ族長</span>（Lv700)Zinを100匹倒す<br>
+                (3)<span class="color-image1">オオダコ</span>（Lv705)Zin、<span
+                  class="color-image1">泥ゴーレム</span>（Lv710)Zin、<span
+                  class="color-image1">原始巨大亀</span>（Lv710)Zinを100匹倒す<br>
+                (4)<span class="color-image1">赤き血の番人</span>（Lv705)Zin、<span
+                  class="color-image1">赤き血の隊長</span>（Lv710)Zin、<span class="color-image1">赤き血の狂戦士</span>（Lv710)Zin、<span
+                  class="color-image1">赤き血の囚人</span>（Lv710)Zinを100匹倒す<br>
+                <br>
+                <span class="color-image4">騎士アタゴン</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="26"></a><span color="#00ff00">道具屋ザックの依頼</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">道具屋ザック</span>に、<span
+                  color="#f8f800">ガルビウカ生息地</span>にいる<span color="#d080f8">ガルビウカ</span>から<span
+                  class="color-image14">巨大な骨</span> 20本を手に入れてきて欲しいと頼まれた。<br>
+                <br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">道具屋ザック</span>に頼まれた<span
+                  class="color-image14">巨大な骨</span> 20本をすべて集めた。<span class="color-image4">道具屋ザック</span>の所に戻ろう。<br>
+                <br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">道具屋ザック</span>に、<span color="#f8f800">枯れ木道</span>と<span
+                  color="#f8f800">枯れ木地帯</span>にいる<span color="#d080f8">ロッテンツリー</span>と<span
+                  color="#d080f8">アンガーツリー</span>から、<span class="color-image14">神秘の樹脂</span> 25個を手に入れてきて欲しいと頼まれた。<br>
+                <br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">道具屋ザック</span>に頼まれた<span
+                  class="color-image14">神秘の樹脂</span> 25個をすべて集めた。<span class="color-image4">道具屋ザック</span>の所に戻ろう。<br>
+                <br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">道具屋ザック</span>に、<span color="#f8f800">チキチャカ族
+                  危険地域</span>にいる<span color="#d080f8">チキチャカ兵</span>と<span color="#d080f8">チキチャカ戦士</span>、<span
+                  color="#d080f8">チキチャカ族長</span>を倒し、<span class="color-image14">チキチャカ族の刀</span> 30本を手に入れてきて欲しいと頼まれた。<br>
+                <br>神秘の洞窟　Ｂ２の討伐隊基地にいる<span class="color-image4">道具屋ザック</span>に頼まれた<span
+                  class="color-image14">チキチャカ族の刀</span> 30本をすべて集めた。<span class="color-image4">道具屋ザック</span>の所に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">神秘の洞窟　Ｂ２　道具屋ザック（28.75）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv675</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">経験値2560万</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">神秘の洞窟　Ｂ２</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <span color="#666666">道具屋ザックの依頼</span>　→　<a href="normalquest600.html#27">本日の収集品：…</a><br>
+                <br>
+                <span class="color-image1">ガルビウカ</span>（Lv680）Zinを倒す<br>
+                <br>
+                <span class="color-image4">道具屋ザック</span>へ<br>
+                <br>
+                <span class="color-image1">ロッテンツリー</span>（Lv695）Zin、<span
+                  class="color-image1">アンガーツリー</span>（Lv700）Zinを倒す<br>
+                <br>
+                <span class="color-image4">道具屋ザック</span>へ<br>
+                <br>
+                <span class="color-image1">チキチャカ兵</span>（Lv695）Zin、<span
+                  class="color-image1">チキチャカ戦士</span>（Lv700）Zin、<span
+                  class="color-image1">チキチャカ族長</span>（Lv700）Zinを倒す<br>
+                <br>
+                <span class="color-image4">道具屋ザック</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="240">
+            <col span="1" width="640">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="27"></a><span color="#00ff00">本日の収集品：三日月一族の遺物</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ２の<span color="#f8f800">討伐隊基地</span>にいる<span
+                  class="color-image4">道具屋ザック</span>に、必要な品を手に入れて欲しいと頼まれた。古代文明の遺跡に出没する<span
+                  color="#d080f8">三日月一族の亡霊</span>、<span color="#d080f8">古代遺跡の守護者</span>、<span
+                  color="#d080f8">三日月邪臣</span>を退治して、<span class="color-image14">三日月一族の遺物</span> 30個を手に入れよう。<br>
+                <br>
+                <span class="color-image14">三日月一族の遺物</span> 30個をすべて集めた。<span color="#f8f800">討伐隊基地</span>の<span
+                  class="color-image4">道具屋ザック</span>の所に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="2"><span color="#00ff00">本日の収集品：ポロナの銀の鱗</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ２の<span color="#f8f800">討伐隊基地</span>にいる<span
+                  class="color-image4">道具屋ザック</span>に、必要な品を手に入れて欲しいと頼まれた。ミステリー地域に出没する<span
+                  color="#d080f8">リトルデビルアイ</span>、<span color="#d080f8">ビッグデビルアイ</span>、<span
+                  color="#d080f8">スカルデビルアイ</span>を退治して、<span class="color-image14">ポロナの銀の鱗</span> 30個を手に入れよう。<br>
+                <br>
+                <span class="color-image14">ポロナの銀の鱗</span> 30個をすべて集めた。<span color="#f8f800">討伐隊基地</span>の<span
+                  class="color-image4">道具屋ザック</span>の所に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="2"><span color="#00ff00">本日の収集品：煌く貝殻</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ２の<span color="#f8f800">討伐隊基地</span>にいる<span
+                  class="color-image4">道具屋ザック</span>に必要な収集品を手に入れて欲しいと頼まれた。パナディル段丘に出没する<span
+                  color="#d080f8">オオダコ</span>、<span color="#d080f8">泥ゴーレム</span>、<span
+                  color="#d080f8">原始巨大亀</span>を退治して、<span class="color-image14">煌く貝殻</span> 30個を手に入れよう。<br>
+                <br>
+                <span class="color-image14">煌く貝殻</span> 30個をすべて集めた。<span color="#f8f800">討伐隊基地</span>の<span
+                  class="color-image4">道具屋ザック</span>の所に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="2"><span color="#00ff00">本日の収集品：赤き血の遺物</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>神秘の洞窟　Ｂ２の<span color="#f8f800">討伐隊基地</span>にいる<span
+                  class="color-image4">道具屋ザック</span>に、必要な品を手に入れて欲しいと頼まれた。赤き血の遺跡に出没する<span
+                  color="#d080f8">赤き血の番人</span>、<span color="#d080f8">赤き血の隊長</span>、<span
+                  color="#d080f8">赤き血の狂戦士</span>、<span color="#d080f8">赤き血の囚人</span>を退治して、<span
+                  class="color-image14">赤き血の遺物</span> 30個を手に入れよう。<br>
+                <br>
+                <span class="color-image14">赤き血の遺物</span> 30個をすべて集めた。<span color="#f8f800">討伐隊基地</span>の<span
+                  class="color-image4">道具屋ザック</span>の所に戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">神秘の洞窟　Ｂ２　道具屋ザック（28.75）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv675　1日1回繰り返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">Lv675～725　経験値428万　</span><a
+                  href="../information/goldcoin.html">黄金硬貨</a><span class="color-image20">1個<br>
+                  Lv726～</span>　　　<a href="../information/goldcoin.html">黄金硬貨</a><span class="color-image20">2個</span>
+              </td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">神秘の洞窟　Ｂ２</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest600.html#26">道具屋ザックの依頼</a>　→　<span color="#666666">本日の収集品：…</span><br>
+                <br>
+                (1)～(4)のクエストをランダムで受諾。<br>
+                好きな対象モンスターになるまでキャンセルして受け直し可能。<br>
+                <br>
+                (1)<span class="color-image1">三日月一族の亡霊</span>（Lv685)Zin、<span
+                  class="color-image1">古代遺跡の守護者</span>（Lv690)Zin、<span
+                  class="color-image1">三日月邪臣</span>（Lv690)Zinを倒す<br>
+                (2)<span class="color-image1">リトルデビルアイ</span>（Lv685)Zin、<span
+                  class="color-image1">ビッグデビルアイ</span>（Lv690)Zin、<span
+                  class="color-image1">スカルデビルアイ</span>（Lv690)Zinを倒す<br>
+                (3)<span class="color-image1">オオダコ</span>（Lv705)Zin、<span
+                  class="color-image1">泥ゴーレム</span>（Lv710)Zin、<span class="color-image1">原始巨大亀</span>（Lv710)Zinを倒す<br>
+                (4)<span class="color-image1">赤き血の番人</span>（Lv705)Zin、<span
+                  class="color-image1">赤き血の隊長</span>（Lv710)Zin、<span class="color-image1">赤き血の狂戦士</span>（Lv710)Zin、<span
+                  class="color-image1">赤き血の囚人</span>（Lv710)Zinを倒す<br>
+                <br>
+                <span class="color-image4">道具屋ザック</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+      <br>
+      <br>
+      [参考] <a href="https://yotsuba000.github.io/YotsubaDataBase/QuestDataBase/QuestDataBaseIndex.html">Yotsuba
+        Quest DataBase</a><br>
+      <br>
+      <br>
+      <footer class="android-footer mdl-mega-footer">
+        <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+          許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+        </font>
+        Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+      </footer>
+      <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+    </div>
+    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  </div>
+</body>
+
+</html>

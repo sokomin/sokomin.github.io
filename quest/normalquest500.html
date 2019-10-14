@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <a href="../index.html">トップ</a> >> <a href="../quest/quest.html">クエスト</a> >> <a
+                href="../quest/normalquest_list.html">一般クエスト</a><br>
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+                <h3>一般クエスト　Lv500～599</h3>
+                <br>
+                <table id="table14" style="text-align:left">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+
+                            <th colspan="2"><a name="1"></a><span color="#00ff00">奪われた指輪</span></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>
+                                <span class="color-image14">国王の指輪</span>が盗まれた。犯人は<span
+                                    color="#d080f8">スナッチャー</span>だ。モリネルタワーに隠れているという。そこは危ない所だから仲間たちと一緒に、ここを捜索してみよう。モリネルタワーの全ての階に隠れているようだが、隠れている人々の中で誰が国王の指輪を持っているのかは分からない。<br>
+                                <br>
+                                <span class="color-image14">国王の指輪</span>を見つけた。ビッグアイの訓練隊長<span
+                                    class="color-image4">トレース</span>のもとに戻ろう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">小都市ビッグアイ　訓練隊長トレース（90.51）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image20">Lv500</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値90万</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">モリネルタワー<br>
+                                    地上１～４階</span></td>
+                            <td><span class="color-image1">スナッチャー</span>（Lv100）を倒す</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">小都市ビッグアイ</span></td>
+                            <td><span class="color-image4">訓練隊長トレース</span>へ</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+                <table id="table14" style="text-align:left">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+
+                            <th colspan="2"><a name="2"></a><span color="#00ff00">隠された収容所 大捜査線 1</span></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>ビショップの<span
+                                    class="color-image4">マルティ・オッズ</span>に、脱獄を企てて同盟を結んだ収容所の凶悪犯たちを鎮静化するため、隠された収容所で諜報活動中のビショップの<span
+                                    class="color-image4">パルジェ</span>を訪ねるように言われた。いくつかある潜伏場所を回れば会えるはずだ。<br>
+                                <br>神聖結界が弱まった隙に脱獄する計画で各勢力をまとめて同盟を結び、<span color="#d080f8">ヴァンパイア一族</span>と<span
+                                    color="#d080f8">殺人鬼一族</span>の勢力争いも休戦させてしまった切れ者の<span
+                                    color="#d080f8">アルパレス</span>。そして、高慢な彼が気に入らない<span
+                                    color="#d080f8">キメラ研究員</span>。これからの問題を1つずつ解決しなければ、隠された収容所の鎮静化は難しそうだ。まずは、明晰な頭脳で凶悪犯たちを丸め込んでしまった希代の詐欺師<span
+                                    color="#d080f8">アルパレス</span>に近付き、様々な情報を手に入れよう。<br>
+                                <br>希代の詐欺師<span color="#d080f8">アルパレス</span>が、どれほどの実力があるのかテストするという。キメラ研究所にいる<span
+                                    color="#d080f8">キメラ</span>を退治して、<span
+                                    class="color-image14">拘束の首輪</span>を手に入れてこよう。<br>
+                                <br>実力テストの最中に、牢屋のような所に閉じ込められている人々を発見した。怪しまれないよう気をつけながら<span
+                                    color="#d080f8">アルパレス</span>に聞いてみよう。<br>
+                                <br>
+                                <span color="#d080f8">アルパレス</span>の話によれば、無差別に手を出させないために、<span
+                                    color="#d080f8">殺人鬼一族</span>・<span color="#d080f8">ヴァンパイア一族</span>・<span
+                                    color="#d080f8">キメラ研究員</span>にお供えとして、クジで選んだ凶悪犯を捧げているという。この事実を隠された収容所の潜伏場所にいる<span
+                                    class="color-image4">パルジェ</span>に知らせよう。<br>
+                                <br>お供えを捧げられている話にとても驚いたビショップの<span
+                                    class="color-image4">パルジェ</span>は、早くこの事を上に報告しなければと言う。そのためには、<span
+                                    color="#d080f8">殺人鬼一族</span>・<span color="#d080f8">ヴァンパイア一族</span>・<span
+                                    color="#d080f8">キメラ研究員</span>がいる各地域の牢屋の現状を<span
+                                    class="color-image14">マジックペーパー</span>に写し取らなければならない。<span
+                                    class="color-image14">マジックペーパー</span>を火で炙れば、現在地から直径500m以内の様子が保存されるらしい。牢屋の近くにある火を使おう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">神聖都市アウグスタ　マルティ・オッズ（105.15）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image20">Lv500</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値332万6200</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">隠された収容所</span></td>
+                            <td><span color="#ff0000">連作クエスト</span><br>
+                                <span color="#666666">隠された収容所 大捜査線 1</span>　→　<a href="normalquest500.html#3">隠された収容所
+                                    大捜査線 2</a>　→　<a href="normalquest500.html#4">隠された収容所 大捜査線 3</a>　→　<a
+                                    href="normalquest500.html#5">隠された収容所 大捜査線 4</a><br>
+                                <br>
+                                <span class="color-image4">パルジェ</span>（144.133）へ<br>
+                                <br>
+                                <span class="color-image4">アルパレス</span>（178.21）へ<br>
+                                <br>
+                                <span class="color-image1">キメラ</span>（Lv500）Zinを倒す。非アクティブ、アンテイム、ワーム攻撃あり。<br>
+                                <br>
+                                <span class="color-image4">アルパレス</span>へ<br>
+                                <br>
+                                <span class="color-image4">パルジェ</span>へ<br>
+                                <br>
+                                <span color="#ffff86">たいまつ</span>（44.118）（214.269）（236.155）をクリック<br>
+                                <br>
+                                <img src="./normalquest500_files/n500-001.gif" width="44" height="99" border="0"><br>
+                                <br>
+                                <img src="./normalquest500_files/n500-002-map495.gif" width="400" height="200"
+                                    border="0"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+                <table id="table14" style="text-align:left">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="2"><a name="3"></a><span color="#00ff00">隠された収容所 大捜査線 2</span></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>出来上がった<span
+                                    class="color-image14">マジックペーパー</span>をビショップの<span
+                                    class="color-image4">マルティ・オッズ</span>のところに送った。ビショップの<span
+                                    class="color-image4">パルジェ</span>のところに戻ろう。<br>
+                                <br>
+                                <span color="#d080f8">ヴァンパイア</span>を退治して、<span
+                                    class="color-image14">牢屋の鍵</span>を手に入れたら、お供えになった人たちを救出しよう。<br>
+                                <br>ヴァンパイア一族に捕まったすべての人々を救出した。しかし、他の地域に捕まっている人々が、いつ命を奪われるか分からない！ビショップの<span
+                                    class="color-image4">パルジェ</span>のところに急いで戻って、次の任務について聞こう。<br>
+                                <br>
+                                <span color="#d080f8">キメラ研究員</span>の実験材料にされる人々を救出することになった。ビショップの<span
+                                    class="color-image4">パルジェ</span>に、<span
+                                    class="color-image14">拘束の首輪</span>の核となる部品「魔力の玉」に<span
+                                    class="color-image14">カリモの葉</span>を塗って魔力を遮断するように言われた。<br>
+                                <span color="#00b8b8">カリモは、洞窟内の水辺に自生しているらしい。</span><br>
+                                <br>
+                                <span class="color-image14">カリモの葉</span>をすべて手に入れた。ビショップの<span
+                                    class="color-image4">パルジェ</span>のところに戻って、使用方法を教えてもらおう。<br>
+                                <br>キメラ研究所の机に置いてある<span class="color-image14">拘束の首輪</span>を探して、魔力の玉に<span
+                                    class="color-image14">カリモの絞り汁</span>を塗ろう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">隠された収容所</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image20">Lv500</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値272万1400</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">隠された収容所</span></td>
+                            <td><span color="#ff0000">連作クエスト</span><br>
+                                <a href="normalquest500.html#2">隠された収容所 大捜査線 1</a>　→　<span color="#666666">隠された収容所 大捜査線
+                                    2</span>　→　<a href="normalquest500.html#4">隠された収容所 大捜査線 3</a>　→　<a
+                                    href="normalquest500.html#5">隠された収容所 大捜査線 4</a><br>
+                                <br>
+                                <span class="color-image4">パルジェ</span>（144.133）へ<br>
+                                <br>
+                                <span class="color-image1">古代ヴァンパイア</span>（Lv550)Zinを倒す。非アクティブ、CP吸収攻撃あり。<br>
+                                <br>
+                                <span color="#ffff86">牢屋の扉</span>を10回クリック<br>
+                                （206.153）（210.157）（214.160）（219.142）（222.146）（226.150）<br>
+                                の6箇所あるが、少し時間が経つと何度でもクリックできる。<br>
+                                <br>
+                                <img src="./normalquest500_files/n500-003.gif" width="250" height="205" border="0"><br>
+                                <br>
+                                <img src="./normalquest500_files/n500-004-map495.gif" width="400" height="200"
+                                    border="0"><br>
+                                <br>
+                                <span class="color-image4">パルジェ</span>へ<br>
+                                <br>
+                                <span color="#ffff86">草</span>をクリック<br>
+                                （8.27）（44.19）（59.18）（89.19）（99.19）（128.17）（131.30）（222.15）（240.14）（258.16）（276.16）（278.50）<br>
+                                の12箇所あるが、少し時間が経つと何度でもクリックできる。<br>
+                                <br>
+                                <img src="./normalquest500_files/n500-005.gif" width="37" height="46" border="0"><br>
+                                <br>
+                                <img src="./normalquest500_files/n500-006-map495.gif" width="400" height="200"
+                                    border="0"><br>
+                                <br>
+                                <span class="color-image4">パルジェ</span>へ<br>
+                                <br>
+                                <span color="#ffff86">机</span>をクリック<br>
+                                （73.279）（73.283）（74.284）（89.260）（90.259）（100.249）（102.247）（109.248）（200.289）（203.291）<br>
+                                の10箇所あるが、少し時間が経つと何度でもクリックできる。<br>
+                                <br>
+                                <img src="./normalquest500_files/n500-007.gif" width="132" height="100" border="0"><br>
+                                <br>
+                                <img src="./normalquest500_files/n500-008-map495.gif" width="400" height="200"
+                                    border="0"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+                <table id="table14" style="text-align:left">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+
+                            <th colspan="2"><a name="4"></a><span color="#00ff00">隠された収容所 大捜査線 3</span></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>キメラ研究所に捕まった人々を直接救出することはできなかったが、<span
+                                    class="color-image14">拘束の首輪</span>の破壊に成功したので、自力で逃げることができるはずだ。あとは、殺人鬼に捕まった人々を救出するだけだ。ビショップの<span
+                                    class="color-image4">パルジェ</span>のところに戻って作戦をたてよう。<br>
+                                <br> 殺人鬼たちは、ヴァンパイアの牙を持ってくれば、奴隷一人を選んで持って行って良いという。ビショップの<span
+                                    class="color-image4">パルジェ</span>は、<span
+                                    class="color-image4">アルパレス</span>に関する嘘の情報を流して内部分裂させる作戦も同時に行うという。ヴァンパイア一族の地域で<span
+                                    color="#d080f8">古代ヴァンパイア</span>を退治して、<span
+                                    class="color-image14">ヴァンパイアの牙</span>を手に入れてこよう！<br>
+                                <br>
+                                <span class="color-image14">ヴァンパイアの牙</span>をすべて手に入れた。殺人鬼一族の幹部レペロのところに行き、<span
+                                    class="color-image14">ヴァンパイアの牙</span>と<span
+                                    class="color-image14">所有権証明書</span>を交換してもらったら、お供えにされた人に声をかけよう。<br>
+                                <br>もう少しで奴隷にされる所だった彼が、偽の情報を流してくれている。ビショップの<span
+                                    class="color-image4">パルジェ</span>のところに戻って状況を報告しよう。<br>
+                                <br>元々、信頼のかけらも無かった者同士だったため、偽の情報に惑わされた彼らは分裂一歩手前だ。しかし相手は、希代の詐欺師<span
+                                    color="#d080f8">アルパレス</span>である。彼が動き出す前に、追い討ちをかけておこう。ビショップの<span
+                                    class="color-image4">パルジェ</span>にもらった<span
+                                    class="color-image14">変装用の仮面</span>を着けて<span color="#d080f8">レック</span>に変装したら、<span
+                                    color="#d080f8">古代ヴァンパイア</span>たちに不信感を植え付けよう。<br>
+                                <span color="#00b8b8">変装用の仮面の着用必須！変装用の仮面を失くしてしまったら、ビショップのパルジェに言って新しいのをもらおう。</span><br>
+                                <br>
+                                <span color="#d080f8">古代ヴァンパイア</span>らは、<span
+                                    color="#d080f8">レック</span>が戦闘宣布してきたと思い込んだようだ。ビショップの<span
+                                    class="color-image4">パルジェ</span>のところに戻って、次の作戦をたてよう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">隠された収容所</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image20">Lv500</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値635万</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">隠された収容所</span></td>
+                            <td><span color="#ff0000">連作クエスト</span><br>
+                                <a href="normalquest500.html#2">隠された収容所 大捜査線 1</a>　→　<a
+                                    href="normalquest500.html#3">隠された収容所 大捜査線 2</a>　→　<span color="#666666">隠された収容所 大捜査線
+                                    3</span>　→　<a href="normalquest500.html#5">隠された収容所 大捜査線 4</a><br>
+                                <br>
+                                <span class="color-image4">パルジェ</span>（144.133）へ<br>
+                                <br>
+                                <span class="color-image1">古代ヴァンパイア</span>（Lv550)Zinを倒す<br>
+                                <br>
+                                <span class="color-image4">レペロ</span>（59.118）へ<br>
+                                <br>
+                                <span class="color-image4">奴隷予定者</span>（37.107）へ<br>
+                                <br>
+                                <span class="color-image4">パルジェ</span>へ<br>
+                                <br>
+                                <span class="color-image1">古代ヴァンパイア</span>（Lv550)Zinを20匹倒す。<br>
+                                変装用の仮面を装備した状態で倒さないと、クエスト更新されない。<br>
+                                <br>
+                                <img src="./normalquest500_files/n500-009.gif" width="298" height="148" border="0"><br>
+                                <br>
+                                <span class="color-image4">パルジェ</span>へ</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+                <table id="table14" style="text-align:left">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+
+                            <th colspan="2"><a name="5"></a><span color="#00ff00">隠された収容所 大捜査線 4</span></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class">
+                                <br>隠された収容所の暗黒組織は崩壊寸前だ。もう少し頑張れば、隠された収容所の同盟は完全に崩壊するだろう。次の任務は、<span
+                                    color="#d080f8">ジュペス</span>に変装して、<span color="#d080f8">恐怖の殺人鬼</span>と<span
+                                    color="#d080f8">極悪の殺人鬼</span>を退治し、2つの一族を対立させよう。<br>
+                                <span color="#00b8b8">変装用アイテムの着用必須！変装用アイテムを失くしてしまったら、ビショップのパルジェに言って新しいのをもらおう。</span><br>
+                                <br>
+                                <span color="#d080f8">殺人鬼</span>らは、<span
+                                    color="#d080f8">ジュペス</span>が直々に宣戦布告してきたと信じたようだ。ビショップの<span
+                                    class="color-image4">パルジェ</span>のところに戻って様子をみよう。<br>
+                                <br>ビショップの<span class="color-image4">パルジェ</span>は、<span
+                                    color="#d080f8">キメラ研究員</span>らが、ヴァンパイア一族との戦闘を避けるため、長年にわたり多くのことに譲歩してきた点を利用して、2つの一族が対立関係になるよう挑発してこいという。まずは、<span
+                                    color="#d080f8">ジュペス</span>に変装して<span color="#d080f8">研究所長</span>を挑発してこよう。<br>
+                                <span color="#00b8b8">変装用アイテの着用必須！</span><br>
+                                <br>
+                                <span color="#d080f8">研究所長</span>は、完全に騙されたようだ。ビショップの<span
+                                    class="color-image4">パルジェ</span>に報告しよう。<br>
+                                <br>隠された収容所の問題が、すべて解決した。ビショップの<span class="color-image4">マルティ・オッズ</span>に報告しよう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">隠された収容所　パルジェ（144.133）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image20">Lv500</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値257万</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">隠された収容所</span></td>
+                            <td><span color="#ff0000">連作クエスト</span><br>
+                                <a href="normalquest500.html#2">隠された収容所 大捜査線 1</a>　→　<a
+                                    href="normalquest500.html#3">隠された収容所 大捜査線 2</a>　→　<a
+                                    href="normalquest500.html#4">隠された収容所 大捜査線 3</a>　→　<span color="#666666">隠された収容所 大捜査線
+                                    4</span><br>
+                                <br>
+                                <span class="color-image1">恐怖の殺人鬼</span>（Lv500)Zin、<span
+                                    class="color-image1">極悪の殺人鬼</span>（Lv500)Zinを50匹倒す。<br>
+                                ジュペスのイヤリング/マントを装備した状態で倒さないと、クエスト更新されない。<br>
+                                <br>
+                                <img src="./normalquest500_files/n500-010.gif" width="299" height="195" border="0"><br>
+                                <br>
+                                <span class="color-image4">パルジェ</span>へ<br>
+                                <br>
+                                <span class="color-image4">研究所長</span>（207.292）へ<br>
+                                ジュペスのイヤリング/マントを装備した状態で話さないと、クエスト更新されない。<br>
+                                <br>
+                                <span class="color-image4">パルジェ</span>へ</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">神聖都市アウグスタ</span></td>
+                            <td><span class="color-image4">マルティ・オッズ</span>（105.15）へ</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+                <table id="table14" style="text-align:left">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+
+                            <th colspan="2"><a name="6"></a><span color="#00ff00">伝説のシャトゥ・ラヴォヌ</span></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>隠された収容所に、伝説のワイン<span
+                                    class="color-image14">シャトゥ・ラヴォヌ</span>が保管された倉庫があるという噂を聞いた<span
+                                    class="color-image4">ロミオ</span>が、隠された収容所に<span
+                                    class="color-image4">シャトゥ・ラヴォヌ</span>が存在するのか調べてほしいという。また、もしも実在するならば、どうしても飲んでみたいので、10本だけ持ち帰るように言われた。<br>
+                                <br>調査の結果、<span
+                                    class="color-image14">シャトゥ・ラヴォヌ</span>は、ヴァンパイア一族が管理する倉庫で発見された。10本のワインを手に入れたので、神聖都市アウグスタにいる<span
+                                    class="color-image4">ロミオ</span>のところに持って帰ろう。<br>
+                                <br>
+                                <span class="color-image14">シャトゥ・ラヴォヌ</span>をテイスティングした<span
+                                    class="color-image4">ロミオ</span>に、ワインと<span
+                                    class="color-image14">エシリアの花の種</span>をうまく組み合わせれば、同じような味が出せそうだから、隠された収容所から手に入れてきてほしいと頼まれた。<br>
+                                <br>
+                                <span class="color-image14">エシリアの花の種</span>をすべて手に入れた。神聖都市アウグスタにいる<span
+                                    class="color-image4">ロミオ</span>に渡そう。<br>
+                                <br>まだ何か足りないと感じた<span class="color-image4">ロミオ</span>は、ワインを熟成させる時に使う樽を作る材料で、伝説といわれる<span
+                                    class="color-image14">堅いバオバブの枝</span>のことを思い出した。事実かどうかは分からないが、ヴァンパイアたちは最後の瞬間に自らの心臓を突くために、この木の枝を集めているらしい。隠された収容所の<span
+                                    color="#d080f8">古代ヴァンパイア</span>を退治して、<span
+                                    class="color-image14">堅いバオバブの枝</span>を手に入れよう。<br>
+                                <br>
+                                <span class="color-image14">堅いバオバブの枝</span>を必要なだけ手に入れた。神聖都市アウグスタにいる<span
+                                    class="color-image4">ロミオ</span>のところに戻ろう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">神聖都市アウグスタ 　ロミオ（47.122）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image20">Lv500</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値544万2900</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">隠された収容所</span></td>
+                            <td><span color="#ffff86">樽</span>をクリック<br>
+                                （238.259）（240.265）（242.262）（245.260）（257.222）（258.228）（261.222）（262.223）（264.224）（264.230）（268.228）（281.232）（284.232）（287.233）（287.241）（291.240）（292.235）<br>
+                                の17箇所あるが、少し時間が経つと何度でもクリックできる。<br>
+                                <br>
+                                <img src="./normalquest500_files/n500-011.gif" width="152" height="134" border="0"><br>
+                                <br>
+                                <img src="./normalquest500_files/n500-012-map495.gif" width="400" height="200"
+                                    border="0"><br>
+                                <br>
+                                <span class="color-image4">ロミオ</span>へ<br>
+                                <br>
+                                <span color="#ffff86">花</span>をクリック<br>
+                                （9.79）（13.57）（27.91）（52.89）（85.89）（90.33）（111.30）（189.39）（198.135）（215.94）（221.122）（253.135）（257.76）（269.15）<br>
+                                の14箇所あるが、少し時間が経つと何度でもクリックできる。<br>
+                                <br>
+                                <img src="./normalquest500_files/n500-013.gif" width="100" height="93" border="0"><br>
+                                <br>
+                                <img src="./normalquest500_files/n500-014-map495.gif" width="400" height="200"
+                                    border="0"><br>
+                                <br>
+                                <span class="color-image4">ロミオ</span>へ<br>
+                                <br>
+                                <span class="color-image1">古代ヴァンパイア</span>（Lv550)Zinを倒す<br>
+                                <br>
+                                <span class="color-image4">ロミオ</span>へ</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+                <table id="table14" style="text-align:left">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+
+                            <th colspan="2"><a name="7"></a><span color="#00ff00">妖精研究家の発明品</span></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>グレートマウンテン北部の妖精の木から<span
+                                    class="color-image14">長老妖精の羽根の粉</span>を10個採集しよう。<br>
+                                <br>採集した長老妖精の羽根の粉を<span class="color-image4">ヴィンス</span>に渡そう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">グレートフォレスト/ 妖精達の蜘蛛の糸　ヴィンス（162.171）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image20">Lv500</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値200万　ヴィンスの錬金術箱を購入できる</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">グレートマウンテン北部</span></td>
+                            <td><span color="#ff0000">連作クエスト</span><br>
+                                <a href="normalquest100.html#19">フェアリーズビーベル</a>　→　<span
+                                    color="#666666">妖精研究家の発明品</span><br>
+                                <br>
+                                <span color="#ffff86">木</span>をクリック<br>
+                                （39.202）（58.232）（59.215）（64.198）（68.224）（74.235）（77.220）<br>
+                                の7箇所あるが、少し時間が経つと何度でもクリックできる。<br>
+                                <br>
+                                <img src="./normalquest500_files/n500-015-map434.gif" width="400" height="296"
+                                    border="0"></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">グレートフォレスト/ 妖精達の蜘蛛の糸</span></td>
+                            <td><span class="color-image4">ヴィンス</span>へ<br>
+                                <br>
+                                ヴィンスの錬金術箱を所持していると 限界突破Lv4<a href="limitbreak.html#16">不思議な噴水と新たな祝福 4</a>にて、<br>
+                                祈りのカケラ7個で夢のカケラ1個を作成できる。<br>
+                                ただし、失敗すると祈りのカケラは消滅する。<br>
+                                ヴィンスの錬金術箱は取引不可、銀行・ギルド倉庫保管不可、破壊のみ可。<br>
+                                <br>
+                                <table id="table10">
+                                    <colgroup>
+                                        <col span="1" width="309">
+                                    </colgroup>
+                                    <tbody>
+                                        <tr>
+                                            <td><img src="./normalquest500_files/n500-016.gif" width="299" height="113"
+                                                    border="0"></td>
+                                            <td>140万G</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <br>
+                                所持した状態で長老妖精の樹に話しかけると選択肢が変わり、選択肢(2)を選ぶことでチャレンジできる。<br>
+                                失敗時は祈りのかけらを1個、成功時は祈りのかけらを7個失う。<br>
+                                テキストウィンドウには必要な祈りのカケラの所持数のみ記載されている。<br>
+                                成功確率は16～20%程度なので、期待値としては普通に出したほうが速い。(25%で元が取れる。)<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <br>
+                <br>
+                [参考] <a
+                    href="https://yotsuba000.github.io/YotsubaDataBase/QuestDataBase/QuestDataBaseIndex.html">Yotsuba
+                    Quest DataBase</a><br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+        </div>
+</body>
+
+</html>

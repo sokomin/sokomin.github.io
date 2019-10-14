@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <a href="../index.html">トップ</a> >> <a href="../quest/quest.html">クエスト</a> >> <a href="../quest/normalquest_list.html">一般クエスト</a><br>
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+                <h3>一般クエスト　Lv300～399</h3>
+                <br>
+                <table id="table14" style="text-align:left">
+                    <colgroup>
+                      <col span="1" width="240">
+                      <col span="1" width="640">
+                  </colgroup>
+<tbody><tr>
+                      <th colspan="2"><a name="1"></a><span color="#00ff00">伝染病</span></th>
+                          </tr>
+                          <tr>
+                            <td colspan="2" class="dummy-class"><br>南フォーリンロード / エルン山南部地域のトラン森西部にいる<span color="#d080f8">サティロス</span>を狩ってサンプルを採取しよう。<br>
+                            <br>サンプルを手に入れた。<span class="color-image4">ドクター・ヘンリ</span>のもとに戻ろう。<br>
+                            <br>名も無い崩れた塔B2にいる<span color="#d080f8">デスピンサー</span>30匹を消滅させよう。モンスターを倒した後、必ず燃やさなければならない。失敗すると毒ダメージを受ける可能性がある。<br>
+                            <br>名も無い崩れた塔B1にいる<span color="#d080f8">ポイズンテール</span>30匹を消滅させよう。モンスターを倒した後、必ず燃やさなければならない。失敗すると毒ダメージを受ける可能性がある。<br>
+                            <br>任務を果たした。<span class="color-image4">ドクター・ヘンリ</span>のもとに戻ろう。<br>
+                            <br>
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">新興王国ビガプール　ドクター・ヘンリ（34.150）</span></td>
+                          </tr>
+                      <tr>
+                      <th>受諾条件</th>
+                      <td><span class="color-image20">Lv300</span></td>
+                          </tr>
+                          <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値30万</span></td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">トラン森西部</span></td>
+                            <td><span class="color-image1">サティロス</span>（Lv345）Zinを倒す</td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">新興王国ビガプール</span></td>
+                            <td><span class="color-image4">ドクター・ヘンリ</span>へ<br>
+                            <br>
+                            <span color="#9999ff">[選択肢1]名も無い崩れた塔　Ｂ２<br>
+                            [選択肢2]名も無い崩れた塔　Ｂ１</span></td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">名も無い崩れた塔　Ｂ２</span></td>
+                            <td><span color="#9999ff">[選択肢1]名も無い崩れた塔　Ｂ２</span>　を選択した場合の続き<br>
+                            <br>
+                            <span class="color-image1">デスピンサー</span>（Lv310）を30匹倒す</td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">名も無い崩れた塔　Ｂ１</span></td>
+                            <td><span color="#9999ff">[選択肢2]名も無い崩れた塔　Ｂ１</span>　を選択した場合の続き<br>
+                            <br>
+                            <span class="color-image1">ポイズンテール</span>（Lv300）を30匹倒す</td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">新興王国ビガプール</span></td>
+                            <td><span class="color-image4">ドクター・ヘンリ</span>へ</td>
+                          </tr>
+                        </tbody></table>
+                      <br>
+                      <br>
+                      <br>
+                      <table id="table14" style="text-align:left">
+                            <colgroup>
+                                <col span="1" width="240">
+                                <col span="1" width="640">
+                            </colgroup>
+        <tbody><tr>
+                                <th colspan="2"><a name="2"></a><span color="#00ff00">失われたワイン</span></th>
+                          </tr>
+                          <tr>
+                            <td colspan="2" class="dummy-class"><br>デフヒルズ付近に住んでいる原始人が‘シャトゥ・ブレリュ’を盗んだ。デフヒルズ北東の方にいる村のリーダー<span color="#d080f8">シャーマン</span>を倒せば、<span color="#d080f8">原始人</span>達をあわてさせることが出来るだろう。しかし、シャーマンのいる場所はかなり危険だ。<span color="#d080f8">シャーマン</span>を倒さないで<span color="#d080f8">原始人</span>達が持っている<span class="color-image14">シャトゥ・ブレリュ</span>を取り戻すこともできるから、賢明な判断をしよう。<br>
+                            <br>デフヒルズ原始人のリーダーである<span color="#d080f8">シャーマン</span>を倒した。今、<span color="#d080f8">原始人</span>達はパニック状態だろう。今こそ、<span color="#d080f8">原始人</span>達が盗んで行った<span class="color-image14">シャトゥ・ブレリュ</span>を取り戻そう。<br>
+                            <br>
+                            <span class="color-image14">シャトゥ・ブレリュ</span>を手に入れた。すぐに戻ろう。<br>
+                            <br>
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">新興王国ビガプール　グリーク教巡礼者（82.68）</span></td>
+                          </tr>
+                      <tr>
+                      <th>受諾条件</th>
+                      <td><span class="color-image20">Lv300　繰り返し可</span></td>
+                          </tr>
+                          <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値5万　1万G</span></td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">デフヒルズ</span></td>
+                            <td><span class="color-image1">シャーマン</span>（Lv182)Zinを倒すと追加報酬1万G<br>
+                            <br>
+                            <span class="color-image1">原始人</span>（Lv182)Zinを倒す</td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">新興王国ビガプール</span></td>
+                            <td><span class="color-image4">グリーク教巡礼者</span>へ</td>
+                          </tr>
+                        </tbody></table>
+                      <br>
+                      <br>
+                      <br>
+                      <table id="table14" style="text-align:left">
+                            <colgroup>
+                                <col span="1" width="240">
+                                <col span="1" width="640">
+                            </colgroup>
+        <tbody><tr>
+    
+                            <th colspan="2"><a name="3"></a><span color="#00ff00">スケジュール報告書</span></th>
+                          </tr>
+                          <tr>
+                            <td colspan="2" class="dummy-class"><br>ビガプール教会の<span class="color-image4">アンジェラ修道女</span>の代わりに神聖都市アウグスタ教会にいる<span class="color-image4">ジョセフ・ランドルン3世</span>に、ビガプール教会のスケジュール報告書を渡そう。<br>
+                            <br>
+                            <span class="color-image4">ジョセフ・ランドルン3世</span>が渡された報告書の内容を検討している。ちょっと待ってからまた話かけてみよう。<br>
+                            <br>
+                            何か深刻な事が進行されているようだ。話を最後まで聞いてみよう。<br>
+                            <br>スウェブタワー17F, 18F, 19F, 20Fのレッドアイ幹部の身体を探ろう。困難な場所ほど神父たちの足跡を見つけやすい。神父たちの指輪5個を探そう。<br>
+                            <br>残念ながら5人とも<span color="#d080f8">レッドアイ幹部</span>に殺されたようだ。この事実を<span class="color-image4">ジョセフ・ランドルン3世</span>に伝えよう。<br>
+                            <br>
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">ビガプール教会　アンジェラ修道女（13.14）</span></td>
+                          </tr>
+                      <tr>
+                      <th>受諾条件</th>
+                      <td><span class="color-image20">Lv300</span></td>
+                          </tr>
+                          <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">[選択肢1]　経験値1万<br>
+                            [選択肢2]　経験値70万</span></td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">アウグスタ大聖堂</span></td>
+                            <td><span color="#ff0000">連作クエスト</span><br>
+                            <span color="#666666">スケジュール報告書</span>　→　<a href="normalquest300.html#4">教会支援</a><br>
+                            <br>
+                            <span class="color-image4">ジョセフ3世</span>（17.24）へ<br>
+                            <br>
+                            <span color="#9999ff">[選択肢1]引き受けることは出来かねます。</span>　→　終了　（経験値1万）<br>
+                            <span color="#9999ff">[選択肢2]喜んでお手伝いいたします。</span>　　　→　クエスト継続</td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">スウェブタワー<br>
+                            １７～２０Ｆ</span></td>
+                            <td><span color="#9999ff">[選択肢2]喜んでお手伝いいたします。</span>　を選択した場合の続き<br>
+                            <br>
+                            <span class="color-image1">レッドアイ幹部</span>（Lv300）を倒す</td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">アウグスタ大聖堂</span></td>
+                            <td><span class="color-image4">ジョセフ3世</span>へ、<a href="normalquest300.html#4">教会支援</a>に続く　（経験値70万）</td>
+                          </tr>
+                        </tbody></table>
+                      <br>
+                      <br>
+                      <br>
+                      <table id="table14" style="text-align:left">
+                            <colgroup>
+                                <col span="1" width="240">
+                                <col span="1" width="640">
+                            </colgroup>
+        <tbody><tr>
+    
+                            <th colspan="2"><a name="4"></a><span color="#00ff00">教会支援</span></th>
+                          </tr>
+                          <tr>
+                            <td colspan="2" class="dummy-class"><br>名前のない崩れたタワー5Fのブラックメイジが教会支援金を自分らの魔法研究のために奪った。奪われた教会支援金を取り戻そう。<br>
+                            <br>教会支援金を取り戻した。ビガプール教会の<span class="color-image4">ブレイグ神父</span>に教会支援金を渡そう。<br>
+                            <br>
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">アウグスタ大聖堂　ジョセフ3世（17.24）</span></td>
+                          </tr>
+                      <tr>
+                      <th>受諾条件</th>
+                      <td><span class="color-image20">Lv300</span></td>
+                          </tr>
+                          <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値20万</span></td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">名も無い崩れた塔　５Ｆ</span></td>
+                            <td><span color="#ff0000">連作クエスト</span><br>
+                            <a href="normalquest300.html#3">スケジュール報告書</a>　→　<span color="#666666">教会支援</span><br>
+                            <br>
+                            <span class="color-image1">ブラックメイジ</span>(Lv250)を倒す</td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">ビガプール教会</span></td>
+                            <td><span class="color-image4">ブレイグ神父</span>（9.15）へ</td>
+                          </tr>
+                        </tbody></table>
+                      <br>
+                      <br>
+                      <br>
+                      <table id="table14" style="text-align:left">
+                            <colgroup>
+                                <col span="1" width="240">
+                                <col span="1" width="640">
+                            </colgroup>
+        <tbody><tr>
+    
+                            <th colspan="2"><a name="5"></a><span color="#00ff00">結界強化</span></th>
+                          </tr>
+                          <tr>
+                            <td colspan="2" class="dummy-class"><br>自我を失って悪の道に落ちてしまった天才魔法師<span color="#d080f8">ジャロック</span>を心の中に封印した<span class="color-image4">ヘリス</span>を手伝おう。結界内に溢れてしまった<span color="#d080f8">ジャロック</span>の悪のオーラの影響で出現するモンスターを退治して、悪のオーラがなくなってしまうまで頑張ろう。<br>
+                            <br>ミッションに失敗した。名も無い崩れた塔　Ｂ３にいる<span class="color-image4">ヘリス</span>のところに行ってやり直そう。<br>
+                            <br>ミッションが完了した。名も無い崩れた塔　Ｂ３にいる<span class="color-image4">ヘリス</span>のところに行こう。<br>
+                            <br>自我を失った天才魔法師<span color="#d080f8">ジャロック</span>を封印するために、命を落としてしまった<span class="color-image4">ヘリス</span>の仲間の魂が悪霊になってしまう前に、現世から魂を解き放とう。英雄の怨念は、名も無い崩れた塔　Ｂ３を歩き回っていると出会えるらしい。<br>
+                            <br>
+                            <span color="#d080f8">英雄の怨念</span>を退治した。名も無い崩れた塔　Ｂ３にいる<span class="color-image4">ヘリス</span>のところに戻ろう。<br>
+                            <br>
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">名も無い崩れた塔　Ｂ３　ヘリス(77.21)</span></td>
+                          </tr>
+                      <tr>
+                      <th>受諾条件</th>
+                      <td><span class="color-image20">Lv320　キャンセル不可</span></td>
+                          </tr>
+                          <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値1095万</span></td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">名も無い崩れた塔　Ｂ３</span></td>
+                            <td>結界内に出現する<span class="color-image1">モンスター</span>を800匹倒す。<br>
+                            クエスト受諾者同士でパーティーを組んだ場合、799匹目まではパーティーメンバーが倒した数もカウントされる。<br>
+                            800匹目に<span class="color-image1">ジャロックの幻影</span>(Lv310)が出現、倒す。火光闇抵抗90％以上。<br>
+                            <br>
+                            <img src="./normalquest300_files/n300-001.gif" width="144" height="158" border="0"><br>
+                            <br>
+                            <span class="color-image4">ヘリス</span>へ<br>
+                            <br>
+                            <span class="color-image1">英雄の怨魂</span>(Lv320)を倒す、タゲを取るとHP1/2のダメージを受ける。<br>
+                            <br>
+                            <img src="./normalquest300_files/n300-002.gif" width="148" height="190" border="0"><br>
+                            <br>
+                            <span class="color-image4">ヘリス</span>へ</td>
+                          </tr>
+                        </tbody></table>
+                      <br>
+                      <br>
+                      <br>
+                      <table id="table14" style="text-align:left">
+                            <colgroup>
+                                <col span="1" width="240">
+                                <col span="1" width="640">
+                            </colgroup>
+        <tbody><tr>
+    
+                            <th colspan="2"><a name="6"></a><span color="#00ff00">吟遊詩人</span></th>
+                          </tr>
+                          <tr>
+                            <td colspan="2" class="dummy-class"><br>トラン森西部の<span color="#d080f8">エルフ戦士</span>、トラン森東部の<span color="#d080f8">トランクマン</span>を倒して、<span class="color-image14">エルフ戦士の髪の毛</span>と<span class="color-image14">トランクマンの胴</span>を収集しよう。<br>
+                            <br>楽器の材料をすべて集めた。収集した材料を<span class="color-image4">バーデン</span>に渡そう。<br>
+                            <br>
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">港街シュトラセラト バーデン（62.62）</span></td>
+                          </tr>
+                      <tr>
+                      <th>受諾条件</th>
+                      <td><span class="color-image20">Lv340</span></td>
+                          </tr>
+                          <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値145万</span></td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">トラン森西部</span></td>
+                            <td><span class="color-image1">エルフ戦士</span>（Lv345）Zinを倒す</td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">トラン森東部</span></td>
+                            <td><span class="color-image1">トランクマン</span>（Lv285）Zinを倒す</td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">港街シュトラセラト</span></td>
+                            <td><span class="color-image4">バーデン</span>へ</td>
+                          </tr>
+                        </tbody></table>
+                      <br>
+                      <br>
+                      <br>
+                      <table id="table14" style="text-align:left">
+                            <colgroup>
+                                <col span="1" width="240">
+                                <col span="1" width="640">
+                            </colgroup>
+        <tbody><tr>
+    
+                            <th colspan="2"><a name="7"></a><span color="#00ff00">一体誰が･･･？</span></th>
+                          </tr>
+                          <tr>
+                            <td colspan="2" class="dummy-class"><br>誰かが機密を漏らしていると考えている<span class="color-image4">タール</span>が、名も無い崩れた塔　Ｂ６にある祭壇に音声を記録することができる魔法音声呪文書を設置してほしいという。<br>
+                            <br>
+                            <span class="color-image14">魔法音声呪文書</span>をすべて設置した。名も無い崩れた塔　Ｂ６にいる<span class="color-image4">タール</span>のところに戻ろう。<br>
+                            <br>
+                            <span class="color-image14">魔法音声呪文書</span>に情報が保存されるまで、名も無い崩れた塔　Ｂ６を見回っている<span color="#d080f8">巡察者</span>を12匹を退治しよう。<br>
+                            <br>すべての<span color="#d080f8">巡察者</span>を退治した。名も無い崩れた塔　Ｂ６にいる<span class="color-image4">タール</span>のところに戻ろう。<br>
+                            <br>
+                            <span class="color-image4">タール</span>が人の気配を感じたと言う。名も無い崩れた塔　Ｂ６にある祭壇の8所に設置した<span class="color-image14">魔法音声呪文書</span>を確認してみよう。<br>
+                            <br>
+                            <span class="color-image4">魔法音声呪文書</span>に保存されていた情報を名も無い崩れた塔　Ｂ６にいる<span class="color-image4">タール</span>に伝えてあげよう。<br>
+                            <br>
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">名も無い崩れた塔　Ｂ６　タール(51.23)</span></td>
+                          </tr>
+                      <tr>
+                      <th>受諾条件</th>
+                      <td><span class="color-image20">Lv340</span></td>
+                          </tr>
+                          <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値213万1000</span></td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">名も無い崩れた塔　Ｂ６</span></td>
+                            <td><span color="#ff0000">連作クエスト</span><br>
+                            <span color="#666666">一体誰が･･･？</span>　→　<a href="normalquest300.html#8">成敗</a><br>
+                            <br>
+                            <span color="#ffff86">祭壇</span>（12.34）（12.58）（37.9）（37.82）（59.9）（59.82）（84.33）（84.58）をクリック<br>
+                            <br>
+                            <img src="./normalquest300_files/n300-003.gif" width="265" height="205" border="0"><br>
+                            <br>
+                            <img src="./normalquest300_files/n300-004-map175.gif" width="320" height="160" border="0"><br>
+                            <br>
+                            <span class="color-image4">タール</span>へ<br>
+                            <br>
+                            <span class="color-image1">巡察者</span>(Lv350)を12匹倒す<br>
+                            <br>
+                            <span class="color-image4">タール</span>へ<br>
+                            <br>
+                            <span color="#ffff86">祭壇</span>（12.34）（12.58）（37.9）（37.82）（59.9）（59.82）（84.33）（84.58）をクリック<br>
+                            <br>
+                            <span class="color-image4">タール</span>へ</td>
+                          </tr>
+                        </tbody></table>
+                      <br>
+                      <br>
+                      <br>
+                      <table id="table14" style="text-align:left">
+                            <colgroup>
+                                <col span="1" width="240">
+                                <col span="1" width="640">
+                            </colgroup>
+        <tbody><tr>
+    
+                            <th colspan="2"><a name="8"></a><span color="#00ff00">成敗</span></th>
+                          </tr>
+                          <tr>
+                            <td colspan="2" class="dummy-class"><br>機密を漏らしていた<span color="#d080f8">裏切り者クホル</span>が、<span color="#d080f8">ソーサラー</span>に渡した<span class="color-image14">監視団名簿と配置リスト</span>を奪おう。<span color="#d080f8">ソーサラー</span>は、まだ名も無い崩れた塔　Ｂ６にいるはずだ。<br>
+                            <br>
+                            <span class="color-image14">監視団名簿と配置リスト</span>を奪った。名も無い崩れた塔　Ｂ６にいる<span class="color-image4">タール</span>のところに戻ろう。<br>
+                            <br>
+                            <span color="#d080f8">裏切り者クホル</span>は気が付いて逃げ出してしまった。しかし、名も無い崩れた塔　Ｂ６は必ず通るという。モンスターたち退治していれば、<span color="#d080f8">裏切り者クホル</span>が現われるはずだ。<span color="#d080f8">裏切り者クホル</span>が、先の階に逃げる前に退治しよう。<br>
+                            <br>
+                            <span color="#d080f8">裏切り者クホル</span>を逃してしまい、ミッションに失敗した。名も無い崩れた塔　Ｂ６にいる<span class="color-image4">タール</span>のところに戻ってミッションをやり直そう。<br>
+                            <br>
+                            <span color="#d080f8">裏切り者クホル</span>を退治した。名も無い崩れた塔　Ｂ６にいる<span class="color-image4">タール</span>に<span class="color-image14">裏切り者クホルの印</span>を渡そう。<br>
+                            <br>
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">名も無い崩れた塔　Ｂ６　タール(51.23)</span></td>
+                          </tr>
+                      <tr>
+                      <th>受諾条件</th>
+                      <td><span class="color-image20">Lv340</span></td>
+                          </tr>
+                          <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値54万</span></td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">名も無い崩れた塔　Ｂ６</span></td>
+                            <td><span color="#ff0000">連作クエスト</span><br>
+                            <a href="normalquest300.html#7">一体誰が･･･？</a>　→　<span color="#666666">成敗</span><br>
+                      <br>
+                            <span class="color-image1">ソーサラー</span>(Lv350)Zinを倒す<br>
+                            <br>
+                            <span class="color-image4">タール</span>へ<br>
+                            <br>
+                            <span class="color-image1">モンスター</span>を倒していると、「クホルが動き回る音が聞こえる。」とログが表示され、<br>
+                            <span class="color-image1">裏切り者クホル</span>(Lv340)Zinが出現、倒す。<br>
+                            B5へのポータル付近に湧き、B7へのポータル付近へゆっくり移動して消滅。<br>
+                            消滅する前に倒せなかった場合、<span class="color-image4">タール</span>へ戻ってやり直しになる。<br>
+                            <br>
+                            <img src="./normalquest300_files/n300-005.gif" width="140" height="116" border="0"><br>
+                            <br>
+                            <span class="color-image4">タール</span>へ</td>
+                          </tr>
+                        </tbody></table>
+                      <br>
+                      <br>
+                      <br>
+                      <table id="table14" style="text-align:left">
+                            <colgroup>
+                                <col span="1" width="240">
+                                <col span="1" width="640">
+                            </colgroup>
+        <tbody><tr>
+    
+                            <th colspan="2"><a name="9"></a><span color="#00ff00">シーフード材料</span></th>
+                          </tr>
+                          <tr>
+                            <td colspan="2" class="dummy-class"><br>北フォーリンロード/西リットリン半島の南側の漁村にいる<span class="color-image4">マロン</span>を訪ねて、<span class="color-image14">漬物フィッシュエッグ</span> 20個をもらって来よう。<br>
+                            <br>フォーリン望楼地下の<span color="#d080f8">拷問された商人</span>を倒して、<span class="color-image14">漬物フィッシュエッグ</span> 20個を取り戻そう。<br>
+                            <br>
+                            <span class="color-image14">漬物フィッシュエッグ</span> 20個をすべて集めた。収集した材料を<span class="color-image4">パルメ</span>に渡そう。<br>
+                            <br>
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">ブルースビストロ　パルメ（19.5）</span></td>
+                          </tr>
+                      <tr>
+                      <th>受諾条件</th>
+                      <td><span class="color-image20">Lv350</span></td>
+                          </tr>
+                          <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">165万</span></td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">北フォーリンロード / 西リットリン半島</span></td>
+                            <td><span class="color-image4">マロン</span>（240.305）へ</td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">フォーリン望楼　地下</span></td>
+                            <td><span class="color-image1">拷問された商人</span>（Lv355）Zinを倒す</td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">ブルースビストロ</span></td>
+                            <td><span class="color-image4">パルメ</span>へ</td>
+                          </tr>
+                        </tbody></table>
+                      <br>
+                      <br>
+                      <br>
+                      <table id="table14" style="text-align:left">
+                            <colgroup>
+                                <col span="1" width="240">
+                                <col span="1" width="640">
+                            </colgroup>
+        <tbody><tr>
+    
+                            <th colspan="2"><a name="10"></a><span color="#00ff00">聖堂の秘密結社団</span></th>
+                          </tr>
+                          <tr>
+                            <td colspan="2" class="dummy-class"><br>南フォーリンロード/エルン山南部地域に潜伏中である聖堂の秘密結社団員<span class="color-image4">カリング</span>を訪ねよう。<br>
+                            <br>トラン森西部の<span color="#d080f8">エルフ戦士</span>、<span color="#d080f8">エルフ暗殺者</span>、<span color="#d080f8">エルフ巡察者</span>たちを倒して、4等分になった<span class="color-image14">聖書の切れ端</span>を取り戻そう。<br>
+                            <br>聖書の切れ端をすべて集めた。<span class="color-image4">カリング</span>のもとに戻ろう。<br>
+                            <br>
+                            <span class="color-image14">完成された聖書</span>を<span class="color-image4">捜査員レンドン</span>に返そう。<br>
+                            <br>
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">港街シュトラセラト　捜査員レンドン（94.21）</span></td>
+                          </tr>
+                      <tr>
+                      <th>受諾条件</th>
+                      <td><span class="color-image20">Lv350</span></td>
+                          </tr>
+                          <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値165万</span></td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">南フォーリンロード / エルン山南部地域</span></td>
+                            <td><span class="color-image4">カリング</span>（185.173）へ</td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">トラン森西部</span></td>
+                            <td><span class="color-image1">エルフ戦士</span>（Lv345）Zin、<span class="color-image1">エルフ暗殺者</span>（Lv348）Zin、<span class="color-image1">エルフ巡察者</span>（Lv352）Zinを倒す</td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">南フォーリンロード / エルン山南部地域</span></td>
+                            <td><span class="color-image4">カリング</span>へ</td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">港街シュトラセラト</span></td>
+                            <td><span class="color-image4">捜査員レンドン</span>へ</td>
+                          </tr>
+                        </tbody></table>
+                      <br>
+                      <br>
+                      <br>
+                      <table id="table14" style="text-align:left">
+                            <colgroup>
+                                <col span="1" width="240">
+                                <col span="1" width="640">
+                            </colgroup>
+        <tbody><tr>
+    
+                            <th colspan="2"><a name="11"></a><span color="#00ff00">水産物輸送</span></th>
+                          </tr>
+                          <tr>
+                            <td colspan="2" class="dummy-class"><br>フォーリン望楼地下の<span color="#d080f8">拷問技術者</span>を倒して、<span class="color-image14">アイスボックス</span>を獲得しよう。<br>
+                            <br>
+                            <span class="color-image4">プシケ</span>に、<span class="color-image14">アイスボックス</span>を渡そう。<br>
+                            <br>
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">港街シュトラセラト　プシケ（59.130）</span></td>
+                          </tr>
+                      <tr>
+                      <th>受諾条件</th>
+                      <td><span class="color-image20">Lv370</span></td>
+                          </tr>
+                          <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値175万</span></td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">フォーリン望楼　地下</span></td>
+                            <td><span class="color-image1">拷問技術者</span>（Lv370）Zinを倒す</td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">港街シュトラセラト</span></td>
+                            <td><span class="color-image4">プシケ</span>へ</td>
+                          </tr>
+                        </tbody></table>
+                      <br>
+                      <br>
+                      <br>
+                      <table id="table14" style="text-align:left">
+                            <colgroup>
+                                <col span="1" width="240">
+                                <col span="1" width="640">
+                            </colgroup>
+        <tbody><tr>
+    
+                            <th colspan="2"><a name="12"></a><span color="#00ff00">ダイエット</span></th>
+                          </tr>
+                          <tr>
+                            <td colspan="2" class="dummy-class"><br>トラン森南部の<span color="#d080f8">ブラウンベアー</span>を狩って、<span class="color-image14">ダイエット用蜂蜜</span> 10個収集しよう。<br>
+                            <br>必要な蜂蜜をすべて集めた。<span class="color-image4">サンドラ</span>のもとに戻ろう。<br>
+                            <br>シュトラセラト雑貨店の<span class="color-image4">ベロンス</span>を訪ねて、<span class="color-image14">運動マシーン</span>を買おう。<br>
+                            <br>
+                            <span class="color-image14">運動マシーン</span>を購入した。<span class="color-image4">サンドラ</span>のもとに戻ろう。<br>
+                            <br>古都ブルンネンシュティグの<span class="color-image4">ピエンナ</span>を訪ねて、ダイエットメニューに関する情報を調べるようにしよう。<br>
+                            <br>
+                            <span class="color-image14">ピエンナのメモ</span>を<span class="color-image4">サンドラ</span>に渡そう。<br>
+                            <br>
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">港街シュトラセラト　サンドラ（28.27）</span></td>
+                          </tr>
+                      <tr>
+                      <th>受諾条件</th>
+                      <td><span class="color-image20">Lv370</span></td>
+                          </tr>
+                          <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値370万　2万G</span></td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">トラン森南部</span></td>
+                            <td><span class="color-image1">ブラウンベアー</span>（Lv383）Zinを倒す</td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">港街シュトラセラト</span></td>
+                            <td><span class="color-image4">サンドラ</span>へ</td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">シュトラセラト雑貨店</span></td>
+                            <td><span class="color-image4">ベロンス</span>（5.8）へ、1000G払う</td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">港街シュトラセラト</span></td>
+                            <td><span class="color-image4">サンドラ</span>へ</td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">古都ブルンネンシュティグ</span></td>
+                            <td><span class="color-image4">ピエンナ</span>（145.90）へ</td>
+                          </tr>
+                          <tr>
+                            <td align="center"><span class="color-image2">港街シュトラセラト</span></td>
+                            <td><span class="color-image4">サンドラ</span>へ</td>
+                          </tr>
+                        </tbody></table>
+                <br>
+                <br>
+                [参考] <a
+                    href="https://yotsuba000.github.io/YotsubaDataBase/QuestDataBase/QuestDataBaseIndex.html">Yotsuba
+                    Quest DataBase</a><br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+        </div>
+</body>
+
+</html>
