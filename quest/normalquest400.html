@@ -19,1075 +19,1209 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=960">
-    <!-- Page styles -->
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
-    <link rel="stylesheet" href="../styles.css" />
-    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
-    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
-    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=960">
+  <!-- Page styles -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+  <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-        gtag('config', 'UA-133658114-1');
-    </script>
-    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
-    <script>
-        function enter() {
-            if (window.event.keyCode == 13) {
-                var last_keyword = $('#search-field').val();
-                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
-            }
-        }
-    </script>
+    gtag('config', 'UA-133658114-1');
+  </script>
+  <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+  <script>
+    function enter() {
+      if (window.event.keyCode == 13) {
+        var last_keyword = $('#search-field').val();
+        window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+      }
+    }
+  </script>
 
-    <style>
-        #view-source {
-            position: fixed;
-            display: block;
-            right: 0;
-            bottom: 0;
-            margin-right: 40px;
-            margin-bottom: 40px;
-            z-index: 900;
-        }
-    </style>
+  <style>
+    #view-source {
+      position: fixed;
+      display: block;
+      right: 0;
+      bottom: 0;
+      margin-right: 40px;
+      margin-bottom: 40px;
+      z-index: 900;
+    }
+  </style>
 </head>
 
 <body>
-    <title>赤石の民衆</title>
-    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
-    <meta http-equiv="Content-Style-Type" content="text/css" />
-    <meta http-equiv="Content-Script-Type" content="text/javascript" />
-    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
-    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+  <title>赤石の民衆</title>
+  <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
 
-    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-        <a name="container"></a>
-        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
-            <div class="mdl-layout__header-row">
-                <span class="android-title mdl-layout-title">
-                    <a href="https://sokomin.github.io/index.html">
-                        <img class="android-logo-image" src="../design/logo3.png" />
-                    </a>
-                </span>
-                <!-- Add spacer, to align navigation to the right in desktop -->
-                <div class="android-header-spacer mdl-layout-spacer"></div>
-                <div
-                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
-                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
-                        <i class="material-icons">search</i>
-                    </label>
-                    <div class="mdl-textfield__expandable-holder">
-                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
-                            onkeypress="enter();" id="search-field" />
-                    </div>
-                </div>
-                <!-- Navigation -->
-                <div class="android-navigation-container">
-                    <nav class="android-navigation mdl-navigation">
-                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
-                            href="https://sokomin.github.io/index.html">ホーム</a>
-                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
-                            href="https://sokomin.github.io/calculator.html">計算機</a>
-                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
-                            href="https://sokomin.github.io/history.html">赤石史</a>
-                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
-                            href="https://sokomin.github.io/link.html">リンク</a>
-                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
-                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
-                    </nav>
-                </div>
-                <span class="android-mobile-title mdl-layout-title">
-                    <a href="https://sokomin.github.io/index.html">
-                        <img class="android-logo-image" src="../design/logo3.png" />
-                    </a>
-                </span>
-                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
-                    id="more-button">
-                    <i class="material-icons">more_vert</i>
-                </button>
-                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
-                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
-                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
-                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
-                            href="https://sokomin.github.io/history.html">赤石史</a></li>
-                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
-                            href="https://sokomin.github.io/link.html">リンク</a></li>
-                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
-                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
-                </ul>
-
-            </div>
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <a name="container"></a>
+    <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+      <div class="mdl-layout__header-row">
+        <span class="android-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <!-- Add spacer, to align navigation to the right in desktop -->
+        <div class="android-header-spacer mdl-layout-spacer"></div>
+        <div
+          class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text" onkeypress="enter();"
+              id="search-field" />
+          </div>
         </div>
-
-        <div class="android-drawer mdl-layout__drawer">
-            <span class="mdl-layout-title">
-                <h3>メニュー</h3>
-            </span>
-            <nav class="mdl-navigation">
-                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
-                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
-                <a class="mdl-navigation__link sokomin-layout-pt"
-                    href="../monster/monster.html"><strong>モンスター</strong></a>
-                <a class="mdl-navigation__link sokomin-layout-pt"
-                    href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
-                <a class="mdl-navigation__link sokomin-layout-quest"
-                    href="../quest/quest.html"><strong>クエスト</strong></a>
-                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
-                <a class="mdl-navigation__link sokomin-layout-friend"
-                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
-                <a class="mdl-navigation__link sokomin-layout-info"
-                    href="../information/information.html"><strong>雑学</strong></a>
-            </nav>
+        <!-- Navigation -->
+        <div class="android-navigation-container">
+          <nav class="android-navigation mdl-navigation">
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/index.html">ホーム</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/calculator.html">計算機</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/history.html">赤石史</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/link.html">リンク</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+          </nav>
         </div>
+        <span class="android-mobile-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+          id="more-button">
+          <i class="material-icons">more_vert</i>
+        </button>
+        <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/calculator.html">計算機</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/history.html">赤石史</a></li>
+          <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/link.html">リンク</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+        </ul>
+
+      </div>
+    </div>
+
+    <div class="android-drawer mdl-layout__drawer">
+      <span class="mdl-layout-title">
+        <h3>メニュー</h3>
+      </span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html"><strong>モンスター</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html"><strong>クエスト</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-friend"
+          href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-info"
+          href="../information/information.html"><strong>雑学</strong></a>
+      </nav>
+    </div>
 
 
-        <div class="android-large-table mdl-layout__content">
+    <div class="android-large-table mdl-layout__content">
 
-            <!--main-->
-            <a href="../index.html">トップ</a> >> <a href="../quest/quest.html">クエスト</a> >> <a href="../quest/normalquest_list.html">一般クエスト</a><br>
-            <div class="main-background mdl-typography--text-center korea-content">
+      <!--main-->
+      <a href="../index.html">トップ</a> >> <a href="../quest/quest.html">クエスト</a> >> <a
+        href="../quest/normalquest_list.html">一般クエスト</a><br>
+      <div class="main-background mdl-typography--text-center korea-content">
+        <br>
+        <h3>一般クエスト　Lv400～499</h3>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="140">
+            <col span="1" width="490">
+
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="1"></a><span color="#00ff00">古代王国の紋様</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>古代王国の紋様を見つける事にした。見つけなければならない紋様のかけらは4つだ。どの遺跡地に行くかを決めよう。<br>
+                <br>河口ダンジョン‘ラ’に行き、古代王国の紋様のかけら4つを探そう。<br>
+                <br>ダークエルフの王宮寺院に行き、古代王国の紋様のかけら4つを探そう。<br>
+                <br>名も無い遺跡に行き、古代王国の紋様切れ4つを探そう。そこは、かなり危ない所だが古代王国の紋様を簡単に手に入れることができる。<br>
                 <br>
-                <h3>一般クエスト　Lv400～499</h3>
+                名も無い崩れた塔に移動し、古代王国の紋様のかけら4つを探そう。探索場所の中でも一番広い地域だ。地下の階だけを集中的に探してみよう。そこは、かなり危ない所だが古代王国の紋様を簡単に手に入れることができる。<br>
+                <br>古代王国の紋様を見つけた。<span class="color-image4">アリストイ・ジュニア2世</span>のもとに戻ろう。<br>
                 <br>
-                <table id="table14" style="text-align:left">
-                        <colgroup><col span="1" width="140">
-                      <col span="1" width="490">
-                        
-                          </colgroup><tbody><tr>
-                            <th colspan="2"><a name="1"></a><span color="#00ff00">古代王国の紋様</span></th>
-                          </tr>
-                          <tr>
-                            <td colspan="2" class="dummy-class"><br>古代王国の紋様を見つける事にした。見つけなければならない紋様のかけらは4つだ。どの遺跡地に行くかを決めよう。<br>
-                            <br>河口ダンジョン‘ラ’に行き、古代王国の紋様のかけら4つを探そう。<br>
-                            <br>ダークエルフの王宮寺院に行き、古代王国の紋様のかけら4つを探そう。<br>
-                            <br>名も無い遺跡に行き、古代王国の紋様切れ4つを探そう。そこは、かなり危ない所だが古代王国の紋様を簡単に手に入れることができる。<br>
-                            <br>
-                            名も無い崩れた塔に移動し、古代王国の紋様のかけら4つを探そう。探索場所の中でも一番広い地域だ。地下の階だけを集中的に探してみよう。そこは、かなり危ない所だが古代王国の紋様を簡単に手に入れることができる。<br>
-                            <br>古代王国の紋様を見つけた。<span class="color-image4">アリストイ・ジュニア2世</span>のもとに戻ろう。<br>
-                            <br>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th>受諾場所</th>
-                            <td><span class="color-image20">新興王国ビガプール　ジュニア2世（153.109）</span></td>
-                          </tr>
-                      <tr>
-                      <th>受諾条件</th>
-                      <td><span class="color-image20">Lv400</span></td>
-                          </tr>
-                          <tr>
-                            <th>報酬</th>
-                            <td><span class="color-image20">[選択肢1,4]　経験値30万<br>
-                            [選択肢2,3]　経験値50万</span></td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">新興王国ビガプール</span></td>
-                            <td><span class="color-image4">ジュニア2世</span>へ<br>
-                            <br>
-                            <span color="#9999ff">[選択肢1]河口ダンジョン　'ラ'<br>
-                            [選択肢2]ダークエルフの王宮寺院<br>
-                            [選択肢3]名も無き遺跡<br>
-                            [選択肢4]名も無い崩れた塔</span></td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">河口ダンジョン　'ラ'　Ｂ１～２</span></td>
-                            <td><span color="#9999ff">[選択肢1]河口ダンジョン　'ラ'</span>　を選択した場合の続き<br>
-                            <br>
-                            <span class="color-image1">モンスター</span>を倒す</td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">ダークエルフの王宮寺院</span></td>
-                            <td><span color="#9999ff">[選択肢2]ダークエルフの王宮寺院</span>　を選択した場合の続き<br>
-                            <br>
-                            <span class="color-image1">モンスター</span>を倒す</td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">名も無い遺跡の入口<br>
-                            名も無き遺跡　Ｂ１～２</span></td>
-                            <td><span color="#9999ff">[選択肢3]名も無き遺跡</span>　を選択した場合の続き<br>
-                            <br>
-                            <span class="color-image1">モンスター</span>を倒す</td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">名も無い崩れた塔<br>
-                            Ｂ１～７</span></td>
-                            <td><span color="#9999ff">[選択肢4]名も無い崩れた塔</span>　を選択した場合の続き<br>
-                            <br>
-                            <span class="color-image1">モンスター</span>を倒す</td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">新興王国ビガプール</span></td>
-                            <td><span class="color-image4">ジュニア2世</span>へ</td>
-                          </tr>
-                        </tbody></table>
-                      <br>
-                      <br>
-                      <br>
-                      <table id="table14" style="text-align:left">
-                        <colgroup><col span="1" width="140">
-                      <col span="1" width="490">
-                        
-                          </colgroup><tbody><tr>
-                            <th colspan="2"><a name="2"></a><span color="#00ff00">セントロードの噂</span></th>
-                          </tr>
-                          <tr>
-                            <td colspan="2" class="dummy-class"><br>
-                            <span class="color-image4">エールキース</span>に言われた通り、セントロードの調査のため、農村ガリムトに派遣されている<span class="color-image4">バルベルト</span>に会いに行こう。<br>
-                            <br>
-                            <span class="color-image4">バルベルト</span>に、セントロードではないかと推定される洞窟内で、出口を探し出さなければいけないと言われた。ミルトリム記念公園の近くにある入口から入って、洞窟の出口を探してみよう。<br>
-                            <br>セントロードと推定される洞窟の出口を発見した。この事を<span class="color-image4">バルベルト</span>に報告しよう。<br>
-                            <br>
-                            <span class="color-image4">バルベルト</span>が言うには、洞窟の出口が存在したことから考えても、王国の追い手から逃げてきたグリーク教信者たちが身を隠した場所である確率が高いらしい。再び洞窟に行って、内部の壁や床などを調査して、グリーク教の高位神官だった信者の手がかりを探してみよう。<br>
-                            <br>聖具と推定される品物を見つけた。<span class="color-image4">バルベルト</span>に見せよう。<br>
-                            <br>
-                            <span class="color-image14">アルタミコ</span>が発見されたことを考えても、背教者がこの洞窟を通じて逃走したという<span class="color-image4">バルベルト</span>から聞いた学者の仮説は正しいようだ。しかし、神聖物から聖なるパワーが感じられない点に疑問が残るため、調査が必要だという。<span class="color-image4">エールキース</span>に<span class="color-image14">アルタミコ</span>を渡しに行こう。<br>
-                            <br>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th>受諾場所</th>
-                            <td><span class="color-image20">神聖都市アウグスタ　エールキース（97.77）</span></td>
-                          </tr>
-                      <tr>
-                      <th>受諾条件</th>
-                      <td><span class="color-image20">Lv410　キャンセル不可</span></td>
-                          </tr>
-                          <tr>
-                            <th>報酬</th>
-                            <td><span class="color-image20">-</span></td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">農村ガリムト</span></td>
-                            <td><span color="#ff0000">連作クエスト</span><br>
-                            <span color="#666666">セントロードの噂</span>　→　<a href="normalquest400.html#3">アルタミコ</a><br>
-                            ⇒　<a href="normalquest400.html#4">村の生計</a>　<a href="normalquest400.html#5">少女のための鎮魂歌</a>　<a href="normalquest400.html#6">ジェソ・ジーコフ</a>　<a href="normalquest400.html#7">ジェド・ジーコフ</a>　<a href="normalquest400.html#8">ビルベルトのわがまま</a><br>
-                            ⇒　<a href="normalquest400.html#11">洞窟の主</a>　→　<a href="normalquest400.html#12">キリアムの力</a><br>
-                            ⇒　<a href="normalquest400.html#10">遅すぎた後悔</a>　→　<a href="normalquest400.html#13">破門されたベルートス</a><br>
-                            <br>
-                            <span class="color-image4">バルベルト</span>（81.86）へ</td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">ミルトリムの道 / シュトラセラト入口付近</span></td>
-                            <td><span class="color-image2">セントロード　Ｂ１</span>への入口は3箇所ある。<br>
-                            <br>
-                            <span color="#00ffff">(1)</span>隠し入口=<span color="#ffff86">洞穴</span>（214.55）　⇔　<span color="#00ffff">(2)</span>隠し出口＝<span color="#ffff86">蓮花</span>（266.46）<br>
-                            <span color="#00ffff">(2)</span>隠し入口=<span color="#ffff86">洞穴</span>（110.236）　⇔　<span color="#00ffff">(2)</span>隠し出口＝<span color="#ffff86">岩</span>（120.347）<br>
-                            <span color="#00ffff">()</span>通常入口=移動ポータル（155.279）　⇔　<span color="#00ffff">(3)</span>通常出口=移動ポータル（110.394）<br>
-                            <br>
-                            <img src="./normalquest400_files/n400-001-map444.gif" width="400" height="240" border="0"><br>
-                            <br>
-                            <span color="#00ffff">(1)</span>隠し入口=<span color="#ffff86">洞穴</span>（214.55）から入り、<span color="#00ffff">(2)</span>隠し出口＝<span color="#ffff86">蓮花</span>（266.46）へ<br>
-                            <br>
-                            <img src="./normalquest400_files/n400-003.gif" width="258" height="165" border="0"></td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
-                            <td><span color="#00ffff">(2)</span>隠し出口＝<span color="#ffff86">蓮花</span>（266.46）をクリック<br>
-                            <br>
-                            <img src="./normalquest400_files/n400-004.gif" width="150" height="197" border="0"><br>
-                            <br>
-                            <img src="./normalquest400_files/n400-002-map497.gif" width="400" height="333" border="0"></td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">農村ガリムト</span></td>
-                            <td><span class="color-image4">バルベルト</span>へ</td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
-                            <td><span color="#ffff86">十字架</span>（253.192）をクリック<br>
-                            <br>
-                            <img src="./normalquest400_files/n400-005.gif" width="246" height="223" border="0"><br>
-                            <br>
-                            <img src="./normalquest400_files/n400-006-map497.gif" width="400" height="333" border="0"></td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">農村ガリムト</span></td>
-                            <td><span class="color-image4">バルベルト</span>へ</td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">神聖都市アウグスタ</span></td>
-                            <td><span class="color-image4">エールキース</span>へ</td>
-                          </tr>
-                        </tbody></table>
-                      <br>
-                      <br>
-                      <br>
-                      <table id="table14" style="text-align:left">
-                        <colgroup><col span="1" width="140">
-                      <col span="1" width="490">
-                        
-                          </colgroup><tbody><tr>
-                            <th colspan="2"><a name="3"></a><span color="#00ff00">アルタミコ</span></th>
-                          </tr>
-                          <tr>
-                            <td colspan="2" class="dummy-class"><br>
-                            <span class="color-image4">エールキース</span>の指示通り、魔法陣を使って他の<span class="color-image14">アルタミコ</span>も探してみよう。<br>
-                            <br>魔法陣付近の<span class="color-image14">アルタミコ</span>を回収して帰ろう。<br>
-                            <br>
-                            <span class="color-image14">アルタミコ</span>をすべて探し出した。これを<span class="color-image4">エールキース</span>のところに持って行って報告しよう。<br>
-                            <br>
-                            <span class="color-image4">エールキース</span>の手紙を農村ガリムトにいる<span class="color-image4">バルベルト</span>に渡そう。<br>
-                            <br>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th>受諾場所</th>
-                            <td><span class="color-image20">神聖都市アウグスタ　エールキース（97.77）</span></td>
-                          </tr>
-                      <tr>
-                      <th>受諾条件</th>
-                      <td><span class="color-image20">Lv410　キャンセル不可</span></td>
-                          </tr>
-                          <tr>
-                            <th>報酬</th>
-                            <td><span class="color-image20">経験値1150万</span></td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
-                            <td><span color="#ff0000">連作クエスト</span><br>
-                            <a href="normalquest400.html#2">セントロードの噂</a>　→　<span color="#666666">アルタミコ</span><br>
-                            <br>
-                            <span color="#ffff86">魔方陣</span>（254.195）をクリック、対岸へワープ<br>
-                            <br>
-                            <span color="#ffff86">十字架</span>（278.291）をクリック<br>
-                            <br>
-                            <img src="./normalquest400_files/n400-005.gif" width="246" height="223" border="0"><br>
-                            <br>
-                            <img src="./normalquest400_files/n400-007-map497.gif" width="400" height="333" border="0"></td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">神聖都市アウグスタ</span></td>
-                            <td><span class="color-image4">エールキース</span>へ</td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">農村ガリムト</span></td>
-                            <td><span class="color-image4">バルベルト</span>（81.86）へ</td>
-                          </tr>
-                        </tbody></table>
-                      <br>
-                      <br>
-                      <br>
-                      <table id="table14" style="text-align:left">
-                        <colgroup><col span="1" width="140">
-                      <col span="1" width="490">
-                        
-                          </colgroup><tbody><tr>
-                            <th colspan="2"><a name="4"></a><span color="#00ff00">村の生計</span></th>
-                          </tr>
-                          <tr>
-                            <td colspan="2" class="dummy-class"><br>
-                            <span class="color-image4">アルト</span>から、薬草について詳しい妹の<span class="color-image4">アイルネイン</span>に会ってみるように言われた。村の北側の家に住んでいる<span class="color-image4">アイルネイン</span>を訪ねよう。<br>
-                            <br>
-                            <span class="color-image14">アンゼリカ</span>は、水辺などにたくさん育つと言う。<span class="color-image14">アンゼリカ</span>を探すために、洞窟内の水辺を調査してみよう。<br>
-                            <br>
-                            <span class="color-image14">アンゼリカ</span>を手に入れた。<span class="color-image4">アイルネイン</span>のところに戻って、<span class="color-image14">アンゼリカ</span>を見せよう。<br>
-                            <br>
-                            <span class="color-image4">アイルネイン</span>は、洞窟で発見される薬草が、村の生計を支えてくれるはずだと言う。<span class="color-image4">アルト</span>に報告しよう。<br>
-                            <br>
-                            <span class="color-image4">アルト</span>に、村の人々が安全に薬草を採取できるように洞窟中のモンスターたちを退治してほしいと頼まれた。薬草の辺りをウロウロしているモンスターの<span color="#d080f8">クローラー</span>と<span color="#d080f8">ホップクローラー</span>を退治しよう。<br>
-                            <br>かなりのモンスターを退治した。<span class="color-image4">アルト</span>のところに戻って報告しよう。<br>
-                            <br>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th>受諾場所</th>
-                            <td><span class="color-image20">農村ガリムト　アルト（43.79）</span></td>
-                          </tr>
-                      <tr>
-                      <th>受諾条件</th>
-                      <td><span class="color-image20">Lv420</span></td>
-                          </tr>
-                          <tr>
-                            <th>報酬</th>
-                            <td><span class="color-image20">経験値700万</span></td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">農村ガリムト</span></td>
-                            <td><span color="#ff0000">連作クエスト</span><br>
-                            <a href="normalquest400.html#2">セントロードの噂</a>　→　<a href="normalquest400.html#3">アルタミコ</a>　→　<span color="#666666">村の生計</span><br>
-                            <br>
-                            <span class="color-image4">アイルネイン</span>（41.9）へ</td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
-                            <td><span color="#ffff86">薬草</span>（72.378）をクリック<br>
-                            <br>
-                            <img src="./normalquest400_files/n400-008.gif" width="118" height="107" border="0"><br>
-                            <br>
-                            <img src="./normalquest400_files/n400-009-map497.gif" width="400" height="333" border="0"></td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">農村ガリムト</span></td>
-                            <td><span class="color-image4">アイルネイン</span>へ<br>
-                            <br>
-                            <span class="color-image4">アルト</span>へ</td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
-                            <td><span class="color-image1">クローラー</span>（Lv430）、<span class="color-image1">ホップクローラー</span>（Lv435）を100匹倒す</td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">農村ガリムト</span></td>
-                            <td><span class="color-image4">アルト</span>へ</td>
-                          </tr>
-                        </tbody></table>
-                      <br>
-                      <br>
-                      <br>
-                      <table id="table14" style="text-align:left">
-                        <colgroup><col span="1" width="140">
-                      <col span="1" width="490">
-                        
-                          </colgroup><tbody><tr>
-                            <th colspan="2"><a name="5"></a><span color="#00ff00">少女のための鎮魂歌</span></th>
-                          </tr>
-                          <tr>
-                            <td colspan="2" class="dummy-class"><br>洞窟の出口周辺を彷徨っていた<span class="color-image4">メイ</span>が、失くしてしまったネックレスを探し出して欲しいと頼まれた。洞窟に入って<span class="color-image14">メイのネックレス</span>を探してみよう。<br>
-                            <br>
-                            <span class="color-image14">メイのネックレス</span>を見つけた。洞窟の外で待っている<span class="color-image4">メイ</span>にネックレスを返そう。<br>
-                            <br>自分が既にこの世の存在ではないと分かっていない<span class="color-image4">メイ</span>は、自分のことを待っている母<span class="color-image4">メアリーン</span>に、ネックレスを渡してほしいと言う。<span class="color-image4">メイ</span>の頼み通り、お母さんに<span class="color-image14">メイのネックレス</span>を渡してあげよう。<br>
-                            <br>
-                            <span class="color-image4">メアリーン</span>は、亡き娘<span class="color-image4">メイ</span>が安らかに眠れるように手伝ってほしいという。<span class="color-image4">バルベルト</span>を訪ねて相談してみよう。<br>
-                            <br>
-                            <span class="color-image4">バルベルト</span>は、彼女の遺骨と<span class="color-image14">浄化の聖水</span>を利用すれば、彷徨っている霊魂を呼び出して成仏させることができると言う。<span class="color-image4">メイ</span>を成仏させるために、洞窟に入って<span class="color-image14">子供の遺骨</span>を探し出そう。<br>
-                            <br>
-                            <span class="color-image14">子供の遺骨</span>を探し出した。遺骨を持って<span class="color-image4">メアリーン</span>のところに戻ろう。<br>
-                            <br>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th>受諾場所</th>
-                            <td><span class="color-image20">ミルトリムの道 / シュトラセラト入口付近　メイ（207.53）</span></td>
-                          </tr>
-                      <tr>
-                      <th>受諾条件</th>
-                      <td><span class="color-image20">Lv430</span></td>
-                          </tr>
-                          <tr>
-                            <th>報酬</th>
-                            <td><span class="color-image20">経験値620万</span></td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
-                            <td><span color="#ff0000">連作クエスト</span><br>
-                            <a href="normalquest400.html#2">セントロードの噂</a>　→　<a href="normalquest400.html#3">アルタミコ</a>　→　<span color="#666666">少女のための鎮魂歌</span><br>
-                            <br>
-                            <span class="color-image1">サンクラブ</span>（Lv452）を倒す</td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">ミルトリムの道 / シュトラセラト入口付近</span></td>
-                            <td><span class="color-image4">メイ</span>へ</td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">農村ガリムト</span></td>
-                            <td><span class="color-image4">メアリーン</span>（66.15）へ<br>
-                            <br>
-                            <span class="color-image4">バルベルト</span>（81.86）へ</td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
-                            <td><span color="#ffff86">遺骨</span>（276.69）をクリック<br>
-                            <br>
-                            <img src="./normalquest400_files/n400-010.gif" width="69" height="57" border="0"><br>
-                            <br>
-                            <img src="./normalquest400_files/n400-011-map497.gif" width="400" height="333" border="0"></td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">農村ガリムト</span></td>
-                            <td><span class="color-image4">メアリーン</span>へ</td>
-                          </tr>
-                        </tbody></table>
-                      <br>
-                      <br>
-                      <br>
-                      <table id="table14" style="text-align:left">
-                        <colgroup><col span="1" width="140">
-                      <col span="1" width="490">
-                        
-                          </colgroup><tbody><tr>
-                            <th colspan="2"><a name="6"></a><span color="#00ff00">ジェソ・ジーコフ</span></th>
-                          </tr>
-                          <tr>
-                            <td colspan="2" class="dummy-class"><br>
-                            <span class="color-image4">ジェソ・ジーコフ</span>の実験に必要な変異フロッグが逃げてしまったらしい。変異フロッグを捕まえるためには、麻酔薬を混ぜた餌が必要だという。<span color="#d080f8">洞窟亀</span>を退治して、<span class="color-image14">洞窟亀の卵</span>を手に入れてくるように頼まれた。<span class="color-image14">洞窟亀の卵</span>を<span class="color-image4">ジェソ・ジーコフ</span>に渡すと、<span class="color-image14">小さな団子</span>にしてもらえるので、<span class="color-image14">小さな団子</span>を使って逃げた変異フロッグを捕まえよう。捕まえる時は、変異フロッグが死んでしまわないように、やさしく叩こう。<br>
-                            <br>
-                            <span class="color-image14">変異フロッグ</span>をすべて捕まえることに成功した。<span class="color-image4">ジェソ・ジーコフ</span>のところに戻って、<span class="color-image14">変異フロッグ</span>を渡そう。<br>
-                            <br>
-                            <span class="color-image4">ジェソ・ジーコフ</span>は、双子の兄さんが自分の邪魔をしているようだと言う。復讐のために、農村ガリムトの雑貨店で<span class="color-image14">甘い蜂蜜</span>を手に入れてこよう。<br>
-                            <br>
-                            <span class="color-image14">甘い蜂蜜</span>を手に入れた。<span class="color-image4">ジェソ・ジーコフ</span>が言った石筍を探して<span class="color-image14">甘い蜂蜜</span>を塗ったら、<span class="color-image14">虫壷</span>を開いて置いて帰ろう。<br>
-                            <br>虫たちを振り撒くことに成功した。<span class="color-image4">ジェソ・ジーコフ</span>のところに戻って報告しよう。<br>
-                            <br>この双子の兄弟の行動は、どうも危険に感じる。農村ガリムトにいる<span class="color-image4">バルベルト</span>に報告しよう。<br>
-                            <br>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th>受諾場所</th>
-                            <td><span class="color-image20">セントロード　Ｂ１　ジェソ・ジーコフ（190.23）</span></td>
-                          </tr>
-                      <tr>
-                      <th>受諾条件</th>
-                      <td><span class="color-image20">Lv430</span></td>
-                          </tr>
-                          <tr>
-                            <th>報酬</th>
-                            <td><span class="color-image20"><a href="normalquest400.html#7">ジェド・ジーコフ</a>未済　　　 経験値520万<br>
-                            <a href="normalquest400.html#7">ジェド・ジーコフ</a>クリア済　経験値670万<br>
-                      </span></td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
-                            <td><span color="#ff0000">連作クエスト</span><br>
-                            <a href="normalquest400.html#2">セントロードの噂</a>　→　<a href="normalquest400.html#3">アルタミコ</a>　→　<span color="#666666">ジェソ・ジーコフ</span><br>
-                            <br>
-                            <a href="normalquest400.html#7">ジェド・ジーコフ</a>と同時には受けられない。<br>
-                            <br>
-                            <span class="color-image1">洞窟亀</span>（Lv443）を倒す<br>
-                            <br>
-                            <span class="color-image4">ジェソ・ジーコフ</span>へ、5回話す<br>
-                            <br>
-                            <span color="#ff0000">▲</span><span class="color-image1">変異フロッグ</span>（Lv1）Zinのタゲを取る。倒さないように注意、2分湧き。<br>
-                            <br>
-                            <img src="./normalquest400_files/n400-012-map497.gif" width="400" height="333" border="0"><br>
-                            <br>
-                            <span class="color-image4">ジェソ・ジーコフ</span>へ</td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">ガリムト武器・雑貨店</span></td>
-                            <td><span class="color-image4">ミランダ</span>（13.11）へ、5万G払う</td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
-                            <td><span color="#ffff86">石筍</span>（134.468）をクリック<br>
-                            <br>
-                            <img src="./normalquest400_files/n400-013.gif" width="104" height="152" border="0"><br>
-                            <br>
-                            <img src="./normalquest400_files/n400-014-map497.gif" width="400" height="333" border="0"><br>
-                            <br>
-                            <span class="color-image4">ジェソ・ジーコフ</span>へ<br>
-                            <br>
-                            <a href="normalquest400.html#7">ジェド・ジーコフ</a>未済の場合は、ここで終了　（経験値520万）</td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">農村ガリムト</span></td>
-                            <td><a href="normalquest400.html#7">ジェド・ジーコフ</a>クリア済の場合は、<span class="color-image4">バルベルト</span>（81.86）へ　（経験値670万）</td>
-                          </tr>
-                        </tbody></table>
-                      <br>
-                      <br>
-                      <br>
-                      <table id="table14" style="text-align:left">
-                        <colgroup><col span="1" width="140">
-                      <col span="1" width="490">
-                        
-                          </colgroup><tbody><tr>
-                            <th colspan="2"><a name="7"></a><span color="#00ff00">ジェド・ジーコフ</span></th>
-                          </tr>
-                          <tr>
-                            <td colspan="2" class="dummy-class"><br>
-                            <span class="color-image4">ジェド・ジーコフ</span>は、青い原石がめり込んでいる石筍の周辺にいる多量の虫たちのために、<span class="color-image14">青い原石</span>を採るのが大変だという。<span class="color-image14">ケーキ</span>を石筍の周辺にばら撒いて、石筍から出てくる虫たちをすべて退治したら、<span class="color-image14">青い原石</span>を手に入れよう。<br>
-                            <br>石筍の周辺に<span class="color-image14">ケーキ</span>をばら撒いた。集まってきた虫たちを一気に退治して、虫がこれ以上発生しないようにしたら、<span class="color-image14">青い原石</span>を手に入れよう。<br>
-                            <br>
-                            <span class="color-image14">青い原石</span>を手に入れた。<span class="color-image4">ジェド・ジーコフ</span>のところに戻って<span class="color-image14">青い原石</span>を渡そう。<br>
-                            <br>
-                            <span class="color-image4">ジェド</span>は、双子の弟が自分の邪魔をしているようだと言う。復讐のために、<span color="#d080f8">洞窟スパイダー</span>を捕まえて<span class="color-image14">洞窟スパイダーの毒袋</span>を手に入れたあと、<span class="color-image4">ジェド</span>が言っていた変異フロッグの檻の周辺に振り撤こう。<br>
-                            <br>変異フロッグが檻の中から逃げ出すようにした。<span class="color-image4">ジェド・ジーコフ</span>のところに戻って報告しよう。<br>
-                            <br>この双子の兄弟の行動は、どうも危険に感じる。農村ガリムトにいる<span class="color-image4">バルベルト</span>に報告しよう。<br>
-                            <br>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th>受諾場所</th>
-                            <td><span class="color-image20">セントロード　Ｂ１　ジェド・ジーコフ（20.462）</span></td>
-                          </tr>
-                      <tr>
-                      <th>受諾条件</th>
-                      <td><span class="color-image20">Lv430</span></td>
-                          </tr>
-                          <tr>
-                            <th>報酬</th>
-                            <td><span class="color-image20"><a href="normalquest400.html#6">ジェソ・ジーコフ</a>未済　　　 経験値520万<br>
-                            <a href="normalquest400.html#6">ジェソ・ジーコフ</a>クリア済　経験値670万</span></td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
-                            <td><span color="#ff0000">連作クエスト</span><br>
-                            <a href="normalquest400.html#2">セントロードの噂</a>　→　<a href="normalquest400.html#3">アルタミコ</a>　→　<span color="#666666">ジェド・ジーコフ</span><br>
-                            <br>
-                            <a href="normalquest400.html#6">ジェソ・ジーコフ</a>と同時には受けられない。<br>
-                            <br>
-                            ケーキ5個を用意しておく。<br>
-                            ケーキは<span class="color-image2">古都ブルンネンシュティグ</span>の<span class="color-image4">バリカス</span>（47.57）から750Gで購入できる。<br>
-                            <br>
-                            <span color="#ffff86">石筍</span>（134.468）をクリック、ケーキ5個を消費<br>
-                            <br>
-                            <span class="color-image1">鋏昆虫の群れ</span>（Lv430）が5匹出現、倒す<br>
-                            <br>
-                            <span color="#ffff86">石筍</span>（134.468）をクリック<br>
-                            <br>
-                            <img src="./normalquest400_files/n400-013.gif" width="104" height="152" border="0"><br>
-                            <br>
-                            <img src="./normalquest400_files/n400-014-map497.gif" width="400" height="333" border="0"><br>
-                            <br>
-                            <span class="color-image4">ジェド・ジーコフ</span>へ<br>
-                            <br>
-                            <span class="color-image1">洞窟スパイダー</span>（Lv455）を倒す<br>
-                            <br>
-                            <span class="color-image4">変異フロッグ</span>（195.23）へ<br>
-                            <br>
-                            <span class="color-image4">ジェド・ジーコフ</span>へ<br>
-                            <br>
-                            <a href="normalquest400.html#6">ジェソ・ジーコフ</a>未済の場合は、ここで終了　（経験値520万）</td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">農村ガリムト</span></td>
-                            <td><a href="normalquest400.html#6">ジェソ・ジーコフ</a>クリア済の場合は、<span class="color-image4">バルベルト</span>（81.86）へ　（経験値670万）</td>
-                          </tr>
-                        </tbody></table>
-                      <br>
-                      <br>
-                      <br>
-                      <table id="table14" style="text-align:left">
-                        <colgroup><col span="1" width="140">
-                      <col span="1" width="490">
-                        
-                          </colgroup><tbody><tr>
-                            <th colspan="2"><a name="8"></a><span color="#00ff00">ビルベルトのわがまま</span></th>
-                          </tr>
-                          <tr>
-                            <td colspan="2" class="dummy-class"><br>
-                            <span class="color-image4">ビルベルト</span>は、セントロードを調査した際に、自分の聖具を失くしてしまったらしい。<span class="color-image4">ビルベルト</span>に言われた通りに洞窟に入って<span class="color-image14">ビルベルトの聖具</span>を探し出そう。<br>
-                            <br>
-                            <span class="color-image14">ビルベルトの聖具</span>を探し出した。洞窟の外で待っている<span class="color-image4">ビルベルト</span>に聖具を渡してあげよう。<br>
-                            <br>
-                            <span class="color-image4">ビルベルト</span>が、洞窟内のモンスターを退治して、自分の聖具に聖なる力を集めて欲しいと頼んできた。聖なる力を吸いこむ<span color="#d080f8">ソウルナイト</span>と<span color="#d080f8">ソウルロスト</span>を退治して聖なる力を集めよう。<br>
-                            <br>
-                            <span class="color-image14">ビルベルトの聖具</span>に、聖なる力を十分に集めた。洞窟の外で待っている<span class="color-image4">ビルベルト</span>に渡そう。<br>
-                            <br>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th>受諾場所</th>
-                            <td><span class="color-image20">ミルトリムの道 / シュトラセラト入口付近　ビルベルト（111.264）</span></td>
-                          </tr>
-                      <tr>
-                      <th>受諾条件</th>
-                      <td><span class="color-image20">Lv440</span></td>
-                          </tr>
-                          <tr>
-                            <th>報酬</th>
-                            <td><span class="color-image20">経験値780万</span></td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
-                            <td><span color="#ff0000">連作クエスト</span><br>
-                            <a href="normalquest400.html#2">セントロードの噂</a>　→　<a href="normalquest400.html#3">アルタミコ</a>　→　<span color="#666666">ビルベルトのわがまま</span><br>
-                            <br>
-                            <span class="color-image1">ソウルナイト</span>（Lv460）を倒す</td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">ミルトリムの道 / シュトラセラト入口付近</span></td>
-                            <td><span class="color-image4">ビルベルト</span>へ</td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
-                            <td><span class="color-image1">ソウルナイト</span>（Lv460）、<span class="color-image1">ソウルロスト</span>（Lv476）Zinを60匹程倒す</td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">ミルトリムの道 / シュトラセラト入口付近</span></td>
-                            <td><span class="color-image4">ビルベルト</span>へ</td>
-                          </tr>
-                        </tbody></table>
-                      <br>
-                      <br>
-                      <br>
-                      <table id="table14" style="text-align:left">
-                        <colgroup><col span="1" width="140">
-                      <col span="1" width="490">
-                        
-                          </colgroup><tbody><tr>
-                            <th colspan="2"><a name="9"></a><span color="#00ff00">ダークエルフ王</span></th>
-                          </tr>
-                          <tr>
-                            <td colspan="2" class="dummy-class"><br>
-                            <span color="#d080f8">ダークエルフ王</span>を探し出し、制圧せよ。<br>
-                            <br>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th>受諾場所</th>
-                            <td><span class="color-image20">ダークエルフ王宮　３Ｆ</span></td>
-                          </tr>
-                      <tr>
-                      <th>受諾条件</th>
-                      <td><span class="color-image20">Lv450</span></td>
-                          </tr>
-                          <tr>
-                            <th>報酬</th>
-                            <td><span class="color-image20">経験値500万　職専用アイテム（最高補正の刺青/ブローチ/十字架）</span></td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">ダークエルフ王宮　３Ｆ</span></td>
-                            <td><span class="color-image1">ダークエルフ王</span>（Lv470)のタゲを取るとクエスト発生、倒す<br>
-                            （13.11）付近に4時間47分16秒、1匹湧き。<br>
-                            <br>
-                            <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/b65aad247438b9fe2136078fde1d74ee333719ea.10.2.9.2.jpeg" border=0 name="insertImg" /><br><br>                            <table id="table4">
-                              <colgroup><col span="1" width="180">
-                              </colgroup><colgroup>
-                              
-                              </colgroup><tbody>
-                                <tr>
-                                  <th colspan="2">報酬アイテム</th>
-                                </tr>
-                                <tr>
-                                  <th>職業</th>
-                                  <th>職専用アイテム（補正）</th>
-                                </tr>
-                                <tr>
-                                  <td align="center">剣士/戦士</td>
-                                  <td align="center">-</td>
-                                </tr>
-                                <tr>
-                                  <td align="center">アーチャー/ランサー</td>
-                                  <td align="center">ペイルライト紋様の腕刺青XLS（光強化 <span class="color-image20">100</span>％）</td>
-                                </tr>
-                                <tr>
-                                  <td align="center">ウィザード/ウルフマン</td>
-                                  <td align="center">イフリィト紋様のブローチXLS（火強化 <span class="color-image20">120</span>％）</td>
-                                </tr>
-                                <tr>
-                                  <td align="center">ビショップ/追放天使</td>
-                                  <td align="center">ペイルライト装飾の十字架XLS（光強化 <span class="color-image20">100</span>％）</td>
-                                </tr>
-                                <tr>
-                                  <td align="center">ビーストテイマー/サマナー</td>
-                                  <td align="center">エント紋様の肩刺青XLS（大地強化 <span class="color-image20">160</span>％）</td>
-                                </tr>
-                                <tr>
-                                  <td align="center">シーフ/武道家</td>
-                                  <td align="center">-</td>
-                                </tr>
-                                <tr>
-                                  <td align="center">プリンセス/リトルウィッチ</td>
-                                  <td align="center">-</td>
-                                </tr>
-                                <tr>
-                                  <td align="center">ネクロマンサー/悪魔</td>
-                                  <td align="center">イフリィト装飾の十字架XLS（火強化 <span class="color-image20">120</span>％）</td>
-                                </tr>
-                                <tr>
-                                  <td align="center">霊術師/闘士</td>
-                                  <td align="center">-</td>
-                                </tr>
-                                <tr>
-                                  <td align="center">光奏師/獣人</td>
-                                  <td align="center">イフリィト紋様のブローチXLS（火強化 <span class="color-image20">120</span>％）</td>
-                                </tr>
-                                <tr>
-                                  <td align="center">メイド/黒魔術師</td>
-                                  <td align="center">-</td>
-                                </tr>
-                                <tr>
-                                  <td align="center">マスケッティア/アルケミスト</td>
-                                  <td align="center">-</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            </td>
-                          </tr>
-                        </tbody></table>
-                      <br>
-                      <br>
-                      <br>
-                      <table id="table14" style="text-align:left">
-                        <colgroup><col span="1" width="140">
-                      <col span="1" width="490">
-                        
-                          </colgroup><tbody><tr>
-                            <th colspan="2"><a name="10"></a><span color="#00ff00">遅すぎた後悔</span></th>
-                          </tr>
-                          <tr>
-                            <td colspan="2" class="dummy-class"><br>
-                            <span class="color-image4">バルベルト</span>から、洞窟に関する新たな情報収集のために、港街シュトラセラトにいる<span class="color-image4">ミゲル</span>を訪ねるよう言われた。<br>
-                            <br>
-                            <span class="color-image4">ミゲル</span>に、死んで怨霊となってしまった仲間たちを退治してほしいと頼まれた。背教者の秘密通路　Ｂ１を徘徊している<span color="#d080f8">ディブロ</span>、<span color="#d080f8">ルーブ</span>、<span color="#d080f8">デルローブ</span>を退治しよう。<br>
-                            <br>死んで怨霊となってしまった仲間たちを退治した。<span class="color-image4">ミゲル</span>のところに戻って報告しよう。<br>
-                            <br>
-                            <span class="color-image4">ミゲル</span>から渡された<span class="color-image14">ミゲルの日誌</span>を農村ガリムトにいる<span class="color-image4">バルベルト</span>に届けよう。<br>
-                            <br>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th>受諾場所</th>
-                            <td><span class="color-image20">農村ガリムト　バルベルト（81.86）</span></td>
-                          </tr>
-                      <tr>
-                      <th>受諾条件</th>
-                      <td><span class="color-image20">Lv450</span></td>
-                          </tr>
-                          <tr>
-                            <th>報酬</th>
-                            <td><span class="color-image20">経験値870万　高級復活巻物3個</span></td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">港街シュトラセラト</span></td>
-                            <td><span color="#ff0000">連作クエスト</span><br>
-                            <a href="normalquest400.html#2">セントロードの噂</a>　→　<a href="normalquest400.html#3">アルタミコ</a>　→　<span color="#666666">遅すぎた後悔</span>　→　<a href="normalquest400.html#13">破門されたベルートス</a><br>
-                            <br>
-                            <span class="color-image4">ミゲル</span>（138.135）へ</td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
-                            <td><span class="color-image1">ディブロ</span>（Lv460）、<span class="color-image1">ルーブ</span>（Lv460）、<span class="color-image1">デルローブ</span>（Lv460）を倒す<br>
-                            <br>
-                            <img src="./normalquest400_files/n400-016.gif" width="95" height="93" border="0">　<img src="./normalquest400_files/n400-017.gif" width="84" height="107" border="0">　<img src="./normalquest400_files/n400-018.gif" width="105" height="117" border="0"></td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">港街シュトラセラト</span></td>
-                            <td><span class="color-image4">ミゲル</span>へ</td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">農村ガリムト</span></td>
-                            <td><span class="color-image4">バルベルト</span>へ</td>
-                          </tr>
-                        </tbody></table>
-                      <br>
-                      <br>
-                      <br>
-                      <table id="table14" style="text-align:left">
-                        <colgroup><col span="1" width="140">
-                      <col span="1" width="490">
-                        
-                          </colgroup><tbody><tr>
-                            <th colspan="2"><a name="11"></a><span color="#00ff00">洞窟の主</span></th>
-                          </tr>
-                          <tr>
-                            <td colspan="2" class="dummy-class"><br>洞窟の奥深くで出会った<span class="color-image4">キリアム</span>は、力の源を奪われて、力を失っているらしい。彼の力を回復させるために、セントロード　Ｂ２にあるキリアムの棲み処に咲く<span class="color-image4">蓮華</span>と輝く泉に咲く<span class="color-image4">赤い花</span>から、<span class="color-image14">生命の玉</span>を手に入れて<span class="color-image4">キリアム</span>に渡してあげよう。<br>
-                            <br>
-                            <span class="color-image4">キリアム</span>が言っていた<span class="color-image14">生命の玉</span>を手に入れた。これを渡してあげよう。<br>
-                            <br>
-                            <span class="color-image14">生命の玉</span>を川辺に咲く<span class="color-image4">蓮華</span>と<span class="color-image4">赤い花</span>のところに、1つずつ埋めてこよう。<br>
-                            <br>
-                            <span class="color-image14">生命の玉</span>をすべて埋めた。<span class="color-image4">キリアム</span>と話をしよう。<br>
-                            <br>
-                            <span class="color-image4">キリアム</span>に、力を回復しなければいけないから、領域に入ってきた悪霊を退治してほしいと頼まれた。<span class="color-image4">キリアム</span>に頼まれた通りに、洞窟の奥深くにいる<span color="#d080f8">フォースナイト</span>と<span color="#d080f8">フォースロスト</span>を退治しよう。<br>
-                            <br>悪霊たちをすべて退治した。<span class="color-image4">キリアム</span>のところに戻って報告しよう。<br>
-                            <br>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th>受諾場所</th>
-                            <td><span class="color-image20">セントロード　Ｂ１　キリアム（99.69）</span></td>
-                          </tr>
-                      <tr>
-                      <th>受諾条件</th>
-                      <td><span class="color-image20">Lv460</span></td>
-                          </tr>
-                          <tr>
-                            <th>報酬</th>
-                            <td><span class="color-image20">経験値970万</span></td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">セントロード　Ｂ２</span></td>
-                            <td><span color="#ff0000">連作クエスト</span><br>
-                            <a href="normalquest400.html#2">セントロードの噂</a>　→　<a href="normalquest400.html#3">アルタミコ</a>　→　<span color="#666666">洞窟の主</span>　→　<a href="normalquest400.html#12">キリアムの力</a><br>
-                            <br>
-                            <span color="#ffff86">蓮華</span>（73.18）と<span color="#ffff86">赤い花</span>（62.149）をクリック<br>
-                            <br>
-                            <img src="./normalquest400_files/n400-019.gif" width="144" height="197" border="0">　<img src="./normalquest400_files/n400-020.gif" width="61" height="95" border="0"><br>
-                            <br>
-                            <img src="./normalquest400_files/n400-021-map498.gif" width="400" height="333" border="0"></td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
-                            <td><span class="color-image4">キリアム</span>へ<br>
-                            <br>
-                            <span color="#ffff86">蓮華</span>（92.64）と<span color="#ffff86">赤い花</span>（102.66）をクリック<br>
-                            <br>
-                            <img src="./normalquest400_files/n400-022.gif" width="146" height="197" border="0">　<img src="./normalquest400_files/n400-023.gif" width="86" height="83" border="0"><br>
-                            <br>
-                            <img src="./normalquest400_files/n400-024-map497.gif" width="400" height="333" border="0"><br>
-                            <br>
-                            <span class="color-image4">キリアム</span>へ</td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">セントロード　Ｂ２</span></td>
-                            <td><span class="color-image1">フォースナイト</span>（Lv486）、<span class="color-image1">フォースロスト</span>（Lv500）Zinを30匹倒す</td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
-                            <td><span class="color-image4">キリアム</span>へ</td>
-                          </tr>
-                        </tbody></table>
-                      <br>
-                      <br>
-                      <br>
-                      <table id="table14" style="text-align:left">
-                        <colgroup><col span="1" width="140">
-                      <col span="1" width="490">
-                        
-                          </colgroup><tbody><tr>
-                            <th colspan="2"><a name="12"></a><span color="#00ff00">キリアムの力</span></th>
-                          </tr>
-                          <tr>
-                            <td colspan="2" class="dummy-class"><br>
-                            <span class="color-image4">キリアム</span>に、力を回復しなければいけないから、領域に入ってきた悪霊を退治してほしいと頼まれた。<span class="color-image4">キリアム</span>に頼まれた通りに、洞窟の奥深くにいる<span color="#d080f8">フォースナイト</span>と<span color="#d080f8">フォースロスト</span>を退治しよう。<br>
-                            <br>悪霊たちをすべて退治した。<span class="color-image4">キリアム</span>のところに戻って報告しよう。<br>
-                            <br>
-                            <span class="color-image4">キリアム</span>が言っていた強力な悪霊<span color="#d080f8">ダークサイファー</span>を退治した。<span color="#d080f8">ダークサイファー</span>の棲家で<span class="color-image4">輝く岩石</span>を調査してみよう。<br>
-                            <br>
-                            <span class="color-image4">キリアム</span>が、人間に騙されて失くしてしまった<span class="color-image14">生命の地玉</span>を手に入れた。<span class="color-image4">キリアム</span>のところに戻って報告しよう。<br>
-                            <br>このまま悪霊たちを退治していても、数が減っているとは思えない。<span class="color-image4">キリアム</span>を助ける為には、もっと根本的な問題を解決する必要がありそうだ。問題解決のため、調査してみよう。<br>
-                            <br>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th>受諾場所</th>
-                            <td><span class="color-image20">セントロード　Ｂ１　キリアム（99.69）</span></td>
-                          </tr>
-                      <tr>
-                      <th>受諾条件</th>
-                      <td><span class="color-image20">Lv460　繰返し可</span></td>
-                          </tr>
-                          <tr>
-                            <th>報酬</th>
-                            <td><span class="color-image20">経験値60万+2000万　ドラゴンの心臓5個</span></td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">セントロード　Ｂ２</span></td>
-                            <td><span color="#ff0000">連作クエスト</span><br>
-                            <a href="normalquest400.html#2">セントロードの噂</a>　→　<a href="normalquest400.html#3">アルタミコ</a>　→　<a href="normalquest400.html#11">洞窟の主</a>　→　<span color="#666666">キリアムの力</span><br>
-                            <br>
-                            <span class="color-image1">フォースナイト</span>（Lv486）、<span class="color-image1">フォースロスト</span>（Lv500）Zinを100匹倒す</td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
-                            <td><span class="color-image4">キリアム</span>へ<br>
-                            <br>
-                            Lv540未満の場合は、ここまでを繰り返し可。　（経験値60万）<br>
-                            最後までクリアすると繰り返しクエストは受けられなくなる。</td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">セントロード　Ｂ２</span></td>
-                            <td>Lv540以上や途中で<span class="color-image1">ダークサイファー</span>を倒しに行くと、次のクエストに進む。<br>
-                            <br>
-                            <span color="#ff0000">▲</span><span class="color-image1">ダークサイファー</span>（Lv490）Zinを倒す、（106.231）付近に約4時間47分湧き。<br>
-                            全属性魔法抵抗90％以上、ミラーカーズ攻撃あり。<br>
-                            HPが1/2と1/3になった時、<span class="color-image1">サイファー</span>（Lv490）と<span class="color-image1">ダークスプリンタ</span>（Lv490）4匹が湧く。<br>
-                            <br>
-                            <span color="#ffff86">岩石</span>（99.224）をクリック<br>
-                            <br>
-                            <img src="./normalquest400_files/n400-025.gif" width="137" height="217" border="0">　<img src="./normalquest400_files/n400-026.gif" width="120" height="202" border="0"><br>
-                            <br>
-                            <img src="./normalquest400_files/n400-027-map498.gif" width="400" height="333" border="0"></td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
-                            <td><span class="color-image4">キリアム</span>へ　（経験値2000万　ドラゴンの心臓5個）</td>
-                          </tr>
-                        </tbody></table>
-                      <br>
-                      <br>
-                      <br>
-                      <table id="table14" style="text-align:left">
-                        <colgroup><col span="1" width="140">
-                      <col span="1" width="490">
-                        
-                          </colgroup><tbody><tr>
-                            <th colspan="2"><a name="13"></a><span color="#00ff00">破門されたベルートス</span></th>
-                          </tr>
-                          <tr>
-                            <td colspan="2" class="dummy-class"><br>
-                            <span class="color-image4">バルベルト</span>は、罪を犯して逃走した<span color="#d080f8">ベルートス</span>が、村の南側の洞窟に隠れているという情報を得たそうだ。洞窟内に隠れている<span color="#d080f8">ベルートス</span>を捜して退治しよう。<br>
-                            <br>
-                            <span color="#d080f8">ベルートス</span>は、魔法陣を使って逃走したようだ。<span class="color-image4">バルベルト</span>に報告しよう。<br>
-                            <br>
-                            <span class="color-image14">バルベルトの聖具</span>を利用して魔法陣の捜索を行い、<span color="#d080f8">ベルートス</span>を退治しよう。<br>
-                            <br>
-                            <span color="#d080f8">ベルートス</span>を退治して、<span class="color-image14">ベルートスの研究日誌</span>を手に入れた。<span class="color-image4">バルベルト</span>に報告しよう。<br>
-                            <br>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th>受諾場所</th>
-                            <td><span class="color-image20">農村ガリムト　バルベルト（81.86）</span></td>
-                          </tr>
-                      <tr>
-                      <th>受諾条件</th>
-                      <td><span class="color-image20">Lv480</span></td>
-                          </tr>
-                          <tr>
-                            <th>報酬</th>
-                            <td><span class="color-image20">経験値1300万</span></td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">セントロード　Ｂ２</span></td>
-                            <td><span color="#ff0000">連作クエスト</span><br>
-                            <a href="normalquest400.html#2">セントロードの噂</a>　→　<a href="normalquest400.html#3">アルタミコ</a>　→　<a href="normalquest400.html#10">遅すぎた後悔</a>　→　<span color="#666666">破門されたベルートス</span><br>
-                            <br>
-                            <span class="color-image1">ベルートス</span>（Lv490）を倒す<br>
-                            <br>
-                            <img src="./normalquest400_files/n400-028.gif" width="101" height="114" border="0"></td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">農村ガリムト</span></td>
-                            <td><span class="color-image4">バルベルト</span>へ</td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">セントロード　Ｂ２</span></td>
-                            <td><span color="#ffff86">魔方陣</span>（142.91）をクリック<br>
-                            3つあるうちの東の<span color="#ffff86">魔方陣</span>が正解、Ｂ１右下の島の上側へワープ<br>
-                            <br>
-                            <img src="./normalquest400_files/n400-029.gif" width="168" height="92" border="0"><br>
-                            <br>
-                            <img src="./normalquest400_files/n400-030-map498.gif" width="400" height="333" border="0"></td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
-                            <td><span color="#ff0000">▲</span><span class="color-image1">ベルートス</span>（Lv490）Zinを倒す、HP回復1万1000あり<br>
-                            <br>
-                            <img src="./normalquest400_files/n400-031.gif" width="109" height="119" border="0"><br>
-                            <br>
-                            <img src="./normalquest400_files/n400-032-map497.gif" width="400" height="333" border="0"></td>
-                          </tr>
-                          <tr>
-                            <td align="center"><span class="color-image2">農村ガリムト</span></td>
-                            <td><span class="color-image4">バルベルト</span>へ</td>
-                          </tr>
-                        </tbody></table>
-                      
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">新興王国ビガプール　ジュニア2世（153.109）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv400</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">[選択肢1,4]　経験値30万<br>
+                  [選択肢2,3]　経験値50万</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">新興王国ビガプール</span></td>
+              <td><span class="color-image4">ジュニア2世</span>へ<br>
                 <br>
+                <span color="#9999ff">[選択肢1]河口ダンジョン　'ラ'<br>
+                  [選択肢2]ダークエルフの王宮寺院<br>
+                  [選択肢3]名も無き遺跡<br>
+                  [選択肢4]名も無い崩れた塔</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">河口ダンジョン　'ラ'　Ｂ１～２</span></td>
+              <td><span color="#9999ff">[選択肢1]河口ダンジョン　'ラ'</span>　を選択した場合の続き<br>
                 <br>
-                [参考] <a
-                    href="https://yotsuba000.github.io/YotsubaDataBase/QuestDataBase/QuestDataBaseIndex.html">Yotsuba
-                    Quest DataBase</a><br>
+                <span class="color-image1">モンスター</span>を倒す</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">ダークエルフの王宮寺院</span></td>
+              <td><span color="#9999ff">[選択肢2]ダークエルフの王宮寺院</span>　を選択した場合の続き<br>
                 <br>
+                <span class="color-image1">モンスター</span>を倒す</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">名も無い遺跡の入口<br>
+                  名も無き遺跡　Ｂ１～２</span></td>
+              <td><span color="#9999ff">[選択肢3]名も無き遺跡</span>　を選択した場合の続き<br>
                 <br>
-                <footer class="android-footer mdl-mega-footer">
-                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
-                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
-                    </font>
-                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
-                </footer>
-                <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+                <span class="color-image1">モンスター</span>を倒す</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">名も無い崩れた塔<br>
+                  Ｂ１～７</span></td>
+              <td><span color="#9999ff">[選択肢4]名も無い崩れた塔</span>　を選択した場合の続き<br>
+                <br>
+                <span class="color-image1">モンスター</span>を倒す</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">新興王国ビガプール</span></td>
+              <td><span class="color-image4">ジュニア2世</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="140">
+            <col span="1" width="490">
+
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="2"></a><span color="#00ff00">セントロードの噂</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">エールキース</span>に言われた通り、セントロードの調査のため、農村ガリムトに派遣されている<span
+                  class="color-image4">バルベルト</span>に会いに行こう。<br>
+                <br>
+                <span
+                  class="color-image4">バルベルト</span>に、セントロードではないかと推定される洞窟内で、出口を探し出さなければいけないと言われた。ミルトリム記念公園の近くにある入口から入って、洞窟の出口を探してみよう。<br>
+                <br>セントロードと推定される洞窟の出口を発見した。この事を<span class="color-image4">バルベルト</span>に報告しよう。<br>
+                <br>
+                <span
+                  class="color-image4">バルベルト</span>が言うには、洞窟の出口が存在したことから考えても、王国の追い手から逃げてきたグリーク教信者たちが身を隠した場所である確率が高いらしい。再び洞窟に行って、内部の壁や床などを調査して、グリーク教の高位神官だった信者の手がかりを探してみよう。<br>
+                <br>聖具と推定される品物を見つけた。<span class="color-image4">バルベルト</span>に見せよう。<br>
+                <br>
+                <span class="color-image14">アルタミコ</span>が発見されたことを考えても、背教者がこの洞窟を通じて逃走したという<span
+                  class="color-image4">バルベルト</span>から聞いた学者の仮説は正しいようだ。しかし、神聖物から聖なるパワーが感じられない点に疑問が残るため、調査が必要だという。<span
+                  class="color-image4">エールキース</span>に<span class="color-image14">アルタミコ</span>を渡しに行こう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">神聖都市アウグスタ　エールキース（97.77）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv410　キャンセル不可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">-</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">農村ガリムト</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <span color="#666666">セントロードの噂</span>　→　<a href="normalquest400.html#3">アルタミコ</a><br>
+                ⇒　<a href="normalquest400.html#4">村の生計</a>　<a href="normalquest400.html#5">少女のための鎮魂歌</a>　<a
+                  href="normalquest400.html#6">ジェソ・ジーコフ</a>　<a href="normalquest400.html#7">ジェド・ジーコフ</a>　<a
+                  href="normalquest400.html#8">ビルベルトのわがまま</a><br>
+                ⇒　<a href="normalquest400.html#11">洞窟の主</a>　→　<a href="normalquest400.html#12">キリアムの力</a><br>
+                ⇒　<a href="normalquest400.html#10">遅すぎた後悔</a>　→　<a href="normalquest400.html#13">破門されたベルートス</a><br>
+                <br>
+                <span class="color-image4">バルベルト</span>（81.86）へ</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">ミルトリムの道 / シュトラセラト入口付近</span></td>
+              <td><span class="color-image2">セントロード　Ｂ１</span>への入口は3箇所ある。<br>
+                <br>
+                <span color="#00ffff">(1)</span>隠し入口=<span color="#ffff86">洞穴</span>（214.55）　⇔　<span
+                  color="#00ffff">(1)</span>隠し出口＝<span color="#ffff86">蓮花</span>（266.46）<br>
+                <span color="#00ffff">(2)</span>隠し入口=<span color="#ffff86">洞穴</span>（110.236）　⇔　<span
+                  color="#00ffff">(2)</span>隠し出口＝<span color="#ffff86">岩</span>（120.347）<br>
+                <span color="#00ffff">(3)</span>通常入口=移動ポータル（155.279）　⇔　<span
+                  color="#00ffff">(3)</span>通常出口=移動ポータル（110.394）<br>
+                <br>
+                <img
+                  src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/c7f0506114597d0d9ef35315769136d557b80a39.10.2.9.2.png"
+                  border=0 name="insertImg" /><br><br>
+                <span color="#00ffff">(1)</span>隠し入口=<span color="#ffff86">洞穴</span>（214.55）から入り、<span
+                  color="#00ffff">(1)</span>隠し出口＝<span color="#ffff86">蓮花</span>（266.46）へ<br>
+                <br>
+                <img
+                  src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/f96a673fc078a2971802201648fb26f378ed0115.10.2.9.2.png"
+                  border=0 name="insertImg" /><br><br>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
+              <td><span color="#00ffff">(1)</span>隠し出口＝<span color="#ffff86">蓮花</span>（266.46）をクリック<br>
+                <br>
+                <img
+                  src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/adb6a7922d1d66086a61cd5ed055c75027baad0c.10.2.9.2.png"
+                  border=0 name="insertImg" /><br><br>
+                <img src="./normalquest400_files/n400-002-map497.gif" width="400" height="333" border="0"></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">農村ガリムト</span></td>
+              <td><span class="color-image4">バルベルト</span>へ</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
+              <td><span color="#ffff86">十字架</span>（253.192）をクリック<br>
+                <br>
+                <img
+                  src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/802ca741149812975893b86a1deb942c14854e4d.10.2.9.2.png"
+                  border=0 name="insertImg" /><br><br>
+              </td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">農村ガリムト</span></td>
+              <td><span class="color-image4">バルベルト</span>へ</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">神聖都市アウグスタ</span></td>
+              <td><span class="color-image4">エールキース</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="140">
+            <col span="1" width="490">
+
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="3"></a><span color="#00ff00">アルタミコ</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">エールキース</span>の指示通り、魔法陣を使って他の<span
+                  class="color-image14">アルタミコ</span>も探してみよう。<br>
+                <br>魔法陣付近の<span class="color-image14">アルタミコ</span>を回収して帰ろう。<br>
+                <br>
+                <span class="color-image14">アルタミコ</span>をすべて探し出した。これを<span
+                  class="color-image4">エールキース</span>のところに持って行って報告しよう。<br>
+                <br>
+                <span class="color-image4">エールキース</span>の手紙を農村ガリムトにいる<span class="color-image4">バルベルト</span>に渡そう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">神聖都市アウグスタ　エールキース（97.77）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv410　キャンセル不可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">経験値1150万</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest400.html#2">セントロードの噂</a>　→　<span color="#666666">アルタミコ</span><br>
+                <br>
+                <span color="#ffff86">魔方陣</span>（254.195）をクリック、対岸へワープ<br>
+                <br>
+                <span color="#ffff86">十字架</span>（278.291）をクリック<br>
+                <br>
+                <img
+                  src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/7c0cbdcaf33a17c53388a75c763e85228f74bd9e.10.2.9.2.png"
+                  border=0 name="insertImg" /><br><br>
+              </td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">神聖都市アウグスタ</span></td>
+              <td><span class="color-image4">エールキース</span>へ</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">農村ガリムト</span></td>
+              <td><span class="color-image4">バルベルト</span>（81.86）へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="140">
+            <col span="1" width="490">
+
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="4"></a><span color="#00ff00">村の生計</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">アルト</span>から、薬草について詳しい妹の<span
+                  class="color-image4">アイルネイン</span>に会ってみるように言われた。村の北側の家に住んでいる<span
+                  class="color-image4">アイルネイン</span>を訪ねよう。<br>
+                <br>
+                <span class="color-image14">アンゼリカ</span>は、水辺などにたくさん育つと言う。<span
+                  class="color-image14">アンゼリカ</span>を探すために、洞窟内の水辺を調査してみよう。<br>
+                <br>
+                <span class="color-image14">アンゼリカ</span>を手に入れた。<span class="color-image4">アイルネイン</span>のところに戻って、<span
+                  class="color-image14">アンゼリカ</span>を見せよう。<br>
+                <br>
+                <span class="color-image4">アイルネイン</span>は、洞窟で発見される薬草が、村の生計を支えてくれるはずだと言う。<span
+                  class="color-image4">アルト</span>に報告しよう。<br>
+                <br>
+                <span
+                  class="color-image4">アルト</span>に、村の人々が安全に薬草を採取できるように洞窟中のモンスターたちを退治してほしいと頼まれた。薬草の辺りをウロウロしているモンスターの<span
+                  color="#d080f8">クローラー</span>と<span color="#d080f8">ホップクローラー</span>を退治しよう。<br>
+                <br>かなりのモンスターを退治した。<span class="color-image4">アルト</span>のところに戻って報告しよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">農村ガリムト　アルト（43.79）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv420</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">経験値700万</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">農村ガリムト</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest400.html#2">セントロードの噂</a>　→　<a href="normalquest400.html#3">アルタミコ</a>　→　<span
+                  color="#666666">村の生計</span><br>
+                <br>
+                <span class="color-image4">アイルネイン</span>（41.9）へ</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
+              <td><span color="#ffff86">薬草</span>（72.378）をクリック<br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/679ab6d5d07a154241b44e7dfb849957527bfdef.10.2.9.2.png" border=0 name="insertImg" /><br><br>
+                <img src="./normalquest400_files/n400-009-map497.gif" width="400" height="333" border="0"></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">農村ガリムト</span></td>
+              <td><span class="color-image4">アイルネイン</span>へ<br>
+                <br>
+                <span class="color-image4">アルト</span>へ</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
+              <td><span class="color-image1">クローラー</span>（Lv430）、<span
+                  class="color-image1">ホップクローラー</span>（Lv435）を100匹倒す</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">農村ガリムト</span></td>
+              <td><span class="color-image4">アルト</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="140">
+            <col span="1" width="490">
+
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="5"></a><span color="#00ff00">少女のための鎮魂歌</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>洞窟の出口周辺を彷徨っていた<span
+                  class="color-image4">メイ</span>が、失くしてしまったネックレスを探し出して欲しいと頼まれた。洞窟に入って<span
+                  class="color-image14">メイのネックレス</span>を探してみよう。<br>
+                <br>
+                <span class="color-image14">メイのネックレス</span>を見つけた。洞窟の外で待っている<span
+                  class="color-image4">メイ</span>にネックレスを返そう。<br>
+                <br>自分が既にこの世の存在ではないと分かっていない<span class="color-image4">メイ</span>は、自分のことを待っている母<span
+                  class="color-image4">メアリーン</span>に、ネックレスを渡してほしいと言う。<span
+                  class="color-image4">メイ</span>の頼み通り、お母さんに<span class="color-image14">メイのネックレス</span>を渡してあげよう。<br>
+                <br>
+                <span class="color-image4">メアリーン</span>は、亡き娘<span
+                  class="color-image4">メイ</span>が安らかに眠れるように手伝ってほしいという。<span
+                  class="color-image4">バルベルト</span>を訪ねて相談してみよう。<br>
+                <br>
+                <span class="color-image4">バルベルト</span>は、彼女の遺骨と<span
+                  class="color-image14">浄化の聖水</span>を利用すれば、彷徨っている霊魂を呼び出して成仏させることができると言う。<span
+                  class="color-image4">メイ</span>を成仏させるために、洞窟に入って<span class="color-image14">子供の遺骨</span>を探し出そう。<br>
+                <br>
+                <span class="color-image14">子供の遺骨</span>を探し出した。遺骨を持って<span
+                  class="color-image4">メアリーン</span>のところに戻ろう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">ミルトリムの道 / シュトラセラト入口付近　メイ（207.53）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv430</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">経験値620万</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest400.html#2">セントロードの噂</a>　→　<a href="normalquest400.html#3">アルタミコ</a>　→　<span
+                  color="#666666">少女のための鎮魂歌</span><br>
+                <br>
+                <span class="color-image1">サンクラブ</span>（Lv452）を倒す</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">ミルトリムの道 / シュトラセラト入口付近</span></td>
+              <td><span class="color-image4">メイ</span>へ</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">農村ガリムト</span></td>
+              <td><span class="color-image4">メアリーン</span>（66.15）へ<br>
+                <br>
+                <span class="color-image4">バルベルト</span>（81.86）へ</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
+              <td><span color="#ffff86">遺骨</span>（276.69）をクリック<br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/9e6eba05a4e30353e075f529a2a6eed0d73d9a34.10.2.9.2.png" border=0 name="insertImg" /><br><br>
+              </td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">農村ガリムト</span></td>
+              <td><span class="color-image4">メアリーン</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="140">
+            <col span="1" width="490">
+
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="6"></a><span color="#00ff00">ジェソ・ジーコフ</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">ジェソ・ジーコフ</span>の実験に必要な変異フロッグが逃げてしまったらしい。変異フロッグを捕まえるためには、麻酔薬を混ぜた餌が必要だという。<span
+                  color="#d080f8">洞窟亀</span>を退治して、<span class="color-image14">洞窟亀の卵</span>を手に入れてくるように頼まれた。<span
+                  class="color-image14">洞窟亀の卵</span>を<span class="color-image4">ジェソ・ジーコフ</span>に渡すと、<span
+                  class="color-image14">小さな団子</span>にしてもらえるので、<span
+                  class="color-image14">小さな団子</span>を使って逃げた変異フロッグを捕まえよう。捕まえる時は、変異フロッグが死んでしまわないように、やさしく叩こう。<br>
+                <br>
+                <span class="color-image14">変異フロッグ</span>をすべて捕まえることに成功した。<span
+                  class="color-image4">ジェソ・ジーコフ</span>のところに戻って、<span class="color-image14">変異フロッグ</span>を渡そう。<br>
+                <br>
+                <span class="color-image4">ジェソ・ジーコフ</span>は、双子の兄さんが自分の邪魔をしているようだと言う。復讐のために、農村ガリムトの雑貨店で<span
+                  class="color-image14">甘い蜂蜜</span>を手に入れてこよう。<br>
+                <br>
+                <span class="color-image14">甘い蜂蜜</span>を手に入れた。<span class="color-image4">ジェソ・ジーコフ</span>が言った石筍を探して<span
+                  class="color-image14">甘い蜂蜜</span>を塗ったら、<span class="color-image14">虫壷</span>を開いて置いて帰ろう。<br>
+                <br>虫たちを振り撒くことに成功した。<span class="color-image4">ジェソ・ジーコフ</span>のところに戻って報告しよう。<br>
+                <br>この双子の兄弟の行動は、どうも危険に感じる。農村ガリムトにいる<span class="color-image4">バルベルト</span>に報告しよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">セントロード　Ｂ１　ジェソ・ジーコフ（190.23）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv430</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20"><a href="normalquest400.html#7">ジェド・ジーコフ</a>未済　　　 経験値520万<br>
+                  <a href="normalquest400.html#7">ジェド・ジーコフ</a>クリア済　経験値670万<br>
+                </span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest400.html#2">セントロードの噂</a>　→　<a href="normalquest400.html#3">アルタミコ</a>　→　<span
+                  color="#666666">ジェソ・ジーコフ</span><br>
+                <br>
+                <a href="normalquest400.html#7">ジェド・ジーコフ</a>と同時には受けられない。<br>
+                <br>
+                <span class="color-image1">洞窟亀</span>（Lv443）を倒す<br>
+                <br>
+                <span class="color-image4">ジェソ・ジーコフ</span>へ、5回話す<br>
+                <br>
+                <span color="#ff0000">▲</span><span class="color-image1">変異フロッグ</span>（Lv1）Zinのタゲを取る。<br>
+                HPが1000程度しかなく、倒さないようにニケの靴などの準備を。2分湧き。<br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/3fc6bf1e9457b7a79743c5aa4c1ca83713c8a39d.10.2.9.2.png" border=0 name="insertImg" /><br><br><img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/74a5d9b846995223de0aae74061ccddf9fdd97ed.10.2.9.2.png" border=0 name="insertImg" /><br><br>
+                <span class="color-image4">ジェソ・ジーコフ</span>へ</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">ガリムト武器・雑貨店</span></td>
+              <td><span class="color-image4">ミランダ</span>（13.11）へ、5万G払う</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
+              <td><span color="#ffff86">石筍</span>（134.468）をクリック<br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/b6a66814a9f43274be83f6cebe94888f5d1bc421.10.2.9.2.png" border=0 name="insertImg" /><br><br>
+                <span class="color-image4">ジェソ・ジーコフ</span>へ<br>
+                <br>
+                <a href="normalquest400.html#7">ジェド・ジーコフ</a>未済の場合は、ここで終了　（経験値520万）</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">農村ガリムト</span></td>
+              <td><a href="normalquest400.html#7">ジェド・ジーコフ</a>クリア済の場合は、<span
+                  class="color-image4">バルベルト</span>（81.86）へ　（経験値670万）</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="140">
+            <col span="1" width="490">
+
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="7"></a><span color="#00ff00">ジェド・ジーコフ</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">ジェド・ジーコフ</span>は、青い原石がめり込んでいる石筍の周辺にいる多量の虫たちのために、<span
+                  class="color-image14">青い原石</span>を採るのが大変だという。<span
+                  class="color-image14">ケーキ</span>を石筍の周辺にばら撒いて、石筍から出てくる虫たちをすべて退治したら、<span
+                  class="color-image14">青い原石</span>を手に入れよう。<br>
+                <br>石筍の周辺に<span class="color-image14">ケーキ</span>をばら撒いた。集まってきた虫たちを一気に退治して、虫がこれ以上発生しないようにしたら、<span
+                  class="color-image14">青い原石</span>を手に入れよう。<br>
+                <br>
+                <span class="color-image14">青い原石</span>を手に入れた。<span class="color-image4">ジェド・ジーコフ</span>のところに戻って<span
+                  class="color-image14">青い原石</span>を渡そう。<br>
+                <br>
+                <span class="color-image4">ジェド</span>は、双子の弟が自分の邪魔をしているようだと言う。復讐のために、<span
+                  color="#d080f8">洞窟スパイダー</span>を捕まえて<span class="color-image14">洞窟スパイダーの毒袋</span>を手に入れたあと、<span
+                  class="color-image4">ジェド</span>が言っていた変異フロッグの檻の周辺に振り撤こう。<br>
+                <br>変異フロッグが檻の中から逃げ出すようにした。<span class="color-image4">ジェド・ジーコフ</span>のところに戻って報告しよう。<br>
+                <br>この双子の兄弟の行動は、どうも危険に感じる。農村ガリムトにいる<span class="color-image4">バルベルト</span>に報告しよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">セントロード　Ｂ１　ジェド・ジーコフ（20.462）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv430</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20"><a href="normalquest400.html#6">ジェソ・ジーコフ</a>未済　　　 経験値520万<br>
+                  <a href="normalquest400.html#6">ジェソ・ジーコフ</a>クリア済　経験値670万</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest400.html#2">セントロードの噂</a>　→　<a href="normalquest400.html#3">アルタミコ</a>　→　<span
+                  color="#666666">ジェド・ジーコフ</span><br>
+                <br>
+                <a href="normalquest400.html#6">ジェソ・ジーコフ</a>と同時には受けられない。<br>
+                <br>
+                ケーキ5個を用意しておく。<br>
+                ケーキは<span class="color-image2">古都ブルンネンシュティグ</span>の<span
+                  class="color-image4">バリカス</span>（47.57）から750Gで購入できる。<br>
+                <br>
+                <span color="#ffff86">石筍</span>（134.468）をクリック、ケーキ5個を消費<br>
+                <br>
+                <span class="color-image1">鋏昆虫の群れ</span>（Lv430）が5匹出現、倒す<br>
+                <br>
+                <span color="#ffff86">石筍</span>（134.468）をクリック<br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/b6a66814a9f43274be83f6cebe94888f5d1bc421.10.2.9.2.png" border=0 name="insertImg" /><br><br>
+                <span class="color-image4">ジェド・ジーコフ</span>へ<br>
+                <br>
+                <span class="color-image1">洞窟スパイダー</span>（Lv455）を倒す<br>
+                <br>
+                <span class="color-image4">変異フロッグ</span>（195.23）へ<br>
+                <br>
+                <span class="color-image4">ジェド・ジーコフ</span>へ<br>
+                <br>
+                <a href="normalquest400.html#6">ジェソ・ジーコフ</a>未済の場合は、ここで終了　（経験値520万）</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">農村ガリムト</span></td>
+              <td><a href="normalquest400.html#6">ジェソ・ジーコフ</a>クリア済の場合は、<span
+                  class="color-image4">バルベルト</span>（81.86）へ　（経験値670万）</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="140">
+            <col span="1" width="490">
+
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="8"></a><span color="#00ff00">ビルベルトのわがまま</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">ビルベルト</span>は、セントロードを調査した際に、自分の聖具を失くしてしまったらしい。<span
+                  class="color-image4">ビルベルト</span>に言われた通りに洞窟に入って<span class="color-image14">ビルベルトの聖具</span>を探し出そう。<br>
+                <br>
+                <span class="color-image14">ビルベルトの聖具</span>を探し出した。洞窟の外で待っている<span
+                  class="color-image4">ビルベルト</span>に聖具を渡してあげよう。<br>
+                <br>
+                <span class="color-image4">ビルベルト</span>が、洞窟内のモンスターを退治して、自分の聖具に聖なる力を集めて欲しいと頼んできた。聖なる力を吸いこむ<span
+                  color="#d080f8">ソウルナイト</span>と<span color="#d080f8">ソウルロスト</span>を退治して聖なる力を集めよう。<br>
+                <br>
+                <span class="color-image14">ビルベルトの聖具</span>に、聖なる力を十分に集めた。洞窟の外で待っている<span
+                  class="color-image4">ビルベルト</span>に渡そう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">ミルトリムの道 / シュトラセラト入口付近　ビルベルト（111.264）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv440</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">経験値780万</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest400.html#2">セントロードの噂</a>　→　<a href="normalquest400.html#3">アルタミコ</a>　→　<span
+                  color="#666666">ビルベルトのわがまま</span><br>
+                <br>
+                <span class="color-image1">ソウルナイト</span>（Lv460）を倒す</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">ミルトリムの道 / シュトラセラト入口付近</span></td>
+              <td><span class="color-image4">ビルベルト</span>へ</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
+              <td><span class="color-image1">ソウルナイト</span>（Lv460）、<span
+                  class="color-image1">ソウルロスト</span>（Lv476）Zinを60匹程倒す</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">ミルトリムの道 / シュトラセラト入口付近</span></td>
+              <td><span class="color-image4">ビルベルト</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="140">
+            <col span="1" width="490">
+
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="9"></a><span color="#00ff00">ダークエルフ王</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span color="#d080f8">ダークエルフ王</span>を探し出し、制圧せよ。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">ダークエルフ王宮　３Ｆ</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv450</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">経験値500万　職専用アイテム（最高補正の刺青/ブローチ/十字架）</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">ダークエルフ王宮　３Ｆ</span></td>
+              <td><span class="color-image1">ダークエルフ王</span>（Lv470)のタゲを取るとクエスト発生、倒す<br>
+                （13.11）付近に4時間47分16秒、1匹湧き。<br>
+                <br>
+                <img
+                  src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/b65aad247438b9fe2136078fde1d74ee333719ea.10.2.9.2.jpeg"
+                  border=0 name="insertImg" /><br><br>
+                <table id="table4">
+                  <colgroup>
+                    <col span="1" width="180">
+                  </colgroup>
+                  <colgroup>
+
+                  </colgroup>
+                  <tbody>
+                    <tr>
+                      <th colspan="2">報酬アイテム</th>
+                    </tr>
+                    <tr>
+                      <th>職業</th>
+                      <th>職専用アイテム（補正）</th>
+                    </tr>
+                    <tr>
+                      <td align="center">剣士/戦士</td>
+                      <td align="center">-</td>
+                    </tr>
+                    <tr>
+                      <td align="center">アーチャー/ランサー</td>
+                      <td align="center">ペイルライト紋様の腕刺青XLS（光強化 <span class="color-image20">100</span>％）</td>
+                    </tr>
+                    <tr>
+                      <td align="center">ウィザード/ウルフマン</td>
+                      <td align="center">イフリィト紋様のブローチXLS（火強化 <span class="color-image20">120</span>％）</td>
+                    </tr>
+                    <tr>
+                      <td align="center">ビショップ/追放天使</td>
+                      <td align="center">ペイルライト装飾の十字架XLS（光強化 <span class="color-image20">100</span>％）</td>
+                    </tr>
+                    <tr>
+                      <td align="center">ビーストテイマー/サマナー</td>
+                      <td align="center">エント紋様の肩刺青XLS（大地強化 <span class="color-image20">160</span>％）</td>
+                    </tr>
+                    <tr>
+                      <td align="center">シーフ/武道家</td>
+                      <td align="center">-</td>
+                    </tr>
+                    <tr>
+                      <td align="center">プリンセス/リトルウィッチ</td>
+                      <td align="center">-</td>
+                    </tr>
+                    <tr>
+                      <td align="center">ネクロマンサー/悪魔</td>
+                      <td align="center">イフリィト装飾の十字架XLS（火強化 <span class="color-image20">120</span>％）</td>
+                    </tr>
+                    <tr>
+                      <td align="center">霊術師/闘士</td>
+                      <td align="center">-</td>
+                    </tr>
+                    <tr>
+                      <td align="center">光奏師/獣人</td>
+                      <td align="center">イフリィト紋様のブローチXLS（火強化 <span class="color-image20">120</span>％）</td>
+                    </tr>
+                    <tr>
+                      <td align="center">メイド/黒魔術師</td>
+                      <td align="center">-</td>
+                    </tr>
+                    <tr>
+                      <td align="center">マスケッティア/アルケミスト</td>
+                      <td align="center">-</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="140">
+            <col span="1" width="490">
+
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="10"></a><span color="#00ff00">遅すぎた後悔</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">バルベルト</span>から、洞窟に関する新たな情報収集のために、港街シュトラセラトにいる<span
+                  class="color-image4">ミゲル</span>を訪ねるよう言われた。<br>
+                <br>
+                <span class="color-image4">ミゲル</span>に、死んで怨霊となってしまった仲間たちを退治してほしいと頼まれた。背教者の秘密通路　Ｂ１を徘徊している<span
+                  color="#d080f8">ディブロ</span>、<span color="#d080f8">ルーブ</span>、<span
+                  color="#d080f8">デルローブ</span>を退治しよう。<br>
+                <br>死んで怨霊となってしまった仲間たちを退治した。<span class="color-image4">ミゲル</span>のところに戻って報告しよう。<br>
+                <br>
+                <span class="color-image4">ミゲル</span>から渡された<span class="color-image14">ミゲルの日誌</span>を農村ガリムトにいる<span
+                  class="color-image4">バルベルト</span>に届けよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">農村ガリムト　バルベルト（81.86）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv450</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">経験値870万　高級復活巻物3個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">港街シュトラセラト</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest400.html#2">セントロードの噂</a>　→　<a href="normalquest400.html#3">アルタミコ</a>　→　<span
+                  color="#666666">遅すぎた後悔</span>　→　<a href="normalquest400.html#13">破門されたベルートス</a><br>
+                <br>
+                <span class="color-image4">ミゲル</span>（138.135）へ</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
+              <td><span class="color-image1">ディブロ</span>（Lv460）、<span class="color-image1">ルーブ</span>（Lv460）、<span
+                  class="color-image1">デルローブ</span>（Lv460）を倒す<br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/71f0b760388a35c244b2331d0771cbd2a164ecbc.10.2.9.2.png" border=0 name="insertImg" /><br><br><img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/f9d0be45ba8226a89d0a8c7d5d1b359f85bd3402.10.2.9.2.png" border=0 name="insertImg" /><br><br><img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/f4fe380653dc2247f06b2ac48fb51baa6ecd5973.10.2.9.2.png" border=0 name="insertImg" /><br><br>
+                ※実際にはデルローブ→ルーブ→ディブロの順に倒すのが手っ取り早い。<br>
+              </td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">港街シュトラセラト</span></td>
+              <td><span class="color-image4">ミゲル</span>へ</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">農村ガリムト</span></td>
+              <td><span class="color-image4">バルベルト</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="140">
+            <col span="1" width="490">
+
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="11"></a><span color="#00ff00">洞窟の主</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>洞窟の奥深くで出会った<span
+                  class="color-image4">キリアム</span>は、力の源を奪われて、力を失っているらしい。彼の力を回復させるために、セントロード　Ｂ２にあるキリアムの棲み処に咲く<span
+                  class="color-image4">蓮華</span>と輝く泉に咲く<span class="color-image4">赤い花</span>から、<span
+                  class="color-image14">生命の玉</span>を手に入れて<span class="color-image4">キリアム</span>に渡してあげよう。<br>
+                <br>
+                <span class="color-image4">キリアム</span>が言っていた<span
+                  class="color-image14">生命の玉</span>を手に入れた。これを渡してあげよう。<br>
+                <br>
+                <span class="color-image14">生命の玉</span>を川辺に咲く<span class="color-image4">蓮華</span>と<span
+                  class="color-image4">赤い花</span>のところに、1つずつ埋めてこよう。<br>
+                <br>
+                <span class="color-image14">生命の玉</span>をすべて埋めた。<span class="color-image4">キリアム</span>と話をしよう。<br>
+                <br>
+                <span class="color-image4">キリアム</span>に、力を回復しなければいけないから、領域に入ってきた悪霊を退治してほしいと頼まれた。<span
+                  class="color-image4">キリアム</span>に頼まれた通りに、洞窟の奥深くにいる<span color="#d080f8">フォースナイト</span>と<span
+                  color="#d080f8">フォースロスト</span>を退治しよう。<br>
+                <br>悪霊たちをすべて退治した。<span class="color-image4">キリアム</span>のところに戻って報告しよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">セントロード　Ｂ１　キリアム（99.69）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv460</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">経験値970万</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">セントロード　Ｂ２</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest400.html#2">セントロードの噂</a>　→　<a href="normalquest400.html#3">アルタミコ</a>　→　<span
+                  color="#666666">洞窟の主</span>　→　<a href="normalquest400.html#12">キリアムの力</a><br>
+                <br>
+                <span color="#ffff86">蓮華</span>（73.18）と<span color="#ffff86">赤い花</span>（62.149）をクリック<br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/b1950d4d181303e21e0153e10b1973a34ba410c2.10.2.9.2.png" border=0 name="insertImg" /><br><br><img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/81eb082567eee0dc5581822576c81cdfd265440d.10.2.9.2.png" border=0 name="insertImg" /><br><br>
+              </td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
+              <td><span class="color-image4">キリアム</span>へ<br>
+                <br>
+                <span color="#ffff86">蓮華</span>（92.64）と<span color="#ffff86">赤い花</span>（102.66）をクリック<br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/12fa650c94e743daf5daba66d9c2b4e1bf3a8fc9.10.2.9.2.png" border=0 name="insertImg" /><br><br><img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/d62c41a5526e89585233092d0528727426166e13.10.2.9.2.png" border=0 name="insertImg" /><br><br>
+                <span class="color-image4">キリアム</span>へ</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">セントロード　Ｂ２</span></td>
+              <td><span class="color-image1">フォースナイト</span>（Lv486）、<span
+                  class="color-image1">フォースロスト</span>（Lv500）Zinを30匹倒す</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
+              <td><span class="color-image4">キリアム</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="140">
+            <col span="1" width="490">
+
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="12"></a><span color="#00ff00">キリアムの力</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">キリアム</span>に、力を回復しなければいけないから、領域に入ってきた悪霊を退治してほしいと頼まれた。<span
+                  class="color-image4">キリアム</span>に頼まれた通りに、洞窟の奥深くにいる<span color="#d080f8">フォースナイト</span>と<span
+                  color="#d080f8">フォースロスト</span>を退治しよう。<br>
+                <br>悪霊たちをすべて退治した。<span class="color-image4">キリアム</span>のところに戻って報告しよう。<br>
+                <br>
+                <span class="color-image4">キリアム</span>が言っていた強力な悪霊<span color="#d080f8">ダークサイファー</span>を退治した。<span
+                  color="#d080f8">ダークサイファー</span>の棲家で<span class="color-image4">輝く岩石</span>を調査してみよう。<br>
+                <br>
+                <span class="color-image4">キリアム</span>が、人間に騙されて失くしてしまった<span
+                  class="color-image14">生命の地玉</span>を手に入れた。<span class="color-image4">キリアム</span>のところに戻って報告しよう。<br>
+                <br>このまま悪霊たちを退治していても、数が減っているとは思えない。<span
+                  class="color-image4">キリアム</span>を助ける為には、もっと根本的な問題を解決する必要がありそうだ。問題解決のため、調査してみよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">セントロード　Ｂ１　キリアム（99.69）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv460　繰返し可</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">経験値60万+2000万　ドラゴンの心臓5個</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">セントロード　Ｂ２</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest400.html#2">セントロードの噂</a>　→　<a href="normalquest400.html#3">アルタミコ</a>　→　<a
+                  href="normalquest400.html#11">洞窟の主</a>　→　<span color="#666666">キリアムの力</span><br>
+                <br>
+                <span class="color-image1">フォースナイト</span>（Lv486）、<span
+                  class="color-image1">フォースロスト</span>（Lv500）Zinを100匹倒す</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
+              <td><span class="color-image4">キリアム</span>へ<br>
+                <br>
+                Lv540未満の場合は、ここまでを繰り返し可。　（経験値60万）<br>
+                最後までクリアすると繰り返しクエストは受けられなくなる。</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">セントロード　Ｂ２</span></td>
+              <td>Lv540以上や途中で<span class="color-image1">ダークサイファー</span>を倒しに行くと、次のクエストに進む。<br>
+                <br>
+                <span color="#ff0000">▲</span><span
+                  class="color-image1">ダークサイファー</span>（Lv490）Zinを倒す、（106.231）付近に約4時間47分湧き。<br>
+                全属性魔法抵抗90％以上、ミラーカーズ攻撃あり。<br>
+                HPが1/2と1/3になった時、<span class="color-image1">サイファー</span>（Lv490）と<span
+                  class="color-image1">ダークスプリンタ</span>（Lv490）4匹が湧く。<br>
+                <br>
+                <span color="#ffff86">岩石</span>（99.224）をクリック<br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/63fd93c628615fee07c6c781992345eb56817620.10.2.9.2.png" border=0 name="insertImg" /><br><br><img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/ae51d624a46ee27eb92df771e6fd9fca1a95d9a9.10.2.9.2.png" border=0 name="insertImg" /><br><br>
+              </td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
+              <td><span class="color-image4">キリアム</span>へ　（経験値2000万　ドラゴンの心臓5個）</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table14" style="text-align:left">
+          <colgroup>
+            <col span="1" width="140">
+            <col span="1" width="490">
+
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2"><a name="13"></a><span color="#00ff00">破門されたベルートス</span></th>
+            </tr>
+            <tr>
+              <td colspan="2" class="dummy-class"><br>
+                <span class="color-image4">バルベルト</span>は、罪を犯して逃走した<span
+                  color="#d080f8">ベルートス</span>が、村の南側の洞窟に隠れているという情報を得たそうだ。洞窟内に隠れている<span
+                  color="#d080f8">ベルートス</span>を捜して退治しよう。<br>
+                <br>
+                <span color="#d080f8">ベルートス</span>は、魔法陣を使って逃走したようだ。<span class="color-image4">バルベルト</span>に報告しよう。<br>
+                <br>
+                <span class="color-image14">バルベルトの聖具</span>を利用して魔法陣の捜索を行い、<span color="#d080f8">ベルートス</span>を退治しよう。<br>
+                <br>
+                <span color="#d080f8">ベルートス</span>を退治して、<span class="color-image14">ベルートスの研究日誌</span>を手に入れた。<span
+                  class="color-image4">バルベルト</span>に報告しよう。<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <th>受諾場所</th>
+              <td><span class="color-image20">農村ガリムト　バルベルト（81.86）</span></td>
+            </tr>
+            <tr>
+              <th>受諾条件</th>
+              <td><span class="color-image20">Lv480</span></td>
+            </tr>
+            <tr>
+              <th>報酬</th>
+              <td><span class="color-image20">経験値1300万</span></td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">セントロード　Ｂ２</span></td>
+              <td><span color="#ff0000">連作クエスト</span><br>
+                <a href="normalquest400.html#2">セントロードの噂</a>　→　<a href="normalquest400.html#3">アルタミコ</a>　→　<a
+                  href="normalquest400.html#10">遅すぎた後悔</a>　→　<span color="#666666">破門されたベルートス</span><br>
+                <br>
+                <span class="color-image1">ベルートス</span>（Lv490）を倒す<br>
+                <br>
+              </td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">農村ガリムト</span></td>
+              <td><span class="color-image4">バルベルト</span>へ</td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">セントロード　Ｂ２</span></td>
+              <td><span color="#ffff86">魔方陣</span>（142.91）をクリック<br>
+                3つあるうちの東の<span color="#ffff86">魔方陣</span>が正解、Ｂ１右下の島の上側へワープ<br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/7abeb0d5ea3ba99b06d43dbe83373e5eceadb204.10.2.9.2.png" border=0 name="insertImg" /><br><br>
+              </td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">セントロード　Ｂ１</span></td>
+              <td><span color="#ff0000">▲</span><span class="color-image1">ベルートス</span>（Lv490）Zinを倒す、HP回復1万1000あり<br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/7abeb0d5ea3ba99b06d43dbe83373e5eceadb204.10.2.9.2.png" border=0 name="insertImg" /><br><br>
+              </td>
+            </tr>
+            <tr>
+              <td align="center"><span class="color-image2">農村ガリムト</span></td>
+              <td><span class="color-image4">バルベルト</span>へ</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <br>
+        <br>
+        [参考] <a href="https://yotsuba000.github.io/YotsubaDataBase/QuestDataBase/QuestDataBaseIndex.html">Yotsuba
+          Quest DataBase</a><br>
+        <br>
+        <br>
+        <footer class="android-footer mdl-mega-footer">
+          <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+          </font>
+          Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+        </footer>
+        <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
               Copyright (c) This site is created by Sokomin. All Rights Reserved.
          -->
 
-            </div>
-            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+      </div>
+      <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 
-        </div>
+    </div>
 </body>
 
 </html>
