@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>ガルカスクエ　赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <a href="../index.html">トップ</a> >> <a href="../quest/quest.html">クエスト</a> >> <a
+                href="../quest/normalquest_list.html">一般クエスト</a><br>
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+                <h3>火炎傭兵団</h3>
+                通称「ガルカスクエ」。難易度は高め。<br>
+                <br>
+                <table id="table14" style="text-align:left">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="2"><a name="1"></a><span color="#00ff00">火炎傭兵団 1</span></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>火炎傭兵団の団長<span
+                                    class="color-image4">ジョーンヘダ</span>に、ガルカス悪魔軍集結地では補給路の確保が難しいため、早めに食糧確保を行わなければいけないと言われた。<span
+                                    class="color-image4">ワーラット</span>を狩って、<span
+                                    class="color-image18">ワーラットの生肉</span>を手に入れてこよう。<br>
+                                <br>
+                                <span class="color-image14">ワーラットの生肉</span>を必要なだけ手に入れた。ガルカス悪魔軍集結地　Ｂ１にいる<span
+                                    class="color-image4">ジョーンヘダ</span>のところに戻ろう。<br>
+                                <br>
+                                <span class="color-image4">ジョーンヘダ</span>に、<span
+                                    class="color-image14">ワーラットの生肉</span>が食べられない<span
+                                    class="color-image4">ペリーヤン</span>と<span
+                                    class="color-image4">セリノ</span>が食べられる物がないか、神秘の沼周辺を調査中の<span
+                                    class="color-image4">ナーチャル</span>にも聞いてくるように言われた。<br>
+                                <br>悪魔たちが食糧を保管しているらしき場所に、<span class="color-image18">悪魔軍幹部</span>が入るところを目撃した<span
+                                    class="color-image4">ナーチャル</span>から、幹部を退治して食糧を奪ってくるように言われた。<br>
+                                <br>食糧倉庫で戦闘中に、古都ブルンネンシュティグ侵略計画提案書という内容の文書を見つけた。ガルカス悪魔軍集結地　Ｂ１にある神秘の沼付近を捜索している<span
+                                    class="color-image4">ナーチャル</span>に相談しよう。<br>
+                                <br>相談した結果、今は提案段階だとしても、悪魔たちはゴドム共和国と戦争をするつもりだということに間違いないだろうという結論が出た。ガルカス悪魔軍集結地　Ｂ１にいる<span
+                                    class="color-image4">ジョーンヘダ</span>に報告しよう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">ガルカス悪魔軍集結地　Ｂ１　ジョーンヘダ（18.19）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image20">Lv600</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値201万4000</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ガルカス悪魔軍集結地　Ｂ１</span></td>
+                            <td><span class="color-image1">ワーラット</span>（Lv610)を倒す<br>
+                                <br>
+                                <span class="color-image4">ジョーンヘダ</span>へ<br>
+                                <br>
+                                <span class="color-image4">ナーチャル</span>（35.80）へ<br>
+                                <br>
+                                <span class="color-image1">悪魔軍幹部</span>（Lv625)Zinを倒す<br>
+                                <br>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/9887254a25a327297bb0f9d6c19f2913168c9635.10.2.9.2.png" border=0 name="insertImg" /><br><br>
+                                                                <span color="#ffff86">魚の干物</span>をクリック<br>
+                                （10.60）周辺に17箇所あるが、少し時間が経つと何度でもクリックできる。<br>
+                                <br>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/85f15c6789c6c77cc445a3d1bc384c1ddbeb4810.10.2.9.2.png" border=0 name="insertImg" /><br><br>
+                                <span class="color-image4">ナーチャル</span>へ<br>
+                                <br>
+                                <span class="color-image4">ジョーンヘダ</span>へ</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="2"></a><span color="#00ff00">火炎傭兵団 2</span></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>悪魔たちが、古都ブルンネンシュティグを攻撃しようとしている動きが確認されたことを<span
+                                    class="color-image4">ジョーンヘダ</span>に報告した。この件に関して、神秘の沼で捜索中である<span
+                                    class="color-image4">ナーチャル</span>と一緒に監視して確実な証拠を探し出そう。<br>
+                                <br>ガルカス部隊の詰め所を調査中に、<span class="color-image18">ダークパースー</span>に見つかり、逃げる途中で怪我を負った<span
+                                    class="color-image4">ナーチャル</span>が、神秘の沼付近で自分たちを探している<span
+                                    class="color-image18">ダークパースー</span>たちを退治してくれという。<br>
+                                <br>
+                                <span class="color-image18">ダークパースー</span>を退治した。ガルカス悪魔軍集結地　Ｂ１にいる神秘の沼で休憩している<span
+                                    class="color-image4">ナーチャル</span>に教えてあげよう。<br>
+                                <br>諜報部の悪魔<span class="color-image4">ピエンド</span>が、傭兵団と話し合いを試みたいという。まず<span
+                                    class="color-image18">古代悪魔</span>を退治した後に、ガルカス部隊の詰め所内にある巨木に手を乗せるように言われた。<br>
+                                <br>
+                                <span class="color-image18">古代悪魔</span>を退治した。ガルカス部隊の詰め所内にある巨木を通じて<span
+                                    class="color-image4">ピエンド</span>がいる場所に行こう。<br>
+                                <br>
+                                <span class="color-image4">ピエンド</span>から、嵐の刃騎士団のキャンプ内にいる<span
+                                    class="color-image4">準騎士カイロン</span>に会うように言われた。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">ガルカス悪魔軍集結地　Ｂ１　ジョーンヘダ（18.19）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image20">Lv600</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値161万1000</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ガルカス悪魔軍集結地　Ｂ１</span></td>
+                            <td><span class="color-image4">ナーチャル</span>（35.80）へ<br>
+                                <br>
+                                <span class="color-image1">ダークパースー</span>（Lv625)Zinを倒す、アンテイム攻撃あり<br>
+                                <br>
+                                <span class="color-image4">ナーチャル</span>へ<br>
+                                <br>
+                                <span class="color-image1">古代悪魔</span>（Lv625)Zinを倒す<br>
+                                <br>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/cfbd267496a65fc536d0742a88a24152691ed6af.10.2.9.2.png" border=0 name="insertImg" /><br><br>
+
+                                <span color="#ffff86">巨木</span>（13.135）をクリック、ワープ<br>
+                                <br>
+<img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/aef6c5daa413fd2f13297c7189d1d6cd61d9c567.10.2.9.2.png" border=0 name="insertImg" /><br><br>
+                                <span class="color-image4">ピエンド</span>（5.192）へ、ワープ<br>
+                                <br>
+                                <span class="color-image4">準騎士カイロン</span>（57.29）へ</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="3"></a><span color="#00ff00">入団テスト 1</span></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>ガルカス悪魔軍集結地　Ｂ１にいる<span
+                                    class="color-image4">準騎士カイロン</span>の話では、嵐の刃騎士団に入団するためには、3つのテストを受けなければならない。1次テストは、<span
+                                    class="color-image18">大型骸骨</span>の武器を奪うことだ。<br>
+                                <br>ガルカス悪魔軍集結地　Ｂ１にいる<span class="color-image4">準騎士カイロン</span>の1次テストをクリアした。彼に報告しに行こう。<br>
+                                <br>ガルカス悪魔軍集結地　Ｂ１にいる<span class="color-image4">準騎士カイロン</span>から、2次テストとして、<span
+                                    class="color-image18">斧槍兵</span> 50匹を1時間以内に退治するように言われた。<br>
+                                <br>制限時間を過ぎてしまった。ガルカス悪魔軍集結地　Ｂ１にいる<span
+                                    class="color-image4">準騎士カイロン</span>のところに行って、テストをやり直そう。<br>
+                                <br>ガルカス悪魔軍集結地　Ｂ１にいる<span class="color-image4">準騎士カイロン</span>の2次テストをクリアした。彼に報告しに行こう。<br>
+                                <br>体力テストとして、<span class="color-image4">準騎士カイロン</span>から、神秘の沼付近にある大きな木に<span
+                                    class="color-image14">黄色い紐</span>を結んで来るように言われた。大きな木に<span
+                                    class="color-image14">黄色い紐</span>を結んで<span
+                                    class="color-image4">準騎士カイロン</span>に報告すると、次の<span
+                                    class="color-image14">黄色い紐</span>が渡されるので、計5回繰り返そう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">ガルカス悪魔軍集結地　Ｂ１　準騎士カイロン（57.29）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image20">Lv600</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値241万7000</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ガルカス悪魔軍集結地　Ｂ１</span></td>
+                            <td><span class="color-image1">大型骸骨</span>(Lv620）を倒す<br>
+                                <br>
+                                <span class="color-image4">準騎士カイロン</span>へ<br>
+                                <br>
+                                <span class="color-image1">斧槍兵</span>(Lv620）を50匹倒す<br>
+                                制限時間1時間、時間を過ぎると<span class="color-image4">準騎士カイロン</span>に戻ってやり直しになる。<br>
+                                <br>
+                                <span class="color-image4">準騎士カイロン</span>へ<br>
+                                <br>
+                                <span color="#ffff86">大きな木</span>（43.79）をクリック、<span
+                                    class="color-image4">準騎士カイロン</span>に戻り5回繰り返す<br>
+                                <br>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/4091d87e6b7a0dc3789cbed1844662147419cc24.10.2.9.2.png" border=0 name="insertImg" /><br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="4"></a><span color="#00ff00">入団テスト 2</span></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>嵐の刃騎士団キャンプにいる<span
+                                    class="color-image4">準騎士カイロン</span>の3次テストをクリアした。彼に報告しに行こう。<br>
+                                <br>嵐の刃騎士団キャンプにいる <span class="color-image4">準騎士カイロン</span>に、4次テストとして食糧倉庫にいる<span
+                                    class="color-image18">悪魔軍幹部</span>を生け捕りにするように言われた。生け捕り方法は、<span
+                                    class="color-image18">悪魔軍幹部</span>の体力を奪った後、<span
+                                    class="color-image14">光の縛り縄</span>を使えば良いらしい。 <span
+                                    color="#00b8b8">準騎士カイロンに言えば、新しい光の縛り縄がもらえます。</span><br>
+                                <br>嵐の刃騎士団キャンプにいる <span class="color-image4">準騎士カイロン</span>の4次テストを完了した。彼に報告しに行こう。<br>
+                                <br>
+                                <span class="color-image18">悪魔軍幹部</span>の生け捕りに失敗した。嵐の刃騎士団キャンプにいる<span
+                                    class="color-image4">準騎士カイロン</span>に報告しよう。<br>
+                                <br>
+                                <span class="color-image4">準騎士カイロン</span>の入団テストをクリアした。嵐の刃騎士団本部にいる聖騎士<span
+                                    class="color-image4">グリース</span>のところに行って入団手続きをしよう。<br>
+                                <br>聖騎士<span class="color-image4">グリース</span>が、聖域付近にある石像に手をのせると<span
+                                    class="color-image4">監視者メリス</span>がいる場所に行けると教えてくれた。<span
+                                    class="color-image4">監視者メリス</span>の所に行き、指示された任務が完了したら、嵐の刃騎士団本部にいる聖騎士<span
+                                    class="color-image4">グリース</span>に報告しよう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">ガルカス悪魔軍集結地　Ｂ１</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image20">Lv600</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値80万5000　王の秘策</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ガルカス悪魔軍集結地　Ｂ１</span></td>
+                            <td><span class="color-image4">準騎士カイロン</span>（57.29）へ<br>
+                                <br>
+                                <span class="color-image1">悪魔軍幹部</span>(Lv625）Zinを生け捕りにする。<br>
+                                HPバーの「悪」の字くらいまでHPを削ってから光の縛り縄を使用する。<br>
+                                光の縛り縄はベルトにセット可能。<br>
+                                失敗した場合は、<span class="color-image4">準騎士カイロン</span>に戻ってやり直す。<br>
+                                <br>
+                                <span class="color-image4">準騎士カイロン</span>へ<br>
+                                <br>
+                                <span class="color-image4">グリース</span>（185.12）へ<br>
+                                <br>
+                                <span class="color-image20">○</span><span color="#ffff86">石像</span>（216.62）をクリック、ワープ<br>
+                                <br>
+                                <img src="./longquest4_files/l406.gif" width="121" height="155" border="0"><br>
+                                <br>
+                                <span class="color-image4">監視者メリス</span>（229.49）へ<br>
+                                <br>
+                                <span color="#ff3333">○</span><span color="#ffff86">石</span>（222.7）をクリック、ワープ<br>
+                                <br>
+                                <span class="color-image4">グリース</span>へ<br>
+                                <br>
+                                王の秘策は取引・銀行保管・破壊不可。<br>
+                                「王の秘策が、強く光っている。」の青文字ログがでた時に、CPが全回復する。</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="5"></a><span color="#00ff00">王の秘策</span></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>聖騎士<span class="color-image4">グリース</span>に、<span
+                                    class="color-image14">王の秘策</span>がどんなものなのかを確認するため、ガルカス悪魔軍集結地　Ｂ１で生息する<span
+                                    class="color-image18">デスピンサー</span> 50匹を退治してきてほしいといわれた。<br>
+                                <br>
+                                <span class="color-image14">王の秘策</span>は、動物型モンスターには効果がなさそうだ。嵐の刃騎士団本部にいる聖騎士<span
+                                    class="color-image4">グリース</span>のところに戻ろう。<br>
+                                <br>聖騎士<span class="color-image4">グリース</span>に、<span
+                                    class="color-image14">王の秘策</span>がどんなものなのかを確認するため、<span
+                                    class="color-image18">ガルカス</span>の部下 250匹を退治するように言われた。<br>
+                                <br>
+                                <span class="color-image14">王の秘策</span>は、<span
+                                    class="color-image18">ガルカス</span>のすべての部下には効果がありそうだ。嵐の刃騎士団本部にいる聖騎士<span
+                                    class="color-image4">グリース</span>のところに戻ろう。<br>
+                                <br>聖騎士<span class="color-image4">グリース</span>から、ガルカス悪魔軍集結地　Ｂ２にいる<span
+                                    class="color-image4">料理長</span>のところに行くように言われた。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">ガルカス悪魔軍集結地　Ｂ１　グリース（185.12）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image20">Lv600</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値402万8000</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ガルカス悪魔軍集結地　Ｂ１</span></td>
+                            <td><span class="color-image1">デスピンサー</span>(Lv610）を50匹倒す<br>
+                                <br>
+                                <span class="color-image4">グリース</span>へ<br>
+                                <br>
+                                <span class="color-image1">ドゥームスフィア</span>(Lv625）、<span
+                                    class="color-image1">大型骸骨</span>(Lv620）、<span
+                                    class="color-image1">斧槍兵</span>(Lv620）、<span
+                                    class="color-image1">ホーンド</span>(Lv625）を250匹倒す<br>
+                                <br>
+                                <span class="color-image4">グリース</span>へ</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="6"></a><span color="#00ff00">食糧を補充しろ！</span></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>聖騎士<span
+                                    class="color-image4">グリース</span>に、ガルカス悪魔軍集結地　Ｂ２にいる<span
+                                    class="color-image4">料理長</span>のところに行くように言われた。<br>
+                                <br>ガルカス悪魔軍集結地　Ｂ２に派遣された嵐の刃騎士団が、食糧が無くて困っているらしい。<span
+                                    class="color-image4">料理長</span>から、ガルカス悪魔軍集結地　Ｂ２に生息する<span
+                                    class="color-image18">ワーラット</span>を狩って、<span
+                                    class="color-image14">ワーラットの肉</span>を手に入れてくるように言われた。 <span
+                                    color="#00b8b8">嵐の勲章を集める反復クエスト。嵐の勲章 Aを 10個集めよう。</span><br>
+                                <br>
+                                <span class="color-image14">ワーラットの肉</span>をすべて手に入れた。ガルカス悪魔軍集結地　Ｂ２にいる<span
+                                    class="color-image4">料理長</span>のところに戻ろう。 <span color="#00b8b8">嵐の勲章を集める反復クエスト。嵐の勲章
+                                    Aを 10個集めよう。</span><br>
+                                <br>戦場では気軽に火を使うことができない！料理をする時は、常に熱を持っている<span
+                                    class="color-image14">ドレイクの肉</span>を火の代わりに使う。<span
+                                    class="color-image4">料理長</span>から、ガルカス悪魔軍集結地　Ｂ２に生息する<span
+                                    class="color-image18">ドレイク</span>を狩って、<span class="color-image14">ドレイクの肉</span>
+                                30個を手に入れてくるように言われた。 <span color="#00b8b8">嵐の勲章を集める反復クエスト。嵐の勲章 Aを 10個集めよう。</span><br>
+                                <br>調理に使う火の代わりになる熱を帯びた<span
+                                    class="color-image14">ドレイクの肉</span>をすべて手に入れた。ガルカス悪魔軍集結地　Ｂ２にいる<span
+                                    class="color-image4">料理長</span>のところに戻ろう。 <span color="#00b8b8">嵐の勲章を集める反復クエスト。嵐の勲章
+                                    Aを 10個集めよう。</span><br>
+                                <br>気が付いたら警備兵への昇級試験を受ける資格が揃っていたようだ。ガルカス悪魔軍集結地　Ｂ１にいる聖騎士<span
+                                    class="color-image4">グリース</span>のところに行って昇級試験を受けよう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">ガルカス悪魔軍集結地　Ｂ１　グリース（185.12）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image20">Lv600</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値676万8000</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ガルカス悪魔軍集結地　Ｂ２</span></td>
+                            <td>嵐の勲章Aを10個集める反復クエスト<br>
+                                <br>
+                                <span class="color-image4">料理長</span>（223.10）へ<br>
+                                <br>
+                                <span class="color-image1">ワーラット</span>（Lv650)を倒す<br>
+                                <br>
+                                <span class="color-image4">料理長</span>へ<br>
+                                <br>
+                                <span class="color-image1">ドレイク</span>（Lv650)を倒す<br>
+                                <br>
+                                <span class="color-image4">料理長</span>へ、嵐の勲章Aを1個入手<br>
+                                <br>
+                                以上を10回繰り返して嵐の勲章Aを10個集める。途中で死亡すると1個失う。</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ガルカス悪魔軍集結地　Ｂ１</span></td>
+                            <td><span class="color-image4">グリース</span>へ</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="7"></a><span color="#00ff00">食糧配達</span></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>聖騎士<span
+                                    class="color-image4">グリース</span>に、ガルカス悪魔軍集結地　Ｂ２にいる<span
+                                    class="color-image4">料理長</span>のところに行くように言われた。<br>
+                                <br>お腹を空かせた兵士らが心待ちにしている<span
+                                    class="color-image14">さっぱりダブルステーキ</span>が完成した。ガルカス悪魔軍集結地　Ｂ２で任務遂行中の<span
+                                    class="color-image4">嵐の刃騎士団</span> 30人に<span
+                                    class="color-image14">さっぱりダブルステーキ</span>を配達しよう。 <span
+                                    color="#00b8b8">嵐の勲章を集める反復クエスト。嵐の勲章 Bを 20個集めよう。</span><br>
+                                <br>すべての兵士たちに食糧を配達した。ガルカス悪魔軍集結地　Ｂ２にいる<span class="color-image4">料理長</span>のところに戻ろう。
+                                <span color="#00b8b8">嵐の勲章を集める反復クエスト。嵐の勲章 Bを 20個集めよう。</span><br>
+                                <br>嵐の刃騎士団の幹部職である二十長に昇級しなければならない。ガルカス悪魔軍集結地　Ｂ１にいる聖騎士<span
+                                    class="color-image4">グリース</span>のところに行って昇級試験を受けよう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">ガルカス悪魔軍集結地　Ｂ１　グリース（185.12）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image20">Lv600</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値604万3000</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ガルカス悪魔軍集結地　Ｂ２</span></td>
+                            <td>嵐の勲章Bを20個集める反復クエスト<br>
+                                <br>
+                                <span class="color-image4">料理長</span>（223.10）へ<br>
+                                <br>
+                                兵士30人へ<br>
+                                <span
+                                    class="color-image4">嵐の刃騎士団兵</span>25人（8.68）（13.46）（16.41）（36.209）（43.183）（47.188）（60.135）（60.142）（61.46）（63.172）（65.49）（66.180）（73.182）（82.52）（83.182）（126.54）（126.67）（157.210）（190.223）（194.223）（199.128）（201.131）（209.114）（215.12）（221.12）<br>
+                                <span class="color-image4">偵察兵ヘンリー</span>（23.15）<br>
+                                <span class="color-image4">うっかり屋メロ</span>（140.59）<br>
+                                <span class="color-image4">臆病マイキ</span>（151.209）<br>
+                                <span class="color-image4">新兵ガルリア</span>（191.62）<br>
+                                <span class="color-image4">捜索隊員ジン</span>（62.89）<br>
+                                <span class="color-image4">捜索隊員ミバ</span>（66.89）<br>
+                                <span class="color-image4">捜索隊員マロ</span>（64.84）<br>
+                                など32人いるが、少し時間が経つと何度でも配達できる。<br>
+                                <br>
+                                <span class="color-image4">料理長</span>へ、嵐の勲章Bを6個入手<br>
+                                <br>
+                                以上を4回繰り返して嵐の勲章Bを20個集める。途中で死亡すると1個失う。</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ガルカス悪魔軍集結地　Ｂ１</span></td>
+                            <td><span class="color-image4">グリース</span>へ</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="8"></a><span color="#00ff00">巡察</span></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>
+                                <span class="color-image4">グリース</span>に、ガルカス悪魔軍集結地　Ｂ２にいる<span
+                                    class="color-image4">ザロック</span>のところに行くように言われた。<br>
+                                <br>新任幹部と兵士の間でケンカが始まったようだ。ガルカス悪魔軍集結地　Ｂ２を巡察して、<span
+                                    class="color-image4">嵐の刃騎士団</span>の兵士たちが任務中に、さぼっているのを見つけた場合は叱ろう。 <span
+                                    color="#00b8b8">嵐の勲章を集める反復クエスト。嵐の勲章 Cを 20個集めよう。</span><br>
+                                <br>巡察を完了した。ガルカス悪魔軍集結地　Ｂ２にいる突撃隊長<span class="color-image4">ザロック</span>のところに行って報告しよう。
+                                <span color="#00b8b8">嵐の勲章を集める反復クエスト。嵐の勲章 Cを 20個集めよう。</span><br>
+                                <br>百長に昇級する資格が揃った。ガルカス悪魔軍集結地　Ｂ１にいる聖騎士<span
+                                    class="color-image4">グリース</span>のところに行って昇級試験を受けよう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">ガルカス悪魔軍集結地　Ｂ１　グリース（185.12）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image20">Lv600</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値241万9000</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ガルカス悪魔軍集結地　Ｂ２</span></td>
+                            <td>嵐の勲章Cを20個集める反復クエスト<br>
+                                <br>
+                                <span class="color-image4">ザロック</span>（237.26）へ<br>
+                                <br>
+                                兵士20人へ<br>
+                                <span
+                                    class="color-image4">嵐の刃騎士団兵</span>25人（8.68）（13.46）（16.41）（36.209）（43.183）（47.188）（60.135）（60.142）（61.46）（63.172）（65.49）（66.180）（73.182）（82.52）（83.182）（126.54）（126.67）（157.210）（190.223）（194.223）（199.128）（201.131）（209.114）（215.12）（221.12）<br>
+                                <span class="color-image4">偵察兵ヘンリー</span>（23.15）<br>
+                                <span class="color-image4">うっかり屋メロ</span>（140.59）<br>
+                                <span class="color-image4">臆病マイキ</span>（151.209）<br>
+                                <span class="color-image4">新兵ガルリア</span>（191.62）<br>
+                                <span class="color-image4">捜索隊員ジン</span>（62.89）<br>
+                                <span class="color-image4">捜索隊員ミバ</span>（66.89）<br>
+                                <span class="color-image4">捜索隊員マロ</span>（64.84）<br>
+                                など32人いるが、少し時間が経つと何度でも話せる。<br>
+                                <br>
+                                <span class="color-image4">ザロック</span>へ、嵐の勲章Cを10個入手<br>
+                                <br>
+                                以上を2回繰り返して嵐の勲章Cを20個集める。途中で死亡すると1個失う。</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ガルカス悪魔軍集結地　Ｂ１</span></td>
+                            <td><span class="color-image4">グリース</span>へ</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="9"></a><span color="#00ff00">悩み解決</span></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>
+                                <span class="color-image4">グリース</span>に、ガルカス悪魔軍集結地　Ｂ２にいる<span
+                                    class="color-image4">ザロック</span>のところに行くように言われた。<br>
+                                <br>突撃隊長<span class="color-image4">ザロック</span>に、兵士たちの悩みを聞くためには、<span
+                                    class="color-image4">料理長</span>の隣で任務中の<span
+                                    class="color-image4">タリス</span>から話を聞くように言われた。<span
+                                    class="color-image4">料理長</span>は、ガルカス悪魔軍集結地　Ｂ２の入口付近にいる。<br>
+                                <br>まだ部下たちの好感度が低いようだ。ガルカス悪魔軍集結地　Ｂ２にいる<span
+                                    class="color-image4">タリス</span>のところに行って、悩みをかかえている兵士が他にもいるのか聞いてみよう。<br>
+                                <br>まだ部下たちの好感度が低いようだ。ガルカス悪魔軍集結地　Ｂ２にいる<span
+                                    class="color-image4">タリス</span>のところに行って、悩みをかかえている兵士が他にもいるのか聞いてみよう。<br>
+                                <br>部下たちの心をつかんだようだ。ガルカス悪魔軍集結地　Ｂ２にいる突撃隊長<span class="color-image4">ザロック</span>に報告しよう。<br>
+                                <br>突撃隊長<span class="color-image4">ザロック</span>に、ガルカス悪魔軍集結地　Ｂ１にいる聖騎士<span
+                                    class="color-image4">グリース</span>のところに行って、昇級試験を受けるように言われた。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">ガルカス悪魔軍集結地　Ｂ１　グリース（185.12）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image20">Lv600</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値161万1000</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ガルカス悪魔軍集結地　Ｂ２</span></td>
+                            <td><span class="color-image4">ザロック</span>（237.26）へ<br>
+                                <br>
+                                <span class="color-image4">タリス</span>（217.11）へ、<a
+                                    href="longquest4.html#10">ウルトリアの苦悩</a>に移行<br>
+                                <br>
+                                <span class="color-image4">タリス</span>へ、<a href="longquest4.html#11">新兵ガルリアの苦悩</a>に移行<br>
+                                <br>
+                                <span class="color-image4">タリス</span>へ、<a
+                                    href="longquest4.html#12">偵察兵ヘンリーの苦悩</a>に移行<br>
+                                <br>
+                                <span class="color-image4">ザロック</span>へ</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ガルカス悪魔軍集結地　Ｂ１</span></td>
+                            <td><span class="color-image4">グリース</span>へ</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="10"></a><span color="#00ff00">ウルトリアの苦悩</span></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>賭けに負けて<span
+                                    class="color-image14">ダブルステーキ</span>を奪われてしまった食いしん坊の<span
+                                    class="color-image4">ウルトリア</span>に、<span
+                                    class="color-image14">最高級ダブルステーキ</span>を作ってあげよう。材料は、ガルカス悪魔軍集結地　Ｂ２で生息する<span
+                                    class="color-image18">ワーラット</span>と<span
+                                    class="color-image18">ドレイク</span>を狩って高級肉を手に入れよう。<br>
+                                <br>食いしん坊の<span class="color-image4">ウルトリア</span>のために、<span
+                                    class="color-image14">最高級ダブルステーキ</span>を作る材料をすべて手に入れた。ガルカス悪魔軍集結地　Ｂ２にいる<span
+                                    class="color-image4">料理長</span>のところに戻って調理してくれるように頼もう。<br>
+                                <br>
+                                <span class="color-image14">最高級ダブルステーキ</span>が完成した。ガルカス悪魔軍集結地　Ｂ２にいる<span
+                                    class="color-image4">ウルトリア</span>に届けよう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>痩せてしまったと悩んでいる食いしん坊の<span
+                                    class="color-image4">ウルトリア</span>のために、ガルカス悪魔軍集結地　Ｂ２に生息する<span
+                                    class="color-image18">ワーラット</span>を狩って、<span
+                                    class="color-image14">ワーラットに柔らかい肉</span> 50個を手に入れてこよう。<br>
+                                <br>ガルカス悪魔軍集結地　Ｂ２で任務中の食いしん坊の<span class="color-image4">ウルトリア</span>に、<span
+                                    class="color-image14">ワーラットの柔らかい肉</span>をあげよう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>一ヶ月間集めてきた食糧を奪われた食いしん坊の<span
+                                    class="color-image4">ウルトリア</span>が持っていた<span
+                                    class="color-image14">厚ぼったい食糧袋</span>を奪った<span
+                                    class="color-image18">ワーラット</span>は、きっとガルカス悪魔軍集結地　Ｂ２のどこかにいるはずだ。泣いている食いしん坊の<span
+                                    class="color-image4">ウルトリア</span>のために、<span
+                                    class="color-image14">厚ぼったい食糧袋</span>を取り戻そう。<br>
+                                <br>ガルカス悪魔軍集結地　Ｂ２で任務中である食いしん坊の<span class="color-image4">ウルトリア</span>に、取り戻した<span
+                                    class="color-image14">厚ぼったい食糧袋</span>を渡してあげよう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">ガルカス悪魔軍集結地　Ｂ２　タリス（217.11）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image20">Lv600</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">-</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ガルカス悪魔軍集結地　Ｂ２</span></td>
+                            <td>(1)～(3)のクエストをランダムで受諾<br>
+                                <br>
+                                (1)最高級ダブルステーキを作る<br>
+                                <span class="color-image1">ワーラット</span>（Lv650)と<span
+                                    class="color-image1">ドレイク</span>（Lv650)を倒す<br>
+                                <span class="color-image4">料理長</span>（223.10）へ<br>
+                                <br>
+                                (2)ワーラットの柔らかい肉50個を集める<br>
+                                <span class="color-image1">ワーラット</span>（Lv650)を倒す<br>
+                                <br>
+                                (3)厚ぼったい食糧袋を取り戻す<br>
+                                <span class="color-image1">ワーラット</span>（Lv650)を倒す<br>
+                                <br>
+                                <span class="color-image4">ウルトリア</span>（225.12）へ、<a href="longquest4.html#9">悩み解決</a>に戻る
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="11"></a><span color="#00ff00">新兵ガルリアの苦悩</span></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>先任からよく叱れて悩んでいる<span
+                                    class="color-image4">新兵ガルリア</span>に会ってみよう。彼は、ドレイク生息地から少し行った場所にいるらしい。<br>
+                                <br>ガルカス悪魔軍集結地　Ｂ２の突撃隊長<span class="color-image4">ザロック</span>の近くで任務中の<span
+                                    class="color-image4">先任兵ルディン</span>に、<span
+                                    class="color-image4">新兵ガルリア</span>をもう少し優しく指導するように話してみよう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>ドレイク生息地周辺で任務中の<span
+                                    class="color-image4">新兵ガルリア</span>が、ガルカス悪魔軍集結地　Ｂ２に生息する<span
+                                    class="color-image18">ラッシュフレイム</span>から逃げる最中に日記帳を失くしてしまった。<span
+                                    class="color-image18">ラッシュフレイム</span>を退治して、<span
+                                    class="color-image14">ガルリアの日記帳</span>を探し出そう。<br>
+                                <br>
+                                ドレイク生息地周辺で任務中の<span class="color-image4">新兵ガルリア</span>に日記帳を返してあげよう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>暑さに弱い<span
+                                    class="color-image4">新兵ガルリア</span>のために、ガルカス悪魔軍集結地　Ｂ２に生息する<span
+                                    class="color-image18">ハートレッシュ</span>を退治して血液を手に入れよう。<br>
+                                <br>ドレイク生息地周辺で任務中の<span class="color-image4">新兵ガルリア</span>に<span
+                                    class="color-image14">ハートレッシュの血液</span>をあげよう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">ガルカス悪魔軍集結地　Ｂ２　タリス（217.11）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image20">Lv600</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">-</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ガルカス悪魔軍集結地　Ｂ２</span></td>
+                            <td>(1)～(3)のクエストをランダムで受諾<br>
+                                <br>
+                                (1)先任兵ルディンを諭す<br>
+                                <span class="color-image4">新兵ガルリア</span>（191.62）へ<br>
+                                <span class="color-image4">先任兵ルディン</span>（238.26）へ<br>
+                                <br>
+                                (2)ガルリアの日記帳を探す<br>
+                                <span class="color-image1">ラッシュフレイム</span>(Lv650）を倒す<br>
+                                <span class="color-image4">新兵ガルリア</span>へ<br>
+                                <br>
+                                (3)ハートレッシュの血液を集める<br>
+                                <span class="color-image1">ハートレッシュ</span>(Lv650）を倒す<br>
+                                <span class="color-image4">新兵ガルリア</span>へ<br>
+                                <br>
+                                <a href="longquest4.html#9">悩み解決</a>に戻る</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="12"></a><span color="#00ff00">偵察兵ヘンリーの苦悩</span></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>ガルカス悪魔軍集結地　Ｂ２で任務中の<span
+                                    class="color-image4">偵察兵ヘンリー</span>が、<span
+                                    class="color-image14">ハンマーフォースのハンマー</span>を研究したいようだ。第1防衛地域に多く出没する<span
+                                    class="color-image18">ハンマーフォース</span>を退治してハンマーを手に入れよう。<br>
+                                <br>ガルカス悪魔軍集結地　Ｂ２で任務中の<span class="color-image4">偵察兵ヘンリー</span>に、<span
+                                    class="color-image14">ハンマーフォースのハンマー</span>を渡そう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>ガルカス悪魔軍集結地　Ｂ２で任務中の<span
+                                    class="color-image4">偵察兵ヘンリー</span>が、<span
+                                    class="color-image18">ハンマーフォース</span>の身体構造を研究したいようだ。第1防衛地域に多く出没する<span
+                                    class="color-image18">ハンマーフォース</span>を退治し、<span
+                                    class="color-image14">ハンマーフォースの身体標本</span>を手に入れよう。<br>
+                                <br>ガルカス悪魔軍集結地　Ｂ２で任務中の<span class="color-image4">偵察兵ヘンリー</span>に、<span
+                                    class="color-image14">ハンマーフォースの身体標本</span>を渡そう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>ガルカス悪魔軍集結地　Ｂ２で任務中の<span
+                                    class="color-image4">偵察兵ヘンリー</span>が、<span
+                                    class="color-image14">ハンマーフォースの赤い耳</span>を研究したいようだ。<span
+                                    class="color-image18">ハンマーフォース</span>を退治し、<span
+                                    class="color-image14">ハンマーフォースの赤い耳</span>を手に入れよう。<br>
+                                <br>ガルカス悪魔軍集結地　Ｂ２で任務中の<span class="color-image4">偵察兵ヘンリー</span>に、<span
+                                    class="color-image14">ハンマーフォースの赤い耳</span>を渡そう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">ガルカス悪魔軍集結地　Ｂ２　タリス（217.11）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image20">Lv600</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">-</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ガルカス悪魔軍集結地　Ｂ２</span></td>
+                            <td>(1)～(3)のクエストをランダムで受諾<br>
+                                <br>
+                                (1)ハンマーフォースのハンマーを入手する<br>
+                                <span class="color-image1">ハンマーフォース</span>(Lv650）を倒す<br>
+                                <br>
+                                (2)ハンマーフォースの身体標本を入手する<br>
+                                <span class="color-image1">ハンマーフォース</span>(Lv650）を倒す<br>
+                                <br>
+                                (3)ハンマーフォースの赤い耳を入手する<br>
+                                <span class="color-image1">ハンマーフォース</span>(Lv650）を倒す<br>
+                                <br>
+                                <span class="color-image4">偵察兵ヘンリー</span>（23.15）へ、<a
+                                    href="longquest4.html#9">悩み解決</a>に戻る</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="13"></a><span color="#00ff00">一網打尽！</span></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>
+                                <span class="color-image4">グリース</span>に、ガルカス悪魔軍集結地　Ｂ２にいる聖騎士<span
+                                    class="color-image4">エセル</span>のところに行くように言われた。<br>
+                                <br>嵐の刃騎士団が襲撃隊に襲われ、大きな被害を受けた。これを受けて、聖騎士<span
+                                    class="color-image4">エセル</span>から、ガルカス悪魔軍集結地　Ｂ２にいる<span
+                                    class="color-image18">襲撃隊</span>をすべて退治するように言われた。 <span
+                                    color="#00b8b8">嵐の勲章を集める反復クエスト。嵐の勲章 Dを 80個集めよう。</span><br>
+                                <br>任務を完遂した。ガルカス悪魔軍集結地　Ｂ２にいる聖騎士<span class="color-image4">エセル</span>に報告しよう。 <span
+                                    color="#00b8b8">嵐の勲章を集める反復クエスト。嵐の勲章 Dを 80個集めよう。</span><br>
+                                <br>嵐の刃騎士団が伏撃隊に襲われ、大きな被害を受けた。これを受けて、聖騎士<span
+                                    class="color-image4">エセル</span>から、ガルカス悪魔軍集結地　Ｂ２にいる<span
+                                    class="color-image18">伏撃隊</span>をすべて退治するように言われた。 <span
+                                    color="#00b8b8">嵐の勲章を集める反復クエスト。嵐の勲章 Dを 80個集めよう。</span><br>
+                                <br>敵の情報が必要だ。ガルカス悪魔軍集結地　Ｂ２で<span class="color-image18">冷酷な幹部</span>を退治して<span
+                                    class="color-image14">作戦計画書</span>を奪おう。 <span color="#00b8b8">嵐の勲章を集める反復クエスト。嵐の勲章 Dを
+                                    80個集めよう。</span><br>
+                                <br>現在、<span class="color-image18">ガルカス</span>の兵力が、嵐の刃騎士団の兵力を上回っているようだ。そのため、聖騎士<span
+                                    class="color-image4">エセル</span>から、ガルカス悪魔軍集結地　Ｂ２にいる<span
+                                    class="color-image18">ハートレッシュ</span>、<span
+                                    class="color-image18">ハンマーフォース</span>、<span
+                                    class="color-image18">ラッシュフレイム</span>を退治して<span
+                                    class="color-image18">ガルカス</span>の兵力を減らすように言われた。 <span
+                                    color="#00b8b8">嵐の勲章を集める反復クエスト。嵐の勲章 Dを 80個集めよう。</span><br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">ガルカス悪魔軍集結地　Ｂ１　グリース（185.12）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image20">Lv600</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">-</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ガルカス悪魔軍集結地　Ｂ２</span></td>
+                            <td>嵐の勲章Dを80個集める反復クエスト<br>
+                                <br>
+                                <span class="color-image4">エセル</span>（59.138）へ<br>
+                                (1)～(4)のクエストをランダムで受諾<br>
+                                <br>
+                                (1)襲撃隊を退治する<br>
+                                <span class="color-image1">襲撃隊</span>(Lv650）Zinを10匹倒す、10分湧き<br>
+                                <br>
+                                (2)伏撃隊を退治する<br>
+                                <span class="color-image1">伏撃隊</span>(Lv640）Zinを20匹倒す<br>
+                                <br>
+                                (3)作戦計画書を奪う<br>
+                                <span class="color-image1">冷酷な幹部</span>(Lv650）Zinを倒す<br>
+                                <br>
+                                (4)ガルカスの兵力を減らす<br>
+                                <span class="color-image1">ハートレッシュ</span>(Lv650）、<span
+                                    class="color-image1">ハンマーフォース</span>(Lv650）、<span
+                                    class="color-image1">ラッシュフレイム</span>(Lv650）を100匹倒す<br>
+                                <br>
+                                <span class="color-image4">エセル</span>へ、嵐の勲章Dを10個入手<br>
+                                <br>
+                                以上を8回繰り返して嵐の勲章Dを80個集める。途中で死亡すると1個失う。</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="14"></a><span color="#00ff00">ガルカス討伐！</span></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>司令室にいる悪魔軍の最高司令官である悪魔<span
+                                    class="color-image18">ガルカス</span>を退治しよう！<br>
+                                <br>
+                                <span class="color-image18">ガルカス</span>を退治した。ガルカス悪魔軍集結地　Ｂ２にいる聖騎士<span
+                                    class="color-image4">エセル</span>のところに戻ろう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">ガルカス悪魔軍集結地　Ｂ２　エセル（59.138）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image20">Lv600</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値523万7000</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ガルカス悪魔軍集結地　Ｂ２</span></td>
+                            <td><span class="color-image1">ガルカス</span>(Lv650）Zinを倒す。非アクティブ、全属性魔法抵抗90％以上。<br>
+                                <br>
+                                タゲを取ると、司令室の四隅にいる<span class="color-image1">狂魔</span>(Lv650）Zin、<span
+                                    class="color-image1">リッチ</span>(Lv650）Zin、<span
+                                    class="color-image1">ブラックフレイム</span>(Lv650）、<span
+                                    class="color-image1">ジャイアント骸骨</span>(Lv650）Zinが司令室の中央に移動する。<br>
+                                <span class="color-image1">ガルカス</span>のタゲを取る前に倒しておいても可。<br>
+                                <br>
+                                <span class="color-image4">エセル</span>へ<br>
+                                <br>
+                                クエスト終了後も王の秘策が残るが、B1の<span class="color-image4">騎士団所属管理者</span>（184.10）に話すと回収される。</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <br>
+                <br>
+                [参考] <a
+                    href="https://yotsuba000.github.io/YotsubaDataBase/QuestDataBase/QuestDataBaseIndex.html">Yotsuba
+                    Quest DataBase</a><br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+        </div>
+</body>
+
+</html>

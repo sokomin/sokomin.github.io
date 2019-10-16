@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>少女とお父さん　赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <a href="../index.html">トップ</a> >> <a href="../quest/quest.html">クエスト</a> >> <a
+                href="../quest/normalquest_list.html">一般クエスト</a><br>
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+                <h3>少女とお父さん</h3>
+                通称、「シア・ルフト」クエ。終盤で専用秘密ダンジョンに入場可能。<br>
+                <br>
+                <table id="table14" style="text-align:left">
+                    <colgroup>
+                        <col span="1" width="140">
+                        <col span="1" width="490">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="2"><a name="1"></a><span color="#00ff00">少女とお父さん</span></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>少女のお父さんはアリアンの傭兵ギルドで働いているという。アリアン傭兵ギルドの<span
+                                    class="color-image4">セシル</span>を尋ねて、少女のお父さんの消息について聞いてみよう。<br>
+                                <br>
+                                <span class="color-image4">バントリー</span>は東プラトン街道 /
+                                イースタンブリッジ付近にあるアルパス地下監獄の秘密ダンジョンで孤立しているという。<span
+                                    class="color-image4">セシル</span>の話によると、秘密ダンジョンはパーティーを組まなければ探し出すことができないという。ただし、その場所は<span
+                                    class="color-image11">110</span>レベル以上になると探索することができない。もし、<span
+                                    class="color-image11">110</span>レベルを超えたらセシルのもとに帰るようにしよう。<br>
+                                <br>
+                                <span class="color-image4">バントリー</span>は重要な証拠品を<span
+                                    class="color-image18">真紅の従者</span>に奪われたと言う。魔法陣の辺りで<span
+                                    class="color-image18">真紅の従者</span>を見つけ出し、証拠品を回収しよう。<br>
+                                <br>
+                                <span class="color-image18">真紅の従者</span>の呪いで、<span
+                                    class="color-image4">バントリー</span>の証拠品である文書が燃えてしまった。<span
+                                    class="color-image14">燃え残った文書</span>を持って、アリアン傭兵ギルドの<span
+                                    class="color-image4">セシル</span>のもとに戻ろう。<br>
+                                <br>
+                                <span class="color-image4">バントリー</span>からの手紙を引き受けた。ブルンネンシュティグの<span
+                                    class="color-image4">エミリー</span>に手紙を渡してあげよう。<br>
+                                <br>
+                                <span class="color-image4">エミリー</span>のお父さんである<span
+                                    class="color-image4">バントリー</span>は、小都市ビッグアイの応急治療室で治療を受けていると言う。彼を訪ねて行って話をしてみよう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">古都ブルンネンシュティグ　エミリー（130.154）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image20">Lv95～300</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">?経験値60万<br>
+                                    ?経験値61万</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">アリアン傭兵ギルド</span></td>
+                            <td><span class="color-image4">セシル</span>（12.9）へ<br>
+                                <br>
+                                Lv95～110の場合<br>
+                                秘密ダンジョン　<a
+                                    href="secretdgn90-110a.html">アルパス地下監獄の隠された地下牢</a><br>
+                                <br>
+                                <span class="color-image4">セシル</span>へ</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">小都市ビッグアイ応急治療室</span></td>
+                            <td>Lv111～300の場合<br>
+                                <span class="color-image4">バントリー</span>（8.7）へ</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">古都ブルンネンシュティグ</span></td>
+                            <td><span class="color-image4">エミリー</span>へ<br>
+                                <br>
+                                <span class="color-image8">?怪我のことを言う。</span>　→　経験値60万<br>
+                                <span class="color-image8">?言わない。</span>　　　　　→　経験値61万　</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="2"></a><span color="#00ff00">未完の任務</span></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>傭兵ギルドの<span
+                                    class="color-image4">セシル</span>から、バヘル大河の水質汚染について調査依頼を受けた。バヘル大河 / 東バヘル川で、<span
+                                    class="color-image4">イルレイン</span>という傭兵を捜してみよう。東バヘル川から真っ直ぐ上がっていくと、捜すことができると言う。<br>
+                                <br>
+                                <span
+                                    class="color-image4">イルレイン</span>は、バヘル川の上流である泉の水の穴に、水質汚染の原因があるようだと言う。いくつかのサンプルを採集して、<span
+                                    class="color-image4">イルレイン</span>の所に持って行こう。<br>
+                                <br>
+                                <span class="color-image4">イルレイン</span>から頼まれたサンプルをすべて手に入れた。彼女の所に戻ってサンプルを渡そう。<br>
+                                <br>アリアン傭兵ギルドの<span class="color-image4">セシル</span>に、バヘル川の水質汚染関連サンプルを渡そう。<br>
+                                <br> 新しい任務の依頼主であるスマグ・ウィザードギルドの<span class="color-image4">スターク</span>を尋ねて話をしてみよう。<br>
+                                <br>
+                                <span class="color-image4">スターク</span>から、任務に関する新情報が書かれている依頼書を受け取った。アリアン傭兵ギルドの<span
+                                    class="color-image4">セシル</span>に、<span
+                                    class="color-image14">更新されたウィザードギルドの依頼書</span>を渡そう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">アリアン傭兵ギルド　セシル（12.9）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image20">Lv120～300</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値100万</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">バヘル大河 / 東バヘル川上流</span></td>
+                            <td><span color="#00ff00">◆</span><span class="color-image4">イルレイン</span>（27.363）へ<br>
+                                <br>
+                                <span class="color-image2">鉱山町ハノブ</span>←↑←↑<br>
+                                <br>
+                                <img src="./longquest3_files/2-2-1map030.gif" width="300" height="203" border="0"><br>
+                                <br>
+                                <img src="./longquest3_files/2-2-1map031.gif" width="350" height="292" border="0"><br>
+                                <br>
+                                <img src="./longquest3_files/2-2-4map131.gif" width="300" height="154" border="0"><br>
+                                <br>
+                                <img src="./longquest3_files/l3map278.gif" width="416" height="208" border="0"></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">泉の水の穴</span></td>
+                            <td>サンプル3つを集める<br>
+                                <br>
+                                <img src="./longquest3_files/l3map279.gif" width="480" height="205" border="0"><br>
+                                <br>
+                                <img src="./longquest3_files/l3map283.gif" width="300" height="150" border="0"><br>
+                                <br>
+                                <img src="./longquest3_files/l301.gif" width="120" height="111" border="0">　<img
+                                    src="./longquest3_files/l302.gif" width="101" height="132" border="0"><br>
+                                <br>
+                                怪しい石 = <span class="color-image1">ラットシーフ</span>（Lv115）、<span
+                                    class="color-image1">ハンター</span>（Lv125）、<span
+                                    class="color-image1">狩犬</span>（Lv120）を倒す。<br>
+                                どれでも可。怪しい石を最後にすると更新されない場合があるため、最初に。<br>
+                                <br>
+                                怪しい花粉 = <span color="#ffff86">花</span>（24.9）をクリック<br>
+                                きつい臭いのガス = <span color="#ffff86">ガス</span>（24.57）をクリック</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">バヘル大河 / 東バヘル川上流</span></td>
+                            <td><span class="color-image4">イルレイン</span>へ</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">アリアン傭兵ギルド</span></td>
+                            <td><span class="color-image4">セシル</span>へ</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ウィザードギルド</span></td>
+                            <td><span class="color-image4">スターク</span>（4.40）へ</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">アリアン傭兵ギルド</span></td>
+                            <td><span class="color-image4">セシル</span>へ</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="3"></a><span color="#00ff00">真っ赤な足跡</span></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>
+                                <span class="color-image4">スターク</span>の情報によれば、<span
+                                    class="color-image18">シア・ルフト</span>の足跡が、麻薬巣窟地下3階に残っているはずだと言う。そこの器物を調べて、跡を探し出してみよう。<br>
+                                <br>魔法のオーラが感じられる<span class="color-image14">赤黒いオーラの巻物</span>を見つけた。アリアン傭兵ギルドの<span
+                                    class="color-image4">セシル</span>に、この事を報告しよう。<br>
+                                <br>
+                                <span class="color-image14">赤黒いオーラの巻物</span>の封印を解くために、スマグ・ウィザードギルドの<span
+                                    class="color-image4">スターク</span>の所に行ってみよう。<br>
+                                <br>
+                                <span
+                                    class="color-image4">スターク</span>は文書にかかっている封印を解除するための材料を手に入れなければならないと言う。キャンサー気孔に生息する<span
+                                    class="color-image18">デスピンサー</span>から入手できる<span
+                                    class="color-image14">デスピンサーの毒針</span>が20個必要だ。そして、スマグ魔法用品店の<span
+                                    class="color-image4">カルナン</span>から<span
+                                    class="color-image14">反魔法探知機</span>を受け取って来よう。<br>
+                                <br>すべての材料を集めた。急いで<span class="color-image4">スターク</span>に材料を渡そう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">アリアン傭兵ギルド　セシル（12.9）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image20">Lv130～300</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値130万</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">麻薬巣窟　Ｂ３</span></td>
+                            <td><span color="#ffff86">本棚</span>（19.37）（37.60）（38.8）（70.68）をクリック。<br>
+                                100～400程のダメージを受ける。<br>
+                                <br>
+                                <img src="./longquest3_files/l3map104.gif" width="300" height="159" border="0"><br>
+                                <br>
+                                <img src="./longquest3_files/l303.gif" width="248" height="188" border="0"><br>
+                                <br>
+                                <span color="#ffff86">本棚</span>（70.68）は非常にクリックしにくいため、<span
+                                    class="color-image20"><b>○</b></span>の部分にカーソルを合わせるとよい。</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">アリアン傭兵ギルド</span></td>
+                            <td><span class="color-image4">セシル</span>へ<br>
+                                <br>
+                                <span class="color-image8">?私が開けてみます。</span>　　　　　　　　→　200～400程のダメージを受ける<br>
+                                <span class="color-image8">?こういう時には慎重にならないと。</span>　→　安全に進行</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ウィザードギルド</span></td>
+                            <td><span class="color-image4">スターク</span>（4.40）へ</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">キャンサー気孔　Ｂ２</span></td>
+                            <td><span class="color-image1">デスピンサー</span>（Lv65）を20匹倒す</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">スマグ魔法用品店</span></td>
+                            <td><span class="color-image4">カルナン</span>（24.15）へ</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ウィザードギルド</span></td>
+                            <td>Lv170以上で<span class="color-image4">スターク</span>へ</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="4"></a><span color="#00ff00">真紅の魔法石</span></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>魔法都市スマグの住民たちから<span
+                                    class="color-image18">シア・ルフト</span>の新しいうわさを聞いてみよう。<br>
+                                <br>ハンフィ山脈に位置した河口ダンジョン'ラ'で、<span class="color-image18">シア・ルフト</span>を見たという、うわさを聞いた。<span
+                                    class="color-image18">メロウマウラー</span>というモンスターが彼と関係があるようだ。調査をしてみよう。<br>
+                                <br>ハンフィ山脈に位置した河口ダンジョン'ラ'で泉の穴から手に入れた<span
+                                    class="color-image18">シア・ルフト</span>の魔法石と似ている品物をまた探し出した。急いで、<span
+                                    class="color-image4">スターク</span>に見せてあげよう。<br>
+                                <br>傭兵ギルドの部隊が、危機に陥るかもしれない状況だ。急いで、<span
+                                    class="color-image4">セシル</span>に魔法石の危険性を知らせるようにしよう。<br>
+                                <br>
+                                <span class="color-image18">シア・ルフト</span>の魔法石によって、傭兵ギルドの部隊が多大な被害を受けた。<span
+                                    class="color-image4">セシル</span>が状況を確認する間、スマグ・ウィザードギルドの<span
+                                    class="color-image4">スターク</span>に魔法石の対処方法について聞いてみよう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">ウィザードギルド　スターク（4.40）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image20">Lv170～300</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値250万</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">魔法都市スマグ</span></td>
+                            <td>住民4人へ<br>
+                                <span class="color-image4">ウィザード</span>（22.56）<br>
+                                <span class="color-image4">ウィザード</span>（24.32）<br>
+                                <span class="color-image4">マーク</span>（96.65）<br>
+                                <span class="color-image4">サスピン</span>（62.24）<span
+                                    class="color-image8">?こんにちは。ちょっと聞きたいことがあるのですが、良いですか？</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">河口ダンジョン　'ラ'　Ｂ１</span></td>
+                            <td><span class="color-image1">メロウマウラー</span>（Lv190）を倒す</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ウィザードギルド</span></td>
+                            <td><span class="color-image4">スターク</span>へ、ワープ</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">アリアン傭兵ギルド</span></td>
+                            <td><span class="color-image4">セシル</span>（12.9）へ<br>
+                                <br>
+                                <span class="color-image4">魔法傭兵ルイーズ</span>（30.48）へ<br>
+                                <br>
+                                <span class="color-image4">セシル</span>へ<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ウィザードギルド</span></td>
+                            <td><span class="color-image4">スターク</span>へ</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="5"></a><span color="#00ff00">安定剤製作</span></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>
+                                <span class="color-image18">シア・ルフト</span>が作った魔法石の爆発を阻むための安定剤を製作しなければならない。すでに、<span
+                                    class="color-image4">スターク</span>が安定剤の製作に必要な材料類を注文しておいたと言うから、急いで材料を引き取りに行こう。<br>
+                                <br>安定剤の製作のための材料をすべて手に入れた。急いで<span class="color-image4">スターク</span>に材料を渡そう。<br>
+                                <br>安定剤の製作に成功した。アリアン傭兵ギルドの<span class="color-image4">セシル</span>にこの事を伝えた後、次の計画を聞こう。<br>
+                                <br>
+                                <span class="color-image4">セシル</span>は今回の任務の危険度を考慮して、<span
+                                    class="color-image11">全員のレベルが210以上</span>のメンバーで、パーティーを組まなければならないと言う。まずは、力になる仲間たちを集めてから、<span
+                                    class="color-image4">セシル</span>に次の計画を聞くことにしよう。<br>
+                                <br>安定剤の製作には成功したが、今の能力では効能が現われないそうだ。レベルを<span
+                                    class="color-image11">185</span>以上に成長させた後、また、<span
+                                    class="color-image4">セシル</span>に会うことにしよう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">ウィザードギルド　スターク（4.40）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image20">Lv170～300</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">経験値310万</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">鉱山町ハノブ</span></td>
+                            <td><span class="color-image4">ハギン</span>（35.18）へ　<span
+                                    class="color-image8">?スタークさんが、注文した物を取りに来ました。</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">港街ブリッジヘッド</span></td>
+                            <td><span class="color-image4">倉庫番ネビル</span>（26.30）へ</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">アリアン傭兵ギルド</span></td>
+                            <td><span class="color-image4">セシル</span>（12.9）へ</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">テンドペンド平原 / ブリッジヘッド北部地域</span></td>
+                            <td><span class="color-image4">マージルリンド</span>（43.165）へ<br>
+                                <br>
+                                <span class="color-image2">鉱山町ハノブ</span>・<span
+                                    class="color-image2">港街ブリッジヘッド</span>・<span
+                                    class="color-image2">オアシス都市アリアン</span>・<span
+                                    class="color-image2">魔法都市スマグ</span>のどこか1つを選択してワープできる。</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">スマグ魔法用品店</span></td>
+                            <td><span class="color-image4">カルナン</span>（24.15）へ</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ウィザードギルド</span></td>
+                            <td><span class="color-image4">スターク</span>へ</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">アリアン傭兵ギルド</span></td>
+                            <td>Lv185以上で<span class="color-image4">セシル</span>へ<br>
+                                <br>
+                                Lv210～300のメンバーでパーティーを組み<span class="color-image4">セシル</span>へ、リーダーでなくても可。<br>
+                                <br>
+                                Lv300以上の場合は、「上級傭兵たちが、すでにシア・ルフトを征伐したそうです。」と言われ、クエスト終了、<a
+                                    href="longquest3.html#6">シア・ルフト</a>は発生しない。
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="6"></a><span color="#00ff00">シア・ルフト</span></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="dummy-class"><br>
+                                <span
+                                    class="color-image11">全員のレベルが210以上</span>のパーティーで、ハンヒ山脈に位置する河口ダンジョン‘ラ’B2の秘密ダンジョンを探しに行こう。そこに行けば、傭兵ギルドの偵察兵に会えると言う。ここの秘密ダンジョンは<span
+                                    class="color-image11">300</span>レベル以上になると探索することができないと言う。もし、<span
+                                    class="color-image11">300</span>レベルを超えていたら、セシルのもとに戻ろう。<br>
+                                <br>
+                                他のパーティーメンバーがモンスター達の目を引いてくれているうちに、人質として捕まえられた<span
+                                    class="color-image11">5人の傭兵</span>を救出しよう。そして、今回の事件の元凶である<span
+                                    class="color-image18">シア・ルフト</span>を退治しよう。<br>
+                                <br>
+                                <span class="color-image18">シア・ルフト</span>を退治した。アリアン傭兵ギルドの<span
+                                    class="color-image4">セシル</span>の所に戻って、この事を報告しよう。<br>
+                                <br>任務完了の報告書をスマグ・ウィザードギルドの<span class="color-image4">スターク</span>に渡そう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image20">アリアン傭兵ギルド　セシル（12.9）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image20">Lv210～300</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20">Lv210～299　?経験値390万　?経験値420万<br>
+                                    Lv300以上　　経験値420万</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">アリアン傭兵ギルド</span></td>
+                            <td>Lv210～299の場合<br>
+                                秘密ダンジョン　<a
+                                    href="secretdgn210-300.html">河口ダンジョン'ラ'の隠された洞窟</a><br>
+                                <br>
+                                <span class="color-image4">セシル</span>へ<br>
+                                <br>
+                                <span class="color-image8">?これからは、スタークさんの顔を見る事もないですね。</span><br>
+                                　→　経験値390万<br>
+                                <span class="color-image8">?その完了報告書を私が伝えに行っても良いでしょうか？</span><br>
+                                　→　<span class="color-image2">ウィザードギルド</span>の<span
+                                    class="color-image4">スターク</span>（4.40）へ、経験値420万<br>
+                                <br>
+                                Lv300以上の場合<br>
+                                <span class="color-image4">セシル</span>へ<br>
+                                「上級傭兵たちが、すでにシア・ルフトを征伐したそうです。」と言われ、クエスト終了、経験値420万。</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <br>
+                <br>
+                [参考] <a
+                    href="https://yotsuba000.github.io/YotsubaDataBase/QuestDataBase/QuestDataBaseIndex.html">Yotsuba
+                    Quest DataBase</a><br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+        </div>
+</body>
+
+</html>
