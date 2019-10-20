@@ -1565,10 +1565,9 @@ function searchOption(cid, slv) {
             result += '- 魔法強化 +<span class="color-image11">10</span>％<br>'
         }
     }
-    // TODO　この辺りソートして見やすくしたいですね
     if (cid === 80) {
         if (slv < 50) {
-            result += '- 魔法強打 +<span class="color-image11">' + parseInt(slv * 1) + '</span>％増加<br>';
+            result += '- 魔法強打 +<span class="color-image11">' + Math.round(4.8 + slv * 0.2) + '</span>％増加<br>';
         }
         if (slv >= 50) {
             result += '- 魔法強打 +<span class="color-image11">' + 16 + '</span>％増加<br>';
