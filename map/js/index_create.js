@@ -14,7 +14,7 @@ for (key in NameList) {
         npc_doc = npc_doc + '<tr><th>連動</th><th>マップ名</th><th>適正Lv</th></tr>';
     }
     var key_num = parseInt(key);
-    if (key_num === 27 || key_num === 28 || key_num === 555 || key_num === 799 || key_num === 801 || key_num === 9999) {
+    if (key_num === 27 || key_num === 28 ||  key_num === 438 || key_num === 555 || key_num === 799 || key_num === 801 || key_num === 9999) {
         // デバッグ用マップはリストには出さない
         continue;
     } else {
