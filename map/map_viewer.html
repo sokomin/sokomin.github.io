@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="../map/js/style.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+        <script language="JavaScript" src="../map/database/mapdata.js"></script>
+        <script language="JavaScript" src="../map/js/common.js"></script>
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <div class="main-background-map mdl-typography--text-center korea-content">
+                <br>
+
+                <h3>マップビューア</h3>
+                <div id="map_title_name"></div>
+                <br>
+                <div style="padding:0px 20px;"><input type="button" name="btn1" value="拡大" onclick="Up();">
+                    <input type="button" name="btn2" value="縮小" onclick="Dn();">
+                </div>
+                <div style="position:absolute;">
+                    <img id="map_image" style="position:absolute; top:0px; left:20px;"
+                        src="../map/design/[000]T01.rmd.png" width="400" height="200"><br>
+                    <script language="JavaScript" src="../map/js/calc.js"></script>
+                    <div id="map_blank" style="height:200px"></div>
+
+                    <br>
+                    <div class="cn">
+                        <table id="table10" border="0" style="max-width: 360px;" cellspacing="1" cellpadding="2">
+                            <colgroup>
+                                <col span="1" width="20%" />
+                                <col span="1" width="80%" />
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <th colspan="2" class="bred">NPC関連情報</th>
+                                </tr>
+                                <tr>
+                                    <td class="gray cn" colspan="2">NPC</td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">1</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(1)">おじいさん</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">2</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(2)">おじさん</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">3</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(3)">おじさん</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">4</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(4)">おばさん</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">5</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(5)">おばさん</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">6</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(6)">お嬢さん</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">7</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(7)">ちびっこ</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">8</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(8)">ちびっこ</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">9</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(9)">ちびっこ</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">10</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(10)">ちびっこ</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">11</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(11)">エニ</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">12</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(12)">エルランドフォア</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">13</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(13)">オーベル</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">14</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(14)">クライス</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">15</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(15)">クラカ</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">16</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(16)">ケイシー</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">17</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(17)">バウマン</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">18</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(18)">ピエンナ</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">19</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(19)">ホールガイド</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">20</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(20)">ポラック</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">21</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(21)">貴族</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">22</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(22)">貴族</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">23</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(23)">貴族の女の子</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">24</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(24)">貴族の男の子</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">25</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(25)">貴族婦人</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">26</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(26)">青年</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">27</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(27)">青年</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">28</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(28)">農民</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">29</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(29)">木こり</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">30</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(30)">木こり</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="gray cn" colspan="2">モンスター</td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">31</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(31)">骸骨サンタ</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="gray cn" colspan="2">防具商人</td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">32</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(32)">エイドゥル</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">33</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(33)">リン・ジェイク</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="gray cn" colspan="2">雑貨商人</td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">34</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(34)">ドロシー</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">35</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(35)">バリカス</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="gray cn" colspan="2">道具商人</td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">36</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(36)">ブレンシー</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="gray cn" colspan="2">スキルマスター</td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">37</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(37)">マリアンヌ</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="gray cn" colspan="2">一般クエスト</td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">38</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(38)">エミリー </a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">39</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(39)">カルテス</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">40</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(40)">クラム</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">41</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(41)">クレイム</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">42</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(42)">クレンドル</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">43</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(43)">グレーベルクリム</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">44</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(44)">サラ</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">45</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(45)">ティアラ</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">46</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(46)">ドームック</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">47</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(47)">ネスフェリン</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">48</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(48)">バルドゥル</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">49</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(49)">パスィバル</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">50</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(50)">ファーガソ\ン</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">51</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(51)">フェルシオン</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">52</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(52)">フローテック</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">53</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(53)">ミカ</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">54</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(54)">リファシェラン</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">55</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(55)">リュウィンズ</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">56</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(56)">流れ者</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="gray cn" colspan="2">称号クエスト</td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">57</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(57)">クロアン子爵</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">58</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(58)">コリン</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">59</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(59)">スティントン</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">60</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(60)">ブレナン</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">61</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(61)">ベルディノ公爵</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">62</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(62)">マルコム</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">63</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(63)">露店組合広報員</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="gray cn" colspan="2">ギルドクエスト</td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">64</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(64)">ベスペン</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="gray cn" colspan="2">メインクエスト</td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">65</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(65)">ロングッシュ</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="gray cn" colspan="2">サポーター</td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">66</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(66)">クララ</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">67</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(67)">ジェイナ</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">68</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(68)">ジェネガー議員</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">69</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(69)">ジョン・マルコ</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">70</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(70)">小説家アーティー</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="gray cn" colspan="2">テレポーター</td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">71</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(71)">スィラバンダ</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">72</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(72)">ナイルローニ</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="gray cn" colspan="2">治療師</td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">73</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(73)">治療師</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="gray cn" colspan="2">鍛冶屋</td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">74</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(74)">鑑定士ティレン</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">75</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(75)">鍛冶屋</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="gray cn" colspan="2">サポーター</td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">76</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(76)">ケイルン</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="gray cn" colspan="2">剣士/戦士 武器商人</td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">77</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(77)">ウィル・フレド</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="gray cn" colspan="2">ウィザード/ウルフマン 武器商人</td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">78</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(78)">ステビン</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="gray cn" colspan="2">ビショップ/追放天使 武器商人</td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">79</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(79)">チョキー</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="gray cn" colspan="2">シーフ/武道家 武器商人</td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">80</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(80)">ティアン・エビラ</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="gray cn" colspan="2">ランサー/アーチャー 武器商人</td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">81</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(81)">トンキン</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="gray cn" colspan="2">ビーストテイマー/サマナー 武器商人</td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">82</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(82)">ヘンス</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="gray cn" colspan="2">プリンセス/リトルウィッチ 武器商人</td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">83</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(83)">ハパン</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="gray cn" colspan="2">ネクロマンサー/悪魔 武器商人</td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">84</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(84)">トルス</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="gray cn" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">85</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(85)">ベリーナ</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="gray cn" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">86</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(86)">ホールテレポータ</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="gray cn" colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">87</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(87)">イベントガイド</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">88</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(88)">クゥガ</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="black cn">89</td>
+                                    <td class="black cn"><a href="javascript:void(0);" onclick="Yl(89)">占星術師ムーン</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                        [参考] <a href="http://stoneage.suishi.info/map.php">石あげ様</a><br>
+                        <br>
+                        <footer class="android-footer mdl-mega-footer">
+                            <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                                許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                            </font>
+                            Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                        </footer>
+                    </div>
+                    <footer class="android-footer mdl-mega-footer">
+                    </footer>
+                </div>
+                <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+        </div>
+</body>
+
+</html>
