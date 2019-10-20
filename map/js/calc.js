@@ -39,8 +39,46 @@ for (i = 0; i < (LnkX.length - 1); i++) {
 // $('.html').css({ 'height': "100%"});
 // $('.body').css({ 'height': "100%"});
 // $('.main-background-map').css({'height':"auto"});
-$('.main-background-map').css({'min-height':"200%"});
+$('.main-background-map').css({ 'min-height': "200%" });
 // $('.main-background-map').css({'height':$(window).height()});
+
+// テーブルを頑張って作る係
+// TODO テーブルの内容もっと充実させるよ
+var npc_doc = '<table id="table10" border="0" style="max-width: 360px;" cellspacing="1" cellpadding="2">';
+npc_doc = npc_doc + '<colgroup><col span="1" width="20%" /><col span="1" width="80%" /></colgroup><tbody>';
+npc_doc = npc_doc + '<tr><th colspan="2">NPC関連情報</th></tr>';
+
+if (NameNpc && NameNpc.length > 0) {
+    //NPC
+    for (i = 0; i <= (NameNpc.length - 1); i++) {
+        if (i === 0) {
+            npc_doc = npc_doc + '<tr><th colspan="2">NPC</th></tr>';
+        } else {
+            npc_doc = npc_doc + '<tr><td>' + i + '</td>';
+            npc_doc = npc_doc + '<td><a href="javascript:void(0);" onclick="Yl('+ i +')">'+ NameNpc[i] +'</a></td>';
+            npc_doc = npc_doc + '</tr>';
+        }
+    }
+    //モンスター
+    for (i = 0; i <= (NameMob.length - 1); i++) {
+        if (i === 0) {
+            npc_doc = npc_doc + '<tr><th colspan="2">モンスター</th></tr>';
+        } else {
+            // 1行目は「NPC」が固定で入ってるからね
+            var mob_num = NameNpc.length + i - 1;
+            npc_doc = npc_doc + '<tr><td>' + mob_num + '</td>';
+            npc_doc = npc_doc + '<td><a href="javascript:void(0);" onclick="Yl('+ mob_num +')">'+ NameMob[i] +'</a></td>';
+            npc_doc = npc_doc + '</tr>';
+
+        }
+    }
+}
+
+npc_doc = npc_doc + '</tbody></table>';
+//NPCやモンスター名全部かくよ
+var npc_table = document.getElementById('npc_info');
+npc_table.innerHTML = npc_doc;
+
 
 //初期描画担当さん
 var greet = document.getElementById('map_title_name');
