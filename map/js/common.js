@@ -27,7 +27,7 @@ LnkP = [];
 Name = "";
 NameImg = "";
 
-mapid = getParam('mapid') ? getParam('mapid') : 0;
+mapid = getParam('map_id') ? parseInt(getParam('map_id')) : 0;
 
 Jump(mapid);
 
@@ -67,8 +67,10 @@ function Yl(num) {
 }
 
 function Ad() {
-    map_image.width = (MapX * 2) * KS;
-    map_image.height = (MapY) * KS;
+    if (map_image) {
+        map_image.width = (MapX * 2) * KS;
+        map_image.height = (MapY) * KS;
+    }
     $("#map_blank").css({
         "height": (MapY) * KS,
     });
