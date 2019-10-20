@@ -4,8 +4,8 @@ ChkYlw = 999;
 BChkYlw = 999;
 LnkA = [];
 // 大体200ぐらいじゃない？
-MapX = 200;
-MapY = 200;
+MapX = 0;
+MapY = 0;
 ObjY = [];
 ObjX = [];
 ObjT = [];
@@ -16,7 +16,6 @@ LnkS = [];
 LnkP = [];
 LvMin = 0;
 LvMax = 0;
-//map_image = "";
 
 Name = "";
 NameImg = "";
@@ -45,7 +44,7 @@ function Jump(num) {
     ChkYlw = 999;
     BChkYlw = 999;
     KS = 1.0;
-    Ad();
+    Ad(num);
     return false;
 }
 
@@ -62,14 +61,20 @@ function Yl(num) {
     return false;
 }
 
-function Ad() {
+function Ad(num) {
     var map_image = document.getElementById('map_image');
     if (map_image) {
-        map_image.width = (MapX * 2) * KS;
-        map_image.height = (MapY) * KS;
+        MapX = MapX > 0 ? MapX : map_image.width;
+        MapY = MapY > 0 ? MapY : map_image.height;
+        map_image.width = MapX * KS;
+        map_image.height = MapY * KS;
+    } else {
+        //初期描画の時だけこっち通るよ（高さをどーしても計算したいので）
     }
+    // var blank = map_image && map_image.height > 0 ? (map_image.height * 400 / map_image.width) : 200;
+    var blank = map_image && map_image.height > 0 ? map_image.height : 200;
     $("#map_blank").css({
-        "height": (MapY) * KS,
+        "height": (blank),
     });
     if (!document.getElementsByTagName) { return; }
     var objs = document.getElementsByTagName("div");

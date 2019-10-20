@@ -14,7 +14,7 @@ for (i = 0; i < (LnkX.length - 1); i++) {
         col = "#00ffff"; nam = "●";
         // リンク先を配列にしたがって追加していく
         // nam2 = "<a href=\"javascript:void(0);\" onclick=Jump(" + LnkP[PPP] + ") style=\"color:" + col + "\">●</a>";
-        nam2 = "<a href=\"map_viewer?map_id=" + parseInt(LnkP[PPP]) + "\" style=\"color:" + col + "\">●</a>";
+        nam2 = "<a href=\"map_viewer.html?map_id=" + parseInt(LnkP[PPP]) + "\" style=\"color:" + col + "\">●</a>";
         alt = LnkA[PP];
         PP++;
         PPP++;
@@ -55,7 +55,7 @@ if (NameNpc && NameNpc.length > 0) {
             npc_doc = npc_doc + '<tr><th colspan="2">NPC</th></tr>';
         } else {
             npc_doc = npc_doc + '<tr><td>' + i + '</td>';
-            npc_doc = npc_doc + '<td><a href="javascript:void(0);" onclick="Yl('+ i +')">'+ NameNpc[i] +'</a></td>';
+            npc_doc = npc_doc + '<td><a href="javascript:void(0);" onclick="Yl(' + i + ')">' + NameNpc[i] + '</a></td>';
             npc_doc = npc_doc + '</tr>';
         }
     }
@@ -67,7 +67,7 @@ if (NameNpc && NameNpc.length > 0) {
             // 1行目は「NPC」が固定で入ってるからね
             var mob_num = NameNpc.length + i - 1;
             npc_doc = npc_doc + '<tr><td>' + mob_num + '</td>';
-            npc_doc = npc_doc + '<td><a href="javascript:void(0);" onclick="Yl('+ mob_num +')">'+ NameMob[i] +'</a></td>';
+            npc_doc = npc_doc + '<td><a href="javascript:void(0);" onclick="Yl(' + mob_num + ')">' + NameMob[i] + '</a></td>';
             npc_doc = npc_doc + '</tr>';
 
         }
@@ -80,7 +80,7 @@ var npc_table = document.getElementById('npc_info');
 npc_table.innerHTML = npc_doc;
 
 
-//初期描画担当さん
+//マップ名の初期描画担当さん
 var greet = document.getElementById('map_title_name');
 greet.innerHTML = '<h4><font color="#e95388">' + Name + '</font></h4>';
 
