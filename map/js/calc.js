@@ -82,5 +82,12 @@ npc_table.innerHTML = npc_doc;
 
 //初期描画担当さん
 var greet = document.getElementById('map_title_name');
-greet.innerHTML = Name;
+greet.innerHTML = '<h4><font color="#e95388">' + Name + '</font></h4>';
+
+//レベル帯
+if (LvMin && LvMax) {
+    var lv_range_obj = document.getElementById('map_level_range');
+    lv_range_obj.innerHTML = '[適正レベル] ' + LvMin + '～' + LvMax + " ";
+}
+
 

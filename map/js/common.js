@@ -3,8 +3,9 @@
 ChkYlw = 999;
 BChkYlw = 999;
 LnkA = [];
-MapX = 0;
-MapY = 0;
+// 大体200ぐらいじゃない？
+MapX = 200;
+MapY = 200;
 ObjY = [];
 ObjX = [];
 ObjT = [];
@@ -13,6 +14,8 @@ LnkY = [];
 LnkX = [];
 LnkS = [];
 LnkP = [];
+LvMin = 0;
+LvMax = 0;
 //map_image = "";
 
 Name = "";
