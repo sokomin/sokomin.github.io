@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>秘密ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <div class="korea-content main-background">
+                <br>
+                <h3>韓国 2019年以降のロードマップ　Q＆Aコーナー</h3>
+                <h5>
+                    <font color="#ff0000"><strong>[重要！] 韓国公式の情報を基にしています。<br>
+                            誤訳や韓国独自仕様の可能性もありますので、予めご了承下さい。</strong></font><br>
+                </h5>
+                <a href="../korea/koreaupdate20191026.html">本編はこちら</a><br>
+                <br>
+                <a href="#1">開発Q＆A</a><br>
+                <a href="#2">運営Q＆A</a><br>
+                <br>
+
+                <font color="#e95388">
+                    <a name="1"></a>
+                    <h4>開発Q＆A</h4>
+                </font>
+                <b><font color="#e95388">Q.</font>  PVP職業バランスのパッチはいつ完了か？ </b>
+                <br>
+                
+                <font color="#e95388">A.</font> PVPバランスパッチは、今年11月中にサービスに反映することを目的としています。 
+                <br>
+                
+                PVPの戦闘バランスは今までのPvEバランスパッチとは異なり、すべての職業群に一度に一括適用したい。 
+                <br>
+                
+                11月に全体のパッチ後も継続的にPVPバランスを調整していく予定です。 
+                <br>
+                
+                （より詳細なガイドは、更新時にお知らせを通過することはできようにします）
+                <br>
+                
+                加えて、まだPVEバランスパッチが進んでいないキャラクターは、2020年に私の追加適用することを目標に開発中です。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> ウィンドウモード?全画面変更時、キャラクターの移動動作が途切れる現象を解決してください。</b>
+                <br>
+                
+                 <font color="#e95388">A.</font>解像度変更時、ネットワーク遅延のために発生する一時的なサーバー瞬断現象が原因です。
+                <br>
+                
+                原因を解決しようと、ハードウェアのアップグレードやソフトウェアの再構成などの一部の方法でサーバー瞬断現象を軽減するために努力しており、早めに解決できようにします。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> 高レベルのユーザーのための新規のコンテンツと、既存の未完成のコンテンツは、いつ更新されますか？ </b>
+                <br>
+                
+                <font color="#e95388">A.</font>高レベル新規コンテンツは、2020年に私のお客様にリリースすることを目指しています。
+                <br>
+                
+                併せて、未完成と老朽化したコンテンツに対する改善案を内部で検討、議論しており、具体的な結論が出次第、皆様にお知らせいたします。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> 嵐成長褒賞アイテム「安息のリング」の体力吸収バグはいつのパッチですか？</b>
+                <br>
+                
+                <font color="#e95388">A.</font>現在の修正が完了して、早期に反映するようにします。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> 限界突破をはじめとする難易度の高いコンテンツが多くサブキャラクターの育成にも負担がありこの部分の改善策は何ですか？ </b>
+                <br>
+                
+                <font color="#e95388">A.</font>限界突破をはじめとする一部のコンテンツの場合、現在のサブキャラクター育成だけでなく、
+                <br>
+                
+                新規/復帰お客様も参入障壁が高く体感されています。現実的に難易度体感が過度に高く感じられるコンテンツに対する変化を与られます方法を悩んでいます。
+                <br>
+                
+                お客様のストレスを軽減し、コンテンツをより自然に楽しむことができる方案を模索するようにします。
+                <br>
+                
+                
+                <br>
+                
+                
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> 新規ユーザが感じる進入難易度が高くなります。この部分の改善策はありますか？</b>
+                <br>
+                
+                <font color="#e95388">A.</font>私たちは、新しいお客様感じるコンテンツの進入難易度中、特定のレベルと状況に応じて一部のコンテンツを楽しむか、
+                <br>
+                
+                どのような狩り場とクエストを進行するかを探して判断するのは難しい点が最大の原因であると見ています。
+                <br>
+                
+                この問題を優先的に改善するための方策を検討、開発中であり、さらにレベルアップが難しい区間にもクエスト狩り場追加などの様々な方向に模索中です。
+                <br>
+                
+                その内容は、2020年に段階的に反映される予定です。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> 狼にもボイスを入れてください。 </b>
+                <br>
+                
+                <font color="#e95388">A.</font>狼キャラクターのコンセプト上、他のキャラクターのように音声を追加することは適切ではないと見ています。
+                <br>
+                
+                しかし、狼というキャラクターに、より没入感を与られますようなサウンドクオリティを改善する予定です。
+                <br>
+                
+                
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> メイン褒賞/レイドコンテンツの期間のタームが長いと思います。</b>
+                <br>
+                
+                 <font color="#e95388">A.</font>メイン褒賞はかなり良いアイテムで構成されており、褒賞自体の期間タームを減らすことはバランス上の問題があると思います。
+                <br>
+                
+                それよりもチュートリアル、レポートなどを介して、メイン報酬クエストを強要される部分により感じ不快感を最小限にする方向に接近しようとし、
+                <br>
+                
+                関連するクエスト自体の内容を修正するなどの方法で進めています。
+                <br>
+                
+                
+                <br>
+                
+                また、レイド関連不便を感じておら部分はチュートリアルorレポートクエストを進行するためのタームが長くクエストクリアがかかる問題、
+                <br>
+                
+                レイド経験値報酬を除いたレベルアップコンテンツの不足だと思います。該当事項を認知して、様々な方面からの改善できるように詳しく検討するようにします。
+                <br>
+                
+                
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> 補助武器がない職業のための補助武器はいつ来るの？</b>
+                <br>
+                
+                 <font color="#e95388">A.</font> 2020年上半期中に補助武器がない職業も補助武器を身に着けることができように追加する予定です。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> インフィニティ強化と図案書製作などの一部の確率を表記してください。 </b>
+                <br>
+                
+                <font color="#e95388">A.</font>REDSTONE内の確率を公開する部分について、内部的に悪用あるいは不正行為などが起こることができる部分がないかなど、
+                <br>
+                
+                サービスに影響を与られます部分の全体的な確認後に申し上げることが良さそうです。
+                <br>
+                
+                その部分については後に再度告知できるように、内部でよく検討します。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> 「特定のステータス再分配」アイテムを使用した後天上界の褒賞に「CP 10回/ HP 10回」を受けたHP効果の説明と異なる表記されています。 </b>
+                <br>
+                
+                <font color="#e95388">A.</font> HP効果の説明の場合、表記のエラーで確認され、早めに変更して、反映する予定です。
+                <br>
+                
+                
+                <br>
+                
+                <!-- <b><font color="#e95388">Q.</font> 赤みのパッチ以降、一部のキャラクターの不正行為が増加する部分にどのように思いますか？ </b>
+                <br>
+                
+                <font color="#e95388">A.</font>複数のクライアントを使用して、赤いオーラを多数使用しているパターンの、一部の私たちが意図した方向と違う姿に進行されることを認識しました。
+                <br>
+                
+                この問題を改善するための検討中であり、方向が決定されると、皆様に申し上げいたします。
+                <br>
+                
+                 -->
+                <br>
+                
+                <b><font color="#e95388">Q.</font>  PVPランキングに特定の文字（ビショップ）で集まっている現状があります。 この部分のパッチはないですか？ </b>
+                <br>
+                
+                <font color="#e95388">A.</font> 11月にバランスのパッチを目指し、全体的なPVPのバランス調整を進めています。
+                <br>
+                
+                また、ヒールや無敵などのバランスに大きな影響を与えるスキルにもパッチを進める予定です。
+                <br>
+                
+                
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> ギルドバフUIとアイテムのログが重なって確認が困難である。 </b>
+                <br>
+                
+                <font color="#e95388">A.</font>システムと経験値ボーナスUIが重ならないように早め内改善しようとします。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> フィールド内ドロップとジャンレクが頻繁に不便です。 </b>
+                <br>
+                
+                <font color="#e95388">A.</font>原因を解決しようと、ハードウェアのアップグレードやソフトウェアの再構成などの一部の方法で
+                <br>
+                
+                瞬断現象を軽減するために努力しており、早めに解決することを目的としています。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> 嵐成長褒賞アイテム「祝福の指輪」も銀行取引されるようにしてくれると聞いたときに修正できますか？ </b>
+                <br>
+                
+                <font color="#e95388">A.</font>嵐成長イベントは、新規または復帰の顧客をターゲットに企画されたイベントに銀行取引可能な「安息のリング」とは違って
+                <br>
+                
+                「祝福の指輪」はDXの選択、新規DX選択など価値の高いアイテムと同等の性能で構成されています。
+                <br>
+                
+                該当のアイテムが銀行取引までであれば、バランスを損なう恐れがあり、銀行取引不可で製作されました。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> 新規コスチュームの制作企画とスケジュールはありませんか？ </b>
+                <br>
+                
+                <font color="#e95388">A.</font> 2020年上半期に公開を目標に進行中です。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> バランスパッチ後の魔法のキャラクターが物理キャラよりも性能が良くないのに、魔法回避率まで入れると、より悪くありませんか？ </b>
+                <br>
+                
+                <font color="#e95388">A.</font>魔法キャラクターが初期には、物理攻撃キャラよりも強い面貌を見せてバランスを合わせるために魔法回避が反映され、
+                <br>
+                
+                現在ではバランスが合わないと判断され、「魔法回避」を補完するための「魔法命中」を入れた状況です。
+                <br>
+                
+                早め内の魔法/物理キャラクター間のバランスがさらに調整されるように、様々な方策を用意しています。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> メイド補助武器である十字架のオプションがない現象があります。 </b>
+                <br>
+                
+                <font color="#e95388">A.</font>各職業補助装置に合ったオプションを利用できるように改善する予定です。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font>  PVP進行時、召喚獣の体力がなぜ2のみに制限されていますか？ </b>
+                <br>
+                
+                <font color="#e95388">A.</font>サマナーという新規職業が追加されたときPVPバランス上の理由から入った制限値であり、11月に行われるPVPのバランスパッチに合わせて調整する予定です。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> 高レベルユーザーのための「成長型アイテム」などのコンテンツを聞かせてもらいたいと思います。 </b>
+                <br>
+                
+                <font color="#e95388">A.</font>高レベルだけでなく、お客様の成長欲求を呼び起こすオプションとそれに伴うコンテンツの悩みは尽きない宿題だが、
+                <br>
+                
+                後に追加されるエリアボス、新規フィールドと連携するコンテンツを企画してプレイに楽しさを感じることができるよう努力します。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> 初心者ユーザが移動するのにマップが多く、難しい動線があります。 </b>
+                <br>
+                
+                <font color="#e95388">A.</font>来年初心者復帰顧客のためのガイドシステムを追加し、初心者に動線や移動について、今より簡単で便利に利用できるように改善します。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> 初心者ユーザーのためだけに区間狩り場があるフィールドを作成してください。 </b>
+                <br>
+                
+                <font color="#e95388">A.</font>既存狩り場のモンスターのレベルと経験値などの調整を介して、初心者や復帰のお客様が集まって簡単に狩ることができる方案について検討してみます。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> 繰り返しイベントではなく、差別化されたイベントを企画してください。 </b>
+                <br>
+                
+                <font color="#e95388">A.</font>新しい方法のイベントを実装において、ゲーム内/外で発生する可能性のある問題の防止を検討してみると、
+                <br>
+                
+                保守的な観点からのイベントの開発を進めてきたことは事実です。
+                <br>
+                
+                現在のイベントが進行されている方式が時期が違うだけで内容と形式が繰り返しという点は私たちも非常に共感しています。
+                <br>
+                
+                以後、お客様のニーズを反映できるように最善を尽くします。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> ユーザーが使用していないオプションのオプションの改編をしてください。 </b>
+                <br>
+                
+                <font color="#e95388">A.</font>一部のオプションが効果は魅力的だが、性能が低下し、多くのお客様方無視される点であることをしてています。
+                <br>
+                
+                ただし、文字のバランスが仕上げされた後、進行がなければならないバランスの影響を受けないため、優先順位がやや低い点ご了承願い、利用されていないオプションに関連して改善できる方案について綿密に検討します。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> コーリングスキルのクールタイムを増やす方法などのマクロを制限する案が垣間見えている点についてどのように思いますか？ </b>
+                <br>
+                
+                
+                <br>
+                
+                <font color="#e95388">A.</font>コーリング不正行為の問題は、現在のREDSTONE最も深刻な事項に認知しており、
+                <br>
+                
+                コーリングだけでなく、スフィア、カップリングなどの瞬間移動をするすべてのスキルとアイテムについてクールタイム適用外不正行為を制限しようと、2020年以内に適用を目指し、複数の方法を模索しています。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> サマナークリーチャーの魔法クリティカル/魔法強打表記はいつでしょうか？ </b>
+                <br>
+                
+                <font color="#e95388">A.</font>現在サマナークリーチャーだけでなく、キャラクターの攻撃速度、抵抗なども表記されていなくて不便を感じておられる点を認知しています。
+                <br>
+                
+                お客様がゲーム上のスペックを簡単に見て比較できるように、上記の事項を含む魔法クリティカル、魔法強打などについても、2020年に急速に表記関連のエラー現象を改善するようにします。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> 図鑑2発売予定日はどうなりますか？ </b>
+                <br>
+                
+                <font color="#e95388">A.</font>図鑑シーズン2のための適切な褒賞と実装時期は、現在議論中です。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> ギルドマークの飾るなどが詰まっている部分が多いいつ改善できますか？ </b>
+                <br>
+                
+                <font color="#e95388">A.</font>お客様がより一層多様なギルドマークを飾ることができるよう議論中であり、ギルドコンテンツ改編進行時一緒に反映される予定です。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> ギルドバフを再度必要がある場合、再接続をするべきなのに火の鳥のように自動延長に改善してください</b>
+                <br>
+                
+                <font color="#e95388">A.</font>再接続せずにギルドバフの時間が更新されるように早めに改善するようにします。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> 天上界報酬「CP 10回/ HP 10回」に関連して、天上界ペナルティの補完のために地下界褒賞を選択した場合天上界/地下界性向指数が初期化されます。このペナルティの部分を修正していただきたいと思います。 </b>
+                <br>
+                
+                <font color="#e95388">A.</font>ペナルティに関連して言葉くださった事項に共感し、傾斜指数の場合、メイン褒賞と関連全体的な影響を与える要素であるため、内部で慎重に接近して補完できようにします。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> 狂気狼スキルの体力ダメージ米表記/スキルディレイ修正してください。 </b>
+                <br>
+                
+                <font color="#e95388">A.</font>狂気狼の一部のスキルについての問題があることは認識しており、詳細確認後、2020年上半期に修正されることができるよういたします。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> 狼の体力ダメージは敵クリティカル減少の影響をしない受け取れ？ </b>
+                <br>
+                
+                <font color="#e95388">A.</font>狼の体力比例ダメージは効果自体は、物理と同じ構成を有しており、敵のクリティカル抵抗減少が反映されるのが普通です。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> レイド/討伐など歴代未知現象が生じる理由を説明してください。 </b>
+                <br>
+                
+                <font color="#e95388">A.</font>ダメージが逆に帰る現象は一部の特定のスキルが最大ダメを超えたとき、|ダメージが1に戻ってエラー現象です。この問題の深刻さを考慮して優先順位を上げ修正を進めており、早めに反映できるようにします。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> これからエンチャントオプションを用いたリング作業を停止する予定はありますか？ </b>
+                <br>
+                
+                <font color="#e95388">A.</font>既存のリングセッティング方法は、進入難易度がとても高く、満足のいくリングオプションコンテンツアクセスしにくかった。
+                <br>
+                
+                これを緩和するために、ゲーム内のコンテンツを介して取得できる「混沌の破片」に進むことができるように変更しており、今後もあるゲームコンテンツを強化し、
+                <br>
+                
+                オプションシステムへのアクセスと効率を向上させる予定であるため、魔法書/赤の底のないボックス/オプションお守りリングアイテムには使用できません。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> 復帰がないのに復帰者マークを保有したまま狩りをするユーザーを見てバグですか？ </b>
+                <br>
+                
+                <font color="#e95388">A.</font>復帰者マークエラー現象の場合、既に調査中の事案です。高速正常化できるように最善を尽くします。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> レリアイテム錬成進行時、錬成装置の性能平均値を上方せて欲しいです。 </b>
+                <br>
+                
+                <font color="#e95388">A.</font>錬成後の装置の性能平均値が低いと感じられる状況について、内部的に|検討するようにします。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> 討伐進行時、ファルコンが時々ジャンプして外れないエラーがあります。 </b>
+                <br>
+                
+                <font color="#e95388">A.</font>エラー現象で、現在調査と修正作業中です。
+                <br>
+                
+                
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> 魔法精度関連してカリスマステータスを2万まで撮ったが、変化がないようです。 </b>
+                <br>
+                
+                <font color="#e95388">A.</font>現在の魔法の精度の場合、魔法ミスがあるモンスターにのみ反映されるに体感する難しい部分だと思います。
+                <br>
+                
+                また、カリスマステータスを通って魔法の精度が増加する量の場合限界値が定められており、後にUI表記の改善を介して魔法の精度に加えて、
+                <br>
+                
+                様々なステータスの体感をさらに楽にできるように改善します。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> ユニーク超越で/レア超越書新規遺物アイテム（4開放進行時）に比べて効果が良くありません。 </b>
+                <br>
+                
+                <font color="#e95388">A.</font>超越スキルの場合、一部のユニーク超越スキルを除いては、性能が落ちること、スキルポイントを消費することによって、コンテンツへのアクセスが落ちるという点を認識しています。
+                <br>
+                
+                該当事項は2020年上半期に超越スキルリニューアルを通じて改善する予定です。
+                <br>
+                
+                
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> フィールドでドロップされた遺物も後日錬成が可能だろうか。 </b>
+                <br>
+                
+                <font color="#e95388">A.</font>遺物アイテムは良いオプションのアイテムを比較的容易に得ることができる機器であるため、取引不可能状態を維持しようとします。
+                <br>
+                
+                したがって取引可能状態のドロップ遺物を錬成が可能にする予定はありません。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> 各レベルに合ったクエストのか、さまざまな視点で検討する必要があります。 </b>
+                <br>
+                
+                <font color="#e95388">A.</font>レベル台に合わないクエストを改善し、一部の方面で検討し、2020年以内に新規/復帰お客様の進入難易度を下げることを目的としています。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> さまざまなユーザを考えてレベル別のモンスターのリニューアルが必要です。 </b>
+                <br>
+                
+                <font color="#e95388">A.</font>モンスターのレベル台まとめていなかった部分を、2020年以内に改善されることができるようする予定です。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> レイドのような場合に、特定の職業がなければ破ることができません。修正が必要です。 </b>
+                <br>
+                
+                <font color="#e95388">A.</font>キャラクター別バランスとレベルに応じて、レイドの体感難易度が高く感じられる状況を考慮した改善案を議論中です。
+                <br>
+                
+                円滑なレイドの攻略および性能の獲得が可能な希望ゲームの方向を模索するようにします。
+                <br>
+                
+                
+                <br>
+                
+                <b><font color="#e95388">Q.</font> 限定商品の構成が似ていて希少性もなくヘビー課金ユーザーは課金の必要性を感じません。 </b>
+                <br>
+                
+                <font color="#e95388">A.</font>商品の場合、これから行われるアップデートの内容に合わせて、現在よりもアピールできる魅力度を備えた商品を継続的に発売する計画があります。
+                <br>
+                
+                これから公開する新しいコンテンツと一緒に、お客様に、より多くの利点を与られます新しい商品を準備する予定です。
+                <br>
+                
+                <br>
+                                <br>
+                <br>
+                <font color="#e95388">
+                    <a name="4"></a>
+                    <h4>運営 Q＆A</h4>
+                </font>
+                <b><font color="#e95388">Q.</font> アカウントの人の前が難しい理由はありますか？ </b>
+<br>
+
+<font color="#e95388">A.</font>REDSTONEのアカウント名のポリシー原則は、本人名義に限られて適用されています。
+<br>
+
+該当事項は情報通信網法と個人情報保護法に基づく法令による事項であり、現在の他人のアカウントにアカウント情報前やキャラクターの移動などの準備は進んでいません。
+<br>
+
+
+<br>
+
+<b><font color="#e95388">Q.</font> 他のゲームの場合、人の前に可能だ、この部分を改善してくれることができないのですか？ </b>
+<br>
+
+<font color="#e95388">A.</font>現在、多くの他社のゲームでは、アカウント管理の問題と個人情報に関連した事項に人の前に関連するサービスを提供していないです。
+<br>
+
+また、これらのサービスを提供していても、非常に制限的に提供しています。
+<br>
+
+該当事項は他のゲームのポリシーをはじめ、個人情報に関連するポリシーを継続的に監視して、十分検討した後に行わかどうかを決定するようにします。
+<br>
+
+
+<br>
+
+<b><font color="#e95388">Q.</font> 家族関係の人の前ではなぜないか。 </b>
+<br>
+
+<font color="#e95388">A.</font>家族関係の人でも、本人ではない場合には、他人のアカウントに分類され、本人ではなく、以上の個人情報関連法令に基づいて人の前では、現在進行しにくくなります。
+<br>
+
+好ましくは、本人名義のアカウントを使用しハシギルたいが、現在のゲーム利用パターンに合わせて個人情報に関連するポリシーを継続的に確認して、変更可能な部分があることを確認します。
+<br>
+
+
+<br>
+
+<b><font color="#e95388">Q.</font> 亡くなった家族のアカウントがハッキングに遭った場合は、アカウントを削除する方法しかない回答をいただきました。キャラクター削除のほか、他の方法はないですか？ </b>
+<br>
+
+<font color="#e95388">A.</font>家族関係の人も、他人のアカウントに分類されるため、現時点では別の人の前サービスが提供される困難である。
+<br>
+
+継続的に個人情報に関するポリシーを確認して検討するようにします。
+<br>
+
+
+<br>
+
+<b><font color="#e95388">Q.</font> 公式ホームページアカウントの場合、ユーザーとの間のギフトする機能があり便利ですが、ネイバーのアカウントの場合示す機能がなく、不快感があります。この部分の改善することが意向がありますか？ </b>
+<br>
+
+<font color="#e95388">A.</font>ネイバー（ネイバーキャッシュ）と公式ホームページの決済方式とチャネリングサービスのシステムが異なりますので、ネイバー側との協議と、追加の作業が必要な事項です。
+<br>
+
+変更できる改善点を検討するようにします。
+<br>
+
+
+<br>
+
+<b><font color="#e95388">Q.</font>  OTPなしハッキングされている場合が日常茶飯事だが、最近のホームページ個人情報の流出があったのですか？ </b>
+<br>
+
+<font color="#e95388">A.</font>REDSTONEの個人情報は、徹底したセキュリティと暗号化を使用して管理が行われており、個別に個人情報の流出に関連する問題が発生していない。
+<br>
+
+現在のアカウントの盗難や関連事項は、他のサイトの流出した個人情報を利用する場合が多いので、他のサイトとのパスワードと同じか、同様に使用したり、
+<br>
+
+古いパスワードを使用しないで、面倒ロプドラドパスワードの大文字/小文字の組み合わせと特殊文字を組み合わせて設定し、必ずMOTPを活用することをお勧めします。
+<br>
+
+また、追加のセキュリティシステムの検討が進行中です。
+<br>
+
+
+<br>
+
+<b><font color="#e95388">Q.</font> 電話相談が再びたらと思います。 </b>
+<br>
+
+<font color="#e95388">A.</font>内部事情に応じて、現在は、有線相談を行っていないが、進行するかどうかを検討するようにします。
+<br>
+
+
+<br>
+
+<b><font color="#e95388">Q.</font> ホームページに出てくるガイドがあまりにも老朽化しています。アップデートしてください。 </b>
+<br>
+
+<font color="#e95388">A.</font>ホームページだけでなく、すべてのユーザーに役立つことができるガイドと情報が不足している部分にについてできるだけ早く更新されることができるよう努力します。
+<br>
+
+
+<br>
+
+<b><font color="#e95388">Q.</font> 現金取引が深刻なんですが。制限できないのですか？ </b>
+<br>
+
+<font color="#e95388">A.</font>現金取引の疑いのあるゲーム内の行為は摘発時、運用ポリシーに基づいて処理がされています。
+<br>
+
+ただし、現在進められているすべての現金取引を防ぐことは現実的に不可能であるため、最大限の監視によって摘発できるように努力します。
+<br>
+
+また、現金取引を介して販売されるアイテムや金は、ほとんどの問題が発生できるアイテムであるため、通常の取引を通じて進めますようお願いいたします。
+<br>
+
+
+<br>
+
+<b><font color="#e95388">Q.</font> 初心者/新規ユーザーは、現在のREDSTONE方向に適応するのは難しいです。 </b>
+<br>
+
+<font color="#e95388">A.</font>初心者/新規/復帰者ユーザにREDSTONEの参入障壁が高いという点は非常に共感する部分で最近、新規/復帰者の方のためにクエスト動線改編を進めています。
+<br>
+
+クエスト動線のほか、一部の状況の確認作業を進めており、改善可能な操作の結果が出てくるよう優先順位を上げて進行できるようにします。<br>
+
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/00b640015f6dbb0ff262ed6b6638898de3e11dbb.10.2.9.2.jpeg" border=0 name="insertImg" /><br><br>
+                <br>
+                <br>
+                <br>
+                [引用元] <a href="http://redstone.logickorea.co.kr/notice/noticeboard/view.aspx?sqn=6996">韓国公式ページ</a>より。
+                <br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        </div>
+</body>
+
+</html>
