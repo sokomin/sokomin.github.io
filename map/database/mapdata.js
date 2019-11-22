@@ -899,6 +899,7 @@ function datalist(num) {
     LvMin = NameList[num].lvmin;
     LvMax = NameList[num].lvmax;
     Name = NameList[num].name;
+    MapId = num;
     NameImg = NameList[num].img;
     NameNpc = NpcList[num];
     NameMob = MobList[num];

@@ -16,6 +16,8 @@ LnkS = [];
 LnkP = [];
 LvMin = 0;
 LvMax = 0;
+Rendou = "";
+MapId = 0;
 
 Name = "";
 NameImg = "";
@@ -37,6 +39,7 @@ function Up() {
 function Jump(num) {
     //名前入れ替えの術
     datalist(num);
+    datasublist(num);
     // 画像入れ替え
     // 配列総入れ替え
     // ぜーんぶ再描画

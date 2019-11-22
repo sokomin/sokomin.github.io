@@ -89,5 +89,28 @@ if (LvMin && LvMax) {
     var lv_range_obj = document.getElementById('map_level_range');
     lv_range_obj.innerHTML = '[適正レベル] ' + LvMin + '～' + LvMax + " ";
 }
+if (MapId && Rendou) {
+    var rendou_obj = document.getElementById('map_rendou');
+    rendou_obj.innerHTML = '連動マップ：' + createRendouColor(Rendou) + " ";
+
+}
 
 
+//連動わかりやすくするために色付けるだけの関数
+function createRendouColor(rendou) {
+    switch (rendou) {
+        case "A":
+            return '<span class="color-image1">' + rendou + '(古都銀)</span>'
+        case "B":
+            return '<span class="color-image2">' + rendou + '(アリアン)</span>'
+        case "C":
+            return '<span class="color-image11">' + rendou + '(古都)</span>'
+        case "D":
+            return '<span class="color-image4">' + rendou + '(アウグ/地下水路)</span>'
+        case "E":
+            return '<span class="color-image8">' + rendou + '(GH/ハノブ)</span>'
+        default:
+            return rendou;
+    }
+
+}
