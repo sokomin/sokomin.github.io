@@ -6,18 +6,18 @@ MapSubInfoList = {
     //     0: mc:"連動区分",req_map_lv:MAP要求値, dfi:火down, dwa:水down, dwi:風down, dea:地down, dli:光down, dda:闇down, st_down:ステ低下,lbd:抵抗上限低下, non_resume: 記憶できないの？,
     0: { name: "古都ブルンネンシュティグ",mc:"C",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
     10: { name: "中央プラトン街道 / ブルンネンシュティグ入口付近",mc:"A",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
-    828: { name: "捨てられた地下墓地 B1",mc:"C",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
-    829: { name: "捨てられた地下墓地 B2",mc:"C",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
-    830: { name: "捨てられた地下墓地 B3",mc:"C",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
-    824: { name: "忘れられた地下収容所 B1",mc:"C",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
-    825: { name: "忘れられた地下収容所 B2",mc:"C",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
-    826: { name: "忘れられた地下収容所 B3",mc:"C",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
-    874: { name: "静寂の砂丘 / 月の谷",mc:"C",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
-    875: { name: "静寂の砂丘 / 星の谷",mc:"C",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
-    878: { name: "神獣の野原",mc:"B",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
-    879: { name: "生命の森中心部",mc:"B",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
-    880: { name: "枯渇した生命の森",mc:"B",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
-    881: { name: "死の荒れ地",mc:"B",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
+    828: { name: "捨てられた地下墓地 B1",mc:"C",req_map_lv:5, dfi:30, dwa:20, dwi:20, dea:20, dli:20, dda:30, st_down:10,lbd:70, non_resume: false  },
+    829: { name: "捨てられた地下墓地 B2",mc:"C",req_map_lv:5, dfi:40, dwa:20, dwi:20, dea:20, dli:20, dda:40, st_down:15,lbd:70, non_resume: false  },
+    830: { name: "捨てられた地下墓地 B3",mc:"C",req_map_lv:5, dfi:40, dwa:25, dwi:25, dea:25, dli:25, dda:40, st_down:15,lbd:70, non_resume: false  },
+    824: { name: "忘れられた地下収容所 B1",mc:"C",req_map_lv:6, dfi:30, dwa:30, dwi:30, dea:30, dli:30, dda:30, st_down:20,lbd:70, non_resume: false  },
+    825: { name: "忘れられた地下収容所 B2",mc:"C",req_map_lv:6, dfi:35, dwa:35, dwi:35, dea:35, dli:35, dda:35, st_down:20,lbd:70, non_resume: false  },
+    826: { name: "忘れられた地下収容所 B3",mc:"C",req_map_lv:6, dfi:40, dwa:40, dwi:40, dea:40, dli:40, dda:40, st_down:20,lbd:70, non_resume: false  },
+    874: { name: "静寂の砂丘 / 月の谷",mc:"C",req_map_lv:7, dfi:40, dwa:40, dwi:40, dea:40, dli:40, dda:40, st_down:30,lbd:70, non_resume: false  },
+    875: { name: "静寂の砂丘 / 星の谷",mc:"C",req_map_lv:7, dfi:40, dwa:40, dwi:40, dea:40, dli:40, dda:40, st_down:30,lbd:70, non_resume: false  },
+    878: { name: "神獣の野原",mc:"B",req_map_lv:5, dfi:60, dwa:60, dwi:60, dea:60, dli:60, dda:60, st_down:20,lbd:70, non_resume: false  },
+    879: { name: "生命の森中心部",mc:"B",req_map_lv:6, dfi:60, dwa:60, dwi:60, dea:60, dli:60, dda:60, st_down:20,lbd:70, non_resume: false  },
+    880: { name: "枯渇した生命の森",mc:"B",req_map_lv:7, dfi:70, dwa:70, dwi:70, dea:70, dli:70, dda:70, st_down:25,lbd:70, non_resume: false  },
+    881: { name: "死の荒れ地",mc:"B",req_map_lv:7, dfi:70, dwa:70, dwi:70, dea:70, dli:70, dda:70, st_down:30,lbd:70, non_resume: false  },
 
     //以下、機械的に作ったデータ
     1:{ name: "中央プラトン街道 / グレートフォレスト入口付近",mc:"D",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
@@ -737,8 +737,8 @@ MapSubInfoList = {
     // 772:{ name: "",mc:"?",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
     //増量されたミラーたち
     // この辺りからver0.0690
-    773:{ name: "希望と絶望の境目",mc:"C",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
-    774:{ name: "埋没した古代遺跡",mc:"C",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
+    773:{ name: "希望と絶望の境目",mc:"C",req_map_lv:6, dfi:30, dwa:30, dwi:30, dea:30, dli:30, dda:30, st_down:0,lbd:0, non_resume: false  },
+    774:{ name: "埋没した古代遺跡",mc:"C",req_map_lv:6, dfi:30, dwa:30, dwi:30, dea:30, dli:30, dda:30, st_down:0,lbd:0, non_resume: false  },
     // 775:{ name: "",mc:"?",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
     // 776:{ name: "",mc:"?",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
     // 777:{ name: "",mc:"?",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
@@ -751,9 +751,9 @@ MapSubInfoList = {
     791:{ name: "衛星都市ロングテール",mc:"C",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
     792:{ name: "ロングテール付近の狩場",mc:"C",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
     // 792:{ name: "",mc:"?",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
-    794:{ name: "アメンアイランド",mc:"B",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
-    795:{ name: "海底神殿B1",mc:"B",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
-    796: { name: "海底神殿B2",mc:"B",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
+    794:{ name: "アメンアイランド",mc:"B",req_map_lv:6, dfi:40, dwa:40, dwi:40, dea:40, dli:40, dda:40, st_down:30,lbd:70, non_resume: false  },
+    795:{ name: "海底神殿B1",mc:"B",req_map_lv:6, dfi:40, dwa:40, dwi:40, dea:40, dli:40, dda:40, st_down:30,lbd:70, non_resume: false  },
+    796: { name: "海底神殿B2",mc:"B",req_map_lv:6, dfi:40, dwa:40, dwi:40, dea:40, dli:40, dda:40, st_down:30,lbd:70, non_resume: false  },
     // TODO そこみんマップ貼ろうぜ
     799:{ name: "ハードモード",mc:"-",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
     801:{ name: "決戦都市ヒルドブラント",mc:"-",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
@@ -783,7 +783,7 @@ MapSubInfoList = {
     // 824:{ name: "",mc:"?",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
     // 825:{ name: "",mc:"?",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
     // 826:{ name: "",mc:"?",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
-    827:{ name: "近郊森 / 妖精達の安息所",mc:"C",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
+    827:{ name: "近郊森 / 妖精達の安息所",mc:"C",req_map_lv:2, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
     // 828:{ name: "",mc:"?",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
     // 829:{ name: "",mc:"?",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
     // 830:{ name: "",mc:"?",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
@@ -895,4 +895,5 @@ function datasublist(num) {
         return;
     }
     Rendou = MapSubInfoList[num].mc;
+    SubInfo = MapSubInfoList[num];
 }

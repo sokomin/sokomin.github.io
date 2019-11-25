@@ -17,6 +17,7 @@ LnkP = [];
 LvMin = 0;
 LvMax = 0;
 Rendou = "";
+SubInfo = {};
 MapId = 0;
 
 Name = "";

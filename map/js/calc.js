@@ -92,7 +92,10 @@ if (LvMin && LvMax) {
 if (MapId && Rendou) {
     var rendou_obj = document.getElementById('map_rendou');
     rendou_obj.innerHTML = '連動マップ：' + createRendouColor(Rendou) + " ";
-
+}
+if (MapId && SubInfo) {
+    var rendou_obj = document.getElementById('map_down_info');
+    rendou_obj.innerHTML = 'MAP低下情報 ' + createDownTabe(SubInfo) + " ";
 }
 
 
@@ -112,5 +115,36 @@ function createRendouColor(rendou) {
         default:
             return rendou;
     }
+}
 
+function createDownTabe(SubInfo) {
+    if (checkSubInfo(SubInfo)) {
+        var npc_doc = '<table id="table10" border="0" style="max-width: 560px;" cellspacing="1" cellpadding="2">';
+        npc_doc = npc_doc + '<colgroup><col span="8" width="80%" /></colgroup><tbody>';
+        npc_doc = npc_doc + '<tr><th colspan="8">低下情報</th></tr>';
+        npc_doc = npc_doc + '<tr><th><span class="color-fire">火</span></th><th><span class="color-water">水</span></th><th><span class="color-wind">風</span></th><th><span class="color-earth">大地</span></th><th><span class="color-shine">光</span></th><th><span class="color-dark">闇</span></th><th>ステ低下</th><th>抵抗上限</th></tr>';
+        npc_doc = npc_doc + '<tr><td>' + SubInfo.dfi + '</td>';
+        npc_doc = npc_doc + '<td>' + SubInfo.dwa + '</td>';
+        npc_doc = npc_doc + '<td>' + SubInfo.dwi + '</td>';
+        npc_doc = npc_doc + '<td>' + SubInfo.dea + '</td>';
+        npc_doc = npc_doc + '<td>' + SubInfo.dli + '</td>';
+        npc_doc = npc_doc + '<td>' + SubInfo.dda + '</td>';
+        npc_doc = npc_doc + '<td>' + SubInfo.st_down + '</td>';
+        npc_doc = npc_doc + '<td>' + SubInfo.lbd + '</td>';
+        npc_doc = npc_doc + '</tr>';
+        return npc_doc;
+    } else {
+        return "無し";
+    }
+}
+
+function checkSubInfo(SubInfo) {
+    if (SubInfo) {
+        if (SubInfo.dfi > 0 || SubInfo.dwa > 0 || SubInfo.dwi > 0 || SubInfo.dea > 0 || SubInfo.dli > 0 || SubInfo.dda > 0 || SubInfo.st_down > 0 || SubInfo.lbd > 0) {
+            return true;
+        }
+    } else {
+        return false;
+    }
+    return false;
 }
