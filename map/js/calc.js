@@ -94,6 +94,10 @@ if (MapId && Rendou) {
     rendou_obj.innerHTML = '連動マップ：' + createRendouColor(Rendou) + " ";
 }
 if (MapId && SubInfo) {
+    if (SubInfo.req_map_lv > 0) {
+        var req_map = document.getElementById('req_map_lv');
+        req_map.innerHTML = '必要 マップ製作者Lv <span class="color-image11">' + SubInfo.req_map_lv + "</span>";
+    }
     var rendou_obj = document.getElementById('map_down_info');
     rendou_obj.innerHTML = 'MAP低下情報 ' + createDownTabe(SubInfo) + " ";
 }
