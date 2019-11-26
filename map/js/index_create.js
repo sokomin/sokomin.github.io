@@ -1,14 +1,22 @@
 ﻿
 // テーブルを頑張って作る係
-// TODO テーブルの内容もっと充実させるよ
 var npc_doc = '<table id="table10" style="max-width: 700px;">';
 npc_doc = npc_doc + '<colgroup><col span="1" width="5%" /><col span="1" width="60%" /><col span="1" width="27%" /><col span="1" width="8%" /></colgroup><tbody>';
 npc_doc = npc_doc + '<tr><th colspan="4">マップ一覧</th></tr>';
 // npc_doc = npc_doc + '<tr><th>連動</th><th>マップ名</th><th>適正Lv</th></tr>';
 
+map_c = getParam('map_c') ? getParam('map_c') : "";
+
 for (key in NameList) {
     var Obj = NameList[key];
     var SubInfoObj = MapSubInfoList[key];
+    if (map_c) {
+        if (SubInfoObj && SubInfoObj.mc &&SubInfoObj.mc === map_c) {
+            //マップでフィルタかけたい時
+        } else {
+            continue;
+        }
+    } 
     var LvMin = Obj.lvmin;
     var LvMax = Obj.lvmax;
     if (key % 100 === 0) {
@@ -20,7 +28,7 @@ for (key in NameList) {
         continue;
     } else {
         var plemiun = Obj.plemiun ? "[P]" : "-";
-        var rendou = SubInfoObj.mc ? SubInfoObj.mc : "?";
+        var rendou = SubInfoObj && SubInfoObj.mc ? SubInfoObj.mc : "?";
         npc_doc = npc_doc + '<tr><td>' + plemiun + '</td>';
         npc_doc = npc_doc + '<td><a href="../map/map_viewer.html?map_id=' + key_num + '">' + Obj.name + '</a></td>';
         // レベル帯
