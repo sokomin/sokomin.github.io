@@ -48,8 +48,11 @@ var npc_doc = '<table id="table10" border="0" style="max-width: 360px;" cellspac
 npc_doc = npc_doc + '<colgroup><col span="1" width="20%" /><col span="1" width="80%" /></colgroup><tbody>';
 npc_doc = npc_doc + '<tr><th colspan="2">NPC関連情報</th></tr>';
 
-if (NameNpc && NameNpc.length > 0) {
+if ((NameNpc && NameNpc.length > 0) || (NameMob && NameMob.length > 0)) {
     //NPC
+    if (!NameNpc) {
+        NameNpc = [];
+    }
     for (i = 0; i <= (NameNpc.length - 1); i++) {
         if (i === 0) {
             npc_doc = npc_doc + '<tr><th colspan="2">NPC</th></tr>';
@@ -125,7 +128,7 @@ function createDownTabe(SubInfo) {
     if (checkSubInfo(SubInfo)) {
         var npc_doc = '<table id="table10" border="0" style="max-width: 560px;" cellspacing="1" cellpadding="2">';
         npc_doc = npc_doc + '<colgroup><col span="8" width="80%" /></colgroup><tbody>';
-        npc_doc = npc_doc + '<tr><th colspan="8">低下情報</th></tr>';
+        npc_doc = npc_doc + '<tr><th colspan="8">低下情報(％)</th></tr>';
         npc_doc = npc_doc + '<tr><th><span class="color-fire">火</span></th><th><span class="color-water">水</span></th><th><span class="color-wind">風</span></th><th><span class="color-earth">大地</span></th><th><span class="color-shine">光</span></th><th><span class="color-dark">闇</span></th><th>ステ低下</th><th>抵抗上限</th></tr>';
         npc_doc = npc_doc + '<tr><td>' + SubInfo.dfi + '</td>';
         npc_doc = npc_doc + '<td>' + SubInfo.dwa + '</td>';
