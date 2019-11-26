@@ -53,6 +53,9 @@ if ((NameNpc && NameNpc.length > 0) || (NameMob && NameMob.length > 0)) {
     if (!NameNpc) {
         NameNpc = [];
     }
+    if (!NameMob) {
+        NameMob = [];
+    }
     for (i = 0; i <= (NameNpc.length - 1); i++) {
         if (i === 0) {
             npc_doc = npc_doc + '<tr><th colspan="2">NPC</th></tr>';
