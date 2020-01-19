@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <script language="JavaScript" src="js/common_function.js"></script>
+    <script language="JavaScript" src="js/exp-table.js"></script>
+    <script language="JavaScript" src="js/sorting_hat.js"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+    <style type="text/css">
+        input#server[type="button"] {
+          display       : inline-block;
+          width: 200px;
+          border-radius : 2%;          /* 角丸       */
+          font-size     : 12pt;        /* 文字サイズ */
+          text-align    : center;      /* 文字位置   */
+          cursor        : pointer;     /* カーソル   */
+          padding       : 12px 12px;   /* 余白       */
+          background    : #B87800;     /* 背景色     */
+          color         : #000000;     /* 文字色     */
+          line-height   : 1em;         /* 1行の高さ  */
+          transition    : .3s;         /* なめらか変化 */
+          box-shadow    : 6px 6px 3px #666666;  /* 影の設定 */
+          border        : 2px solid #B87800;   /* 枠の指定 */
+        }
+        input#server[type="button"]:hover {
+          box-shadow    : none;        /* カーソル時の影消去 */
+          color         : #000000;
+          background    : #f8b800; 
+        }
+        </style>
+</head>
+
+<body onload="init1(); init2()" leftmargin="0" topmargin="0" crossriderapp0002258="true" marginheight="0"
+    marginwidth="0">
+    <title>組分け帽子　赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <div class="main-background mdl-typography--text-center">
+                <br>
+                <br>
+                <h3>組分け帽子</h3>
+                <a href="#1">自分の鯖を探す</a><br>
+                <a href="#2">おすすめの鯖を探す(組分け帽子)</a><br>
+                <!-- <a href="#3">RS懐かし用語から自分の鯖を探す</a><br> -->
+                <br>
+                自分の鯖を探すのは復帰者向け機能。合併で自分の鯖がどこかわからなくなった人向け。<br>
+                組分け帽子の診断は占いの感覚でご利用ください。<br>
+                <br>
+                <span class="color-image1">※注意※　診断結果は適時変更かかります。</span>　
+                <br>
+                <a name="1"></a><br>
+                <form name="f">
+                    <table id="table8">
+                        <tbody>
+                            <tr>
+                                <th>自分の鯖を探す</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table id="table9">
+                                        <table id="table9">
+                                            <colgroup>
+                                                <col span="1" width="6%">
+                                                <col span="1" width="10%">
+                                                <col span="1" width="15%">
+                                                <col span="1" width="25%">
+                                                <col span="1" width="25%">
+                                                <col span="1" width="19%">
+                                            </colgroup>
+                                            <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>鯖を選択</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td><input style="border-color: red;" id="server" type="button" value="Red Emerald（赤鯖）" onclick="calc2(1)"><br>
+                                                    </td>
+                                                    <td><input style="border-color: blue;" id="server" type="button" value="Blue Sapphire（青鯖）" onclick="calc2(2)"><br>
+                                                    </td>
+                                                    <td><input style="border-color: #eb6ea5;" id="server" type="button" value="Lightning（雷鯖）" onclick="calc2(20)"><br>
+                                                        <!-- FF13かな？ -->
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td><input style="border-color: yellow;" id="server" type="button" value="Yellow Topaz（黄鯖）" onclick="calc2(3)"><br>
+                                                    </td>
+                                                    <td><input style="border-color: white;" id="server" type="button" value="White Diamond（白鯖）" onclick="calc2(4)"><br>
+                                                    </td>
+                                                    <td>
+                                                        <input style="border-color: #badcad;" id="server" type="button" value="Tempest（嵐鯖）" onclick="calc2(15)"><br>
+                                                        <!-- アニバ鯖だけど、それ覚えてる人いるかな？ -->
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>
+                                                        <input style="border-color: black;" id="server" type="button" value="Black Opal（黒鯖）" onclick="calc2(5)"><br>
+                                                        <!-- ごめんね黒鯖くん、並べると１鯖余っちゃうんだ…-->
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td><input style="border-color: green;" id="server" type="button" value="Green Alexandrite（緑鯖）" onclick="calc2(6)"><br>
+                                                    </td>
+                                                    <td><input style="border-color: pink;" id="server" type="button" value="Pink Tourmaline（桃鯖）" onclick="calc2(9)"><br>
+                                                    </td>
+                                                    <td><input style="border-color: rgb(241, 95, 119);" id="server" type="button" value="Sunrise（陽鯖）" onclick="calc2(16)"><br>
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td><input style="border-color: purple;" id="server" type="button" value="Purple Amethyst（紫鯖）" onclick="calc2(7)"><br>
+                                                    </td>
+                                                    <td><input style="border-color: orange;" id="server" type="button" value="Orange Garnet（橙鯖）" onclick="calc2(8)"><br>
+                                                    </td>
+                                                    <td><input style="border-color: rgba(207, 86, 207, 0.445);" id="server" type="button" value="Eclipse（蝕鯖）" onclick="calc2(17)"><br>
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td><input style="border-color: aqua;" id="server" type="button" value="Aqua Crystal（水鯖）" onclick="calc2(10)"><br>
+                                                    </td>
+                                                    <td><input style="border-color: rgb(189, 58, 58);" id="server" type="button" value="ScarletRuby（紅鯖）
+                                                        " onclick="calc2(11)"><br>
+                                                    </td>
+                                                    <td><input style="border-color: aquamarine;" id="server" type="button" value="Twilight（宵鯖）" onclick="calc2(18)"><br>
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td><input style="border-color: rgb(78, 78, 233);" id="server" type="button" value="Starlight（星鯖）" onclick="calc2(12)"><br>
+                                                    </td>
+                                                    <td><input style="border-color: rgb(70, 70, 202);"  id="server" type="button" value="Moonlight（月鯖）" onclick="calc2(13)"><br>
+                                                    </td>
+                                                    <td><input style="border-color: rgb(60, 60, 136);"  id="server" type="button" value="NightSky（夜鯖）" onclick="calc2(14)"><br>
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <br>
+                                        <table id="table9">
+                                            <colgroup>
+                                            </colgroup>
+                                            <tbody>
+                                                <tr>
+                                                    <td align="center" colspan="7">
+                                                        <textarea name="res1" rows="3" cols="80">
+                                                        </textarea>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <br>
+                    <a name="2"></a><br>
+                    <table id="table8">
+                        <tbody>
+                            <tr>
+                                <th>おすすめの鯖を探す</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table id="table9">
+                                        <table id="table9">
+                                            <colgroup>
+                                                <col span="1" width="6%">
+                                                <col span="1" width="10%">
+                                                <col span="1" width="15%">
+                                                <col span="1" width="25%">
+                                                <col span="1" width="25%">
+                                                <col span="1" width="19%">
+                                            </colgroup>
+                                            <tbody>
+                                                <tr>
+                                                    <td align="center" colspan="7">
+                                                        君の名前は何だね？<br>
+                                                        <br>
+                                                        <input type="text" class="memorize" name="a_name" size="20">
+                                                        <br>
+                                                        <br>
+                                                        <br>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th align="center" colspan="7">
+                                                        Q1 君はREDSTONEを手に入れて何をしたいのかね？<br>
+                                                        複数選んでもよいが、欲にまみれないほうがよいぞ。<br>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <td align="center" colspan="7">
+                                                        <br>
+                                                        <!-- 統計とったアレ。ソース出せないけど。 -->
+                                                        <p style="text-align: left; margin-left: 100px;">
+                                                            <input type="checkbox" class="memorize" name="q3_1"> 巨万の富を得たい！<br>
+                                                            <input type="checkbox" class="memorize" name="q3_2"> 不老不死になりたい！<br>
+                                                            <input type="checkbox" class="memorize" name="q3_3"> 最強のプレイヤーになりたい！<br>
+                                                            <input type="checkbox" class="memorize" name="q3_4"> この世を支配する王になりたい！<br>
+                                                            <input type="checkbox" class="memorize" name="q3_5"> この世の真理を見極めたい！<br>
+                                                            <input type="checkbox" class="memorize" name="q3_6"> そこに、REDSTONEがあるから。<br>
+                                                        </p>
+                                                        <br>
+                                                        <br>
+                                                        <br>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th align="center" colspan="7">
+                                                        Q2 君はこのゲームで大事にしたいものは何かね？<br>
+                                                        複数選んでもよいぞ。<br>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <td align="center" colspan="7">
+                                                        <br>
+                                                        <!-- 全部選んだら±0になるからな？ -->
+                                                        <p style="text-align: left; margin-left: 100px;">
+                                                            <input type="checkbox" class="memorize" name="q4_1"> 人との繋がり！<br>
+                                                            <input type="checkbox" class="memorize" name="q4_3"> レベル上げ！<br>
+                                                            <input type="checkbox" class="memorize" name="q4_2"> 対人戦！<br>
+                                                        </p>
+                                                        <br>
+                                                        <br>
+                                                        <br>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th align="center" colspan="7">
+                                                        Q3 君の好きな世界を選んでくれ。<br>
+                                                        複数選んでもよいぞ。<br>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <td align="center" colspan="7">
+                                                        <br>
+                                                        <!-- 全部選んだら±0になるからな？ -->
+                                                        <p style="text-align: left; margin-left: 100px;">
+                                                            <input type="checkbox" class="memorize" name="q5_1"> 天上界<br>
+                                                            <input type="checkbox" class="memorize" name="q5_2"> 地下会<br>
+                                                            <input type="checkbox" class="memorize" name="q5_3"> 赤い悪魔<br>
+                                                        </p>
+                                                        <br>
+                                                        <br>
+                                                        <br>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th align="center" colspan="7">
+                                                        Q4 そういえば…君はいつ生まれたのかね？<br>
+                                                        大体でよいぞ。
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <td align="center" colspan="7">
+                                                        <br>
+                                                        <!-- 全部選んだら±0になるからな？ -->
+                                                        <p style="text-align: left; margin-left: 100px;">
+                                                            <input type="checkbox" class="memorize" name="q6_1"> ～1989年<br>
+                                                            <input type="checkbox" class="memorize" name="q6_2"> 1990年～1995年<br>
+                                                            <input type="checkbox" class="memorize" name="q6_3"> 1996年～<br>
+                                                        </p>
+                                                        <br>
+                                                        <br>
+                                                        <br>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th align="center" colspan="7">
+                                                        Q5 君はどういうプレースタイルが好みかね？<br>
+                                                        REDSTONEはMMORPGという多人数で遊べるRPGじゃぞ。<br>
+                                                        
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <td align="center" colspan="7">
+                                                        <br>
+                                                        <!-- 全部選んだら±0になるからな？ -->
+                                                        <p style="text-align: left; margin-left: 100px;">
+                                                            <input type="checkbox" class="memorize" name="q7_1"> ソロプレイ<br>
+                                                            <input type="checkbox" class="memorize" name="q7_2"> パーティープレイ<br>
+                                                            <input type="checkbox" class="memorize" name="q7_3"> 対人戦(GvG)<br>
+                                                            <input type="checkbox" class="memorize" name="q7_4"> ギルドの人との交流<br>
+                                                            <input type="checkbox" class="memorize" name="q7_5"> ダンジョン攻略<br>
+                                                            <input type="checkbox" class="memorize" name="q7_6"> アイテム収集・強化<br>
+                                                        </p>
+                                                        <br>
+                                                        <br>
+                                                        <br>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th align="center" colspan="7">
+                                                        Q6 君は他にどんなゲームを遊ぶのかね？<br>
+                                                        複数選んでもよいぞ。<br>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <td align="center" colspan="7">
+                                                        <br>
+                                                        <!-- 統計とったアレ。ソース出せないけど。 -->
+                                                        <p style="text-align: left; margin-left: 100px;">
+                                                            <input type="checkbox" class="memorize" name="q2_1"> ボードゲーム(トランプなど)<br>
+                                                            <input type="checkbox" class="memorize" name="q2_2">FPS（LoL, PUBGなど）<br>
+                                                            <input type="checkbox" class="memorize" name="q2_3"> RPG (ドラクエ, FFなど)<br>
+                                                            <input type="checkbox" class="memorize" name="q2_4"> パズルゲーム(ぷよぷよ)<br>
+                                                            <input type="checkbox" class="memorize" name="q2_5"> 音楽ゲーム(音ゲー)<br>
+                                                            <input type="checkbox" class="memorize" name="q2_6"> ローグライクゲーム(トルネコなど)<br>
+                                                            <input type="checkbox" class="memorize" name="q2_7"> ギャンブル(麻雀含む)<br>
+                                                        </p>
+                                                        <br>
+                                                        <br>
+                                                        <br>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th align="center" colspan="7">
+                                                        Q7 最後に、君の性格であてはまるものを選んでくれ。<br>
+                                                        複数選んでもよいぞ。<br>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <td align="left" colspan="7">
+                                                        <br>
+                                                        <!-- 九星気学を参考にした質問 -->
+                                                        <p style="text-align: left; margin-left: 100px;">
+                                                        <input type="checkbox" class="memorize" name="q1_1"> 自由が大好きで、どんな場所でも適応できる柔軟さを持ち合わせている<br>
+                                                        <input type="checkbox" class="memorize" name="q1_2"> 堅実で慎重ながら、絶え間ない努力ができる<br>
+                                                        <input type="checkbox" class="memorize" name="q1_3"> 社交的で、行動が素早い<br>
+                                                        <input type="checkbox" class="memorize" name="q1_4"> 人間関係が豊かで、色々な人と仲良くできる<br>
+                                                        <input type="checkbox" class="memorize" name="q1_5"> 色々な問題に臆することなく立ち向かっていける<br>
+                                                        <input type="checkbox" class="memorize" name="q1_6"> リーダーシップを取りたい、指導者的な存在になりたい<br>
+                                                        <input type="checkbox" class="memorize" name="q1_7"> 人脈がある、営業などが好き<br>
+                                                        <input type="checkbox" class="memorize" name="q1_8"> 強気な感じで高い理想を目指したい<br>
+                                                        <input type="checkbox" class="memorize" name="q1_9"> 判断力や直感力に優れている<br>
+                                                        <!-- これムズいのはネガティブなこと書きづらい所だよなあ -->
+                                                        </p>
+                                                        <br>
+                                                        <br>
+                                                        <br>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th align="center" colspan="7">
+                                                        Q さて、結果を出す前に君の要望を聞こうか。<br>
+                                                        <!-- スリザリンは嫌かね？ -->
+                                                        どこの鯖がいいか、というのはあるかね？<br>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <td align="left" colspan="7">
+                                                        <br>
+                                                        ※ どれかをクリックすると結果が出ます！<br>
+                                                        ※ 診断結果は参考程度に。<br>
+                                                        <!-- ぶっちゃけこれで大半決まるんだけど -->
+                                                        <br>
+                                                        <input style="border-color: red;" id="server" type="button" value="シュトラセラト（S鯖）" onclick="calc1(1)"> 
+                                                        <input style="border-color: yellow;" id="server" type="button" value="ボルティッシュ（V鯖）" onclick="calc1(2)">                                                         
+                                                        <input style="border-color: blue;" id="server" type="button" value="ブリッジヘッド（B鯖）" onclick="calc1(3)"><br>
+                                                        <br>
+                                                        <input style="border-color: black;" id="server" type="button" value="組分け帽子に任せる" onclick="calc1(0)"><br>
+                                                        <br>
+                                                        <br>
+                                                        <br>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="center" colspan="7">
+                                                        <textarea name="res2" rows="3" cols="80">
+                                                        </textarea>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <br>
+                    <a name="3"></a><br>
+                    <br>
+                    <br>
+                </form>
+                <a name="20"></a><br>
+                <br>
+                <br>
+                <br>
+                <br>
+
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止（書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        </div>
+</body>
+
+</html>
