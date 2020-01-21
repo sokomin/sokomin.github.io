@@ -5,6 +5,24 @@ function init2() {
     //TODO localstorage辺りから引っ張ってきたい。
 }
 
+
+function tweet() {
+    if (!document.f.res2.value) {
+        alert("組分け帽子の診断を受けてからツイートボタンを押してください。");
+        return;
+    }
+    var text_base = document.f.res2.value;
+    var text = "【RS鯖診断】\n組分け帽子「" + text_base + "」";
+    var url = "https://sokomin.github.io/calculation/sorting_hat.html"
+    var hashtags = "赤石の民衆"
+	window.open(
+        'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) +'&url='+ url + '&hashtags=' + encodeURIComponent(hashtags),
+		'share window','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600'
+	);
+	return !1;
+}
+
+
 // ネタだから。連絡くれれば消すよ。
 var ban_list = ["ネトゲ廃人ken", "廃ken"];
 
