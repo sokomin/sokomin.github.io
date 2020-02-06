@@ -1,0 +1,18 @@
+﻿0: [:{ id: "0",name:ギルド飼育師,type:1,inid:10,repop:120,isptboss:0,posx:88.13,posy:30.56, lv_min:0, lv_max:0, is_npc: false  },
+:{ id: "1",name:ギルド事務官,type:1,inid:7,repop:120,isptboss:0,posx:59.65,posy:59.10, lv_min:0, lv_max:0, is_npc: false  },
+:{ id: "2",name:移動管理人,type:1,inid:2,repop:120,isptboss:0,posx:47.43,posy:65.00, lv_min:0, lv_max:0, is_npc: false  },
+:{ id: "3",name:ハローナイト,type:2,inid:0,repop:120,isptboss:0,posx:67.36,posy:25.00, lv_min:0, lv_max:0, is_npc: false  },
+:{ id: "4",name:考古学者グラン,type:1,inid:13,repop:120,isptboss:0,posx:95.69,posy:25.42, lv_min:0, lv_max:0, is_npc: false  },
+:{ id: "5",name:エンチャント商人,type:1,inid:9,repop:120,isptboss:0,posx:100.76,posy:53.40, lv_min:0, lv_max:0, is_npc: false  },
+:{ id: "6",name:ギルド倉庫管理人,type:1,inid:6,repop:120,isptboss:0,posx:88.96,posy:66.04, lv_min:0, lv_max:0, is_npc: false  },
+:{ id: "7",name:エーテルシェル,type:2,inid:1,repop:120,isptboss:0,posx:79.79,posy:21.04, lv_min:0, lv_max:0, is_npc: false  },
+:{ id: "8",name:エレメントポスト,type:2,inid:4,repop:120,isptboss:0,posx:82.29,posy:14.93, lv_min:0, lv_max:0, is_npc: false  },
+:{ id: "9",name:シールドクラフト,type:2,inid:5,repop:120,isptboss:0,posx:74.17,posy:21.94, lv_min:0, lv_max:0, is_npc: false  },
+:{ id: "10",name:火炎の錬金術師,type:1,inid:11,repop:120,isptboss:0,posx:115.07,posy:30.42, lv_min:0, lv_max:0, is_npc: false  },
+:{ id: "11",name:石像パーツ管理人,type:1,inid:11,repop:120,isptboss:0,posx:130.42,posy:39.17, lv_min:0, lv_max:0, is_npc: false  },
+:{ id: "12",name:治療師,type:16,inid:12,repop:120,isptboss:0,posx:74.86,posy:49.31, lv_min:0, lv_max:0, is_npc: false  },
+:{ id: "13",name:雑貨商人,type:1,inid:8,repop:120,isptboss:0,posx:47.08,posy:45.69, lv_min:0, lv_max:0, is_npc: false  },
+:{ id: "14",name:古美術商ネネ,type:1,inid:14,repop:120,isptboss:0,posx:104.86,posy:25.07, lv_min:0, lv_max:0, is_npc: false  },
+:{ id: "15",name:派遣官ベルント,type:12,inid:15,repop:120,isptboss:0,posx:87.85,posy:44.93, lv_min:0, lv_max:0, is_npc: false  },
+]
+    
