@@ -1,18 +1,77 @@
-﻿0: [:{ id: "0",name:ギルド飼育師,type:1,inid:10,repop:120,isptboss:0,posx:88.13,posy:30.56, lv_min:0, lv_max:0, is_npc: false  },
-:{ id: "1",name:ギルド事務官,type:1,inid:7,repop:120,isptboss:0,posx:59.65,posy:59.10, lv_min:0, lv_max:0, is_npc: false  },
-:{ id: "2",name:移動管理人,type:1,inid:2,repop:120,isptboss:0,posx:47.43,posy:65.00, lv_min:0, lv_max:0, is_npc: false  },
-:{ id: "3",name:ハローナイト,type:2,inid:0,repop:120,isptboss:0,posx:67.36,posy:25.00, lv_min:0, lv_max:0, is_npc: false  },
-:{ id: "4",name:考古学者グラン,type:1,inid:13,repop:120,isptboss:0,posx:95.69,posy:25.42, lv_min:0, lv_max:0, is_npc: false  },
-:{ id: "5",name:エンチャント商人,type:1,inid:9,repop:120,isptboss:0,posx:100.76,posy:53.40, lv_min:0, lv_max:0, is_npc: false  },
-:{ id: "6",name:ギルド倉庫管理人,type:1,inid:6,repop:120,isptboss:0,posx:88.96,posy:66.04, lv_min:0, lv_max:0, is_npc: false  },
-:{ id: "7",name:エーテルシェル,type:2,inid:1,repop:120,isptboss:0,posx:79.79,posy:21.04, lv_min:0, lv_max:0, is_npc: false  },
-:{ id: "8",name:エレメントポスト,type:2,inid:4,repop:120,isptboss:0,posx:82.29,posy:14.93, lv_min:0, lv_max:0, is_npc: false  },
-:{ id: "9",name:シールドクラフト,type:2,inid:5,repop:120,isptboss:0,posx:74.17,posy:21.94, lv_min:0, lv_max:0, is_npc: false  },
-:{ id: "10",name:火炎の錬金術師,type:1,inid:11,repop:120,isptboss:0,posx:115.07,posy:30.42, lv_min:0, lv_max:0, is_npc: false  },
-:{ id: "11",name:石像パーツ管理人,type:1,inid:11,repop:120,isptboss:0,posx:130.42,posy:39.17, lv_min:0, lv_max:0, is_npc: false  },
-:{ id: "12",name:治療師,type:16,inid:12,repop:120,isptboss:0,posx:74.86,posy:49.31, lv_min:0, lv_max:0, is_npc: false  },
-:{ id: "13",name:雑貨商人,type:1,inid:8,repop:120,isptboss:0,posx:47.08,posy:45.69, lv_min:0, lv_max:0, is_npc: false  },
-:{ id: "14",name:古美術商ネネ,type:1,inid:14,repop:120,isptboss:0,posx:104.86,posy:25.07, lv_min:0, lv_max:0, is_npc: false  },
-:{ id: "15",name:派遣官ベルント,type:12,inid:15,repop:120,isptboss:0,posx:87.85,posy:44.93, lv_min:0, lv_max:0, is_npc: false  },
-]
-    
+﻿<tr>
+<td>13111</td>
+<td><a href="../map/map_viewer.html?map_id=373&qid=4040">新興王国ビガプール</a></td>
+<td>中央</td>
+<td><a href="../quest/normalquest200.html#2">ビガプール失踪事件</a></td>
+<td>ビガプール警備長</td>
+</tr>
+<tr>
+<td>13121</td>
+<td><a href="../map/map_viewer.html?map_id=375&qid=4040">港街シュトラセラト</a></td>
+<td>左下</td>
+<td><a href="../quest/normalquest200.html#1">船人たちの希望</a></td>
+<td>クニス</td>
+</tr>
+<tr>
+<td>13131</td>
+<td><a href="../map/map_viewer.html?map_id=181&qid=4040">名も無い崩れた塔 1F</a></td>
+<td>左下</td>
+<td><a href="../quest/normalquest200.html#3">救出：１回目</a></td>
+<td>ガルトス</td>
+</tr>
+<tr>
+<td>13141</td>
+<td><a href="../map/map_viewer.html?map_id=181&qid=4040">名も無い崩れた塔 1F</a></td>
+<td>左下</td>
+<td><a href="../quest/normalquest200.html#4">救出：２回目</a></td>
+<td>ガルトス</td>
+</tr>
+<tr>
+<td>13151</td>
+<td><a href="../map/map_viewer.html?map_id=433&qid=4040">冒険家協会ブルンネンシュティグ本部</a></td>
+<td>すぐ隣</td>
+<td><a href="../quest/longquest5.html">緊急召集</a></td>
+<td>協会事務官</td>
+</tr>
+<tr>
+<td>13211</td>
+<td><a href="../map/map_viewer.html?map_id=375&qid=4040">港街シュトラセラト</a></td>
+<td>左下</td>
+<td><a href="../quest/normalquest200.html#6">海の妖精ネリイス</a></td>
+<td>ブリスン</td>
+</tr>
+<tr>
+<td>13221</td>
+<td><a href="../map/map_viewer.html?map_id=185&qid=4040">名も無い崩れた塔 5F</a></td>
+<td>6F入口</td>
+<td><a href="../quest/normalquest200.html#7">失踪</a></td>
+<td>アマン</td>
+</tr>
+<tr>
+<td>13231</td>
+<td><a href="../map/map_viewer.html?map_id=187&qid=4040">名も無い崩れた塔 7F</a></td>
+<td>8F入口</td>
+<td><a href="../quest/normalquest200.html#8">タワー補修作業</a></td>
+<td>アポロ</td>
+</tr>
+<tr>
+<td>13311</td>
+<td><a href="../map/map_viewer.html?map_id=189&qid=4040">名も無い崩れた塔 9F</a></td>
+<td>8F入口</td>
+<td><a href="../quest/normalquest200.html#9">敵をスパイせよ！</a></td>
+<td>ガーリン</td>
+</tr>
+<tr>
+<td>13411</td>
+<td><a href="../map/map_viewer.html?map_id=376&qid=4040">荒廃都市ダメル</a></td>
+<td>中央</td>
+<td><a href="../quest/normalquest200.html#10">消えた王国Ⅰ</a></td>
+<td>デンバー</td>
+</tr>
+<tr>
+<td>13511</td>
+<td><a href="../map/map_viewer.html?map_id=180&qid=4040">名も無い崩れた塔 B1</a></td>
+<td>B2入口</td>
+<td><a href="../quest/normalquest200.html#13">裏切り</a></td>
+<td>レイク</td>
+</tr>
