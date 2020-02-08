@@ -1985,7 +1985,7 @@ function searchOption(cid, slv) {
             result += '- 最終ダメージ + <span class="color-image11">' + parseInt(0.5 + 0.1 * slv) + '</span>％<br>';
         }
         if (slv >= 50) {
-            result += '- 最終ダメージ + <span class="color-image11">' + 20 + '</span>％<br>';
+            result += '- 最終ダメージ + <span class="color-image11">' + 7 + '</span>％<br>';
             result += '- スキルレベル + <span class="color-image11">' + 10 + '</span><br>';
             result += '- 敵致命打減少 + <span class="color-image11">' + 8 + '</span>％<br>';
         } else if (slv >= 40) {
