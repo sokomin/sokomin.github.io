@@ -116,7 +116,7 @@ function calc1() {
         }
     } else if (b1 === 2) {
         //ドラツイ君
-        //最小ダメージ側（関数化しろよ感）
+        //最小ダメージ側(関数化しろよ感)
         min_damage = (1+a10) * (1 + (a3 / 200)) * 0.5;
         min_damage = min_damage * (1 + (0.6 * a14 /100));
         min_damage = min_damage * ((100 + a11 + a13) / 100);

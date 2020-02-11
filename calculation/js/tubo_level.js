@@ -387,7 +387,7 @@ function calc1() {
     document.f.r34.value = tubo_pt;
 }
 
-// 壺Pt通常シミュレータのほう（簡易計算版）
+// 壺Pt通常シミュレータのほう(簡易計算版)
 function calc2() {
     var r1 = {};
     var a1 = parseInt(document.f.a21.value) ? parseInt(document.f.a21.value) : 0;
@@ -508,7 +508,7 @@ function calc2() {
 
 const exp_buff = [0.5, 1.0, 1.3, 1.6, 2.0];
 
-// 壺Pt通常シミュレータのほう（簡易計算版）
+// 壺Pt通常シミュレータのほう(簡易計算版)
 function calc3() {
     var r1 = {};
     var a1 = parseInt(document.f.a41.value) ? parseInt(document.f.a41.value) : 0;

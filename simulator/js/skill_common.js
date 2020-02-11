@@ -93,7 +93,7 @@ function SlvSum() {
 
     }
   }
-  //超越スキル用（ポイントの計算は外部でする）
+  //超越スキル用(ポイントの計算は外部でする）
   var tpt0 = TransPoint ? TransPoint[0] : 0; 
   var tpt1 = TransPoint ? TransPoint[1] : 0; 
   var tpt2 = TransPoint ? TransPoint[2] : 0; 
@@ -281,7 +281,7 @@ function CalcUniqueTransPt(level) {
 };
 
 function Awake(num) {
-  //★覚醒スキル制御部（覚醒が無ければコードこんなに長くならなかったのにね・・・）
+  //★覚醒スキル制御部(覚醒が無ければコードこんなに長くならなかったのにね・・・）
   if (AwakeSwitch == 0) {
 
     if (num >= 51 && num <= 53) { //表職覚醒スキル1

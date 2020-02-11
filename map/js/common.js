@@ -73,7 +73,7 @@ function Ad(num) {
         map_image.width = MapX * KS;
         map_image.height = MapY * KS;
     } else {
-        //初期描画の時だけこっち通るよ（高さをどーしても計算したいので）
+        //初期描画の時だけこっち通るよ(高さをどーしても計算したいので)
     }
     // var blank = map_image && map_image.height > 0 ? (map_image.height * 400 / map_image.width) : 200;
     var blank = map_image && map_image.height > 0 ? map_image.height : 200;
@@ -134,7 +134,7 @@ function Ad(num) {
  * Get the URL parameter value
  *
  * @param  name {string} パラメータのキー文字列
- * @return  url {url} 対象のURL文字列（任意）
+ * @return  url {url} 対象のURL文字列(任意)
  */
 function getParam(name, url) {
     if (!url) url = window.location.href;

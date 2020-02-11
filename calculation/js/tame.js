@@ -209,7 +209,7 @@ function calc7() {
 
 //
 //　function calc8( btn, zoubun )
-//  機能：ペット成長計算機（ボタンによる操作）
+//  機能：ペット成長計算機(ボタンによる操作)
 //  引数：btn ボタンの種類。1　本体after
 //　　　　zoubun　増分値
 //

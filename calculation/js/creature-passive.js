@@ -360,7 +360,7 @@ function matchSkill(main, sub, name) {
         });
         result.best += (tmp_b + ", ");
     }
-    //メインは確定したので、サブだけで組む。（ロジック上同じの２匹は選ばれない）
+    //メインは確定したので、サブだけで組む。(ロジック上同じの２匹は選ばれない)
     var best3 = [{ id: -1, name: "", slv: 0 }, { id: -1, name: "", slv: 0 }, { id: -1, name: "", slv: 0 }];
     sub.forEach(function (e, index) {
         if (e.sub1Id === name) {
