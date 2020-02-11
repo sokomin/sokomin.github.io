@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>レポクエ１　赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <a href="../index.html">トップ</a> >> <a href="../quest/quest.html">クエスト</a> >> <a
+                href="../quest/normalquest_list.html">一般クエスト</a><br>
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+                <h3>冒険家レポート１(～2018)</h3>
+                <font style="font-size:24px;color:#FF0033;">※注意※　現在、冒険家レポートクエストの内容に変更が入っています。</font>
+                <!-- 最新の情報はこちら -->
+                <br>
+                <br>
+                <br>
+
+                <table id="table10">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+                    </colgroup><tbody><tr>
+                        <th colspan="2"><a name="1"></a><font color="#11ff11">冒険家レポート(1)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>
+                        冒険家協会から協会内の<span class="color-image4">協会専属魔法師</span>から協会支援(バフ)を受けるように依頼された。<br>
+                        <br>
+                        協会専属魔法師からバフの支援を受けた。冒険家協会ブルンネンシュティグ本部にいる<span class="color-image3">協会任務担当官</span>を訪ねよう。<br>
+                        <br>
+                        冒険家協会からRED STONE探索についての記録を依頼された。メインクエスト<span class="color-image3">地下水路への探索</span>を完了し、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv1</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">経験値79万1590　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td><span class="color-image4">協会専属魔法師</span>（26.43）へ<br>
+                        <br>
+                        <span class="color-image4">協会任務担当官</span>へ<br>
+                        <br>
+                        メインクエスト1-1-2<a href="mainquest1.html#p1-2">地下水路への探索</a>をクリアする<br>
+                        <br>
+                        <span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="2"></a><font color="#11ff11">冒険家レポート(2)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会から冒険家としての心得を得る過程についての記録を依頼された。クエスト<span class="color-image3">冒険家の心得</span>を完了し、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv50</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">経験値343万6180　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td><a href="normalquest1.html#29">冒険家の心得</a>をクリアする<br>
+                        <br>
+                        <span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="3"></a><font color="#11ff11">冒険家レポート(3)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会から秘密ダンジョン探検についての記録を依頼された。<span class="color-image3">秘密ダンジョンを2回以上クリア</span>した後、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv100</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">経験値1520万6250　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td>Lv710以下の場合<br>
+                        秘密ダンジョンを2回探索し、0時にリセットされる前に<span class="color-image4">協会任務担当官</span>へ<br>
+                        <br>Lv711以上の場合<br>
+                        秘密ダンジョンをクリアする必要はない、そのまま<span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="4"></a><font color="#11ff11">冒険家レポート(4)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会からRED STONE探索についての記録を依頼された。メインクエスト<span class="color-image3">オーガの大魔王シュウ</span>を完了し、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv150</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">経験値4008万1750　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td>メインクエスト2-8-1<a href="mainquest2.html#p8-1">オーガの大魔王シュウ</a>をクリアする<br>
+                        <br>
+                        <span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="5"></a><font color="#11ff11">冒険家レポート(5)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会からRED STONE探索についての記録を依頼された。メインクエスト<span class="color-image3">排水路工事</span>を完了し、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv200</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">経験値7205万9010　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td>メインクエスト3-4-5<a href="mainquest3.html#p4-5">排水路工事</a>をクリアする<br>
+                        <br>
+                        <span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="6"></a><font color="#11ff11">冒険家レポート(6)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会からRED STONE探索についての記録を依頼された。<span class="color-image3">天上界の褒美</span>、<span class="color-image3">RED STONEを地下界に</span>、<span class="color-image3">RED STONEを赤い悪魔に</span> のうち1つを達成し、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv250</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv250～349　 経験値1億5359万9380　冒険団コイン<br>
+                        Lv350～　　　経験値1億2443万5470　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td>メインクエスト5-2-2<a href="mainquest5.html#p2-2">天上界の褒美</a><br>
+                        メインクエスト5-2-1<a href="mainquest5.html#p2-1b1">RED STONEを地下界に</a><br>
+                        メインクエスト5-2-1<a href="mainquest5.html#p2-1c1">RED STONEを赤い悪魔に</a>　のうち1つをクリアする<br>
+                        <br>
+                        <span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="7"></a><font color="#11ff11">冒険家レポート(7)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会から秘密ダンジョン探検についての記録を依頼された。<span class="color-image3">秘密ダンジョンを2回以上クリア</span>した後、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv300</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv300～399　 経験値2億3977万5880　冒険団コイン<br>
+                        Lv400～　　　経験値1億7224万2760　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td>Lv710以下の場合<br>
+                        秘密ダンジョンを2回探索し、0時にリセットされる前に<span class="color-image4">協会任務担当官</span>へ<br>
+                        <br>Lv711以上の場合<br>
+                        秘密ダンジョンをクリアする必要はない、そのまま<span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="8"></a><font color="#11ff11">冒険家レポート(8)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会からパーティーボスモンスター討伐についての記録を依頼された。フォーリン望楼地下にいる<span class="color-image3">狂気の指揮官</span>を10体退治し、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。<br>
+                        <br>パーティーボスモンスター討伐に成功した。冒険家協会ブルンネンシュティグ本部にいる協会任務担当官に報告しよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv350</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv350～449　 経験値3億5032万6900　冒険団コイン<br>
+                        Lv450～　　　経験値2億5207万5720　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">フォーリン望楼　地下</span></td>
+                        <td><a href="../monster/ptboss365.html">パーティーボスモンスター</a>　<span class="color-image1">狂気の指揮官</span>（Lv365）Zinを10匹倒す<br>
+                        ミラーダンジョンでも可</td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td><span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="9"></a><font color="#11ff11">冒険家レポート(9)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会からモンスター討伐についての記録を依頼された。<span class="color-image3">モンスター100体を退治</span>した後、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。討伐モンスターが、自分のレベルより50以上低いと対象外となる。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv400</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv400～499　 経験値4億8667万7840　冒険団コイン<br>
+                        Lv500～　　　経験値3億589万5660　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td>本体Lv-49以上の<span class="color-image1">モンスター</span>を100匹倒す<br>
+                        <br>
+                        <span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="10"></a><font color="#11ff11">冒険家レポート(10)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会から秘密ダンジョン探検についての記録を依頼された。<span class="color-image3">秘密ダンジョンを2回以上クリア</span>した後、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv450</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv450～549　 経験値6億5063万2767　冒険団コイン<br>
+                        Lv550～　　　経験値4億944万9600　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td>Lv710以下の場合<br>
+                        秘密ダンジョンを2回探索し、0時にリセットされる前に<span class="color-image4">協会任務担当官</span>へ<br>
+                        <br>Lv711以上の場合<br>
+                        秘密ダンジョンをクリアする必要はない、そのまま<span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="11"></a><font color="#11ff11">冒険家レポート(11)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会からパーティーボスモンスター討伐についての記録を依頼された。呪いを受けたミズナの洞窟 B1にいる<span class="color-image3">悪夢のサソリ</span>を10匹退治し、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。<br>
+                        <br>パーティーボスモンスター討伐に成功した。冒険家協会ブルンネンシュティグ本部にいる協会任務担当官に報告しよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv500</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv500～599　 経験値8億4361万8483　冒険団コイン<br>
+                        Lv600～　　　経験値4億5450万2750　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">呪いを受けたミズナの洞窟　Ｂ１</span></td>
+                        <td><a href="../monster/ptboss515.html">パーティーボスモンスター</a>　<span class="color-image1">悪夢のサソリ</span>（Lv515）Zinを10匹倒す<br>
+                        ミラーダンジョンでも可</td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td><span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="12"></a><font color="#11ff11">冒険家レポート(12)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会からモンスター討伐についての記録を依頼された。<span class="color-image3">モンスター100体を退治</span>した後、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。討伐モンスターが、自分のレベルより50以上低いと対象外となる。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv550</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv550～649　 経験値10億6782万4340　冒険団コイン<br>
+                        Lv650～　　　経験値5億7585万590　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td>本体Lv-49以上の<span class="color-image1">モンスター</span>を100匹倒す<br>
+                        <br>
+                        <span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="13"></a><font color="#11ff11">冒険家レポート(13)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会から秘密ダンジョン探検についての記録を依頼された。<span class="color-image3">秘密ダンジョンを2回以上クリア</span>した後、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv600</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv600～699　 経験値13億2449万1700　冒険団コイン<br>
+                        Lv700～　　　経験値5億9452万310　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td>Lv710以下の場合<br>
+                        秘密ダンジョンを2回探索し、0時にリセットされる前に<span class="color-image4">協会任務担当官</span>へ<br>
+                        <br>Lv711以上の場合<br>
+                        秘密ダンジョンをクリアする必要はない、そのまま<span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="14"></a><font color="#11ff11">冒険家レポート(14)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会からパーティーボスモンスター討伐についての記録を依頼された。ガルカス悪魔軍集結地 B1にいる<span class="color-image3">オーガゼネラル</span>を10匹退治して冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。<br>
+                        <br>パーティーボスモンスター討伐に成功した。冒険家協会ブルンネンシュティグ本部にいる協会任務担当官に報告しよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv650</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv650～749　 経験値16億1494万440　冒険団コイン<br>
+                        Lv750～　　　経験値7億2559万4510　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">ガルカス悪魔軍集結地　Ｂ１</span></td>
+                        <td><a href="../monster/ptboss660.html">パーティーボスモンスター</a>　<span class="color-image1">オーガゼネラル</span>（Lv660）を10匹倒す<br>
+                        ミラーダンジョンでも可</td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td><span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="15"></a><font color="#11ff11">冒険家レポート(15)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会から秘密ダンジョン探検についての記録を依頼された。<span class="color-image3">秘密ダンジョンを2回以上クリア</span>した後、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv400　1次転生</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv400～499　 経験値4億8667万7840　冒険団コイン<br>
+                        Lv500～　　　経験値3億589万5660　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td>Lv710以下の場合<br>
+                        秘密ダンジョンを2回探索し、0時にリセットされる前に<span class="color-image4">協会任務担当官</span>へ<br>
+                        <br>Lv711以上の場合<br>
+                        秘密ダンジョンをクリアする必要はない、そのまま<span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="16"></a><font color="#11ff11">冒険家レポート(16)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会からパーティーボスモンスター討伐についての記録を依頼された。ダークエルフ王宮 1Fにいる <span class="color-image3">ダークエルフ将校</span>を10匹退治して冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。<br>
+                        <br>パーティーボスモンスター討伐に成功した。冒険家協会ブルンネンシュティグ本部にいる協会任務担当官に報告しよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv450　1次転生</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv450～549　 経験値6億5063万2767　冒険団コイン<br>
+                        Lv550～　　　経験値4億944万9600　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">ダークエルフ王宮　１Ｆ</span></td>
+                        <td><a href="../monster/ptboss460.html">パーティーボスモンスター</a>　<span class="color-image1">ダークエルフ将校</span>（Lv460）Zinを10匹倒す<br>
+                        ミラーダンジョンでも可</td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td><span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="17"></a><font color="#11ff11">冒険家レポート(17)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>
+                        冒険家協会からRED STONE探索についての記録を依頼された。RED STONEを<span class="color-image3">オニトルロ</span>, <span class="color-image3">ガイルート</span>, <span class="color-image3"></span>ロシペル</span> のうちどれかに渡そう。<br>
+                        <br>3大勢力の1つにRED STONEを渡した。冒険家協会に戻って協会任務担当官に報告しよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv500　1次転生</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv500～599　 経験値8億4361万8483　冒険団コイン<br>
+                        Lv600～　　　経験値4億5450万2750　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><font color="#80ffff"> フォゲルネスト<br>
+                        地下界の町<br>
+                        ロシペル城</font></td>
+                        <td><span class="color-image4">オニトルロ</span>（48.27）<br>
+                        <span class="color-image4">ガイルート</span>（33.18）<br>
+                        <span class="color-image4">ロシペル</span>（43.16）　のうちどれかにRED STONEを渡す</td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td><span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="18"></a><font color="#11ff11">冒険家レポート(18)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会からモンスター討伐についての記録を依頼された。<span class="color-image3">モンスター100体を退治</span>した後、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。討伐モンスターが、自分のレベルより50以上低いと対象外となる。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv550　1次転生</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv550～649　 経験値10億6782万4340　冒険団コイン<br>
+                        Lv650～　　　経験値5億7585万590　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td>本体Lv-49以上の<span class="color-image1">モンスター</span>を100匹倒す<br>
+                        <br>
+                        <span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="19"></a><font color="#11ff11">冒険家レポート(19)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会から秘密ダンジョン探検についての記録を依頼された。<span class="color-image3">秘密ダンジョンを2回以上クリア</span>した後、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv600　1次転生</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv600～699　 経験値13億2449万1700　冒険団コイン<br>
+                        Lv700～　　　経験値5億9452万310　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td>Lv710以下の場合<br>
+                        秘密ダンジョンを2回探索し、0時にリセットされる前に<span class="color-image4">協会任務担当官</span>へ<br>
+                        <br>Lv711以上の場合<br>
+                        秘密ダンジョンをクリアする必要はない、そのまま<span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="20"></a><font color="#11ff11">冒険家レポート(20)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会からパーティーボスモンスター討伐についての記録を依頼された。ガルカス悪魔軍集結地 B1にいる <span class="color-image3">オーガゼネラル</span>を10体退治し、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。<br>
+                        <br>パーティーボスモンスター討伐に成功した。冒険家協会ブルンネンシュティグ本部にいる協会任務担当官に報告しよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv650　1次転生</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv650～749　 経験値16億1494万440　冒険団コイン<br>
+                        Lv750～　　　経験値7億2559万4510　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">ガルカス悪魔軍集結地　Ｂ１</span></td>
+                        <td><a href="../monster/ptboss660.html">パーティーボスモンスター</a>　<span class="color-image1">オーガゼネラル</span>（Lv660）を10匹倒す<br>
+                        ミラーダンジョンでも可</td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td><span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="21"></a><font color="#11ff11">冒険家レポート(21)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会から秘密ダンジョン探検についての記録を依頼された。<span class="color-image3">秘密ダンジョンを2回以上クリア</span>した後、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv400　2次転生</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv400～499　 経験値4億8667万7840　冒険団コイン<br>
+                        Lv500～　　　経験値3億589万5660　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td>Lv710以下の場合<br>
+                        秘密ダンジョンを2回探索し、0時にリセットされる前に<span class="color-image4">協会任務担当官</span>へ<br>
+                        <br>Lv711以上の場合<br>
+                        秘密ダンジョンをクリアする必要はない、そのまま<span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="22"></a><font color="#11ff11">冒険家レポート(22)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会からパーティーボスモンスター討伐についての記録を依頼された。ダークエルフ王宮 1Fにいる<span class="color-image3">ダークエルフ将校</span>を10体退治し、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。<br>
+                        <br>パーティーボスモンスター討伐に成功した。冒険家協会ブルンネンシュティグ本部にいる協会任務担当官に報告しよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv450　2次転生</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv450～549　 経験値6億5063万2767　冒険団コイン<br>
+                        Lv550～　　　経験値4億944万9600　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">ダークエルフ王宮　１Ｆ</span></td>
+                        <td><a href="../monster/ptboss460.html">パーティーボスモンスター</a>　<span class="color-image1">ダークエルフ将校</span>（Lv460）Zinを10匹倒す<br>
+                        ミラーダンジョンでも可</td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td><span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="23"></a><font color="#11ff11">冒険家レポート(23)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>
+                            冒険家協会からRED STONE探索についての記録を依頼された。RED STONEを<span class="color-image3">オニトルロ</span>, <span class="color-image3">ガイルート</span>, <span class="color-image3"></span>ロシペル</span> のうちどれかに渡そう。<br>
+                        <br>3大勢力の1つにRED STONEを渡した。冒険家協会に戻って協会任務担当官に報告しよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv500　2次転生</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv500～599　 経験値8億4361万8483　冒険団コイン<br>
+                        Lv600～　　　経験値4億5450万2750　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><font color="#80ffff">フォゲルネスト<br>
+                        地下界の町<br>
+                        ロシペル城</font></td>
+                        <td><span class="color-image4">オニトルロ</span>（48.27）<br>
+                        <span class="color-image4">ガイルート</span>（33.18）<br>
+                        <span class="color-image4">ロシペル</span>（43.16）　のうちどれかにRED STONEを渡す</td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td><span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="24"></a><font color="#11ff11">冒険家レポート(24)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会からモンスター討伐についての記録を依頼された。<span class="color-image3">モンスター100体を退治</span>した後、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。討伐モンスターが、自分のレベルより50以上低いと対象外となる。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv550　2次転生</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv550～649　 経験値10億6782万4340　冒険団コイン<br>
+                        Lv650～　　　経験値5億7585万590　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td>本体Lv-49以上の<span class="color-image1">モンスター</span>を100匹倒す<br>
+                        <br>
+                        <span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="25"></a><font color="#11ff11">冒険家レポート(25)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会から秘密ダンジョン探検についての記録を依頼された。<span class="color-image3">秘密ダンジョンを2回以上クリア</span>した後、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv600　2次転生</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv600～699　 経験値13億2449万1700　冒険団コイン<br>
+                        Lv700～　　　経験値5億9452万310　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td>Lv710以下の場合<br>
+                        秘密ダンジョンを2回探索し、0時にリセットされる前に<span class="color-image4">協会任務担当官</span>へ<br>
+                        <br>Lv711以上の場合<br>
+                        秘密ダンジョンをクリアする必要はない、そのまま<span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="26"></a><font color="#11ff11">冒険家レポート(26)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会からパーティーボスモンスター討伐についての記録を依頼された。ガルカス悪魔軍集結地 B1にいる<span class="color-image3">オーガゼネラル</span>を10体退治し、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。<br>
+                        <br>パーティーボスモンスター討伐に成功した。冒険家協会ブルンネンシュティグ本部にいる協会任務担当官に報告しよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv650　2次転生</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv650～749　 経験値16億1494万440　冒険団コイン<br>
+                        Lv750～　　　経験値7億2559万4510　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">ガルカス悪魔軍集結地　Ｂ１</span></td>
+                        <td><a href="../monster/ptboss660.html">パーティーボスモンスター</a>　<span class="color-image1">オーガゼネラル</span>（Lv660）を10匹倒す<br>
+                        ミラーダンジョンでも可</td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td><span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="27"></a><font color="#11ff11">冒険家レポート(27)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会から秘密ダンジョン探検についての記録を依頼された。<span class="color-image3">秘密ダンジョンを2回以上クリア</span>した後、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv400　3次転生</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv400～499　 経験値4億8667万7840　冒険団コイン<br>
+                        Lv500～　　　経験値3億589万5660　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td>Lv710以下の場合<br>
+                        秘密ダンジョンを2回探索し、0時にリセットされる前に<span class="color-image4">協会任務担当官</span>へ<br>
+                        <br>Lv711以上の場合<br>
+                        秘密ダンジョンをクリアする必要はない、そのまま<span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="28"></a><font color="#11ff11">冒険家レポート(28)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会からパーティーボスモンスター討伐についての記録を依頼された。ダークエルフ王宮 1Fにいる<span class="color-image3">ダークエルフ将校</span>を10体退治し、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。<br>
+                        <br>パーティーボスモンスター討伐に成功した。冒険家協会ブルンネンシュティグ本部にいる協会任務担当官に報告しよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv450　3次転生</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv450～549　 経験値6億5063万2767　冒険団コイン<br>
+                        Lv550～　　　経験値4億944万9600　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">ダークエルフ王宮　１Ｆ</span></td>
+                        <td><a href="../monster/ptboss460.html">パーティーボスモンスター</a>　<span class="color-image1">ダークエルフ将校</span>（Lv460）Zinを10匹倒す<br>
+                        ミラーダンジョンでも可</td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td><span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="29"></a><font color="#11ff11">冒険家レポート(29)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>
+                            冒険家協会からRED STONE探索についての記録を依頼された。RED STONEを<span class="color-image3">オニトルロ</span>, <span class="color-image3">ガイルート</span>, <span class="color-image3"></span>ロシペル</span> のうちどれかに渡そう。<br>
+                            <br>
+                        3大勢力の1つにRED STONEを渡した。冒険家協会に戻って協会任務担当官に報告しよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv500　3次転生</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv500～599　 経験値8億4361万8483　冒険団コイン<br>
+                        Lv600～　　　経験値4億5450万2750　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><font color="#80ffff">フォゲルネスト<br>
+                        地下界の町<br>
+                        ロシペル城</font></td>
+                        <td><span class="color-image4">オニトルロ</span>（48.27）<br>
+                        <span class="color-image4">ガイルート</span>（33.18）<br>
+                        <span class="color-image4">ロシペル</span>（43.16）　のうちどれかにRED STONEを渡す</td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td><span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="30"></a><font color="#11ff11">冒険家レポート(30)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会からモンスター討伐についての記録を依頼された。<span class="color-image3">モンスター100体を退治</span>した後、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。討伐モンスターが、自分のレベルより50以上低いと対象外となる。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv550　3次転生</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv550～649　 経験値10億6782万4340　冒険団コイン<br>
+                        Lv650～　　　経験値5億7585万590　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td>本体Lv-49以上の<span class="color-image1">モンスター</span>を100匹倒す<br>
+                        <br>
+                        <span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="31"></a><font color="#11ff11">冒険家レポート(31)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会から秘密ダンジョン探検についての記録を依頼された。<span class="color-image3">秘密ダンジョンを2回以上クリア</span>した後、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv600　3次転生</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv600～699　 経験値13億2449万1700　冒険団コイン<br>
+                        Lv700～　　　経験値5億9452万310　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td>Lv710以下の場合<br>
+                        秘密ダンジョンを2回探索し、0時にリセットされる前に<span class="color-image4">協会任務担当官</span>へ<br>
+                        <br>Lv711以上の場合<br>
+                        秘密ダンジョンをクリアする必要はない、そのまま<span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="32"></a><font color="#11ff11">冒険家レポート(32)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会からパーティーボスモンスター討伐についての記録を依頼された。ガルカス悪魔軍集結地 B1にいる<span class="color-image3">オーガゼネラル</span>を10体退治して冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。<br>
+                        <br>パーティーボスモンスター討伐に成功した。冒険家協会ブルンネンシュティグ本部にいる協会任務担当官に報告しよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv650　3次転生</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv650～749　 経験値16億1494万440　冒険団コイン<br>
+                        Lv750～　　　経験値7億2559万4510　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">ガルカス悪魔軍集結地　Ｂ１</span></td>
+                        <td><a href="../monster/ptboss660.html">パーティーボスモンスター</a>　<span class="color-image1">オーガゼネラル</span>（Lv660）を10匹倒す<br>
+                        ミラーダンジョンでも可</td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td><span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="33"></a><font color="#11ff11">冒険家レポート(33)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会から秘密ダンジョン探検についての記録を依頼された。<span class="color-image3">秘密ダンジョンを2回以上クリア</span>した後、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv400　4次転生</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv400～499　 経験値4億8667万7840　冒険団コイン<br>
+                        Lv500～　　　経験値3億589万5660　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td>Lv710以下の場合<br>
+                        秘密ダンジョンを2回探索し、0時にリセットされる前に<span class="color-image4">協会任務担当官</span>へ<br>
+                        <br>Lv711以上の場合<br>
+                        秘密ダンジョンをクリアする必要はない、そのまま<span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="34"></a><font color="#11ff11">冒険家レポート(34)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会からパーティーボスモンスター討伐についての記録を依頼された。ダークエルフ王宮 1Fにいる <span class="color-image3">ダークエルフ将校</span>を10体退治して冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。<br>
+                        <br>パーティーボスモンスター討伐に成功した。冒険家協会ブルンネンシュティグ本部にいる協会任務担当官に報告しよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv450　4次転生</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv450～549　 経験値6億5063万2767　冒険団コイン<br>
+                        Lv550～　　　経験値4億944万9600　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">ダークエルフ王宮　１Ｆ</span></td>
+                        <td><a href="../monster/ptboss460.html">パーティーボスモンスター</a>　<span class="color-image1">ダークエルフ将校</span>（Lv460）Zinを10匹倒す<br>
+                        ミラーダンジョンでも可</td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td><span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="35"></a><font color="#11ff11">冒険家レポート(35)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>
+                            冒険家協会からRED STONE探索についての記録を依頼された。RED STONEを<span class="color-image3">オニトルロ</span>, <span class="color-image3">ガイルート</span>, <span class="color-image3"></span>ロシペル</span> のうちどれかに渡そう。<br>
+                        <br>3大勢力の1つにRED STONEを渡した。冒険家協会に戻って協会任務担当官に報告しよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv500　4次転生</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv500～599　 経験値8億4361万8483　冒険団コイン<br>
+                        Lv600～　　　経験値4億5450万2750　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><font color="#80ffff">フォゲルネスト<br>
+                        地下界の町<br>
+                        ロシペル城</font></td>
+                        <td><span class="color-image4">オニトルロ</span>（48.27）<br>
+                        <span class="color-image4">ガイルート</span>（33.18）<br>
+                        <span class="color-image4">ロシペル</span>（43.16）　のうちどれかにRED STONEを渡す</td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td><span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="36"></a><font color="#11ff11">冒険家レポート(36)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会からモンスター討伐についての記録を依頼された。<span class="color-image3">モンスター100体を退治</span>した後、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。討伐モンスターが、自分のレベルより50以上低いと対象外となる。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv550　4次転生</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv550～649　 経験値10億6782万4340　冒険団コイン<br>
+                        Lv650～　　　経験値5億7585万590　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td>本体Lv-49以上の<span class="color-image1">モンスター</span>を100匹倒す<br>
+                        <br>
+                        <span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="37"></a><font color="#11ff11">冒険家レポート(37)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会から秘密ダンジョン探検についての記録を依頼された。<span class="color-image3">秘密ダンジョンを2回以上クリア</span>した後、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv600　4次転生</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv600～699　 経験値13億2449万1700　冒険団コイン<br>
+                        Lv700～　　　経験値5億9452万310　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td>Lv710以下の場合<br>
+                        秘密ダンジョンを2回探索し、0時にリセットされる前に<span class="color-image4">協会任務担当官</span>へ<br>
+                        <br>Lv711以上の場合<br>
+                        秘密ダンジョンをクリアする必要はない、そのまま<span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                      <tr>
+                        <th colspan="2"><a name="38"></a><font color="#11ff11">冒険家レポート(38)</font></th>
+                      </tr>
+                      <tr>
+                        <td colspan="2"><br>冒険家協会からパーティーボスモンスター討伐についての記録を依頼された。ガルカス悪魔軍集結地 B1にいる<span class="color-image3">オーガゼネラル</span>を10体退治し、冒険家協会ブルンネンシュティグ本部にいる協会任務担当官を訪ねよう。<br>
+                        <br>パーティーボスモンスター討伐に成功した。冒険家協会ブルンネンシュティグ本部にいる協会任務担当官に報告しよう。<br>
+                        <br>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>受諾場所</th>
+                        <td><span class="color-image3">冒険家協会ブルンネンシュティグ本部　協会任務担当官（22.34）</span></td>
+                      </tr>
+                      <tr>
+                        <th>受諾条件</th>
+                        <td><span class="color-image3">Lv650　4次転生</span></td>
+                      </tr>
+                      <tr>
+                        <th>報酬</th>
+                        <td><span class="color-image3">Lv650～749　 経験値16億1494万440　冒険団コイン<br>
+                        Lv750～　　　経験値7億2559万4510　冒険団コイン</span></td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">ガルカス悪魔軍集結地　Ｂ１</span></td>
+                        <td><a href="../monster/ptboss660.html">パーティーボスモンスター</a>　<span class="color-image1">オーガゼネラル</span>（Lv660）を10匹倒す<br>
+                        ミラーダンジョンでも可</td>
+                      </tr>
+                      <tr>
+                        <td align="center"><span class="color-image2">冒険家協会ブルンネンシュティグ本部</span></td>
+                        <td><span class="color-image4">協会任務担当官</span>へ</td>
+                      </tr>
+                    </tbody></table>
+                <br>
+                <br>
+                [参考] <a
+                    href="https://yotsuba000.github.io/YotsubaDataBase/QuestDataBase/QuestDataBaseIndex.html">Yotsuba
+                    Quest DataBase</a><br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+        </div>
+</body>
+
+</html>
