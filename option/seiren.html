@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>製錬システム　赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+                <h3>製錬システム</h3>
+
+                <!-- <table id="table10" style="min-width: 780px;">
+                  <colgroup><col span="1" width="200">
+                  </colgroup><tbody><tr>
+                      <th>対象アイテム</th>
+                      <td align="center">ユニークアイテム(DX, UMU可) … 金増幅対象アイテム
+
+                      </td>
+                    </tr>
+                  </tbody></table> -->
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/3d5f0d2b740e1df599bbc1d60e1cebe092781150.10.2.9.2.png" border="0" alt="" name="insertImg" /><br><br>
+                <span class="color-image1">製錬</span>システムはユニークアイテムを強化することで装備に新しくオプションを1～4個付与できるシステムです。<br>
+                リングと補助武器は製錬できません。<br>
+                遺物装備・セットアイテム・<a href="../option/item-college-weapon.html">協会装備</a>には使用可能。<br>
+                製錬したアイテムに異次元ボックスや鏡の魔法書を使用できますが、製錬段階は引き継がれません。(0段階のアイテムが作成されます。)<br>
+                <br>
+                最大20段階まで製錬できます。<br>
+                各段階には固有の成功確率が割り振られています。[<a href="#300">参考</a>]<br>
+                - 製錬に成功するとアイテムが1段階強化されます。<br>
+                - 1～6段階のアイテムは失敗時に1段階ダウンします。<br>
+                - 7～9段階のアイテムは失敗時に0段階に戻ります。<br>
+                - 10～19段階目のアイテムは失敗時に0段階に減少または<font style="color:#FF0033;">アイテムが破壊されます</font>。<br>
+                <br>
+                - <span class="color-image4">製錬ガード</span>を使用することで、1～9段階の段階ダウンと10段階からのアイテム破壊を防げます。<br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/546f433f95af1f0533c1ca9ca46c4d25a8851382.10.2.9.2.png" border=0 name="insertImg" /><br>
+                - ※製錬ガード[E]は取引不可。<br>
+                - 表でまとめると以下の通り。<br>
+                <br>
+                <table id="table10" style="min-width: 600px; max-width: 760px;">
+                    <colgroup>
+                        <col span="1" width="150">
+                        <col span="1" width="150">
+                        <col span="1" width="150">
+                        <col span="1" width="150">
+                    </colgroup>
+                    <tr>
+                        <th>段階</th>
+                        <th>成功時</th>
+                        <th>失敗時</th>
+                        <th>製錬ガード使用時</th>
+                    </tr>
+
+                    <tr>
+                        <th>1～6段階</th>
+                        <td>＋１</td>
+                        <td>－１</td>
+                        <td>ダウン無し</td>
+                    </tr>
+                    <tr>
+                        <th>7～9段階</th>
+                        <td>＋１</td>
+                        <td>0段階</td>
+                        <td>ダウン無し</td>
+                    </tr>
+                    <tr>
+                        <th>10～19段階</th>
+                        <td>＋１</td>
+                        <td>0段階 or 破壊</td>
+                        <td>0段階</td>
+                    </tr>
+                </table>
+                <br>
+                <br>
+                製錬はアイテムウィンドウ(F3)から行えます。<br>
+                <font style="color:#FF0033;">※実装前時点でクリーチャーウィンドウがあった場所です。<br>
+                クリーチャー関連のウィンドウはミッションブックやPVPと同列に並んでいます。</font><br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/5dbb9eb07e01fd54a84e6fd49f40c31e0eb134eb.10.2.9.2.png" border="0" alt="" name="insertImg" /><br><br>
+                
+                <br>
+                <h4>製錬の各段階で必要なアイテム</h4>
+                - 魔力インクは<a href="../secret/chaos-earth.html">混沌の大地</a>やインク分解システム、各種イベントなどで入手可能。<br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <colgroup>
+                            <col span="1" width="40">
+                            <col span="1" width="200">
+                            <col span="1" width="40">
+                            <col span="1" width="200">
+                            <col span="1" width="40">
+                            <col span="1" width="200">
+                            <col span="1" width="40">
+                            <col span="1" width="200">
+                        </colgroup>
+    
+                    <tr >
+                    <th>
+                    <b>製錬段階</b></th>
+                    <th >
+                    <b>必要な消耗品</b></th>
+                    <th >
+                    <b>製錬</b>
+                    <b>段階</b></th>
+                    <th >
+                    <b>必要な消耗品</b></th>
+                    <th >
+                    <b>製錬段階</b></th>
+                    <th >
+                    <b>必要な消耗品</b></th>
+                    <th >
+                    <b>製錬</b>
+                    <b>段階</b></th>
+                    <th >
+                    <b>必要な消耗品</b></th></tr>
+                    <tr >
+                    <td >
+                    <b>1</b></td>
+                    <td >
+                    <span class="color-image5">魔力インク</span>x10 <br>10 万<span class="color-image11">ゴールド</span></td>
+                    <td >
+                    <b>6</b></td>
+                    <td >
+                    <span class="color-image5">魔力インク</span>x50 <br>100 万<span class="color-image11">ゴールド</span></td>
+                    <td >
+                    <b>11</b></td>
+                    <td >
+                    <span class="color-image5">魔力インク</span>x300 <br>結晶石x3 <br>2000 万<span class="color-image11">ゴールド</span></td>
+                    <td >
+                    <b>16</b></td>
+                    <td >
+                    <span class="color-image5">魔力インク</span>x1500 <br>結晶石x8 <br>混沌石x1 <br>1 億<span class="color-image11">ゴールド</span></td></tr>
+                    <tr >
+                    <td >
+                    <b>2</b></td>
+                    <td >
+                    <span class="color-image5">魔力インク</span>x10 <br>20 万<span class="color-image11">ゴールド</span></td>
+                    <td >
+                    <b>7</b></td>
+                    <td >
+                    <span class="color-image5">魔力インク</span>x100 <br>200 万<span class="color-image11">ゴールド</span></td>
+                    <td >
+                    <b>12</b></td>
+                    <td >
+                    <span class="color-image5">魔力インク</span>x300 <br>結晶石x3 <br>4000 万<span class="color-image11">ゴールド</span></td>
+                    <td >
+                    <b>17</b></td>
+                    <td >
+                    <span class="color-image5">魔力インク</span>x1500 <br>結晶石x10 <br>混沌石x1 <br>2 億<span class="color-image11">ゴールド</span></td></tr>
+                    <tr >
+                    <td >
+                    <b>3</b></td>
+                    <td >
+                    <span class="color-image5">魔力インク</span>x30 <br>30 万<span class="color-image11">ゴールド</span></td>
+                    <td >
+                    <b>8</b></td>
+                    <td >
+                    <span class="color-image5">魔力インク</span>x100 <br>300 万<span class="color-image11">ゴールド</span></td>
+                    <td >
+                    <b>13</b></td>
+                    <td >
+                    <span class="color-image5">魔力インク</span>x500 <br>結晶石x5 <br>6000 万<span class="color-image11">ゴールド</span></td>
+                    <td >
+                    <b>18</b></td>
+                    <td >
+                    <span class="color-image5">魔力インク</span>x2000 <br>結晶石x10 <br>混沌石x2 <br>2 億<span class="color-image11">ゴールド</span></td></tr>
+                    <tr >
+                    <td >
+                    <b>4</b></td>
+                    <td >
+                    <span class="color-image5">魔力インク</span>x30 <br>50 万<span class="color-image11">ゴールド</span></td>
+                    <td >
+                    <b>9</b></td>
+                    <td >
+                    <span class="color-image5">魔力インク</span>x200 <br>400 万<span class="color-image11">ゴールド</span></td>
+                    <td >
+                    <b>14</b></td>
+                    <td >
+                    <span class="color-image5">魔力インク</span>x500 <br>結晶石x5 <br>8000 万<span class="color-image11">ゴールド</span></td>
+                    <td >
+                    <b>19</b></td>
+                    <td >
+                    <span class="color-image5">魔力インク</span>x2000 <br>結晶石x20 <br>混沌石x2 <br>3 億<span class="color-image11">ゴールド</span></td></tr>
+                    <tr >
+                    <td >
+                    <b>5</b></td>
+                    <td >
+                    <span class="color-image5">魔力インク</span>x50 <br>80 万<span class="color-image11">ゴールド</span></td>
+                    <td >
+                    <b>10</b></td>
+                    <td >
+                    <span class="color-image5">魔力インク</span>x200 <br>500 万<span class="color-image11">ゴールド</span></td>
+                    <td >
+                    <b>15</b></td>
+                    <td >
+                    <span class="color-image5">魔力インク</span>x1000 <br>結晶石x8 <br>1 億<span class="color-image11">ゴールド</span></td>
+                    <td >
+                    <b>20</b></td>
+                    <td >
+                    <span class="color-image5">魔力インク</span>x2500 <br>結晶石x20 <br>混沌石x3 <br>3 億<span class="color-image11">ゴールド</span></td></tr></tbody></table>
+                <br>
+                ※ 混沌石とは、<a href="../secret/chaos-earth.html">混沌の大地</a>とULTユニーク分解により一定確率で獲得できるアイテムです。<br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/d13518d1bfc7d1d185f3a1f7b7d378bece34f2d9.10.2.9.2.png" border="0" alt="" name="insertImg" /><br><br>
+
+<h4>製錬時オプション</h4>
+1・5・10・15・18段階に成功時、新しくオプションを1つ付与できます。(最大5つ)<br>
+例えば、以下画像の5段階アイテムであれば2つのオプションが付与されています。<br>
+<img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/8530ebddb5686f0ae130d58fa26db38e0d69b804.10.2.9.2.png" border="0" alt="" name="insertImg" /><br><br>
+(＜製錬情報＞欄の基礎防御力+30が1段階で付与され、最大HP+10％が5段階で付与されています。)<br>
+<br>
+- 製錬オプションの種類と数値はアイテム毎に一定範囲からランダムで出現します。<br>
+- 通常Uは下級まで、DXUは中級まで、UMUは上級まで登場します。(※セットアイテムについても同様)<br>
+- 製錬強化成功時に選択可能なオプションが3つ出現して、その中から1つを付与できます。<br>
+- <span class="color-image2">製錬魔法</span>を使用して製錬する場合に選択できるオプションの数が3個から4個に増加します。
+<br>
+
+- 以下画面は1・5・10・15・18段階に成功時に出てきます。<br>
+<img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/0683954cf9f1c0d4a3ba8175a5d4ab1b1c83df73.10.2.9.2.png" border="0" alt="" name="insertImg" /><br>
+オプションを1つ選択して[製錬]をクリック。<br>
+
+<br>
+<img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/ac42591f13ff490d03cdbf7753507b2c3d7be167.10.2.9.2.png" border="0" alt="" name="insertImg" /><br>
+該当オプションが付与されます。<br>
+<a href="#400">各部位毎の付与可能オプション一覧</a>も作成したので参考に。<br>
+<br>
+<br>
+
+
+
+
+<br>
+
+<h4>製錬オプション変換</h4>
+-<span class="color-image11">ゴールド</span>を消費してオプションを再選択できます。<br>
+
+- <span class="color-image2">製錬魔法</span>を使用して製錬オプションを変換する場合、選択できるオプションの数が3個から4個に増加します。<br>
+<br>
+<table id="table10" style="min-width: 600px; max-width: 760px;">
+    <tbody>
+    <tr >
+    <th >
+    <b>製錬OP</b></th>
+    <th >
+    <b>1OP目</b></th>
+    <th >
+    <b>2OP目</b></th>
+    <th >
+    <b>3OP目</b></th>
+    <th >
+    <b>4OP目</b></th>
+    <th >
+    <b>5OP目</b></th></tr>
+    <tr >
+    <td >
+    <b>必要<span class="color-image11">ゴールド</span></b></td>
+    <td >
+    10 万</td>
+    <td >
+    50 万</td>
+    <td >
+    500 万</td>
+    <td >
+    5000 万</td>
+    <td >
+    1 億
+    </td></tr></tbody></table>
+
+    - 必ず何らかのオプションに変換可能です。<br>
+    - 1～5OP目における任意のオプションを変換できます。<br>
+    - オプション変換製錬時、対象OP以外は固定されたままとなります。<br>
+    <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/1ead29928bd2c18c0acb2a649ea68e7b42c671e8.10.2.9.2.png" border="0" alt="" name="insertImg" /><br><br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <a name="99"></a>
+                <h4>補足</h4>
+                <a name="300"></a>
+                <h4>各段階の成功確率</h4>
+                <span class="color-image1">※独自に調査したものです。</span><br>
+                <br>
+                <table id="table10" style="min-width: 600px; max-width: 760px;">
+                    <colgroup>
+                        <col span="1" width="120">
+                        <col span="1" width="120">
+                        <col span="1" width="120">
+                        <col span="1" width="120">
+                    </colgroup>
+
+                    <tr>
+                        <th>0->1段階</th>
+                        <td>100%</td>
+                        <th>10->11段階</th>
+                        <td>？</td>
+                    </tr>
+                    <tr>
+                        <th>1->2段階</th>
+                        <td>95%</td>
+                        <th>11->12段階</th>
+                        <td>？</td>
+                    </tr>
+                    <tr>
+                        <th>2->3段階</th>
+                        <td>90%</td>
+                        <th>12->13段階</th>
+                        <td>？</td>
+                    </tr>
+                    <tr>
+                        <th>3->4段階</th>
+                        <td>80%</td>
+                        <th>13->14段階</th>
+                        <td>？</td>
+                    </tr>
+                    <tr>
+                        <th>4->5段階</th>
+                        <td>66%</td>
+                        <th>14->15段階</th>
+                        <td>？</td>
+                    </tr>
+                    <tr>
+                        <th>5->6段階</th>
+                        <td>50%</td>
+                        <th>15->16段階</th>
+                        <td>？</td>
+                    </tr>
+                    <tr>
+                        <th>6->7段階</th>
+                        <td>50%</td>
+                        <th>16->17段階</th>
+                        <td>？</td>
+                    </tr>
+                    <tr>
+                        <th>7->8段階</th>
+                        <td>25%</td>
+                        <th>17->18段階</th>
+                        <td>？</td>
+                    </tr>
+                    <tr>
+                        <th>8->9段階</th>
+                        <td>12%</td>
+                        <th>18->19段階</th>
+                        <td>？</td>
+                    </tr>
+                    <tr>
+                        <th>9->10段階</th>
+                        <td>6%</td>
+                        <th>19->20段階</th>
+                        <td>？</td>
+                    </tr>
+                </table>
+                <br>
+                <a name="400"></a>
+                <h4>部位毎の付与可能OP一覧</h4>
+                <br>
+                ※作成中・・・<br>
+                <br>
+                <h5>マント</h5>
+                <table id="table10" style="min-width: 760px; max-width: 960px;">
+                    <colgroup>
+                        <col span="1" width="300">
+                    </colgroup>
+                    <tr>
+                        <th></th>
+                        <th colspan="3">初期値</th>
+                        <th colspan="3">上昇係数</th>
+                    </tr>
+                    <tr>
+                        <th>等級</th>
+                        <th>下級</th>
+                        <th><span class="color-image2">中級</span></th>
+                        <th><span class="color-image1">上級</span></th>
+                        <th>下級</th>
+                        <th><span class="color-image2">中級</span></th>
+                        <th><span class="color-image1">上級</span></th>
+                    </tr>
+                    <tr>
+                        <td colspan="7">1段階</td>
+                    </tr>
+                    <tr>
+                        <th>健康</th>
+                        <td>10</td>
+                        <td>15</td>
+                        <td>20</td>
+                        <td>10</td>
+                        <td>15</td>
+                        <td>20</td>
+                    </tr>
+                    <tr>
+                        <th>カリスマ</th>
+                        <td>10</td>
+                        <td>15</td>
+                        <td>20</td>
+                        <td>10</td>
+                        <td>15</td>
+                        <td>20</td>
+                    </tr>
+                    <tr>
+                        <th>(召喚獣・ペット)健康ステータス</th>
+                        <td>10</td>
+                        <td>15</td>
+                        <td>20</td>
+                        <td>10</td>
+                        <td>15</td>
+                        <td>20</td>
+                    </tr>
+                    <tr>
+                        <th>(召喚獣・ペット)カリスマステータス</th>
+                        <td>10</td>
+                        <td>15</td>
+                        <td>20</td>
+                        <td>10</td>
+                        <td>15</td>
+                        <td>20</td>
+                    </tr>
+                    <tr>
+                        <td colspan="7">5段階</td>
+                    </tr>
+                    <tr>
+                        <th>火属性抵抗</th>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <th>風属性抵抗</th>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <th>光属性抵抗</th>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <th>(召喚獣・ペット)火属性抵抗</th>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <th>(召喚獣・ペット)風属性抵抗</th>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <th>(召喚獣・ペット)光属性抵抗</th>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td colspan="7">10段階</td>
+                    </tr>
+                </table>
+                <!-- 気が向いたら作る。てか別ページのほうがよくね？ -->
+                <br>
+
+
+                <br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+        </div>
+</body>
+
+</html>
