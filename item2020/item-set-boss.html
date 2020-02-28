@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=960">
+  <!-- Page styles -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+  <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-133658114-1');
+  </script>
+  <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+  <script>
+    function enter() {
+      if (window.event.keyCode == 13) {
+        var last_keyword = $('#search-field').val();
+        window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+      }
+    }
+  </script>
+
+  <style>
+    #view-source {
+      position: fixed;
+      display: block;
+      right: 0;
+      bottom: 0;
+      margin-right: 40px;
+      margin-bottom: 40px;
+      z-index: 900;
+    }
+  </style>
+</head>
+
+<body>
+  <title>赤石の民衆</title>
+  <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <a name="container"></a>
+    <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+      <div class="mdl-layout__header-row">
+        <span class="android-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <!-- Add spacer, to align navigation to the right in desktop -->
+        <div class="android-header-spacer mdl-layout-spacer"></div>
+        <div
+          class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text" onkeypress="enter();" id="search-field" />
+          </div>
+        </div>
+        <!-- Navigation -->
+        <div class="android-navigation-container">
+          <nav class="android-navigation mdl-navigation">
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/index.html">ホーム</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/calculator.html">計算機</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/history.html">赤石史</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/link.html">リンク</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+          </nav>
+        </div>
+        <span class="android-mobile-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+          id="more-button">
+          <i class="material-icons">more_vert</i>
+        </button>
+        <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/calculator.html">計算機</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/history.html">赤石史</a></li>
+          <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/link.html">リンク</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+        </ul>
+
+      </div>
+    </div>
+
+    <div class="android-drawer mdl-layout__drawer">
+      <span class="mdl-layout-title">
+        <h3>メニュー</h3>
+      </span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html"><strong>モンスター</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html"><strong>ダンジョン</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html"><strong>クエスト</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-friend"
+          href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-info"
+          href="../information/information.html"><strong>雑学</strong></a>
+      </nav>
+    </div>
+
+
+    <div class="android-large-table mdl-layout__content">
+
+      <!--main-->
+      <div class="main-background mdl-typography--text-center korea-content">
+        <br>
+
+        <h3>セットアイテム一覧</h3>
+        <table id="table10" style="min-width:640px; max-width:760px">
+          <tbody>
+            <tr>
+              <th><a href="item-set-boss-knight.html">剣士</a></th>
+              <th><a href="item-set-boss-warrior.html">戦士</a></th>
+            </tr>
+            <tr>
+              <td align="center"><a href="item-set-boss-knight.html#1">甲羅装備</a><br>
+                <a href="item-set-boss-knight.html#2">缶騎士</a><br>
+                <a href="item-set-boss-knight.html#3">真紅の瞳の束縛</a><br>
+                <a href="item-set-boss-knight.html#4">聖戦士の闘志</a><br>
+                <a href="item-set-boss-knight.html#5">聖騎士団</a><br>
+                <a href="item-set-boss-knight.html#6">深淵の騎士</a><br>
+                <a href="item-set-boss-knight.html#7">青の騎士団</a><br>
+                <a href="item-set-boss-knight.html#8">ディメンション ナイト</a></td>
+              <td align="center"><a href="item-set-boss-warrior.html#1">警備兵ルーク</a><br>
+                <a href="item-set-boss-warrior.html#2">突撃隊長</a><br>
+                <a href="item-set-boss-warrior.html#3">烙印の重さ</a><br>
+                <a href="item-set-boss-warrior.html#4">選ばれし戦士</a><br>
+                <a href="item-set-boss-warrior.html#5">英雄の遺品</a><br>
+                <a href="item-set-boss-warrior.html#6">大地の傷跡</a><br>
+                <a href="item-set-boss-warrior.html#7">ヒドラスレイヤー</a><br>
+                <a href="item-set-boss-warrior.html#8">グランド ショック</a></td>
+            </tr>
+            <tr>
+              <th><a href="item-set-boss-lancer.html">ランサー</a></th>
+              <th><a href="item-set-boss-archer.html">アーチャー</a></th>
+            </tr>
+            <tr>
+              <td align="center"><a href="item-set-boss-lancer.html#1">バーベキューパーティー</a><br>
+                <a href="item-set-boss-lancer.html#2">ナーガスレイヤー</a><br>
+                <a href="item-set-boss-lancer.html#3">塔の守護兵</a><br>
+                <a href="item-set-boss-lancer.html#4">隊長の手本</a><br>
+                <a href="item-set-boss-lancer.html#5">同志の悲劇</a><br>
+                <a href="item-set-boss-lancer.html#6">群衆の偶像</a><br>
+                <a href="item-set-boss-lancer.html#7">君主の統率力</a><br>
+                <a href="item-set-boss-lancer.html#8">策略の鬼才</a></td>
+              <td align="center"><a href="item-set-boss-archer.html#1">オーガのおもちゃ</a><br>
+                <a href="item-set-boss-archer.html#2">蜘蛛糸の装備</a><br>
+                <a href="item-set-boss-archer.html#3">最後の矢</a><br>
+                <a href="item-set-boss-archer.html#4">イーグルの目</a><br>
+                <a href="item-set-boss-archer.html#5">塔の弓兵</a><br>
+                <a href="item-set-boss-archer.html#6">大目玉</a><br>
+                <a href="item-set-boss-archer.html#7">木の葉斬り</a><br>
+                <a href="item-set-boss-archer.html#8">エリプトの悪夢</a></td>
+            </tr>
+            <tr>
+              <th><a href="item-set-boss-wizard.html">ウィザード</a></th>
+              <th><a href="item-set-boss-wolfman.html">ウルフマン</a></th>
+            </tr>
+            <tr>
+              <td align="center"><a href="item-set-boss-wizard.html#1">所長の実験道具</a><br>
+                <a href="item-set-boss-wizard.html#2">王の遺物</a><br>
+                <a href="item-set-boss-wizard.html#3">心残りの産物</a><br>
+                <a href="item-set-boss-wizard.html#4">魔法増幅装置</a><br>
+                <a href="item-set-boss-wizard.html#5">秘密の研究資料</a><br>
+                <a href="item-set-boss-wizard.html#6">深海の魔力源</a><br>
+                <a href="item-set-boss-wizard.html#7">水の君主</a><br>
+                <a href="item-set-boss-wizard.html#8">マスター・オブ・モリネル</a></td>
+              <td align="center"><a href="item-set-boss-wolfman.html#1">食人鬼</a><br>
+                <a href="item-set-boss-wolfman.html#2">洞窟の猛獣</a><br>
+                <a href="item-set-boss-wolfman.html#3">嘆きのこだま</a><br>
+                <a href="item-set-boss-wolfman.html#4">燃ゆる野獣</a><br>
+                <a href="item-set-boss-wolfman.html#5">始祖の化石</a><br>
+                <a href="item-set-boss-wolfman.html#6">絶対捕食者</a><br>
+                <a href="item-set-boss-wolfman.html#7">ホワイトシャーク</a><br>
+                <a href="item-set-boss-wolfman.html#8">精霊の怒り</a></td>
+            </tr>
+            <tr>
+              <th><a href="item-set-boss-priest.html">ビショップ</a></th>
+              <th><a href="item-set-boss-angel.html">追放天使</a></th>
+            </tr>
+            <tr>
+              <td align="center"><a href="item-set-boss-priest.html#1">ドラゴンタートル特製品</a><br>
+                <a href="item-set-boss-priest.html#2">神獣の聖物</a><br>
+                <a href="item-set-boss-priest.html#3">宣教師の箱</a><br>
+                <a href="item-set-boss-priest.html#4">背教者の痕跡</a><br>
+                <a href="item-set-boss-priest.html#5">ポルンジラット</a><br>
+                <a href="item-set-boss-priest.html#6">大きな聖物</a><br>
+                <a href="item-set-boss-priest.html#7">海の神官装束</a><br>
+                <a href="item-set-boss-priest.html#8">神の使徒</a></td>
+              <td align="center"><a href="item-set-boss-angel.html#1">落ちてきた古着</a><br>
+                <a href="item-set-boss-angel.html#2">堕落した神物</a><br>
+                <a href="item-set-boss-angel.html#3">墜落事故</a><br>
+                <a href="item-set-boss-angel.html#4">審判の日</a><br>
+                <a href="item-set-boss-angel.html#5">聖戦の傷跡</a><br>
+                <a href="item-set-boss-angel.html#6">禁断の海</a><br>
+                <a href="item-set-boss-angel.html#7">天上界の守護兵</a><br>
+                <a href="item-set-boss-angel.html#8">空の守護者</a></td>
+            </tr>
+            <tr>
+              <th colspan="2"><a href="item-set-boss-tamer.html">ビーストテイマー/サマナー</a></th>
+            </tr>
+            <tr>
+              <td colspan="2" align="center"><a href="item-set-boss-tamer.html#1">侍従の宴会</a><br>
+                <a href="item-set-boss-tamer.html#2">深海の貴重品</a><br>
+                <a href="item-set-boss-tamer.html#3">森の友達</a><br>
+                <a href="item-set-boss-tamer.html#4">先住民の音楽</a><br>
+                <a href="item-set-boss-tamer.html#5">神秘の秘宝</a><br>
+                <a href="item-set-boss-tamer.html#6">墨汁水晶</a><br>
+                <a href="item-set-boss-tamer.html#7">大自然の共鳴</a><br>
+                <a href="item-set-boss-tamer.html#8">時間の歪み</a></td>
+            </tr>
+            <tr>
+              <th><a href="item-set-boss-thief.html">シーフ</a></th>
+              <th><a href="item-set-boss-fighter.html">武道家</a></th>
+            </tr>
+            <tr>
+              <td align="center"><a href="item-set-boss-thief.html#1">刺客の道</a><br>
+                <a href="item-set-boss-thief.html#2">シーフギルド倉庫の秘蔵品</a><br>
+                <a href="item-set-boss-thief.html#3">ゴーストハンター</a><br>
+                <a href="item-set-boss-thief.html#4">名もなき刺客</a><br>
+                <a href="item-set-boss-thief.html#5">盗掘魂</a><br>
+                <a href="item-set-boss-thief.html#6">世捨て人のエルフ</a><br>
+                <a href="item-set-boss-thief.html#7">海賊王</a><br>
+                <a href="item-set-boss-thief.html#8">夜の君主</a></td>
+              <td align="center"><a href="item-set-boss-fighter.html#1">修行の始まり</a><br>
+                <a href="item-set-boss-fighter.html#2">ギルドデストロイ</a><br>
+                <a href="item-set-boss-fighter.html#3">退魔術師</a><br>
+                <a href="item-set-boss-fighter.html#4">ブラックタイガー</a><br>
+                <a href="item-set-boss-fighter.html#5">冥土の境界線</a><br>
+                <a href="item-set-boss-fighter.html#6">拳聖の道</a><br>
+                <a href="item-set-boss-fighter.html#7">清夜の覇王</a><br>
+                <a href="item-set-boss-fighter.html#8">真理の目</a></td>
+            </tr>
+            <tr>
+              <th><a href="item-set-boss-princess.html">プリンセス</a></th>
+              <th><a href="item-set-boss-magicalgirl.html">リトルウィッチ</a></th>
+            </tr>
+            <tr>
+              <td align="center"><a href="item-set-boss-princess.html#1">雀狩り</a><br>
+                <a href="item-set-boss-princess.html#2">毒蜘蛛の衣装</a><br>
+                <a href="item-set-boss-princess.html#3">古木のプレゼント</a><br>
+                <a href="item-set-boss-princess.html#4">魔獣の王のいたずら</a><br>
+                <a href="item-set-boss-princess.html#5">塔に幽閉されたプリンセス</a><br>
+                <a href="item-set-boss-princess.html#6">防腐加工クラーケンの干物</a><br>
+                <a href="item-set-boss-princess.html#7">皇帝の護身術</a><br>
+                <a href="item-set-boss-princess.html#8">女帝の統治</a></td>
+              <td align="center"><a href="item-set-boss-magicalgirl.html#1">無名歌手の所蔵品</a><br>
+                <a href="item-set-boss-magicalgirl.html#2">宮廷の踊り子</a><br>
+                <a href="item-set-boss-magicalgirl.html#3">魅惑の香水</a><br>
+                <a href="item-set-boss-magicalgirl.html#4">音響システム</a><br>
+                <a href="item-set-boss-magicalgirl.html#5">悲しいバラード</a><br>
+                <a href="item-set-boss-magicalgirl.html#6">エルフのステージ衣装</a><br>
+                <a href="item-set-boss-magicalgirl.html#7">永遠の歌姫</a><br>
+                <a href="item-set-boss-magicalgirl.html#8">星のカケラ</a></td>
+            </tr>
+            <tr>
+              <th><a href="item-set-boss-necromancer.html">ネクロマンサー</a></th>
+              <th><a href="item-set-boss-devil.html">悪魔</a></th>
+            </tr>
+            <tr>
+              <td align="center"><a href="item-set-boss-necromancer.html#1">放熱装置</a><br>
+                <a href="item-set-boss-necromancer.html#2">不死身の体</a><br>
+                <a href="item-set-boss-necromancer.html#3">塩の洞窟</a><br>
+                <a href="item-set-boss-necromancer.html#4">崩壊された塔</a><br>
+                <a href="item-set-boss-necromancer.html#5">禁止された儀式</a><br>
+                <a href="item-set-boss-necromancer.html#6">ブルーモンスター</a><br>
+                <a href="item-set-boss-necromancer.html#7">地獄の業火</a><br>
+                <a href="item-set-boss-necromancer.html#8">悪夢の支配者</a></td>
+              <td align="center"><a href="item-set-boss-devil.html#1">火遊び</a><br>
+                <a href="item-set-boss-devil.html#2">真っ黒な糸</a><br>
+                <a href="item-set-boss-devil.html#3">異界の鍵</a><br>
+                <a href="item-set-boss-devil.html#4">魔界の開放</a><br>
+                <a href="item-set-boss-devil.html#5">地下奥深くの炎</a><br>
+                <a href="item-set-boss-devil.html#6">地下界の女将軍</a><br>
+                <a href="item-set-boss-devil.html#7">ファイヤードラゴンの炎</a><br>
+                <a href="item-set-boss-devil.html#8">地下界の摂理</a></td>
+            </tr>
+            <tr>
+              <th><a href="item-set-boss-soulbringer.html">霊術師</a></th>
+              <th><a href="item-set-boss-champion.html">闘士</a></th>
+            </tr>
+            <tr>
+              <td align="center"><a href="item-set-boss-soulbringer.html#1">ロハススタイル</a><br>
+                <a href="item-set-boss-soulbringer.html#2">ゴッドファビッド</a><br>
+                <a href="item-set-boss-soulbringer.html#3">オカルトクラブ</a><br>
+                <a href="item-set-boss-soulbringer.html#4">輪廻の輪</a><br>
+                <a href="item-set-boss-soulbringer.html#5">魂の墓</a><br>
+                <a href="item-set-boss-soulbringer.html#6">死への招待</a><br>
+                <a href="item-set-boss-soulbringer.html#7">ゴースト・イレギュリアン</a><br>
+                <a href="item-set-boss-soulbringer.html#8">明王</a></td>
+              <td align="center"><a href="item-set-boss-champion.html#1">女神の誘惑</a><br>
+                <a href="item-set-boss-champion.html#2">先人の知恵</a><br>
+                <a href="item-set-boss-champion.html#3">闘争本能</a><br>
+                <a href="item-set-boss-champion.html#4">高段者の教え</a><br>
+                <a href="item-set-boss-champion.html#5">ガーディアン</a><br>
+                <a href="item-set-boss-champion.html#6">リーナの宝物</a><br>
+                <a href="item-set-boss-champion.html#7">戦場の女神</a><br>
+                <a href="item-set-boss-champion.html#8">闘王</a></td>
+            </tr>
+            <tr>
+              <th><a href="item-set-boss-opticalist.html">光奏師</a></th>
+              <th><a href="item-set-boss-beastman.html">獣人</a></th>
+            </tr>
+            <tr>
+              <td align="center"><a href="item-set-boss-opticalist.html#1">貴公子</a><br>
+                <a href="item-set-boss-opticalist.html#2">素粒子加速実験装置</a><br>
+                <a href="item-set-boss-opticalist.html#3">軍略のセオリー</a><br>
+                <a href="item-set-boss-opticalist.html#4">
+                  スウィティベル・アカデミー
+                </a><br>
+                <a href="item-set-boss-opticalist.html#5">人間国宝</a><br>
+                <a href="item-set-boss-opticalist.html#6">プリズムブレーカー</a><br>
+                <a href="item-set-boss-opticalist.html#7">マイクロエレクトロニスト</a><br>
+                <a href="item-set-boss-opticalist.html#8">漆黒の宴</a></td>
+              <td align="center"><a href="item-set-boss-beastman.html#1">ガールズスタイル</a><br>
+                <a href="item-set-boss-beastman.html#2">超神速の境地</a><br>
+                <a href="item-set-boss-beastman.html#3">闇よりの使徒</a><br>
+                <a href="item-set-boss-beastman.html#4">天使のプレゼント</a><br>
+                <a href="item-set-boss-beastman.html#5">剣舞一式</a><br>
+                <a href="item-set-boss-beastman.html#6">超絶技巧アルテイラの遺物</a><br>
+                <a href="item-set-boss-beastman.html#7">天上戦隊ゴービースト</a><br>
+                <a href="item-set-boss-beastman.html#8">失望と裏切り</a></td>
+            </tr>
+            <tr>
+              <th><a href="item-set-boss-maid.html">メイド</a></th>
+              <th><a href="item-set-boss-demonsorcer.html">黒魔術師</a></th>
+            </tr>
+            <tr>
+              <td align="center"><a href="item-set-boss-maid.html#1">メイドインナクリエマ</a><br>
+                <a href="item-set-boss-maid.html#2">王国秘伝掃除技法</a><br>
+                <a href="item-set-boss-maid.html#3">グレイドオブメイド</a><br>
+                <a href="item-set-boss-maid.html#4">フローレンスの心</a><br>
+                <a href="item-set-boss-maid.html#5">メイドの美徳</a><br>
+                <a href="item-set-boss-maid.html#6">父の配慮</a><br>
+                <a href="item-set-boss-maid.html#7">国際メイド機構</a><br>
+                <a href="item-set-boss-maid.html#8">ロイヤルメイド</a></td>
+              <td align="center"><a href="item-set-boss-demonsorcer.html#1">ハイディングマイセルフ</a><br>
+                <a href="item-set-boss-demonsorcer.html#2">彷徨う少女</a><br>
+                <a href="item-set-boss-demonsorcer.html#3">ハーフ＆ハーフ</a><br>
+                <a href="item-set-boss-demonsorcer.html#4">暗影の儀式</a><br>
+                <a href="item-set-boss-demonsorcer.html#5">ファム・ファタール</a><br>
+                <a href="item-set-boss-demonsorcer.html#6">
+                  マジックサークルグラビティー
+                </a><br>
+                <a href="item-set-boss-demonsorcer.html#7">禁じられた取引</a><br>
+                <a href="item-set-boss-demonsorcer.html#8">妖女ルビオラ</a></td>
+            </tr>
+            <tr>
+              <th><a href="item-set-boss-musketeer.html">マスケッティア</a></th>
+              <th><a href="item-set-boss-alchemist.html">アルケミスト</a></th>
+            </tr>
+            <tr>
+              <td align="center"><a href="item-set-boss-musketeer.html#1">西部の無法者</a><br>
+                <a href="item-set-boss-musketeer.html#2">回避の達人</a><br>
+                <a href="item-set-boss-musketeer.html#3">ファイヤーマッドネス</a><br>
+                <a href="item-set-boss-musketeer.html#4">決闘</a><br>
+                <a href="item-set-boss-musketeer.html#5">狩人たちの作法</a><br>
+                <a href="item-set-boss-musketeer.html#6">特異体質</a><br>
+                <a href="item-set-boss-musketeer.html#7">王国のために</a><br>
+                <a href="item-set-boss-musketeer.html#8">射撃マエストロ</a></td>
+              <td align="center"><a href="item-set-boss-alchemist.html#1">古鉄の塊</a><br>
+                <a href="item-set-boss-alchemist.html#2">錬金術入門</a><br>
+                <a href="item-set-boss-alchemist.html#3">カルペディエム</a><br>
+                <a href="item-set-boss-alchemist.html#4">ジェムストーンレファランス</a><br>
+                <a href="item-set-boss-alchemist.html#5">研究者カルテ</a><br>
+                <a href="item-set-boss-alchemist.html#6">身元不明</a><br>
+                <a href="item-set-boss-alchemist.html#7">月光を宿した原石</a><br>
+                <a href="item-set-boss-alchemist.html#8">人間の尊厳</a><br>
+            </tr>
+            <tr>
+              <th colspan="2"><a href="item-set-box.html">箱品</a></th>
+            </tr>
+            <tr>
+              <td align="center"><a href="item-set-box.html#1">マファスのコレクション</a><br>
+                <a href="item-set-box.html#2">ハリネズミのジレンマ</a><br>
+                <a href="item-set-box.html#3">お化けのゲーム盤</a><br>
+                <a href="item-set-box.html#4">チョキーの愛蔵品</a><br>
+                <a href="item-set-box.html#5">ジャングルハンティングパーツ</a><br>
+                <a href="item-set-box.html#6">フェイクバーサーカー</a><br>
+                <a href="item-set-box.html#7">軍楽隊装備</a><br>
+                <a href="item-set-box.html#8">若者の遊戯</a><br>
+                <a href="item-set-box.html#9">十二猿</a><br>
+                <a href="item-set-box.html#10">太極一連</a><br>
+                <a href="item-set-box.html#11">南風装備</a><br>
+                <a href="item-set-box.html#12">リングレイス</a><br>
+                <a href="item-set-box.html#13">アイノの遺産</a></td>
+              <td align="center"><a href="item-set-box.html#14">お姉様の威力</a><br>
+                <a href="item-set-box.html#15">マッドドッグ・イクィプメント</a><br>
+                <a href="item-set-box.html#16">アルティーフィールド</a><br>
+                <a href="item-set-box.html#17">知識の拘束</a><br>
+                <a href="item-set-box.html#18">紫陽花の装備</a><br>
+                <a href="item-set-box.html#19">禁断の衣服</a><br>
+                <a href="item-set-box.html#20">急進派の兵器庫</a><br>
+                <a href="tem-set-box.html#21">大気の跡</a><br>
+                <a href="item-set-box.html#22">シー･ウインド･クルーザー</a><br>
+                <a href="item-set-box.html#23">バイタルサプリメント</a><br>
+                <a href="item-set-box.html#24">知恵の卵</a><br>
+                <a href="item-set-box.html#25">賢者の遺品</a><br>
+                <a href="item-set-box.html#26">鍛冶屋の五つ道具</a>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="2"><a href="item-set-other.html">その他</a></th>
+            </tr>
+            <tr>
+              <td align="center" colspan="2"><a href="item-set-other.html#1">仄かな神獣の力</a> / <a
+                  href="item-set-other.html#2">旅立ちセット</a>
+                / <a href="item-set-other.html#3">タティリスの栄光</a></td>
+
+            </tr>
+          </tbody>
+        </table>
+
+        <br>
+        <br>
+        <footer class="android-footer mdl-mega-footer">
+          <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+          </font>
+          Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+        </footer>
+        <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+      Copyright (c) This site is created by Sokomin. All Rights Reserved.
+ -->
+
+      </div>
+
+      <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    </div>
+</body>
+
+</html>

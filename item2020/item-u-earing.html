@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=960">
+  <!-- Page styles -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+  <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-133658114-1');
+  </script>
+  <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+  <script>
+    function enter() {
+      if (window.event.keyCode == 13) {
+        var last_keyword = $('#search-field').val();
+        window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+      }
+    }
+  </script>
+
+  <style>
+    #view-source {
+        position: fixed;
+        display: block;
+        right: 0;
+        bottom: 0;
+        margin-right: 40px;
+        margin-bottom: 40px;
+        z-index: 900;
+      }
+    </style>
+</head>
+
+<body>
+  <title>赤石の民衆</title>
+  <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <a name="container"></a>
+    <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+      <div class="mdl-layout__header-row">
+        <span class="android-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <!-- Add spacer, to align navigation to the right in desktop -->
+        <div class="android-header-spacer mdl-layout-spacer"></div>
+        <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text" onkeypress="enter();" id="search-field" />
+          </div>
+        </div>
+        <!-- Navigation -->
+        <div class="android-navigation-container">
+          <nav class="android-navigation mdl-navigation">
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/index.html">ホーム</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+          </nav>
+        </div>
+        <span class="android-mobile-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
+          <i class="material-icons">more_vert</i>
+        </button>
+        <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a></li>
+          <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+        </ul>
+
+      </div>
+    </div>
+
+    <div class="android-drawer mdl-layout__drawer">
+      <span class="mdl-layout-title">
+        <h3>メニュー</h3>
+      </span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html"><strong>モンスター</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html"><strong>ダンジョン</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html"><strong>クエスト</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html"><strong>雑学</strong></a>
+      </nav>
+    </div>
+
+
+    <div class="android-content mdl-layout__content">
+
+      <!--main-->
+                  <a href="../index.html">トップ</a> >> <a href="../item/item.html">アイテム</a><br>
+<div class="main-background mdl-typography--text-center">
+        <br>
+
+<h3>ユニーク イヤリング</h3>
+
+<a href="#1">U</a><br>
+<a href="#2">DXU</a><br>
+<a href="#3">NxU</a><br>
+<a href="#4">NxDXU</a><br>
+<br>
+<table id="table1">
+  <colgroup><col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+  </colgroup><tbody><tr>
+      <th colspan="6"><a name="1"></a>U</th>
+    </tr>
+    <tr>
+      <th colspan="6"><font color="#e8c898">ファインウィスパー</font></th>
+    </tr>
+    <tr>
+      <td rowspan="2"><img src="design/image/item/iconItem_0382.png" border="0"></td>
+      <td colspan="5"><font color="#00f8f8">&lt;基本情報&gt;</font><br>
+      集中力 <font color="#f8f800"> +{2~5}</font><br>
+      知恵 <font color="#f8f800">+5</font><br>
+      回避率 <font color="#f8f800">+2</font>％<br>
+      命中率 <font color="#f8f800">+2</font>％<br>
+      混乱抵抗 <font color="#f8f800">+75</font>％<br>
+      <font color="#f8f800">錬成 可能</font></td>
+    </tr>
+    <tr>
+      <td valign="top"><font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+      レベル 38</td>
+      <td valign="top"><font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+      女性キャラクター専用</td>
+      <td valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+      74/1000</td>
+      <td valign="top"><font color="#00f8f8">&lt;価格&gt;</font><br>
+       [補正値] * 4500G</td>
+     </tr>
+    <tr>
+      <td colspan="6"><font color="#00f8f8">&lt;説明&gt;</font><br>
+      この大きい耳飾を着けると聴力が良くなり､人の心まで読める能力が出来るという</td>
+    </tr>
+    <tr>
+      <th colspan="6"><font color="#e8c898">女神の深さ</font></th>
+    </tr>
+    <tr>
+      <td rowspan="2"><img src="design/image/item/iconItem_0381.png" border="0"></td>
+      <td colspan="5"><font color="#00f8f8">&lt;基本情報&gt;</font><br>
+      異常状態 抵抗 <font color="#f8f800"> +{10~20}</font>％<br>
+      最大CP <font color="#f8f800">+15</font><br>
+      最大CP <font color="#f8f800">+5</font>％<br>
+      回避率 <font color="#f8f800">+1</font>％<br>
+      光ダメージ <font color="#f8f800">1</font>～<font color="#f8f800">3</font><br>
+      <font color="#f8f800">2</font>秒の間 命中, 回避低下<br>
+      スキルレベル <font color="#f8f800">+1</font><br>
+      <font color="#f8f800">錬成 可能</font></td>
+    </tr>
+    <tr>
+      <td valign="top"><font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+      レベル 47</td>
+      <td valign="top"><font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+      女性キャラクター専用</td>
+      <td valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+      53/500</td>
+      <td valign="top"><font color="#00f8f8">&lt;価格&gt;</font><br>
+      [補正値]*2500G</td>
+     </tr>
+    <tr>
+      <td colspan="6"><font color="#00f8f8">&lt;説明&gt;</font><br>美しい女神を思い起こせるほどさらさらで柔らかい耳飾。まるで優しい光があふれ落ちる様だ </td>
+    </tr>
+    <tr>
+      <th colspan="6"><font color="#e8c898">エスト・ベル</font></th>
+    </tr>
+    <tr>
+      <td rowspan="2"><img src="design/image/item/iconItem_0380.png" border="0"></td>
+      <td colspan="5"><font color="#00f8f8">&lt;基本情報&gt;</font><br>
+      能力値低下状態 抵抗 <font color="#f8f800"> +{10~20}</font>％<br>
+      カリスマ <font color="#f8f800">+20</font><br>
+      回避率 <font color="#f8f800">+3</font>％<br>
+      チャーミング攻撃 <font color="#f8f800">+10</font>％(<font color="#f8f800">25</font>秒)<br>
+      <font color="#f8f800">錬成 可能</font></td>
+    </tr>
+    <tr>
+      <td valign="top"><font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+      レベル 61</td>
+      <td valign="top"><font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+      女性キャラクター専用</td>
+      <td valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+      67/500</td>
+      <td valign="top"><font color="#00f8f8">&lt;価格&gt;</font><br>
+      [補正値]*3000G</td>
+     </tr>
+    <tr>
+      <td colspan="6"><font color="#00f8f8">&lt;説明&gt;</font><br>
+      女性の美しさを際立たせる耳飾り。あまりの美しさに神秘感すら覚えてしまう</td>
+    </tr>
+    <tr>
+      <th colspan="6"><font color="#e8c898">アンクイヤリング</font></th>
+    </tr>
+    <tr>
+      <td rowspan="2"><img src="design/image/item/iconItem_0379.png" border="0"></td>
+      <td colspan="5"><font color="#00f8f8">&lt;基本情報&gt;</font><br>
+      状態 抵抗 <font color="#f8f800"> +{10~20}</font>％<br>
+      力 <font color="#f8f800">+10</font><br>
+      健康 <font color="#f8f800">+1</font>/レベル <font color="#f8f800">4</font><br>
+      最大HP <font color="#f8f800">+15</font>％<br>
+      <font color="#f8f800">錬成 可能</font></td>
+    </tr>
+    <tr>
+      <td valign="top"><font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+      レベル 71</td>
+      <td valign="top"><font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+      女性キャラクター専用</td>
+      <td valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+      79/500</td>
+      <td valign="top"><font color="#00f8f8">&lt;価格&gt;</font><br>
+      [補正値]*3500G</td>
+     </tr>
+    <tr>
+      <td colspan="6"><font color="#00f8f8">&lt;説明&gt;</font><br>この耳飾には､命と精力の象徴というアンクが付けてある </td>
+    </tr>
+    <tr>
+      <th colspan="6"><font color="#e8c898">ファインティップ</font></th>
+    </tr>
+    <tr>
+      <td rowspan="2"><img src="design/image/item/iconItem_0377.png" border="0"></td>
+      <td colspan="5"><font color="#00f8f8">&lt;基本情報&gt;</font><br>
+      すべての状態異常 抵抗 <font color="#f8f800"> +{5~10}</font>％<br>
+      防御力 <font color="#f8f800">+10</font>％<br>
+      魔法属性ダメージ吸収 <font color="#f8f800">13</font>％<br>
+      <font color="#f8f800">錬成 可能</font></td>
+    </tr>
+    <tr>
+      <td valign="top"><font color="#00f8f8">&lt;要求能力値&gt;</font><br>レベル 121<br>
+      </td>
+      <td valign="top"><font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+      女性キャラクター専用</td>
+      <td valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+      109/50</td>
+      <td valign="top"><font color="#00f8f8">&lt;価格&gt;</font><br>
+      [補正値]*1万G</td>
+     </tr>
+    <tr>
+      <td colspan="6"><font color="#00f8f8">&lt;説明&gt;</font><br>
+      繊細な細工が入れてある最上級のイヤリング</td>
+    </tr>
+    <tr>
+      <th colspan="6"><font color="#e8c898">ネクロキャビティ</font></th>
+    </tr>
+    <tr>
+      <td rowspan="2"><img src="design/image/item/iconItem_0378.png" border="0"></td>
+      <td colspan="5"><font color="#00f8f8">&lt;基本情報&gt;</font><br>
+      決定打 <font color="#f8f800"> +{1~2}</font>％<br>
+      闇属性ダメージ吸収 <font color="#f8f800">17</font>％<br>
+      闇ダメージ <font color="#f8f800">11</font>～<font color="#f8f800">20</font><br>
+      呪い <font color="#f8f800">8</font>秒<br>
+      即死攻撃 <font color="#f8f800">+10</font>％<br>
+      <font color="#f8f800">錬成 可能</font></td>
+    </tr>
+    <tr>
+      <td valign="top"><font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+      レベル 137</td>
+      <td valign="top"><font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+      女性キャラクター専用</td>
+      <td valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+      102/50</td>
+      <td valign="top"><font color="#00f8f8">&lt;価格&gt;</font><br>
+       [補正値] * 3750G</td>
+     </tr>
+    <tr>
+      <td colspan="6"><font color="#00f8f8">&lt;説明&gt;</font><br>死の空虚さが感じられるイヤリング。多分、小さな骸骨の飾りのせいだろう </td>
+    </tr>
+  </tbody></table>
+<br>
+<br>
+<br>
+<table id="table1">
+  <colgroup><col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+  </colgroup><tbody><tr>
+      <th colspan="6"><a name="2"></a>DXU</th>
+    </tr>
+    <tr>
+      <th colspan="6"><font color="#e8c898">女神の息吹</font></th>
+    </tr>
+    <tr>
+      <td rowspan="2"><img src="design/image/item/iconItem_1066.png" border="0"></td>
+      <td colspan="5"><font color="#00f8f8">&lt;基本情報&gt;</font><br>
+      異常状態 抵抗 <font color="#f8f800"> +{20~45}</font>％<br>
+      最大HP <font color="#f8f800">+20</font>％<br>
+      減少限界CP <font color="#f8f800">+20</font><br>
+      攻撃速度 <font color="#f8f800">+10</font>％<br>
+      集中力 <font color="#f8f800">+20</font>％<br>
+      力 <font color="#f8f800">+30</font><br>
+      スキルレベル <font color="#f8f800">+2</font><br>
+      <font color="#f8f800">錬成 可能</font></td>
+    </tr>
+    <tr>
+      <td valign="top"><font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+      レベル 362</td>
+      <td valign="top"><font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+      女性キャラクター専用</td>
+      <td valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+      345/700</td>
+      <td valign="top"><font color="#00f8f8">&lt;価格&gt;</font><br>
+      9540万G</td>
+     </tr>
+    <tr>
+      <td colspan="6"><font color="#00f8f8">&lt;説明&gt;</font><br>慈しみ深い女神の息吹が感じられる優雅なイヤリング </td>
+    </tr>
+    <tr>
+      <th colspan="6"><font color="#e8c898">フリーダムエンプレス</font></th>
+    </tr>
+    <tr>
+      <td rowspan="2"><img src="design/image/item/iconItem_1065.png" border="0"></td>
+      <td colspan="5"><font color="#00f8f8">&lt;基本情報&gt;</font><br>
+      能力値低下状態 抵抗 <font color="#f8f800"> +{20~45}</font>％<br>
+      混乱攻撃 <font color="#f8f800">+2</font>％(<font color="#f8f800">10</font>秒)<br>
+      ベルセルク攻撃 <font color="#f8f800">+3</font>％(<font color="#f8f800">10</font>秒)<br>
+      召喚獣のすべてのステータスが<font color="#f8f800">100</font>増加<br>
+      知識 <font color="#f8f800">+125</font><br>
+      敏捷 <font color="#f8f800">+30</font><br>
+      <font color="#f8f800">ビーストテイマー</font> スキルレベル +<font color="#f8f800">1</font><br>
+      <font color="#f8f800">錬成 可能</font></td>
+    </tr>
+    <tr>
+      <td valign="top"><font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+      レベル 389</td>
+      <td valign="top"><font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+      女性キャラクター専用</td>
+      <td valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+      370/500</td>
+      <td valign="top"><font color="#00f8f8">&lt;価格&gt;</font><br>
+      1億5736万G</td>
+     </tr>
+    <tr>
+      <td colspan="6"><font color="#00f8f8">&lt;説明&gt;</font><br>自由の女帝に捧げられた貴いイヤリング </td>
+    </tr>
+    <tr>
+      <th colspan="6"><font color="#e8c898">トリニティーラスター</font></th>
+    </tr>
+    <tr>
+      <td rowspan="2"><img src="design/image/item/iconItem_1064.png" border="0"></td>
+      <td colspan="5"><font color="#00f8f8">&lt;基本情報&gt;</font><br>
+      状態 抵抗 <font color="#f8f800"> +{20~45}</font>％<br>
+      光ダメージ <font color="#f8f800">1</font>～<font color="#f8f800">240</font><br>
+      <font color="#f8f800">2</font>秒の間 命中, 回避低下<br>
+      光属性抵抗 <font color="#f8f800">+15</font>％<br>
+      光属性ダメージ吸収 <font color="#f8f800">15</font>％<br>
+      カリスマ <font color="#f8f800">+65</font><br>
+      力 <font color="#f8f800">+33</font><br>
+      <font color="#f8f800">錬成 可能</font></td>
+    </tr>
+    <tr>
+      <td valign="top"><font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+      レベル 390</td>
+      <td valign="top"><font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+      女性キャラクター専用</td>
+      <td valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+      371/700</td>
+      <td valign="top"><font color="#00f8f8">&lt;価格&gt;</font><br>
+      1億526万G</td>
+     </tr>
+    <tr>
+      <td colspan="6"><font color="#00f8f8">&lt;説明&gt;</font><br>三つの十字架が光属性の攻撃と防御を効果的に実行できるように補助してくれる </td>
+    </tr>
+    <tr>
+      <th colspan="6"><font color="#e8c898">スターチャイルド</font></th>
+    </tr>
+    <tr>
+      <td rowspan="2"><img src="design/image/item/iconItem_1067.png" border="0"></td>
+      <td colspan="5"><font color="#00f8f8">&lt;基本情報&gt;</font><br>
+      集中力 <font color="#f8f800"> +{6~8}</font><br>
+      ターゲットの光抵抗を<font color="#f8f800">24</font>％弱化させる。<br>
+      力 <font color="#f8f800">+30</font><br>
+      ダメージ <font color="#f8f800">+20</font>％<br>
+      攻撃速度 <font color="#f8f800">+15</font>％<br>
+      健康 <font color="#f8f800">+1</font>/レベル <font color="#f8f800">12</font><br>
+      ターゲットの火抵抗を<font color="#f8f800">12</font>％弱化させる。<br>
+      <font color="#f8f800">錬成 可能</font></td>
+    </tr>
+    <tr>
+      <td valign="top"><font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+      レベル 447</td>
+      <td valign="top"><font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+      女性キャラクター専用</td>
+      <td valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+      425/500</td>
+      <td valign="top"><font color="#00f8f8">&lt;価格&gt;</font><br>
+      1億8904万G</td>
+     </tr>
+    <tr>
+      <td colspan="6"><font color="#00f8f8">&lt;説明&gt;</font><br>星の光と、遥かな星の長寿が込められている細工品 </td>
+    </tr>
+    <tr>
+      <th colspan="6"><font color="#e8c898">レブリングヒンジ</font></th>
+    </tr>
+    <tr>
+      <td rowspan="2"><img src="design/image/item/iconItem_1062.png" border="0"></td>
+      <td colspan="5"><font color="#00f8f8">&lt;基本情報&gt;</font><br>
+      すべての状態異常 抵抗 <font color="#f8f800"> +{10~25}</font>％<br>
+      力 <font color="#f8f800">+1</font>/レベル <font color="#f8f800">8</font><br>
+      知識 <font color="#f8f800">+1</font>/レベル <font color="#f8f800">7</font><br>
+      知恵 <font color="#f8f800">+33</font><br>
+      敏捷 <font color="#f8f800">+20</font><br>
+      集中力 <font color="#f8f800">+25</font>％<br>
+      <font color="#f8f800">錬成 可能</font></td>
+    </tr>
+    <tr>
+      <td valign="top"><font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+      レベル 484</td>
+      <td valign="top"><font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+      女性キャラクター専用</td>
+      <td valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+      460/300</td>
+      <td valign="top"><font color="#00f8f8">&lt;価格&gt;</font><br>
+      2億7995万G</td>
+     </tr>
+    <tr>
+      <td colspan="6"><font color="#00f8f8">&lt;説明&gt;</font><br>小さなつっかえ棒と十分に長いてこさえあれば、大陸でも持てるほどに大きい力を得ることができる </td>
+    </tr>
+    <tr>
+      <th colspan="6"><font color="#e8c898">アイボリーダスト</font></th>
+    </tr>
+    <tr>
+      <td rowspan="2"><img src="design/image/item/iconItem_1063.png" border="0"></td>
+      <td colspan="5"><font color="#00f8f8">&lt;基本情報&gt;</font><br>
+      決定打 <font color="#f8f800"> +{2~3}</font>％<br>
+      コールド攻撃+ <font color="#f8f800">1</font>％(<font color="#f8f800">20</font>秒)<br>
+      闇属性抵抗 <font color="#f8f800">+10</font>％<br>
+      健康 <font color="#f8f800">+40</font><br>
+      最大CP <font color="#f8f800">+12</font>％<br>
+      スキルレベル <font color="#f8f800">+1</font><br>
+      <font color="#f8f800">錬成 可能</font></td>
+    </tr>
+    <tr>
+      <td valign="top"><font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+      レベル 588</td>
+      <td valign="top"><font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+      女性キャラクター専用</td>
+      <td valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+      558/1000</td>
+      <td valign="top"><font color="#00f8f8">&lt;価格&gt;</font><br>
+      4525万G</td>
+     </tr>
+    <tr>
+      <td colspan="6"><font color="#00f8f8">&lt;説明&gt;</font><br>かすかに淡い色をした粉がいっぱい詰まったガラス玉飾りのイヤリング </td>
+    </tr>
+  </tbody></table>
+<br>
+<br>
+<br>
+<table id="table1">
+  <colgroup><col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+  
+    </colgroup><tbody><tr>
+      <th colspan="6"><a name="3"></a>NxU</th>
+    </tr>
+    <tr>
+      <th colspan="6"><font color="#9c4e2d">ファインウィスパー[Nx]</font></th>
+    </tr>
+    <tr>
+      <td rowspan="2"><img src="design/image/item/iconItem_0382.png" border="0"></td>
+      <td colspan="5"><font color="#00f8f8">&lt;基本情報&gt;</font><br>
+      集中力 <font color="#f8f800"> +{2~5}</font><br>
+      知恵 <font color="#f8f800">+20</font><br>
+      回避率 <font color="#f8f800">+2</font>％<br>
+      命中率 <font color="#f8f800">+5</font>％<br>
+      混乱抵抗 <font color="#f8f800">+75</font>％<br>
+      <br>
+      <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#f8f800">20</font><br>
+      最大CP <font color="#f8f800">+10</font>％<br>
+      CP獲得ボーナス <font color="#f8f800">10</font>％<br>
+      クリティカルダメージ <font color="#f8f800">10</font>％ 増加</td>
+    </tr>
+    <tr>
+      <td valign="top"><font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+      レベル 76</td>
+      <td valign="top"><font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+      女性キャラクター専用</td>
+      <td valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+      74/100</td>
+      <td valign="top"><font color="#00f8f8">&lt;価格&gt;</font><br> [補正値] * 4500G</td>
+     </tr>
+    <tr>
+      <td colspan="6"><font color="#00f8f8">&lt;説明&gt;</font><br>
+      この大きい耳飾を着けると聴力が良くなり､人の心まで読める能力が出来るという。<br>
+      <br> <font color="#ef6cef">※ 封印された力を解放するには</font>‘<font color="#e8c898">封印解放道具箱</font>'<font color="#ef6cef">が必要です</font></td>
+    </tr>
+    <tr>
+      <th colspan="6"><font color="#9c4e2d">女神の深さ[Nx]</font></th>
+    </tr>
+    <tr>
+      <td rowspan="2"><img src="design/image/item/iconItem_0381.png" border="0"></td>
+      <td colspan="5"><font color="#00f8f8">&lt;基本情報&gt;</font><br>
+      異常状態 抵抗 <font color="#f8f800"> +{10~20}</font>％<br>
+      最大CP <font color="#f8f800">+100</font><br>
+      最大CP <font color="#f8f800">+8</font>％<br>
+      回避率 <font color="#f8f800">+1</font>％<br>
+      光ダメージ <font color="#f8f800">1</font>～<font color="#f8f800">300</font><br>
+      <font color="#f8f800">2</font>秒の間 命中, 回避低下<br>
+      スキルレベル <font color="#f8f800">+2</font><br>
+      <br>
+      <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#f8f800">20</font><br>
+      最大CP <font color="#f8f800">+10</font>％<br>
+      CP獲得ボーナス <font color="#f8f800">10</font>％<br>
+      クリティカルダメージ <font color="#f8f800">10</font>％ 増加</td>
+    </tr>
+    <tr>
+      <td valign="top"><font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+      レベル 94</td>
+      <td valign="top"><font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+      女性キャラクター専用</td>
+      <td valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+      53/50</td>
+      <td valign="top"><font color="#00f8f8">&lt;価格&gt;</font><br> [補正値] * 2500G</td>
+     </tr>
+    <tr>
+      <td colspan="6"><font color="#00f8f8">&lt;説明&gt;</font><br>
+      美しい女神を思い起こせるほどさらさらで柔らかい耳飾。まるで優しい光があふれ落ちる様だ。<br>
+      <br> <font color="#ef6cef">※ 封印された力を解放するには</font>‘<font color="#e8c898">封印解放道具箱</font>'<font color="#ef6cef">が必要です</font></td>
+    </tr>
+    <tr>
+      <th colspan="6"><font color="#9c4e2d">エスト・ベル[Nx]</font></th>
+    </tr>
+    <tr>
+      <td rowspan="2"><img src="design/image/item/iconItem_0380.png" border="0"></td>
+      <td colspan="5"><font color="#00f8f8">&lt;基本情報&gt;</font><br>
+      能力値低下状態 抵抗 <font color="#f8f800"> +{10~20}</font>％<br>
+      カリスマ <font color="#f8f800">+40</font><br>
+      回避率 <font color="#f8f800">+5</font>％<br>
+      <br>
+      <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#f8f800">40</font><br>
+      最大CP <font color="#f8f800">+12</font>％<br>
+      CP獲得ボーナス <font color="#f8f800">10</font>％<br>
+      クリティカルダメージ <font color="#f8f800">10</font>％ 増加</td>
+    </tr>
+    <tr>
+      <td valign="top"><font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+      レベル 122</td>
+      <td valign="top"><font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+      女性キャラクター専用</td>
+      <td valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+      67/50</td>
+      <td valign="top"><font color="#00f8f8">&lt;価格&gt;</font><br> [補正値] * 3000G</td>
+     </tr>
+    <tr>
+      <td colspan="6"><font color="#00f8f8">&lt;説明&gt;</font><br>
+      女性の美しさを際立たせる耳飾り。あまりの美しさに神秘感すら覚えてしまう。<br>
+      <br> <font color="#ef6cef">※ 封印された力を解放するには</font>‘<font color="#e8c898">封印解放道具箱</font>'<font color="#ef6cef">が必要です</font></td>
+    </tr>
+    <tr>
+      <th colspan="6"><font color="#9c4e2d">アンクイヤリング[Nx]</font></th>
+    </tr>
+    <tr>
+      <td rowspan="2"><img src="design/image/item/iconItem_0379.png" border="0"></td>
+      <td colspan="5"><font color="#00f8f8">&lt;基本情報&gt;</font><br>
+      状態 抵抗 <font color="#f8f800"> +{10~20}</font>％<br>
+      力 <font color="#f8f800">+10</font><br>
+      健康 <font color="#f8f800">+1</font>/レベル <font color="#f8f800">4</font><br>
+      最大HP <font color="#f8f800">+50</font>％<br>
+      <br>
+      <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#f8f800">40</font><br>
+      最大CP <font color="#f8f800">+14</font>％<br>
+      CP獲得ボーナス <font color="#f8f800">10</font>％<br>
+      クリティカルダメージ <font color="#f8f800">10</font>％ 増加</td>
+    </tr>
+    <tr>
+      <td valign="top"><font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+      レベル 140</td>
+      <td valign="top"><font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+      女性キャラクター専用</td>
+      <td valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+      79/50</td>
+      <td valign="top"><font color="#00f8f8">&lt;価格&gt;</font><br> [補正値] * 3500G</td>
+     </tr>
+    <tr>
+      <td colspan="6"><font color="#00f8f8">&lt;説明&gt;</font><br>
+      この耳飾には､命と精力の象徴というアンクが付けてある。<br>
+      <br> <font color="#ef6cef">※ 封印された力を解放するには</font>‘<font color="#e8c898">封印解放道具箱</font>'<font color="#ef6cef">が必要です</font></td>
+    </tr>
+    <tr>
+      <th colspan="6"><font color="#9c4e2d">ファインティップ[Nx]</font></th>
+    </tr>
+    <tr>
+      <td rowspan="2"><img src="design/image/item/iconItem_0377.png" border="0"></td>
+      <td colspan="5"><font color="#00f8f8">&lt;基本情報&gt;</font><br>
+      すべての状態異常 抵抗 <font color="#f8f800"> +{5~10}</font>％<br>
+      防御力 <font color="#f8f800">+10</font>％<br>
+      魔法属性ダメージ吸収 <font color="#f8f800">13</font>％<br>
+      <br>
+      <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#f8f800">60</font><br>
+      最大CP <font color="#f8f800">+20</font>％<br>
+      CP獲得ボーナス <font color="#f8f800">10</font>％<br>
+      クリティカルダメージ <font color="#f8f800">12</font>％ 増加</td>
+    </tr>
+    <tr>
+      <td valign="top"><font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+      レベル 202<br>
+      </td>
+      <td valign="top"><font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+      女性キャラクター専用</td>
+      <td valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+      109/10</td>
+      <td valign="top"><font color="#00f8f8">&lt;価格&gt;</font><br> [補正値] * 1万G</td>
+     </tr>
+    <tr>
+      <td colspan="6"><font color="#00f8f8">&lt;説明&gt;</font><br>
+      繊細な細工が入れてある最上級のイヤリング。<br>
+      <br> <font color="#ef6cef">※ 封印された力を解放するには</font>‘<font color="#e8c898">封印解放道具箱</font>'<font color="#ef6cef">が必要です</font></td>
+    </tr>
+    <tr>
+      <th colspan="6"><font color="#9c4e2d">ネクロキャビティ[Nx]</font></th>
+    </tr>
+    <tr>
+      <td rowspan="2"><img src="design/image/item/iconItem_0378.png" border="0"></td>
+      <td colspan="5"><font color="#00f8f8">&lt;基本情報&gt;</font><br>
+      決定打 <font color="#f8f800"> +{1~2}</font>％<br>
+      闇属性ダメージ吸収 <font color="#f8f800">25</font>％<br>
+      闇ダメージ <font color="#f8f800">450</font>～<font color="#f8f800">500</font><br>
+      呪い <font color="#f8f800">8</font>秒<br>
+      即死攻撃 <font color="#f8f800">+10</font>％<br>
+      <br>
+      <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#f8f800">60</font><br>
+      最大CP <font color="#f8f800">+26</font>％<br>
+      CP獲得ボーナス <font color="#f8f800">10</font>％<br>
+      クリティカルダメージ <font color="#f8f800">14</font>％ 増加</td>
+    </tr>
+    <tr>
+      <td valign="top"><font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+      レベル 256</td>
+      <td valign="top"><font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+      女性キャラクター専用</td>
+      <td valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+      102/10</td>
+      <td valign="top"><font color="#00f8f8">&lt;価格&gt;</font><br> [補正値] * 3750G</td>
+     </tr>
+    <tr>
+      <td colspan="6"><font color="#00f8f8">&lt;説明&gt;</font><br>
+      死の空虚さが感じられるイヤリング。多分、小さな骸骨の飾りのせいだろう。<br>
+      <br> <font color="#ef6cef">※ 封印された力を解放するには</font>‘<font color="#e8c898">封印解放道具箱</font>'<font color="#ef6cef">が必要です</font></td>
+    </tr>
+  
+</tbody></table>
+<br>
+<br>
+<br>
+<table id="table1">
+  <colgroup><col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+  
+    </colgroup><tbody><tr>
+      <th colspan="6"><a name="4"></a>NxDXU</th>
+    </tr>
+    <tr>
+      <th colspan="6"><font color="#9c4e2d">女神の息吹[Nx]</font></th>
+    </tr>
+    <tr>
+      <td rowspan="2"><img src="design/image/item/iconItem_1066.png" border="0"></td>
+      <td colspan="5"><font color="#00f8f8">&lt;基本情報&gt;</font><br>
+      異常状態 抵抗 <font color="#f8f800"> +{20~45}</font>％<br>
+      最大HP <font color="#f8f800">+30</font>％<br>
+      減少限界CP <font color="#f8f800">+20</font><br>
+      攻撃速度 <font color="#f8f800">+20</font>％<br>
+      集中力 <font color="#f8f800">+20</font>％<br>
+      力 <font color="#f8f800">+130</font><br>
+      スキルレベル <font color="#f8f800">+3</font><br>
+      <br>
+      <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#f8f800">52</font><br>
+      最大CP <font color="#f8f800">+36</font>％<br>
+      CP獲得ボーナス <font color="#f8f800">10</font>％<br>
+      クリティカルダメージ <font color="#f8f800">17</font>％ 増加</td>
+    </tr>
+    <tr>
+      <td valign="top"><font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+      レベル 362</td>
+      <td valign="top"><font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+      女性キャラクター専用</td>
+      <td valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+      10000/700</td>
+      <td valign="top"><font color="#00f8f8">&lt;価格&gt;</font><br>9540万G</td>
+     </tr>
+    <tr>
+      <td colspan="6"><font color="#00f8f8">&lt;説明&gt;</font><br>
+      慈しみ深い女神の息吹が感じられる優雅なイヤリング。<br>
+      <br> <font color="#ef6cef">※ 封印された力を解放するには</font>‘<font color="#e8c898">封印解放道具箱</font>'<font color="#ef6cef">が必要です</font></td>
+    </tr>
+    <tr>
+      <th colspan="6"><font color="#9c4e2d">フリーダムエンプレス[Nx]</font></th>
+    </tr>
+    <tr>
+      <td rowspan="2"><img src="design/image/item/iconItem_1065.png" border="0"></td>
+      <td colspan="5"><font color="#00f8f8">&lt;基本情報&gt;</font><br>
+      能力値低下状態 抵抗 <font color="#f8f800"> +{20~45}</font>％<br>
+      混乱攻撃 <font color="#f8f800">+2</font>％(<font color="#f8f800">10</font>秒)<br>
+      ベルセルク攻撃 <font color="#f8f800">+3</font>％(<font color="#f8f800">10</font>秒)<br>
+      召喚獣のすべてのステータスが<font color="#f8f800">100</font>増加<br>
+      知識 <font color="#f8f800">+125</font><br>
+      敏捷 <font color="#f8f800">+30</font><br>
+      <font color="#f8f800">ビーストテイマー</font> スキルレベル +<font color="#f8f800">1</font><br>
+      <br>
+      <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#f8f800">56</font><br>
+      最大CP <font color="#f8f800">+39</font>％<br>
+      CP獲得ボーナス <font color="#f8f800">10</font>％<br>
+      ダブルクリティカルダメージ <font color="#f8f800">18</font>％ 増加</td>
+    </tr>
+    <tr>
+      <td valign="top"><font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+      レベル 389</td>
+      <td valign="top"><font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+      女性キャラクター専用</td>
+      <td valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+      10000/500</td>
+      <td valign="top"><font color="#00f8f8">&lt;価格&gt;</font><br>1億5736万G</td>
+     </tr>
+    <tr>
+      <td colspan="6"><font color="#00f8f8">&lt;説明&gt;</font><br>
+      自由の女帝に捧げられた貴いイヤリング。<br>
+      <br> <font color="#ef6cef">※ 封印された力を解放するには</font>‘<font color="#e8c898">封印解放道具箱</font>'<font color="#ef6cef">が必要です</font></td>
+    </tr>
+    <tr>
+      <th colspan="6"><font color="#9c4e2d">トリニティーラスター[Nx]</font></th>
+    </tr>
+    <tr>
+      <td rowspan="2"><img src="design/image/item/iconItem_1064.png" border="0"></td>
+      <td colspan="5"><font color="#00f8f8">&lt;基本情報&gt;</font><br>
+      状態 抵抗 <font color="#f8f800"> +{20~45}</font>％<br>
+      光ダメージ <font color="#f8f800">1</font>～<font color="#f8f800">1740</font><br>
+      <font color="#f8f800">2</font>秒の間 命中, 回避低下<br>
+      光属性抵抗 <font color="#f8f800">+15</font>％<br>
+      光属性ダメージ吸収 <font color="#f8f800">15</font>％<br>
+      カリスマ <font color="#f8f800">+165</font><br>
+      力 <font color="#f8f800">+133</font><br>
+      <br>
+      <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#f8f800">56</font><br>
+      最大CP <font color="#f8f800">+39</font>％<br>
+      CP獲得ボーナス <font color="#f8f800">10</font>％<br>
+      クリティカルダメージ <font color="#f8f800">18</font>％ 増加</td>
+    </tr>
+    <tr>
+      <td valign="top"><font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+      レベル 390</td>
+      <td valign="top"><font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+      女性キャラクター専用</td>
+      <td valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+      10000/700</td>
+      <td valign="top"><font color="#00f8f8">&lt;価格&gt;</font><br>1億526万G</td>
+     </tr>
+    <tr>
+      <td colspan="6"><font color="#00f8f8">&lt;説明&gt;</font><br>
+      三つの十字架が光属性の攻撃と防御を効果的に実行できるように補助してくれる。<br>
+      <br> <font color="#ef6cef">※ 封印された力を解放するには</font>‘<font color="#e8c898">封印解放道具箱</font>'<font color="#ef6cef">が必要です</font></td>
+    </tr>
+    <tr>
+      <th colspan="6"><font color="#9c4e2d">スターチャイルド[Nx]</font></th>
+    </tr>
+    <tr>
+      <td rowspan="2"><img src="design/image/item/iconItem_1067.png" border="0"></td>
+      <td colspan="5"><font color="#00f8f8">&lt;基本情報&gt;</font><br>
+      集中力 <font color="#f8f800"> +{6~8}</font><br>
+      ターゲットの光抵抗を<font color="#f8f800">24</font>％弱化させる。<br>
+      力 <font color="#f8f800">+130</font><br>
+      ダメージ <font color="#f8f800">+25</font>％<br>
+      攻撃速度 <font color="#f8f800">+20</font>％<br>
+      健康 <font color="#f8f800">+1</font>/レベル <font color="#f8f800">10</font><br>
+      ターゲットの火抵抗を<font color="#f8f800">20</font>％弱化させる。<br>
+      <br>
+      <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#f8f800">64</font><br>
+      最大CP <font color="#f8f800">+45</font>％<br>
+      CP獲得ボーナス <font color="#f8f800">10</font>％<br>
+      クリティカルダメージ <font color="#f8f800">20</font>％ 増加</td>
+    </tr>
+    <tr>
+      <td valign="top"><font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+      レベル 447</td>
+      <td valign="top"><font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+      女性キャラクター専用</td>
+      <td valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+      10000/500</td>
+      <td valign="top"><font color="#00f8f8">&lt;価格&gt;</font><br>1億8904万G</td>
+     </tr>
+    <tr>
+      <td colspan="6"><font color="#00f8f8">&lt;説明&gt;</font><br>
+      星の光と、遥かな星の長寿が込められている細工品。<br>
+      <br> <font color="#ef6cef">※ 封印された力を解放するには</font>‘<font color="#e8c898">封印解放道具箱</font>'<font color="#ef6cef">が必要です</font></td>
+    </tr>
+    <tr>
+      <th colspan="6"><font color="#9c4e2d">レブリングヒンジ[Nx]</font></th>
+    </tr>
+    <tr>
+      <td rowspan="2"><img src="design/image/item/iconItem_1062.png" border="0"></td>
+      <td colspan="5"><font color="#00f8f8">&lt;基本情報&gt;</font><br>
+      すべての状態異常 抵抗 <font color="#f8f800"> +{10~25}</font>％<br>
+      力 <font color="#f8f800">+1</font>/レベル <font color="#f8f800">7</font><br>
+      知識 <font color="#f8f800">+1</font>/レベル <font color="#f8f800">6</font><br>
+      知恵 <font color="#f8f800">+100</font><br>
+      敏捷 <font color="#f8f800">+90</font><br>
+      集中力 <font color="#f8f800">+25</font>％<br>
+      <br>
+      <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#f8f800">69</font><br>
+      最大CP <font color="#f8f800">+48</font>％<br>
+      CP獲得ボーナス <font color="#f8f800">10</font>％<br>
+      クリティカルダメージ <font color="#f8f800">21</font>％ 増加</td>
+    </tr>
+    <tr>
+      <td valign="top"><font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+      レベル 484</td>
+      <td valign="top"><font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+      女性キャラクター専用</td>
+      <td valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+      10000/300</td>
+      <td valign="top"><font color="#00f8f8">&lt;価格&gt;</font><br>2億7995万G</td>
+     </tr>
+    <tr>
+      <td colspan="6"><font color="#00f8f8">&lt;説明&gt;</font><br>
+      小さなつっかえ棒と十分に長いてこさえあれば、大陸でも持てるほどに大きい力を得ることができる。<br>
+      <br> <font color="#ef6cef">※ 封印された力を解放するには</font>‘<font color="#e8c898">封印解放道具箱</font>'<font color="#ef6cef">が必要です</font></td>
+    </tr>
+    <tr>
+      <th colspan="6"><font color="#9c4e2d">アイボリーダスト[Nx]</font></th>
+    </tr>
+    <tr>
+      <td rowspan="2"><img src="design/image/item/iconItem_1063.png" border="0"></td>
+      <td colspan="5"><font color="#00f8f8">&lt;基本情報&gt;</font><br>
+      決定打 <font color="#f8f800"> +{2~3}</font>％<br>
+      コールド攻撃+ <font color="#f8f800">10</font>％(<font color="#f8f800">20</font>秒)<br>
+      闇属性抵抗 <font color="#f8f800">+10</font>％<br>
+      健康 <font color="#f8f800">+140</font><br>
+      最大CP <font color="#f8f800">+15</font>％<br>
+      スキルレベル <font color="#f8f800">+3</font><br>
+      <br>
+      <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>アイテム着用レベル -<font color="#f8f800">84</font><br>
+      最大CP <font color="#f8f800">+59</font>％<br>
+      CP獲得ボーナス <font color="#f8f800">10</font>％<br>
+      クリティカルダメージ <font color="#f8f800">25</font>％ 増加</td>
+    </tr>
+    <tr>
+      <td valign="top"><font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+      レベル 588</td>
+      <td valign="top"><font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+      女性キャラクター専用</td>
+      <td valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+      10000/1000</td>
+      <td valign="top"><font color="#00f8f8">&lt;価格&gt;</font><br>4525万G</td>
+     </tr>
+    <tr>
+      <td colspan="6"><font color="#00f8f8">&lt;説明&gt;</font><br>
+      かすかに淡い色をした粉がいっぱい詰まったガラス玉飾りのイヤリング。<br>
+      <br> <font color="#ef6cef">※ 封印された力を解放するには</font>‘<font color="#e8c898">封印解放道具箱</font>'<font color="#ef6cef">が必要です</font></td>
+    </tr>
+</tbody></table>
+
+<br>
+<br>
+<footer class="android-footer mdl-mega-footer">
+  <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+    許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+  </font>
+  Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+</footer>
+<!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+      Copyright (c) This site is created by Sokomin. All Rights Reserved.
+ -->
+
+</div>
+
+<script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+</div>
+</body>
+
+</html>

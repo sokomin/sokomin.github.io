@@ -1,0 +1,1840 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=960">
+  <!-- Page styles -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+  <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-133658114-1');
+  </script>
+  <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+  <script>
+    function enter() {
+      if (window.event.keyCode == 13) {
+        var last_keyword = $('#search-field').val();
+        window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+      }
+    }
+  </script>
+
+  <style>
+    #view-source {
+        position: fixed;
+        display: block;
+        right: 0;
+        bottom: 0;
+        margin-right: 40px;
+        margin-bottom: 40px;
+        z-index: 900;
+      }
+    </style>
+</head>
+
+<body>
+  <title>赤石の民衆</title>
+  <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <a name="container"></a>
+    <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+      <div class="mdl-layout__header-row">
+        <span class="android-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <!-- Add spacer, to align navigation to the right in desktop -->
+        <div class="android-header-spacer mdl-layout-spacer"></div>
+        <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text" onkeypress="enter();" id="search-field" />
+          </div>
+        </div>
+        <!-- Navigation -->
+        <div class="android-navigation-container">
+          <nav class="android-navigation mdl-navigation">
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/index.html">ホーム</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+          </nav>
+        </div>
+        <span class="android-mobile-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
+          <i class="material-icons">more_vert</i>
+        </button>
+        <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a></li>
+          <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+        </ul>
+
+      </div>
+    </div>
+
+    <div class="android-drawer mdl-layout__drawer">
+      <span class="mdl-layout-title">
+        <h3>メニュー</h3>
+      </span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html"><strong>モンスター</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html"><strong>ダンジョン</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html"><strong>クエスト</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html"><strong>雑学</strong></a>
+      </nav>
+    </div>
+
+
+    <div class="android-content mdl-layout__content">
+
+      <!--main-->
+                  <a href="../index.html">トップ</a> >> <a href="../item/item.html">アイテム</a><br>
+<div class="main-background mdl-typography--text-center">
+        <br>
+        <h3>ユニーク 兜</h3>
+
+        <a href="#1">U</a><br>
+        <a href="#2">DXU</a><br>
+        <a href="#3">NxU</a><br>
+        <a href="#4">NxDXU</a><br>
+        <br>
+        <table id="table1">
+          <colgroup>
+            <col span="1" width="40">
+            <col span="1" width="135">
+            <col span="1" width="135">
+            <col span="2">
+            <col span="1">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="6"><a name="1"></a>U</th>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#e8c898">ジェーソンの革の帽子</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0090.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800"> +{1~10}</font><br>
+                火 抵抗 <font color="#f8f800">+30</font>％<br>
+                火ダメージ <font color="#f8f800">500</font>～<font color="#f8f800">600</font><br>
+                火属性攻撃力を<font color="#f8f800">10</font>％強化させる。<br>
+                召喚獣の火属性攻撃力 <font color="#f8f800">+10</font>％<br>
+                ペットの火属性攻撃力 <font color="#f8f800">+10</font>％<br>
+                火の恩寵 持続時間 <font color="#f8f800">+60</font>秒
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                10000/1000
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                [補正値]*150G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                ジェーソンが大事にしている革の帽子。これをかぶると、よく分からないが、ある人物に怒りを覚えるらしい
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#e8c898">ハーソンのバンダナ</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0089.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800"> +{1~10}</font><br>
+                歩行中 CP <font color="#f8f800">+10</font><br>
+                歩行中 HP <font color="#f8f800">+10</font><br>
+                移動速度 <font color="#f8f800">+10</font>％<br>
+                DXユニークドロップ確率 <font color="#f8f800">5</font>％ 増加
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                10000/1000
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                [補正値]*25G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                遠い思い出となった女性の記憶が残るバンダナ。彼女が恋しくなった時には、このバンダナを身に着けて静かに歩くそうだ
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#e8c898">クリムソンハット</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0321.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+2</font><br>
+                防御力 <font color="#f8f800">+10</font>％<br>
+                火ダメージ <font color="#f8f800">14</font>～<font color="#f8f800">24</font><br>
+                火属性抵抗 <font color="#f8f800">+55</font>％<br>
+                火属性ダメージ吸収 <font color="#f8f800">10</font>％<br>
+                運 <font color="#f8f800">+25</font><br>
+                <font color="#f8f800">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>レベル 67<br>
+                力 10
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                61/500
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                3000G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>赤い帽子。燃える太陽のような赤い色が印象に残る
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#e8c898">スカルスタック</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0322.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+3</font><br>
+                防御力 <font color="#f8f800">+20</font>％<br>
+                集中力 <font color="#f8f800">+15</font>％<br>
+                減少限界CP <font color="#f8f800">+5</font><br>
+                <font color="#f8f800">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>レベル 78<br>
+                力 20
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                71/750
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                7500G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>被ると頭のサイズに合わせて大きさが変わるヘッドギア。精神集中に抜群の効果がある
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#e8c898">アルファキャップ</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0323.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800"> +{3~4}</font><br>
+                致命打 抵抗 <font color="#f8f800"> +{1~2}</font>％<br>
+                防御力 <font color="#f8f800">+5</font><br>
+                防御力 <font color="#f8f800">+15</font>％<br>
+                知識 <font color="#f8f800">+10</font><br>
+                <font color="#f8f800">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>レベル 80<br>
+                力 30
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                75/1000
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                 [補正値] * 2万G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>フランデル大陸の鉄製兜の原型と知られた古代の遺物。古い金属製にもかかわらず､保存状態がいい
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#e8c898">必勝バンダナ</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0320.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+1</font><br>
+                防御力 <font color="#f8f800">+1</font><br>
+                防御力 <font color="#f8f800">+5</font>％<br>
+                集中力 <font color="#f8f800">+20</font>％<br>
+                減少限界CP <font color="#f8f800">+2</font><br>
+                スキルレベル <font color="#f8f800">+1</font><br>
+                <font color="#f8f800">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                レベル 90
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                82/600
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                250G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>赤い字で‘必勝’と書かれているバンダナ。集中力の向上に役に立つ
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#e8c898">デンスフォーグ</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0324.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800"> +{4~5}</font><br>
+                致命打 抵抗 <font color="#f8f800"> +{2~4}</font>％<br>
+                防御力 <font color="#f8f800">+7</font><br>
+                防御力 <font color="#f8f800">+20</font>％<br>
+                光属性抵抗 <font color="#f8f800">+25</font>％<br>
+                闇属性抵抗 <font color="#f8f800">-5</font>％<br>
+                <font color="#f8f800">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>レベル 93<br>
+                力 45
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                84/600
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                 [補正値] * 6万G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>硬く隙の無い作りで守ることに集中した結果､視野が狭くなってしまった兜。しかし､頭を守るにはこれ以上のものは無い
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#e8c898">ダークバイザー</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0325.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800"> +{5~6}</font><br>
+                致命打 抵抗 <font color="#f8f800"> +{5~7}</font>％<br>
+                防御力 <font color="#f8f800">+10</font><br>
+                闇ダメージ <font color="#f8f800">28</font>～<font color="#f8f800">47</font><br>
+                呪い <font color="#f8f800">30</font>秒<br>
+                闇属性ダメージ吸収 <font color="#f8f800">10</font>％<br>
+                敵逃亡 <font color="#f8f800">45</font>％<br>
+                ターゲットの回避率補正値 無視<br>
+                <font color="#f8f800">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>レベル 149<br>
+                力 60
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                125/300
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                 [補正値] * 12万G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>闇の騎士が好んで使う兜。昔の持主に殺された者達の呪いが積もっている
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#e8c898">ルシッドヘルム</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0326.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+6</font><br>
+                致命打 抵抗 <font color="#f8f800"> +{7~10}</font>％<br>
+                防御力 <font color="#f8f800">+8</font><br>
+                防御力 <font color="#f8f800">+30</font>％<br>
+                魔法抵抗 <font color="#f8f800">+15</font>％<br>
+                状態異常抵抗 <font color="#f8f800">+35</font>％<br>
+                <font color="#f8f800">ブラー</font><br>
+                <font color="#f8f800">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>レベル 160<br>
+                力 90
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                127/50
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                [補正値]*20万G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br> 大きいにも関わらず、視野を妨げない様に透明な材質で作られた最高の兜
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table1">
+          <colgroup>
+            <col span="1" width="40">
+            <col span="1" width="135">
+            <col span="1" width="135">
+            <col span="2">
+            <col span="1">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="6"><a name="2"></a>DXU</th>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#e8c898">放浪のメロディー</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0995.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+11</font><br>
+                命中率 <font color="#f8f800">+20</font>％<br>
+                風ダメージ <font color="#f8f800">30</font>～<font color="#f8f800">40</font><br>
+                スタン <font color="#f8f800">5</font>Frame<br>
+                即死攻撃 <font color="#f8f800">+1</font>％<br>
+                風属性抵抗 <font color="#f8f800">+15</font>％<br>
+                石化抵抗 <font color="#f8f800">+30</font>％<br>
+                知恵 <font color="#f8f800">+50</font><br>
+                <font color="#f8f800">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>レベル 318<br>
+                力 80
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                303/1000
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                2010万G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>放浪者ケインが使ったバンダナ。放浪者として旅行を楽しんていたケインは、訪れた印として、あちこちに自分のバンダナを残して歩いたという話がある
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#e8c898">リトルサンシャイン</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0996.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+12</font><br>
+                健康固定 <font color="#f8f800">150</font><br>
+                カリスマ固定 <font color="#f8f800">100</font><br>
+                減少限界CP <font color="#f8f800">+45</font><br>
+                火ダメージ <font color="#f8f800">54</font>～<font color="#f8f800">60</font><br>
+                ポーション回復速度<font color="#f8f800">150</font>％増加<br>
+                <font color="#f8f800">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>レベル 364<br>
+                力 100
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                347/600
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                1億2012万G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>巨大な太陽の力を小さな帽子に閉じこめた。制限はあるが、太陽の力を使用することが可能
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#e8c898">マスターキャップ</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0997.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+13</font><br>
+                致命打 抵抗 <font color="#f8f800">+5</font>％<br>
+                魔法抵抗 <font color="#f8f800">+15</font>％<br>
+                召喚獣のすべてのステータスが<font color="#f8f800">200</font>増加<br>
+                HP回復 +(<font color="#f8f800">40</font>/10秒)<br>
+                ダメージをCPに転換 <font color="#f8f800">20</font>％<br>
+                <font color="#f8f800">サマナー</font> スキルレベル +<font color="#f8f800">2</font><br>
+                力 <font color="#f8f800">+100</font><br>
+                <font color="#f8f800">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>レベル 364<br>
+                力 140
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                347/750
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                8409万G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>サマナーの間に、口伝えられている夢の帽子
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#e8c898">ファーブの帽子</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0998.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+14</font><br>
+                致命打 抵抗 <font color="#f8f800">+8</font>％<br>
+                <font color="#f8f800">武道家</font> スキルレベル +<font color="#f8f800">3</font><br>
+                カウンターフリーズ <font color="#f8f800">10</font>％(<font color="#f8f800">7</font>秒)<br>
+                カウンターコールド <font color="#f8f800">20</font>％(<font color="#f8f800">8</font>秒)<br>
+                力 <font color="#f8f800">+66</font><br>
+                敏捷 <font color="#f8f800">+100</font><br>
+                水属性抵抗 <font color="#f8f800">+40</font>％<br>
+                <font color="#f8f800">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>レベル 364<br>
+                力 160
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                347/900
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                4805万G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>内側に「ファーブ」と書かれている帽子。誰だか分からないが、かなり名の知れた有名武道家だったようだ
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#e8c898">黒鉄帽</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0999.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+15</font><br>
+                致命打 抵抗 <font color="#f8f800"> +{10~11}</font>％<br>
+                防御力 <font color="#f8f800">+20</font><br>
+                健康 <font color="#f8f800">+150</font><br>
+                回避率 <font color="#f8f800">+5</font>％<br>
+                集中力 <font color="#f8f800">+40</font>％<br>
+                決定打抵抗 <font color="#f8f800">+60</font>％<br>
+                状態異常抵抗 <font color="#f8f800">+30</font>％<br>
+                <font color="#f8f800">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>レベル 401<br>
+                力 180
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                382/650
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                1億2285万G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>丈夫な鉄の帽子で、頭の両方が尖って上っている姿が特徴的だ
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#e8c898">タレントハット</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1000.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+16</font><br>
+                致命打 抵抗 <font color="#f8f800"> +{12~13}</font>％<br>
+                スキル難易度<font color="#f8f800">1</font>以下のスキルレベルが<font color="#f8f800">4</font>増加する。<br>
+                スキル難易度<font color="#f8f800">2</font>以下のスキルレベルが<font color="#f8f800">3</font>増加する。<br>
+                スキル難易度<font color="#f8f800">3</font>以下のスキルレベルが<font color="#f8f800">2</font>増加する。<br>
+                スキル難易度<font color="#f8f800">4</font>以下のスキルレベルが<font color="#f8f800">1</font>増加する。<br>
+                運 <font color="#f8f800">+30</font><br>
+                魔法アイテムドロップ確率 <font color="#f8f800">+30</font>％<br>
+                <font color="#f8f800">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>レベル 464<br>
+                力 190
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                441/150
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                3億1443万G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>自分の人生を終えて死んでしまった有名な芸人の帽子。ちょっとだけ頭の働きがよくなる効果がある
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#e8c898">アースアンプ</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1001.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+17</font><br>
+                致命打 抵抗 <font color="#f8f800"> +{14~15}</font>％<br>
+                最大ダメージ <font color="#f8f800">+12</font><br>
+                ダメージ <font color="#f8f800">+10</font>％<br>
+                致命打発動確率 <font color="#f8f800">+5</font>％<br>
+                ブロッキング速度 <font color="#f8f800">+30</font>％<br>
+                最大HP <font color="#f8f800">+25</font>％<br>
+                大地属性抵抗 <font color="#f8f800">+35</font>％<br>
+                <font color="#f8f800">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                レベル 468<br>
+                力 200
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                445/250
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                2億8454万G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br> 大地の力を導き出す帽子
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#e8c898">ハイハット</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1002.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+18</font><br>
+                致命打 抵抗 <font color="#f8f800"> +{16~17}</font>％<br>
+                知恵 <font color="#f8f800">+50</font><br>
+                カリスマ <font color="#f8f800">+50</font><br>
+                攻撃速度 <font color="#f8f800">+20</font>％<br>
+                CP獲得ボーナス <font color="#f8f800">5</font>％<br>
+                目くらまし攻撃 <font color="#f8f800">+23</font>％(<font color="#f8f800">8</font>秒)<br>
+                <font color="#f8f800">ビショップ</font> スキルレベル +<font color="#f8f800">3</font><br>
+                <font color="#f8f800">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br> レベル 482<br>
+                力 220
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                458/330
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                2億6799万G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br> 戦闘を専門にするビショップのための特別な兜。主に過激派たちが使ったらしい
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#e8c898">グリムジョーカーの帽子</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1003.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+19</font><br>
+                致命打 抵抗 <font color="#f8f800"> +{18~20}</font>％<br>
+                魔法アイテムドロップ確率 <font color="#f8f800">+25</font>％<br>
+                <font color="#f8f800">15</font>％のペット経験値ボーナス<br>
+                最大HP <font color="#f8f800">+25</font>％<br>
+                ダメージ返し <font color="#f8f800">30</font>％<br>
+                光属性抵抗 <font color="#f8f800">+45</font>％<br>
+                <font color="#f8f800">錬成 可能</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br> レベル 538<br>
+                力 280
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                511/400
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                2億8166万G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>光の神獣が愛用する帽子。神獣が消える時、一緒に消えてしまうのが普通だが、たまに次元の混同が起きて、この世界へ実体化されて落ちることがある
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table1">
+          <colgroup>
+            <col span="1" width="40">
+            <col span="1" width="135">
+            <col span="1" width="135">
+            <col span="2">
+            <col span="1">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="6"><a name="3"></a>NxU</th>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#9c4e2d">クリムソンハット[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0321.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+2</font><br>
+                防御力 <font color="#f8f800">+15</font>％<br>
+                火ダメージ <font color="#f8f800">300</font>～<font color="#f8f800">600</font><br>
+                火属性抵抗 <font color="#f8f800">+55</font>％<br>
+                火属性ダメージ吸収 <font color="#f8f800">30</font>％<br>
+                運 <font color="#f8f800">+25</font><br>
+                <br>
+                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>
+                アイテム着用レベル -<font color="#f8f800">40</font><br>
+                力 <font color="#f8f800">+43</font><br>
+                光ダメージ <font color="#f8f800">1</font>～<font color="#f8f800">318</font><br>
+                <font color="#f8f800">5</font>秒の間 命中, 回避低下<br>
+                運 <font color="#f8f800">+50</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                レベル 134<br>
+                力 10
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                61/50
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>3000G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                赤い帽子。燃える太陽のような赤い色が印象に残る。<br>
+                <br>
+                 <font color="#ef6cef">※ 封印された力を解放するには</font>‘<font color="#e8c898">封印解放道具箱</font>'<font color="#ef6cef">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#9c4e2d">スカルスタック[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0322.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+3</font><br>
+                防御力 <font color="#f8f800">+25</font>％<br>
+                集中力 <font color="#f8f800">+20</font>％<br>
+                減少限界CP <font color="#f8f800">+10</font><br>
+                <br>
+                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>
+                アイテム着用レベル -<font color="#f8f800">40</font><br>
+                力 <font color="#f8f800">+46</font><br>
+                光ダメージ <font color="#f8f800">1</font>～<font color="#f8f800">362</font><br>
+                <font color="#f8f800">5</font>秒の間 命中, 回避低下<br>
+                致命打抵抗 <font color="#f8f800">+20</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                レベル 156<br>
+                力 20
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                71/100
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>7500G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                被ると頭のサイズに合わせて大きさが変わるヘッドギア。精神集中に抜群の効果がある。<br>
+                <br>
+                 <font color="#ef6cef">※ 封印された力を解放するには</font>‘<font color="#e8c898">封印解放道具箱</font>'<font color="#ef6cef">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#9c4e2d">アルファキャップ[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0323.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+4</font><br>
+                致命打 抵抗 <font color="#f8f800">+2</font>％<br>
+                防御力 <font color="#f8f800">+5</font><br>
+                防御力 <font color="#f8f800">+20</font>％<br>
+                知識 <font color="#f8f800">+40</font><br>
+                <br>
+                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>
+                アイテム着用レベル -<font color="#f8f800">40</font><br>
+                力 <font color="#f8f800">+46</font><br>
+                光ダメージ <font color="#f8f800">1</font>～<font color="#f8f800">370</font><br>
+                <font color="#f8f800">5</font>秒の間 命中, 回避低下<br>
+                知識 <font color="#f8f800">+50</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                レベル 160<br>
+                力 30
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                75/100
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                4万G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                フランデル大陸の鉄製兜の原型と知られた古代の遺物。古い金属製にもかかわらず､保存状態がいい。<br>
+                <br>
+                 <font color="#ef6cef">※ 封印された力を解放するには</font>‘<font color="#e8c898">封印解放道具箱</font>'<font color="#ef6cef">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#9c4e2d">必勝バンダナ[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0320.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+1</font><br>
+                防御力 <font color="#f8f800">+3</font><br>
+                防御力 <font color="#f8f800">+10</font>％<br>
+                集中力 <font color="#f8f800">+20</font>％<br>
+                減少限界CP <font color="#f8f800">+6</font><br>
+                スキルレベル <font color="#f8f800">+2</font><br>
+                <br>
+                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>
+                アイテム着用レベル -<font color="#f8f800">40</font><br>
+                力 <font color="#f8f800">+48</font><br>
+                光ダメージ <font color="#f8f800">1</font>～<font color="#f8f800">410</font><br>
+                <font color="#f8f800">5</font>秒の間 命中, 回避低下<br>
+                知識 <font color="#f8f800">+50</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                レベル 180
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                82/60
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>250G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                赤い字で‘必勝’と書かれているバンダナ。集中力の向上に役に立つ。<br>
+                <br>
+                 <font color="#ef6cef">※ 封印された力を解放するには</font>‘<font color="#e8c898">封印解放道具箱</font>'<font color="#ef6cef">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#9c4e2d">デンスフォーグ[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0324.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+5</font><br>
+                致命打 抵抗 <font color="#f8f800">+4</font>％<br>
+                防御力 <font color="#f8f800">+14</font><br>
+                防御力 <font color="#f8f800">+40</font>％<br>
+                光属性抵抗 <font color="#f8f800">+25</font>％<br>
+                <br>
+                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>
+                アイテム着用レベル -<font color="#f8f800">40</font><br>
+                力 <font color="#f8f800">+49</font><br>
+                光ダメージ <font color="#f8f800">1</font>～<font color="#f8f800">422</font><br>
+                <font color="#f8f800">5</font>秒の間 命中, 回避低下<br>
+                防御力 <font color="#f8f800">+30</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                レベル 186<br>
+                力 45
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                84/60
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                24万G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                硬く隙の無い作りで守ることに集中した結果､視野が狭くなってしまった兜。しかし､頭を守るにはこれ以上のものは無い。<br>
+                <br>
+                 <font color="#ef6cef">※ 封印された力を解放するには</font>‘<font color="#e8c898">封印解放道具箱</font>'<font color="#ef6cef">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#9c4e2d">ダークバイザー[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0325.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+6</font><br>
+                致命打 抵抗 <font color="#f8f800">+7</font>％<br>
+                防御力 <font color="#f8f800">+15</font><br>
+                闇ダメージ <font color="#f8f800">300</font>～<font color="#f8f800">500</font><br>
+                呪い <font color="#f8f800">30</font>秒<br>
+                闇属性ダメージ吸収 <font color="#f8f800">20</font>％<br>
+                敵逃亡 <font color="#f8f800">45</font>％<br>
+                ターゲットの回避率補正値 無視<br>
+                <br>
+                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>
+                アイテム着用レベル -<font color="#f8f800">60</font><br>
+                力 <font color="#f8f800">+55</font><br>
+                光ダメージ <font color="#f8f800">1</font>～<font color="#f8f800">546</font><br>
+                <font color="#f8f800">5</font>秒の間 命中, 回避低下<br>
+                闇ダメージ <font color="#f8f800">500</font>～<font color="#f8f800">500</font><br>
+                呪い <font color="#f8f800">30</font>秒
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                レベル 248<br>
+                力 60
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                125/30
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                84万G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                闇の騎士が好んで使う兜。昔の持主に殺された者達の呪いが積もっている。<br>
+                <br>
+                 <font color="#ef6cef">※ 封印された力を解放するには</font>‘<font color="#e8c898">封印解放道具箱</font>'<font color="#ef6cef">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#9c4e2d">ルシッドヘルム[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0326.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+6</font><br>
+                致命打 抵抗 <font color="#f8f800">+10</font>％<br>
+                防御力 <font color="#f8f800">+8</font><br>
+                防御力 <font color="#f8f800">+30</font>％<br>
+                魔法抵抗 <font color="#f8f800">+30</font>％<br>
+                状態異常抵抗 <font color="#f8f800">+50</font>％<br>
+                <font color="#f8f800">ブラー</font><br>
+                <br>
+                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>
+                アイテム着用レベル -<font color="#f8f800">60</font><br>
+                力 <font color="#f8f800">+57</font><br>
+                光ダメージ <font color="#f8f800">1</font>～<font color="#f8f800">590</font><br>
+                <font color="#f8f800">5</font>秒の間 命中, 回避低下<br>
+                敵に与えたダメージ <font color="#f8f800">2</font>％を 体力吸収
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                レベル 270<br>
+                力 90
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                127/10
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                200万G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                大きいにも関わらず、視野を妨げない様に透明な材質で作られた最高の兜。<br>
+                <br>
+                 <font color="#ef6cef">※ 封印された力を解放するには</font>‘<font color="#e8c898">封印解放道具箱</font>'<font color="#ef6cef">が必要です</font>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <table id="table1">
+          <colgroup>
+            <col span="1" width="40">
+            <col span="1" width="135">
+            <col span="1" width="135">
+            <col span="2">
+            <col span="1">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="6"><a name="4"></a>NxDXU</th>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#9c4e2d">放浪のメロディー[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0995.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+11</font><br>
+                命中率 <font color="#f8f800">+20</font>％<br>
+                風ダメージ <font color="#f8f800">300</font>～<font color="#f8f800">400</font><br>
+                スタン <font color="#f8f800">5</font>Frame<br>
+                即死攻撃 <font color="#f8f800">+3</font>％<br>
+                風属性抵抗 <font color="#f8f800">+20</font>％<br>
+                石化抵抗 <font color="#f8f800">+30</font>％<br>
+                知恵 <font color="#f8f800">+250</font><br>
+                <br>
+                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>
+                アイテム着用レベル -<font color="#f8f800">45</font><br>
+                力 <font color="#f8f800">+114</font><br>
+                光ダメージ <font color="#f8f800">1</font>～<font color="#f8f800">686</font><br>
+                <font color="#f8f800">5</font>秒の間 命中, 回避低下<br>
+                即死攻撃 <font color="#f8f800">+10</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                レベル 318<br>
+                力 80
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                10000/1000
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>2010万G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                放浪者ケインが使ったバンダナ。放浪者として旅行を楽しんていたケインは、訪れた印として、あちこちに自分のバンダナを残して歩いたという話がある。<br>
+                <br>
+                 <font color="#ef6cef">※ 封印された力を解放するには</font>‘<font color="#e8c898">封印解放道具箱</font>'<font color="#ef6cef">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#9c4e2d">リトルサンシャイン[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0996.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+12</font><br>
+                健康固定 <font color="#f8f800">450</font><br>
+                減少限界CP <font color="#f8f800">+45</font><br>
+                火ダメージ <font color="#f8f800">540</font>～<font color="#f8f800">600</font><br>
+                ポーション回復速度<font color="#f8f800">150</font>％増加<br>
+                <br>
+                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>
+                アイテム着用レベル -<font color="#f8f800">52</font><br>
+                力 <font color="#f8f800">+123</font><br>
+                光ダメージ <font color="#f8f800">1</font>～<font color="#f8f800">778</font><br>
+                <font color="#f8f800">5</font>秒の間 命中, 回避低下<br>
+                食べ物回復量 <font color="#f8f800">+10</font>％ 増加
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                レベル 364<br>
+                力 100
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                10000/600
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>1億2012万G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                巨大な太陽の力を小さな帽子に閉じこめた。制限はあるが、太陽の力を使用することが可能。<br>
+                <br>
+                 <font color="#ef6cef">※ 封印された力を解放するには</font>‘<font color="#e8c898">封印解放道具箱</font>'<font color="#ef6cef">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#9c4e2d">マスターキャップ[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0997.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+13</font><br>
+                致命打 抵抗 <font color="#f8f800">+15</font>％<br>
+                魔法抵抗 <font color="#f8f800">+20</font>％<br>
+                召喚獣のすべてのステータスが<font color="#f8f800">250</font>増加<br>
+                HP回復 +(<font color="#f8f800">40</font>/10秒)<br>
+                ダメージをCPに転換 <font color="#f8f800">30</font>％<br>
+                <font color="#f8f800">サマナー</font> スキルレベル +<font color="#f8f800">4</font><br>
+                力 <font color="#f8f800">+200</font><br>
+                <br>
+                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>
+                アイテム着用レベル -<font color="#f8f800">52</font><br>
+                力 <font color="#f8f800">+123</font><br>
+                光ダメージ <font color="#f8f800">1</font>～<font color="#f8f800">778</font><br>
+                <font color="#f8f800">5</font>秒の間 命中, 回避低下<br>
+                召喚獣の魔法攻撃力 <font color="#f8f800">+10</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                レベル 364<br>
+                力 140
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                10000/750
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>8409万G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                サマナーの間に、口伝えられている夢の帽子。<br>
+                <br>
+                 <font color="#ef6cef">※ 封印された力を解放するには</font>‘<font color="#e8c898">封印解放道具箱</font>'<font color="#ef6cef">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#9c4e2d">ファーブの帽子[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0998.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+14</font><br>
+                致命打 抵抗 <font color="#f8f800">+12</font>％<br>
+                <font color="#f8f800">武道家</font> スキルレベル +<font color="#f8f800">5</font><br>
+                カウンターフリーズ <font color="#f8f800">10</font>％(<font color="#f8f800">7</font>秒)<br>
+                カウンターコールド <font color="#f8f800">20</font>％(<font color="#f8f800">8</font>秒)<br>
+                力 <font color="#f8f800">+166</font><br>
+                敏捷 <font color="#f8f800">+200</font><br>
+                水属性抵抗 <font color="#f8f800">+40</font>％<br>
+                <br>
+                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>
+                アイテム着用レベル -<font color="#f8f800">52</font><br>
+                力 <font color="#f8f800">+123</font><br>
+                光ダメージ <font color="#f8f800">1</font>～<font color="#f8f800">778</font><br>
+                <font color="#f8f800">5</font>秒の間 命中, 回避低下<br>火ダメージ <font color="#f8f800">1070</font>～<font color="#f8f800">1250</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                レベル 364<br>
+                力 160
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                10000/900
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>4805万G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                内側に「ファーブ」と書かれている帽子。誰だか分からないが、かなり名の知れた有名武道家だったようだ。<br>
+                <br>
+                 <font color="#ef6cef">※ 封印された力を解放するには</font>‘<font color="#e8c898">封印解放道具箱</font>'<font color="#ef6cef">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#9c4e2d">黒鉄帽[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_0999.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+15</font><br>
+                致命打 抵抗 <font color="#f8f800"> +{10~11}</font>％<br>
+                防御力 <font color="#f8f800">+40</font><br>
+                健康 <font color="#f8f800">+250</font><br>
+                回避率 <font color="#f8f800">+6</font>％<br>
+                集中力 <font color="#f8f800">+50</font>％<br>
+                決定打抵抗 <font color="#f8f800">+60</font>％<br>
+                状態異常抵抗 <font color="#f8f800">+30</font>％<br>
+                <br>
+                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>
+                アイテム着用レベル -<font color="#f8f800">57</font><br>
+                力 <font color="#f8f800">+130</font><br>
+                光ダメージ <font color="#f8f800">1</font>～<font color="#f8f800">852</font><br>
+                <font color="#f8f800">5</font>秒の間 命中, 回避低下<br>
+                回避率 <font color="#f8f800">+6</font>％
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                レベル 401<br>
+                力 180
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                10000/650
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>1億2285万G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                丈夫な鉄の帽子で、頭の両方が尖って上っている姿が特徴的だ。<br>
+                <br>
+                 <font color="#ef6cef">※ 封印された力を解放するには</font>‘<font color="#e8c898">封印解放道具箱</font>'<font color="#ef6cef">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#9c4e2d">タレントハット[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1000.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+16</font><br>
+                致命打 抵抗 <font color="#f8f800"> +{12~13}</font>％<br>
+                スキル難易度<font color="#f8f800">1</font>以下のスキルレベルが<font color="#f8f800">4</font>増加する。<br>
+                スキル難易度<font color="#f8f800">2</font>以下のスキルレベルが<font color="#f8f800">3</font>増加する。<br>
+                スキル難易度<font color="#f8f800">3</font>以下のスキルレベルが<font color="#f8f800">2</font>増加する。<br>
+                スキル難易度<font color="#f8f800">4</font>以下のスキルレベルが<font color="#f8f800">1</font>増加する。<br>
+                運 <font color="#f8f800">+250</font><br>
+                魔法アイテムドロップ確率 <font color="#f8f800">+100</font>％<br>
+                <br>
+                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>
+                アイテム着用レベル -<font color="#f8f800">66</font><br>
+                力 <font color="#f8f800">+143</font><br>
+                光ダメージ <font color="#f8f800">1</font>～<font color="#f8f800">978</font><br>
+                <font color="#f8f800">5</font>秒の間 命中, 回避低下<br>
+                DXユニークドロップ確率 <font color="#f8f800">10</font>％ 増加
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                レベル 464<br>
+                力 190
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                10000/150
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>3億1443万G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                自分の人生を終えて死んでしまった有名な芸人の帽子。ちょっとだけ頭の働きがよくなる効果がある。<br>
+                <br>
+                 <font color="#ef6cef">※ 封印された力を解放するには</font>‘<font color="#e8c898">封印解放道具箱</font>'<font color="#ef6cef">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#9c4e2d">アースアンプ[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1001.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+17</font><br>
+                致命打 抵抗 <font color="#f8f800"> +{14~15}</font>％<br>
+                最大ダメージ <font color="#f8f800">+20</font><br>
+                ダメージ <font color="#f8f800">+20</font>％<br>
+                致命打発動確率 <font color="#f8f800">+10</font>％<br>
+                ブロッキング速度 <font color="#f8f800">+50</font>％<br>
+                最大HP <font color="#f8f800">+30</font>％<br>
+                大地属性抵抗 <font color="#f8f800">+35</font>％<br>
+                <br>
+                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>
+                アイテム着用レベル -<font color="#f8f800">67</font><br>
+                力 <font color="#f8f800">+144</font><br>
+                光ダメージ <font color="#f8f800">1</font>～<font color="#f8f800">986</font><br>
+                <font color="#f8f800">5</font>秒の間 命中, 回避低下<br>
+                ダブルクリティカルダメージ <font color="#f8f800">10</font>％ 減少
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                レベル 468<br>
+                力 200
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                10000/250
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>2億8454万G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                大地の力を導き出す帽子。<br>
+                <br>
+                 <font color="#ef6cef">※ 封印された力を解放するには</font>‘<font color="#e8c898">封印解放道具箱</font>'<font color="#ef6cef">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#9c4e2d">ハイハット[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1002.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+18</font><br>
+                致命打 抵抗 <font color="#f8f800"> +{16~17}</font>％<br>
+                知恵 <font color="#f8f800">+250</font><br>
+                カリスマ <font color="#f8f800">+250</font><br>
+                攻撃速度 <font color="#f8f800">+20</font>％<br>
+                CP獲得ボーナス <font color="#f8f800">10</font>％<br>
+                目くらまし攻撃 <font color="#f8f800">+23</font>％(<font color="#f8f800">8</font>秒)<br>
+                <font color="#f8f800">ビショップ</font> スキルレベル +<font color="#f8f800">4</font><br>
+                <br>
+                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>
+                アイテム着用レベル -<font color="#f8f800">69</font><br>
+                力 <font color="#f8f800">+146</font><br>
+                光ダメージ <font color="#f8f800">1</font>～<font color="#f8f800">1014</font><br>
+                <font color="#f8f800">5</font>秒の間 命中, 回避低下<br>
+                <font color="#f8f800">ビショップ</font> スキルレベル +<font color="#f8f800">3</font>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                レベル 482<br>
+                力 220
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                10000/330
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>2億6799万G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                戦闘を専門にするビショップのための特別な兜。主に過激派たちが使ったらしい。<br>
+                <br>
+                 <font color="#ef6cef">※ 封印された力を解放するには</font>‘<font color="#e8c898">封印解放道具箱</font>'<font color="#ef6cef">が必要です</font>
+              </td>
+            </tr>
+            <tr>
+              <th colspan="6">
+                <font color="#9c4e2d">グリムジョーカーの帽子[Nx]</font>
+              </th>
+            </tr>
+            <tr>
+              <td rowspan="2"><img src="design/image/item/iconItem_1003.png"></td>
+              <td colspan="5">
+                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                防御力 <font color="#f8f800">+19</font><br>
+                致命打 抵抗 <font color="#f8f800"> +{18~20}</font>％<br>
+                魔法アイテムドロップ確率 <font color="#f8f800">+100</font>％<br>
+                <font color="#f8f800">25</font>％のペット経験値ボーナス<br>
+                最大HP <font color="#f8f800">+30</font>％<br>
+                ダメージ返し <font color="#f8f800">30</font>％<br>
+                光属性抵抗 <font color="#f8f800">+45</font>％<br>
+                <br>
+                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>
+                アイテム着用レベル -<font color="#f8f800">77</font><br>
+                力 <font color="#f8f800">+158</font><br>
+                光ダメージ <font color="#f8f800">1</font>～<font color="#f8f800">1126</font><br>
+                <font color="#f8f800">5</font>秒の間 命中, 回避低下<br>
+                <font color="#f8f800">25</font>％のペット経験値ボーナス
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                レベル 538<br>
+                力 280
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                -
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                10000/400
+              </td>
+              <td valign="top">
+                <font color="#00f8f8">&lt;価格&gt;</font><br>2億8166万G
+              </td>
+ 
+            </tr>
+            <tr>
+              <td colspan="6">
+                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                光の神獣が愛用する帽子。神獣が消える時、一緒に消えてしまうのが普通だが、たまに次元の混同が起きて、この世界へ実体化されて落ちることがある。<br>
+                <br>
+                 <font color="#ef6cef">※ 封印された力を解放するには</font>‘<font color="#e8c898">封印解放道具箱</font>'<font color="#ef6cef">が必要です</font>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+
+        <br>
+        <br>
+        <footer class="android-footer mdl-mega-footer">
+          <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+          </font>
+          Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+        </footer>
+        <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+      </div>
+
+      <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    </div>
+</body>
+
+</html>
