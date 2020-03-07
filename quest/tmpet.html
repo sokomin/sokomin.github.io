@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+<font style="color:#888833;">  Copyright 2015  ゴールド</font>oogle Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>転生ペット一覧　赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <a href="../index.html">トップ</a> >> <a href="../quest/quest.html">クエスト</a> >> <a
+                href="../quest/tm.html">転生クエスト</a><br>
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+                <a href="#0">関連クエスト</a><br>
+                <a href="#101">1次転生ペット詳細</a><br>
+                <a href="#201">2次転生ペット詳細</a><br>
+                <a href="#301">3次転生ペット詳細</a><br>
+                <a href="#401">4次転生ペット詳細</a><br>
+                <a href="#501">5次転生ペット詳細</a><br>
+                <a href="#99">備考</a><br>
+                <br>
+                <a name="0"></a>
+                <h4>関連クエスト</h4>
+                <table id="table2">
+                    <colgroup>
+                        <col span="1" width="130">
+                        <col span="2" width="200">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td align="center"><a href="#1">伝説のビーストテイマーの噂</a><br>
+                                ↓<br>
+                                <a href="#2">欲張りタユ</a><br>
+                                ↓<br>
+                                <a href="#3">信頼を得るためには</a></td>
+                            <td valign="bottom" align="center"><a href="#4">甘いハニークッキー</a></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td align="center" colspan="2">↓↓</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td align="center"><a href="#5">試練の地：ディオレン</a><br>
+                                <a href="#7">試練の地：ラン</a><br>
+                                <a href="#9">試練の地：グローケン</a><br>
+                                <a href="#11">試練の地：バルベルド</a><br>
+                                <a href="#13">試練の地：シュム</a></td>
+                            <td align="center">　　　<a href="#6">試練の地：クオトン</a><br>
+                                　　　<a href="#8">試練の地：ゴンゴン</a><br>
+                                　　　<a href="#10">試練の地：ティルカン</a><br>
+                                　　　<a href="#12">試練の地：アルシウス</a><br>
+                                　　　<a href="#14">試練の地：バルカイン</a></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                </a><br>
+                <table id="table14" style="min-width: 84s0px;">
+                    <colgroup>
+                        <col span="1" width="200">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="2"><a name="1"></a>
+                                <font color="#00ff00">伝説のビーストテイマーの噂</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><br>語り部の<font color="#00b800">パリオ</font>から、伝説のビーストテイマーに関する話を聞いた。農村ガリムトにいる少女
+                                <font color="#00b800">タユ</font>のところに行ってみよう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image11">港街シュトラセラト　パリオ（136.45）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image11">Lv1　転生　ビーストテイマー　キャンセル不可</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image11">-</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">農村ガリムト</span></td>
+                            <td>ペットを出した状態ではクエスト受諾できない<br>
+                                <br>
+                                <span class="color-image4">タユ</span>（3.20）へ</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="2"></a>
+                                <font color="#00ff00">欲張りタユ</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><br>
+                                <font color="#00b800">タユ</font>が、<span
+                                    class="color-image11">甘いハニークッキー</span>を持ってきてほしいと頼んできた。港街シュトラセラトの高級ホテル オクトパス周辺にいる露店商の
+                                <font color="#00b800">グーディー</font>を捜しに行こう。<br>
+                                <br>
+                                <span class="color-image11">甘いハニークッキー</span>が手に入ったので、農村ガリムトに戻って<font color="#00b800">タユ
+                                </font>に渡してあげよう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image11">農村ガリムト　タユ（3.20）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image11">Lv1　転生　ビーストテイマー　キャンセル不可</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image11">-</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">港街シュトラセラト</span></td>
+                            <td><span class="color-image4">グーディー</span>（152.90）へ</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">農村ガリムト</span></td>
+                            <td><span class="color-image4">タユ</span>へ</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="3"></a>
+                                <font color="#00ff00">信頼を得るためには</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><br>伝説のビーストテイマーである<font color="#00b800">タユ</font>
+                                の十使徒を受け継ぐ決心がついたら、再度話しかけてみよう。<br>
+                                <br>
+                                <font color="#00b800">タユ</font>に、人間ではない存在とも意思の疎通ができるように学んでこいと言われた。グレートフォレスト/ 妖精達の蜘蛛の糸にいる
+                                <font color="#00b800">ジャフィナ</font>に会いに行ってみよう。<br>
+                                <br>
+                                <font color="#00b800">ジャフィナ</font>からもらった<span
+                                    class="color-image11">心の実</span>を食べてから、再び農村ガリムトの<font color="#00b800">タユ</font>
+                                のところに戻ろう。<br>
+                                <br>
+                                <font color="#00b800">タユ</font>に、今度は王の威厳を直接肌で感じてくるように言われた。ヘムクロス高原 / 高原南部地域にいる凶暴な<font
+                                    color="#00b800">キングベアー</font>に会いに行こう。<br>
+                                <br>
+                                <font color="#00b800">キングベアー</font>の王としての威厳を感じ取ることができた。農村ガリムトの<font color="#00b800">タユ
+                                </font>のところに戻ろう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image11">農村ガリムト　タユ（3.20）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image11">Lv1　転生　ビーストテイマー　キャンセル不可</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image11">試練の地へワープ</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">農村ガリムト</span></td>
+                            <td><span class="color-image4">タユ</span>へ</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">グレートフォレスト/ 妖精達の蜘蛛の糸</span></td>
+                            <td><span class="color-image4">ジャフィナ</span>（20.21）へ</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">農村ガリムト</span></td>
+                            <td>心の実を使用して、<span class="color-image4">タユ</span>へ</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ヘムクロス高原 / 高原南部地域</span></td>
+                            <td><span class="color-image4">キングベアー</span>（149.61）へ、HP4/5のダメージを受ける</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">農村ガリムト</span></td>
+                            <td><span class="color-image4">タユ</span>へ、<span class="color-image2">試練の地</span>へワープ</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="4"></a>
+                                <font color="#00ff00">甘いハニークッキー</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><br>
+                                <font color="#00b800">タユ</font>が、試練の地に再び行きたいのであれば<span
+                                    class="color-image11">甘いハニークッキー</span>を持ってくるようにと言う。港街シュトラセラトにいる<font
+                                    color="#00b800">グーディー</font>のところに行ってこよう。<br>
+                                <br>
+                                <font color="#00b800">グーディー</font>から、<span
+                                    class="color-image11">甘いハニークッキー</span>を購入したら、再び農村ガリムトの<font color="#00b800">タユ
+                                </font>のところに戻ろう。<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image11">農村ガリムト　タユ（3.20）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image11">Lv1　転生　ビーストテイマー　繰り返し可</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image11">試練の地へワープ</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">港街シュトラセラト</span></td>
+                            <td>2回目以降、<span class="color-image2">試練の地</span>へワープする場合<br>
+                                <br>
+                                <span class="color-image4">グーディー</span>（152.90）へ、1000G払う</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">農村ガリムト</span></td>
+                            <td><span class="color-image4">タユ</span>へ、<span class="color-image2">試練の地</span>へワープ</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="5"></a>
+                                <font color="#00ff00">試練の地：ディオレン</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><br>
+                                <font color="#00b800">ディオレンの石像</font>が、自分を拘束している自尊の術から解き放ってほしいという。<font color="#d080f8">
+                                    ディオレン</font>を退治し、<span class="color-image11">ディオレンの自尊</span>を手に入れよう。<br>
+                                <br>見事、<font color="#00b800">ディオレン</font>を倒した。<span
+                                    class="color-image11">ディオレンの石像</span>に話しかけて仲間にしよう！<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image11">試練の地　ディオレンの石像（71.144）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image11">Lv1　1次転生　ビーストテイマー　キャンセル不可　繰り返し可</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image11">ディオレン（Lv1)Zinをペットにする</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">試練の地</span></td>
+                            <td>帰還アイテムの使用不可。<br>
+                                笛を装備し忘れたままワープすると、戻れなくなるので注意。<br>
+                                <br>
+                                <span class="color-image1">ディオレン</span>（Lv1)Zinを倒す<br>
+                                <br>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/aa53bddb3768274a04f0fcba008d87616a296d88.10.2.9.2.png"
+                                    border="0" alt="" name="insertImg" /><br><br> <span
+                                    class="color-image4">ディオレンの石像</span>へ<br>
+                                <br>
+                                <span class="color-image4">タユ</span>（67.159）に話すと、<span
+                                    class="color-image2">農村ガリムト</span>へワープ</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="6"></a>
+                                <font color="#00ff00">試練の地：クオトン</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><br>
+                                <font color="#00b800">クオトンの暴走</font>が止められない心の暴走を静めてほしいという。<font color="#d080f8">クオトン
+                                </font>を退治して、<span class="color-image11">クオトンの暴走</span>を手に入れよう。<br>
+                                <br>見事、<font color="#d080f8">クオトン</font>を倒した。<font color="#00b800">クオトンの石像</font>
+                                に話しかけて仲間にしよう！<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image11">試練の地　クオトンの石像（65.144）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image11">Lv1　1次転生　ビーストテイマー　キャンセル不可　繰り返し可</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image11">クオトン（Lv1)Zinをペットにする</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">試練の地</span></td>
+                            <td><span class="color-image1">クオトン</span>（Lv1)Zinを倒す<br>
+                                <br>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/bfe720b6d7f11c5e1e47bbb303f0b7e8ba253b0d.10.2.9.2.png"
+                                    border="0" alt="" name="insertImg" /><br><br> <span
+                                    class="color-image4">クオトンの石像</span>へ</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="7"></a>
+                                <font color="#00ff00">試練の地：ラン</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><br>
+                                <font color="#00b800">ランの石像</font>が、心に巣食う憂鬱の拘束から解き放ってほしいという。<font color="#d080f8">ラン
+                                </font>を退治し、<span class="color-image11">ランの憂鬱</span>を手に入れよう。<br>
+                                <br>見事、<font color="#d080f8">ラン</font>を倒した。<font color="#00b800">ランの石像</font>
+                                に話しかけて仲間にしよう！<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image11">試練の地　ランの石像（64.115）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image11">Lv1　2次転生　ビーストテイマー　キャンセル不可　繰り返し可</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image11">ラン（Lv1)Zinをペットにする</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">試練の地</span></td>
+                            <td><span class="color-image1">ラン</span>（Lv1)Zinを倒す<br>
+                                <br>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/7d9e0a33eb7c024f70b79be50ac30670ec83e350.10.2.9.2.png"
+                                    border="0" alt="" name="insertImg" /><br><br> <span
+                                    class="color-image4">ランの石像</span>へ</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="8"></a>
+                                <font color="#00ff00">試練の地：ゴンゴン</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><br>
+                                <font color="#00b800">ゴンゴンの石像</font>が、人間に対する憎悪の拘束から解き放ってほしいという。<font color="#d080f8">
+                                    ゴンゴン</font>を退治し、<span class="color-image11">ゴンゴンの憎悪</span>を手に入れよう。<br>
+                                <br>見事、<font color="#d080f8">ゴンゴン</font>を倒した。<font color="#00b800">ゴンゴンの石像</font>
+                                に話しかけて仲間にしよう！<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image11">試練の地　ゴンゴンの石像（71.115）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image11">Lv1　2次転生　ビーストテイマー　キャンセル不可　繰り返し可</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image11">ゴンゴン（Lv1)Zinをペットにする</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">試練の地</span></td>
+                            <td><span class="color-image1">ゴンゴン</span>（Lv1)Zinを倒す<br>
+                                <br>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/8b5e906430ea55c88ad24adbecc270184fd26b93.10.2.9.2.png"
+                                    border="0" alt="" name="insertImg" /><br><br> <span
+                                    class="color-image4">ゴンゴンの石像</span>へ</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="9"></a>
+                                <font color="#00ff00">試練の地：グローケン</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><br>
+                                <font color="#00b800">グローケンの石像</font>が、心の中を支配しているこの虚無感から解き放ってほしいという。<font
+                                    color="#d080f8">グローケン</font>を退治し、<span
+                                    class="color-image11">グローケンの虚無</span>を手に入れよう。<br>
+                                <br>見事、<font color="#d080f8">グローケン</font>を倒した。<font color="#00b800">グローケンの石像</font>
+                                に話しかけて仲間にしよう！<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image11">試練の地　グローケンの石像（71.83）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image11">Lv1　3次転生　ビーストテイマー　キャンセル不可　繰り返し可</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image11">グローケン（Lv1)Zinをペットにする</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">試練の地</span></td>
+                            <td><span class="color-image1">グローケン</span>（Lv1)Zinを倒す<br>
+                                <br>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/2669e1b76a41561ebf29bb91e459cafff620c53f.10.2.9.2.png" border="0" alt="" name="insertImg" /><br><br>
+                                <span class="color-image4">グローケンの石像</span>へ</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="10"></a>
+                                <font color="#00ff00">試練の地：ティルカン</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><br>
+                                <font color="#00b800">ティルカンの石像</font>が、渦巻く気が狂わんばかりの怒りを静めてほしいという。<font color="#d080f8">
+                                    ティルカン</font>を退治し、<span class="color-image11">ティルカンの憤激</span>を手に入れよう。<br>
+                                <br>見事、<font color="#d080f8">ティルカン</font>を倒した。<font color="#00b800">ティルカンの石像</font>
+                                に話しかけて仲間にしよう！<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image11">試練の地　ティルカンの石像（64.83）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image11">Lv1　3次転生　ビーストテイマー　キャンセル不可　繰り返し可</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image11">ティルカン（Lv1)Zinをペットにする</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">試練の地</span></td>
+                            <td><span class="color-image1">ティルカン</span>（Lv1)Zinを倒す<br>
+                                <br>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/60662d93a25878b60ce1b9c0f8037d6bb556b65b.10.2.9.2.png" border="0" alt="" name="insertImg" /><br><br>
+                                <span class="color-image4">ティルカンの石像</span>へ</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="11"></a>
+                                <font color="#00ff00">試練の地：バルベルド</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><br>
+                                <font color="#00b800">バルベルドの石像</font>が、自分の抑えきれない我欲に打ち勝ってみせろという。<font color="#d080f8">
+                                    バルベルド</font>を退治し、<span class="color-image11">バルベルドの我欲</span>を手に入れよう。<br>
+                                <br>見事、<font color="#d080f8">バルベルド</font>を倒した。<font color="#00b800">バルベルドの石像</font>
+                                に話しかけて仲間にしよう！<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image11">試練の地　バルベルドの石像（71.48）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image11">Lv600　4次転生　ビーストテイマー　キャンセル不可　繰り返し可</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image11">バルベルド（Lv600)Zinをペットにする</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">試練の地</span></td>
+                            <td><span class="color-image1">バルベルド</span>（Lv600)Zinを倒す<br>
+                                <br>
+                                <img src="./tmpet_files/tmpet07.gif" width="123" height="132" border="0"><br>
+                                <br>
+                                <span class="color-image4">バルベルドの石像</span>へ</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="12"></a>
+                                <font color="#00ff00">試練の地：アルシウス</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><br>
+                                <font color="#00b800">アルシウスの石像</font>が、自分を縛り付けている嫉妬を取り除いてほしいという。<font color="#d080f8">
+                                    アルシウス</font>を退治し、<span class="color-image11">アルシウスの嫉妬</span>を手に入れよう。<br>
+                                <br>見事、<font color="#d080f8">アルシウス</font>を倒した。<font color="#00b800">アルシウスの石像</font>
+                                に話しかけて仲間にしよう！<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image11">試練の地　アルシウスの石像（64.48）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image11">Lv600　4次転生　ビーストテイマー　キャンセル不可　繰り返し可</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image11">アルシウス（Lv600)Zinをペットにする</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2"> 試練の地</span></td>
+                            <td><span class="color-image1">アルシウス</span>（Lv600)Zinを倒す<br>
+                                <br>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/e4774411eed007e34d73d0841914efc937124b15.10.2.9.2.png" border="0" alt="" name="insertImg" /><br><br>
+                                <span class="color-image4">アルシウスの石像</span>へ</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="13"></a>
+                                <font color="#00ff00">試練の地：シュム</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><br>
+                                <font color="#00b800">シュムの石像</font>が、心を埋め尽くす混沌を消してほしいという。<font color="#d080f8">シュム
+                                </font>を退治し、<span class="color-image11">シュムの混沌</span>を手に入れよう。<br>
+                                <br>見事、<font color="#d080f8">シュム</font>を倒した。<font color="#00b800">シュムの石像</font>
+                                に話しかけて仲間にしよう！<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image11">試練の地　シュムの石像（71.16）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image11">Lv600　5次転生　ビーストテイマー　キャンセル不可　繰り返し可</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image11">シュム（Lv600)Zinをペットにする</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">試練の地</span></td>
+                            <td><span class="color-image1">シュム</span>（Lv1)Zinを倒す<br>
+                                <br>
+                                <img src="./tmpet_files/tmpet09.gif" width="175" height="137" border="0"><br>
+                                <br>
+                                <span class="color-image4">シュムの石像</span>へ</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><a name="14"></a>
+                                <font color="#00ff00">試練の地：バルカイン</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><br>
+                                <font color="#00b800">バルカインの石像</font>が、孤独の中から解き放ってほしいという。<font color="#d080f8">バルカイン
+                                </font>を退治し、<span class="color-image11">バルカインの孤独</span>を手に入れよう。<br>
+                                <br>見事、<font color="#d080f8">バルカイン</font>を倒した。<font color="#00b800">バルカインの石像</font>
+                                に話しかけて仲間にしよう！<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image11">試練の地　バルカインの石像（64.16）</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td><span class="color-image11">Lv600　5次転生　ビーストテイマー　キャンセル不可　繰り返し可</span></td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image11">バルカイン（Lv600)Zinをペットにする</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">試練の地</span></td>
+                            <td><span class="color-image1">バルカイン</span>（Lv1)Zinを倒す<br>
+                                <br>
+                                <img src="./tmpet_files/tmpet10.gif" width="139" height="145" border="0"><br>
+                                <br>
+                                <span class="color-image4">バルカインの石像</span>へ</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <br>
+                <br>
+                <a name="101"></a>
+                <h4>1次転生ペット詳細</h4>
+                ■　鋼鉄の肉体　クオトン　神獣型<br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/bfe720b6d7f11c5e1e47bbb303f0b7e8ba253b0d.10.2.9.2.png"
+                    border="0" alt="" name="insertImg" /><br><br>
+                <!-- preってる時は改行補正かけちゃダメだよ -->
+                ※Lv200時補正<br>
+                <pre class="sokomin-style">
+内部名: 聖ダークバファロ Zin
+Lv: 200
+HP: 14421
+攻撃力: 230~268
+防御力: 405
+攻撃速度: 1.40秒
+アクティブ射程: 215
+
+<基礎能力値>
+力	敏捷	健康	知恵	知識	威厳	運
+386	579	482	251	579	77	135
+
+<元素抵抗値>
+火	水	大地	風	光	闇
+72	62	62	62	92	12	
+
+<基礎抵抗値>
+-1-	-2-	-3-	ｺｰﾙﾄﾞ	-5-	ｽﾀﾝ	石化
+0	50	30	30	25	0	10
+
+混乱	魅了	異常	低下	呪い	致命打	決定打
+50	0	30	25	20	30	30
+
+<使用スキル>
+-ピンシャーアタック
+-スマッシュベロシティー
+
+<説明>
+「クオトンについて聞きたいのか。うーん、彼は、ファウンティンス・ハイランドで出会ったバッファローだ。
+うぅ～ん、彼の鋼鉄のような角で攻撃されたら、ひとたまりもないな。そして、何よりもクオトンの背中は、広くてふかふかで暖かくて、乗り心地が良いのじゃ！」
+
+                </pre>
+                ■　高貴なる森の貴族　ディオレン　人間型<br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/aa53bddb3768274a04f0fcba008d87616a296d88.10.2.9.2.png"
+                    border="0" alt="" name="insertImg" /><br><br>
+                <pre class="sokomin-style">
+内部名: 聖エルフ貴族 Zin
+Lv: 200
+HP: 10341
+攻撃力: 89~119
+防御力: 863
+攻撃速度: 0.55秒
+アクティブ射程: 350
+
+<基礎能力値>
+力	敏捷	健康	知恵	知識	威厳	運
+208	450	260	156	450	52	294
+
+<元素抵抗値>
+火	水	大地	風	光	闇
+47	47	47	47	47	47	
+
+<基礎抵抗値>
+-1-	-2-	-3-	ｺｰﾙﾄﾞ	-5-	ｽﾀﾝ	石化
+60	50	100	0	0	100	30
+
+混乱	魅了	異常	低下	呪い	致命打	決定打
+20	0	10	0	10	0	30
+
+<使用スキル>
+-キックアタック
+-ソードクラッシュII
+
+<説明>
+「ディオレンについて聞きたいのか。うーん、そうだな。彼は、ものすごくプライドが高いからな！気をつけなくちゃダメだ。
+たまに、タユでさえもディオレンに怒られるくらいなんだぞ？しかし、森の貴族の中でも一番の腕だし、とても頭が良い！
+タユが大陸を巡らなければならぬ時には、いつも必ず護衛をしてくれるのだ！」
+</pre>
+
+                <br>
+                <br>
+                <a name="201"></a>
+                <h4>2次転生ペット詳細</h4>
+                ■　研ぎ澄まされし砂漠の踊り子　ラン<br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/7d9e0a33eb7c024f70b79be50ac30670ec83e350.10.2.9.2.png"
+                    border="0" alt="" name="insertImg" /><br><br>
+                <br>
+                ■　心優しき猛獣　ゴンゴン<br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/8b5e906430ea55c88ad24adbecc270184fd26b93.10.2.9.2.png"
+                    border="0" alt="" name="insertImg" /><br><br> <br>
+                <br>
+                <a name="301"></a>
+                <h4>3次転生ペット詳細</h4>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/60662d93a25878b60ce1b9c0f8037d6bb556b65b.10.2.9.2.png" border="0" alt="" name="insertImg" /><br><br>
+<img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/2669e1b76a41561ebf29bb91e459cafff620c53f.10.2.9.2.png" border="0" alt="" name="insertImg" /><br><br>
+                <br>
+                <br>
+                <a name="401"></a>
+                <h4>4次転生ペット詳細</h4>
+                <br>
+                <br>
+                <a name="501"></a>
+                <h4>5次転生ペット詳細</h4>
+                <br>
+                <br>
+                <br>
+                <a name="99"></a>
+                <h4>備考</h4>
+                <p class="sokomin-style">
+                    - 覚醒スキル関係なく調教可能。<br>
+                </p>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+
+            </div>
+
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        </div>
+</body>
+
+</html>
