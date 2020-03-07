@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>テイム可能ペット一覧 赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <a href="../index.html">トップ</a> >> <a href="../skill/skill.html">スキル</a><br>
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+                <h3>テイム可能ペット一覧</h3>
+                <br>
+
+                <!-- TODO そのうち、マップのリンクも貼りたいね -->
+                <h4>2008/7/29～</h4>
+                <table id="table14" style="min-width:840px">
+                    <colgroup>
+                        <col span="1" width="160">
+                        <col span="1" width="200">
+                        <col span="1" width="250">
+                        <col span="1" width="180">
+                        <col span="1" width="100">
+                        <col span="1" width="70">
+                        <col span="1" width="100">
+                        <col span="1" width="300">
+                    </colgroup>
+
+                    <tr>
+                        <th>名前</th>
+                        <th>場所</th>
+                        <th>画像</th>
+                        <th>種族名</th>
+                        <th>種類</th>
+                        <th>等級</th>
+                        <th>レベル</th>
+                        <th>湧き時間</th>
+                    </tr>
+                    <tr>
+                        <th>骸骨魔法師</th>
+                        <td>呪いの墓Ｂ１</td>
+                        <td></td>
+                        <td>骸骨魔法師 Zin</td>
+                        <td>アンデッド系</td>
+                        <td>一般4</td>
+                        <td>200～210</td>
+                        <td>60分</td>
+                    </tr>
+                    <tr>
+                        <th>ホワイトゴルゴ</th>
+                        <td>ハンヒ山脈 / ドレム川付近</td>
+                        <td></td>
+                        <td>ホワイトゴルゴ Zin</td>
+                        <td>動物系</td>
+                        <td>一般4</td>
+                        <td>270～275</td>
+                        <td>20分</td>
+                    </tr>
+                    <tr>
+                        <th>ゴルゴン</th>
+                        <td>ハイランド洞窟 B2</td>
+                        <td></td>
+                        <td>ゴルゴン Zin</td>
+                        <td>神獣系</td>
+                        <td>一般4</td>
+                        <td>295～300</td>
+                        <td>上＆左（2時間）<br>
+                            右＆下（1時間55分）</td>
+                    </tr>
+                    <tr>
+                        <th>さすらう傭兵</th>
+                        <td>スウェブタワー 17F</td>
+                        <td></td>
+                        <td>さすらう傭兵 Zin</td>
+                        <td>人間系</td>
+                        <td>一般4</td>
+                        <td>330～335</td>
+                        <td>60分</td>
+                    </tr>
+                    <tr>
+                        <th>引導者</th>
+                        <td>名も無い崩れた塔 B5</td>
+                        <td></td>
+                        <td>引導者 Zin</td>
+                        <td>悪魔系</td>
+                        <td>一般4</td>
+                        <td>330～340</td>
+                        <td>60分</td>
+                    </tr>
+                    <tr>
+                        <th>スコフィールダー</th>
+                        <td>フォーリン望楼地下</td>
+                        <td></td>
+                        <td>スコフィールダー Zin</td>
+                        <td>人間系</td>
+                        <td>一般4</td>
+                        <td>365～370</td>
+                        <td>60分</td>
+                    </tr>
+                    <tr>
+                        <th>ボーンドラゴン</th>
+                        <td>モリネルタワー1F</td>
+                        <td></td>
+                        <td>ボーンドラゴン Zin</td>
+                        <td>アンデッド系</td>
+                        <td>一般4</td>
+                        <td>370～375</td>
+                        <td>60分</td>
+                    </tr>
+                    <tr>
+                        <th>カラフルトカゲ</th>
+                        <td>スウェブタワー B4</td>
+                        <td></td>
+                        <td>カラフルトカゲ Zin</td>
+                        <td>動物系</td>
+                        <td>一般4</td>
+                        <td>380～390</td>
+                        <td>左上（1時間40分）<br>
+                            左下（1時間45分）右下（2時間）</td>
+                    </tr>
+                    <tr>
+                        <th>ジャックランタン</th>
+                        <td>暴かれた納骨堂 B3</td>
+                        <td></td>
+                        <td>ジャックランタン Zin</td>
+                        <td>悪魔系</td>
+                        <td>一般4</td>
+                        <td>406～410</td>
+                        <td>60分</td>
+                    </tr>
+                    <tr>
+                        <th>大骸骨</th>
+                        <td>暴かれた納骨堂 B5</td>
+                        <td></td>
+                        <td>大骸骨 Zin</td>
+                        <td>アンデッド系</td>
+                        <td>一般4</td>
+                        <td>416～420</td>
+                        <td>60分</td>
+                    </tr>
+                    <tr>
+                        <th>堕落オーガ</th>
+                        <td>スウェブタワー B13</td>
+                        <td></td>
+                        <td>墜落オーガ Zin</td>
+                        <td>悪魔系</td>
+                        <td>一般4</td>
+                        <td>446～450</td>
+                        <td>右上（2時間）左下（1時間30分）</td>
+                    </tr>
+                    <tr>
+                        <th>ハイエルフ</th>
+                        <td>ダークエルフ王宮 3F</td>
+                        <td></td>
+                        <td>ハイエルフ Zin</td>
+                        <td>人間系</td>
+                        <td>一般4</td>
+                        <td>470～480</td>
+                        <td>60分</td>
+                    </tr>
+                    <tr>
+                        <th>フロッグ</th>
+                        <td>呪いを受けたミズナの洞窟 B2</td>
+                        <td></td>
+                        <td>フロッグ Zin</td>
+                        <td>動物系</td>
+                        <td>一般4</td>
+                        <td>534～534</td>
+                        <td>左から①（1時間40分）②（1時間45分）<br>
+                        ③（1時間50分）④（2時間）</td>
+                    </tr>
+                    <tr>
+                        <th>かまいたち</th>
+                        <td>ビックマウスダンジョン B4</td>
+                        <td></td>
+                        <td>かまいたち Zin</td>
+                        <td>悪魔系</td>
+                        <td>一般4</td>
+                        <td>600～610</td>
+                        <td>左下（1時間30分）中央上（2時間）</td>
+                    </tr>
+                    <tr>
+                        <th>サキュバス</th>
+                        <td>モリネルタワー 4F</td>
+                        <td></td>
+                        <td>サキュバス Zin</td>
+                        <td>悪魔系</td>
+                        <td>一般4</td>
+                        <td>620～620</td>
+                        <td>60分</td>
+                    </tr>
+                    <tr>
+                        <th>時の旅人</th>
+                        <td>時の森</td>
+                        <td></td>
+                        <td>時の旅人 Zin</td>
+                        <td>人間系</td>
+                        <td>一般4</td>
+                        <td>650～660</td>
+                        <td>60分</td>
+                    </tr>
+                    <tr>
+                        <th>ユニコーン</th>
+                        <td>時の森</td>
+                        <td></td>
+                        <td>ユニコーン Zin</td>
+                        <td>神獣系</td>
+                        <td>一般4</td>
+                        <td>700～710</td>
+                        <td>2時間</td>
+                    </tr>
+                </table>
+                <br>
+                <br>
+                <br>
+                <br>
+
+                <h4>2009/3/17～</h4>
+                <table id="table14" style="min-width:840px">
+                    <colgroup>
+                        <col span="1" width="160">
+                        <col span="1" width="200">
+                        <col span="1" width="250">
+                        <col span="1" width="180">
+                        <col span="1" width="100">
+                        <col span="1" width="70">
+                        <col span="1" width="100">
+                        <col span="1" width="300">
+                    </colgroup>
+
+                    <tr>
+                        <th>名前</th>
+                        <th>場所</th>
+                        <th>画像</th>
+                        <th>種族名</th>
+                        <th>種類</th>
+                        <th></th>
+                        <th>レベル</th>
+                        <th>湧き時間</th>
+                    </tr>
+                    <tr>
+                        <th>アイドレースカル</th>
+                        <td>ウエストスワンプ洞窟</td>
+                        <td></td>
+                        <td>大骸骨 Zin</td>
+                        <td>アンデッド系</td>
+                        <td>一般4</td>
+                        <td>210～220</td>
+                        <td>マップ10関連mob<br>
+                            クエスト遂行者のみpop可能</td>
+                    </tr>
+                    <tr>
+                        <th>カラモスの魂</th>
+                        <td>ガディウス大砂漠 / デフヒルズ北側</td>
+                        <td></td>
+                        <td>ボーンドラゴン Zin</td>
+                        <td>アンデッド系</td>
+                        <td>一般4</td>
+                        <td>345～350</td>
+                        <td>ポーター10関連mob<br>
+                            クエスト遂行者のみpop可能</td>
+                    </tr>
+                </table>
+                <h4>その他</h4>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        </div>
+</body>
+
+</html>
