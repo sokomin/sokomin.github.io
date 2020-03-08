@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=960">
+  <!-- Page styles -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+  <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-133658114-1');
+  </script>
+  <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+  <script>
+    function enter() {
+      if (window.event.keyCode == 13) {
+        var last_keyword = $('#search-field').val();
+        window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+      }
+    }
+  </script>
+
+  <style>
+    #view-source {
+      position: fixed;
+      display: block;
+      right: 0;
+      bottom: 0;
+      margin-right: 40px;
+      margin-bottom: 40px;
+      z-index: 900;
+    }
+  </style>
+</head>
+
+<body>
+  <title>赤石の民衆</title>
+  <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <a name="container"></a>
+    <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+      <div class="mdl-layout__header-row">
+        <span class="android-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <!-- Add spacer, to align navigation to the right in desktop -->
+        <div class="android-header-spacer mdl-layout-spacer"></div>
+        <div
+          class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text" onkeypress="enter();" id="search-field" />
+          </div>
+        </div>
+        <!-- Navigation -->
+        <div class="android-navigation-container">
+          <nav class="android-navigation mdl-navigation">
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/index.html">ホーム</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/calculator.html">計算機</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/history.html">赤石史</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/link.html">リンク</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+          </nav>
+        </div>
+        <span class="android-mobile-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+          id="more-button">
+          <i class="material-icons">more_vert</i>
+        </button>
+        <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/calculator.html">計算機</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/history.html">赤石史</a></li>
+          <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/link.html">リンク</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+        </ul>
+
+      </div>
+    </div>
+
+    <div class="android-drawer mdl-layout__drawer">
+      <span class="mdl-layout-title">
+        <h3>メニュー</h3>
+      </span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html"><strong>モンスター</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html"><strong>ダンジョン</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html"><strong>クエスト</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-friend"
+          href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-info"
+          href="../information/information.html"><strong>雑学</strong></a>
+      </nav>
+    </div>
+
+
+    <div class="android-content mdl-layout__content">
+
+      <!--main-->
+      <a href="../index.html">トップ</a> >> <a href="../skill/skill.html">スキル</a> >> <a href="../skill/trans-skill.html">超越スキル</a><br>
+      <div class="main-background korea-content">
+        <br>
+        <h3>超越スキル</h3>
+        <br>
+        <a href="#1">概要</a><br>
+        <a href="#normal">ノーマル一覧</a><br>
+        <a href="#rare">レア一覧</a><br>
+        <a href="#unique">ユニーク一覧</a><br>
+        <br>
+        <br>
+        <a name="1"></a>
+        <font style="color:#FF0033;"><b>3転900Lv～使用可能</b></font><br>
+        港町ボルティッシュ「超越の導師バラン(32.38)」にて、クエスト「潜在意識の解放」を完了後にスキルスロットがオープンされます。<br>
+        このスロットはクエスト完了時、1000Lv、1200Lv・課金アイテム<a
+          href="http://mall.redsonline.jp/items/1820">悟りの書</a>(通常時1000GEM)使用時に開放されます。(最大4つ)<br>
+        オープンされたスキルスロットに各種「超越の書」(取引・銀行・倉庫可)を使用することで修得できます。<br>
+        <br>
+        超越スキルにはノーマル、レア、ユニークの3種類があり、修得にはそれぞれの超越の書が必要です。<br>
+        <br>
+        <br>
+        <table id="table10">
+          <colgroup>
+            <col width="40" span="1">
+            <col width="80" span="1">
+          </colgroup>
+          <colgroup>
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2">超越の書</th>
+              <th>入手方法</th>
+            </tr>
+            <tr>
+              <td><img width="34" height="34" src="../item/design/image/item/iconItem_2849.png" border="0"></td>
+              <td align="center">ノーマル</td>
+              <td>炎の石1個、神秘の石5個、結晶石5個、1億ゴールドで超越の導師バランにて製作</td>
+            </tr>
+            <tr>
+              <td><img width="34" height="34" src="../item/design/image/item/iconItem_2850.png" border="0"></td>
+              <td align="center">レア</td>
+              <td>Lv600以上のモンスターから低確率でドロップ</td>
+            </tr>
+            <tr>
+              <td><img width="34" height="34" src="../item/design/image/item/iconItem_2851.png" border="0"></td>
+              <td align="center">ユニーク</td>
+              <td>レイドボス、秘密D「放棄された地下牢獄(700～)」「逃亡者の山(900～)」の一部モンスター<br>
+                ギルドダンジョンB8・B9の一部モンスターから低確率でドロップ。<br>
+                また、試練のダンジョン800Lv～におけるパーティープレイの完了報酬として低確率で獲得可能。</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        超越スキルは、最大SLv20まで強化できます。<br>
+        <br>
+        <table id="table10">
+          <colgroup>
+            <col span="3">
+            <!-- <col span="1" width="120">
+            <col span="1" width="220">
+            <col span="1" width="220"> -->
+          </colgroup>
+          <tbody>
+            <tr>
+              <th>超越スキル</th>
+              <th>対象の職業</th>
+              <th>最大スキルLv</th>
+              <th>必要スキルポイント</th>
+              <th>Lv1修得に必要な材料</th>
+            </tr>
+            <tr>
+              <td align="center">ノーマル</td>
+              <td align="center">全職業共通</td>
+              <td align="center">Lv20</td>
+              <td align="center">Lv1 2000<br>
+                Lv2 2100<br>
+                Lv3 2300<br>
+                … +200/毎Lv<br>
+                合計 7万6100</td>
+              <td align="center">炎の石1個<br>
+                ペパーミントフラワーの硝子ビン2個<br>
+                100万ゴールド</td>
+            </tr>
+            <tr>
+              <td align="center">レア</td>
+              <td align="center">各職限定</td>
+              <td align="center">Lv1</td>
+              <td align="center">6万</td>
+              <td align="center">炎の石25個<br>
+                ペパーミントフラワーの硝子ビン50個<br>
+                3億ゴールド</td>
+            </tr>
+            <tr>
+              <td align="center">ユニーク</td>
+              <td align="center">全職業共通</td>
+              <td align="center">Lv20</td>
+              <td align="center">Lv1 2000<br>
+                Lv2 2100<br>
+                Lv3 2200<br>
+                Lv4 2400<br>
+                Lv5 2500<br>
+                Lv6 3000<br>
+                Lv7 3500<br>
+                Lv8 4500<br>
+                Lv9 5500<br>
+                Lv10 6000<br>
+                Lv11 7000<br>
+                Lv12 8000<br>
+                Lv13 9000<br>
+                Lv14 10000<br>
+                Lv15 11000<br>
+                Lv16 12000<br>
+                Lv17 13000<br>
+                Lv18 14000<br>
+                Lv19 15000<br>
+                Lv20 16000<br>
+                ※合計 148700(SP)<br>
+              <td align="center">炎の石1個<br>
+                ペパーミントフラワーの硝子ビン2個<br>
+                100万ゴールド</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        ※ユニーク超越スキルをLv10まで上げるには33700SP(337Lv分)必要です。<br>
+        <br>
+        超越スキルの削除には、課金アイテム<a href="http://mall.redsonline.jp/items/1821">「超越スキル忘却の書」</a>(300GEM)が必要です。<br>
+        スキルポイントは還元されますが、スキル強化に使用した材料は戻りません。<br>
+        <br>
+        GvGアリーナにて装着することも(2019.1現在)可能。<br>
+        ※超越スキルはGvGや攻城戦にも適用されますが、一部のスキルについては性能が調整されます。<br>
+        ※GvGアリーナでも「超越スキル忘却の書」は利用可能です。<br>
+        ※上記により、本鯖ではユニークスキルを装着し、GvGアリーナにて忘却の書を利用して削除->レアスキルで上書き運用も可能。<br>
+        同じ超越スキルを2つ装着することはできません。<br>
+        <br>
+        <br>
+        <a name="normal"></a>
+        <h4>ノーマル</h4>
+        <table id="table10">
+          <colgroup>
+            <col span="1" width="46">
+            <col span="1" width="100">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2">ノーマル等級</th>
+              <th>超越スキル説明</th>
+              <th>SLv1~10</th>
+              <th>SLv11~20</th>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0638.png"></td>
+              <td align="center">筋力強化</td>
+              <td>永久的に力を増加させる。力が増加する代わりに、健康が減少する。</td>
+              <td rowspan="6" align="center">
+                <font color="#888800">SLv*50</font>増加<br>
+                <font color="#888800">SLv*25</font>減少
+              </td>
+              <td rowspan="6" align="center">
+                <font color="#888800">500+(SLv-10)*10</font>増加<br>
+                <font color="#888800">250+(SLv-10)*10</font>減少
+              </td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0639.png"></td>
+              <td align="center">知識強化</td>
+              <td>永久的に知識を増加させる。知識が増加する代わりに、健康が減少する。</td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0640.png"></td>
+              <td align="center">敏捷強化</td>
+              <td>永久的に敏捷を増加させる。敏捷が増加する代わりに、カリスマが減少する。</td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0641.png"></td>
+              <td align="center">知恵強化</td>
+              <td>永久的に知恵を増加させる。知恵が増加する代わりに、敏捷が減少する。</td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0642.png"></td>
+              <td align="center">健康強化</td>
+              <td>永久的に健康を増加させる。健康が増加する代わりに、カリスマが減少する。</td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0643.png"></td>
+              <td align="center">カリスマ強化</td>
+              <td>永久的にカリスマを増加させる。カリスマが増加する代わりに、敏捷が減少する。</td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0644.png"></td>
+              <td align="center">メンテナンス術</td>
+              <td>装備の点検・整備が上達し、耐久度が減少する確率を下げる。</td>
+              <td>？</td>
+              <td>？</td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0645.png"></td>
+              <td align="center">体力再生</td>
+              <td>敵にダメージを与えた際に、一定量のHPが回復する。</td>
+              <td>体力回復量 (SLv-1)*30+50</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0646.png"></td>
+              <td align="center">ランダム追加<br>
+                ダメージ</td>
+              <td>一定の数値分のランダム属性の追加ダメージが発生する。</td>
+              <td align="center">ランダム属性<br>
+                追加ダメージ<br>
+                <font color="#888800">500+SLv*50</font>
+              </td>
+              <td align="center">ランダム属性追加ダメージ<br>
+                <font color="#888800">1000+(SLv-10)*10</font>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <a name="rare"></a>
+        <h4>レア</h4>
+        <table id="table10">
+          <colgroup>
+            <col span="1" width="46">
+            <col span="1" width="100">
+            <col span="1">
+            <col span="1">
+            <col span="1" width="100">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2">レア等級</th>
+              <th>超越スキル説明</th>
+              <th>効果</th>
+              <th>職業</th>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0654.png"></td>
+              <td align="center">パラレルスティング改</td>
+              <td>パラレルスティング 最大打撃回数が1回増加する。</td>
+              <td>最大打撃回数1回増加</td>
+              <td align="center">剣士</td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0655.png"></td>
+              <td align="center">ドラゴンツイスター改</td>
+              <td>ドラゴンツイスター使用時、一定確率でドラゴンツイスターがもう1度発動する。</td>
+              <td>30%程度？でドラツイがもう1度発動</td>
+              <td align="center">戦士</td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0656.png"></td>
+              <td align="center">テイルチェイサー改</td>
+              <td>発動後、対象が生存している場合、追加で矢を発射し、対象の最大体力に比例したダメージを与える。</td>
+              <td>最大体力比例ダメージ 10%</td>
+              <td align="center">アーチャー</td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0657.png"></td>
+              <td align="center">オーサムフォートレス改</td>
+              <td>近く付いた敵をさらに強力な分身を作って同時に攻撃する。</td>
+              <td>攻撃力数値 30%増加、射程距離 20増加、ブロック無視効果</td>
+              <td align="center">ランサー</td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0658.png"></td>
+              <td align="center">メテオ改</td>
+              <td>隕石の落下地点に火炎が発生し、持続的なダメージを与える。</td>
+              <td>秒当たりメテオダメージの30％ダメージを3秒間与える。</td>
+              <td align="center">ウィザード</td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0659.png"></td>
+              <td align="center">ビーストベルセルク改</td>
+              <td>血に酔った殺戮者の本能が覚醒し一定時間無敵状態になる。体力吸収効果も発生する。</td>
+              <td>体力吸収1％、無敵時間2秒、クールタイム30秒</td>
+              <td align="center">ウルフマン</td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0660.png"></td>
+              <td align="center">ミラータワー改</td>
+              <td>盾を召喚した発動者に最大HPの二倍のシールドを生成する。<br>
+                (スキルグラフィック消失後、30秒のクールタイムあり)</td>
+              <td>使用者に最大HPの二倍のシールド生成</td>
+              <td align="center">ビショップ</td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0661.png"></td>
+              <td align="center">ホーリークロス改</td>
+              <td>ホーリークロスによって体力が回復した対象に、回復した分シールドを生成する。</td>
+              <td>回復値がシールドのHPになる。</td>
+              <td align="center">追放天使</td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0662.png"></td>
+              <td align="center">唐辛子を食べさせる改</td>
+              <td>唐辛子の王「ハバネロ」を使用し、一日の使用制限を無視して持続時間を増加させる。</td>
+              <td>使用制限回数を削除し、持続時間2分増加</td>
+              <td align="center">ビーストテイマー</td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0663.png"></td>
+              <td align="center">召喚獣パワーアップ改</td>
+              <td>召喚獣の潜在能力を引き出し最大体力を増加させる。</td>
+              <td>召喚獣たちの最大体力1.5倍増加</td>
+              <td align="center">サマナー</td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0664.png"></td>
+              <td align="center">ダーティーフィーバー改</td>
+              <td>周囲の敵が少ない場合、残り最小攻撃回数分、敵に追加攻撃を行うする。</td>
+              <td>最小攻撃回数8回</td>
+              <td align="center">シーフ</td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0665.png"></td>
+              <td align="center">分身改</td>
+              <td>分身数を増やすことで、敵の攻撃に対してさらに1回分多く耐えられるようになる。</td>
+              <td>分身 1体増加</td>
+              <td align="center">武道家</td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0666.png"></td>
+              <td align="center">ゴリアテスレイヤー改</td>
+              <td>特殊な石の射出法により竜巻が発生する。石に当たった敵が真ん中に吸い寄せられる。</td>
+              <td>攻撃命中時、周囲のmobを引き寄せる。</td>
+              <!-- 概ねPvPでは禁止スキル、狩りでは便利。 -->
+              <td align="center">プリンセス</td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0667.png"></td>
+              <td align="center">花の乙女スペシャル改</td>
+              <td>花の乙女スペシャルスキルが発動しても、プリンセスに変身しない。</td>
+              <td>-</td>
+              <td align="center">リトル<br>
+                ウィッチ</td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0668.png"></td>
+              <td align="center">死霊術改</td>
+              <td>より強力なアンデッドを支配下に置くことができる。</td>
+              <td>一般4型まで降神術可能<br>
+                ※2018.10.3アップデートにより、「調教したペットのHP100%増加」に変更されました。
+              </td>
+              <td align="center">ネクロ<br>
+                マンサー</td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0669.png"></td>
+              <td align="center">バインドブレイズ改</td>
+              <td>ダメージに加えて、敵の火属性抵抗力を下げる。</td>
+              <td>火属性抵抗力が40％以上の敵打撃時、相手の火属性抵抗力を40まで下げる。</td>
+              <td align="center">悪魔</td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0676.png"></td>
+              <td align="center">乱斬り改</td>
+              <td>連打の最後に数人の敵を攻撃する強力な一撃を加える。</td>
+              <td></td>
+              <td align="center">霊術師</td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0670.png"></td>
+              <td align="center">半月いなし改</td>
+              <td>回避した瞬間に全身に闘気を集中させ反撃を準備する。</td>
+              <td></td>
+              <td align="center">闘士</td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0671.png"></td>
+              <td align="center">エクスプロージョン改</td>
+              <td>ビットを全て爆破させる途中でビットをもう一つ付着させる。</td>
+              <td>ビット１つ追加</td>
+              <td align="center">光奏師</td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0672.png"></td>
+              <td align="center">パニッシュメントクロス改</td>
+              <td>攻撃時、さらにもう1体の分身幻影が追加される。</td>
+              <td>分身1個追加</td>
+              <td align="center">獣人</td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0673.png"></td>
+              <td align="center">掃除の邪魔しちゃダメ改</td>
+              <td>ほうきでもう1回打撃する。</td>
+              <td>最大打撃回数1回増加</td>
+              <td align="center">メイド</td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0674.png"></td>
+              <td align="center">デモンコマンダー改</td>
+              <td>地下界の下僕たちの念が集まり、ごくまれにCP消費せずにスキルを発動することができる。</td>
+              <td>-</td>
+              <td align="center">黒魔術師</td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0675.png"></td>
+              <td align="center">アトラクションドロー改</td>
+              <td>手首のスナップが洗練され、より遠くの敵に連続ダメージを与えることができる。</td>
+              <td></td>
+              <td align="center">マスケッティア</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <a name="unique"></a>
+        <h4>ユニーク</h4>
+        <table id="table10">
+          <colgroup>
+            <col span="1" width="46">
+            <col span="1" width="100">
+            <col span="1">
+            <col span="1">
+            <col span="1">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th colspan="2">ユニーク等級</th>
+              <th>超越スキル説明</th>
+              <th>SLv1~10</th>
+              <th>SLv11~20</th>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0647.png"></td>
+              <td align="center">物理強打</td>
+              <td>一定確率で物理ダメージの強力な一撃を加える。</td>
+              <td>物理強打<br>
+                <font color="#888800">SLv*1.0</font>％
+              </td>
+              <td>物理強打<br>
+                <font color="#888800">10+(SLv-10)*0.2</font>％
+              </td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0677.png"></td>
+              <td align="center">魔法強打</td>
+              <td>一定確率で魔法ダメージの強力な一撃を加える。</td>
+              <td>魔法強打<br>
+                <font color="#888800">SLv*1.0</font>％
+              </td>
+              <td>魔法強打<br>
+                <font color="#888800">10+(SLv-10)*0.2</font>％
+              </td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0648.png"></td>
+              <td align="center">魔力の暴走</td>
+              <td>一定の確率で、自身の攻撃力増加分および、魔法攻撃力増加分が、最大ダメージに関係なく追加ダメージとして入る。</td>
+              <td>追加ダメージ<br>
+                <font color="#888800">SLv*5.0</font>％<br>発動確率<font color="#888800">10</font>％
+              </td>
+              <td>追加ダメージ<br>
+                <font color="#888800">50+(SLv-10)*1.0</font>％<br>発動確率<font color="#888800">10</font>％
+              </td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0649.png"></td>
+              <td align="center">覚醒</td>
+              <td>一定の確率で、自身のダメージ限界を無視したダメージを与える。</td>
+              <td>発動確率<br>
+                <font color="#888800">SLv*0.5</font>％
+              </td>
+              <td>発動確率<br>
+                <font color="#888800">5+(SLv-10)*0.1</font>％
+              </td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0650.png"></td>
+              <td align="center">適応力</td>
+              <td>マップ進入時、減少したステータス値が回復する。</td>
+              <td>
+                <font color="#888800">SLv*0.30</font>％
+              </td>
+              <td>
+                <font color="#888800">3+(SLv-10)*0.06</font>％
+              </td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0652.png"></td>
+              <td align="center">魔力吸収</td>
+              <td>与えたダメージの一定数のCPを回復させる。</td>
+              <td>ダメージCP変換<br>
+                <font color="#888800">SLv*0.05</font>％
+              </td>
+              <td>ダメージCP変換<br>
+                <font color="#888800">SLv*0.01</font>％
+                <!-- TODO ソース見た人はLv11まで振って検証してね☆ -->
+              </td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0653.png"></td>
+              <td align="center">時空の歪み</td>
+              <td>受けるダメージの一定の数値を減少させる。</td>
+              <td>減少ダメージ<br>
+                <font color="#888800">SLv*50</font>
+              </td>
+              <td>減少ダメージ<br>
+                <font color="#888800">500+(SLv-10)*10</font>
+              </td>
+            </tr>
+            <tr>
+              <td align="center"><img src="../skill/design/image/skill/iconSkill_0651.png"></td>
+              <td align="center">耐性</td>
+              <td>マップ進入時、減少した最大抵抗力が回復する。</td>
+              <td>
+                  <font color="#888800">SLv*0.30</font>％
+                </td>
+                <td>
+                  <font color="#888800">3+(SLv-10)*0.06</font>％
+                </td>
+                <!-- TODO ソース見た人はLv11まで振って検証してね☆ -->
+              </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <br>
+        [公式不具合修正情報]<br>
+        <a href="http://members.redsonline.jp/game_info/support/trouble/detail.asp?num=294">●</a> マスケッティアの超越スキル「アトラクションドロー改」の射程範囲だけでなく、ダメージ範囲が伸びていなかった問題修正。<br>
+        <br>
+        <br>
+        <footer class="android-footer mdl-mega-footer">
+          <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+          </font>
+          Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+        </footer>
+        <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+      </div>
+
+      <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    </div>
+</body>
+
+</html>
