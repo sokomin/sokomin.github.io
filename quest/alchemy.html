@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>称号 錬金術 赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <a href="../index.html">トップ</a> >> <a href="../quest/quest.html">クエスト</a> >> <a
+                href="../quest/designation_list.html">称号クエスト</a><br>
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+                <h3>錬金術</h3>
+
+                
+<span class="color-image2">&lt;称号効果&gt;</span><br>
+- 純粋な魔法ダメージ <span class="color-image11">[2~20]</span>％増加<br>
+<br>
+<span class="color-image2">&lt;説明&gt;</span><br>
+- 付与系以外の魔法ダメージが増加<br>
+<br>
+<table id="table14" style="min-width: 840px;">
+    <colgroup>
+        <col span="1" width="200px">
+        <col span="10" width="40px">
+    </colgroup><tbody><tr>
+      <th colspan="11">称号効果</th>
+    </tr>
+    <tr>
+      <th>称号Lv</th>
+      <td align="center"><a href="#1">1</a></td>
+      <td align="center"><a href="#2">2</a></td>
+      <td align="center"><a href="#3">3</a></td>
+      <td align="center"><a href="#4">4</a></td>
+      <td align="center"><a href="#5">5</a></td>
+      <td align="center">6</td>
+      <td align="center">7</td>
+      <td align="center">8</td>
+      <td align="center">9</td>
+      <td align="center">10</td>
+    </tr>
+    <tr>
+      <th>純粋な魔法ダメージ増加（％）</th>
+      <td align="center">2</td>
+      <td align="center">4</td>
+      <td align="center">6</td>
+      <td align="center">8</td>
+      <td align="center">10</td>
+      <td align="center">12</td>
+      <td align="center">14</td>
+      <td align="center">16</td>
+      <td align="center">18</td>
+      <td align="center">20</td>
+    </tr>
+  </tbody></table>
+<br>
+<table id="table14" style="min-width: 840px;">
+    <colgroup>
+        <col span="1" width="200">
+        <col span="1" width="640">
+    </colgroup><tbody><tr>
+      <th colspan="2"><a name="1"></a><font color="#00ff00">アルケミの理解</font></th>
+    </tr>
+    <tr>
+      <td colspan="2"><br>
+      <font color="#00b800">錬金術師ジン</font>が知らせてくれた対象を捜し出して火の元素を獲得しよう。もし対象が誰だか忘れたら<font color="#00b800">錬金術師ジン</font>に聞いてみよう。<br>
+      <br>火の元素を持って<font color="#00b800">錬金術師ジン</font>の所へ戻ろう。<br>
+      <br>スマグ地下に出没する<font color="#d080f8">レッドアイ骨人像</font>の骨切れを手に入れよう。<br>
+      <br>
+      <font color="#00b800">錬金術師ジン</font>に骨切れを持って行こう。<br>
+      <br>レッドアイが操作して作り出した純粋ではない火の元素をハノブ近くのキャンサー気孔地下6階にいる<font color="#d080f8">メロウ</font>に使用して、<font color="#00b800">錬金術師ジン</font>の所へ戻ろう。<br>
+      <br>ハノブ近くのキャンサー気孔地下6階にいる<font color="#d080f8">メロウ</font>に純粋な火の元素を使用して、<font color="#00b800">錬金術師ジン</font>の所へ戻ろう。<br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <th>受諾場所</th>
+      <td><span class="color-image11">ウィザードの研究室　錬金術師ジン（43.13）</span></td>
+    </tr>
+    <tr>
+      <th>受諾条件</th>
+      <td><span class="color-image11">Lv50</span></td>
+    </tr>
+    <tr>
+      <th>報酬</th>
+      <td><span class="color-image11">錬金術Lv1</span></td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">ウィザードの研究室</span></td>
+      <td>対象モンスター（<span class="color-image1">フーフー</span>/<span class="color-image1">ブレイジャー</span>）はクエスト受諾時にランダムで決定。<br>
+      クエストを受け直すことで、対象モンスターを変更することも可能。<br>
+      <br>
+      タゲを取る度にキャンディーを消費するため、多数のキャンディーが必要。<br>
+      キャンディーは<span class="color-image2">古都ブルンネンシュティグ</span>の<span class="color-image4">バリカス</span>（47.57）から200G/1個、<br>
+      または<span class="color-image2">ギルドホール</span>の<span class="color-image4">雑貨商人</span>から2000G/10個で購入できる。<br>
+      キャンディーSPや子供キャンディーは不可。</td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">オート地下監獄　Ｂ２</span></td>
+      <td><span class="color-image1">フーフー</span>（Lv37）のタゲを取る、1回につきキャンディー5個を消費</td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">オート地下監獄　Ｂ３</span></td>
+      <td><span class="color-image1">ブレイジャー</span>（Lv58）のタゲを取る、1回につきキャンディー30個を消費</td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">ウィザードの研究室</span></td>
+      <td><span class="color-image4">錬金術師ジン</span>へ</td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">スマグ地下道　Ｂ３</span></td>
+      <td><span class="color-image1">レッドアイ骨人像</span>（Lv65）を倒す<br>
+      <br>
+      <!-- 行き方の詳細は　⇒　<a href="info01.html">スマグ地下道へのワープ方法</a></td> -->
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">ウィザードの研究室</span></td>
+      <td><span class="color-image4">錬金術師ジン</span>へ<br>
+      <br>
+      はずれの場合は再度、<span class="color-image1">レッドアイ骨人像</span>（Lv65）を倒す</td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">キャンサー気孔　Ｂ６</span></td>
+      <td><span class="color-image1">メロウ</span>（Lv110）のタゲを取る</td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">ウィザードの研究室</span></td>
+      <td><span class="color-image4">錬金術師ジン</span>へ</td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">キャンサー気孔　Ｂ６</span></td>
+      <td><span class="color-image1">メロウ</span>（Lv110）のタゲを取る</td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">ウィザードの研究室</span></td>
+      <td><span class="color-image4">錬金術師ジン</span>へ</td>
+    </tr>
+  </tbody></table>
+<br>
+<br>
+<br>
+<table id="table14" style="min-width: 840px;">
+    <colgroup>
+        <col span="1" width="200">
+        <col span="1" width="640">
+    </colgroup><tbody><tr>
+      <th colspan="2"><a name="2"></a><font color="#00ff00">とても危険な実験</font></th>
+    </tr>
+    <tr>
+      <td colspan="2"><br>魔法都市スマグの<font color="#00b800">研修生ハベイン</font>が、錬金術の実験に使う道具であるガラス管を作る時に必要な<font color="#e8c898">綺麗な砂</font>を 15個手に入れて来てほしいと言ってきた。<font color="#e8c898">綺麗な砂</font>は、南フォーリンロード / シュトラセラト西部地域の白浜にいる<font color="#d080f8">ビッグクラブ</font>から手に入れることができるようだ。<br>
+      <br>
+      <font color="#e8c898">綺麗な砂</font> 15個をすべて手に入れた。魔法都市スマグにいる<font color="#00b800">研修生ハベイン</font>の所に戻ろう。<br>
+      <br>魔法都市スマグの<font color="#00b800">研修生ハベイン</font>が、錬金術の実験に必要な材料である<font color="#e8c898">煌く石炭</font>を 10個手に入れて来てほしいと言ってきた。<font color="#e8c898">煌く石炭</font>は、廃坑　Ｂ８にいる<font color="#d080f8">ロックゴーレム</font>から手に入れることができるようだ。<br>
+      <br>
+      <font color="#e8c898">煌く石炭</font> 10個をすべて手に入れた。魔法都市スマグにいる<font color="#00b800">研修生ハベイン</font>の所に戻ろう。<br>
+      <br>魔法都市スマグの<font color="#00b800">研修生ハベイン</font>が、錬金術の実験に必要な最後の材料である<font color="#e8c898">発火のかけら</font> 1個を手に入れて来てほしいと言ってきた。<font color="#e8c898">発火のかけら</font>は、ウェテンロード / デフヒルズ東部地域にいる<font color="#d080f8">ファイヤーオーク</font>から手に入れることができるようだ。<br>
+      <br>
+      <font color="#e8c898">発火のかけら</font>を手に入れた。魔法都市スマグにいる<font color="#00b800">研修生ハベイン</font>の所に戻ろう。<br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <th>受諾場所</th>
+      <td><span class="color-image11">魔法都市スマグ　研修生ハベイン（74.86）</span></td>
+    </tr>
+    <tr>
+      <th>受諾条件</th>
+      <td><span class="color-image11">Lv100</span></td>
+    </tr>
+    <tr>
+      <th>報酬</th>
+      <td><span class="color-image11">経験値1万8000　錬金術Lv2</span></td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">南フォーリンロード / シュトラセラト</span></td>
+      <td><span class="color-image1">ビッグクラブ</span>（Lv50）Zinを倒す</td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">魔法都市スマグ</span></td>
+      <td><span class="color-image4">研修生ハベイン</span>へ</td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">廃坑　Ｂ８</span></td>
+      <td><span class="color-image1">ロックゴーレム</span>（Lv90）を倒す</td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">魔法都市スマグ</span></td>
+      <td><span class="color-image4">研修生ハベイン</span>へ</td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">ウェテンロード / デフヒルズ東部地域</span></td>
+      <td><span class="color-image1">ファイヤーオーク</span>（Lv110）を倒す</td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">魔法都市スマグ</span></td>
+      <td><span class="color-image4">研修生ハベイン</span>へ</td>
+    </tr>
+  </tbody></table>
+<br>
+<br>
+<br>
+<table id="table14" style="min-width: 840px;">
+    <colgroup>
+        <col span="1" width="200">
+        <col span="1" width="640">
+    </colgroup><tbody><tr>
+      <th colspan="2"><a name="3"></a><font color="#00ff00">風の舞</font></th>
+    </tr>
+    <tr>
+      <td colspan="2"><br>ロマ村 ビスルの<font color="#00b800">メリルダ</font>が、<font color="#e8c898">透明な氷の結晶</font>を手に入れてほしいと頼んできた。<font color="#e8c898">透明な氷の結晶</font>は、ゴリマ沼地にある水の神獣の島に立つ<font color="#f80000">水の神獣の石像</font>に隠されているという。水の神獣の島は、ゴリマ沼地の奇妙な場所から行けるそうだ。<br>
+      <br>
+      <font color="#e8c898">透明な氷の結晶</font>を手に入れた。ロマ村 ビスルにいる<font color="#00b800">メリルダ</font>のところに戻ろう。<br>
+      <br>ロマ村 ビスルの<font color="#00b800">メリルダ</font>が、<font color="#e8c898">湧き上がる火炎の薬瓶</font>を手に入れてほしいと頼んできた。<font color="#e8c898">湧き上がる火炎の薬瓶</font>を手に入れるためには、まず魔法傭兵の墓に行き、<font color="#f80000">壁に打ち付けられた骸骨</font>から隠されたアジトに入ろう。隠されたアジトにいる<font color="#d080f8">火炎の守護者</font>から手に入れることができるようだ。<br>
+      <br>
+      <font color="#e8c898">湧き上がる火炎の薬瓶</font>を手に入れた。ロマ村 ビスルにいる<font color="#00b800">メリルダ</font>のところに戻ろう。<br>
+      <br>
+      ロマ村 ビスルの<font color="#00b800">メリルダ</font>が、<font color="#e8c898">大地の息吹</font>を手に入れてほしいと頼んできた。<font color="#e8c898">大地の息吹</font>は、タトバ山頂上登山路の<font color="#f80000">大地の広場</font>という場所にいる<font color="#d080f8">大地の番人</font>から手に入れることができるようだ。<br>
+      <br>
+      <font color="#d080f8">大地の番人</font>から<font color="#e8c898">大地の息吹</font>を手に入れた。ロマ村 ビスルにいる<font color="#00b800">メリルダ</font>のところに戻ろう。<br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <th>受諾場所</th>
+      <td><span class="color-image11">ロマ村 ビスル　メリルダ（62.30）</span></td>
+    </tr>
+    <tr>
+      <th>受諾条件</th>
+      <td><span class="color-image11">Lv150</span></td>
+    </tr>
+    <tr>
+      <th>報酬</th>
+      <td><span class="color-image11">経験値20万　錬金術Lv3</span></td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">ゴリマ沼地</span></td>
+      <td><font color="#ff3333">○</font><span class="color-image11">木の像</span>（42.281）をクリック、水の神獣の島へワープ<br>
+      <br>
+      <img src="../quest/design/quest/alchemy01.gif" width="112" height="180" border="0"><br>
+      <br>
+      <span class="color-image11">○</span><span class="color-image11">石像</span>（119.319）をクリック<br>
+      <br>
+      <img src="../quest/design/quest/alchemy02.gif" width="268" height="266" border="0"><br>
+      <br>
+      <span class="color-image1">堕落した水の精霊</span>（Lv150）を倒す<br>
+      <br>
+      <span class="color-image11">○</span><span class="color-image11">石像</span>をクリック<br>
+      <br>
+      <font color="#ff3333">○</font><span class="color-image11">木の像</span>（123.328）をクリックすると、奇妙な場所へ戻る<br>
+      <br>
+      <img src="../quest/design/quest/alchemy03.gif" width="108" height="181" border="0"><br>
+      <br>
+      <img src="../quest/design/quest/alchemymap437.gif" width="320" height="357" border="0"></td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">ロマ村 ビスル</span></td>
+      <td><span class="color-image4">メリルダ</span>へ</td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">魔法傭兵の墓　Ｂ１</span></td>
+      <td><span class="color-image11">骸骨</span>（25.11）をクリック、ワープ<br>
+      <br>
+      <font color="#ff0000">▲</font><span class="color-image1">火炎の守護者</span>（Lv150）Zinを倒す、ワープ<br>
+      <br>
+      <img src="../quest/design/quest/alchemy04.gif" width="174" height="205" border="0">　<img src="../quest/design/quest/alchemy05.gif" width="138" height="131" border="0"><br>
+      <br>
+      <img src="../quest/design/quest/alchemymap159.gif" width="300" height="132" border="0"><br>
+      </td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">ロマ村 ビスル</span></td>
+      <td><span class="color-image4">メリルダ</span>へ</td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">タトバ山頂上登山路</span></td>
+      <td><span class="color-image1">大地の番人</span>（Lv154）を倒す<br>
+      <br>
+      <img src="../quest/design/quest/alchemy06.gif" width="122" height="175" border="0"></td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">ロマ村 ビスル</span></td>
+      <td><span class="color-image4">メリルダ</span>へ</td>
+    </tr>
+  </tbody></table>
+<br>
+<br>
+<br>
+<table id="table14" style="min-width: 840px;">
+    <colgroup>
+        <col span="1" width="200">
+        <col span="1" width="640">
+    </colgroup><tbody><tr>
+      <th colspan="2"><a name="4"></a><font color="#00ff00">闇に落ちし者</font></th>
+    </tr>
+    <tr>
+      <td colspan="2"><br>砂漠村リンケンにいる <font color="#00b800">錬金術師バルモン</font>が、不死の霊薬を作るために必要な材料である<font color="#e8c898">縮んだ黒い心臓</font>を手に入れてほしいと頼んできた。 <font color="#e8c898">縮んだ黒い心臓</font>は、デフヒルズの<span class="color-image11">闇の地</span>にいる<font color="#d080f8">闇の邪術師</font>から手に入れることができるという。<br>
+      <br>
+      <font color="#e8c898">縮んだ黒い心臓</font>を手に入れた。砂漠村リンケンにいる<font color="#00b800">錬金術師バルモン</font>のところに戻ろう。<br>
+      <br>砂漠村リンケンにいる <font color="#00b800">錬金術師バルモン</font>が、不死の霊薬を作るために必要な2つ目の材料 <font color="#e8c898">黒い血液</font>を 5つ手に入れてほしいと頼んできた。 <font color="#e8c898">黒い血液</font>は、壊れた道で手に入れることができるという。<br>
+      <br>
+      <font color="#e8c898">黒い血液</font> 5個をすべて手にいれた。砂漠村リンケンにいる<font color="#00b800">錬金術師バルモン</font>のところに戻ろう。<br>
+      <br>砂漠村リンケンにいる<font color="#00b800">錬金術師バルモン</font>が、不死の霊薬を作るために必要な最後の材料である <font color="#e8c898">カリゴの草露</font>を5つを手に入れてほしいと頼んできた。 <font color="#e8c898">カリゴの草露</font>は、蒸留器を利用すれば手に入るという。カリゴの草露は、ナラダ平原の沼地帯 / ノーススワンプにあるという。<br>
+      <br>
+      <font color="#e8c898">カリゴの草露</font> 5つをすべて手にいれた。 砂漠村リンケンにいる<font color="#00b800">錬金術師バルモン</font>のところに戻ろう。<br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <th>受諾場所</th>
+      <td><span class="color-image11">砂漠村リンケン　錬金術師バルモン（42.14）</span></td>
+    </tr>
+    <tr>
+      <th>受諾条件</th>
+      <td><span class="color-image11">Lv200</span></td>
+    </tr>
+    <tr>
+      <th>報酬</th>
+      <td><span class="color-image11">経験値40万　錬金術Lv4</span></td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">デフヒルズ</span></td>
+      <td><span class="color-image1">闇の邪術師</span>（Lv200）を倒す<br>
+      <br>
+      <img src="../quest/design/quest/alchemy07.gif" width="121" height="119" border="0"></td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">砂漠村リンケン</span></td>
+      <td><span class="color-image4">錬金術師バルモン</span>へ</td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">壊れた道</span></td>
+      <td><span class="color-image11">バケツ</span>をクリック<br>
+      （74.90）（88.89）（98.22）（98.58）（100.99）（102.42）（109.47）（110.15）（112.56）（114.42）（115.68）（119.120）（122.28）（131.33）（134.58）（138.42）（140.118）（142.26）（144.149）（148.75）（154.30）（156.121）（158.62）（164.41）（168.37）<br>
+      の25箇所あるが、少し時間が経つと何度でもクリックできる。<br>
+      <br>
+      <img src="../quest/design/quest/alchemy08.gif" width="76" height="66" border="0"><br>
+      <br>
+      <img src="../quest/design/quest/alchemymap134.gif" width="350" height="175" border="0"></td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">砂漠村リンケン</span></td>
+      <td><span class="color-image4">錬金術師バルモン</span>へ</td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">ナラダ平原の沼地帯 / ノーススワンプ</span></td>
+      <td><span class="color-image11">草</span>をクリック<br>
+      （239.135）（243.149）（243.161）（247.140）（248.128）（248.151）（253.165）（257.131）（257.145）（259.174）（260.164）（262.129）（265.138）（265.173）（266.157）（268.182）（270.146）（271.129）（271.162）（276.174）<br>
+      の20箇所あるが、少し時間が経つと何度でもクリックできる。<br>
+      クリックする度に、成功時はHP1/4、失敗時はHP1/2のダメージを受ける。<br>
+      <br>
+      <img src="../quest/design/quest/alchemy09.gif" width="133" height="118" border="0"><br>
+      <br>
+      <img src="../quest/design/quest/alchemymap436.gif" width="460" height="198" border="0"></td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">砂漠村リンケン</span></td>
+      <td><span class="color-image4">錬金術師バルモン</span>へ</td>
+    </tr>
+  </tbody></table>
+<br>
+<br>
+<br>
+<table id="table14" style="min-width: 840px;">
+    <colgroup>
+        <col span="1" width="200">
+        <col span="1" width="640">
+    </colgroup><tbody><tr>
+      <th colspan="2"><a name="5"></a><font color="#00ff00">大地を鎮めろ！</font></th>
+    </tr>
+    <tr>
+      <td colspan="2"><br>ヘムクロス高原 / アラク湖付近にいる <font color="#00b800">錬金術師ハテル</font>が、スウェブタワー　１Ｆに行き、<font color="#e8c898">魔力探知機</font>で魔力を探知し、その数値を確認してきてほしいと頼んできた。スウェブタワー　１Ｆの <span class="color-image11">魔力動力機</span>がある場所で魔力を探知することができるという。<br>
+      <br>
+      <font color="#e8c898">魔力探知機</font>でスウェブタワーの魔力を探知し、数値を確認した。<font color="#00b800">錬金術師ハテル</font>のところに戻ろう。<br>
+      <br>ヘムクロス高原/アラク湖付近にいる <font color="#00b800">錬金術師ハテル</font>が、河口ダンジョン　'ラ'　Ｂ２にいるモンスターから、<font color="#e8c898">清浄な神水</font>を10個を手に入れてほしいと頼んできた。<br>
+      <br>
+      <font color="#e8c898">清浄な神水</font> 10個をすべ集めた。ヘムクロス高原/アラク湖付近にる <font color="#00b800">錬金術師ハテル</font>のところに戻ろう。<br>
+      <br>
+      <font color="#00b800">錬金術師ハテル</font>が作った<font color="#e8c898">暴雨の秘薬</font>を持って、アラク湖の北側に向かおう。そこで、アラク湖に向かって<font color="#e8c898">暴雨の秘薬</font>を投げ、アラク湖の水量を増やさなければならない。<br>
+      <br>アラク湖に<font color="#e8c898">暴雨の秘薬</font>を投げた。アラク湖の水量が増え、ヘムクロス高原の高度が再び正常に戻った。<font color="#00b800">錬金術師ハテル</font>のところに戻ろう。<br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <th>受諾場所</th>
+      <td><span class="color-image11">ヘムクロス高原 / アラク湖付近　錬金術師ハテル（204.155）</span></td>
+    </tr>
+    <tr>
+      <th>受諾条件</th>
+      <td><span class="color-image11">Lv250</span></td>
+    </tr>
+    <tr>
+      <th>報酬</th>
+      <td><span class="color-image11">経験値68万　錬金術Lv5</span></td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">スウェブタワー　１Ｆ</span></td>
+      <td><span class="color-image11">魔力動力機</span>（58.49）をクリック<br>
+      <br>
+      <img src="../quest/design/quest/alchemy10.gif" width="166" height="150" border="0"><br>
+      <br>
+      <img src="../quest/design/quest/alchemymap232.gif" width="250" height="125" border="0"></td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">ヘムクロス高原 / アラク湖付近</span></td>
+      <td><span class="color-image4">錬金術師ハテル</span>へ</td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">河口ダンジョン　'ラ'　Ｂ２</span></td>
+      <td><span class="color-image1">キャストアイ</span>（Lv195）、<span class="color-image1">メロウ</span>（Lv200）、<span class="color-image1">メロウマウラー</span>（Lv195）を倒す</td>
+    </tr>
+    <tr>
+      <td align="center"><span class="color-image2">ヘムクロス高原 / アラク湖付近</span></td>
+      <td><span class="color-image4">錬金術師ハテル</span>へ<br>
+      <br>
+      <span class="color-image11">柱</span>（180.79）をクリック<br>
+      <br>
+      <img src="../quest/design/quest/alchemy11.gif" width="172" height="148" border="0"><br>
+      <br>
+      <img src="../quest/design/quest/alchemymap205.gif" width="480" height="140" border="0"><br>
+      <br>
+      <span class="color-image4">錬金術師ハテル</span>へ</td>
+    </tr>
+  </tbody></table>
+
+
+                <br>
+                <h4>その他</h4>
+                <!-- ・NPCの会話とかそのうち載せたいね。 -->
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        </div>
+</body>
+
+</html>
