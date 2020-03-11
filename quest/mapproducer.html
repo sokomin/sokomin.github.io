@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>称号 マップ製作者 赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <a href="../index.html">トップ</a> >> <a href="../quest/quest.html">クエスト</a> >> <a
+                href="../quest/designation_list.html">称号クエスト</a><br>
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+                <h3>マップ製作者</h3>
+
+                <span class="color-image2">&lt;称号効果&gt;</span><br>
+                - 深い洞窟でもミニマップが見える。<br>
+                <br>
+                <span class="color-image2">&lt;説明&gt;</span><br>
+                - 深い洞窟の中でもマップを閲覧可能<br>
+                <br>
+                <table id="table14" style="min-width: 840px;">
+                    <colgroup>
+                        <col span="1" width="200">
+                        <col span="1" width="40">
+                    </colgroup><tbody><tr>
+                      <th colspan="11">称号効果</th>
+                    </tr>
+                    <tr>
+                      <th>称号Lv</th>
+                      <td align="center"><a href="mapproducer.html#1">1</a></td>
+                      <td align="center"><a href="mapproducer.html#2">2</a></td>
+                      <td align="center"><a href="mapproducer.html#3">3</a></td>
+                      <td align="center"><a href="mapproducer.html#4">4</a></td>
+                      <td align="center"><a href="mapproducer.html#5">5</a></td>
+                      <td align="center"><a href="mapproducer.html#6">6</a></td>
+                      <td align="center"><a href="mapproducer.html#7">7</a></td>
+                      <td align="center"><a href="mapproducer.html#8">8</a></td>
+                      <td align="center"><a href="mapproducer.html#9">9</a></td>
+                      <td align="center"><a href="mapproducer.html#10">10</a></td>
+                    </tr>
+                    <tr>
+                      <th></th>
+                      <td align="center" colspan="10">深い洞窟でもミニマップが見える</td>
+                    </tr>
+                  </tbody></table>
+                <br>
+                <table id="table14" style="min-width: 840px;">
+                    <colgroup>
+                        <col span="1" width="200">
+                        <col span="1" width="640">
+                    </colgroup><tbody><tr>
+                      <th colspan="2"><a name="1"></a><font color="#00ff00">コリンの授業</font></th>
+                    </tr>
+                    <tr>
+                      <td colspan="2"><br>あなたの方向感覚と空間知覚能力を試す為、<span class="color-image1">コリン</span>はコボルト洞窟で隠居中の<font color="#b80000">ストラッシュ</font>を訪ねることを勧める。<br>
+                      <br>
+                      <span class="color-image4">ストラッシュ</span>は自分に会いたいならコボルト洞窟の南西側へ来いと言った。彼を探そう。<span class="color-image4">ストラッシュ</span>は2回以上話すことを非常に嫌うので気をつけよう。<br>
+                      <br>
+                      <span class="color-image4">ストラッシュ</span>は北の方で会おうと言った。彼を探そう。<span class="color-image4">ストラッシュ</span>は2回以上話すことを非常に嫌うので気をつけよう。<br>
+                      <br>
+                      <span class="color-image4">ストラッシュ</span>は南東側にいるらしい。彼を探そう。<span class="color-image4">ストラッシュ</span>は2回以上話すことを非常に嫌うので気をつけよう。<br>
+                      <br>
+                      <span class="color-image4">コリン</span>の所にまた戻ろう。<br>
+                      <br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>受諾場所</th>
+                      <td><span class="color-image11">古都ブルンネンシュティグ　コリン（11.135）</span></td>
+                    </tr>
+                    <tr>
+                      <th>受諾条件</th>
+                      <td><span class="color-image11">Lv2</span></td>
+                    </tr>
+                    <tr>
+                      <th>報酬</th>
+                      <td><span class="color-image11">経験値2000　移動速度Lv1クロスシューズ　<br>
+                        マップ製作者Lv1</span></td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">コボルトの洞窟　Ｂ１</span></td>
+                      <td><span class="color-image4">ストラッシュ</span>（71.122）へ。<br>
+                      2回話しかけると、クエストがキャンセルされてやり直しになる。<br>
+                      <br>
+                      <span class="color-image4">ストラッシュ</span>（12.127）へ<br>
+                      <br>
+                      <span class="color-image4">ストラッシュ</span>（47.18）へ<br>
+                      <br>
+                      <span class="color-image4">ストラッシュ</span>（129.125）へ</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">古都ブルンネンシュティグ</span></td>
+                      <td><span class="color-image4">コリン</span>へ<br>
+                      <br>
+                    </td>
+                    </tr>
+                  </tbody></table>
+                <br>
+                <br>
+                <br>
+                <table id="table14" style="min-width: 840px;">
+                    <colgroup>
+                        <col span="1" width="200">
+                        <col span="1" width="640">
+                    </colgroup><tbody><tr>
+                      <th colspan="2"><a name="2"></a><font color="#00ff00">アサスの冒険談</font></th>
+                    </tr>
+                    <tr>
+                      <td colspan="2"><br>
+                      <span class="color-image4">アサス</span>が、彼の日記帳を探してくれたら地図の製作方法についてもっと詳しく教えてくれるという。日記帳はガディウス砂漠のリンケン北部地域で出没する<font color="#d080f8">スターヒール盗賊</font>が持っている。彼らは道の周辺に隠れて通り過ぎる旅人を襲うらしい。主な出没地は勇者の丘、傭兵の丘とのこと。<br>
+                      <br>日記帳を回収したので、<span class="color-image4">アサス</span>の所へ戻ろう。<br>
+                      <br>
+                      <span class="color-image4">アサス</span>が出した宿題は、警備兵の墓を探して地図の欠片を組み合わせることだ。警備兵の墓はガディウス砂漠のリンケン北部地域にある傭兵達の墓の中にある。 欠片は全てで4つだ。<br>
+                      <br>警備兵の墓の地図を完成した。<span class="color-image4">アサス</span>の所へ戻ろう。<br>
+                      <br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>受諾場所</th>
+                      <td><span class="color-image11">砂漠の炎 旅館２階　アサス（25.5）</span></td>
+                    </tr>
+                    <tr>
+                      <th>受諾条件</th>
+                      <td><span class="color-image11">Lv4</span></td>
+                    </tr>
+                    <tr>
+                      <th>報酬</th>
+                      <td><span class="color-image11">マップ製作者Lv2</span></td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">ガディウス大砂漠 / リンケン北部地域</span></td>
+                      <td><span class="color-image1">スターヒール盗賊</span>（Lv75）を倒す、3種類いるがどれでも可</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">砂漠の炎 旅館２階</span></td>
+                      <td><span class="color-image4">アサス</span>へ<br>
+                      <br>
+                      <span class="color-image5">(1)少し高いけど、出しましょう。</span>　　　 → 10万G払う<br>
+                      <span class="color-image5">(2)あの、ちょっと酷いじゃないですか？</span> → クエストがキャンセルされてやり直しになる</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">警備兵墓　Ｂ１</span></td>
+                      <td><span class="color-image1">骸骨狂戦士</span>（Lv85）を倒す、2種類いるが青色ではなく、茶色の<span class="color-image1">骸骨狂戦士</span><br>
+                      <br>
+                    </td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">砂漠の炎 旅館２階</span></td>
+                      <td><span class="color-image4">アサス</span>へ</td>
+                    </tr>
+                  </tbody></table>
+                <br>
+                <br>
+                <br>
+                <table id="table14" style="min-width: 840px;">
+                    <colgroup>
+                        <col span="1" width="200">
+                        <col span="1" width="640">
+                    </colgroup><tbody><tr>
+                      <th colspan="2"><a name="3"></a><font color="#00ff00">コジの宝物</font></th>
+                    </tr>
+                    <tr>
+                      <td colspan="2"><br>一時有名だった地図製作者の<span class="color-image4">コジ</span>は自分だけの薬を作れるらしい。その薬を目に塗ると視力や記憶力などが向上されるらしいが、詳細な効果は分からない。ただ、他の地図製作者達が推薦するコジなら信用出来るだろう。薬の材料はトワイライト滝6階、ソルティケーブ8階にある<font color="#e8c898">ブラウンベアーの血</font>、<font color="#e8c898">古代ヴァンパイアの目</font>の二つを集めよう。<br>
+                      <br>
+                      <font color="#e8c898">ブラウンベアーの血</font>を手に入れた。残りはソルティケーブ 地下8階にある<font color="#e8c898">古代ヴァンパイアの目</font>だ。<br>
+                      <br>
+                      <font color="#e8c898">古代ヴァンパイアの目</font>を手に入れた。残りはトワイライト滝 地下6階にある<font color="#e8c898">ブラウンベアーの血</font>だ。<br>
+                      <br>材料が全部揃った。<span class="color-image4">コジ</span>の所へ戻ろう。<br>
+                      <br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>受諾場所</th>
+                      <td><span class="color-image11">港街ブリッジヘッド　コジ（34.78）</span></td>
+                    </tr>
+                    <tr>
+                      <th>受諾条件</th>
+                      <td><span class="color-image11">Lv9</span></td>
+                    </tr>
+                    <tr>
+                      <th>報酬</th>
+                      <td><span class="color-image11">経験値3万　マップ製作者Lv3</span></td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">トワイライト滝　Ｂ６</span></td>
+                      <td><span class="color-image1">ブラウンベアー</span>（Lv160）を倒す<br>
+                      <br>
+                      <span class="color-image11">壊れた道</span>を通って<span class="color-image11">ソルティケーブ　Ｂ６</span>へ移動できる</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">ソルティケーブ　Ｂ８</span></td>
+                      <td><span class="color-image1">古代ヴァンパイア</span>（Lv285）Zinを倒す、CP吸収攻撃あり</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">港街ブリッジヘッド</span></td>
+                      <td><span class="color-image4">コジ</span>へ</td>
+                    </tr>
+                  </tbody></table>
+                <br>
+                <br>
+                <br>
+                <table id="table14" style="min-width: 840px;">
+                    <colgroup>
+                        <col span="1" width="200">
+                        <col span="1" width="640">
+                    </colgroup><tbody><tr>
+                      <th colspan="2"><a name="4"></a><font color="#00ff00">クラフトヒストリー</font></th>
+                    </tr>
+                    <tr>
+                      <td colspan="2"><br>
+                      <span class="color-image4">ロビン</span>に禁書の<font color="#e8c898">クラフトヒストリー</font>を捜してあげることにした。その代わり、クラフトヒストリーをロビンに渡すまでは、かけてもらった魔法の呪いで本の影響を受けないようにした。ロビンが言うには、クラフトヒストリーは路上強盗団アジトの2階にあり、そこにいる<font color="#d080f8">Ｘ会議員</font>が守っているらしい。<br>
+                      <br>
+                      <font color="#e8c898">クラフトヒストリー</font>を取り戻した。本物かどうかはわからないが、<span class="color-image4">ロビン</span>の所へ戻ろう。<br>
+                      <br>持ち帰ったクラフトヒストリーは偽物だった。ロビンは本物のクラフトヒストリーもそこにあるはずだという。多分<font color="#d080f8">Ｘ会議員</font>が変装しているのだろう。<br>
+                      <br>今度は本物であって欲しい。<span class="color-image4">ロビン</span>の所へ戻ろう。<br>
+                      <br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>受諾場所</th>
+                      <td><span class="color-image11">神聖都市アウグスタ　ロビン（90.14）</span></td>
+                    </tr>
+                    <tr>
+                      <th>受諾条件</th>
+                      <td><span class="color-image11">Lv16</span></td>
+                    </tr>
+                    <tr>
+                      <th>報酬</th>
+                      <td><span class="color-image11">経験値5000　マップ製作者Lv4</span></td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">路上強盗団アジト　２Ｆ</span></td>
+                      <td><span class="color-image1">Ｘ会議員</span>（Lv40）を倒す</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">神聖都市アウグスタ</span></td>
+                      <td><span class="color-image4">ロビン</span>へ、本物の場合はこれで終了</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">路上強盗団アジト　２Ｆ</span></td>
+                      <td>偽物の場合は、<span class="color-image1">国Ｘ議員</span>（Lv40）を倒す</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">神聖都市アウグスタ</span></td>
+                      <td><span class="color-image4">ロビン</span>へ</td>
+                    </tr>
+                  </tbody></table>
+                <br>
+                <br>
+                <br>
+                <table id="table14" style="min-width: 840px;">
+                    <colgroup>
+                        <col span="1" width="200">
+                        <col span="1" width="640">
+                    </colgroup><tbody><tr>
+                      <th colspan="2"><a name="5"></a><font color="#00ff00">地図製作用具</font></th>
+                    </tr>
+                    <tr>
+                      <td colspan="2"><br>
+                      <span class="color-image4">トラブス</span>は地図を描くのに必要な物を売る商人だ。<span class="color-image4">トラブス</span>にペンに刺す羽と、特殊用紙を作る木材、チョッキを作る熊の皮を持っていこう。 テンドペンド平原 / ブリッジヘッド北部地域から<font color="#e8c898">鷲闘士の翼羽</font>。ヘムクロス高原 / 高原南部地域からは<font color="#e8c898">ティンバーマンの体</font>と<font color="#e8c898">野生茶色熊の皮</font>。<br>
+                      <br>材料は揃った。<span class="color-image4">トラブス</span>の所へ戻ってみよう。<br>
+                      <br>
+                      <span class="color-image4">トラブス</span>から、材料をブリッジヘッドの<span class="color-image4">ジャック・ハンマ</span>に届けて欲しいと頼まれた。届けた後に領収証を必ず持って帰らなければならない。<br>
+                      <br>領収証を受け取った。<span class="color-image4">トラブス</span>の所へ戻ろう。<br>
+                      <br>
+                      <span class="color-image4">トラブス</span>が、また<span class="color-image4">ジャック・ハンマ</span>の所に行って荷物を受け取ってきて欲しいそうだ。すぐ出来ることだから助けてあげよう。<br>
+                      <br>荷物を受け取ったので<span class="color-image4">トラブス</span>の所へ戻ろう。荷物の数量は合っている。<br>
+                      <br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>受諾場所</th>
+                      <td><span class="color-image11">冒険家協会アリアン支部 / アリアン旅館　トラブス（24.10）</span></td>
+                    </tr>
+                    <tr>
+                      <th>受諾条件</th>
+                      <td><span class="color-image11">Lv25</span></td>
+                    </tr>
+                    <tr>
+                      <th>報酬</th>
+                      <td><span class="color-image11">経験値4万　水属性抵抗Lv1火属性抵抗Lv2レザーアーマー　マップ製作者Lv5</span></td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">テンドペンド平原 / ブリッジヘッド北部地域</span></td>
+                      <td><span class="color-image1">鷲闘士</span>（Lv70）を倒す</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">ヘムクロス高原 / 高原南部地域</span></td>
+                      <td><span class="color-image1">ティンバーマン</span>（Lv70）と<span class="color-image1">ブラウンベアー</span>（Lv70）を倒す</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">冒険家協会アリアン支部 / アリアン旅館</span></td>
+                      <td><span class="color-image4">トラブス</span>へ</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">港街ブリッジヘッド</span></td>
+                      <td><span class="color-image4">ジャック・ハンマ</span>（49.112）へ</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">冒険家協会アリアン支部 / アリアン旅館</span></td>
+                      <td><span class="color-image4">トラブス</span>へ</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">港街ブリッジヘッド</span></td>
+                      <td><span class="color-image4">ジャック・ハンマ</span>へ</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">冒険家協会アリアン支部 / アリアン旅館</span></td>
+                      <td><span class="color-image4">トラブス</span>へ<br>
+                      <br>
+                    </td>
+                    </tr>
+                  </tbody></table>
+                <br>
+                <br>
+                <br>
+                <table id="table14" style="min-width: 840px;">
+                    <colgroup>
+                        <col span="1" width="200">
+                        <col span="1" width="640">
+                    </colgroup><tbody><tr>
+                      <th colspan="2"><a name="6"></a><font color="#00ff00">ノイクの頼みごと：1回目</font></th>
+                    </tr>
+                    <tr>
+                      <td colspan="2"><br>
+                      <span class="color-image4">ノイク</span>はあなたに、ハノブ付近の廃坑へ行って、工作員に会えと言った。その工作員は廃坑の地下5階にいて、詳細な任務の内容は彼が伝えてくれるそうだ。<br>
+                      <br>工作員と話してみた。工作員が指示した詳細な任務の内容は廃坑5階と6階にいる<font color="#d080f8">ブラックメイジ</font>達からある紙を回収して欲しいというものだった。紙を回収して来れば、工作員が本物かどうか鑑定してくれるそうだ。探さなければならない本物の紙は全部で13枚である。<br>
+                      <br>再びグローティング酒場のウィザード<span class="color-image4">ノイク</span>の所へ戻ろう。<br>
+                      <br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>受諾場所</th>
+                      <td><span class="color-image11">グローティング酒場　ノイク（12.17）</span></td>
+                    </tr>
+                    <tr>
+                      <th>受諾条件</th>
+                      <td><span class="color-image11">Lv36</span></td>
+                    </tr>
+                    <tr>
+                      <th>報酬</th>
+                      <td><span class="color-image11">経験値20万　5000G　マップ製作者Lv6</span></td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">廃坑　Ｂ５</span></td>
+                      <td><span class="color-image4">ぎこちない鉱員</span>(3.46)へ</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">廃坑　Ｂ５～６</span></td>
+                      <td><span class="color-image1">ブラックメイジ</span>（Lv60）を倒す</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">廃坑　Ｂ５</span></td>
+                      <td><span class="color-image4">ぎこちない鉱員</span>へ、本物の確率は約1/2</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">グローティング酒場</span></td>
+                      <td><span class="color-image4">ノイク</span>へ</td>
+                    </tr>
+                  </tbody></table>
+                <br>
+                <br>
+                <br>
+                <table id="table14" style="min-width: 840px;">
+                    <colgroup>
+                        <col span="1" width="200">
+                        <col span="1" width="640">
+                    </colgroup><tbody><tr>
+                      <th colspan="2"><a name="7"></a><font color="#00ff00">ノイクの頼みごと：2回目</font></th>
+                    </tr>
+                    <tr>
+                      <td colspan="2"><br>
+                      <span class="color-image4">ノイク</span>はあなたに、ハノブ付近の廃坑へ行って、工作員に会えと言った。その工作員は廃坑の地下5階にいて、詳細な任務の内容は彼が伝えてくれるそうだ。<br>
+                      <br>工作員と話してみた。彼の指示は廃坑7階と8階にいる<font color="#d080f8">ソーサラー</font>からある紙を回収して欲しいというものだった。紙を回収して来れば、工作員が本物かどうか鑑定してくれるそうだ。探さなければならない本物の紙は全部で26枚である。<br>
+                      <br>再びグローティング酒場のウィザード<span class="color-image4">ノイク</span>の所へ戻ろう。<br>
+                      <br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>受諾場所</th>
+                      <td><span class="color-image11">グローティング酒場　ノイク（12.17）</span></td>
+                    </tr>
+                    <tr>
+                      <th>受諾条件</th>
+                      <td><span class="color-image11">Lv49</span></td>
+                    </tr>
+                    <tr>
+                      <th>報酬</th>
+                      <td><span class="color-image11">経験値25万　5500G　マップ製作者Lv7</span></td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">廃坑　Ｂ５</span></td>
+                      <td><span class="color-image4">ぎこちない鉱員</span>(3.46)へ</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">廃坑　Ｂ７～８</span></td>
+                      <td><span class="color-image1">ソーサラー</span>（Lv80）を倒す</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">廃坑　Ｂ５</span></td>
+                      <td><span class="color-image4">ぎこちない鉱員</span>へ、本物の確率は約1/3</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">グローティング酒場</span></td>
+                      <td><span class="color-image4">ノイク</span>へ</td>
+                    </tr>
+                  </tbody></table>
+                <br>
+                <br>
+                <br>
+                <table id="table14" style="min-width: 840px;">
+                    <colgroup>
+                        <col span="1" width="200">
+                        <col span="1" width="640">
+                    </colgroup><tbody><tr>
+                      <th colspan="2"><a name="8"></a><font color="#00ff00">ノイクの頼みごと：3回目</font></th>
+                    </tr>
+                    <tr>
+                      <td colspan="2"><br>
+                      <span class="color-image4">ノイク</span>はあなたに廃坑へ行って工作員に会えと言った。その工作員は廃坑の地下5階にいて、詳細な任務の内容は彼が伝えてくれるそうだ。<br>
+                      <br>工作員と話してみた。彼の指示は廃坑8階にいる<font color="#d080f8">ロックゴーレム</font>からある紙を回収して欲しいというものだった。紙を回収して来れば、工作員が本物かどうか鑑定してくれるそうだ。探さなければならない本物の紙は全部で39枚である。<br>
+                      <br>再びグローティング酒場のウィザード<span class="color-image4">ノイク</span>の所へ戻ろう。<br>
+                      <br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>受諾場所</th>
+                      <td><span class="color-image11">グローティング酒場　ノイク（12.17）</span></td>
+                    </tr>
+                    <tr>
+                      <th>受諾条件</th>
+                      <td><span class="color-image11">Lv64</span></td>
+                    </tr>
+                    <tr>
+                      <th>報酬</th>
+                      <td><span class="color-image11">経験値30万　6000G　マップ製作者Lv8</span></td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">廃坑　Ｂ５</span></td>
+                      <td><span class="color-image4">ぎこちない鉱員</span>(3.46)へ</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">廃坑　Ｂ８</span></td>
+                      <td><span class="color-image1">ロックゴーレム</span>（Lv90）を倒す</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">廃坑　Ｂ５</span></td>
+                      <td><span class="color-image4">ぎこちない鉱員</span>へ、本物の確率は約1/4</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">グローティング酒場</span></td>
+                      <td><span class="color-image4">ノイク</span>へ</td>
+                    </tr>
+                  </tbody></table>
+                <br>
+                <br>
+                <br>
+                <table id="table14" style="min-width: 840px;">
+                    <colgroup>
+                        <col span="1" width="200">
+                        <col span="1" width="640">
+                    </colgroup><tbody><tr>
+                      <th colspan="2"><a name="9"></a><font color="#00ff00">引き裂かれた宝の地図</font></th>
+                    </tr>
+                    <tr>
+                      <td colspan="2"><br>大きな町 バリアートの<span class="color-image4">冒険家ビーゼン</span>に、自分を裏切った仲間の<span class="color-image4">冒険家クーロン</span>の生死を確認してくれと頼まれた。<span class="color-image4">冒険家クーロン</span>が最後に目撃された場所は、オカー三角州だという。オカー三角州で<span class="color-image4">冒険家クーロン</span>の手がかりを探してみよう。<br>
+                      <br>オカー三角州の<span class="color-image11">リザード出没地域</span>で息絶えた<span class="color-image4">冒険家クーロン</span>の亡骸を見つけた。それから、<font color="#e8c898">冒険家クーロンの冒険日誌</font>を手に入れた。大きな町 バリアートの<span class="color-image4">冒険家ビーゼンの</span>ところに戻ろう。<br>
+                      <br>
+                      <span class="color-image4">冒険家クーロン</span>が16ピースに破いたアスタシウス公爵の宝の場所が描かれた地図のかけらの内、1枚目から8枚目までのかけらが、オーガの王窟にあるという。オーガの王窟にいる<font color="#d080f8">オーガチーフ</font>、<font color="#d080f8">オーガオフィサー</font>、<font color="#d080f8">エルフ暗殺者</font>を退治して、地図のかけらを集めなければならない。<br>
+                      <br>
+                      <span class="color-image4">冒険家クーロン</span>が16ピースに破いたアスタシウス公爵の宝の場所が描かれた地図のかけらの内、オーガの王窟に隠された1枚目から8枚目までのかけらをすべて集めた。大きな町 バリアートの<span class="color-image4">冒険家ビーゼン</span>のところに戻ろう。<br>
+                      <br>
+                      <span class="color-image4">冒険家クーロン</span>が16ピースに破いたアスタシウス公爵の宝の場所が描かれた地図のかけらの内、9枚目から16枚目までのかけらが、オロイン森　地下洞窟にあるという。オロイン森　地下洞窟にいる<font color="#d080f8">洞窟狼</font>、<font color="#d080f8">ダイアーウルフ</font>を退治して、地図のかけらを集めなければならない。<br>
+                      <br>
+                      <span class="color-image4">冒険家クーロン</span>が16ピースに破いたアスタシウス公爵の宝の場所が描かれた地図のかけらの内、オロイン森 地下洞窟に隠された9枚目から16枚目のかけらをすべて集めた。大きな町バリアートの<span class="color-image4">冒険家ビーゼン</span>のところに戻ろう。<br>
+                      <br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>受諾場所</th>
+                      <td><span class="color-image11">大きな町 バリアート　冒険家ビーゼン(102.127)</span></td>
+                    </tr>
+                    <tr>
+                      <th>受諾条件</th>
+                      <td><span class="color-image11">Lv120</span></td>
+                    </tr>
+                    <tr>
+                      <th>報酬</th>
+                      <td><span class="color-image11">経験値10万9500　マップ製作者Lv9</span></td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">オカー三角州</span></td>
+                      <td><span class="color-image11">骨</span>（6.39）をクリック<br>
+                      <br>
+
+                    </td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">大きな町 バリアート</span></td>
+                      <td><span class="color-image4">冒険家ビーゼン</span>へ</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">オーガの王窟　Ｂ１</span></td>
+                      <td><font color="#ff0000">必要なインベントリの空き8個</font><br>
+                      <br>
+                      <font color="#ff0000">●</font><span class="color-image1">オーガチーフ</span>（Lv80）を倒す　（かけら1.3.5.7）<br>
+                      <font color="66FF00">●</font><span class="color-image1">オーガオフィサー</span>（Lv80）を倒す　（かけら8）<br>
+                      <span class="color-image11">●</span><span class="color-image1">エルフ暗殺者</span>（Lv110）を倒す　（かけら2.4.6）<br>
+                      <br>
+                    </td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">大きな町 バリアート</span></td>
+                      <td><span class="color-image4">冒険家ビーゼン</span>へ</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">オロイン森　地下洞窟</span></td>
+                      <td><font color="#ff0000">必要なインベントリの空き8個</font><br>
+                      <br>
+                      <font color="#ff0000">●</font><span class="color-image1">洞窟狼</span>（Lv120）を倒す　（かけら9～15）<br>
+                      <span class="color-image11">●</span><span class="color-image1">ダイアーウルフ</span>（Lv120）を倒す　（かけら16）<br>
+                      <br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">大きな町 バリアート</span></td>
+                      <td><span class="color-image4">冒険家ビーゼン</span>へ</td>
+                    </tr>
+                  </tbody></table>
+                <br>
+                <br>
+                <br>
+                <table id="table14" style="min-width: 840px;">
+                    <colgroup>
+                        <col span="1" width="200">
+                        <col span="1" width="640">
+                    </colgroup><tbody><tr>
+                      <th colspan="2"><a name="10"></a><font color="#00ff00">その沼には何かある！</font></th>
+                    </tr>
+                    <tr>
+                      <td colspan="2"><br>農村ラカリフサの<span class="color-image4">探検隊長エイダン</span>から、ゴリマ沼地のベースキャンプに残っている探検隊員たちが、問題なく過ごしているか確認して来てほしいと頼まれた。<span class="color-image4">探検隊長エイダン</span>の代わりに探検隊員の指揮をとる<span class="color-image4">探検隊員フィン</span>に会いに行こう。<br>
+                      <br>ゴリマ沼地のエイダン探検隊のベースキャンプにいる<span class="color-image4">探検隊員フィン</span>が、沼の調査のため、ベースキャンプを離れた<span class="color-image4">探検隊員バンヌ</span>、<span class="color-image4">探検隊員アレン</span>、<span class="color-image4">探検隊員ナズ</span>、<span class="color-image4">探検隊員メルビン</span>に、ベースキャンプに帰還するように伝えて欲しいと依頼された。彼らは、ナラダ平原の沼地帯 / ノーススワンプの方に行ったという。<br>
+                      <br>グレートマウンテンの原始人に連れ去られた<span class="color-image4">探検隊員メルビン</span>の位置に関する手がかりを見つけなければならない。原始人の村から手がかりを探し出そう。原始人の村にいる<font color="#6058d0">異形の原始人</font>や<font color="#6058d0">堕落魔法師</font>が、その手がかりを持っているはずだ。彼らを倒して手がかりを探し出そう。<br>
+                      <br>原始人の村で発見した<font color="#e8c898">崇拝者のお供え</font>という本から、<span class="color-image4">探検隊員メルビン</span>は、ウエストスワンプ洞窟にいる原始人の信者たちが、生贄として連れて行ったことが分かった。ウエストスワンプ洞窟にいる<span class="color-image4">探検隊員メルビン</span>を救出しよう。<br>
+                      <br>沼地のあっちこっちにいたエイダン探検隊の探検隊員たちに会い、ベースキャンプに帰還するように伝えた。これから、ゴリマ沼地のエイダン探検隊のベースキャンプにいる<span class="color-image4">探検隊員フィン</span>のところに戻ろう。<br>
+                      <br>農村ラカリフサにいる<span class="color-image4">探検隊長エイダン</span>のところに戻って、今までのことを報告しよう。<br>
+                      <br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>受諾場所</th>
+                      <td><span class="color-image11">農村ラカリフサ　探検隊長エイダン（87.68）</span></td>
+                    </tr>
+                    <tr>
+                      <th>受諾条件</th>
+                      <td><span class="color-image11">Lv240</span></td>
+                    </tr>
+                    <tr>
+                      <th>報酬</th>
+                      <td><span class="color-image11">経験値60万6000　マップ製作者Lv10</span></td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">ゴリマ沼地</span></td>
+                      <td><span class="color-image4">探検隊員フィン</span>（39.99）へ</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">ナラダ平原の沼地帯 / ノーススワンプ</span></td>
+                      <td><span class="color-image4">探検隊員バンヌ</span>(14.101)、<span class="color-image4">探検隊員アレン</span>(81.72)、<span class="color-image4">探検隊員ナズ</span>(14.126)へ</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">グレートマウンテン北部</span></td>
+                      <td><span class="color-image1">異形の原始人</span>（Lv120）を倒す</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">ウエストスワンプ洞窟</span></td>
+                      <td><span class="color-image4">探検隊員メルビン</span>（13.27）へ<br>
+                      <br>
+                      <span class="color-image1">アイドレースカル</span>（Lv220）Zinが出現、倒す。ターンアンデッドによる即死可能<br>
+                      <br>
+                      <span class="color-image4">探検隊員メルビン</span>へ</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">ゴリマ沼地</span></td>
+                      <td><span class="color-image4">探検隊員フィン</span>へ</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image11">農村ラカリフサ</span></td>
+                      <td><span class="color-image4">探検隊長エイダン</span>へ</td>
+                    </tr>
+                  </tbody></table>
+                
+                <br>
+                <h4>その他</h4>
+                <!-- ・NPCの会話とかそのうち載せたいね。 -->
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        </div>
+</body>
+
+</html>
