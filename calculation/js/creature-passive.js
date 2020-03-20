@@ -277,6 +277,7 @@ var skillData = [
     { name: "オーロラ", id: 162, mainId: "闇低下", mainLv: 32, sub1Id: "魔法攻撃力強化", sub1IdLv: 5, sub2Id: "人間型魔法ダメージ", sub2IdLv: 5 },
     { name: "アレクサンダ", id: 163, mainId: "敵致命打減少", mainLv: 10, sub1Id: "攻撃力", sub1IdLv: 16, sub2Id: "クリティカルダメージ", sub2IdLv: 16 },
     { name: "マキュリア", id: 180, mainId: "水低下", mainLv: 32, sub1Id: "魔法致命打", sub1IdLv: 5, sub2Id: "水強化", sub2IdLv: 16 },
+    { name: "ラクネーラ", id: 181, mainId: "魔法強打", mainLv: 10, sub1Id: "PVP防御力", sub1IdLv: 5, sub2Id: "上級最大CP", sub2IdLv: 5 },
     { name: "ラクネーラ", id: 184, mainId: "人間型魔法ダメージ", mainLv: 10, sub1Id: "魔法致命打", sub1IdLv: 5, sub2Id: "水強化", sub2IdLv: 16 },
     { name: "橘 清音", id: 189, mainId: "クリティカル確率", mainLv: 32, sub1Id: "上級攻撃速度", sub1IdLv: 5, sub2Id: "命中率", sub2IdLv: 16 },
     { name: "枇々木 丈", id: 190, mainId: "クリティカルダメージ", mainLv: 32, sub1Id: "上級攻撃力", sub1IdLv: 5, sub2Id: "最大体力", sub2IdLv: 16 },
