@@ -30,6 +30,7 @@ function init2() {
 
 // 裏でも多分こんな感じで管理してるんでないの。
 var skillIdMap = [
+    // Rank2が一般で、Rank1が上級
     { id: 0, value: "PVP攻撃力", passive_rank: 1 },
     { id: 1, value: "PVP防御力", passive_rank: 1 },
     { id: 2, value: "スキルクールタイム減少", passive_rank: 2 },
@@ -1527,9 +1528,9 @@ function searchOption(cid, slv) {
             result += '- 抵抗値低下防止 +<span class="color-image11">' + Math.round(slv * 0.2) + '</span>％<br>';
         }
         if (slv >= 50) {
-            result += '- 抵抗値低下防止 +<span class="color-image11">' + 15 + '</span>％<br>';
-            // 5%かもしれない。違ったらごめん
-            result += '- 能力値低下防止 +<span class="color-image11">10</span>％<br>'
+            result += '- 抵抗値低下防止 +<span class="color-image11">' + 10 + '</span>％<br>';
+            // やっぱり5%だったよ
+            result += '- 能力値低下防止 +<span class="color-image11">5</span>％<br>'
             result += '- すべての能力値 +<span class="color-image11">80</span>上昇<br>'
         } else if (slv >= 40) {
             result += '- 能力値低下防止 +<span class="color-image11">3</span>％<br>'
@@ -1635,6 +1636,7 @@ function searchOption(cid, slv) {
             result += '- 魔法強打 <span class="color-image11">' + 5 + '</span>％<br>';
         } else if (slv >= 40) {
             result += '- 魔法攻撃力を +<span class="color-image11">30</span>％強化させる。<br>'
+            result += '- 魔法強打 <span class="color-image11">' + 3 + '</span>％<br>';
         } else if (slv >= 30) {
             result += '- 魔法攻撃力を +<span class="color-image11">20</span>％強化させる。<br>'
         } else if (slv >= 20) {

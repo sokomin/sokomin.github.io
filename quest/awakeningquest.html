@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>覚醒クエスト 赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+                <h3>覚醒クエスト</h3>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/5d559b7d1057f8113f06eb36fc642bed31dfd217.10.2.9.2.png" border=0 name="insertImg" /><br><br> 
+                ・Lv300になると、特定のスキルが強化された「覚醒スキル」を使えるようになります。<br>
+                ・覚醒タイプは3つの中から１つを選択できます。<br>
+                ・各職業の覚醒タイプ/スキルの詳細は　⇒　<a href="skill2020.html">覚醒スキル</a><br>
+                ・スキル再配分巻物を使用するか、1～3次転生によりスキルが初期化されると、覚醒タイプも初期化されます。<br>
+                ・再振り後も古都ブルンネンシュティグのアルブレヒト（43.48）に話して再度、選択し直せます。<br>
+                ・覚醒スキルは既存のスキルをマスターすることでLV1まで上昇できます。(3500/7000SP必要)<br>
+                ・<span class="color-image1">専用パッシブスキル</span>は、ON/OFFの切り替えなしスキルレベル増加効果に依らずで常に効果が発揮されます。<br>
+                ・<span class="color-image2">専用強化スキル</span>と<span class="color-image4">強化スキル</span>は、スキルマスターや装備品などのスキルLv補正+が適応されます。<br>
+                ・<span class="color-image1">2020/2まではギルド戦/攻城戦にて覚醒スキルは発動しませんでしたが、現在は使用可能。</span><br>
+                ・ペパーミントフラワーの硝子ビンは、自キャラ±50Lvのモンスターから0.1%程度の確率でドロップします。取引可。<br>
+                <br>
+                <img src="./awakeningquest_files/a001.gif" width="299" height="160" border="0"><br>
+                <br>
+                <table id="table14">
+                  <colgroup><col span="1" width="140">
+                  <col span="1" width="40">
+                  <col span="1" width="60">
+                  <col span="1">
+                  <col span="1" width="120">
+                  <col span="1" width="120">
+                  </colgroup><tbody>
+                <tr>
+                <th>覚醒スキル</th>
+                      <th>SP</th>
+                      <th>硝子ビン</th>
+                      <th>条件</th>
+                      <th colspan="2">説明</th>
+                    </tr>
+                <tr>
+                      <td align="center"><span class="color-image1">専用パッシブスキル</span></td>
+                      <td align="center">-</td>
+                      <td align="center">-</td>
+                      <td>自動取得</td>
+                      <td rowspan="2" align="center">異なる覚醒タイプ<br>
+                      は取得不可</td>
+                      <td align="center">新スキル</td>
+                    </tr>
+                <tr>
+                      <td align="center"><span class="color-image2">専用強化スキル</span></td>
+                      <td align="center">3500</td>
+                      <td align="center">-</td>
+                      <td>前提スキルをマスター</td>
+                      <td rowspan="3" align="center">既存スキルの<br>
+                      強化スキル</td>
+                    </tr>
+                <tr>
+                      <td align="center"><span class="color-image4">自分の覚醒タイプの<br>
+                      強化スキル</span></td>
+                      <td align="center">3500</td>
+                      <td align="center">2個</td>
+                      <td>前提スキルをマスター</td>
+                      <td rowspan="2" align="center">異なる覚醒タイプ<br>
+                      でも取得可能</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image4">他の覚醒タイプの<br>
+                      強化スキル</span></td>
+                      <td align="center">7000</td>
+                      <td align="center">4個</td>
+                      <td>前提スキルをマスター、<br>
+                      <span class="color-image2">専用強化スキル</span>と<span class="color-image4">自分の覚醒タイプの強化スキル</span>2つを取得</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <br>
+                例）　エンターテイナーに覚醒する場合<br>
+                ・「ウルトラノヴァ」をマスターするとエンターテイナーに覚醒でき、クエスト完了時に<span class="color-image1">専用パッシブスキル</span>「華麗なる変身」を自動で取得。<br>
+                ・SP3500で、「ウルトラノヴァ」の<span class="color-image2">専用強化スキル</span>「ウルトラスーパーノヴァ」を取得。<br>
+                ・SP3500と硝子ビン2個と「花の乙女スペシャル」をマスターで、<span class="color-image4">強化スキル</span>「花の乙女デラックス」を取得。<br>
+                ・SP3500と硝子ビン2個と「ライトニングワインダー」をマスターで、<span class="color-image4">強化スキル</span>「サンダーボルトワインダー」を取得。<br>
+                「ウルトラスーパーノヴァ」、「花の乙女デラックス」、「サンダーボルトワインダー」はどれから習得しても可。<br>
+                自分の覚醒タイプの覚醒スキルを4つ全て取得すると、<span class="color-image4">他の覚醒タイプの強化スキル</span>も取得可能になる。<br>
+                ・SP7000と硝子ビン4個と各前提スキルをマスターで、<span class="color-image4">他の覚醒タイプの強化スキル</span>である<br>
+                「ビックコメットシューティング」、「アステラガン」、「ミスティックボックス」、「平和の伝書鳩」を取得。<br>
+                「スターライトパレード」、「ギャラクシーシャワー」、「平和の歌」、「スーパーアイドルスター」や、<br>
+                プリンセスの覚醒スキルは覚醒タイプが異なるため、取得不可。<br>
+                <br>
+                <table id="table14">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="490">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                <th colspan="2"><font color="#00ff00">黄色のメリックが残した遺物 1</font></th>
+                    </tr>
+                    <tr>
+                      <td colspan="2"><br>ダメル地下遺跡から石版を発掘した<span class="color-image4">シュトラウズ</span>を探してみよう。<span class="color-image4">シュトラウズ</span>は東側の遺跡入口あたりで落ちこんでいるらしい。<br>
+                      <br>
+                      <span class="color-image4">シュトラウズ</span>が発掘したという石版は地下遺跡の中にある。なにか発見できるかもしれない。ダメル地下遺跡に入って石版を探そう。<br>
+                      <br>石版は見つかったが、保存状態が悪い。表面には不思議な文字で何やら文章が刻まれている。読むのは難しそうだ。再び<span class="color-image4">シュトラウズ</span>に会って石版について話してみよう。<br>
+                      <br>石版に刻まれた文章については、<span class="color-image4">シュトラウズ</span>も分からないという。文章を解読したいと言ったら、シュトラウズは<span class="color-image11">拓本の紙</span>をくれた。<span class="color-image4">オクレル</span>なら解読できる人を知っているかもしれないという。<br>
+                      <br>
+                      <span class="color-image4">オクレル</span>は、魔法都市スマグのウィザードギルドの近くにいる<span class="color-image4">スタイング</span>という魔法師に聞いてみろと言った。<br>
+                      <br>
+                      <span class="color-image4">スタイング</span>は、どこか不思議な雰囲気の老魔法師だった。解読のための時間が欲しいと言ってるので、しばらくスマグ観光でもしてから<span class="color-image4">スタイング</span>の所へ戻ろう。<br>
+                      <br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>受諾場所</th>
+                      <td><span class="color-image11">荒廃都市ダメル　オクレル（29.41）</span></td>
+                    </tr>
+                    <tr>
+                      <th>受諾条件</th>
+                      <td><span class="color-image11">Lv300　キャンセル不可</span></td>
+                    </tr>
+                    <tr>
+                      <th>報酬</th>
+                      <td><span class="color-image11">-</span></td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image2">荒廃都市ダメル</span></td>
+                      <td><span class="color-image4">シュトラウズ</span>（66.24）へ</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image2">ダメル地下遺跡</span></td>
+                      <td><span class="color-image11">石版</span>（172.55）をクリック<br>
+                      <br>
+                      <img src="./awakeningquest_files/a002.gif" width="187" height="274" border="0"><br>
+                      <br>
+                      <img src="./awakeningquest_files/awakeningmap404.gif" width="480" height="120" border="0"></td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image2">荒廃都市ダメル</span></td>
+                      <td><span class="color-image4">シュトラウズ</span>へ<br>
+                      <br>
+                      <span class="color-image4">オクレル</span>へ</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image2">魔法都市スマグ</span></td>
+                      <td><span class="color-image4">スタイング</span>（6.47）へ<br>
+                      <br>
+                      <span class="color-image4">スタイング</span>へ</td>
+                    </tr>
+                    <tr>
+                <th colspan="2"><font color="#00ff00">黄色のメリックが残した遺物 2</font></th>
+                    </tr>
+                    <tr>
+                      <td colspan="2"><br>錬金術師<span class="color-image4">ブロデル</span>を探し、完全な石版を持ってくる方法を聞いてみよう。<span class="color-image4">ブロデル</span>はアラク湖の近くで錬金術の研究をしている。<br>
+                      <br>ひびが入った石版をくっつけるための接着剤を作ろう。そのためには<span class="color-image11">ネバネバした蜘蛛の糸</span>が5つ必要だ。<font color="#d080f8">ホールドスパイダ</font>、<font color="#d080f8">ソードスパイダー</font>を退治すると入手できる。<br>
+                      <br>
+                      <span class="color-image11">ネバネバした蜘蛛の糸</span>を5つ全て集めた。<span class="color-image4">ブロデル</span>の所に戻ろう。<br>
+                      <br>石版をくっつけることができる<span class="color-image11">強力接着剤</span>をもらった。荒廃都市ダメルに行って石版を持ってこよう。その前に<span class="color-image4">シュトラウズ</span>から許可をもらわなければならない。<br>
+                      <br>
+                      <span class="color-image4">シュトラウズ</span>は自由に石版を持って行っても問題ないという。石版を取りにダメル地下遺跡に入ろう。<br>
+                      <br>
+                      <span class="color-image11">魔法にかかった石版</span>を無事手に入れた。魔法都市スマグの<span class="color-image4">スタイング</span>の所に戻ろう。<br>
+                      <br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>受諾場所</th>
+                      <td><span class="color-image11">魔法都市スマグ　スタイング（6.47）</span></td>
+                    </tr>
+                    <tr>
+                      <th>受諾条件</th>
+                      <td><span class="color-image11">Lv300　キャンセル不可</span></td>
+                    </tr>
+                    <tr>
+                      <th>報酬</th>
+                      <td><span class="color-image11">-</span></td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image2">ヘムクロス高原 / アラク湖付近</span></td>
+                      <td><span class="color-image4">ブロデル</span>（120.65）へ</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image2">スウェブタワー　１Ｆ</span></td>
+                      <td><span class="color-image1">ホールドスパイダ</span>（Lv205）、<span class="color-image1">ソードスパイダー</span>（Lv205）を5匹倒す</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image2">ヘムクロス高原 / アラク湖付近</span></td>
+                      <td><span class="color-image4">ブロデル</span>へ</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image2">荒廃都市ダメル</span></td>
+                      <td><span class="color-image4">シュトラウズ</span>（66.24）へ</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image2">ダメル地下遺跡</span></td>
+                      <td><span class="color-image11">石版</span>（172.55）をクリック</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image2">魔法都市スマグ</span></td>
+                      <td><span class="color-image4">スタイング</span>へ</td>
+                    </tr>
+                    <tr>
+                <th colspan="2"><font color="#00ff00">黄色のメリックが残した遺物 3</font></th>
+                    </tr>
+                    <tr>
+                      <td colspan="2"><br>石版の文章を解読するために、学者<span class="color-image4">ヘンリエット</span>に<span class="color-image11">解読されてない拓本</span>を見せ、助けてもらおう。<span class="color-image4">ヘンリエット</span>は、古都ブルンネンシュティグにある国会議事堂の近くにいる。<br>
+                      <br>
+                      <span class="color-image4">ヘンリエット</span>から黄色のメリックに関する話を聞いた。<span class="color-image4">ヘンリエット</span>が解読を終えるまでは時間がかかりそうだ。再び魔法都市スマグに行って<span class="color-image4">スタイング</span>と話してみよう。<br>
+                      <br>黄色のメリックについて詳しく調べるため、研究家<span class="color-image4">ディラ</span>を探しに行こう。<span class="color-image4">ディラ</span>は、スマグ地下道で問題を起こしているレッドアイ残党を相手にしているらしい。<br>
+                      <br>
+                      <span class="color-image4">ディラ</span>は、レッドアイ残党を相手するのに忙しくて話をする余裕がない。周りの<font color="#d080f8">レッドアイ信奉者</font>を片付けたら話ができそうだ。<br>
+                      <br>
+                      <font color="#d080f8">レッドアイ信奉者</font>をある程度退治した。今回こそディラと話ができそうだ。<span class="color-image4">ディラ</span>の所へ戻ろう。<br>
+                      <br>
+                      <span class="color-image4">ディラ</span>は、黄色のメリックが地下界への門を開いた理由について話してくれた。ある程度時間も経ったので、<span class="color-image4">スタイング</span>の所に戻って石版の解読が終わったか聞いてみよう。<br>
+                      <br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>受諾場所</th>
+                      <td><span class="color-image11">魔法都市スマグ　スタイング（6.47）</span></td>
+                    </tr>
+                    <tr>
+                      <th>受諾条件</th>
+                      <td><span class="color-image11">Lv300　キャンセル不可</span></td>
+                    </tr>
+                    <tr>
+                      <th>報酬</th>
+                      <td><span class="color-image11">帰還の巻物1個</span></td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image2">古都ブルンネンシュティグ</span></td>
+                      <td><span class="color-image4">ヘンリエット</span>（126.103）へ</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image2">魔法都市スマグ</span></td>
+                      <td><span class="color-image4">スタイング</span>へ</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image2">スマグ地下道　Ｂ１</span></td>
+                      <td>
+                          <!-- 行き方の詳細は　⇒　<a href="info01.html">スマグ地下道へのワープ方法</a><br>
+                      <br> -->
+                      <span class="color-image4">ディラ</span>（67.32）へ<br>
+                      <br>
+                      <span class="color-image1">レッドアイ信奉者</span>（Lv50）を5匹倒す<br>
+                      <br>
+                      <span class="color-image4">ディラ</span>へ</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image2">魔法都市スマグ</span></td>
+                      <td><span class="color-image4">スタイング</span>へ</td>
+                    </tr>
+                    <tr>
+                <th colspan="2"><font color="#00ff00">黄色のメリックが残した遺物 4</font></th>
+                    </tr>
+                    <tr>
+                      <td colspan="2"><br>石版の解読が全て終わっていた。古都ブルンネンシュティグの学者<span class="color-image4">ヘンリエット</span>から<span class="color-image11">解読本</span>をもらって来よう。<span class="color-image4">ヘンリエット</span>は、古都ブルンネンシュティグにある国会の建物近くにいる。<br>
+                      <br>
+                      <span class="color-image4">ヘンリエット</span>から<span class="color-image11">解読本</span>をもらった。これで石版の文章を読むことができる。魔法都市スマグに行って<span class="color-image4">スタイング</span>と一緒に見よう。<br>
+                      <br>石版の魔法を使うためには、<span class="color-image11">覚醒の霊水</span>が必要のようだ。問題はどうやって作るのか分からないことだ。ヘムクロス高原 / アラク湖付近の錬金術師<span class="color-image4">ブロデル</span>に聞いてみよう。<br>
+                      <br>
+                      <span class="color-image4">ブロデル</span>は、<font color="#d080f8">ティンバーマン</font>が<span class="color-image11">覚醒の霊水</span>を壺ごと飲み込んでしまったという。<font color="#d080f8">ティンバーマン</font>を退治し<span class="color-image11">覚醒の霊水</span>を取り戻そう。<br>
+                      <br>
+                      <span class="color-image11">覚醒の霊水</span>を取り戻した。ヘムクロス高原 / アラク湖付近の<span class="color-image4">ブロデル</span>の所へ戻ろう。<br>
+                      <br>
+                      <span class="color-image4">ブロデル</span>から<span class="color-image11">覚醒の霊水</span>をもらって、石版の魔法が使えるようになった。魔法都市スマグで待っている<span class="color-image4">スタイング</span>の所へ戻ろう。<br>
+                      <br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>受諾場所</th>
+                      <td><span class="color-image11">魔法都市スマグ　スタイング（6.47）</span></td>
+                    </tr>
+                    <tr>
+                      <th>受諾条件</th>
+                      <td><span class="color-image11">Lv300　キャンセル不可</span></td>
+                    </tr>
+                    <tr>
+                      <th>報酬</th>
+                      <td><span class="color-image11">-</span></td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image2">古都ブルンネンシュティグ</span></td>
+                      <td><span class="color-image4">ヘンリエット</span>（126.103）へ</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image2">魔法都市スマグ</span></td>
+                      <td><span class="color-image4">スタイング</span>へ</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image2">ヘムクロス高原 / アラク湖付近</span></td>
+                      <td><span class="color-image4">ブロデル</span>（120.65）へ<br>
+                      <br>
+                      <span class="color-image1">ティンバーマン</span>（Lv125）を倒す<br>
+                      <br>
+                      <span class="color-image4">ブロデル</span>へ</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image2">魔法都市スマグ</span></td>
+                      <td><span class="color-image4">スタイング</span>へ</td>
+                    </tr>
+                    <tr>
+                <th colspan="2"><font color="#00ff00">黄色のメリックが残した遺物 5</font></th>
+                    </tr>
+                    <tr>
+                      <td colspan="2"><br>石版の魔法を使うためには相当な魔力が必要になるようだ。古都ブルンネンシュティグに行って、魔法師<span class="color-image4">アルブレヒト</span>に会ってみよう。<br>
+                      <br>
+                      <span class="color-image4">アルブレヒト</span>と黄色のメリックに関する話を交わした。<span class="color-image11">ペパーミントフラワーの小ビン</span>を1つ入手しよう。<span class="color-image11">ペパーミントフラワーの小ビン</span>は、<font color="#d080f8">土蜘蛛</font>から手に入る。<br>
+                      <br>
+                      <span class="color-image11">ペパーミントフラワーの小ビン</span>を1つ入手した。古都ブルンネンシュティグの魔法師<span class="color-image4">アルブレヒト</span>の所に戻り、石版の魔法をお願いしよう。<br>
+                      <br>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>受諾場所</th>
+                      <td><span class="color-image11">魔法都市スマグ　スタイング（6.47）</span></td>
+                    </tr>
+                    <tr>
+                      <th>受諾条件</th>
+                      <td><span class="color-image11">Lv300　キャンセル不可</span></td>
+                    </tr>
+                    <tr>
+                      <th>報酬</th>
+                      <td><span class="color-image11">覚醒</span></td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image2">古都ブルンネンシュティグ</span></td>
+                      <td><span class="color-image4">アルブレヒト</span>（42.48）へ</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image2">東プラトン街道 / イースタンブリッジ付近</span></td>
+                      <td><span class="color-image1">土蜘蛛</span>（Lv1）を倒す</td>
+                    </tr>
+                    <tr>
+                      <td align="center"><span class="color-image2">古都ブルンネンシュティグ</span></td>
+                      <td><span class="color-image4">アルブレヒト</span>または<span class="color-image4">イルデレヒト</span>（41.49）へ、覚醒タイプを選択<br>
+                      <br>
+                      <span class="color-image2">専用強化スキル</span>の前提スキルをマスターしていないと、覚醒不可。<br>
+                      <br>
+                    <table id="table14">
+                        <colgroup><col span="1" width="120">
+                        <col span="1" width="200">
+                        </colgroup><tbody>
+                          <tr>
+                            <td valign="top">剣士</td>
+                            <td><font color="#9999ff">(1)攻撃力が欲しいです。<br>
+                            (2)魔法力が欲しいです。<br>
+                            (3)防御力が欲しいです。</font></td>
+                            <td>→　<a href="../skill/knight_awake_skill2020.html#skill_awake1">幻影の剣士</a><br>
+                            →　<a href="../skill/knight_awake_skill2020.html#skill_awake2">嵐の剣士</a><br>
+                            →　<a href="../skill/knight_awake_skill2020.html#skill_awake3">鋼の剣士</a></td>
+                          </tr>
+                          <tr>
+                            <td valign="top">戦士</td>
+                            <td><font color="#9999ff">(1)速度が欲しいです。<br>
+                            (2)魔力が欲しいです。<br>
+                            (3)突進力が欲しいです。</font></td>
+                            <td>→　<a href="../skill/warrior_awake_skill2020.html#skill_awake1">疾風の戦士</a><br>
+                            →　<a href="../skill/warrior_awake_skill2020.html#skill_awake2">魔性の戦士</a><br>
+                            →　<a href="../skill/warrior_awake_skill2020.html#skill_awake3">無双の戦士</a></td>
+                          </tr>
+                          <tr>
+                            <td valign="top">ランサー</td>
+                            <td><font color="#9999ff">(1)攻撃術が欲しいです。<br>
+                            (2)元素力が欲しいです。<br>
+                            (3)突破力が欲しいです。</font></td>
+                            <td>→　<a href="../skill/lancer_awake_skill.html#skill_awake1">ヴァンガードキャバリエ</a><br>
+                            →　<a href="../skill/lancer_awake_skill.html#skill_awake2">エレメンタルランサー</a><br>
+                            →　<a href="../skill/lancer_awake_skill.html#skill_awake3">ロージングヴァルキリー</a></td>
+                          </tr>
+                          <tr>
+                            <td valign="top">アーチャー</td>
+                            <td><font color="#9999ff">(1)速射の能力が欲しいです。<br>
+                            (2)秘伝術が欲しいです。<br>
+                            (3)強力な力が欲しいです。</font></td>
+                            <td>→　<a href="../skill/archer_awake_skill.html#skill_awake1">シャープシューター</a><br>
+                            →　<a href="../skill/archer_awake_skill.html#skill_awake2">アケインスナイパー</a><br>
+                            →　<a href="../skill/archer_awake_skill.html#skill_awake3">ローチングアンブッシャ</a></td>
+                          </tr>
+                          <tr>
+                            <td valign="top">ウィザード</td>
+                            <td><font color="#9999ff">(1)炎の力が欲しいです。<br>
+                            (2)守りの冷気が欲しいです。<br>
+                            (3)接近戦闘術が欲しいです。</font></td>
+                            <td>→　<a href="../skill/wiz_awake_skill20190626.html#skill_awake1">爆炎の大魔導師</a><br>
+                            →　<a href="../skill/wiz_awake_skill20190626.html#skill_awake2">氷嵐の大魔導師</a><br>
+                            →　<a href="../skill/wiz_awake_skill20190626.html#skill_awake3">猛撃の大魔導師</a></td>
+                          </tr>
+                          <tr>
+                            <td valign="top">ウルフマン</td>
+                            <td><font color="#9999ff">(1)吸血能力が欲しいです。<br>
+                            (2)炎の力が欲しいです。<br>
+                            (3)魔法の力が欲しいです。</font></td>
+                            <td>→　<a href="../skill/wolf_awake_skill20180529.html#skill_awake1">ブラッディバーサーカー</a><br>
+                            →　<a href="../skill/wolf_awake_skill20180529.html#skill_awake2">フレイムバーサーカー</a><br>
+                            →　<a href="../skill/wolf_awake_skill20180529.html#skill_awake3">ルナティックバーサーカー</a></td>
+                          </tr>
+                          <tr>
+                            <td valign="top">ビショップ</td>
+                            <td><font color="#9999ff">(1)浄化の力が欲しいです。<br>
+                            (2)盾の防御術が欲しいです。<br>
+                            (3)強化の力が欲しいです。</font></td>
+                            <td>→　<a href="../skill/bis_awake_skill20181218.html#skill_awake1">ディバインエクソシスト</a><br>
+                            →　<a href="../skill/bis_awake_skill20181218.html#skill_awake2">セイクリッドディフェンダー</a><br>
+                            →　<a href="../skill/bis_awake_skill20181218.html#skill_awake3">グロリアスエイダー</a></td>
+                          </tr>
+                          <tr>
+                            <td valign="top">追放天使</td>
+                            <td><font color="#9999ff">(1)伝道の力が欲しいです。<br>
+                            (2)天上の光が欲しいです。<br>
+                            (3)移動の能力が欲しいです。</font></td>
+                            <td>→　<a href="../skill/angel_awake_skill20180903.html#skill_awake1">ホーリーミッショナリー</a><br>
+                            →　<a href="../skill/angel_awake_skill20180903.html#skill_awake2">セイントパニッシャー</a><br>
+                            →　<a href="../skill/angel_awake_skill20180903.html#skill_awake3">スピリットガイド</a></td>
+                          </tr>
+                          <tr>
+                            <td valign="top">ビーストテイマー</td>
+                            <td><font color="#9999ff">(1)愛の力が欲しいです。<br>
+                            (2)威厳が欲しいです。<br>
+                            (3)親和力が欲しいです。</font></td>
+                            <td>→　<a href="../skill/beasttamer_awake_skill2018.html#skill_awake1">慈愛の民</a><br>
+                            →　<a href="../skill/beasttamer_awake_skill2018.html#skill_awake2">信望の民</a><br>
+                            →　<a href="../skill/beasttamer_awake_skill2018.html#skill_awake3">真心の民</a></td>
+                          </tr>
+                          <tr>
+                            <td valign="top">サマナー</td>
+                            <td><font color="#9999ff">(1)調和の力が欲しいです。<br>
+                            (2)暖かさが欲しいです。<br>
+                            (3)爽快さが欲しいです。</font></td>
+                            <td>→　<a href="../skill/summoner_awake_skill20181107.html#skill_awake1">導きの楽士</a><br>
+                            →　<a href="../skill/summoner_awake_skill20181107.html#skill_awake2">太陽と風の楽士</a><br>
+                            →　<a href="../skill/summoner_awake_skill20181107.html#skill_awake3">海と大地の楽士</a></td>
+                          </tr>
+                          <tr>
+                            <td valign="top">シーフ</td>
+                            <td><font color="#9999ff">(1)投擲術が欲しいです。<br>
+                            (2)トラップ術が欲しいです。<br>
+                            (3)隠密術が欲しいです。</font></td>
+                            <td>→　<a href="../skill/thief_awake_skill2020.html#skill_awake1">ヴェノムスローアー</a><br>
+                            →　<a href="../skill/thief_awake_skill2020.html#skill_awake2">サイレントトラッパー</a><br>
+                            →　<a href="../skill/thief_awake_skill2020.html#skill_awake3">シャドウインフェルノ</a></td>
+                          </tr>
+                          <tr>
+                            <td valign="top">武道</td>
+                            <td><font color="#9999ff">(1)正拳が欲しいです。<br>
+                            (2)閃脚が欲しいです。<br>
+                            (3)気功が欲しいです。</font></td>
+                            <td>→　<a href="../skill/budou_awake_skill2020.html#skill_awake1">ダイヤモンドアームズ</a><br>
+                            →　<a href="../skill/budou_awake_skill2020.html#skill_awake2">ライトニングストライカー</a><br>
+                            →　<a href="../skill/budou_awake_skill2020.html#skill_awake3">オーラマスター</a></td>
+                          </tr>
+                          <tr>
+                            <td valign="top">プリンセス</td>
+                            <td><font color="#9999ff">(1)怪力が欲しいです。<br>
+                            (2)投擲力が欲しいです。<br>
+                            (3)変身能力が欲しいです。</font></td>
+                            <td>→　<a href="../skill/princess_awake_skill2020.html#skill_awake1">フォースクイーン</a><br>
+                            →　<a href="../skill/princess_awake_skill2020.html#skill_awake2">ケイオスクイーン</a><br>
+                            →　<a href="../skill/princess_awake_skill2020.html#skill_awake3">トランスクイーン</a></td>
+                          </tr>
+                          <tr>
+                            <td valign="top">リトルウィッチ</td>
+                            <td><font color="#9999ff">(1)星の力が欲しいです。<br>
+                            (2)撹乱術が欲しいです。<br>
+                            (3)歌唱力が欲しいです。</font></td>
+                            <td>→　<a href="../skill/witch_awake_skill2020.html#skill_awake1">アクションスター</a><br>
+                            →　<a href="../skill/witch_awake_skill2020.html#skill_awake2">エンターテイナー</a><br>
+                            →　<a href="../skill/witch_awake_skill2020.html#skill_awake3">スーパーアイドル</a></td>
+                          </tr>
+                          <tr>
+                            <td valign="top">ネクロマンサー</td>
+                            <td><font color="#9999ff">(1)暗黒の力が欲しいです。<br>
+                            (2)悪意の力が欲しいです。<br>
+                            (3)奸計術が欲しいです。</font></td>
+                            <td>→　<a href="../skill/necro_awake_skill20181003.html#skill_awake1">ストレンジコンジュラー</a><br>
+                            →　<a href="../skill/necro_awake_skill20181003.html#skill_awake2">ウィキッドサイコロジスト</a><br>
+                            →　<a href="../skill/necro_awake_skill20181003.html#skill_awake3">デモニックチューナー</a></td>
+                          </tr>
+                          <tr>
+                            <td valign="top">悪魔</td>
+                            <td><font color="#9999ff">(1)地獄の鞭術が欲しいです。<br>
+                            (2)闇の契約法が欲しいです。<br>
+                            (3)悪魔毒術が欲しいです。</font></td>
+                            <td>→　<a href="../skill/devil_awake_skill20181218.html#skill_awake1">アンタッチャブルボンテージ</a><br>
+                            →　<a href="../skill/devil_awake_skill20181218.html#skill_awake2">アンジャストラバー</a><br>
+                            →　<a href="../skill/devil_awake_skill20181218.html#skill_awake3">アラクノエンプレス</a></td>
+                          </tr>
+                          <tr>
+                            <td valign="top">霊術師</td>
+                            <td><font color="#9999ff">(1)風刃の力が欲しいです。<br>
+                            (2)暴走の力が欲しいです。<br>
+                            (3)魂の力が欲しいです。</font></td>
+                            <td>→　<a href="../skill/soulbringer_awake_skill2020.html#skill_awake1">シャーマンオブウィンド</a><br>
+                            →　<a href="../skill/soulbringer_awake_skill2020.html#skill_awake2">ソウルコントローラー</a><br>
+                            →　<a href="../skill/soulbringer_awake_skill2020.html#skill_awake3">スピリットインプリケイショナ</a></td>
+                          </tr>
+                          <tr>
+                            <td valign="top">闘士</td>
+                            <td><font color="#9999ff">(1)コンボの力が欲しいです。<br>
+                            (2)闘気の力が欲しいです。<br>
+                            (3)憑依の力が欲しいです。</font></td>
+                            <td>→　<a href="../skill/champion_awake_skill2020.html#skill_awake1">フォースグラップラー</a><br>
+                            →　<a href="../skill/champion_awake_skill2020.html#skill_awake2">ダンシングレイジス</a><br>
+                            →　<a href="../skill/champion_awake_skill2020.html#skill_awake3">ファーストアブソーバ</a></td>
+                          </tr>
+                          <tr>
+                            <td valign="top">光奏師</td>
+                            <td><font color="#9999ff">(1)強力な光の力が欲しいです。<br>
+                            (2)ビットの力が欲しいです。<br>
+                            (3)暖かい力が欲しいです。</font></td>
+                            <td>→　<a href="../skill/opticalist_awake_skill.html#skill_awake1">ルミナスモナーク</a><br>
+                            →　<a href="../skill/opticalist_awake_skill.html#skill_awake2">クリスタルオペレータ</a><br>
+                            →　<a href="../skill/opticalist_awake_skill.html#skill_awake3">ラディアンスコーディネーター</a></td>
+                          </tr>
+                          <tr>
+                            <td valign="top">獣人</td>
+                            <td valign="top"><font color="#9999ff">(1)接近攻撃の力が欲しいです。<br>
+                            (2)範囲攻撃の力が欲しいです。<br>
+                            (3)回避と反撃の力が欲しいです。</font></td>
+                            <td valign="top">→　<a href="../skill/beastman_awake_skill.html#skill_awake1">イリュージョナリーアサルター</a><br>
+                            →　<a href="../skill/beastman_awake_skill.html#skill_awake2">スラッシングスプリッター</a><br>
+                            →　<a href="../skill/beastman_awake_skill.html#skill_awake3">ラストラスピアサー</a></td>
+                          </tr>
+                          <tr>
+                            <td valign="top">メイド</td>
+                            <td valign="top"><font color="#9999ff">(1)魔法の力が欲しいです。<br>
+                            (2)強力な遠距離攻撃が欲しいです。<br>
+                            (3)突進の力が欲しいです。</font></td>
+                            <td valign="top">→　<a href="../skill/maid_awake_skill20191023.html#skill_awake1">マジェスティックサーバント</a><br>
+                            →　<a href="../skill/maid_awake_skill20191023.html#skill_awake2">ルナティックサーバント</a><br>
+                            <br>
+                            →　<a href="../skill/maid_awake_skill20191023.html#skill_awake3">アージェントサーバント</a></td>
+                          </tr>
+                          <tr>
+                            <td valign="top">黒魔術師</td>
+                            <td valign="top"><font color="#9999ff">(1)単一魔法が欲しいです。<br>
+                            (2)範囲魔法が欲しいです。<br>
+                            (3)弱体化魔法が欲しいです。</font></td>
+                            <td valign="top">→　<a href="../skill/demonsorceress_awake_skill.html#skill_awake1">ディアボリックレディ</a><br>
+                            →　<a href="../skill/demonsorceress_awake_skill.html#skill_awake2">オブセッショナルチェイサー</a><br>
+                            →　<a href="../skill/demonsorceress_awake_skill.html#skill_awake3">ラプチュラスエンチャントレス</a></td>
+                          </tr>
+                          <tr>
+                            <td valign="top">マスケッティア</td>
+                            <!-- TODO 直したい -->
+                            <td valign="top"><font color="#9999ff">(1)単一魔法が欲しいです。<br>
+                                (2)範囲魔法が欲しいです。<br>
+                                (3)弱体化魔法が欲しいです。</font></td>
+                                <td valign="top">→　<a href="../skill/musket_awake_skill.html#skill_awake1">ラピッドデスペラード</a><br>
+                            →　<a href="../skill/musket_awake_skill.html#skill_awake2">アブソリュートヒーター</a><br>
+                            →　<a href="../skill/musket_awake_skill.html#skill_awake3">アルティメットエンフォーサー</a></td>
+                          </tr>
+                          <tr>
+                            <td valign="top">アルケミスト</td>
+                            <td valign="top"><font color="#9999ff">(1)単一魔法が欲しいです。<br>
+                                (2)範囲魔法が欲しいです。<br>
+                                (3)弱体化魔法が欲しいです。</font></td>
+                            <td valign="top">→　<a href="../skill/alchemist_awake_skill.html#skill_awake1">バーストマニアック</a><br>
+                            →　<a href="../skill/alchemist_awake_skill.html#skill_awake2">ホムンクルスマイスター</a><br>
+                            →　<a href="../skill/alchemist_awake_skill.html#skill_awake3">クロニクルスカラー</a></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <br>
+                      <span class="color-image4">アルブレヒト</span>または<span class="color-image4">イルデレヒト</span>へ、強化したいスキルを選択<br>
+                      <font color="#9999ff">(1)私の才能の強化スキルを手に入れたいです。<br>
+                      (2)違う才能の強化スキルを手に入れたいです。</font></td>
+                    </tr>
+                  </tbody>
+                </table>
+                
+
+                <br>
+                <h4>その他</h4>
+                <!-- ・NPCの会話とかそのうち載せたいね。 -->
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        </div>
+</body>
+
+</html>
