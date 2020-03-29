@@ -31,7 +31,7 @@
   <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
   <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
   <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
-  <script language="JavaScript" src="js/magic-damage.js"></script>
+  <script language="JavaScript" src="js/bottle-damage.js"></script>
   <script language="JavaScript" src="calculation-attackspeed_files/memorize.js"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -66,7 +66,7 @@
 
 <body onload="init1(); init2()" leftmargin="0" topmargin="0" crossriderapp0002258="true" marginheight="0"
   marginwidth="0">
-  <title>魔法ダメージ計算機 赤石の民衆</title>
+  <title>ボトルダメ計算機 赤石の民衆</title>
   <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta http-equiv="Content-Script-Type" content="text/javascript" />
@@ -157,22 +157,25 @@
       <div class="main-background mdl-typography--text-center korea-content">
         <br>
         <br>
-        <h3>魔法ダメージ計算機</h3>
-        <a href="#1">純粋魔法ダメージ計算機</a><br>
-        <a href="#2">魔法ダメージ計算式</a><br>
-        <a href="#3">知識ボーナス早見表</a><br>
+        <h3>ボトルダメージ計算機</h3>
+        <a href="#1">ボトルダメージ計算機</a><br>
+        <a href="#2">ダメージ計算式</a><br>
         <br>
         <br>
         各項目には全て数値を入力してください。<br>
         小数点以下での誤差が発生するほか、テキストに記載された内容が必ずしも効果通りに反映されているとは限りません。<br>
         「あれ、おかしいな？」と思ったら不具合の可能性もあるので、公式連絡帳か中の人にマシュマロなどで連絡お願いします。<br>
         <br>
+        魔法ダメ最大値（21,474,836）を超えた数値が出力されることがあります。<br>
+        覚醒スキルのダメージ増加挙動は仕様調査中のため、未搭載。仕様分かり次第追記します。<br>
+        ※ダメージに範囲があるかと思いますが、よしなに扱ってください。(最小・最大・平均を入力する…など)<br>
+        <br>
         <a name="1"></a><br>
         <form name="f">
-          <table id="table8">
+          <table id="table8" style="width: 900px;">
             <tbody>
               <tr>
-                <th>純粋魔法ダメージ計算機</th>
+                <th>ボトルダメージ計算機</th>
               </tr>
               <tr>
                 <td>
@@ -188,57 +191,121 @@
                       </colgroup>
                       <tbody>
                         <tr>
-                          <td>基礎ダメ下限</td>
-                          <td> <input type="text" class="memorize" name="a1" size="6"></td>
-                          <td>基礎ダメ上限</td>
+                          <td></td>
+                          <td></td>
+                          <td>スキルレベル</td>
                           <td><input type="text" class="memorize" name="a2" size="6"></td>
                           <td>知識</td>
                           <td><input type="text" class="memorize" name="a3" size="6"></td>
                           <td></td>
                         </tr>
                         <tr>
-                          <td>強化値</td>
+                          <td colspan="6">ボトルの各属性攻撃</td>
+                        </tr>
+                        <tr>
+                          <td><span class="color-image1">火属性</span></td>
+                          <td> <input type="text" class="memorize" name="a101" size="6"></td>
+                          <td><span class="color-image2">水属性</span></td>
+                          <td><input type="text" class="memorize" name="a102" size="6"></td>
+                          <td><span class="color-image4">風属性</span></td>
+                          <td><input type="text" class="memorize" name="a103" size="6"></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td><span class="color-image11">地属性</span></td>
+                          <td> <input type="text" class="memorize" name="a104" size="6"></td>
+                          <td><span class="color-image5">光属性</span></td>
+                          <td><input type="text" class="memorize" name="a105" size="6"></td>
+                          <td>闇属性</td>
+                          <td><input type="text" class="memorize" name="a106" size="6"></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td colspan="6">各属性強化攻撃</td>
+                        </tr>
+                        <tr>
+                          <td><span class="color-image1">火強化</span></td>
+                          <td> <input type="text" class="memorize" name="a201" size="6"></td>
+                          <td><span class="color-image2">水強化</span></td>
+                          <td><input type="text" class="memorize" name="a202" size="6"></td>
+                          <td><span class="color-image4">風強化</span></td>
+                          <td><input type="text" class="memorize" name="a203" size="6"></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td><span class="color-image11">地強化</span></td>
+                          <td> <input type="text" class="memorize" name="a204" size="6"></td>
+                          <td><span class="color-image5">光強化</span></td>
+                          <td><input type="text" class="memorize" name="a205" size="6"></td>
+                          <td>闇強化</td>
+                          <td><input type="text" class="memorize" name="a206" size="6"></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td colspan="6">各属性弱化攻撃</td>
+                        </tr>
+                        <tr>
+                          <td><span class="color-image1">火弱化</span></td>
+                          <td> <input type="text" class="memorize" name="a301" size="6"></td>
+                          <td><span class="color-image2">水弱化</span></td>
+                          <td><input type="text" class="memorize" name="a302" size="6"></td>
+                          <td><span class="color-image4">風弱化</span></td>
+                          <td><input type="text" class="memorize" name="a303" size="6"></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td><span class="color-image11">地弱化</span></td>
+                          <td> <input type="text" class="memorize" name="a304" size="6"></td>
+                          <td><span class="color-image5">光弱化</span></td>
+                          <td><input type="text" class="memorize" name="a305" size="6"></td>
+                          <td>闇弱化</td>
+                          <td><input type="text" class="memorize" name="a306" size="6"></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td colspan="6">敵の各属性抵抗</td>
+                        </tr>
+                        <tr>
+                          <td><span class="color-image1">火抵抗</span></td>
+                          <td> <input type="text" class="memorize" name="a401" size="6"></td>
+                          <td><span class="color-image2">水抵抗</span></td>
+                          <td><input type="text" class="memorize" name="a402" size="6"></td>
+                          <td><span class="color-image4">風抵抗</span></td>
+                          <td><input type="text" class="memorize" name="a403" size="6"></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td><span class="color-image11">地抵抗</span></td>
+                          <td> <input type="text" class="memorize" name="a404" size="6"></td>
+                          <td><span class="color-image5">光抵抗</span></td>
+                          <td><input type="text" class="memorize" name="a405" size="6"></td>
+                          <td>闇抵抗</td>
+                          <td><input type="text" class="memorize" name="a406" size="6"></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>魔法強化</td>
                           <td><input type="text" class="memorize" name="a4" size="6">％</td>
-                          <td>弱化値</td>
+                          <td>魔法弱化</td>
                           <td><input type="text" class="memorize" name="a5" size="6">％</td>
-                          <td>敵の抵抗</td>
+                          <td>限凸補正</td>
                           <td><input type="text" class="memorize" name="a6" size="6">％</td>
                         </tr>
                         <tr>
-                          <td>錬金術</td>
+                          <td>限界突破</td>
                           <td><input type="text" class="memorize" name="a7" size="6">Lv</td>
                           <td>最終ダメージ</td>
                           <td><input type="text" class="memorize" name="a8" size="6">％</td>
-                          <td>敵ダメージカット</td>
+                          <td>敵ダメカット</td>
                           <td><input type="text" class="memorize" name="a9" size="6">％</td>
-                        </tr>
-                        <tr>
-                          <td colspan="6">その他特殊補正系</td>
-                        </tr>
-                        <tr>
-                          <td>武器攻撃力</td>
-                          <td><input type="text" class="memorize" name="a10" size="6"></td>
-                          <td>石像補正</td>
-                          <td><input type="text" class="memorize" name="a11" size="6">％</td>
-                          <td>スキルレベル</td>
-                          <td><input type="text" class="memorize" name="a14" size="6">Lv</td>
-                        </tr>
-                        <tr>
-                          <td>神秘水補正</td>
-                          <td><input type="text" class="memorize" name="a12" size="6">％</td>
-                          <td>刃油補正</td>
-                          <td><input type="text" class="memorize" name="a13" size="6">％</td>
-                          <td colspan="2">※刃油は該当スキルのみ反映</td>
                         </tr>
                         <tr>
                           <td></td>
                           <td></td>
                           <td>計算式</td>
                           <td><select class="memorize" name="b1">
-                              <option value="0">純粋魔法</option>
-                              <option value="1">物理ダメを含む魔法</option>
-                              <option value="2">改変ドラツイ</option>
-                              <!-- <option value="3">物理ダメを含む魔法</option> -->
+                              <option value="0">通常スキル</option>
+                              <option value="1">覚醒スキル</option>
                             </select>
                           </td>
                           <td></td>
@@ -274,8 +341,10 @@
                       <tbody>
                         <tr>
                           <td></td>
-                          <td>【表記ダメージ】<input type="text" class="memorize" name="r1" size="15"> ～ <input type="text"
-                              class="memorize" name="r2" size="15"></td>
+                          <td>
+                            【表記ダメージ】<input type="text" class="memorize" name="r1" size="20"><br>
+                            【限界突破適用時】<input type="text" class="memorize" name="r3" size="20"><br>
+                            【√適用時】<input type="text" class="memorize" name="r2" size="20"></td>
                         </tr>
                         <!-- TODO限界突破含めた計算機も作っとく？ -->
                       </tbody>
@@ -287,7 +356,7 @@
         </form>
         <a name="2"></a><br>
         <h4>魔法ダメージ計算式</h4><br>
-        <table id="table8">
+        <table id="table10" style="width: 940px;">
           <colgroup>
             <!-- <col span="1" width="8%"> -->
           </colgroup>
@@ -296,167 +365,50 @@
               <th colspan="7">ダメージ計算式</th>
             </tr>
             <tr>
-              <th>純粋魔法ダメージ</th>
+              <th>通常ボトルダメージ</th>
               <td colspan="6">
-                基本ダメージ*(1+(知識ボーナス*知識/200))*((100+強化補正+称号補正)/100)*((100-抵抗+弱化補正)/100)
+                【弾丸の属性ダメ】×【スキル補正】×【知識補正】<br>
+                <br>
+                【弾丸の属性ダメ】＝｛弾丸の基礎数値×（1×属性強化％）×（1×魔法強化％）｝×｛1-対象の魔法抵抗＋属性弱化＋魔法弱化｝<br>
+                【スキル補正】＝｛１＋(スキル/10)｝<br>
+                【知識補正】＝｛１＋(知識×知識ボーナス)/200｝<br>
+                <br>
+                ※各属性強化と全属性強化は別計算かつ重複して計算されます。<br>
               </td>
             </tr>
             <tr>
-              <th>物理補正を含む魔法</th>
+              <th>覚醒ボトルダメージ</th>
               <td colspan="6">
-                <img
-                  src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/1150ea79387896a2e1aad3ac65532f8387855ac6.10.2.9.2.jpeg"
-                  width="660" border=0 name="insertImg" /><br>
-                WIZのライトニングサンダー(光ダメ)の場合、20～(20+SLv*4)ダメージのため、このような計算式になります。<br>
-              </td>
-            </tr>
-            <!-- <tr>
-              <th>武器攻撃力補正有の魔法ダメージ</th>
-              <td colspan="6">
-                <img
-                  src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/244a694b5177e4cae473be7e10f9c25ea66787ce.10.2.9.2.jpeg"
-                  width="660" border=0 name="insertImg" /><br> 錬金術などの補正がかかりません。<br>
-              </td>
-            </tr> -->
-            <tr>
-              <th>改変ドラツイの魔法ダメージ</th>
-              <td colspan="6">
-                <img
-                  src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/cc2d311deb8170b9e13fa87eeef81369618ae6f4.10.2.9.2.jpeg"
-                  width="660" border=0 name="insertImg" /><br> 特殊な計算式のようです。<br>
+                跳弾効果は1発ごとに1.5～2.5倍ずつ増加するようです。<br>
+                5段階目のみ、1~4段階目と比較して大きなダメージが出やすい模様。<br>
+                <br>
               </td>
             </tr>
         </table>
         </tbody>
         </table>
         <br>
-        [情報提供協力者] <a href="https://twitter.com/akadameinochi">水樹慎</a>さん
-        <!-- 画像はここから：https://twitter.com/akadameinochi/status/1090627584163905537 -->
+        <br>
+        <br>
+        <h3>備考</h3>
+        魔法致命打・魔法強打・PvP攻撃・人間魔法ダメージ・最終ダメージ・錬金術（称号）は適応されません。<br>
+        魔法強化の上限は300%、各属性強化は120%上限と上限対象外の要素があります。<br>
+        魔法弱化・属性弱化の上限は120%です。<br>
+        錬金術称号効果は適用されない(純粋魔法攻撃ではない)ため、除外。<br>
+        魔法ダメカンストを出すための計算が必要な場合は、属性合計に属性幅の最小ダメージで計算すると良いかもです。<br>
+        限凸補正はフレキシブルスリングなどで向上できます。<br>
         <br>
         <br>
         <br>
+        [関連] <a href="../calculation/calculation-magic-damage.html">魔法ダメージ計算機</a><br>
+        [関連] <a href="../skill/princess_n_skill2020.html">姫通常スキル(2020)</a><br>
+        [関連] <a href="../skill/princess_awake_skill2020.html">姫覚醒スキル(2020)</a><br>
         <br>
-        <a name="3"></a><br>
-        <h4>知識ボーナス早見表</h4><br>
-        <table id="table10" style="max-width:480px;">
-          <tbody><tr>
-            <th>知識</th>
-            <th>知識ボーナス係数</th>
-          </tr>
-          <tr>
-            <td>1~99</td>
-            <td>1.00</td>
-          </tr>
-          <tr>
-            <td>100~131</td>
-            <td>1.02</td>
-          </tr>
-          <tr>
-            <td>132~173</td>
-            <td>1.04</td>
-          </tr>
-          <tr>
-            <td>174~229</td>
-            <td>1.06</td>
-          </tr>
-          <tr>
-            <td>230~303</td>
-            <td>1.08</td>
-          </tr>
-          <tr>
-            <td>304~401</td>
-            <td>1.10</td>
-          </tr>
-          <tr>
-            <td>402~530</td>
-            <td>1.12</td>
-          </tr>
-          <tr>
-            <td>531~701</td>
-            <td>1.14</td>
-          </tr>
-          <tr>
-            <td>702~927</td>
-            <td>1.16</td>
-          </tr>
-          <tr>
-            <td>928~1226</td>
-            <td>1.18</td>
-          </tr>
-          <tr>
-            <td>1227~1576</td>
-            <td>1.20</td>
-          </tr>
-          <tr>
-            <td>1577~1926</td>
-            <td>1.22</td>
-          </tr>
-          <tr>
-            <td>1927~2276</td>
-            <td>1.24</td>
-          </tr>
-          <tr>
-            <td>2277~2626</td>
-            <td>1.26</td>
-          </tr>
-          <tr>
-            <td>2627~2976</td>
-            <td>1.28</td>
-          </tr>
-          <tr>
-            <td>2977~3326</td>
-            <td>1.30</td>
-          </tr>
-          <tr>
-            <td>3327~3676</td>
-            <td>1.32</td>
-          </tr>
-          <tr>
-            <td>3677~4026</td>
-            <td>1.34</td>
-          </tr>
-          <tr>
-            <td>4027~4376</td>
-            <td>1.36</td>
-          </tr>
-          <tr>
-            <td>4377~4726</td>
-            <td>1.38</td>
-          </tr>
-          <tr>
-            <td>4727~5126</td>
-            <td>1.40</td>
-          </tr>
-          <tr>
-            <td>5127~5526</td>
-            <td>1.42</td>
-          </tr>
-          <tr>
-            <td>5527~5926</td>
-            <td>1.44</td>
-          </tr>
-          <tr>
-            <td>5927~6326</td>
-            <td>1.46</td>
-          </tr>
-          <tr>
-            <td>6327~6726</td>
-            <td>1.48</td>
-          </tr>
-          <tr>
-            <td>6727~7126</td>
-            <td>1.50</td>
-          </tr>
-          <tr>
-            <td>7127~</td>
-            <td>1.50？<br>
-            ※400毎に2%補正増加説あり</td>
-          </tr>
-        </tbody></table>
+        [参考] <a href="http://blog.livedoor.jp/nashikan/archives/51993038.html">姫考察：ボトル投げダメージ推移（姫アプデ後）(廃姫のRS日記)</a><br>
+        [参考] <a href="https://btlirk.jimdosite.com/%E5%85%A5%E9%96%80%E7%B7%A8/">～魔強弱･火風強弱装備まとめ～(淑女の休日さん)</a><br>
+        <!-- <a href="https://twitter.com/gv_camellia/status/1014343146149314560">つばき姫さん</a> -->
         <br>
         <br>
-        <br>        
-        [関連]<a href="../calculation/calculation-bottle-damage.html">ボトルダメージ計算機</a><br>
         <br>
         <br>
         <br>
