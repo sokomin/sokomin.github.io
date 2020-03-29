@@ -3,9 +3,19 @@ map_image.src = "../map/design/" + NameImg;
 //オブジェクトの描画
 if (mapid === 1) {
     for (i = 0; i < (ObjX.length - 1); i++) {
-        mob_info = OBjX[i]; 
-        document.write("\t<div class=\"Obj Pa a" + (mob_info.inid) + "\" style=\"top:" + (mob_info.posy) + "px; left:" + (mob_info.posx + 20) + "px;\" title=\"" + (mobinfo.repop) + "\">" + mob_info.inid + "</div>\n");
-        document.write("\t<div class=\"Obj Pb a" + (mob_info.inid) + "\" style=\"top:" + (mob_info.posy - 1) + "px; left:" + (mob_info.posx + 19) + "px;\" title=\"" + (mobinfo.repop) + "\">" + mob_info.inid + "</div>\n");
+        // var mob_info = ObjX[i]; 
+        // document.write("\t<div class=\"Obj Pa a" + (mob_info.inid) + "\" style=\"top:" + (mob_info.posy) + "px; left:" + (mob_info.posx + 20) + "px;\" title=\"" + (mob_info.repop) + "\">" + mob_info.inid + "</div>\n");
+        // document.write("\t<div class=\"Obj Pb a" + (mob_info.inid) + "\" style=\"top:" + (mob_info.posy - 1) + "px; left:" + (mob_info.posx + 19) + "px;\" title=\"" + (mob_info.repop) + "\">" + mob_info.inid + "</div>\n");
+        var path = "../map/design/" + NameList[mapid].img;
+        var element = new Image();
+        element.src = path;
+        var width = element.naturalWidth;
+        var height = element.naturalHeight;
+        ObjY[i] = ObjY[i] * 200 / height;
+        ObjX[i] = ObjX[i] * 200 / height;
+
+        document.write("\t<div class=\"Obj Pa a" + (ObjN[i]) + "\" style=\"top:" + (ObjY[i]) + "px; left:" + (ObjX[i] + 20) + "px;\" title=\"" + (ObjT[i]) + "\">" + (ObjN[i]) + "</div>\n");
+        document.write("\t<div class=\"Obj Pb a" + (ObjN[i]) + "\" style=\"top:" + (ObjY[i] - 1) + "px; left:" + (ObjX[i] + 19) + "px;\" title=\"" + (ObjT[i]) + "\">" + (ObjN[i]) + "</div>\n");
     }
 
 } else {
