@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>ミニペット合成システム　赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <a href="../index.html">トップ</a> >> <a href="../skill/skill.html">スキル</a> >> <a href="../skill/minipetskill.html">ミニペット</a><br>
+            <div class="korea-content main-background">
+                <br>
+                <h3>ミニペット合成システム</h3>
+                <br>
+                <p class="sokomin-style">
+                ミニペットを合成することで、さらに進化した2次進化ミニペットを入手する事が出来ます。<br>
+また、Lv30未満の基本型ミニペットのみに使用できる、ミニペットのレベルを一気に100まで<br>
+上昇させてくれる アイテム「成長の呪文書」をNPC「クロネ」より入手できます。<br>
+</p>
+                <br>
+                <a href="#1">手順</a><br>
+<a href="#2">まとめ</a><br>
+<a href="#3">ミニペット一覧</a><br>
+<br>
+<br>
+<a name="1"></a><span class="color-image4">手順</span><br>
+<br>
+<table id="table2" style="max-width: 880px;">
+  <colgroup><col span="1" width="352">
+  </colgroup><tbody>
+    <tr>
+      <td><img src="./minipetcomposition_files/i142.gif" width="180" height="129" border="0"><br>
+      <br>
+      </td>
+      <td><span class="color-image2">神聖都市アウグスタ</span>　<span class="color-image4">クロネ</span>（62.103）にて、<br>
+      13～23時の間にLv100以上のキャラクターでのみ<br>
+      ミニペット合成を行うことができる。<br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <td><img src="./minipetcomposition_files/i143.gif" width="327" height="328" border="0"><br>
+      <br>
+      </td>
+      <td><font color="#9999ff">ミニペットを合成して進化させたいです</font><br>
+      を選択<br>
+      <br>
+      合成には非活性にしたLv100のミニペット2体が<br>
+      必要。<br>
+      期限切れでも合成できる。<br>
+      同じ属性同士は合成できない。<br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <td><img src="./minipetcomposition_files/i144.gif" width="243" height="239" border="0"><br>
+      <br>
+      </td>
+      <td><span class="color-image4">チャオリン×ゴオリン　の場合</span><br>
+      <br>
+      左にベース　<a href="../skill/minipetskill-light.html#4">光の神霊型　チャオリン</a><br>
+      右に生贄　<a href="../skill/minipetskill-darkness.html#4">闇の神霊型　ゴオリン</a><br>
+      下に　<span class="color-image11">ミニペット変異促進剤</span>　をセット<br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <td><img src="./minipetcomposition_files/i145.gif" width="299" height="189" border="0"><br>
+      <br>
+      </td>
+      <td><span class="color-image11">ミニペット変異促進剤</span>は課金アイテム。<br>
+      使用しなくても合成はできるが、使用すると突然変異体の誕生確率が10％ほど増加。<br>
+      <br>
+      また<span class="color-image11">ミニペット変異促進剤</span>を使用して突然変異体が誕生した場合、合成ミニペットと突然変異体の2体を入手できるが、使用せずに突然変異体が誕生した場合は、どちらか1体のみ選択で入手となる。<br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <td><img src="./minipetcomposition_files/i146.gif" width="342" height="237" border="0"><br>
+      <br>
+      </td>
+      <td>合成開始<br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <td><img src="./minipetcomposition_files/i147.gif" width="243" height="239" border="0"><br>
+      <br>
+      </td>
+      <td>合成完了<br>
+      <br>
+      <a href="../skill/minipetskill-light.html#4">光の神霊型　チャオリン</a>が2次進化して<br>
+      合成ミニペット　<a href="../skill/minipetskill-light.html#7">ヌウリ</a>が誕生。<br>
+      <br>
+      生贄にした<a href="../skill/minipetskill-darkness.html#4">ゴオリン</a>は消滅する。<br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <td><img src="./minipetcomposition_files/i148.gif" width="110" height="77" border="0"><br>
+      <br>
+      </td>
+      <td><a href="../skill/minipetskill-light.html#7">光の神霊型　2次進化　ヌウリ</a><br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <td><img src="./minipetcomposition_files/i149.gif" width="258" height="488" border="0"><br>
+      <br>
+      </td>
+      <td>2次進化した合成ミニペットはベースの属性・系統・スキル・覚醒の果実の有無を引き継ぐ。<br>
+      <br>
+      <font color="#ff80c0">生贄のスキル</font>は「ミニペット合成可能スキル」と表示されている中からランダムで2個付加される。<br>
+      また、専用の<font color="#f8b000">新しいスキル</font>2個が付加される。<br>
+      スキル振りは初期化される。<br>
+      進化ボーナスは2倍になる。<br>
+      残り保有時間は合算される。<br>
+      最大Lv150まで上げることができる。<br>
+      攻撃力が300増加する。<br>
+      アブソーブ・チェーンは使用不可。<br>
+      <br>
+      <a href="../skill/minipetskill-light.html#4">チャオリン</a>の<br>
+      属性　=　光<br>
+      系統　=　神霊<br>
+      全てのスキル<br>
+      覚醒の果実　=　無<br>
+      が引き継がれ、<br>
+      <a href="../skill/minipetskill-darkness.html#4">ゴオリン</a>の<font color="#ff80c0">ミニ装備バッジ</font>と<font color="#ff80c0">ロックスミスマスター</font>、新たに<font color="#f8b000">レールレーザーEx</font>と<font color="#f8b000">光輪の解放</font>が付加。<br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <td><img src="./minipetcomposition_files/i150.gif" width="299" height="161" border="0"><br>
+      <br>
+      </td>
+      <td><a href="../skill/minipetskill-light.html#7">光の神霊型　2次進化　ヌウリ</a>専用の<font color="#f8b000">新しいスキル</font><br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <td><img src="./minipetcomposition_files/i151.gif" width="299" height="147" border="0"><br>
+      <br>
+      </td>
+      <td><a href="../skill/minipetskill-light.html#7">光の神霊型　2次進化　ヌウリ</a>専用の<font color="#f8b000">新しいスキル</font><br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <td><img src="./minipetcomposition_files/i152.gif" width="243" height="239" border="0"><br>
+      <br>
+      </td>
+      <td>2次進化した合成ミニペットは生贄として合成に使用することはできないが、ベースとして合成し直すことは可能。<br>
+      <br>
+      <span class="color-image4">ヌウリ×ゴオリン　の場合</span><br>
+      <br>
+      左にベース　<a href="../skill/minipetskill-light.html#7">光の神霊型　2次進化　ヌウリ</a><br>
+      右に生贄　<a href="../skill/minipetskill-darkness.html#4">闇の神霊型　ゴオリン</a><br>
+      下に　<span class="color-image11">ミニペット変異促進剤</span>　をセット<br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <td><img src="./minipetcomposition_files/i147.gif" width="243" height="239" border="0"><br>
+      <br>
+      </td>
+      <td>合成完了<br>
+      <br>
+      <a href="../skill/minipetskill-light.html#7">ヌウリ</a>の形態は変わらず、<br>
+      生贄にした<a href="../skill/minipetskill-darkness.html#4">ゴオリン</a>は消滅する。<br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <td><img src="./minipetcomposition_files/i153.gif" width="258" height="488" border="0"><br>
+      <br>
+      </td>
+      <td><font color="#ff80c0">生贄のスキル</font>2個が変更になり、<span class="color-image11"><a href="../skill/minipetskill-darkness.html#4">ゴオリン</a></span>の<font color="#ff80c0">ミニ装備バッジ</font>と<font color="#ff80c0">闇のカリスマ</font>が付加。<br>
+      残り保有時間はさらに合算される。<br>
+      <br>
+      <a href="../skill/minipetskill-darkness.html#4">ゴオリン</a>の合成可能スキル<br>
+      <font color="#ff80c0">・　闇のカリスマ<br>
+      ・　チャージング[Pet]<br>
+      ・　ロックスミスマスター<br>
+      ・　エンブレスブラックパール<br>
+      ・　ミニ装備バッジ<br>
+      ・　ゴミルの無限迷宮</font><br>
+      の6個の中からランダムで2個が<font color="#ff80c0">生贄のスキル</font>として付加される。<br>
+      <br>
+      希望するスキルが付くまで、合成を繰り返し行うことができる。<br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <td><img src="./minipetcomposition_files/i154.gif" width="243" height="239" border="0"><br>
+      <br>
+      </td>
+      <td><span class="color-image4">ゴオリン×チャオリン　の場合</span><br>
+      <br>
+      左にベース　<a href="../skill/minipetskill-darkness.html#4">闇の神霊型　ゴオリン</a><br>
+      右に生贄　<span class="color-image11"><a href="../skill/minipetskill-light.html#4">光の神霊型　チャオリン</a></span><br>
+      下に　<span class="color-image11">ミニペット変異促進剤</span>　をセット<br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <td><img src="./minipetcomposition_files/i155.gif" width="243" height="239" border="0"><br>
+      <br>
+      </td>
+      <td>合成完了<br>
+      <br>
+      <span class="color-image11"><a href="../skill/minipetskill-darkness.html#4">闇の神霊型　ゴオリン</a></span>が2次進化して<br>
+      合成ミニペット　<a href="../skill/minipetskill-darkness.html#7">ダウリ</a>が誕生。<br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <td><img src="./minipetcomposition_files/i156.gif" width="243" height="239" border="0"><br>
+      <br>
+      </td>
+      <td>さらに<a href="../skill/minipetskill-mutant.html#2">突然変異体　陰</a>も同時に誕生。<br>
+      <br>
+      <span class="color-image11">ミニペット変異促進剤</span>を使用しているため、<br>
+      合成ミニペットと突然変異体の2体を同時に入手。<br>
+      <br>
+      生贄にした<span class="color-image11"><a href="../skill/minipetskill-light.html#4">チャオリン</a></span>は消滅する。<br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <td><img src="./minipetcomposition_files/i157.gif" width="97" height="75" border="0"><img src="./minipetcomposition_files/i158.gif" width="93" height="74" border="0"><br>
+      <br>
+      </td>
+      <td><span class="color-image11"><a href="../skill/minipetskill-darkness.html#7">闇の神霊型　2次進化　ダウリ</a></span><br>
+      <span class="color-image11"><a href="../skill/minipetskill-mutant.html#2"> 突然変異体　陰</a></span><br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <td><img src="./minipetcomposition_files/i159.gif" width="258" height="488" border="0"><br>
+      <br>
+      </td>
+      <td><span class="color-image11"><a href="../skill/minipetskill-darkness.html#7">闇の神霊型　2次進化　ダウリ</a></span><br>
+      <br>
+      <span class="color-image11"><a href="../skill/minipetskill-darkness.html#4">ゴオリン</a></span>の<br>
+      属性　=　闇<br>
+      系統　=　神霊<br>
+      全てのスキル<br>
+      覚醒の果実　=　無<br>
+      が引き継がれ、<br>
+      <span class="color-image11"><a href="../skill/minipetskill-light.html#4">チャオリン</a></span>の<font color="#ff80c0">チャミルの閃光</font>と<font color="#ff80c0">アドベンチャーラー</font>、新たに<font color="#f8b000">ヴォルテックスフリングEx</font>と<font color="#f8b000">奈落の解放</font>が付加。<br>
+      <br>
+      <span class="color-image11"><a href="../skill/minipetskill-light.html#4">チャオリン</a></span>の合成可能スキル<br>
+      <font color="#ff80c0">・　光の知識<br>
+      ・　リザレクション[Pet]<br>
+      ・　アドベンチャーラー<br>
+      ・　エンブレスパール<br>
+      ・　ミニディバインアーチ<br>
+      ・　チャミルの閃光</font><br>
+      の6個の中からランダムで2個が<font color="#ff80c0">生贄のスキル</font>として付加される。<br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <td><img src="./minipetcomposition_files/i160.gif" width="299" height="175" border="0"><br>
+      <br>
+      </td>
+      <td><span class="color-image11"><a href="../skill/minipetskill-darkness.html#7">闇の神霊型　2次進化　ダウリ</a></span>専用の<font color="#f8b000">新しいスキル</font><br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <td><img src="./minipetcomposition_files/i161.gif" width="299" height="147" border="0"><br>
+      <br>
+      </td>
+      <td><span class="color-image11"><a href="../skill/minipetskill-darkness.html#7">闇の神霊型　2次進化　ダウリ</a></span>専用の<font color="#f8b000">新しいスキル</font><br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <td><img src="./minipetcomposition_files/i162.gif" width="258" height="488" border="0"><br>
+      <br>
+      </td>
+      <td><a href="../skill/minipetskill-mutant.html#2">突然変異体　陰</a><br>
+      <br>
+      ベースや生贄の種類に関わらず<br>
+      全く新しいスキルを持つ。<br>
+      <br>
+      精霊/自然/神霊の系統が異なっても<br>
+      スキルの種類は全て同じ。<br>
+      <br>
+      全てのスキルに前提スキルがないため、必要なスキルだけを自由に習得することができる。<br>
+      <br>
+      進化ボーナスは2倍になる。<br>
+      <br>
+      <span class="color-image11">ミニペット変異促進剤</span>を使用しているため、残り保有時間は合算されず、誕生した日から30日。<br>
+      <br>
+      突然変異体は2次進化（合成）不可。<br>
+      アブソーブ・チェーンも不可。<br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <td><img src="./minipetcomposition_files/i143.gif" width="327" height="328" border="0"><br>
+      <br>
+      </td>
+      <td>また、<br>
+      <font color="#9999ff">ミニペットの記憶が刻まれた成長の呪文書が欲しいです</font><br>
+      を選択すると<br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <td><img src="./minipetcomposition_files/i163.gif" width="327" height="213" border="0"><br>
+      <br>
+      </td>
+      <td><font color="#9999ff">金のインゴット　5本<br>
+      炎の石　3個</font><br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <td><img src="./minipetcomposition_files/i164.gif" width="327" height="225" border="0"><br>
+      <br>
+      </td>
+      <td>で、<span class="color-image11">成長の呪文書</span>と交換できる。<br>
+      <br>
+      </td>
+    </tr>
+    <tr>
+      <td><img src="./minipetcomposition_files/i165.gif" width="252" height="119" border="0"></td>
+      <td><span class="color-image11">成長の呪文書</span>を進化前のミニペットに使用すると、各系統のLv100に進化させることができる。<br>
+      <br>
+      進化前のミニペットLv30未満にのみ使用可能。</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+<a name="2"></a><span class="color-image4">まとめ</span><br>
+<br>
+<b><span class="color-image11">ミニペット合成システム</span></b><br>
+<br>
+・合成には非活性にしたLv100以上のミニペット2体が必要。<br>
+・保有期限の切れたミニペットでも使用できる。<br>
+・同じ属性のミニペット同士は合成できない。<br>
+・生贄にしたミニペットは消滅する。<br>
+<br>
+<b><span class="color-image11">2次進化した合成ミニペット</span></b><br>
+<br>
+・ベースにしたミニペットの属性・系統・スキル・覚醒の種/果実の有無が引き継がれる。<br>
+・ベースにしたミニペットの全てのスキルと、「ミニペット合成可能スキル」と表示された生贄のスキルの中からランダムで2個と、新しい専用のスキル2個が付加される。<br>
+・スキル振りは初期化される。<br>
+・進化ボーナスは2倍になる。<br>
+　精霊型　ペットスキルダメージ +50％　→　+100％<br>
+　自然型　ペットスキル発動確率 +0.10％　→　+0.20％<br>
+　神霊型　ペットスキルレベル +1　→　+2<br>
+・残り保有時間は、ベースと生贄の時間が合算される。<br>
+・最大Lv150まで上げることができる。<br>
+・攻撃力が300増加する。<br>
+・生贄として合成に使用することはできないが、ベースとして合成し直すことは可能。<br>
+・アブソーブ・チェーンは使用不可。<br>
+・ミニペットスキル再配分巻物を使用してスキル振りを初期化することはできるが、生贄のスキルの種類は変わらない。<br>
+・ミニペット進化の巻物を使用して系統を変更し、スキルを初期化することはできるが、生贄のスキルの種類は変わらない。<br>
+・最大Lv150になるため、残余ポイントボーナススキル（エアロビクスなど）はLv150にならないと習得できない。<br>
+<br>
+<b><span class="color-image11">突然変異体</span></b><br>
+<br>
+・合成時に低確率で、誕生する。<br>
+・ミニペット変異促進剤を使用すると、突然変異体が誕生する確率が10％ほど増加する。<br>
+・ミニペット変異促進剤を使用して突然変異体が誕生した場合、合成ミニペットと突然変異体の2体を入手できるが、使用せずに突然変異体が誕生した場合は、どちらか1体のみを選択で入手となる。<br>
+・ベースや生贄の種類に関わらず、全く新しいスキルを持つ。<br>
+・精霊/自然/神霊の系統が異なってもスキルの種類は全て同じ。<br>
+・全てのスキルに前提スキルがないため、必要なスキルだけを自由に習得することができる。<br>
+・進化ボーナスは2倍になる。<br>
+・ミニペット変異促進剤を使用して誕生した突然変異体の残り保有時間は、30日。<br>
+・ミニペット変異促進剤を使用せずに誕生した突然変異体の残り保有時間は、ベースと生贄の時間が合算される。<br>
+・突然変異体は2次進化（合成）不可。<br>
+・アブソーブ・チェーンは使用不可。<br>
+・ミニペットスキル再配分巻物を使用して、スキル振りを初期化できる。<br>
+・ミニペット進化の巻物を使用して系統を変更し、スキルを初期化できる。<br>
+<br>
+<a name="3"></a><br>
+    <table id="table10">
+  <colgroup><col span="1" width="60">
+  <col span="1">
+  <col span="1" width="95">
+  </colgroup><tbody>
+          <tr>
+      <th align="center" colspan="8"><span class="color-image3">ミニペット一覧</span></th>
+    </tr>
+    <tr>
+      <th align="center" rowspan="2"></th>
+      <th rowspan="2">基本型</th>
+      <th colspan="3">1次進化</th>
+      <th colspan="3">2次進化</th>
+    </tr>
+    <tr>
+      <th>精霊型</th>
+      <th>自然型</th>
+      <th align="center">神霊型</th>
+      <th>精霊型</th>
+      <th>自然型</th>
+      <th align="center">神霊型</th>
+    </tr>
+    <tr>
+      <th align="center">火</th>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_111.gif" width="30" height="30" border="0"><br>
+      火の霊</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_118.gif" width="30" height="30" border="0"><br>
+      サラマンダー</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_125.gif" width="30" height="30" border="0"><br>
+      火</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_132.gif" width="30" height="30" border="0"><br>
+      ハオリン</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_139.gif" width="30" height="30" border="0"><br>ケルベロス</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_148.gif" width="30" height="30" border="0"><br>業火</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_157.gif" width="30" height="30" border="0"><br>ヴァウリ</td>
+    </tr>
+    <tr>
+      <th align="center">水</th>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_112.gif" width="30" height="30" border="0"><br>
+      水の霊</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_119.gif" width="30" height="30" border="0"><br>
+      ウンディーネ</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_126.gif" width="30" height="30" border="0"><br>
+      水</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_133.gif" width="30" height="30" border="0"><br>
+      ミオリン<br>
+      </td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_140.gif" width="30" height="30" border="0"><br>セイレーン</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_149.gif" width="30" height="30" border="0"><br>爆水</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_158.gif" width="30" height="30" border="0"><br>ムウリ</td>
+    </tr>
+    <tr>
+      <th align="center">風</th>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_113.gif" width="30" height="30" border="0"><br>
+      風の霊</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_120.gif" width="30" height="30" border="0"><br>
+      シルフィー</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_127.gif" width="30" height="30" border="0"><br>
+      風</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_134.gif" width="30" height="30" border="0"><br>
+      スオリン</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_141.gif" width="30" height="30" border="0"><br>ハーピー</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_150.gif" width="30" height="30" border="0"><br>烈風</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_159.gif" width="30" height="30" border="0"><br>パウリ</td>
+    </tr>
+    <tr>
+      <th align="center">大地</th>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_114.gif" width="30" height="30" border="0"><br>
+      大地の霊</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_121.gif" width="30" height="30" border="0"><br>
+      ノーム</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_128.gif" width="30" height="30" border="0"><br>
+      土</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_135.gif" width="30" height="30" border="0"><br>
+      ダオリン</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_142.gif" width="30" height="30" border="0"><br>カトブレパス</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_151.gif" width="30" height="30" border="0"><br>大地</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_160.gif" width="30" height="30" border="0"><br>ゴウリ</td>
+    </tr>
+    <tr>
+      <th align="center">光</th>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_115.gif" width="30" height="30" border="0"><br>
+      光の霊</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_122.gif" width="30" height="30" border="0"><br>
+      ウィスプー</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_129.gif" width="30" height="30" border="0"><br>
+      光</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_136.gif" width="30" height="30" border="0"><br>
+      チャオリン</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_143.gif" width="30" height="30" border="0"><br>ピクシー</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_152.gif" width="30" height="30" border="0"><br>
+      雷光</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_161.gif" width="30" height="30" border="0"><br>
+      ヌウリ</td>
+    </tr>
+    <tr>
+      <th align="center">闇</th>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_116.gif" width="30" height="30" border="0"><br>
+      闇の霊</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_123.gif" width="30" height="30" border="0"><br>
+      シャドウ</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_130.gif" width="30" height="30" border="0"><br>
+      闇</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_137.gif" width="30" height="30" border="0"><br>
+      ゴオリン</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_144.gif" width="30" height="30" border="0"><br>アビス</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_153.gif" width="30" height="30" border="0"><br>黒闇</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_162.gif" width="30" height="30" border="0"><br>ダウリ</td>
+    </tr>
+    <tr>
+      <th align="center">幻</th>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_117.gif" width="30" height="30" border="0"><br>
+      幻</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_124.gif" width="30" height="30" border="0"><br>イリュージョン</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_131.gif" width="30" height="30" border="0"><br>
+      幻想</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_138.gif" width="30" height="30" border="0"><br>
+      ザオリン</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_145.gif" width="30" height="30" border="0"><br>
+      ファントム</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_154.gif" width="30" height="30" border="0"><br>
+      幻影</td>
+      <td align="center"><img src="./minipetcomposition_files/miniPetIcon_163.gif" width="30" height="30" border="0"><br>
+      アウリ</td>
+    </tr>
+    <tr>
+      <th>突然変異</th>
+      <td align="center">-</td>
+      <td align="center" colspan="3"><img src="./minipetcomposition_files/miniPetIcon_146.gif" width="30" height="30" border="0">　　　　　<img src="./minipetcomposition_files/miniPetIcon_147.gif" width="30" height="30" border="0"><br>
+      陽　　　　　　　　陰</td>
+      <td align="center" colspan="3">-</td>
+    </tr>
+  </tbody>
+      </table>
+<br>
+スキルの詳細は　⇒　<a href="../skill/minipetskill.html">ミニペットスキル</a>　<a href="../skill/minipetcompositionskill.html">ミニペット合成スキル
+                <br>
+                <br>
+                <br>
+                [参考]<a href="http://service.redsonline.jp/library/1154">ミニペット合成システム(公式サイト)</a><br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        </div>
+</body>
+
+</html>
