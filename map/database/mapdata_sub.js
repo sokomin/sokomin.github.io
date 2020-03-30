@@ -1688,11 +1688,13 @@ function datasublist(num) {
     Rendou = MapSubInfoList[num].mc;
     SubInfo = MapSubInfoList[num];
     //誰だこんなやりかたでリリース許可だしたのは！！！
-    SubInfo.dfi = SubInfoBase[num].dfi;
-    SubInfo.dwa = SubInfoBase[num].dwa;
-    SubInfo.dwi = SubInfoBase[num].dwi;
-    SubInfo.dea = SubInfoBase[num].dea;
-    SubInfo.dli = SubInfoBase[num].dli;
-    SubInfo.dda = SubInfoBase[num].dda;
-    SubInfo.req_map_lv = SubInfoBase[num].req_map_lv;
+    if (SubInfoBase[num]) {
+        SubInfo.dfi = SubInfoBase[num].dfi;
+        SubInfo.dwa = SubInfoBase[num].dwa;
+        SubInfo.dwi = SubInfoBase[num].dwi;
+        SubInfo.dea = SubInfoBase[num].dea;
+        SubInfo.dli = SubInfoBase[num].dli;
+        SubInfo.dda = SubInfoBase[num].dda;
+        SubInfo.req_map_lv = SubInfoBase[num].req_map_lv;
+    }
 }

@@ -72,8 +72,10 @@ function Yl(num) {
 function Ad(num) {
     var map_image = document.getElementById('map_image');
     if (map_image) {
-        MapX = MapX > 0 ? MapX : IMG_SIZE[num].w;
-        MapY = MapY > 0 ? MapY : IMG_SIZE[num].h;
+        // MapX = MapX > 0 ? MapX : IMG_SIZE[num].w;
+        // MapY = MapY > 0 ? MapY : IMG_SIZE[num].h;
+        MapX = MapX > 0 ? MapX : IMG_SIZE[num].w * 200 / IMG_SIZE[num].h;
+        MapY = MapY > 0 ? MapY : 200;
         map_image.width = MapX * KS;
         map_image.height = MapY * KS;
     } else {
