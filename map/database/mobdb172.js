@@ -1,0 +1,25 @@
+MobData = {
+172: [{ id: "0",name:"お嬢さん",type:1,inid:0,repop:120,isptboss:0,posx:41.13,posy:53.25, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "1",name:"おじさん",type:1,inid:1,repop:120,isptboss:0,posx:102.63,posy:80.25, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "2",name:"女の子",type:1,inid:2,repop:120,isptboss:0,posx:89.75,posy:73.00, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "3",name:"ペナック",type:1,inid:3,repop:120,isptboss:0,posx:69.75,posy:22.50, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "4",name:"ペルジュ",type:1,inid:3,repop:120,isptboss:0,posx:139.88,posy:90.50, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "5",name:"婦人",type:1,inid:4,repop:120,isptboss:0,posx:141.38,posy:32.13, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "6",name:"ペロペロ",type:1,inid:5,repop:120,isptboss:0,posx:129.25,posy:34.88, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "7",name:"ノタジール",type:1,inid:6,repop:120,isptboss:0,posx:107.88,posy:17.13, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "8",name:"青年",type:1,inid:7,repop:120,isptboss:0,posx:139.50,posy:62.75, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "9",name:"おばあさん",type:1,inid:8,repop:120,isptboss:0,posx:179.00,posy:66.50, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "10",name:"ロリア",type:1,inid:9,repop:120,isptboss:0,posx:106.75,posy:36.88, lv_min:0, lv_max:0, is_npc: false  },
+]};
+AreaData = {
+172: [{ id: "0",name:"none",area_name:"_필드 전체",type:0,posx:0.00,posx2:0.00,access_map:"none",posy:0.00,posy2:0.00,is_secret:0},
+{ id: "1",name:"none",area_name:"_화면",type:0,posx:0.00,posx2:0.00,access_map:"none",posy:0.00,posy2:0.00,is_secret:0},
+{ id: "2",name:"none",area_name:"식당, 여관",type:4,posx:120.63,posx2:156.25,access_map:"none",posy:24.38,posy2:43.63,is_secret:0},
+{ id: "3",name:"none",area_name:"마법 방어구 상점",type:0,posx:187.75,posx2:205.00,access_map:"none",posy:79.75,posy2:90.25,is_secret:0},
+{ id: "4",name:"none",area_name:"Area 3",type:4,posx:33.00,posx2:55.38,access_map:"none",posy:46.00,posy2:57.38,is_secret:0},
+{ id: "5",name:"none",area_name:"Area 4",type:4,posx:96.88,posx2:108.25,access_map:"none",posy:76.13,posy2:83.50,is_secret:0},
+{ id: "6",name:"none",area_name:"Area 5",type:4,posx:85.13,posx2:95.50,access_map:"none",posy:69.13,posy2:75.50,is_secret:0},
+{ id: "7",name:"砂漠の炎 旅館２階",area_name:"2층 침실로",type:3,posx:171.63,posx2:182.63,access_map:"[173]T18_I02.rmd",posy:47.63,posy2:55.00,is_secret:0},
+{ id: "8",name:"砂漠村リンケン",area_name:"링켄~",type:3,posx:48.75,posx2:61.88,access_map:"[171]T18.rmd",posy:72.50,posy2:79.38,is_secret:0},
+{ id: "9",name:"none",area_name:"Area 8",type:4,posx:127.00,posx2:148.00,access_map:"none",posy:51.75,posy2:65.13,is_secret:0},
+]};

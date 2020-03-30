@@ -306,4 +306,5 @@
     { id: "761", name: "", type: 2, inid: 12, repop: 20, isptboss: 0, posx: 218.30, posy: 154.30, lv_min: 0, lv_max: 0, is_npc: false },
     { id: "762", name: "", type: 2, inid: 1, repop: 20, isptboss: 0, posx: 305.00, posy: 88.10, lv_min: 0, lv_max: 0, is_npc: false },
     ],
-}
+};
+AreaData = {};

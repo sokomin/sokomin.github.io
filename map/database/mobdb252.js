@@ -1,0 +1,27 @@
+MobData = {
+252: [{ id: "0",name:"従業員",type:1,inid:1,repop:120,isptboss:0,posx:81.19,posy:66.19, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "1",name:"従業員",type:1,inid:2,repop:120,isptboss:0,posx:234.75,posy:88.50, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "2",name:"住民",type:1,inid:4,repop:120,isptboss:0,posx:127.50,posy:45.94, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "3",name:"ウィザード",type:1,inid:6,repop:120,isptboss:0,posx:331.69,posy:73.50, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "4",name:"傭兵",type:1,inid:5,repop:120,isptboss:0,posx:76.88,posy:118.13, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "5",name:"住民",type:1,inid:7,repop:120,isptboss:0,posx:188.25,posy:134.81, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "6",name:"住民",type:1,inid:3,repop:120,isptboss:0,posx:249.56,posy:50.25, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "7",name:"バーテンダー",type:1,inid:0,repop:120,isptboss:0,posx:368.81,posy:98.44, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "8",name:"ウィザード",type:1,inid:6,repop:120,isptboss:0,posx:248.63,posy:93.94, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "9",name:"ノイク",type:11,inid:8,repop:120,isptboss:0,posx:145.88,posy:102.94, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "10",name:"サンディ",type:1,inid:2,repop:120,isptboss:0,posx:37.69,posy:117.38, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "11",name:"ジョイ",type:1,inid:4,repop:120,isptboss:0,posx:438.75,posy:101.06, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "12",name:"カーター",type:1,inid:7,repop:120,isptboss:0,posx:444.19,posy:129.75, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "13",name:"ゴージン",type:1,inid:4,repop:120,isptboss:0,posx:353.06,posy:124.50, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "14",name:"ユダ",type:1,inid:8,repop:120,isptboss:0,posx:333.56,posy:100.13, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "15",name:"グリムス",type:1,inid:11,repop:120,isptboss:0,posx:173.63,posy:80.81, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "16",name:"ウルファ",type:1,inid:11,repop:120,isptboss:0,posx:162.75,posy:27.56, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "17",name:"リーマ",type:1,inid:11,repop:120,isptboss:0,posx:64.88,posy:39.56, lv_min:0, lv_max:0, is_npc: false  },
+]};
+AreaData = {
+252: [{ id: "0",name:"none",area_name:"_필드 전체",type:0,posx:0.00,posx2:0.00,access_map:"none",posy:0.00,posy2:0.00,is_secret:0},
+{ id: "1",name:"none",area_name:"_화면",type:0,posx:0.00,posx2:0.00,access_map:"none",posy:0.00,posy2:0.00,is_secret:0},
+{ id: "2",name:"none",area_name:"Area 1",type:4,posx:21.38,posx2:142.31,access_map:"none",posy:49.50,posy2:91.50,is_secret:0},
+{ id: "3",name:"none",area_name:"Area 2",type:4,posx:163.31,posx2:285.56,access_map:"none",posy:53.25,posy2:127.31,is_secret:0},
+{ id: "4",name:"魔法都市スマグ",area_name:"스머그로",type:3,posx:373.50,posx2:395.25,access_map:"[214]T11.rmd",posy:154.13,posy2:165.19,is_secret:0},
+]};

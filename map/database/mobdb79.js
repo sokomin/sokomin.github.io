@@ -1,0 +1,26 @@
+MobData = {
+79: [{ id: "0",name:"原始人",type:2,inid:0,repop:30,isptboss:0,posx:16.00,posy:29.06, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "1",name:"原始人",type:2,inid:0,repop:30,isptboss:0,posx:16.81,posy:33.06, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "2",name:"原始人",type:2,inid:0,repop:30,isptboss:0,posx:32.09,posy:6.06, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "4",name:"原始人",type:2,inid:0,repop:30,isptboss:0,posx:29.56,posy:14.50, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "6",name:"原始人",type:2,inid:0,repop:30,isptboss:0,posx:37.66,posy:3.63, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "7",name:"原始人",type:2,inid:0,repop:30,isptboss:0,posx:39.44,posy:23.16, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "8",name:"原始人",type:2,inid:0,repop:30,isptboss:0,posx:41.91,posy:28.97, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "10",name:"原始人",type:2,inid:0,repop:30,isptboss:0,posx:50.25,posy:30.09, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "12",name:"原始人",type:2,inid:0,repop:30,isptboss:0,posx:72.41,posy:13.34, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "13",name:"原始人",type:2,inid:0,repop:30,isptboss:0,posx:73.06,posy:22.91, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "15",name:"原始人",type:2,inid:0,repop:30,isptboss:0,posx:78.91,posy:13.97, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "18",name:"原始人",type:2,inid:0,repop:30,isptboss:0,posx:91.81,posy:31.78, lv_min:0, lv_max:0, is_npc: false  },
+]};
+AreaData = {
+79: [{ id: "0",name:"none",area_name:"_필드 전체",type:0,posx:0.00,posx2:0.00,access_map:"none",posy:0.00,posy2:0.00,is_secret:0},
+{ id: "1",name:"none",area_name:"_화면",type:0,posx:0.00,posx2:0.00,access_map:"none",posy:0.00,posy2:0.00,is_secret:0},
+{ id: "2",name:"やぶ森の中",area_name:"4번으로",type:3,posx:103.97,posx2:107.22,access_map:"[078]G26_G04.rmd",posy:28.50,posy2:32.47,is_secret:0},
+{ id: "3",name:"やぶ森の中",area_name:"2번으로",type:3,posx:52.38,posx2:57.19,access_map:"[076]G26_G02.rmd",posy:1.84,posy2:4.28,is_secret:0},
+{ id: "4",name:"やぶ森の中",area_name:"6번으로",type:3,posx:2.53,posx2:6.31,access_map:"[080]G26_G06.rmd",posy:38.94,posy2:42.41,is_secret:0},
+{ id: "5",name:"none",area_name:"Area 4",type:4,posx:22.84,posx2:39.94,access_map:"none",posy:2.00,posy2:16.94,is_secret:0},
+{ id: "6",name:"none",area_name:"Area 5",type:4,posx:37.53,posx2:56.38,access_map:"none",posy:21.81,posy2:35.50,is_secret:0},
+{ id: "7",name:"none",area_name:"Area 6",type:4,posx:69.63,posx2:85.00,access_map:"none",posy:11.72,posy2:26.00,is_secret:0},
+{ id: "8",name:"none",area_name:"Area 7",type:4,posx:89.34,posx2:94.75,access_map:"none",posy:23.22,posy2:35.50,is_secret:0},
+{ id: "9",name:"none",area_name:"Area 8",type:4,posx:12.91,posx2:21.06,access_map:"none",posy:27.09,posy2:35.63,is_secret:0},
+]};

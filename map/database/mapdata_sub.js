@@ -1669,7 +1669,11 @@ SubInfoBase = {
 996:{ name: "デフヒルズ / 砂漠の遺跡",req_map_lv:0,dfi:50,dwa:90,dwi:80,dea:55,dli:50,dda:50, st_down:0,lbd:0, non_resume: false  },
 997:{ name: "エルベルグ山脈 / 岩の谷",req_map_lv:0,dfi:75,dwa:75,dwi:75,dea:35,dli:80,dda:40, st_down:0,lbd:0, non_resume: false  },
 998:{ name: "ソゴム山脈 / 赤い丘",req_map_lv:0,dfi:0,dwa:0,dwi:0,dea:0,dli:0,dda:0, st_down:0,lbd:0, non_resume: false  },
-999:{ name: "廃墟スバイン要塞",req_map_lv:0,dfi:45,dwa:45,dwi:45,dea:45,dli:45,dda:45, st_down:0,lbd:0, non_resume: false  }
+999:{ name: "廃墟スバイン要塞",req_map_lv:0,dfi:45,dwa:45,dwi:45,dea:45,dli:45,dda:45, st_down:0,lbd:0, non_resume: false  },
+9999: {
+    name: "そこみん王国",mc: "S", req_map_lv: 4, dfi: 40, dwa: 40, dwi: 40, dea: 40, dli: 40, dda: 40, st_down: 40, lbd: 40, non_resume: true
+},
+
 }
 
 function datasublist(num) {

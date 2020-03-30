@@ -1,0 +1,27 @@
+MobData = {
+410: [{ id: "0",name:"ブローム",type:1,inid:0,repop:120,isptboss:0,posx:74.55,posy:62.53, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "1",name:"傭兵ボディガード",type:2,inid:1,repop:30,isptboss:0,posx:161.11,posy:83.97, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "2",name:"傭兵ボディガード",type:2,inid:1,repop:30,isptboss:0,posx:296.05,posy:96.19, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "3",name:"傭兵ボディガード",type:2,inid:1,repop:30,isptboss:0,posx:321.02,posy:147.82, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "4",name:"傭兵ボディガード",type:2,inid:1,repop:30,isptboss:0,posx:230.26,posy:88.89, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "5",name:"傭兵ボディガード",type:2,inid:2,repop:30,isptboss:0,posx:102.64,posy:75.47, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "6",name:"傭兵ボディガード",type:2,inid:2,repop:30,isptboss:0,posx:171.07,posy:101.58, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "7",name:"傭兵ボディガード",type:2,inid:2,repop:30,isptboss:0,posx:261.59,posy:90.20, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "8",name:"傭兵ボディガード",type:2,inid:2,repop:30,isptboss:0,posx:242.51,posy:105.42, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "9",name:"傭兵ボディガード",type:2,inid:2,repop:30,isptboss:0,posx:344.67,posy:107.33, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "10",name:"傭兵ボディガード",type:2,inid:2,repop:30,isptboss:0,posx:369.04,posy:108.53, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "11",name:"傭兵ボディガード",type:2,inid:2,repop:30,isptboss:0,posx:354.63,posy:151.06, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "12",name:"傭兵ボディガード",type:2,inid:2,repop:30,isptboss:0,posx:337.35,posy:156.45, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "13",name:"傭兵ボディガード",type:2,inid:2,repop:40,isptboss:0,posx:75.03,posy:70.92, lv_min:0, lv_max:0, is_npc: false  },
+]};
+AreaData = {
+410: [{ id: "0",name:"none",area_name:"_필드 전체",type:0,posx:0.00,posx2:0.00,access_map:"none",posy:0.00,posy2:0.00,is_secret:0},
+{ id: "1",name:"none",area_name:"_화면",type:0,posx:0.00,posx2:0.00,access_map:"none",posy:0.00,posy2:0.00,is_secret:0},
+{ id: "2",name:"バヘル台地 / 丸太いかだ丘",area_name:"132로",type:3,posx:407.70,posx2:421.62,access_map:"[132]G14.rmd",posy:81.10,posy2:89.13,is_secret:0},
+{ id: "3",name:"none",area_name:"Area 2",type:4,posx:322.58,posx2:382.49,access_map:"none",posy:99.67,posy2:114.88,is_secret:0},
+{ id: "4",name:"none",area_name:"Area 3",type:4,posx:309.37,posx2:367.96,access_map:"none",posy:140.76,posy2:163.40,is_secret:0},
+{ id: "5",name:"none",area_name:"Area 4",type:4,posx:222.94,posx2:275.40,access_map:"none",posy:80.74,posy2:114.04,is_secret:0},
+{ id: "6",name:"none",area_name:"Area 5",type:4,posx:139.14,posx2:184.16,access_map:"none",posy:76.91,posy2:112.96,is_secret:0},
+{ id: "7",name:"none",area_name:"Area 6",type:4,posx:279.48,posx2:306.01,access_map:"none",posy:84.33,posy2:101.58,is_secret:0},
+{ id: "8",name:"none",area_name:"Area 7",type:4,posx:60.99,posx2:107.45,access_map:"none",posy:53.31,posy2:84.69,is_secret:0},
+]};

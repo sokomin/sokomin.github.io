@@ -1,0 +1,27 @@
+MobData = {
+269: [{ id: "0",name:"グレムリン",type:2,inid:0,repop:30,isptboss:0,posx:17.66,posy:18.22, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "1",name:"グレムリン",type:2,inid:0,repop:30,isptboss:0,posx:27.28,posy:11.22, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "2",name:"ゴースト",type:2,inid:2,repop:30,isptboss:0,posx:16.38,posy:16.25, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "3",name:"グレムリン",type:2,inid:0,repop:30,isptboss:0,posx:52.16,posy:16.19, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "4",name:"ゴースト",type:2,inid:2,repop:30,isptboss:0,posx:41.88,posy:20.31, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "5",name:"グレムリン",type:2,inid:0,repop:30,isptboss:0,posx:42.47,posy:26.47, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "6",name:"グレムリン",type:2,inid:0,repop:30,isptboss:0,posx:40.63,posy:33.50, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "7",name:"グレムリン",type:2,inid:0,repop:30,isptboss:0,posx:32.34,posy:29.53, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "8",name:"野良犬",type:2,inid:1,repop:30,isptboss:0,posx:35.38,posy:31.09, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "9",name:"ゴースト",type:2,inid:2,repop:30,isptboss:0,posx:28.63,posy:26.69, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "10",name:"野良犬",type:2,inid:1,repop:30,isptboss:0,posx:39.38,posy:14.84, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "11",name:"野良犬",type:2,inid:1,repop:30,isptboss:0,posx:21.63,posy:18.13, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "12",name:"野良犬",type:2,inid:1,repop:30,isptboss:0,posx:31.03,posy:14.16, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "13",name:"野良犬",type:2,inid:1,repop:30,isptboss:0,posx:55.31,posy:18.72, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "14",name:"ゴースト",type:2,inid:2,repop:30,isptboss:0,posx:46.13,posy:34.50, lv_min:0, lv_max:0, is_npc: false  },
+]};
+AreaData = {
+269: [{ id: "0",name:"none",area_name:"_필드 전체",type:0,posx:0.00,posx2:0.00,access_map:"none",posy:0.00,posy2:0.00,is_secret:0},
+{ id: "1",name:"none",area_name:"_화면",type:0,posx:0.00,posx2:0.00,access_map:"none",posy:0.00,posy2:0.00,is_secret:0},
+{ id: "2",name:"none",area_name:"Area 1",type:4,posx:24.56,posx2:53.31,access_map:"none",posy:23.56,posy2:37.81,is_secret:0},
+{ id: "3",name:"廃墟スバイン要塞",area_name:"밖으로..",type:3,posx:57.72,posx2:61.47,access_map:"[268]P01.rmd",posy:30.63,posy2:32.56,is_secret:0},
+{ id: "4",name:"none",area_name:"Area 3",type:4,posx:14.06,posx2:33.19,access_map:"none",posy:11.66,posy2:22.44,is_secret:0},
+{ id: "5",name:"none",area_name:"Area 4",type:4,posx:36.88,posx2:61.63,access_map:"none",posy:10.81,posy2:22.81,is_secret:0},
+{ id: "6",name:"none",area_name:"보물상자00",type:13,posx:29.94,posx2:32.09,access_map:"none",posy:20.84,posy2:22.00,is_secret:0},
+{ id: "7",name:"none",area_name:"보물상자01",type:13,posx:25.94,posx2:27.75,access_map:"none",posy:8.00,posy2:8.84,is_secret:0},
+]};

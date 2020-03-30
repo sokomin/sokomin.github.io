@@ -1,0 +1,28 @@
+MobData = {
+254: [{ id: "0",name:"ハイハイ",type:1,inid:1,repop:120,isptboss:0,posx:22.60,posy:46.95, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "1",name:"リド",type:1,inid:0,repop:120,isptboss:0,posx:219.65,posy:117.40, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "2",name:"ミツ",type:1,inid:0,repop:120,isptboss:0,posx:72.20,posy:106.55, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "3",name:"エルデン",type:1,inid:3,repop:120,isptboss:0,posx:117.75,posy:135.25, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "4",name:"お嬢さん",type:1,inid:2,repop:120,isptboss:0,posx:201.25,posy:51.10, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "5",name:"錬金術師ジン",type:11,inid:4,repop:120,isptboss:0,posx:137.90,posy:22.15, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "6",name:"アルケミスト",type:1,inid:4,repop:120,isptboss:0,posx:103.65,posy:40.15, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "7",name:"お嬢さん",type:1,inid:2,repop:120,isptboss:0,posx:130.45,posy:55.50, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "8",name:"フラットペカト",type:1,inid:3,repop:90,isptboss:0,posx:38.15,posy:20.15, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "9",name:"ゲデワン",type:1,inid:4,repop:120,isptboss:0,posx:178.40,posy:134.35, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "10",name:"アダプ",type:1,inid:0,repop:120,isptboss:0,posx:87.05,posy:126.55, lv_min:0, lv_max:0, is_npc: false  },
+]};
+AreaData = {
+254: [{ id: "0",name:"none",area_name:"_필드 전체",type:0,posx:0.00,posx2:0.00,access_map:"none",posy:0.00,posy2:0.00,is_secret:0},
+{ id: "1",name:"none",area_name:"_화면",type:0,posx:0.00,posx2:0.00,access_map:"none",posy:0.00,posy2:0.00,is_secret:0},
+{ id: "2",name:"none",area_name:"Area 1",type:4,posx:7.95,posx2:43.95,access_map:"none",posy:29.70,posy2:60.60,is_secret:0},
+{ id: "3",name:"none",area_name:"Area 2",type:4,posx:206.20,posx2:234.35,access_map:"none",posy:100.05,posy2:121.70,is_secret:0},
+{ id: "4",name:"none",area_name:"Area 3",type:4,posx:100.75,posx2:157.40,access_map:"none",posy:123.75,posy2:143.60,is_secret:0},
+{ id: "5",name:"none",area_name:"Area 4",type:4,posx:180.90,posx2:226.40,access_map:"none",posy:31.75,posy2:61.25,is_secret:0},
+{ id: "6",name:"none",area_name:"Area 5",type:4,posx:129.90,posx2:176.90,access_map:"none",posy:14.60,posy2:36.10,is_secret:0},
+{ id: "7",name:"none",area_name:"Area 6",type:4,posx:94.50,posx2:113.50,access_map:"none",posy:34.65,posy2:47.65,is_secret:0},
+{ id: "8",name:"none",area_name:"Area 7",type:4,posx:125.30,posx2:144.10,access_map:"none",posy:50.30,posy2:61.50,is_secret:0},
+{ id: "9",name:"ウィザードの研究室",area_name:"AREA1",type:3,posx:134.70,posx2:139.35,access_map:"[254]T11_P01.rmd",posy:64.40,posy2:67.05,is_secret:0},
+{ id: "10",name:"ウィザードの研究室",area_name:"AREA2",type:3,posx:42.95,posx2:47.60,access_map:"[254]T11_P01.rmd",posy:41.85,posy2:44.35,is_secret:0},
+{ id: "11",name:"魔法都市スマグ",area_name:"스머그로",type:3,posx:97.15,posx2:102.10,access_map:"[214]T11.rmd",posy:62.60,posy2:65.30,is_secret:0},
+{ id: "12",name:"none",area_name:"Area 11",type:4,posx:71.75,posx2:90.20,access_map:"none",posy:130.30,posy2:137.45,is_secret:0},
+]};

@@ -1,0 +1,28 @@
+MobData = {
+78: [{ id: "0",name:"エルフ戦士",type:2,inid:0,repop:30,isptboss:0,posx:25.06,posy:16.66, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "1",name:"エルフ戦士",type:2,inid:0,repop:30,isptboss:0,posx:19.97,posy:23.19, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "3",name:"エルフ暗殺者",type:2,inid:1,repop:30,isptboss:0,posx:27.66,posy:25.94, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "4",name:"エルフ暗殺者",type:2,inid:1,repop:30,isptboss:0,posx:42.22,posy:20.03, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "6",name:"エルフ戦士",type:2,inid:0,repop:30,isptboss:0,posx:47.81,posy:20.88, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "7",name:"エルフ戦士",type:2,inid:0,repop:30,isptboss:0,posx:65.13,posy:15.34, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "8",name:"エルフ戦士",type:2,inid:0,repop:30,isptboss:0,posx:77.00,posy:7.66, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "10",name:"エルフ暗殺者",type:2,inid:1,repop:30,isptboss:0,posx:70.44,posy:11.91, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "11",name:"エルフ暗殺者",type:2,inid:1,repop:30,isptboss:0,posx:92.56,posy:8.13, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "13",name:"エルフ戦士",type:2,inid:0,repop:30,isptboss:0,posx:96.81,posy:3.47, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "14",name:"エルフ戦士",type:2,inid:0,repop:30,isptboss:0,posx:97.03,posy:14.66, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "15",name:"エルフ戦士",type:2,inid:0,repop:30,isptboss:0,posx:72.88,posy:29.50, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "17",name:"エルフ戦士",type:2,inid:0,repop:30,isptboss:0,posx:87.59,posy:29.66, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "19",name:"エルフ暗殺者",type:2,inid:1,repop:30,isptboss:0,posx:85.06,posy:34.97, lv_min:0, lv_max:0, is_npc: false  },
+]};
+AreaData = {
+78: [{ id: "0",name:"none",area_name:"_필드 전체",type:0,posx:0.00,posx2:0.00,access_map:"none",posy:0.00,posy2:0.00,is_secret:0},
+{ id: "1",name:"none",area_name:"_화면",type:0,posx:0.00,posx2:0.00,access_map:"none",posy:0.00,posy2:0.00,is_secret:0},
+{ id: "2",name:"やぶ森の中",area_name:"3번으로",type:3,posx:29.34,posx2:34.00,access_map:"[077]G26_G03.rmd",posy:1.91,posy2:4.34,is_secret:0},
+{ id: "3",name:"やぶ森の中",area_name:"5번으로",type:3,posx:2.63,posx2:5.53,access_map:"[079]G26_G05.rmd",posy:25.31,posy2:29.13,is_secret:0},
+{ id: "4",name:"none",area_name:"Area 3",type:4,posx:16.13,posx2:29.28,access_map:"none",posy:14.41,posy2:33.72,is_secret:0},
+{ id: "5",name:"none",area_name:"Area 4",type:4,posx:39.69,posx2:50.88,access_map:"none",posy:14.06,posy2:25.53,is_secret:0},
+{ id: "6",name:"none",area_name:"Area 5",type:4,posx:69.53,posx2:90.63,access_map:"none",posy:25.78,posy2:39.91,is_secret:0},
+{ id: "7",name:"none",area_name:"Area 6",type:4,posx:85.00,posx2:102.72,access_map:"none",posy:0.63,posy2:16.28,is_secret:0},
+{ id: "8",name:"none",area_name:"Area 7",type:4,posx:60.09,posx2:78.84,access_map:"none",posy:5.66,posy2:17.03,is_secret:0},
+{ id: "9",name:"none",area_name:"보물상자00",type:13,posx:76.09,posx2:77.84,access_map:"none",posy:27.09,posy2:27.97,is_secret:0},
+]};

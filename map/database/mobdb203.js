@@ -1,0 +1,26 @@
+MobData = {
+203: [{ id: "0",name:"トゥーファ",type:12,inid:0,repop:120,isptboss:0,posx:324.75,posy:82.58, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "1",name:"貴族",type:1,inid:1,repop:120,isptboss:0,posx:298.57,posy:90.67, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "2",name:"傭兵",type:1,inid:2,repop:120,isptboss:0,posx:82.50,posy:126.22, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "3",name:"傭兵",type:1,inid:2,repop:120,isptboss:0,posx:233.17,posy:103.58, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "4",name:"貴族",type:1,inid:7,repop:120,isptboss:0,posx:211.57,posy:59.63, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "5",name:"貴族",type:1,inid:8,repop:120,isptboss:0,posx:228.82,posy:54.90, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "6",name:"召使い",type:1,inid:5,repop:120,isptboss:0,posx:283.20,posy:52.50, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "7",name:"召使い",type:1,inid:3,repop:120,isptboss:0,posx:89.25,posy:40.13, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "8",name:"召使い",type:1,inid:4,repop:120,isptboss:0,posx:209.25,posy:146.10, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "9",name:"召使い",type:1,inid:6,repop:120,isptboss:0,posx:43.50,posy:97.27, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "10",name:"召使い",type:1,inid:3,repop:120,isptboss:0,posx:141.30,posy:162.82, lv_min:0, lv_max:0, is_npc: false  },
+]};
+AreaData = {
+203: [{ id: "0",name:"none",area_name:"_필드 전체",type:0,posx:0.00,posx2:0.00,access_map:"none",posy:0.00,posy2:0.00,is_secret:0},
+{ id: "1",name:"none",area_name:"_화면",type:0,posx:0.00,posx2:0.00,access_map:"none",posy:0.00,posy2:0.00,is_secret:0},
+{ id: "2",name:"オアシス都市アリアン",area_name:"아리안",type:3,posx:53.17,posx2:61.27,access_map:"[193]T08.rmd",posy:136.05,posy2:141.07,is_secret:0},
+{ id: "3",name:"none",area_name:"Area 2",type:4,posx:64.50,posx2:98.63,access_map:"none",posy:118.80,posy2:133.80,is_secret:0},
+{ id: "4",name:"none",area_name:"Area 3",type:4,posx:219.82,posx2:251.17,access_map:"none",posy:99.22,posy2:114.83,is_secret:0},
+{ id: "5",name:"none",area_name:"Area 4",type:4,posx:205.95,posx2:236.17,access_map:"none",posy:49.27,posy2:65.02,is_secret:0},
+{ id: "6",name:"none",area_name:"Area 5",type:4,posx:261.97,posx2:303.60,access_map:"none",posy:35.77,posy2:59.40,is_secret:0},
+{ id: "7",name:"none",area_name:"Area 6",type:4,posx:73.88,posx2:110.02,access_map:"none",posy:28.50,posy2:45.00,is_secret:0},
+{ id: "8",name:"none",area_name:"Area 7",type:4,posx:183.38,posx2:242.25,access_map:"none",posy:134.10,posy2:158.47,is_secret:0},
+{ id: "9",name:"none",area_name:"Area 8",type:4,posx:32.77,posx2:62.25,access_map:"none",posy:92.25,posy2:108.52,is_secret:0},
+{ id: "10",name:"none",area_name:"Area 9",type:4,posx:129.30,posx2:156.90,access_map:"none",posy:155.40,posy2:169.50,is_secret:0},
+]};

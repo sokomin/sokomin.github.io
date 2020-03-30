@@ -1,0 +1,25 @@
+MobData = {
+94: [{ id: "0",name:"クレナ",type:8,inid:0,repop:120,isptboss:0,posx:59.00,posy:23.67, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "1",name:"クロウン",type:11,inid:1,repop:120,isptboss:0,posx:40.20,posy:33.28, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "2",name:"警備員",type:1,inid:2,repop:120,isptboss:0,posx:106.76,posy:58.65, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "3",name:"警備員",type:1,inid:3,repop:120,isptboss:0,posx:120.29,posy:52.56, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "4",name:"お嬢さん",type:1,inid:4,repop:120,isptboss:0,posx:114.26,posy:38.14, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "5",name:"おばさん",type:1,inid:5,repop:120,isptboss:0,posx:102.30,posy:31.46, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "6",name:"青年",type:1,inid:6,repop:120,isptboss:0,posx:79.51,posy:49.63, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "7",name:"お嬢さん",type:1,inid:4,repop:120,isptboss:0,posx:43.59,posy:42.42, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "8",name:"おばあさん",type:1,inid:7,repop:120,isptboss:0,posx:58.89,posy:51.50, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "9",name:"ウードスタック",type:11,inid:8,repop:120,isptboss:0,posx:86.95,posy:19.86, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "10",name:"マガラース",type:10,inid:9,repop:120,isptboss:0,posx:98.50,posy:45.94, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "11",name:"金取引人",type:1,inid:10,repop:120,isptboss:0,posx:66.45,posy:20.21, lv_min:0, lv_max:0, is_npc: false  },
+{ id: "12",name:"チケット交換員",type:1,inid:11,repop:120,isptboss:0,posx:54.14,posy:33.16, lv_min:0, lv_max:0, is_npc: false  },
+]};
+AreaData = {
+94: [{ id: "0",name:"none",area_name:"_필드 전체",type:0,posx:0.00,posx2:0.00,access_map:"none",posy:0.00,posy2:0.00,is_secret:0},
+{ id: "1",name:"none",area_name:"_화면",type:0,posx:0.00,posx2:0.00,access_map:"none",posy:0.00,posy2:0.00,is_secret:0},
+{ id: "2",name:"古都ブルンネンシュティグ",area_name:"은행",type:3,posx:112.03,posx2:119.59,access_map:"[000]T01.rmd",posy:53.20,posy2:57.83,is_secret:0},
+{ id: "3",name:"none",area_name:"Area 2",type:4,posx:106.64,posx2:123.57,access_map:"none",posy:31.29,posy2:43.65,is_secret:0},
+{ id: "4",name:"none",area_name:"Area 3",type:4,posx:86.19,posx2:106.00,access_map:"none",posy:25.55,posy2:35.68,is_secret:0},
+{ id: "5",name:"none",area_name:"Area 4",type:4,posx:74.77,posx2:84.43,access_map:"none",posy:37.32,posy2:52.32,is_secret:0},
+{ id: "6",name:"none",area_name:"Area 5",type:4,posx:53.26,posx2:73.83,access_map:"none",posy:47.81,posy2:54.49,is_secret:0},
+{ id: "7",name:"none",area_name:"Area 6",type:4,posx:38.61,posx2:62.75,access_map:"none",posy:39.43,posy2:47.46,is_secret:0},
+]};
