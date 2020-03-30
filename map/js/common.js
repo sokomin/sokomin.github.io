@@ -6,6 +6,8 @@ LnkA = [];
 // 大体200ぐらいじゃない？
 MapX = 0;
 MapY = 0;
+MapBaseX = 0;
+MapBaseY = 0;
 ObjY = [];
 ObjX = [];
 ObjT = [];
@@ -27,7 +29,7 @@ NameMob = ["モンスター"];
 
 mapid = getParam('map_id') ? parseInt(getParam('map_id')) : 0;
 
-Jump(mapid);
+// Jump(mapid);
 
 
 
@@ -68,8 +70,8 @@ function Yl(num) {
 function Ad(num) {
     var map_image = document.getElementById('map_image');
     if (map_image) {
-        MapX = MapX > 0 ? MapX : map_image.width;
-        MapY = MapY > 0 ? MapY : map_image.height;
+        MapX = MapX > 0 ? MapX : IMG_SIZE[num].w;
+        MapY = MapY > 0 ? MapY : IMG_SIZE[num].h;
         map_image.width = MapX * KS;
         map_image.height = MapY * KS;
     } else {
