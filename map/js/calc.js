@@ -1,5 +1,5 @@
 ﻿
-
+mapid = mapid ? mapid : 0;
 const file_url = "https://sokomin.github.io/map/database/mobdb" + mapid + ".js";
 // const file_url = "../map/database/mobdb1.js";
 // import(file_url).then((module) => {
@@ -15,7 +15,7 @@ $.ajax({
         //NameImgはcommon.jsで定義されてる
         map_image.src = "../map/design/" + NameImg;
         //オブジェクトの描画
-        if (mapid >= 1) {
+        if (mapid >= 0) {
             var map_dot = document.getElementById('map-drawer');
             var dot_txt = "";
             var height = IMG_SYS_SIZE[mapid] ? IMG_SYS_SIZE[mapid].h : IMG_SIZE[mapid].h;
