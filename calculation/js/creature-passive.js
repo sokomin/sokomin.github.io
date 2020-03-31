@@ -1569,11 +1569,11 @@ function searchOption(cid, slv) {
             result += '- 魔法強化 +<span class="color-image11">30</span>％<br>'
             result += '- 最終ダメージ +<span class="color-image11">5</span>％<br>'
         } else if (slv >= 40) {
-            result += '- 魔法強化 +<span class="color-image11">20</span>％<br>'
-        } else if (slv >= 30) {
             result += '- 魔法強化 +<span class="color-image11">15</span>％<br>'
-        } else if (slv >= 20) {
+        } else if (slv >= 30) {
             result += '- 魔法強化 +<span class="color-image11">10</span>％<br>'
+        } else if (slv >= 20) {
+            result += '- 魔法強化 +<span class="color-image11">5</span>％<br>'
         }
     }
     if (cid === 80) {
