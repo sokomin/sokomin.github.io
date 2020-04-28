@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>韓国2020/4アプデ　赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <a href="../index.html">トップ</a> >> <a href="../korea/korea-update.html">韓国情報</a> >> <a
+                href="../korea/koreaupdate20200417.html">2020/04</a><br>
+            <div class="korea-content main-background">
+                <br>
+                <h3>韓国 2020/04予定アップデート</h3>
+                <h5>
+                    <font color="#ff0000"><strong>[重要！] 韓国公式の情報を基にしています。<br>
+                            誤訳や韓国独自仕様の可能性もありますので、予めご了承下さい。</strong></font><br>
+                </h5>
+                <br>
+                <blockquote class="twitter-tweet">
+                    <p lang="ja" dir="ltr">【韓国赤石4月アプデ】<br>・解像度1920 *
+                        1080対応<br>・新規エリアボス「ガリオ」実装<br>・（復帰者向け）ガイドシステム実装<br>・超越スキルリニューアル<br>・クリーチャー8種追加<br><br>※詳しくは配信しながらサイト書きつつ話す！
+                        <a href="https://t.co/gqJXSLru5Z">pic.twitter.com/gqJXSLru5Z</a></p>&mdash; そこらの民衆
+                    (@sokoranominnsyu) <a
+                        href="https://twitter.com/sokoranominnsyu/status/1251491471363981316?ref_src=twsrc%5Etfw">April
+                        18, 2020</a>
+                </blockquote>
+                <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                <br>
+                <br>
+                <a href="#1">解像度1920 * 1080対応</a><br>
+                <a href="#7">新規エピソードクエスト</a><br>
+                <a href="#3">新規エリアボス</a><br>
+                <a href="#2">ガイドシステム</a><br>
+                <a href="#4">超越スキルリニューアル</a><br>
+                <a href="#5">新規クリーチャー8種追加</a><br>
+                <a href="#6">ランサースキル改変</a><br>
+                <br>
+                <br>
+
+                <font color="#e95388">
+                    <a name="1"></a>
+                    <h4>解像度1920 * 1080対応</h4>
+                </font>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/b57e0d6fc8a65748f6e8e70d2b11465d49f0dcd5.10.2.9.2.png"
+                    border=0 name="insertImg" /><br><br>
+
+                自由な解像度サイズ変更ができるようになります！<br>
+                ウィンドウモード時にドラッグ＆ドロップで自由に解像度を調節できるようになります。<br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/c22a285ca1064f67e9161d592b5d115e345d6463.10.2.9.2.png"
+                    border="0" name="insertImg" />
+                <br><br>
+                Alt + EnterキーでWide Full Screen(1920 * 1080)と既存の画面切り替えられるようになります。<br>
+                最大で（1920x1080）のサイズでゲームを楽しむことができます！<br>
+                ただし、モニターの解像度が1920x1080以上の場合、ゲーム内のUIも一緒に拡大されます。<br>
+                <br>
+                <br>
+
+                <font color="#e95388">
+                    <a name="7"></a>
+                    <h4>新規エピソードクエスト</h4>
+                </font>
+                シナリオクエストの続編が実装されます。<br>
+                後述するエリアボス討伐に挑戦するための前提クエストとなります。<br>
+                <br>
+                - 冒険家協会スマグ支部 / スマグ旅館の「支部長ランベル」より受諾可能。<br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/03023856d1e6d01dbfa47e4e2fdd056ea3b3c102.10.2.9.2.png"
+                    border="0" name="insertImg" />
+                <br>
+                クエストの後半では、エリアボスに挑戦するシーンもあります。<br>
+                <br>
+                【シナリオ】<br>
+                ある日、冒険家協会スマグ支部の支部長ランベルから助けを求める声が入ってくる。<br>
+                ランベルの言葉によると、神獣の野原で、まるで大きな力が衝突したのと同じ衝撃が感じられたという。<br>
+                その真意を把握するために冒険家は、神獣の森に向かうことになった....<br>
+                <br>
+                <br>
+
+                <font color="#e95388">
+                    <a name="2"></a>
+                    <h4>新規エリアボス</h4>
+                </font>
+                新規<a href="../monster/areaboss1.html">エリアボス</a>「ガリオ（仮）」が追加されます。<br>
+                最上位ユーザのための新規コンテンツ！非常に強力なモンスターが出現します！<br>
+                Lv.1100以上の狩り場である「神獣の野原」で会うことができます。<br>
+                <br>
+                【入場条件】<br>
+                - レベル：900以上<br>
+                - パーティー条件：シナリオクエスト進行時はクエ受諾者が1人でも可能<br>
+                -（クエスト受諾時はキャンセル不可・入場券不要）<br>
+                - パーティーは2人以上、最大8人まで<br>
+                - だだし、パーティーメンバー全員のシナリオクエスト完了している場合、クエスト関係なく入場可能<br>
+                - 【必要な入場券】クルリドゥの魔力 1つ（反復クエストで獲得可能）<br>
+                - またはポータルスフィア（パーティーメンバー全員保有時入場可能） <br>
+                - 参加回数：毎日1回（クリア失敗時の再入場可能、入場券1個追加消費）<br>
+                <br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/403f284787f36d84b36bc542eb5ebc9867cadfd3.10.2.9.2.png"
+                    border="0" name="insertImg" /><br><br>
+                難易度はいつもの通り4段階あります。<br>
+                報酬はバッジ・特殊防具「ガリオの鎧」、超級(最高難易度)クリア時には「翼を破りし者」の称号を入手可能、など。<br>
+                NPCクルリドゥより挑戦可能。<br>
+                シナリオクエスト完了後もPTを組めばれガリオ討伐に挑戦できます。<br>
+                難易度が高いほど、最上級の褒賞ボックスがドロップされやすくなります。<br>
+                詳しくは<a href="../monster/areaboss1.html">エリアボス</a>を参照ください。<br>
+                <br>
+                獲得可能な称号の特殊エフェクト・およびアイテム画像は以下の通りです。<br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/1ee539a93a222b384374602ff16b83ec805be1ff.10.2.9.2.png"
+                    border="0" name="insertImg" />
+                <br>
+                <br>
+
+                <font color="#e95388">
+                    <a name="3"></a>
+                    <h4>ガイドシステム</h4>
+                </font>
+
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/56fd20a6a198e36cd576438f231cf35a4e228412.10.2.9.2.png"
+                    border=0 name="insertImg" /><br><br>
+
+
+                ガイドシステムを介してレベル別おすすめコンテンツと復帰者クエストを進行できるようになります。<br>
+                ガイドシステム機能はLv.10から利用できます。<br>
+                ガイドシステムのアイコンは、メイン画面Creature横に配置されます。<br>
+                <br>
+                ※ガイドには「オススメ狩場」や「レベル別オススメコンテンツ」が記載されています。<br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/fa70459f5bc00cd18292f4bda8235863faf870e8.10.2.9.2.png"
+                    border=0 name="insertImg" /><br><br>
+                レベルに合った狩り場は、秘密ダンジョン、クエスト、コンテンツを教えてくれて、知りたいレベルのを選択することができます。<br>
+                復帰者称号・ポータルスフィアのいずれかを所持する場合は、「無料」でお勧めのコンテンツの位置に瞬間移動できます。<br>
+                <!-- なんでコルは制限したのさ -->
+                瞬間移​​動は通常記憶(?)と分けで使用可能であり、瞬間移動時に風の羽1個消費します。<br>
+                <br>
+                <br>
+                復帰者の有効期間が上部に表示され、ガイドシステムにて復帰者クエストを進行できます。<br>
+                復帰者クエストはクエストウィンドウに別々に表示されていません。<br>
+                さらに、協会クエスト・協会デイリークエストが進行しやすくなるようにガイドがより詳細に表示されるようになります。<br>
+                <br>
+                <br>
+                <font color="#e95388">
+                    <a name="4"></a>
+                    <h4>超越スキルリニューアル</h4>
+                </font>
+                超越で使用可能にする過程が改善され、超越スキルを2次強化することができる「特殊強化」のステップが追加されます。<br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/96425e418d205d544e3fdcb8c24bc3aa21215a45.10.2.9.2.png"
+                    border=0 name="insertImg" /><br><br>
+
+                超越の書を使用すると超越スキルが専用インベントリに保管され、保有リストの超越スキルをマウスドラッグを使用して、希望の登録欄に登録/解除することができます。<br>
+                特殊強化とは、既存の超越スキルを重ねることで強化できるシステムのことです。<br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/f6fab24fd2ddb77912fa6e04526da64bdac50aa3.10.2.9.2.png"
+                    border=0 name="insertImg" /><br><br>
+                超越スキルと同じ超越の書を使用して、100％の確率で強化することができます。<br>
+                特殊強化は超越スキル1レベル以上から進むことができます。(上限不明)<br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/f189084633cd67cd5df87c44c3c52dcbaddcf637.10.2.9.2.png"
+                    border=0 name="insertImg" /><br><br>
+                超越強化UI改善として、超越スキルの強化に必要な材料と強化前/後超越スキル情報を確認することができます。<br>
+                <br>
+                <br>
+
+                <font color="#e95388">
+                    <a name="5"></a>
+                    <h4>新規クリーチャー8種追加</h4>
+                </font>
+                新規クリーチャー8種が追加されます。<br>
+                (LR2体、SR1体、HR1体、R4体)<br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/81557c3f2bd3fea2df816c53febe6ddc70eff136.10.2.9.2.png"
+                    border=0 name="insertImg" /><br><br>
+                <!-- がぶがぶ～～ -->
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/9854349ca768ab3c3ac62707dc4268a397f5f9d0.10.2.9.2.png"
+                    border=0 name="insertImg" /><br><br>
+                <br>
+                <font color="#e95388">
+                    <a name="6"></a>
+                    <h4>ランサースキル改変</h4>
+                </font>
+                ランサーのスキルが変更されます。<br>
+                <br>
+                [ ランサー] （PvE / PvP）< 一般スキル>
+<br>
+
+ ● [ ラピッドスティンガー] 物理攻撃力の数値が変更される予定です。
+<br>
+
+● [ 槍投げ] スキル効果が変更される予定です。
+<br>
+
+● [ イリュージョンスピア] スキルの名前が変更される予定であり、スキル効果が追加、変更される予定です。
+<br>
+
+● [ ジャベリンテンペスト] 覚醒スキルに指定される予定です。
+<br>
+
+● [ ジャベリンテンペスト] スキル効果が変更される予定であり、攻撃範囲と射程距離が変更される予定です。
+<br>
+
+● [ サイドステップ] スキル効果が変更される予定です。
+<br>
+
+● [ スピンアライジング] 獲得CP 値と物理ダメ数値、発動確率が変更される予定であり、スキル効果が追加、変更される予定です。
+<br>
+
+● [ アーマーディスアセンブラ] 防御力の低下数値と発動条件が変更される予定です。
+<br>
+
+● [ダミーステップ] スキルの名前と消費CP 値が変更される予定であり、スキル効果が追加、変更される予定です。
+<br>
+
+● [ ワールランニング] スキル効果が変更される予定です。
+<br>
+
+● [ ワーリングアサルト] スキルの名前が変更される予定であり、スキル効果が追加、変更される予定です。
+<br>
+
+● [ マルチプルツイスター] スキルの名前とスキルの種類が変更される予定であり、スキル効果が追加、変更される予定です。
+<br>
+
+● [ グランドシェーカー] 硬直発動確率と硬直時間が変更される予定です。
+<br>
+
+● [ ラジアルアーク] 風/ 光ダメージ値と攻撃範囲、攻撃回数が変更される予定であり、スキル効果が追加、変更される予定です。
+<br>
+
+● [ ファイアアンドアイス] 火/ 水ダメージ数値が変更される予定であり、スキル効果が追加、変更される予定です。
+<br>
+
+● [ エントラップメントピアシング] 物理攻撃力の数値と同時攻撃回数最大値が変更される予定です。
+<br>
+
+● [ オーサムフォートレス] 同時攻撃回数が変更される予定であり、スキル効果が追加される予定です。
+<br>
+
+● [ 信念] 持続時間が変更される予定です。
+<br>
+
+
+<br>
+
+[ヴァンガードキャバリエ] （PvE / PvP 共通）<元スキル> 
+<br>
+
+● [ 連続攻撃]パッシブスキルの効果が変更される予定です。
+<br>
+
+● [ パラライズスティンガー] 物理攻撃力数値が変更される予定であり、スキル効果が追加、変更される予定です。
+<br>
+
+● [ エントラップメントインペール] 物理攻撃力の数値と同時攻撃回数の最大値が変更される予定です。
+<br>
+
+
+<br>
+
+[ エレメンタルランサー] （PvE / PvP 共通）<元スキル> 
+<br>
+
+● [ クレセントライトニング] 風/ 光ダメージ数値と攻撃範囲が変更される予定であり、スキル効果が追加、変更される予定です。
+<br>
+
+● [ ブレイズ・アンド・ブリザード] 火/ 水ダメージと攻撃回数が変更される予定であり、スキル効果が追加、変更される予定です。
+<br>
+
+● [ 確固たる信念] 持続時間が変更される予定です
+<br>
+
+
+<br>
+
+[ロージングヴァルキリー] （PvE / PvP 共通）<元スキル> 
+<br>
+
+● [ 巧妙な戦術] パッシブ効果が変更される予定です。
+<br>
+
+● [ インボルションツイスター] スキルの名前と攻撃回数、攻撃範囲が変更される予定であり、スキル効果が追加、変更される予定です。
+<br>
+
+● [ マエルレームアサルト] スキルの名前が変更される予定であり、スキル効果が追加、変更される予定です。
+<br>
+
+● [ ジャベリンストーム] 新規スキルで追加される予定です。
+<br>
+
+
+<br>
+
+
+<br>
+
+
+<br>
+
+
+<br>
+
+
+<br>
+
+[ランサー] （PvP）<一般スキル>
+<br>
+
+● [ スピンアライジング] PvE と同じように適用される予定です。
+<br>
+
+● [ ファイアアンドアイス] PvE と同じように適用される予定です。
+<br>
+
+● [ マルチプルツイスター] PvE と同じように適用される予定です。
+<br>
+
+● [ ワーリングアサルト] PvE と同じように適用される予定です。
+<br>
+
+● [ グランドシェーカー] PvE と同じように適用される予定です。
+<br>
+
+● [ イリュージョンスフィア] PvE と同じように適用される予定です。
+<br>
+
+
+<br>
+
+[ ランサー] （PvP）< 元スキル>
+<br>
+
+● [ ブレイズ・アンド・ブリザード] PvE と同じように適用される予定です。
+<br>
+
+● [ ラピッドスティンガー] PvE と同じように適用される予定です。
+<br>
+
+● [ マエルレームアサルト] PvE と同じように適用される予定です。
+<br>
+
+● [ ジャベリンストーム] PvP 進行時スキル効果が変更されて適用される予定です。
+<br>
+
+<br>
+
+
+                <br>
+                <br>
+                <img width="960px"
+                    src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/ef5e8cfb449eff3ead130cc56a43e47a95e218f6.10.2.9.2.png"
+                    border=0 name="insertImg" /><br><br>
+
+                <br>
+                [引用元] <a
+                    href="http://redstone.logickorea.co.kr/notice/updateboard/view.aspx?sqn=7133">[4月の更新プログラムのプレビュー案内]
+                    (韓国公式)</a><br>
+                <!-- 7132もだよ -->
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        </div>
+</body>
+
+</html>
