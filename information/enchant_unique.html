@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>ユニークアイテムエンチャント</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+                <h3>ユニークアイテムエンチャント</h3>
+                <br>
+                <a href="#1">エンチャントの手順</a><br>
+                <a href="#2">ドギ・タニア（港街ブリッジヘッド）のエンチャント水晶一覧</a><br>
+                <a href="#3">エンチャント商人（ギルドホール）の魔法エンチャント水晶一覧</a><br>
+                <a href="#5">オプション解除</a><br>
+                <a href="#5">エンチャント水晶で付加可能なオプション一覧</a><br>
+                <br>
+                エンチャントとは、装備品アイテムに、能力アップ効果をもつ「アイテム称号」を付与して、アイテムを改良・強化することができるシステムです。<br>
+                アイテムの仕様・詳細は<a href="../information/enchant_normal.html">ノーマルアイテムエンチャントの項目</a>を参考にしてください。<br>
+                オプション付与はプレイヤーの運が高いほど成功確率が上昇します。<br>
+                <br>
+                オプションは1つのアイテムに別々の系統のオプションを3つまで付与できます。<br>
+                ※魔力抽出・貼り付けやオプション巻物アイテムを使った場合のみ同系列のオプションを付与可能。<br>
+                既に3つのオプションが付いたアイテムは「超魔力解除キット」などを使って選んだオプションを1つ削除できます。<br>
+                オプション数を減らすことで再びエンチャできるようになります。<br>
+                <br>
+                一般アイテムや各種特殊アイテム(遺物アイテムなど)の場合は別の方法でアイテム強化を行います。<br>
+                [関連]<a href="enchant_normal.html">一般アイテム強化</a><br>
+                [関連]<a href="../item2020/item-bf-relics2019.html">遺物強化</a><br>
+                <br>
+                <br>
+                <br>
+                <a name="1"></a><span class="color-image4">エンチャントの手順</span><br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/32213fbb145ecd56cf79682214bc1b8a186fc6d0.10.2.9.2.png"
+                    border=0 name="insertImg" /><br><br> ブリッジヘッドの「ドギ・タニア」から購入する方法と、<br>
+                ギルド石像を完成させてギルドホールのエンチャント商人より買う方法の2種類があります。<br>
+                一般に、ギルドホールで購入する方が高い等級まで上げられますが、その分かかる費用が高くなっています。<br>
+                <br>
+                成功確率（％） = 10+運×0.06<br>
+                ただし最小16％、最大40～80％（種類による）<br>
+                運1167以上で成功確率80％（全ての水晶が最大になる運）<br>
+                <br>
+                <br>
+                <span class="color-image1">※注意点</span><br>
+                ・金のエンチャント文書(成功率100%)とは異なり、付与されるオプションは選択できます。<br>
+                    金のエンチャント文書の場合、ユニークアイテムに対して付与可能OPからランダムに1つ付与。<br>
+                ・<span class="color-image1">指輪でエンチャント水晶に失敗時、アイテムが完全に破壊されます。</span><br>
+                ・その他のアイテムでは失敗時、壊れたアイテムになります。<br>
+                　壊れたアイテムは装備/エンチャント不可。取引可。<br>
+                ・壊れたアイテムを修理するには地獄の鉄床か天上の鉄床が必要です。
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/3fdde3f386eae30547a65f8c30c778a31bc38b9a.10.2.9.2.png"
+                    border=0 name="insertImg" /><br><br>
+                ・エンチャント水晶には、エンチャント可能なオプションLvの上限があります。<br>
+                ・魔法エンチャント水晶は、ギルドホール　エンチャント商人より購入するには、各石像の3パーツ以上の作製が必要です。<br>
+                例）ナルの神像,翼+ナルの神像他2パーツを作成<br>
+                ⇒力/運/大地攻撃/光抵抗の魔法エンチャント水晶を購入できます。<br>
+                詳細は<a href="../guild/guild-statue.html#es">ギルド石像</a>より。<br>
+                ・魔法のエンチャント水晶の成功確率の計算式は通常の水晶と同一です。<br>
+                <br>
+                ・同系統の複合オプションアイテムの場合、1番目のオプションにのみ追加エンチャントできます。<br>
+                例)[攻撃Lv4][攻撃Lv1]ホークアイの場合、[攻撃Lv4]側のみ強化可能<br>
+                <br>
+                ・最大値が奇数の場合、再構成を挟む必要あり<br>
+                例）矢に付加できる攻撃オプションは、[攻撃Lv4]（ダメージ +25％）が最大ですが、<br>
+                ダメージのエンチャント水晶は+2％ずつ上昇のため、+24％までが限界です。<br>
+                再構成で奇数の数値にしてから、ダメージのエンチャント水晶を使用すれば、1番目のオプションは+25％（最大）まで可能。<br>
+                <br>
+                <br>
+                <br>
+                <a name="2"></a>
+                <span class="color-image4">ドギ・タニア（港街ブリッジヘッド）のエンチャント水晶一覧</span><br>
+                <br>
+                <table id="table10">
+                    <colgroup>
+                        <col span="2">
+                        <col span="2" width="120">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th>エンチャント水晶</th>
+                            <th>エンチャント効果</th>
+                            <th>価格</th>
+                            <th>最大成功確率/運</th>
+                        </tr>
+                        <tr>
+                            <td align="center">力</td>
+                            <td align="center">力 <span class="color-image11">+2</span></td>
+                            <td align="center" rowspan="7">1万G</td>
+                            <td align="center" rowspan="11">50％<br>
+                                <br>
+                                運667以上</td>
+                        </tr>
+                        <tr>
+                            <td align="center">素早さ</td>
+                            <td align="center">敏捷 <span class="color-image11">+2</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center">健康</td>
+                            <td align="center">健康 <span class="color-image11">+2</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center">知恵</td>
+                            <td align="center">知恵 <span class="color-image11">+2</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center">知識</td>
+                            <td align="center">知識 <span class="color-image11">+2</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center">カリスマ</td>
+                            <td align="center">カリスマ <span class="color-image11">+2</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center">運</td>
+                            <td align="center">運 <span class="color-image11">+2</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center">ダメージ</td>
+                            <td align="center">ダメージ <span class="color-image11">+2</span>％</td>
+                            <td align="center" rowspan="2">10万G</td>
+                        </tr>
+                        <tr>
+                            <td align="center">防御力</td>
+                            <td align="center">防御力 <span class="color-image11">+2</span>％</td>
+                        </tr>
+                        <tr>
+                            <td align="center">体力</td>
+                            <td align="center">最大HP <span class="color-image11">+4</span></td>
+                            <td align="center" rowspan="2">20万G</td>
+                        </tr>
+                        <tr>
+                            <td align="center">CP</td>
+                            <td align="center">最大CP <span class="color-image11">+4</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center">火攻撃</td>
+                            <td align="center"><span class="color-image11">火攻撃称号 1段階上昇</span></td>
+                            <td align="center" rowspan="6">50万G</td>
+                            <td align="center" rowspan="12">40％<br>
+                                <br>
+                                運500以上</td>
+                        </tr>
+                        <tr>
+                            <td align="center">水攻撃</td>
+                            <td align="center"><span class="color-image11">水攻撃称号 1段階上昇</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center">風攻撃</td>
+                            <td align="center"><span class="color-image11">風攻撃称号 1段階 上昇</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center">大地攻撃</td>
+                            <td align="center"><span class="color-image11">大地攻撃称号 1段階 上昇</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center">光攻撃</td>
+                            <td align="center"><span class="color-image11">光攻撃称号 1段階 上昇</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center">闇攻撃</td>
+                            <td align="center"><span class="color-image11">闇攻撃称号 1段階 上昇</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center">火抵抗</td>
+                            <td align="center">火属性抵抗 <span class="color-image11">+1</span>％</td>
+                            <td align="center" rowspan="6">100万G</td>
+                        </tr>
+                        <tr>
+                            <td align="center">水抵抗</td>
+                            <td align="center">水属性抵抗 <span class="color-image11">+1</span>％</td>
+                        </tr>
+                        <tr>
+                            <td align="center">風抵抗</td>
+                            <td align="center">風属性抵抗 <span class="color-image11">+1</span>％</td>
+                        </tr>
+                        <tr>
+                            <td align="center">大地抵抗</td>
+                            <td align="center">大地属性抵抗 <span class="color-image11">+1</span>％</td>
+                        </tr>
+                        <tr>
+                            <td align="center">光抵抗</td>
+                            <td align="center">光属性抵抗 <span class="color-image11">+1</span>％</td>
+                        </tr>
+                        <tr>
+                            <td align="center">闇抵抗</td>
+                            <td align="center">闇属性抵抗 <span class="color-image11">+1</span>％</td>
+                        </tr>
+                        <tr>
+                            <td align="center">武器交換</td>
+                            <td align="center">武器交換速度 <span class="color-image11">+30</span>％</td>
+                            <td align="center" rowspan="3">5000G</td>
+                            <td align="center" rowspan="3">80％<br>
+                                <br>運1167以上</td>
+                        </tr>
+                        <tr>
+                            <td align="center">リロード時間</td>
+                            <td align="center">アイテムリロードタイム -<span class="color-image11">35</span>％</td>
+                        </tr>
+                        <tr>
+                            <td align="center">オートリロード</td>
+                            <td align="center"><span class="color-image11">アイテム自動リロード</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <a name="3"></a>
+                <span class="color-image4">エンチャント商人（ギルドホール）の魔法エンチャント水晶一覧</span><br>
+                <br>
+                <table id="table10">
+                    <colgroup>
+                        <col span="1" width="130">
+                        <col span="1" width="240">
+                        <col span="1">
+                        <col span="1" width="55">
+                        <col span="1" width="120">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th>魔法エンチャント水晶</th>
+                            <th>エンチャント効果</th>
+                            <th>石像</th>
+                            <th>価格</th>
+                            <th>最大成功確率/運</th>
+                        </tr>
+                        <tr>
+                            <td align="center">力</td>
+                            <td align="center">力 <span class="color-image11">+2</span></td>
+                            <td align="center">
+                                <font color="#ff80c0">ナルの神像,翼</font>
+                            </td>
+                            <td align="center" rowspan="7">2万G</td>
+                            <td align="center" rowspan="11">50％<br>
+                                <br>運667以上</td>
+                        </tr>
+                        <tr>
+                            <td align="center">敏捷性</td>
+                            <td align="center">敏捷 <span class="color-image11">+2</span></td>
+                            <td align="center"><span class="color-image2">ネーンの杯,受け皿</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center">健康</td>
+                            <td align="center">健康 <span class="color-image11">+2</span></td>
+                            <td align="center">
+                                <font color="#cc6633">ケーメンの冠,枠飾り</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">知恵</td>
+                            <td align="center">知恵 <span class="color-image11">+2</span></td>
+                            <td align="center"><span class="color-image4">スルの杖,杖先</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center">知識</td>
+                            <td align="center">知識 <span class="color-image11">+2</span></td>
+                            <td align="center"><span class="color-image3">ラークの刀,柄</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center">カリスマ</td>
+                            <td align="center">カリスマ <span class="color-image11">+2</span></td>
+                            <td align="center">
+                                <font color="#999999">シロイオのホール,先端の宝石</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">運</td>
+                            <td align="center">運 <span class="color-image11">+2</span></td>
+                            <td align="center">
+                                <font color="#ff80c0">ナルの神像,翼</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">ダメージ</td>
+                            <td align="center">ダメージ <span class="color-image11">+2</span>％</td>
+                            <td align="center"><span class="color-image4">スルの杖,杖先</span></td>
+                            <td align="center" rowspan="2">20万G</td>
+                        </tr>
+                        <tr>
+                            <td align="center">防御力</td>
+                            <td align="center">防御力 <span class="color-image11">+2</span>％</td>
+                            <td align="center"><span class="color-image3">ラークの刀,柄</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center">体力</td>
+                            <td align="center">最大HP <span class="color-image11">+4</span></td>
+                            <td align="center">
+                                <font color="#999999">シロイオのホール,先端の宝石</font>
+                            </td>
+                            <td align="center" rowspan="2">40万G</td>
+                        </tr>
+                        <tr>
+                            <td align="center">CP</td>
+                            <td align="center">最大CP <span class="color-image11">+4</span></td>
+                            <td align="center">
+                                <font color="#cc6633">ケーメンの冠,枠飾り</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">火攻撃</td>
+                            <td align="center"><span class="color-image11">火攻撃称号 1段階上昇</span></td>
+                            <td align="center"><span class="color-image2">ネーンの杯,受け皿</span></td>
+                            <td align="center" rowspan="6">100万G</td>
+                            <td align="center" rowspan="12">40％<br>
+                                <br>運500以上</td>
+                        </tr>
+                        <tr>
+                            <td align="center">水攻撃</td>
+                            <td align="center"><span class="color-image11">水攻撃称号 1段階上昇</span></td>
+                            <td align="center">
+                                <font color="#cc6633">ケーメンの冠,枠飾り</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">風攻撃</td>
+                            <td align="center"><span class="color-image11">風攻撃称号 1段階 上昇</span></td>
+                            <td align="center"><span class="color-image4">スルの杖,杖先</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center">大地攻撃</td>
+                            <td align="center"><span class="color-image11">大地攻撃称号 1段階 上昇</span></td>
+                            <td align="center">
+                                <font color="#ff80c0">ナルの神像,翼</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">光攻撃</td>
+                            <td align="center"><span class="color-image11">光攻撃称号 1段階 上昇</span></td>
+                            <td align="center"><span class="color-image3">ラークの刀,柄</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center">闇攻撃</td>
+                            <td align="center"><span class="color-image11">闇攻撃称号 1段階 上昇</span></td>
+                            <td align="center">
+                                <font color="#999999">シロイオのホール,先端の宝石</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">火抵抗</td>
+                            <td align="center">火属性抵抗 <span class="color-image11">+1</span>％</td>
+                            <td align="center">
+                                <font color="#cc6633">ケーメンの冠,枠飾り</font>
+                            </td>
+                            <td align="center" rowspan="6">200万G</td>
+                        </tr>
+                        <tr>
+                            <td align="center">水抵抗</td>
+                            <td align="center">水属性抵抗 <span class="color-image11">+1</span>％</td>
+                            <td align="center"><span class="color-image2">ネーンの杯,受け皿</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center">風抵抗</td>
+                            <td align="center">風属性抵抗 <span class="color-image11">+1</span>％</td>
+                            <td align="center">
+                                <font color="#999999">シロイオのホール,先端の宝石</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">大地抵抗</td>
+                            <td align="center">大地属性抵抗 <span class="color-image11">+1</span>％</td>
+                            <td align="center"><span class="color-image3">ラークの刀,柄</span></td>
+                        </tr>
+                        <tr>
+                            <td align="center">光抵抗</td>
+                            <td align="center">光属性抵抗 <span class="color-image11">+1</span>％</td>
+                            <td align="center">
+                                <font color="#ff80c0">ナルの神像,翼</font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">闇抵抗</td>
+                            <td align="center">闇属性抵抗 <span class="color-image11">+1</span>％</td>
+                            <td align="center"><span class="color-image4">スルの杖,杖先</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+                <a name="4"></a><span class="color-image4">オプション解除</span><br>
+
+                超魔力解除キットを使うことで、対象のアイテムに使用することで、選択したオプション1つを削除できます。<br>
+                このほかにも、メインクエストChapter5の地下界報酬である「消滅の魔法書」を使ってもオプションを削除できます。<br>
+                オプションを削除することで、不要なオプションを削れるだけでなく、再度他のオプションを付与できるようになります。<br>
+                加えて、装備要求レベルも下がります。<br>
+                <br>
+                <br>
+                <a name="5"></a>
+                <span class="color-image4">付加可能なオプション一覧</span><br>
+                <br>
+                エンチャ水晶によって付与できるオプションの称号レベルには上限があります。<br>
+                どのオプションがエンチャントで付与できるかがアイテムの部位毎によって異なります。<br>
+                多種多様なアイテムがあり、アイテムによって上限が異なるため注意。<br>
+
+                * <a href="../option/gold_enchantOP.html"><img src="../item/design/image/item/iconItem_1928.png"
+                        height="20" />金エンチャ</a><br>
+                * <a href="../option/unique_enchantOP.html"><img src="../item/design/image/item/iconItem_0552.png"
+                        height="20" />Uエンチャ</a><br>
+                <br>
+                <br>
+                <br>
+                <br>
+                [参考]<a href="http://service.redsonline.jp/library/189">エンチャント(公式サイト)</a><br>
+                <br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+        </div>
+</body>
+
+</html>
