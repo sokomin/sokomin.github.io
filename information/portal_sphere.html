@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>ポータル系アイテム 赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+                <h3>ポータル系アイテム</h3>
+                ポータル系アイテムとは、<a href="http://mall.redsonline.jp/">アイテムモール</a>などを通して入手可能なプレミアムアイテムです。<br>
+                経験値アップ効果、場所記憶・移動などの様々な効果があります。<br>
+                <br>
+                <a href="#1">効果</a><br>
+                <a href="#2">種類</a><br>
+                <br>
+                <br>
+                <br>
+                <font color="#e95388">
+                    <a name="1"></a>
+                    <h4>効果</h4>
+                </font>
+
+                <br>
+                Lv100以下のプレイヤーは各所にいる「協会支援魔法師」からエンヘイなどのバフをもらえます。<br>
+                アップデートにより、ギルドに加入しているキャラクターは300Lvまで支援がもらえるようになりました。<br>
+                加えて、ポータル系アイテムを所持しているキャラクターはLV無制限で支援がもらえます。<br>
+                <br>
+                以下、協会魔法師と協会支援ポーションの比較。<br>
+                <br>
+                <table id="table10" style="max-width:760px">
+                    <colgroup>
+                        <col span="1" width="160">
+                        <col span="1" width="60">
+                        <col span="1">
+                        <col span="1" width="60">
+                        <col span="1" width="175">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th></th>
+                            <th colspan="2">協会魔法師<br>
+                            </th>
+                            <th colspan="2">協会支援ポーションⅠⅡⅢⅣ</th>
+                        </tr>
+                        <tr>
+                            <th align="center">リゼネレイション</th>
+                            <td align="center">SLv1</td>
+                            <td align="center">HP回復 +(<span class="color-image3">2</span>/1秒)</td>
+                            <td align="center">SLv1</td>
+                            <td align="center">
+                                HP回復 +(<span class="color-image3">2</span>/1秒)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="center">ブレッシング</th>
+                            <td align="center">SLv40</td>
+                            <td align="center">最大HP <span class="color-image3">+100</span>％　<font color="#ff0000">※
+                                </font>
+                            </td>
+                            <td align="center">SLv120</td>
+                            <td align="center">最大HP <span class="color-image3">+260</span>％<br>
+                                光ダメージ <span class="color-image3">1~121</span><br>
+                                状態異常抵抗 <span class="color-image3">+290</span>％</td>
+                        </tr>
+                        <tr>
+                            <th align="center">ヘイスト</th>
+                            <td align="center">SLv40</td>
+                            <td align="center">攻撃速度 <span class="color-image3">+30</span>％<br>移動速度 <span
+                                    class="color-image3">+80</span>％</td>
+                            <td align="center">SLv120</td>
+                            <td align="center">攻撃速度 <span class="color-image3">+70</span>％<br>移動速度 <span
+                                    class="color-image3">+200</span>％</td>
+                        </tr>
+                        <tr>
+                            <th align="center">プロテクティングエビル</th>
+                            <td align="center">SLv40</td>
+                            <td align="center">防御力 <span class="color-image3">+200</span>％　<font color="#ff0000">※
+                                </font>
+                            </td>
+                            <td align="center">SLv120</td>
+                            <td align="center">防御力 <span class="color-image3">+520</span>％<br>
+                                低下系抵抗 <span class="color-image3">+300</span>％</td>
+                        </tr>
+                        <tr>
+                            <th align="center">ファイアーエンチャント</th>
+                            <td align="center" colspan="2">
+                                Lv1～200　火ダメージ <span class="color-image3">200</span><br>
+                                Lv201～400　火ダメージ <span class="color-image3">400</span><br>
+                                Lv401～999　火ダメージ <span class="color-image3">600</span></td>
+                            <td align="center">SLv120</td>
+                            <td align="center">火ダメージ <span class="color-image3">1444</span></td>
+                        </tr>
+                        <tr>
+                            <th align="center">ダークエンチャント</th>
+                            <td align="center" colspan="2">
+                                Lv1～200　闇ダメージ <span class="color-image3">200</span><br>
+                                Lv201～400　闇ダメージ <span class="color-image3">400</span><br>
+                                Lv401～999　闇ダメージ <span class="color-image3">600</span></td>
+
+                            </td>
+                            <td align="center">SLv120</td>
+                            <td align="center">闇ダメージ <span class="color-image3">2888</span></td>
+                        </tr>
+                        <tr>
+                            <th align="center">持続時間</th>
+                            <td align="center" colspan="2">60分</td>
+                            <td align="center" colspan="2">30分 / 40分 / 50分 / 60分</td>
+                        </tr>
+                        <tr>
+                            <th align="center">スキルの上書き</th>
+                            <td align="center" colspan="2">不可</td>
+                            <td align="center" colspan="2">可能</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                ※協会魔法師や復帰者称号バフのブレッシング/プロテクティングエビルには、光ダメージ/状態異常抵抗/低下系抵抗の効果はなし。
+                <br>
+                <br>
+                <br>
+                <br>
+                <font color="#e95388">
+                    <a name="2"></a>
+                    <h4>種類</h4>
+                </font>
+                <br>
+                利用ユーザが多いアイテムを中心に解説します。<br>
+                GEMは通常価格での値段で、キャンペーン等で割引されて入手することもできます。<br>
+                <br>
+                <table id="table14" style="max-width:760px">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="50">
+                        <col span="1" width="60">
+                        <col span="1" width="460">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="2">アイテム名</th>
+                            <th colspan="1">GEM</th>
+                            <th colspan="1">効果</th>
+                        </tr>
+                        <tr>
+                            <th colspan="4">スフィア系アイテム</th>
+                        </tr>
+                        <tr>
+                            <th align="center">ポータル・スフィアー</th>
+                            <td align="center"><IMG SRC="../item/design//image/item/iconItem_0300.png" alt=""></td>
+                            <td align="center">2500</td>
+                            <td>・有効期限30日<br>
+                                ・経験値＆アイテムドロップ率２倍<br>
+                                ・<span class="color-image1">３か所記憶可能</span><br>
+                                ・プレミアムゾーン入場可能<br>
+                                ・街への帰還<br>
+                                ・街を選択して移動可能(2万Gold消費) <br>
+                                ・テレポーター(ミラー含む)無料利用 <br>
+                                ・無料カーペット召喚(Yキーで一部狩場でも可能)<br>
+                                ・エリアボス討伐許可証消費無しで入場<br> 
+                                ・協会支援バフ効果付与(マナに願う)<br>
+                                ・ガイドシステムからおすすめの狩場、秘密ダンジョン、コンテンツに無料移動<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="center">ポータル・スフィアー<br>[１日版]</th>
+                            <td align="center"><IMG SRC="../item/design//image/item/iconItem_2173.png" alt=""></td>
+                            <td align="center">？</td>
+                            <td>・有効期限1日<br>
+                                ・以下ポータルスフィアと同様
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="center">ポータル・スフィアー<br>[３日版]</th>
+                            <td align="center"><IMG SRC="../item/design//image/item/iconItem_2174.png" alt=""></td>
+                            <td align="center">？</td>
+                            <td>・有効期限3日<br>
+                                ・以下ポータルスフィアと同様
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="center">ポータル・スフィアー<br>[７日版]</th>
+                            <td align="center"><IMG SRC="../item/design//image/item/iconItem_2175.png" alt=""></td>
+                            <td align="center">？</td>
+                            <td>・有効期限7日<br>
+                                ・以下ポータルスフィアと同様
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="center">ポータル・スフィアー<br>[１０日版]</th>
+                            <td align="center"><IMG SRC="../item/design//image/item/iconItem_1538.png" alt=""></td>
+                            <td align="center">？</td>
+                            <td>・有効期限10日<br>
+                                ・以下ポータルスフィアと同様
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="center">ポータル・スフィアー<br>[１４日版]</th>
+                            <td align="center"><IMG SRC="../item/design//image/item/iconItem_2172.png" alt=""></td>
+                            <td align="center">？</td>
+                            <td>・有効期限14日<br>
+                                ・以下ポータルスフィアと同様
+                                <br>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th align="center">ポータル・スフィアーＤＸ</th>
+                            <td align="center"><IMG SRC="../item/design//image/item/iconItem_0300.png" alt=""></td>
+                            <td align="center">2700</td>
+                            <td>・有効期限30日<br>
+                                ・経験値＆アイテムドロップ率２倍<br>
+                                ・<span class="color-image1">４か所記憶可能</span><br>
+                                ・プレミアムゾーン入場可能<br>
+                                ・街への帰還<br>
+                                ・街を選択して移動可能(2万Gold消費) <br>
+                                ・テレポーター(ミラー含む)無料利用 <br>
+                                ・無料カーペット召喚(Yキーで一部狩場でも可能)<br>
+                                ・エリアボス討伐許可証消費無しで入場<br>
+                                ・協会支援バフ効果付与(マナに願う)<br>
+                                ・ガイドシステムからおすすめの狩場、秘密ダンジョン、コンテンツに無料移動<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="center">ポータル・スフィアーＵＬＴ</th>
+                            <td align="center"><IMG SRC="../item/design//image/item/iconItem_2383.png" alt=""></td>
+                            <td align="center">3000</td>
+                            <td>・有効期限30日<br>
+                                ・経験値＆アイテムドロップ率２倍<br>
+                                ・<span class="color-image1">３か所記憶可能</span><br>
+                                ・<span class="color-image1">デスペナルティ無し</span><br>
+                                ・プレミアムゾーン入場可能<br>
+                                ・街への帰還<br>
+                                ・街を選択して移動可能(2万Gold消費) <br>
+                                ・テレポーター(ミラー含む)無料利用 <br>
+                                ・無料カーペット召喚(Yキーで一部狩場でも可能)<br>
+                                ・エリアボス討伐許可証消費無しで入場<br>
+                                ・協会支援バフ効果付与(マナに願う)<br>
+                                ・ガイドシステムからおすすめの狩場、秘密ダンジョン、コンテンツに無料移動<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="center">ポータル・スフィアーＵＬＴ<br>[１４日版]</th>
+                            <td align="center"><IMG SRC="../item/design//image/item/iconItem_2412.png" alt=""></td>
+                            <td align="center">？</td>
+                            <td>・<span class="color-image1">有効期限14日</span><br>
+                                ・その他はコスミック・ポータルスフィアと同様<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="center">ポータル・スフィアーＵＬＴ<br>[７日版]</th>
+                            <td align="center"><IMG SRC="../item/design//image/item/iconItem_2413.png" alt=""></td>
+                            <td align="center">？</td>
+                            <td>・<span class="color-image1">有効期限7日</span><br>
+                                ・その他はコスミック・ポータルスフィアと同様<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="center">ポータル・スフィアーＵＬＴ<br>[１日版]</th>
+                            <td align="center"><IMG SRC="../item/design//image/item/iconItem_2411.png" alt=""></td>
+                            <td align="center">？</td>
+                            <td>・<span class="color-image1">有効期限1日</span><br>
+                                ・その他はコスミック・ポータルスフィアと同様<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="center">ゲートグローブ</th>
+                            <td align="center"><IMG SRC="../item/design//image/item/iconItem_0960.png" alt=""></td>
+                            <td align="center">2900</td>
+                            <td>・有効期限30日<br>
+                                ・経験値＆アイテムドロップ率２倍<br>
+                                ・<span class="color-image1">３か所記憶可能</span><br>
+                                ・ワールドマップ上でフィールド移動可能<br>
+                                　（移動後、3分間のクールタイム有）<br>
+                                ・プレミアムゾーン入場可能<br>
+                                ・街への帰還<br>
+                                ・街を選択して移動可能(2万Gold消費) <br>
+                                ・テレポーター(ミラー含む)無料利用 <br>
+                                ・無料カーペット召喚(Yキーで一部狩場でも可能)<br>
+                                ・エリアボス討伐許可証消費無しで入場<br> 
+                                ・協会支援バフ効果付与(マナに願う)<br>
+                                ・ガイドシステムからおすすめの狩場、秘密ダンジョン、コンテンツに無料移動<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="center">コスミック・ポータル・スフィアー<br>[１４日版]</th>
+                            <td align="center"><IMG SRC="../item/design//image/item/iconItem_2444.png" alt=""></td>
+                            <td align="center">2100</td>
+                            <td>・<span class="color-image1">有効期限14日</span><br>
+                                ・ギルドダンジョン入場制限回数が1日3回に上昇。(1回増加)<br>
+                                ・インフィニティ武器強化成功確率上昇<br>
+                                ・ギルドダンジョン獲得アイテム上昇<br>
+                                ・ギルドホールランクに関係なく、各階のギルドダンジョン入場券なしで入場可能<br>
+                                ・<font style="color:#FF0033;"><a href="../information/creature.html">クリーチャー冒険</a>にて特殊層に入場可能</font><br>
+                                ・その他はポータルスフィアと同様<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="center">コスミック・ポータル・スフィアー<br>[７日版]</th>
+                            <td align="center"><IMG SRC="../item/design//image/item/iconItem_2446.png" alt=""></td>
+                            <td align="center">1300</td>
+                            <td>・<span class="color-image1">有効期限7日</span><br>
+                                ・その他はコスミック・ポータルスフィアと同様<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="center">コスミック・ポータル・スフィアー<br>[１日版]</th>
+                            <td align="center"><IMG SRC="../item/design//image/item/iconItem_2445.png" alt=""></td>
+                            <td align="center">？</td>
+                            <td>・<span class="color-image1">有効期限1日</span><br>
+                                ・その他はコスミック・ポータルスフィアと同様<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="4">ミニスフィア系アイテム</th>
+                        </tr>
+                        <tr>
+                            <th align="center">ミニポータル・スフィアー</th>
+                            <td align="center"><IMG SRC="../item/design//image/item/iconItem_0851.png" alt=""></td>
+                            <td align="center">400</td>
+                            <td>・<span class="color-image1">有効期限3日</span><br>
+                                ・経験値+100%<br>
+                                ・アイテムドロップ率＋65%<br>
+                                ・<span class="color-image1">記憶機能無し</span><br>
+                                ・プレミアムゾーン入場可能<br>
+                                ・街への帰還<br>
+                                ・テレポーター(ミラー含む)無料利用 <br>
+                                ・テレポーターにてカーペット召喚可能<br>
+                                <!-- ・エリアボス討伐許可証消費無しで入場<br>  -->
+                                <!-- ・協会支援バフ効果付与(マナに願う)<br> -->
+                                ・ガイドシステムからおすすめの狩場、秘密ダンジョン、コンテンツに無料移動<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="center">ミニポータル・オーブ</th>
+                            <td align="center"><IMG SRC="../item/design//image/item/iconItem_0850.png" alt=""></td>
+                            <td align="center">200</td>
+                            <td>・<span class="color-image1">有効期限3日</span><br>
+                                ・経験値+50%<br>
+                                ・アイテムドロップ率＋30%<br>
+                                ・その他はミニポータルスフィアと同様
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="center">ミニポータル・ジェム</th>
+                            <td align="center"><IMG SRC="../item/design//image/item/iconItem_0849.png" alt=""></td>
+                            <td align="center">100</td>
+                            <td>・<span class="color-image1">有効期限3日</span><br>
+                                ・経験値+20%<br>
+                                ・アイテムドロップ率増加無し<br>
+                                ・その他はミニポータルスフィアと同様
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="center">ポータル・オーブ</th>
+                            <td align="center"><IMG SRC="../item/design//image/item/iconItem_0299.png" alt=""></td>
+                            <td align="center">1500</td>
+                            <td>・<span class="color-image1">有効期限30日</span><br>
+                                ・経験値+50%<br>
+                                ・アイテムドロップ率＋50%<br>
+                                ・その他はミニポータルスフィアと同様
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="center">ポータル・ジェム</th>
+                            <td align="center"><IMG SRC="../item/design//image/item/iconItem_0298.png" alt=""></td>
+                            <td align="center">750</td>
+                            <td>・<span class="color-image1">有効期限30日</span><br>
+                                ・経験値+20%<br>
+                                ・アイテムドロップ率＋20%<br>
+                                ・その他はミニポータルスフィアと同様
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="center">ミニポータル・スフィアーPlus</th>
+                            <td align="center"><IMG SRC="../item/design//image/item/iconItem_1857.png" alt=""></td>
+                            <td align="center">700</td>
+                            <td>・<span class="color-image1">有効期限3日</span><br>
+                                ・ギルドダンジョン入場制限回数が1日3回に上昇。(1回増加)<br>
+                                ・インフィニティ武器強化成功確率上昇<br>
+                                ・ギルドダンジョン獲得アイテム上昇<br>
+                                ・ギルドホールランクに関係なく、各階のギルドダンジョン入場券なしで入場可能<br>
+                                ・その他はミニポータルスフィアと同様<br>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="4">パワキ系アイテム</th>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <br>
+                <br>
+                <h4>備考</h4>
+                ・かつてレベリング回避目的からポータルスフィアから経験値100%効果を除いた<a href="http://members.redsonline.jp/evecam/doubleup_2010/">ポータルスフィアEX(2500GEM)</a>が販売されていましたが現在は存在しません。<br>
+                <br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+        </div>
+</body>
+
+</html>
