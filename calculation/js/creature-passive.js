@@ -1322,10 +1322,10 @@ function searchOption(cid, slv) {
     //合成専門で、青
     if (cid === 38) {
         if (slv < 50) {
-            result += '- ペット&召喚獣の魔法致命打増加 +<span class="color-image11">' + "？" + '</span>％<br>';
+            result += '- ペット&召喚獣の魔法致命打増加 +<span class="color-image11">' + parseInt(1 + 0.05 * slv) + '</span>％<br>';
         }
         if (slv >= 50) {
-            result += '- ペット&召喚獣の魔法致命打増加 +<span class="color-image11">' + "？" + '</span>％<br>';
+            result += '- ペット&召喚獣の魔法致命打増加 +<span class="color-image11">' + "5" + '</span>％<br>';
             result += '- ターゲットの魔法抵抗弱化 +<span class="color-image11">' + (10) + '</span>％<br>';
             result += '- スキルレベル +<span class="color-image11">3</span><br>'
         } else if (slv >= 40) {
@@ -1338,13 +1338,13 @@ function searchOption(cid, slv) {
             result += '- ターゲットの魔法抵抗弱化 +<span class="color-image11">' + (5) + '</span>％<br>';
         }
     }
-    //合成専門
+    //合成専門で、青
     if (cid === 39) {
         if (slv < 50) {
-            result += '- ペット&召喚獣の魔法致命打増加 +<span class="color-image11">' + "？" + '</span>％<br>';
+            result += '- ペット&召喚獣の魔法致命打増加 +<span class="color-image11">' + parseInt(1 + 0.05 * slv) + '</span>％<br>';
         }
         if (slv >= 50) {
-            result += '- ペット&召喚獣の魔法致命打増加 +<span class="color-image11">' + "？" + '</span>％<br>';
+            result += '- ペット&召喚獣の魔法致命打増加 +<span class="color-image11">' + "5" + '</span>％<br>';
             result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (40) + '</span>％<br>';
             result += '- スキルレベル +<span class="color-image11">3</span><br>'
         } else if (slv >= 40) {
@@ -1765,11 +1765,9 @@ function searchOption(cid, slv) {
     }
     if (cid === 107) {
         if (slv < 50) {
-            // 多分何かの設定ミス。修正されるんじゃないかな。
-            result += '- 魔法属性ダメージ <span class="color-image11">' + slv * 0.06 + '</span>％吸収<br>';
+            result += '- 魔法属性ダメージ <span class="color-image11">' + parseInt(1 + slv * 0.04) + '</span>％吸収<br>';
         }
         if (slv >= 50) {
-            // 多分何かの設定ミス。修正されるんじゃないかな。
             result += '- CP獲得ボーナス <span class="color-image11">' + 3 + '</span>％<br>';
             result += '- 魔法強打 +<span class="color-image11">15</span>％<br>'
             result += '- 知識 <span class="color-image11">1</span>/ レベル<span class="color-image11">2</span><br>'
