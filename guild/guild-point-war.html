@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=960">
+        <!-- Page styles -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css">
+        <link rel="stylesheet" href="../styles.css">
+        <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32">
+        <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192">
+        <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png">
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+        </script>
+        <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+        <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+        </script>
+        <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+        </style>
+    </head>
+    <body>
+        <title>ギルドポイント戦 赤石の民衆</title>
+        <meta name="description" content="レッドストーン総合攻略情報ポータルページ">
+        <meta http-equiv="Content-Style-Type" content="text/css">
+        <meta http-equiv="Content-Script-Type" content="text/javascript">
+        <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報">
+        <link
+            rel="alternate"
+            type="application/rss+xml"
+            title="RSS"
+            href="/rss.xml"
+        >
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <a name="container"></a>
+            <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+                <div class="mdl-layout__header-row">
+                    <span class="android-title mdl-layout-title">
+                        <a href="https://sokomin.github.io/index.html">
+                            <img class="android-logo-image" src="../design/logo3.png">
+                        </a>
+                    </span>
+                    <!-- Add spacer, to align navigation to the right in desktop -->
+                    <div class="android-header-spacer mdl-layout-spacer"></div>
+                    <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                        <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                            <i class="material-icons">search</i>
+                        </label>
+                        <div class="mdl-textfield__expandable-holder">
+                            <input
+                                placeholder="サイト内検索(Enterで実行)"
+                                class="mdl-textfield__input"
+                                type="text"
+                                onkeypress="enter();"
+                                id="search-field"
+                            >
+                        </div>
+                    </div>
+                    <!-- Navigation -->
+                    <div class="android-navigation-container">
+                        <nav class="android-navigation mdl-navigation">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/index.html">ホーム</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                        </nav>
+                    </div>
+                    <span class="android-mobile-title mdl-layout-title">
+                        <a href="https://sokomin.github.io/index.html">
+                            <img class="android-logo-image" src="../design/logo3.png">
+                        </a>
+                    </span>
+                    <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
+                        <i class="material-icons">more_vert</i>
+                    </button>
+                    <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                        <li class="mdl-menu__item">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+                        </li>
+                        <li class="mdl-menu__item">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+                        </li>
+                        <li disabled class="mdl-menu__item">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+                        </li>
+                        <li class="mdl-menu__item">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="android-drawer mdl-layout__drawer">
+                <span class="mdl-layout-title">
+                    <h3>メニュー</h3>
+                </span>
+                <nav class="mdl-navigation">
+                    <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html">
+                        <strong>アイテム</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html">
+                        <strong>スキル</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html">
+                        <strong>モンスター</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html">
+                        <strong>ダンジョン</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html">
+                        <strong>クエスト</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html">
+                        <strong>ギルド</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html">
+                        <strong>韓国情報</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html">
+                        <strong>雑学</strong>
+                    </a>
+                </nav>
+            </div>
+            <div class="android-large-table mdl-layout__content">
+                <!--main-->
+                <a href="../index.html">トップ</a> >>
+                <a href="../guild/guild.html">ギルド</a> >>
+                <a href="../guild/guild-point-war.html">ポイント戦</a>
+                <br>
+                <div class="main-background mdl-typography--text-center korea-content">
+                    <br>
+                    <h3>ギルド ポイント戦</h3>
+                    <img src="../map/design/[GPB]000.rmd.png">
+                    <br>
+                    <br>
+                    ポイント戦とは、
+                    <a href="guild-siege.html">攻城戦</a>の参加ギルドの組み合わせを決めるための「vsモンスター戦」です。
+                    <br>
+                    1ギルドごとに期間中週2回まで参加可能です。
+                    <br>
+                    挑戦にはランク1以上のギルドホールが必要です。
+                    <br>
+                    <br>
+                    <a href="#1">概要</a>
+                    <br>
+                    <a href="#2">ダンジョン内容</a>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <font color="#e95388">
+                        <a name="1"></a>
+                        <h4>概要</h4>
+                    </font>
+                    ポイント戦全般のルールについて解説。
+                    <br>
+                    <br>
+                    <h5>入場方法</h5>
+                    ・ギルドマスター(もしくは副ギルドマスター)がリーダーとなり、2人以上のパーティーを組む
+                    <br>
+                    ・参加するパーティーメンバーが全員ギルドホールに入る
+                    <br>
+                    ・ギルドマスターがギルドホールNPC「ギルド事務官」に話かける(
+                    <span class="color-image1">1</span>-
+                    <span class="color-image2">2</span>-
+                    <span class="color-image1">1</span>)
+                    <br>
+                    <br>
+                    <h5>日程</h5>
+                    ・土曜日7:00～
+                    <b>金曜日22:00</b>
+                    <br>
+                    <!-- ・金曜日の22時までに入場できれば参加可能(ダンジョン崩壊時間制限あり)<br> -->
+                    ・締切時点での獲得ポイントを元に、攻城戦の組み合わせが決まります。
+                    <br>
+                    ・締め切りごとにポイント戦ランキングはリセットされます。
+                    <br>
+                    <br>
+                    <h5>基本ルール</h5>
+                    ・ポイント戦は「プレイヤーvsモンスター」でおこなわれます。<br>
+                    ・各ステージのボスを倒すことで先に進めます。<br>
+                    ・PTメンバーが全滅(全落ち)するか制限時間終了でゲームオーバー。<br>
+                    ・物資(ポーションなど)はPVPではないため自由に利用可能。<br>
+                    ・全てのギルドメンバーが参加可能。(Lv制限無し)<br>
+                    <br>
+                    <br>
+                    <h5>獲得ポイント確認方法</h5>
+                    ・自分のギルドのポイントはギルドウィンドウ(F7)より確認可能。<br>
+                    ・各ギルドホールの「ギルド事務官」より同ギルドホールの上位ギルドポイントを確認可能。(最大30ギルド)<br>
+                    ・ポイント戦上位ギルドが上位のギルドホールを賭けた攻城戦に参加できます。<br>
+                    <br>
+                    <br>
+                    <h5>ポイント計算式</h5>
+                    ・<b>敵のモンスターレベル * 80</b> が加算ポイント<br>
+                    ・一部モンスターはエリア入場時にレベルがランダムで決定されるため、その影響でギルドごとにポイントが変動します。<br>
+                    ・旧ポイント戦と異なり、タイムボーナス要素は撤廃された模様。<br>
+                    ・<b>PTメンバーが死亡すると[キャラクターのレベル * 80]が減点されます。</b><br>
+                    <br>
+                    <br>
+                    <h5>金鯖の場合</h5>
+                    ・ワールド合併・金鯖等の新規サーバの場合、
+                    <b>ギルドホールランクが1でリセットされます。</b>
+                    <br>
+                    ・金鯖の場合、初週はポイント上位の対象ギルドがギルドの枠数分自動的に上昇
+                    <br>
+                    ※攻城戦無し
+                ・2週目は(Rank2 vs Rank1)のみ発生、Rank2内で上位9ギルドが攻城戦無しで自動的にRank3になります。
+                    <br>
+                    ・以降の週も同様に繰り返され、ランク1～ランク5のギルドホールを持つギルドに振り分けられます。
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <font color="#e95388">
+                        <a name="2"></a>
+                        <h4>ダンジョン内容</h4>
+                    </font>
+                    ・モンスターのレベルに応じてポイントが決定されますが、レベルのランダム要素が強いのは主に第1エリア。<br>
+                    ・第4エリアや第5エリアのようにmobのレベルが固定されている所もあります。<br>
+                    ・そのため、第1エリアの時点でおおよその最終ポイントが推測つくこともあります。<br>
+                    ・専用マップ（全5ステージ）で行われ、各ステージにいるボスモンスターを倒すことで、次のステージへ進むことができます。<br>
+                    ・十分に攻略するにはおおそよ600～700レベル辺りの狩場、PTボスを死なずに狩れる程度の実力が必要。<br>
+                    <br>
+                    <br>
+                    <h4>ステージ１</h4>
+                    <img src="../map/design/[GPB]000.rmd.png">
+                    <br>
+                    <br>
+                    ・転送後の位置が第1エリアのため、転送後の位置で支援補助を済ませ進む。
+                    <br>
+                    ・エリア自体に制限時間は無し。<br>
+                    ・すべての敵を倒す＋ボスを倒すの繰り返し。<br>
+                    <br>
+                    第1エリア内の「トーチリザード」「リザード歩兵」「リザード指揮官」を倒す
+                    <br>
+                    第1エリアのボス「ボス指揮官ガーザンパ」が湧くので倒す。(1分以内)
+                    <br>
+                    ※時間内に倒せなかった場合ポイント戦終了
+                    <br>
+                    <br>
+                    倒したら第2エリア入り口の扉をあけて進む。エリア自体に制限時間は無し。
+                    <br>
+                    「鷲狂戦士チック」
+                    「鷲二等歩兵」
+                    「鷲一等歩兵」
+                    「魔犬」を全て倒す。
+                    <br>
+                    エリア内のMOBを全て倒すと第2エリアのボス「鷲狂戦士チック」が湧くので倒す。(1分以内)
+                    <br>
+                    ※時間内に倒せなかった場合ポイント戦終了
+                    <br>
+                    <br>
+                    倒したら第3エリア入り口の扉をあけて進む。エリア自体に制限時間は無し。
+                    <br>
+                    「司令官ツバク」
+                    「アウトローベア」
+                    「オーガ軍団兵」
+                    「オーガ軍団長」を全て倒す。
+                    <br>
+                    エリア内のMOBを全て倒すと第3エリアのボス「司令官ツバク」が湧くので倒す。(1分以内)
+                    <br>
+                    ※時間内に倒せなかった場合ポイント戦終了
+                    <br>
+                    <br>
+                    倒したら第4エリア入り口の扉をあけて進む。
+                    <br>
+                    チェックポイント④第四エリア内の柱（クリック）
+                    <br>
+                    エリア中央の柱をクリックすると「骸骨騎士」が湧くので全て倒す。(2分以内)
+                    <br>
+                    「第4エリアの‘骸骨騎士’をすべてやっつけました！」（全部倒した時に出る）と出たらステージ１クリア。
+                    <br>
+                    <br>
+                    エリア4の骸骨騎士をすべて倒しきらないうちに次のステージに行く扉を触ると、エリア4の骸骨騎士を全滅させても
+                    <br>
+                    カウントダウン消えない(止まらない)状態になる。もちろん時間切れでポイント戦終了。
+                    <br>
+                    なおステージ2を始めると改めてカウントダウン(ステージ2の)が始まるが、前のステージのカウントダウンは見えないだけで持続している。
+                    <br>
+                    そのまま進んでしまうと、ステージ2の途中で時間も残っているのに「骸骨騎士を全滅できませんでした」と突然表示が出てポイント戦終了。
+                    <br>
+                    <br>
+                    <h4>ステージ２</h4>
+                    <img src="../map/design/[GPB]001.rmd.png">
+                    <br>
+                    <br>
+                    ・敵を倒すと制限時間が回復(初期は1分)<br>
+                    ・最深部の大将軍バーノンを倒すことでステージクリア<br>
+                    ・<br>
+                    <br>
+                    リーダーが「ブルンギルド勇者」と話す。<br>
+                    <!-- 「このスモーキー諸島　密林地帯は、5つのエリアから成る。<br>
+                    そこの入り口の門を俺が開くと、カウントダウンが開始されるんだが、モンスターを倒す度に、少しだけ制限時間が伸びるんだ。<br>
+                    カウントダウンが終わる前に、この密林地帯を抜けられればオーケーってわけさ。分かったかい？」<br>
+                    「なるほど。分かりました。」<br>
+                    「ブルンギルド勇者から話を聞いたので、先に進めるようになりました」<br> -->
+                    <!-- ブルンギルド勇者<br>
+                    「それじゃ、幸運を祈ってるぜ！いいかい、スモーキー諸島　密林地帯を制限時間内に抜けることが目標だからな。<br>
+                    モンスターと戦って制限時間をうまく増やしながら進むのか、戦いは最小限に押さえて最短距離で進むのか。<br>
+                    賢明な判断で切り抜けてくれ。」<br>
+                    ※第2ステージはMOBを倒す毎に時間が延長される仕様<br>
+                    「‘〇〇’を倒し、制限時間が〇秒延長されました。」<br> -->
+                    <br>
+                    第1エリアへの扉をクリック。<br>
+                    制限時間が1分間延長。<br>
+                    「森ゴブリン兵」「森の門番」「森の守護士」を倒す(1匹当たり制限時間+2秒)<br>
+                    <br>
+                    守護者エント＋エント守護兵（守護者エントのタゲを取ると湧く）が出現、倒す。<br>
+                    ※守護者エントは30秒回復、エント守護兵は4秒回復<br>
+                    ※エント守護兵が再湧きしましたが、現在は修正されている模様。<br>
+                    <!-- 守護者エントのタゲを取る⇒湧いたエント守護兵を倒す⇒守護者エントは削って放置⇒勝手に再湧きするエント守護兵を倒す<br> -->
+                    <!-- 制限時間に注意しながらエント守護兵を倒し、時間ギリギリで守護者エントを倒す。<br> -->
+                    <!-- 無限湧きかもしれないが、制限時間の減りがエント守護兵の４秒延長では追いつかないので３匹位しか倒せない？（スン体験）<br> -->
+                    <!-- 守護者エントのタゲを変更すると湧くとの話もあるようで、そうならばうまく移しながらサクサク狩ればかなり倒せるのかも？<br> -->
+                    <br>
+                    チェックポイント第2エリアへの扉をあける。<br>
+                    森の幻術師(＋4秒)森の原始人(＋3秒)を倒しつつ進む<br>
+                    <br>
+                    「魍魎使いハンセン」(+35秒)のタゲを取ると「ダークスター」(+4秒)が出現、倒す。<br>
+                    魍魎使いハンセンを倒したら次の扉へ<br>
+                    <br>
+                    <br>
+                    チェックポイント第3エリアへの扉へ<br>
+                    森の破壊者(+5秒) フォレスガゴイル(+2秒)を倒しつつ進む<br>
+                    <br><br>
+                    テラザック・アイのタゲを取って敵を出現させたあと、全て倒す。(＋40秒)<br>
+                    テラザック・アイを倒したら次の扉へ<br>
+                    ※敵の魔法抵抗注意<br>
+                    <br>
+                    森の亡霊(+4秒)
+                    下級デビルナイト(＋3秒)
+                    下級悪魔術師（＋2秒）
+                    を倒しつつ進む。
+                    <br>
+                    「ガラキス男爵」(+45秒)のタゲを取って「ガラキスゾンビ兵」(＋6秒)を出現させる、全て倒す。<br>
+                    ※デビルスピード(移動/攻撃速度増加)が厄介。<br>
+                    ガラキス男爵を倒したら次の扉へ<br>
+                        <br>
+                    第5エリアの塔をクリックするとバーノンの幻影が湧く<br>
+                    バーノンの幻影を全て倒す。<br>
+                    <br>
+                    大将軍バーノンが出現、倒す。（プレイヤーが死亡する度に10秒制限時間が減少？）<br>
+                    ※敵の魔法抵抗が高く、弱化装備が欲しい。加えて火抵抗が必要。<br>
+                    大将軍バーノンを倒したら出口へ<br>
+                    <br>
+                    <h4>ステージ３</h4>
+                    <img src="../map/design/[GPB]002.rmd.png">
+                    <br>
+                    <br>
+                    ・内容はステージ1と似ていますが、モンスターが大幅に強化されています。<br>
+                    ・(ステージ1はLv200程度に対してこちらはLv470程度)<br>
+                    ・途中魔法無効モンスターや高火力モンスターがいるため、タゲ取り役がいると攻略が楽になります。<br>
+                    <br>
+                    扉を抜けて第1エリア内を少し進むと捕虜の勇者が居るのでリーダーが話す<br>
+<!-- 捕虜の勇者<br>
+「誰か、ちょっと助けてください！」<br>
+「あなたは、パーティリーダーではありませんね。パーティーリーダーの方を呼んでください」<br>
+「私は、ブルンギルド連合会の勇者なんですが。<br>
+ここに、悪魔 テラザックの様子を見にきて、捕虜になってしまいました･･･。<br>
+すみませんが、ジャイアントを倒してきてもらえますか？」<br>
+チェックポイント①「制限時間内に、ジャイアントをすべて倒さなければならない！」<br> -->
+「ジャイアント」が出現。制限時間内に全て倒す。<br>
+リーダーが捕虜の勇者と話す。<br>
+<!-- 「本当にありがとうございます。ジャイアントをすべて倒してくださったんですね。皆さんのおかげで助かりました。」<br>
+「危ないところでしたね。」<br>
+「そうですね。私は、ブルンギルド連合会の所属で、ブラックファイヤーダンジョンを通じて地上に出現した悪魔 テラザックの様子を調査するために来ました。<br>
+しかし、こうして捕虜になってしまいまして。私を助けてくださったので、1つ重要な情報をお教えしましょう。」<br>
+「重要な情報ですか？」<br>
+「第4エリアに行くなら、第2エリアと第3エリアにいる悪魔 テラザックの手下たちを倒す必要があります！<br>
+すべて倒せば第4エリアに行く扉が開きます。<br>
+あと、第4エリアに行く通路には、かなり手強いモンスターがいると聞きました。どうか気を付けてください。」<br>
+「役立つ情報をありがとうございます。」<br>
+「では、私はこれで！残念ながら私は目的達成できませんでしたが、皆さんは必ず悪魔 テラザックを倒してくださいね。」<br> -->
+<br>
+第2エリアの扉(上側)をリーダーがクリックして進める<br>
+<!-- 捕虜の勇者との会話の後は第3エリアと第2エリアに分かれ道となるが当然次は第2エリア<br> -->
+第3エリアに先に行っても「第2エリアの遊撃隊長ダハークを倒していない！」と出て扉は開かない。<br>
+<!-- 「パーティーリーダーのみ、扉を開くことができます」<br> -->
+扉を開け第2エリアへ<br>
+「闇の遊撃隊員」を全て倒す<br>
+<!-- 全て倒し終わっていないと倒すたびに「闇の遊撃隊員が、まだ残っています！」と出る。<br>
+全て倒すと遊撃隊長ダハーク出現「生意気なヤツらめっ！人間如きが、私の部下たちをっ！」<br> -->
+「遊撃隊長ダハーク」が出現、倒す。(1分以内)<br>
+<!-- 「まずは、1人撃墜だ！お前たちに残された時間は少ないぞっ！」（PTメンバー死亡時）<br>
+「制限時間が、10秒短くなりました」（PTメンバー死亡時）<br>
+「無敗を誇っていた私が･･････。」（第3エリアへの扉が開くようになった）<br> -->
+<br>
+リーダーが扉を開けて第3エリアへ進む<br>
+「闇の騎士」を全て倒す。<br>
+「騎士隊長ビケイン」が出現、倒す。<br>
+<!-- 「クククッ！さあ、1人地獄に落ちて行ったぞ！お前たちは、もう終わりだ！」（PTメンバー死亡時）<br>
+「制限時間が、10秒短くなりました」（PTメンバー死亡時）<br>
+「ガハッ･･･。この私が･･･人間如きに･･」（第4エリアへの扉が開くようになった）<br> -->
+<br>
+リーダーが扉を開け第4エリアへ行く通路へ<br>
+「アウトローコング」を倒す。<br>
+<br>
+「パンプキンヘッド」が出現、倒す。<br>
+全て倒すとキングヘッド出現するので、倒す。<br>
+<!-- 「[制限時間]内に、キングヘッドを倒さなければならない！」<br>
+キングヘッド<br>
+「カカカッ！まず1人！」（PTメンバー死亡時）<br>
+「>制限時間が、10秒短くなりました」（PTメンバー死亡時）<br>
+「グエッ！」（第5エリアへの扉が開くようになった）<br> -->
+<br>
+リーダーが第5エリアへの扉を開く。<br>
+［制限時間］内に、第6エリアに続く扉を開く。(最初の20秒はオーガが動くまでのダミー時間)<br>
+「テラザックの幻影」(オーガ)は20秒経過前に倒してもポイントとして加算されないので待機。<br>
+20秒経過後の制限時間が正規の制限時間(4分)。全てのオーガを倒す。<br>
+最初の20秒間は「テラザックの幻影」はノンアクティブ。扉をあけて次に進むことも可能。(※ポイントが入らない)<br>
+<br>
+リーダーが第6エリアへの扉を開く。<br>
+「マーダマーシャル」が出現、倒す。<br>
+全て倒すとマーダー・オルガが出現。倒す。<br>
+倒して扉を開けるとステージ3クリア。<br>
+<br>
+                    <h4>ステージ４</h4>
+                    <img src="../map/design/[GPB]003.rmd.png">
+                    <br>
+                    <br>
+                    ・敵は全てモグラ(移動しない)。倒せば倒すほど制限時間が延長されます。<br>
+                    ・敵の攻撃が激しく、かつ敵のHPが多いため600付近のPTボスを安定して倒せる程度の実力が必要。<br>
+                    ・全てスルーしてステージ5に行くことも可能ですが、ポイントは加算されません。<br>
+                    <br>
+                    「入場門」をリーダーがクリックして開く<br>
+                    開いたら右上の退場門を目指す。(初期制限時間は1分)<br>
+                    <br>
+                    「ニューサンス」（モグラ）が大量に出現するので、倒す。(1体ごとに+20秒)<br>
+                    モグラは遠距離土ダメ＋ワームバイト(闇ダメ)を使ってくる。<br>
+                    途中アースクェイク(固定1000ダメ？)がマップ全体に入ることもある。<br>
+                    <br>
+                    チェックポイント②第４ポイント退場門を時間内に誰かがクリックすることでステージ完了。<br>
+
+                    <h4>ステージ５</h4>
+                    <img src="../map/design/[GPB]004.rmd.png">
+                    <br>
+                    <br>
+                    ・ボスを倒すことでポイント戦クリア<br>
+                    ・制限時間が残り3分を切ったタイミングで取り巻きのモンスターが出現するので、全て倒す<br>
+                    ・戦闘中にHPを大幅に削られる要素があるため、敵Lvと同じぐらいのLv600は欲しい<br>
+                    <br>
+                    「悪魔テラザック」を制限時間内に倒す。<br>
+                    制限時間が残り3分になると「地獄の門番」するので倒す。<br>
+                    ※地獄の門番は制限時間が３分を切ると出現するのでそれ以前にテラザックを倒さず削っておく。<br>
+                    <br>
+                    ・「悪魔テラザック」は<a href="../skill/2020skill.html">スキル改変</a>で強化された「ワイルドスタンプ」を使ってきます。<br>
+                    ・耐えるにはHP1万程度が欲しい。<br>
+                    ・加えて、一定時間経過後にタゲを取ってるPTメンバーに9割ダメージ＋強制転移などを使ってきます。<br>
+                    <br>
+                    <br>
+                    <h4>備考</h4>
+                    ・ポイント戦は1度内容リニューアルが行われています。
+                    <br>
+                    ・8人で行くと5~7番目辺りの人が落ちやすい可能性あり。
+                    <br>
+                    <br>
+                    <h4>参考</h4>
+                    ・
+                    <a href="http://service.redsonline.jp/library/201">ポイント戦(公式サイト)</a><br>
+                    ・
+                    <a href="https://sokomin.github.io/calculation/guild-point-war.html">ポイント戦シミュレータ</a>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <footer class="android-footer mdl-mega-footer">
+                        <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。
+                            <br>
+                            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。
+                            <br>
+                        </font>
+                        Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                    </footer>
+                    <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+                </div>
+                <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+            </div>
+        </body>
+    </html>
