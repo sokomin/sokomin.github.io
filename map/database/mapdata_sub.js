@@ -18,6 +18,9 @@ MapSubInfoList = {
     879: { name: "生命の森中心部",mc:"B",req_map_lv:6, dfi:60, dwa:60, dwi:60, dea:60, dli:60, dda:60, st_down:20,lbd:70, non_resume: false  },
     880: { name: "枯渇した生命の森",mc:"B",req_map_lv:7, dfi:70, dwa:70, dwi:70, dea:70, dli:70, dda:70, st_down:25,lbd:70, non_resume: false  },
     881: { name: "死の荒れ地",mc:"B",req_map_lv:7, dfi:70, dwa:70, dwi:70, dea:70, dli:70, dda:70, st_down:30,lbd:70, non_resume: false  },
+    882: { name: "墓地",mc:"B",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
+    885: { name: "生命の森外郭",mc:"B",req_map_lv:7, dfi:60, dwa:40, dwi:40, dea:40, dli:40, dda:40, st_down:25,lbd:70, non_resume: false  },
+    886: { name: "干からびた影の砂漠",mc:"B",req_map_lv:7, dfi:40, dwa:40, dwi:40, dea:40, dli:40, dda:40, st_down:25,lbd:70, non_resume: false  },
 
     //以下、機械的に作ったデータ
     1:{ name: "中央プラトン街道 / グレートフォレスト入口付近",mc:"D",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },

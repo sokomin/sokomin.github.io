@@ -15,7 +15,10 @@ NameList = {
     878: { name: "神獣の野原", img: "[878]PlainOfDivineAnimals.rmd.png", black: "[875]D01.rmd.png", lvmin: 935, lvmax: 965 },
     879: { name: "生命の森中心部", img: "[879]ForestOfLife_Center.rmd.png", black: "[875]D01.rmd.png", lvmin: 1030, lvmax: 1065 },
     880: { name: "枯渇した生命の森", img: "[880]ForestOfLife_OutSkirts.rmd.png", black: "[880]ForestOfLife_OutSkirts.rmd.png", lvmin: 1145, lvmax: 1180 },
-    881: { name: "死の荒れ地", img: "[881]WasteLandOfDeath.rmd.png", black: "[875]D01.rmd.png", lvmin: 1200, lvmax: 1250 },
+    881: { name: "死の荒れ地", img: "[881]WasteLandOfDeath.rmd.png", black: "[881]D01.rmd.png", lvmin: 1200, lvmax: 1250 },
+    882: { name: "墓地", img: "[882]Graveyard.rmd.png", black: "[875]D01.rmd.png", lvmin: 850, lvmax: 900 },
+    885: { name: "生命の森外郭", img: "[885]G02.rmd.png", black: "[880]ForestOfLife_OutSkirts.rmd.png", lvmin: 1075, lvmax: 1100 },
+    886: { name: "干からびた影の砂漠", img: "[886]G03.rmd.png", black: "[875]D01.rmd.png", lvmin: 1125, lvmax: 1150 },
 
     //以下、機械的に作ったデータ
     1: { name: "中央プラトン街道 / グレートフォレスト入口付近", img: "[001]G07.rmd.png", black: "[000]T01.rmd.png", lvmin: 5, lvmax: 30 },
