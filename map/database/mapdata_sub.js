@@ -20,7 +20,12 @@ MapSubInfoList = {
     881: { name: "死の荒れ地",mc:"B",req_map_lv:7, dfi:70, dwa:70, dwi:70, dea:70, dli:70, dda:70, st_down:30,lbd:70, non_resume: false  },
     882: { name: "墓地",mc:"B",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
     885: { name: "生命の森外郭",mc:"B",req_map_lv:7, dfi:60, dwa:40, dwi:40, dea:40, dli:40, dda:40, st_down:25,lbd:70, non_resume: false  },
-    886: { name: "干からびた影の砂漠",mc:"B",req_map_lv:7, dfi:40, dwa:40, dwi:40, dea:40, dli:40, dda:40, st_down:25,lbd:70, non_resume: false  },
+    886: { name: "干からびた影の砂漠", mc: "B", req_map_lv: 7, dfi: 40, dwa: 40, dwi: 40, dea: 40, dli: 40, dda: 40, st_down: 25, lbd: 70, non_resume: false },
+    // ヤティカヌの必要マップなんてわからんのよ
+    1007: { name: "ヤティカヌ月の出森林",mc:"A",req_map_lv:8, dfi:70, dwa:70, dwi:70, dea:70, dli:70, dda:70, st_down:30,lbd:70, non_resume: false },
+    1008: { name: "ヤティカヌ日の出森林",mc:"A",req_map_lv:8, dfi:80, dwa:80, dwi:80, dea:80, dli:80, dda:80, st_down:30,lbd:50, non_resume: false },
+    1009: { name: "ヤティカヌ星降る森林",mc:"A",req_map_lv:8, dfi:85, dwa:85, dwi:85, dea:85, dli:85, dda:85, st_down:30,lbd:50, non_resume: false },
+    1010: { name: "ガレリオン野営地",mc:"A",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false },
 
     //以下、機械的に作ったデータ
     1:{ name: "中央プラトン街道 / グレートフォレスト入口付近",mc:"D",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
@@ -1681,7 +1686,7 @@ SubInfoBase = {
 
 function datasublist(num) {
     // そのマップねぇから！！
-    if (!num && num != 0) {
+    if (num == void 0) {
         return;
     }
     if (!NameList[num]) {
@@ -1690,7 +1695,7 @@ function datasublist(num) {
     }
     Rendou = MapSubInfoList[num].mc;
     SubInfo = MapSubInfoList[num];
-    //誰だこんなやりかたでリリース許可だしたのは！！！
+    //誰だこんなやりかたでリリース許可だしたのは！！！(コンバージョン対応)
     if (SubInfoBase[num]) {
         SubInfo.dfi = SubInfoBase[num].dfi;
         SubInfo.dwa = SubInfoBase[num].dwa;

@@ -1,12 +1,11 @@
 ﻿
 mapid = mapid ? mapid : 0;
 const file_url = "https://sokomin.github.io/map/database/mobdb" + mapid + ".js";
-// const file_url = "../map/database/mobdb1.js";
-// import(file_url).then((module) => {
+
 $.ajax({
     type: "GET",
     url: file_url,
-    // dataType: "js",
+    // mobdb見つかったらsuccess、なかったらエラー
     success: function (result) {
         var obj = (new Function(result + "return{m:MobData,a:AreaData}"))();
         MobData = obj.m;
@@ -20,16 +19,11 @@ $.ajax({
             var dot_txt = "";
             var height = IMG_SYS_SIZE[mapid] ? IMG_SYS_SIZE[mapid].h : IMG_SIZE[mapid].h;
             for (i = 0; i < (ObjX.length - 1); i++) {
-                // var mob_info = ObjX[i]; 
-                // document.write("\t<div class=\"Obj Pa a" + (mob_info.inid) + "\" style=\"top:" + (mob_info.posy) + "px; left:" + (mob_info.posx + 20) + "px;\" title=\"" + (mob_info.repop) + "\">" + mob_info.inid + "</div>\n");
-                // document.write("\t<div class=\"Obj Pb a" + (mob_info.inid) + "\" style=\"top:" + (mob_info.posy - 1) + "px; left:" + (mob_info.posx + 19) + "px;\" title=\"" + (mob_info.repop) + "\">" + mob_info.inid + "</div>\n");
                 ObjY[i] = ObjY[i] * 200 / height;
                 ObjX[i] = ObjX[i] * 200 / height;
                 // TODO 名前もとってきたい
                 dot_txt += "\t<div class=\"Obj Pa a" + (ObjN[i]) + "\" style=\"top:" + (ObjY[i]) + "px; left:" + (ObjX[i] + 20) + "px;\" title=\"" + (ObjT[i]) + "\">" + (ObjN[i]) + "</div>\n";
                 dot_txt += "\t<div class=\"Obj Pb a" + (ObjN[i]) + "\" style=\"top:" + (ObjY[i] - 1) + "px; left:" + (ObjX[i] + 19) + "px;\" title=\"" + MobMapName[i] + "\nリポップ時間：" + (ObjT[i]) + "秒\">" + (ObjN[i]) + "</div>\n";
-                //document.write("\t<div class=\"Obj Pa a" + (ObjN[i]) + "\" style=\"top:" + (ObjY[i]) + "px; left:" + (ObjX[i] + 20) + "px;\" title=\"" + (ObjT[i]) + "\">" + (ObjN[i]) + "</div>\n");
-                //document.write("\t<div class=\"Obj Pb a" + (ObjN[i]) + "\" style=\"top:" + (ObjY[i] - 1) + "px; left:" + (ObjX[i] + 19) + "px;\" title=\"" + (ObjT[i]) + "\">" + (ObjN[i]) + "</div>\n");
             }
             map_dot.innerHTML = dot_txt;
             // type3の時だけカウントが増える
@@ -66,8 +60,6 @@ $.ajax({
                 LnkX[i] = LnkX[i] * 200 / height;
                 area_txt += "\t<div class=\"Lnk Pa\" style=\"top:" + (LnkY[i] - 10) + "px; left:" + (LnkX[i] + 20) + "px;\" title=\"" + alt + "\">" + nam + "</div>\n";
                 area_txt += "\t<div class=\"Lnk\" style=\"top:" + (LnkY[i] - 9) + "px; left:" + (LnkX[i] + 19) + "px; color:" + col + "\" title=\"" + alt + "\">" + nam2 + "</div>\n";
-                // document.write("\t<div class=\"Lnk Pa\" style=\"top:" + (LnkY[i]) + "px; left:" + (LnkX[i] + 20) + "px;\" title=\"" + alt + "\">" + nam + "</div>\n");
-                // document.write("\t<div class=\"Lnk\" style=\"top:" + (LnkY[i] - 1) + "px; left:" + (LnkX[i] + 19) + "px; color:" + col + "\" title=\"" + alt + "\">" + nam2 + "</div>\n");
             }
             map_pot.innerHTML = area_txt;
         } else {
@@ -111,74 +103,11 @@ $.ajax({
         // $('.html').css({ 'height': "100%"});
         // $('.body').css({ 'height': "100%"});
         // $('.main-background-map').css({'height':"auto"});
-        $('.main-background-map').css({ 'min-height': "200%" });
+        // $('.main-background-map').css({ 'min-height': "200%" });
         // $('.main-background-map').css({'height':$(window).height()});
 
         // テーブルを頑張って作る係
-        // TODO テーブルの内容もっと充実させるよ
-        var npc_doc = '<table id="table10" border="0" style="max-width: 360px;" cellspacing="1" cellpadding="2">';
-        npc_doc = npc_doc + '<colgroup><col span="1" width="20%" /><col span="1" width="80%" /></colgroup><tbody>';
-        npc_doc = npc_doc + '<tr><th colspan="2">NPC関連情報</th></tr>';
-
-        if ((NameNpc && NameNpc.length > 0) || (NameMob && NameMob.length > 0)) {
-            //NPC
-            if (!NameNpc) {
-                NameNpc = [];
-            }
-            if (!NameMob) {
-                NameMob = [];
-            }
-            for (i = 0; i <= (NameNpc.length - 1); i++) {
-                if (i === 0) {
-                    npc_doc = npc_doc + '<tr><th colspan="2">NPC</th></tr>';
-                } else {
-                    npc_doc = npc_doc + '<tr><td>' + i + '</td>';
-                    npc_doc = npc_doc + '<td><a href="javascript:void(0);" onclick="Yl(' + i + ')">' + NameNpc[i] + '</a></td>';
-                    npc_doc = npc_doc + '</tr>';
-                }
-            }
-            //モンスター
-            for (i = 0; i <= (NameMob.length - 1); i++) {
-                if (i === 0) {
-                    npc_doc = npc_doc + '<tr><th colspan="2">モンスター</th></tr>';
-                } else {
-                    // 1行目は「NPC」が固定で入ってるからね
-                    var mob_num = NameNpc.length + i - 1;
-                    npc_doc = npc_doc + '<tr><td>' + mob_num + '</td>';
-                    npc_doc = npc_doc + '<td><a href="javascript:void(0);" onclick="Yl(' + mob_num + ')">' + NameMob[i] + '</a></td>';
-                    npc_doc = npc_doc + '</tr>';
-
-                }
-            }
-        }
-
-        npc_doc = npc_doc + '</tbody></table>';
-        //NPCやモンスター名全部かくよ
-        var npc_table = document.getElementById('npc_info');
-        npc_table.innerHTML = npc_doc;
-
-
-        //マップ名の初期描画担当さん
-        var greet = document.getElementById('map_title_name');
-        greet.innerHTML = '<h4><font color="#e95388">' + Name + '</font></h4>';
-
-        //レベル帯
-        if (LvMin && LvMax) {
-            var lv_range_obj = document.getElementById('map_level_range');
-            lv_range_obj.innerHTML = '[適正レベル] ' + LvMin + '～' + LvMax + " ";
-        }
-        if (MapId && Rendou) {
-            var rendou_obj = document.getElementById('map_rendou');
-            rendou_obj.innerHTML = '連動マップ：' + createRendouColor(Rendou) + " ";
-        }
-        if (MapId && SubInfo) {
-            if (SubInfo.req_map_lv > 0) {
-                var req_map = document.getElementById('req_map_lv');
-                req_map.innerHTML = '必要 マップ製作者Lv <span class="color-image11">' + SubInfo.req_map_lv + "</span>";
-            }
-            var rendou_obj = document.getElementById('map_down_info');
-            rendou_obj.innerHTML = 'MAP低下情報 ' + createDownTabe(SubInfo) + " ";
-        }
+        outputInfo();
     },
     error: function (result) {
         // mob名とか対応してないマップっぽいで。旧型式で出力するやで
@@ -186,71 +115,7 @@ $.ajax({
         Jump(mapid);
         //NameImgはcommon.jsで定義されてる
         map_image.src = "../map/design/" + NameImg;
-        $('.main-background-map').css({ 'min-height': "200%" });
-        // テーブルを頑張って作る係
-        var npc_doc = '<table id="table10" border="0" style="max-width: 360px;" cellspacing="1" cellpadding="2">';
-        npc_doc = npc_doc + '<colgroup><col span="1" width="20%" /><col span="1" width="80%" /></colgroup><tbody>';
-        npc_doc = npc_doc + '<tr><th colspan="2">NPC関連情報</th></tr>';
-
-        if ((NameNpc && NameNpc.length > 0) || (NameMob && NameMob.length > 0)) {
-            //NPC
-            if (!NameNpc) {
-                NameNpc = [];
-            }
-            if (!NameMob) {
-                NameMob = [];
-            }
-            for (i = 0; i <= (NameNpc.length - 1); i++) {
-                if (i === 0) {
-                    npc_doc = npc_doc + '<tr><th colspan="2">NPC</th></tr>';
-                } else {
-                    npc_doc = npc_doc + '<tr><td>' + i + '</td>';
-                    npc_doc = npc_doc + '<td><a href="javascript:void(0);" onclick="Yl(' + i + ')">' + NameNpc[i] + '</a></td>';
-                    npc_doc = npc_doc + '</tr>';
-                }
-            }
-            //モンスター
-            for (i = 0; i <= (NameMob.length - 1); i++) {
-                if (i === 0) {
-                    npc_doc = npc_doc + '<tr><th colspan="2">モンスター</th></tr>';
-                } else {
-                    // 1行目は「NPC」が固定で入ってるからね
-                    var mob_num = NameNpc.length + i - 1;
-                    npc_doc = npc_doc + '<tr><td>' + mob_num + '</td>';
-                    npc_doc = npc_doc + '<td><a href="javascript:void(0);" onclick="Yl(' + mob_num + ')">' + NameMob[i] + '</a></td>';
-                    npc_doc = npc_doc + '</tr>';
-
-                }
-            }
-        }
-
-        npc_doc = npc_doc + '</tbody></table>';
-        //NPCやモンスター名全部かくよ
-        var npc_table = document.getElementById('npc_info');
-        npc_table.innerHTML = npc_doc;
-
-
-        //マップ名の初期描画担当さん
-        var greet = document.getElementById('map_title_name');
-        greet.innerHTML = '<h4><font color="#e95388">' + Name + '</font></h4>';
-
-        //レベル帯
-        if (LvMin && LvMax) {
-            var lv_range_obj = document.getElementById('map_level_range');
-            lv_range_obj.innerHTML = '[適正レベル] ' + LvMin + '～' + LvMax + " ";
-        }
-        if (MapId && Rendou) {
-            var rendou_obj = document.getElementById('map_rendou');
-            rendou_obj.innerHTML = '連動マップ：' + createRendouColor(Rendou) + " ";
-        }
-        if (MapId && SubInfo) {
-            if (SubInfo.req_map_lv > 0) {
-                var req_map = document.getElementById('req_map_lv');
-                req_map.innerHTML = '必要 マップ製作者Lv <span class="color-image11">' + SubInfo.req_map_lv + "</span>";
-            }
-            var rendou_obj = document.getElementById('map_down_info');
-            rendou_obj.innerHTML = 'MAP低下情報 ' + createDownTabe(SubInfo) + " ";
-        }
+        outputInfo();
     },
 
 });
@@ -305,4 +170,85 @@ function checkSubInfo(SubInfo) {
         return false;
     }
     return false;
+}
+
+function outputInfo() { 
+    $('.main-background-map').css({ 'min-height': "200%" });
+    // $('.main-background-map').css({'height':$(window).height()});
+
+    // テーブルを頑張って作る係
+    // TODO テーブルの内容もっと充実させるよ
+    var npc_doc = '<table id="table10" border="0" style="max-width: 360px;" cellspacing="1" cellpadding="2">';
+    npc_doc = npc_doc + '<colgroup><col span="1" width="20%" /><col span="1" width="80%" /></colgroup><tbody>';
+    npc_doc = npc_doc + '<tr><th colspan="2">NPC関連情報</th></tr>';
+
+    if ((NameNpc && NameNpc.length > 0) || (NameMob && NameMob.length > 0)) {
+        //NPC
+        if (!NameNpc) {
+            NameNpc = [];
+        }
+        if (!NameMob) {
+            NameMob = [];
+        }
+        for (i = 0; i <= (NameNpc.length - 1); i++) {
+            if (i === 0) {
+                npc_doc = npc_doc + '<tr><th colspan="2">NPC</th></tr>';
+            } else {
+                npc_doc = npc_doc + '<tr><td>' + i + '</td>';
+                npc_doc = npc_doc + '<td><a href="javascript:void(0);" onclick="Yl(' + i + ')">' + NameNpc[i] + '</a></td>';
+                npc_doc = npc_doc + '</tr>';
+            }
+        }
+        //モンスター
+        for (i = 0; i <= (NameMob.length - 1); i++) {
+            if (i === 0) {
+                npc_doc = npc_doc + '<tr><th colspan="2">モンスター</th></tr>';
+            } else {
+                // 1行目は「NPC」が固定で入ってるからね
+                var mob_num = NameNpc.length + i - 1;
+                npc_doc = npc_doc + '<tr><td>' + mob_num + '</td>';
+                npc_doc = npc_doc + '<td><a href="javascript:void(0);" onclick="Yl(' + mob_num + ')">' + NameMob[i] + '</a></td>';
+                npc_doc = npc_doc + '</tr>';
+
+            }
+        }
+    }
+
+    npc_doc = npc_doc + '</tbody></table>';
+    //NPCやモンスター名全部かくよ
+    var npc_table = document.getElementById('npc_info');
+    npc_table.innerHTML = npc_doc;
+
+
+    //マップ名の初期描画担当さん
+    var greet = document.getElementById('map_title_name');
+    greet.innerHTML = '<h4><font color="#e95388">' + Name + '</font></h4>';
+
+    //レベル帯
+    if (LvMin && LvMax) {
+        var lv_range_obj = document.getElementById('map_level_range');
+        lv_range_obj.innerHTML = '[適正レベル] ' + LvMin + '～' + LvMax + " ";
+    }
+    if (MapId != void 0  && Rendou) {
+        var rendou_obj = document.getElementById('map_rendou');
+        rendou_obj.innerHTML = '連動マップ：' + createRendouColor(Rendou) + " ";
+    }
+    if (MapId != void 0  && SubInfo) {
+        if (SubInfo.req_map_lv > 0) {
+            var req_map = document.getElementById('req_map_lv');
+            req_map.innerHTML = '必要 マップ製作者Lv <span class="color-image11">' + SubInfo.req_map_lv + "</span>";
+        }
+        var rendou_obj = document.getElementById('map_down_info');
+        rendou_obj.innerHTML = 'MAP低下情報 ' + createDownTabe(SubInfo) + " ";
+    }
+    if (MapId != void 0 && ExtraInfo) {
+        var text = "";
+        for (var i = 0; i < ExtraInfo.length; i++) {
+            var data = ExtraInfo[i];
+            data += "<br>"
+            text += data;
+        }
+        var req_map = document.getElementById('map_extra_info');
+        req_map.innerHTML = "<br>" + text;
+    }
 }

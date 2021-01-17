@@ -22,6 +22,7 @@ LvMin = 0;
 LvMax = 0;
 Rendou = "";
 SubInfo = {};
+ExtraInfo = {};
 MapId = 0;
 
 Name = "";
@@ -45,6 +46,7 @@ function Jump(num) {
     //名前入れ替えの術
     datalist(num);
     datasublist(num);
+    dataextralist(num);
     // 画像入れ替え
     // 配列総入れ替え
     // ぜーんぶ再描画
