@@ -84,7 +84,7 @@ var skillIdMap = [
     { id: 79, value: "人間型魔法ダメージ", passive_rank: 1 },
     { id: 80, value: "魔法強打", passive_rank: 1 },
     { id: 81, value: "魔法攻撃力強化", passive_rank: 1 },
-    { id: 82, value: "魔法攻撃力低下", passive_rank: 1 },
+    { id: 82, value: "魔法抵抗力低下", passive_rank: 1 },
     { id: 83, value: "魔法致命打", passive_rank: 1 },
     { id: 84, value: "強打", passive_rank: 1 },
     { id: 101, value: "被ダメージCPに変換", passive_rank: 2 },
@@ -109,6 +109,7 @@ var skillIdMap = [
     { id: 307, value: "最終ダメージ", passive_rank: 1 }, // 合成
     { id: 308, value: "上級経験値", passive_rank: 1 }, //合成
     { id: 309, value: "上級ドロップ", passive_rank: 1 }, //合成
+    { id: 310, value: "ペット&召喚獣敵致命打減少", passive_rank: 1 },//合成
 ];
 
 
@@ -273,7 +274,7 @@ var skillData = [
     { name: "ガイア", id: 150, mainId: "闇低下", mainLv: 24, sub1Id: "魔法強打", sub1IdLv: 3, sub2Id: "光抵抗力", sub2IdLv: 12 },
     { name: "トリックスター", id: 161, mainId: "状態異常抵抗力", mainLv: 24, sub1Id: "防御力", sub1IdLv: 12, sub2Id: "人間型ダメージ抵抗", sub2IdLv: 3 },
     { name: "ドリーマー", id: 173, mainId: "命中率", mainLv: 24, sub1Id: "上級攻撃力", sub1IdLv: 3, sub2Id: "攻撃速度", sub2IdLv: 12 },
-    { name: "ノーマド", id: 174, mainId: "回避率", mainLv: 24, sub1Id: "大地抵抗力", sub1IdLv: 12, sub2Id: "魔法攻撃力低下", sub2IdLv: 3 },
+    { name: "ノーマド", id: 174, mainId: "回避率", mainLv: 24, sub1Id: "大地抵抗力", sub1IdLv: 12, sub2Id: "魔法抵抗力低下", sub2IdLv: 3 },
     { name: "シッティングダイル", id: 175, mainId: "攻撃速度", mainLv: 24, sub1Id: "クリティカルダメージ", sub1IdLv: 12, sub2Id: "回避率", sub2IdLv: 12 },
     { name: "シーウォーカー", id: 177, mainId: "最大体力", mainLv: 24, sub1Id: "ダブルクリティカルダメージ", sub1IdLv: 3, sub2Id: "最大体力", sub2IdLv: 12 },
     { name: "クレア", id: 179, mainId: "攻撃力", mainLv: 24, sub1Id: "クリティカルダメージ減少", sub1IdLv: 12, sub2Id: "ドロップ率", sub2IdLv: 12 },
@@ -286,7 +287,7 @@ var skillData = [
     { name: "プチデリン", id: 205, mainId: "攻撃力", mainLv: 24, sub1Id: "火抵抗力", sub1IdLv: 12, sub2Id: "命中率", sub2IdLv: 12 },
     { name: "プチダリン", id: 206, mainId: "ドロップ率", mainLv: 24, sub1Id: "魔法攻撃力強化", sub1IdLv: 3, sub2Id: "ペット&召喚獣全てのステータス", sub2IdLv: 12 },
     { name: "エルダーハーミット", id: 215, mainId: "全ての属性抵抗", mainLv: 24, sub1Id: "動物型ダメージ", sub1IdLv: 12, sub2Id: "ペット&召喚獣体力", sub2IdLv: 12 },
-    { name: "インキュバス", id: 98, mainId: "上級スキル", mainLv: 10, sub1Id: "魔法攻撃力低下", sub1IdLv: 5, sub2Id: "闇強化", sub2IdLv: 16 },
+    { name: "インキュバス", id: 98, mainId: "上級スキル", mainLv: 10, sub1Id: "魔法抵抗力低下", sub1IdLv: 5, sub2Id: "闇強化", sub2IdLv: 16 },
     { name: "吸血姫", id: 99, mainId: "体力吸収", mainLv: 32, sub1Id: "スキル", sub1IdLv: 16, sub2Id: "上級攻撃力", sub2IdLv: 5 },
     { name: "アイスクイーン", id: 100, mainId: "ペット&召喚獣強化", mainLv: 32, sub1Id: "PVP防御力", sub1IdLv: 5, sub2Id: "人間型魔法ダメージ", sub2IdLv: 5 },
     { name: "ラストウィッチ", id: 101, mainId: "魔法致命打", mainLv: 10, sub1Id: "与魔法ダメージ吸収", sub1IdLv: 5, sub2Id: "火強化", sub2IdLv: 16 },
@@ -295,7 +296,7 @@ var skillData = [
     { name: "レオフォールド", id: 110, mainId: "ペット&召喚獣全てのステータス", mainLv: 32, sub1Id: "PVP防御力", sub1IdLv: 5, sub2Id: "ペット&召喚獣状態異常抵抗", sub2IdLv: 16 },
     { name: "メリアス", id: 111, mainId: "強打", mainLv: 10, sub1Id: "上級体力", sub1IdLv: 5, sub2Id: "大地強化", sub2IdLv: 16 },
     { name: "コモルコクーン", id: 115, mainId: "能力値低下防止", mainLv: 32, sub1Id: "人間型ダメージ抵抗", sub1IdLv: 5, sub2Id: "移動速度", sub2IdLv: 16 },
-    { name: "マートン所長", id: 116, mainId: "クリティカル確率", mainLv: 32, sub1Id: "敵致命打減少", sub1IdLv: 16, sub2Id: "上級攻撃速度", sub2IdLv: 5 },
+    { name: "マートン所長", id: 116, mainId: "クリティカル確率", mainLv: 32, sub1Id: "敵致命打減少", sub1IdLv: 5, sub2Id: "上級攻撃速度", sub2IdLv: 5 },
     { name: "スペクター", id: 122, mainId: "能力値低下防止", mainLv: 32, sub1Id: "上級防御力", sub1IdLv: 5, sub2Id: "命中率", sub2IdLv: 16 },
     { name: "パンプキンナイト", id: 128, mainId: "上級攻撃速度", mainLv: 10, sub1Id: "上級最大CP", sub1IdLv: 5, sub2Id: "被ダメージ反射", sub2IdLv: 16 },
     { name: "アサシン", id: 129, mainId: "攻撃速度", mainLv: 16, sub1Id: "強打", sub1IdLv: 5, sub2Id: "PVP防御", sub2IdLv: 10 },
@@ -321,12 +322,25 @@ var skillData = [
     { name: "セイバー", id: 133, mainId: "強打", mainLv: 20, sub1Id: "上級最大CP", sub1IdLv: 10, sub2Id: "上級攻撃力", sub2IdLv: 10 },
     { name: "ライダー", id: 134, mainId: "魔法強打", mainLv: 20, sub1Id: "与魔法ダメージ吸収", sub1IdLv: 10, sub2Id: "上級スキル", sub2IdLv: 10 },
     { name: "グラビティアナ", id: 152, mainId: "PVP攻撃力", mainLv: 20, sub1Id: "強打", sub1IdLv: 10, sub2Id: "ダブルクリティカルダメージ", sub2IdLv: 10 },
-    { name: "タナトス", id: 164, mainId: "魔法攻撃力強化", mainLv: 20, sub1Id: "魔法致命打", sub1IdLv: 10, sub2Id: "魔法攻撃力低下", sub2IdLv: 10 },
-    { name: "ハーモニー", id: 182, mainId: "与魔法ダメージ吸収", mainLv: 20, sub1Id: "魔法攻撃力低下", sub1IdLv: 10, sub2Id: "上級スキル", sub2IdLv: 10 },
+    { name: "タナトス", id: 164, mainId: "魔法攻撃力強化", mainLv: 20, sub1Id: "魔法致命打", sub1IdLv: 10, sub2Id: "魔法抵抗力低下", sub2IdLv: 10 },
+    { name: "ハーモニー", id: 182, mainId: "与魔法ダメージ吸収", mainLv: 20, sub1Id: "魔法抵抗力低下", sub1IdLv: 10, sub2Id: "上級スキル", sub2IdLv: 10 },
     { name: "一ノ瀬はじめ", id: 188, mainId: "上級防御力", mainLv: 20, sub1Id: "強打", sub1IdLv: 10, sub2Id: "魔法強打", sub2IdLv: 10 },
     { name: "ゴールド・エンペラー", id: 204, mainId: "最終ダメージ", mainLv: 20, sub1Id: "強打", sub1IdLv: 10, sub2Id: "上級状態異常抵抗力", sub2IdLv: 10 },
     { name: "ダークネスネビュラ", id: 217, mainId: "人間型魔法ダメージ", mainLv: 20, sub1Id: "上級スキル", sub1IdLv: 10, sub2Id: "上級状態異常抵抗力", sub2IdLv: 10 },
     { name: "ワンインオール", id: 218, mainId: "魔法致命打", mainLv: 20, sub1Id: "魔法強打", sub1IdLv: 10, sub2Id: "与魔法ダメージ吸収", sub2IdLv: 10 },
+    { name: "タイニーフォックス", id: 227, mainId: "クリティカル確率", mainLv: 24, sub1Id: "攻撃力", sub1IdLv: 12, sub2Id: "悪魔型ダメージ", sub2IdLv: 12 },
+    { name: "リトルロトル", id: 228, mainId: "水強化", mainLv: 24, sub1Id: "水低下", sub1IdLv: 12, sub2Id: "状態異常抵抗力", sub2IdLv: 12 },
+    { name: "ホエーリ", id: 229, mainId: "抵抗力低下防止", mainLv: 24, sub1Id: "移動速度", sub1IdLv: 12, sub2Id: "上級最大CP", sub2IdLv: 3 },
+    { name: "セイクリッドフォックス", id: 230, mainId: "魔法攻撃力強化", mainLv: 10, sub1Id: "闇低下", sub1IdLv: 16, sub2Id: "魔法強打", sub2IdLv: 5 },
+    { name: "ドレカニア", id: 231, mainId: "クリティカルダメージ", mainLv: 32, sub1Id: "上級攻撃力", sub1IdLv: 5, sub2Id: "敵致命打減少", sub2IdLv: 5 },
+    { name: "ホエーザランド", id: 232, mainId: "ペット&召喚獣敵致命打減少", mainLv: 10, sub1Id: "ペット&召喚獣攻撃力", sub1IdLv: 16, sub2Id: "ペット&召喚獣体力", sub2IdLv: 16 },
+    { name: "アルティナ・オライオン", id: 235, mainId: "ペット&召喚獣全てのステータス", mainLv: 32, sub1Id: "ペット&召喚獣体力", sub1IdLv: 16, sub2Id: "防御力", sub2IdLv: 16 },
+    { name: "アリサ・ラインフォルト", id: 236, mainId: "魔法攻撃力強化", mainLv: 10, sub1Id: "状態異常抵抗力", sub1IdLv: 16, sub2Id: "最大CP", sub2IdLv: 16 },
+    { name: "ラウラ・S・アルゼイド", id: 237, mainId: "ダブルクリティカルダメージ", mainLv: 10, sub1Id: "上級攻撃速度", sub1IdLv: 5, sub2Id: "命中率", sub2IdLv: 16 },
+    { name: "プチランサー", id: 233, mainId: "ダブルクリティカルダメージ", mainLv: 20, sub1Id: "人間型ダメージ", sub1IdLv: 10, sub2Id: "上級攻撃速度", sub2IdLv: 10 },
+    { name: "プチウィザード", id: 234, mainId: "魔法抵抗力低下", mainLv: 20, sub1Id: "人間型魔法ダメージ", sub1IdLv: 10, sub2Id: "魔法致命打", sub2IdLv: 10 },
+    { name: "リィン・シュバルツァー", id: 238, mainId: "ダブルクリティカルダメージ", mainLv: 20, sub1Id: "上級攻撃力", sub1IdLv: 10, sub2Id: "上級防御力", sub2IdLv: 10 },
+    { name: "クロウ・アームブラスト", id: 239, mainId: "魔法攻撃力強化", mainLv: 20, sub1Id: "魔法抵抗力低下", sub1IdLv: 10, sub2Id: "魔法強打", sub2IdLv: 10 },
     //ここからは覚醒クリーチャー用
     { name: "メイン1", id: 9996, used: false, mainId: "test", mainLv: 20, sub1Id: "test", sub1IdLv: 10, sub2Id: "test", sub2IdLv: 10 },
     { name: "サブ１", id: 9997, used: false, mainId: "test", mainLv: 20, sub1Id: "test", sub1IdLv: 10, sub2Id: "test", sub2IdLv: 10 },
@@ -2077,6 +2091,25 @@ function searchOption(cid, slv) {
             result += '- 最終ダメージ + <span class="color-image11">' + 1 + '</span>％<br>';
         } else if (slv >= 20) {
             result += '- ユニークドロップ率 + <span class="color-image11">' + 20 + '</span>％<br>';
+        }
+    }
+    // TODO 誰かわからんか？
+    if (cid === 310) {
+        if (slv < 50) {
+            result += '- (ペット&召喚獣)敵の物理致命打抵抗 +<span class="color-image11">' + parseInt(2 + 0.5 * slv) + '</span>％<br>';
+        }
+        if (slv >= 50) {
+            result += '- ペット&召喚獣の魔法攻撃力 +<span class="color-image11">' + 32 + '</span>％<br>';
+            // result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (40) + '</span>％<br>';
+            // result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">200</span><br>';
+        } else if (slv >= 40) {
+            // result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (30) + '</span>％<br>';
+            // result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">100</span><br>';
+        } else if (slv >= 30) {
+            // result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (20) + '</span>％<br>';
+            // result += '- ペット/召喚獣の全てのステータス +<span class="color-image11">50</span><br>';
+        } else if (slv >= 20) {
+            // result += '- ペット&召喚獣の攻撃速度 +<span class="color-image11">' + (10) + '</span>％<br>';
         }
     }
 
