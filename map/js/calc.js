@@ -139,6 +139,36 @@ function createRendouColor(rendou) {
             return rendou;
     }
 }
+function createRendou2Color(rendou) {
+    switch (rendou) {
+        case 1:
+            return '<span class="color-image1">' + rendou + '(古都)</span>'
+        case 2:
+            return '<span class="color-image2">' + rendou + '(ハノブ)</span>'
+        case 3:
+            return '<span class="color-image3">' + rendou + '(アウグ/ブリッジ)</span>'
+        case 4:
+            return '<span class="color-image4">' + rendou + '(リンケン)</span>'
+        case 5:
+            return '<span class="color-image5">' + rendou + '(アリアン)</span>'
+        case 6:
+            return '<span class="color-image6">' + rendou + '(スマグ)</span>'
+        case 7:
+            return '<span class="color-image7">' + rendou + '(ロマ)</span>'
+        case 8:
+            return '<span class="color-image8">' + rendou + '(ボルティッシュ)</span>'
+        case 9:
+            return '<span class="color-image9">' + rendou + '(ロングテール)</span>'
+        case 10:
+            return '<span class="color-image10">' + rendou + '(漆黒の城)</span>'
+        case 11:
+            return '<span class="color-image11">' + rendou + '(収容所)</span>'
+        case 12:
+            return '<span class="color-image12">' + rendou + '(古代悪魔研究所)</span>'
+        default:
+            return rendou;
+    }
+}
 
 function createDownTabe(SubInfo) {
     if (checkSubInfo(SubInfo)) {
@@ -172,7 +202,7 @@ function checkSubInfo(SubInfo) {
     return false;
 }
 
-function outputInfo() { 
+function outputInfo() {
     $('.main-background-map').css({ 'min-height': "200%" });
     // $('.main-background-map').css({'height':$(window).height()});
 
@@ -229,11 +259,15 @@ function outputInfo() {
         var lv_range_obj = document.getElementById('map_level_range');
         lv_range_obj.innerHTML = '[適正レベル] ' + LvMin + '～' + LvMax + " ";
     }
-    if (MapId != void 0  && Rendou) {
+    if (MapId != void 0 && Rendou) {
         var rendou_obj = document.getElementById('map_rendou');
         rendou_obj.innerHTML = '連動マップ：' + createRendouColor(Rendou) + " ";
     }
-    if (MapId != void 0  && SubInfo) {
+    if (MapId != void 0 && Rendou2) {
+        var rendou_obj = document.getElementById('map_rendou2');
+        rendou_obj.innerHTML = '新連動マップ：' + createRendou2Color(Rendou2) + " ";
+    }
+    if (MapId != void 0 && SubInfo) {
         if (SubInfo.req_map_lv > 0) {
             var req_map = document.getElementById('req_map_lv');
             req_map.innerHTML = '必要 マップ製作者Lv <span class="color-image11">' + SubInfo.req_map_lv + "</span>";
