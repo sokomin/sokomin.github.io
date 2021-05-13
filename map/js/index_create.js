@@ -6,6 +6,7 @@ npc_doc = npc_doc + '<tr><th colspan="5">マップ一覧</th></tr>';
 // npc_doc = npc_doc + '<tr><th>連動</th><th>マップ名</th><th>適正Lv</th></tr>';
 
 map_c = getParam('map_c') ? getParam('map_c') : "";
+map_c = getParam('map_c2') ? getParam('map_c2') : "";
 
 for (key in NameList) {
     var Obj = NameList[key];
@@ -13,6 +14,13 @@ for (key in NameList) {
     if (map_c) {
         if (SubInfoObj && SubInfoObj.mc &&SubInfoObj.mc === map_c) {
             //マップでフィルタかけたい時
+        } else {
+            continue;
+        }
+    } 
+    if (map_c) {
+        if (SubInfoObj && SubInfoObj.mc2 &&SubInfoObj.mc2 === Number(map_c2)) {
+            //新連動マップでフィルタかけたい時
         } else {
             continue;
         }
