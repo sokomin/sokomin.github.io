@@ -6,7 +6,7 @@ npc_doc = npc_doc + '<tr><th colspan="5">マップ一覧</th></tr>';
 // npc_doc = npc_doc + '<tr><th>連動</th><th>マップ名</th><th>適正Lv</th></tr>';
 
 map_c = getParam('map_c') ? getParam('map_c') : "";
-map_c = getParam('map_c2') ? getParam('map_c2') : "";
+map_c2 = getParam('map_c2') ? getParam('map_c2') : "";
 
 for (key in NameList) {
     var Obj = NameList[key];
@@ -18,7 +18,7 @@ for (key in NameList) {
             continue;
         }
     } 
-    if (map_c) {
+    if (map_c2) {
         if (SubInfoObj && SubInfoObj.mc2 &&SubInfoObj.mc2 === Number(map_c2)) {
             //新連動マップでフィルタかけたい時
         } else {
@@ -49,7 +49,6 @@ for (key in NameList) {
         npc_doc = npc_doc + '<td>' + createRendouColor(rendou) + '</td>';
         npc_doc = npc_doc + '<td>' + createRendou2Color(rendou2) + '</td>';
         npc_doc = npc_doc + '</tr>';
-        // TODO連動マップ調べて表にしたい
     }
 }
 
