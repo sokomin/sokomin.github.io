@@ -66,4 +66,5 @@ const optionlist = {
     63: { name: '命中率 <font color="#f8f800">100</font>％', },
     64: { name: "優先ターゲット攻撃 +[数値]％([数値]秒)", },
     65: { name: '<font color="#f8f800">先攻されない</font>％', },
+    9999: { name: 'アイテム着用レベル -[数値]', },
 };
