@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>2021年4月 韓国アプデ 赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <div class="korea-content main-background">
+                <br>
+                <h3>韓国 2021/4/28 韓国アプデ</h3>
+                <h5>
+                    <font color="#ff0000"><strong>[重要！] 韓国公式の情報を基にしています。<br>
+                            誤訳や韓国独自仕様の可能性もありますので、予めご了承下さい。</strong></font><br>
+                </h5>
+                <br>
+                <a href="#1">新規PVPフィールド</a><br>
+                <a href="#2">新規サブクエ</a><br>
+                <a href="#3">新規クリーチャー</a><br>
+                <a href="#99">変更・修正</a><br>
+                <br>
+                <br>
+                <br>
+                <br>
+
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/18be385d48101df3bfeef529d0ea6737e3f3ea19.10.9.9.3.png"
+                    width="800px" border=0 name="insertImg" /><br><br>
+                <font color="#e95388">
+                    <a name="1"></a>
+                    <h4>新規PVPフィールド</h4>
+                </font>
+                -新規PVPフィールド<br>
+                捨てられた地下墓地B2のメリス・リング<br>
+                捨てられた地下墓地B3のメリス・リング<br>
+                が追加されます。<br>
+                <br>
+                <b>
+                    （925～930）[捨てられた地下墓地B2のメリス・リング]</b>
+                -入場レベル制限：1～950<br>
+                -モンスターレベル：925～930<br>
+                -捨てられた地下墓地B2フィールド内の3カ所のポータルを通して移動できます。（座標223,17 / 133,121 / 11,231）<br>
+                <b>（970?975）[捨てられた地下墓地B3のメリス・リング]</b>
+                -入場レベル制限：1～999<br>
+                -モンスターレベル：970～975<br>
+                -捨てられた地下墓地B3フィールド内の3カ所のポータルを通して移動できます。（座標3,239 / 244,242 / 244,5）<br>
+                <br>
+                - PVPフィールドの入り口<span class="color-image1">セーフティゾーン</span>があり、その区域では攻撃できません。<br>
+                -ガイドシステムを通してセーフティゾーンに瞬間移動できます。<br>
+                - <span class="color-image1">セーフティゾーン</span>オブジェクトとNPCを通じてPVPフィールドの条件と内容を確認できます。<br>
+                - PVPフィールド進入時、相手の体力バー、ニックネーム、ギルドマークを確認できません。<br>
+                - PVPフィールドに入場時、自分を除いたプレイヤーのコスチュームを確認できません。<br>
+                - PVPフィールド進入時のプレーヤーはスキル使用時PVP、モンスターはPvEスキルで適用されます。<br>
+                - PVPフィールド進入時バフが解除されます。（ギルドバフの経験値、アイテムドロップ率、ユニークアイテムドロップ率、DXユニークアイテムドロップ率は除く）<br>
+                - PVPフィールド進入内で<span class="color-image1">スフィアーのマナ</span>バフを受けることができます。<br>
+                - PVPフィールド進入時にランダムに点1ヶ所に瞬間移動します。<br>
+                - PVPフィールド内の特定のオブジェクトをクリックすると、<span class="color-image1">セーフティゾーン</span>に移動できます。<br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/78e6e46b0363143b46a86e326da2177c538cf359.10.9.9.3.png"
+                    border=0 name="insertImg" /><br><br>
+                （↑オブジェクトをクリック時に、セーフティゾーンに移動）<br>
+                -氷の柱オブジェクトは、戦闘状態のときに動作できません。<br>
+                - PVPフィールド内のモンスターが配置されており狩りが可能であり、中心部に行くほど高い等級のモンスターが配置されています。<br>
+                -PTのPVPフィールド入場時、PTメンバーから除外されます。<br>
+                - PVPフィールドでは、冒険家の掲示板や絵文字を使用でき、チャットは使用できません。<br>
+                - PVPフィールドとセーフティゾーンでは、カーペットを使用できません。<br>
+                - PVPフィールドで死亡した場合、最寄りの村に移動することになり、デスペナルティは適用されません。<br>
+                - PVPフィールドで死亡した場合、ミニペットのリザレクションスキルと復活アイテムは使用できません。<br>
+                -スフィア類、コーリング、カップリングを通してPVPフィールドの場所の保存と入場はできません。<br>
+                - PVPフィールドからの風の羽、PC部屋のフィールド移動などテレポート（場所移動）を使用できません。<br>
+                - PVPフィールドでレベルが上昇して入場制限レベルを超えた場合、再接続時の村に移動します。<br>
+                - PVPフィールドで追放天使のタウンポータル、トランスポーテーション、エバキュエイションスキルを使用できません。<br>
+                <br>
+                <br>
+                <br>
+                <font color="#e95388">
+                    <a name="2"></a>
+                    <h4>新規サブクエ</h4>
+                </font>
+
+                - 950レベル以上の新規のサブクエスト5種が追加されます。<br>
+                - [忘れられたところに存在する]は連携型クエストでクリア時[記憶されていない怨霊]、[魂を慰める香り]クエストを順番に開始できるようになります。<br>
+                <br>
+                <b>[クエスト受諾NPCの位置]</b><br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td> <b>制限レベル</b> </td>
+                            <td> <b>クエスト名</b> </td>
+                            <td> <b>位置</b> </td>
+                            <td> <b>npc</b> </td>
+                            <td> <b>座標</b> </td>
+                        </tr>
+                        <tr>
+                            <td> 950?1500 </td>
+                            <td> 忘れられたところに存在する </td>
+                            <td> 衛星都市ロングテール </td>
+                            <td> 村の住民 </td>
+                            <td> 93,67 </td>
+                        </tr>
+                        <tr>
+                            <td> 950?1500 </td>
+                            <td> 盗まれた材料 </td>
+                            <td> 衛星都市ロングテール </td>
+                            <td> 納品担当者 </td>
+                            <td> 6,14 </td>
+                        </tr>
+                        <tr>
+                            <td> 950?1500 </td>
+                            <td> 休まないにがり </td>
+                            <td> 忘れられた地下収容所B1 </td>
+                            <td> ニガリ </td>
+                            <td> 9,109 </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+
+                <font color="#e95388">
+                    <a name="3"></a>
+                    <h4>新規クリーチャー</h4>
+                </font>
+
+                <b>3.新規クリーチャー追加</b>-新規クリーチャー8種が追加されます。
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td> <b>[レア]</b> </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+                        </tr>
+                        <tr>
+                            <td> <b>名前</b> </td>
+                            <td> <b>タイプ</b> </td>
+                            <td> <b>力</b> </td>
+                            <td> <b>敏捷</b> </td>
+                            <td> <b>知識</b> </td>
+                            <td> <b>健康</b> </td>
+                            <td> <b>運</b> </td>
+                            <td> <b>メインスキル</b> </td>
+                            <td> <b>サブスキル</b> </td>
+                            <td colspan="3"> <b>パッシブ</b> </td>
+                            <td> <b>図鑑登録</b> </td>
+
+                        </tr>
+                        <tr>
+                            <td> <b>ブルーペガサス</b> </td>
+                            <td> 力 </td>
+                            <td> 5 </td>
+                            <td> 3 </td>
+                            <td> 1 </td>
+                            <td> 2 </td>
+                            <td> 1 </td>
+                            <td> <b>ボディ占め</b> </td>
+                            <td> <b>ミストシールド-力</b> </td>
+                            <td> <b>メイン</b> 悪魔型ダメージ増加Lv.16</td>
+                            <td> <b>サブ</b> 攻撃力Lv.8</td>
+                            <td> <b>サブ</b> 防御力増加Lv.8</td>
+                            <td> 不可 </td>
+
+                        </tr>
+                        <tr>
+                            <td> <b>レッドペガサス</b> </td>
+                            <td> 知識 </td>
+                            <td> 1 </td>
+                            <td> 2 </td>
+                            <td> 6 </td>
+                            <td> 2 </td>
+                            <td> 1 </td>
+                            <td> <b>ボディ占め</b> </td>
+                            <td> <b>ミストシールド - 知識</b> </td>
+                            <td> <b>メイン</b> 火属性抵抗力の低下Lv.16</td>
+                            <td> <b>サブ</b> 魔法攻撃力強化Lv.8</td>
+                            <td> <b>サブ</b> 火属性抵抗増加Lv.8</td>
+                            <td> 不可 </td>
+                        </tr>
+                        <tr>
+                            <td> <b>グリーンペガサス</b> </td>
+                            <td> 健康 </td>
+                            <td> 2 </td>
+                            <td> 2 </td>
+                            <td> 1 </td>
+                            <td> 6 </td>
+                            <td> 1 </td>
+                            <td> <b>ボディ占め</b> </td>
+                            <td> <b>ミストシールド - 健康</b> </td>
+                            <td> <b>メイン</b> すべての属性抵抗増加Lv.16</td>
+                            <td> <b>サブ</b> 移動速度Lv.8 </td>
+                            <td> <b>サブ</b> 能力値低下防止Lv.8 </td>
+                            <td> 不可 </td>
+
+                        </tr>
+                        <tr>
+                            <td> <b>パープルペガサス</b> </td>
+                            <td> サポート </td>
+                            <td> 1 </td>
+                            <td> 1 </td>
+                            <td> 2 </td>
+                            <td> 3 </td>
+                            <td> 5 </td>
+                            <td> <b>ボディ占め</b> </td>
+                            <td> <b>ミストシールド - 運</b> </td>
+                            <td> <b>メイン</b> 攻撃速度Lv.16 </td>
+                            <td> <b>サブ</b> 光抵抗低下Lv.8 </td>
+                            <td> <b>サブ</b> 最大体力Lv.8</td>
+                            <td> 不可 </td>
+                        </tr>
+                        <tr>
+                            <td> <b>[ＨＲ]</b> </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+                        </tr>
+                        <tr>
+                            <td> <b>名前</b> </td>
+                            <td> <b>タイプ</b> </td>
+                            <td> <b>力</b> </td>
+                            <td> <b>敏捷</b> </td>
+                            <td> <b>知識</b> </td>
+                            <td> <b>健康</b> </td>
+                            <td> <b>運</b> </td>
+                            <td> <b>メインスキル</b> </td>
+                            <td> <b>サブスキル</b> </td>
+                            <td colspan="3"> <b>パッシブ</b> </td>
+                            <td> <b>図鑑登録</b> </td>
+
+                        </tr>
+                        <tr>
+                            <td> <b>三ウス</b> </td>
+                            <td> 知識 </td>
+                            <td> 3 </td>
+                            <td> 3 </td>
+                            <td> 6 </td>
+                            <td> 1 </td>
+                            <td> 2 </td>
+                            <td> <b>ワイルドショット</b> </td>
+                            <td> <b>大地の加護</b> </td>
+                            <td> <b>メイン</b> 大地属性攻撃力増加Lv.24</td>
+                            <td> <b>サブ</b> </td>
+                            <td> <b>サブ</b> </td>
+                            <td> 不可 </td>
+                        </tr>
+                        <tr>
+                            <td> <b>ヒドラゴン</b> </td>
+                            <td> 健康 </td>
+                            <td> 3 </td>
+                            <td> 3 </td>
+                            <td> 1 </td>
+                            <td> 7 </td>
+                            <td> 1 </td>
+                            <td> <b>ポイズンファング</b> </td>
+                            <td> <b>体力再生</b> </td>
+                            <td> <b>メイン</b> 水属性抵抗力の低下Lv.24</td>
+                            <td> <b>サブ</b> 魔法攻撃力強化Lv.12</td>
+                            <td> <b>サブ</b> ペット＆召喚獣の状態異常耐性Lv.12</td>
+                            <td> 不可 </td>
+                        </tr>
+                        <tr>
+                            <td> <b>[ＳＲ]</b> </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td> <b>名前</b> </td>
+                            <td> <b>タイプ</b> </td>
+                            <td> <b>力</b> </td>
+                            <td> <b>敏捷</b> </td>
+                            <td> <b>知識</b> </td>
+                            <td> <b>健康</b> </td>
+                            <td> <b>運</b> </td>
+                            <td> <b>メインスキル</b> </td>
+                            <td> <b>サブスキル</b> </td>
+                            <td colspan="3"> <b>パッシブ</b> </td>
+                            <td> <b>図鑑登録</b> </td>
+                        </tr>
+                        <tr>
+                            <td> <b>ハルプウィア</b> </td>
+                            <td> 力 </td>
+                            <td> 4 </td>
+                            <td> 8 </td>
+                            <td> 2 </td>
+                            <td> 3 </td>
+                            <td> 3 </td>
+                            <td> <b>高速滑空</b> </td>
+                            <td> <b>痛みのエコー</b> </td>
+                            <td> <b>メイン</b> 上級攻撃力Lv.10 </td>
+                            <td> <b>サブ</b> 移動速度Lv.16 </td>
+                            <td> <b>サブ</b>敵クリティカル抵抗低減Lv.5 </td>
+                            <td> 不可 </td>
+                        </tr>
+                        <tr>
+                            <td> <b>[ＬＲ]</b> </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td> <b>名前</b> </td>
+                            <td> <b>タイプ</b> </td>
+                            <td> <b>力</b> </td>
+                            <td> <b>敏捷</b> </td>
+                            <td> <b>知識</b> </td>
+                            <td> <b>健康</b> </td>
+                            <td> <b>運</b> </td>
+                            <td> <b>メインスキル</b> </td>
+                            <td> <b>サブスキル</b> </td>
+                            <td colspan="3"> <b>パッシブ</b> </td>
+                            <td> <b>図鑑登録</b> </td>
+                        </tr>
+                        <tr>
+                            <td> <b>クレオン</b> </td>
+                            <td> 力 </td>
+                            <td> 12 </td>
+                            <td> 5 </td>
+                            <td> 2 </td>
+                            <td> 8 </td>
+                            <td> 3 </td>
+                            <td> <b>魔一撃</b> </td>
+                            <td> <b>狂乱</b> </td>
+                            <td> <b>メイン</b> 敵クリティカル抵抗低減Lv.20</td>
+                            <td> <b>サブ</b> 人間型ダメージ抵抗Lv.10 </td>
+                            <td> <b>サブ</b> PVP攻撃力Lv.10 </td>
+                            <td> 不可 </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <font color="#e95388">
+                    <a name="99"></a>
+                    <h4>変更・修正</h4>
+                </font>
+                <h5>運営によるBOT確認機能の改善</h5>
+
+                -運営によるBOT確認名称が<span class="color-image1">マクロの使用の疑いユーザ申告</span>に変更されます。
+                <br>
+
+
+                <br>
+
+                -運営によるBOT確認解除方式が一部の調整されました。
+                <br>
+
+                <b>[1段階]</b>
+                <br>
+
+                -運営によるBOT確認文字入力時間：1分（従来の2分の変更）
+                <br>
+                -運営によるBOT確認文字入力成功時、運営によるBOT確認解除と通常のプレイ可能
+                <br>
+
+
+                <br>
+
+                <b>[2段階]</b>
+                <br>
+
+                - 1段階で運営によるBOT確認文字入力を超えると失敗時、一定時間（5分）の間、運営によるBOT確認文字再入力が可能です。
+                <br>
+
+                （ただし、この時のキャラクターの移動、アイテムの使用、スキルの使用が制限されます。）
+                <br>
+
+                - 5分内運営によるBOT確認文字入力を成功した場合、運営によるBOT確認解除されます。
+                <br>
+
+
+                - 5分内運営によるBOT確認文字を入力できない場合は、そのキャラクターの接続が終了し、60分間キャラクターのすべての行動が制限されます。
+                <br>
+
+                （ペナルティ時間はキャラクターがゲームに接続中にのみ減少し）
+                <br>
+
+
+                <br>
+
+                -運営によるBOT確認時、案内メッセージが追加されました。
+                <br>
+
+
+                *　運営によるBOT確認を受けて入力されているユーザを再申告する場合
+                <br>
+                → <span class="color-image1">そのユーザはすでにマクロ疑いチェックを行っています。</span>メッセージの表示
+                <br>
+
+                * 2段階で運営によるBOT確認入力に失敗したキャラクターを申告する場合
+                <br>
+                → <span class="color-image1">そのユーザはすでにペナルティにより何の行動もできません。</span>メッセージの表示
+                <br>
+
+
+                <br>
+
+                <br>
+
+                <h5>アルケミストスキル変更</h5>
+                - <span class="color-image1">ビルドトルーパー：イグノア</span>の先攻の機能が削除されます。
+                <br>
+
+                - <span class="color-image1">プロモートリフォーム</span>のポーション回復量増加とポーション回復速度増加係数が変更されます。<br>
+                <br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td> 　 </td>
+                            <td colspan="2"> <b>プロモートリフォーム</b> </td>
+                            <td colspan="13"> スキル難易度：レベル2<br />
+                                スキルツールチップ：本人に人体錬成を使用。体の中で改造が行われ、ポーションによる回復量と回復速度が増加する。<br />
+                                タイプ：NEWパッシブ
+                                </td>
+                        </tr>
+                        <tr>
+                            <td> <b>レベル</b> </td>
+                            <td> <b>1</b> </td>
+                            <td> <b>2</b> </td>
+                            <td> <b>3</b> </td>
+                            <td> <b>4</b> </td>
+                            <td> <b>5</b> </td>
+                            <td> <b>6</b> </td>
+                            <td> <b>7</b> </td>
+                            <td> <b>8</b> </td>
+                            <td> <b>9</b> </td>
+                            <td> <b>10</b> </td>
+                            <td> <b>20</b> </td>
+                            <td> <b>30</b> </td>
+                            <td> <b>40</b> </td>
+                            <td> <b>50</b> </td>
+                            <td> <b>備考</b> </td>
+
+                        </tr>
+                        <tr>
+                            <td> <s><strike>ポーション回復量増加（％）</strike></s> </td>
+                            <td> <s><strike>30</strike></s> </td>
+                            <td> <s><strike>33</strike></s> </td>
+                            <td> <s><strike>36</strike></s> </td>
+                            <td> <s><strike>39</strike></s> </td>
+                            <td> <s><strike>42</strike></s> </td>
+                            <td> <s><strike>45</strike></s> </td>
+                            <td> <s><strike>48</strike></s> </td>
+                            <td> <s><strike>51</strike></s> </td>
+                            <td> <s><strike>54</strike></s> </td>
+                            <td> <s><strike>57</strike></s> </td>
+                            <td> <s><strike>87</strike></s> </td>
+                            <td> <s><strike>117</strike></s> </td>
+                            <td> <s><strike>147</strike></s> </td>
+                            <td> <s><strike>177</strike></s> </td>
+                            <td> 　 </td>
+
+                        </tr>
+                        <tr>
+                            <td> ポーション回復量増加（％） </td>
+                            <td> 1 </td>
+                            <td> 2 </td>
+                            <td> 3 </td>
+                            <td> 4 </td>
+                            <td> 5 </td>
+                            <td> 6 </td>
+                            <td> 7 </td>
+                            <td> 8 </td>
+                            <td> 9 </td>
+                            <td> 10 </td>
+                            <td> 20 </td>
+                            <td> 30 </td>
+                            <td> 40 </td>
+                            <td> 50 </td>
+                            <td> Max 50％ </td>
+
+                        </tr>
+                        <tr>
+                            <td> <s><strike>ポーション回復速度増加（％）</strike></s> </td>
+                            <td> <s><strike>30</strike></s> </td>
+                            <td> <s><strike>33</strike></s> </td>
+                            <td> <s><strike>36</strike></s> </td>
+                            <td> <s><strike>39</strike></s> </td>
+                            <td> <s><strike>42</strike></s> </td>
+                            <td> <s><strike>45</strike></s> </td>
+                            <td> <s><strike>48</strike></s> </td>
+                            <td> <s><strike>51</strike></s> </td>
+                            <td> <s><strike>54</strike></s> </td>
+                            <td> <s><strike>57</strike></s> </td>
+                            <td> <s><strike>87</strike></s> </td>
+                            <td> <s><strike>117</strike></s> </td>
+                            <td> <s><strike>147</strike></s> </td>
+                            <td> <s><strike>177</strike></s> </td>
+                            <td> 　 </td>
+
+                        </tr>
+                        <tr>
+                            <td> ポーション回復速度増加（％） </td>
+                            <td> 1 </td>
+                            <td> 2 </td>
+                            <td> 3 </td>
+                            <td> 4 </td>
+                            <td> 5 </td>
+                            <td> 6 </td>
+                            <td> 7 </td>
+                            <td> 8 </td>
+                            <td> 9 </td>
+                            <td> 10 </td>
+                            <td> 20 </td>
+                            <td> 30 </td>
+                            <td> 40 </td>
+                            <td> 50 </td>
+                            <td> Max 50％ </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+                <h5>変更</h5>
+                -錬成スロット4個開放された遺物アイテムを新しく錬成封印開放しようとすると、警告メッセージを追加
+                <br>
+                -魔法ダメージ表記[,]を追加（例）闇ダメージ31324.23 - >闇ダメージ31,324.23
+                <br>
+                - 2次パスワードの入力ウィンドウのセキュリティ強化
+                <br>
+                -NAVERチャネリングアカウントでログイン画面に再突入時の、ゲーム接続が不可能な現象に伴う一時的な措置
+                <br>
+                キャラクター選択ウィンドウ解除ボタンを無効に
+                <br>
+                ゲーム内のシステムメニューの<span class="color-image1">ログイン画面に戻る</span>ボタンを無効に
+                <br>
+
+
+
+                <br>
+                <br>
+                <br>
+                <h5>修正</h5>
+                -モンスター討伐時、召喚獣より遅く価格がある場合、経験値獲得量が変わる現象を修正
+                <br>
+
+                -取引ウィンドウにあげたアイテムの数が実際とは違って減少よう表示される現象を修正
+                <br>
+
+                -PTメンバーの中で追放天使コーリングスキル使用してプレミアムフィールドに移動する場合スフィア類を所持していない場合、警告アラートが表示され、移動されないように修正
+                <br>
+
+
+                <br>
+
+                -ミッションブックシーズン3「風変わりな冒険」Chapter8[旅の仲間]10番「<span class="color-image1">私はまだ強くなれる</span>」のツールチップ内容の変更
+                <br>
+                -アルケミスト[コントラストトルーパー：ヒューズイグノア]使用時、イグノアが文字を覆う問題を修正
+                <br>
+                -貫通/範囲ミサイルタイプのスキルのスキル不発の問題を修正
+                <br>
+
+
+                <br>
+
+                -ガスタイプスキル詠唱中襲撃や盾のブロックなどの妨害要素によりスキルが中断されないように修正
+                <br>
+
+                - <span class="color-image1">モンスターの魔法体力吸収抵抗100％増加</span>フィールドで体力が吸収されるように見える演出修正
+                <br>
+                -サマナー<span class="color-image1">アルマジロローリング</span>スキルのアニメーションを変更
+                <br>
+
+                -キャラクターが重なったところにマウスを置いて、[P]を押したときにキャラクターの名前のウィンドウに出力される機能の削除
+                <br>
+                -インベントリフィルタの使用時に、ギルドマスターだけがギルドマークのメッセージ出力される問題を修正
+                <br>
+                -忘れられた地下収容所B3フィールドの一部区間を移動不可能な現象を修正
+                <br>
+
+                - <span class="color-image1">死の荒れ地</span>で<span
+                    class="color-image1">生命の森の中心部</span>のフィールドに移動するポータルの位置を修正
+                <br>
+                - <span class="color-image1">ヤティカヌ</span>フィールドPvPゾーンで、一部のエリアがPvPで適用されない現象を修正
+                <br>
+                - <span class="color-image1">女王の墓</span>フィールドで、一部のモンスターが挟まれる現象を修正
+                <br>
+                - <span class="color-image1">他人のために</span>クエストが正常に進行していない現象を修正
+                <br>
+
+
+                <br>
+
+                - [体力再生]超越の書のツールチップ内容の変更
+                <br>
+                -ディメンションハブ<span class="color-image1">堕落したの聖域</span>内の一部エリアを動かすことができなかった現象を修正
+                <br>
+                -花火アイテムのエフェクトが表示されない現象を修正
+                <br>
+                -戦士<span class="color-image1">ブラッドフューリー</span>スキルの付加効果のオプション持続時間を変更
+                <br>
+                -知恵、カリスマステータスの上にマウスオーバー時に、表示される<span class="color-image1">状態異常耐性</span>関連の内容の削除
+                <br>
+                - PvPゾーンでトラップスキルが発動されない現象を修正
+                <br>
+                - [時空の歪み]超越スキルのダメージ減少効果が正常に適用されていない現象を修正
+                <br>
+
+
+                <br>
+
+                -ネクロマンサーの状態でバフが適用された調教ペットが悪魔に変身する場合バフが解ける現象を修正
+                <br>
+                -闘士が透明状態のときに、効果エフェクトが出力される現象を修正
+                <br>
+                -競売オートコンプリート検索機能のエラーを修正
+                <br>
+                -ウルフマン「エモーションバースト」スキルの<span class="color-image1">防御力％増加</span>オプションが適用されていない現象を修正
+                <br>
+                -ウルフマン「エモーションバースト」スキルの<span class="color-image1">魔法防御％増加</span>、<span
+                    class="color-image1">物理防御％増加</span>オプションが正常に適用されない現象を修正
+                <br>
+
+                -付加効果でダメージを与えるスキルに恩寵が発生していない現象を修正
+                <br>
+                - <span class="color-image1">花の乙女スペシャル</span>の攻撃回数が12打適用されていない現象を修正
+                <br>
+
+                -融合されたホムンクルスに透明リング効果が適用されていない現象を修正
+                <br>
+                -ウォーターフォール使用時、ダメージが正常に適用されていない現象を修正
+                <br>
+                - <span class="color-image1">アーマークラッシャー</span>オプションが異常に適用された現象を修正
+                <br>
+                -霊術師のカリスマステータス効果「スキル成功確率増加」の削除
+                <br>
+                -悪魔の<span class="color-image1">液マスター時のオフポイズンボム</span>パッシブスキル効果が適用されない現象を修正
+                <br>
+                -武道家<span class="color-image1">オーラマスター</span>の覚醒パッシブ</span>電力</span>の効果が異常に適用される現象を修正
+                <br>
+
+
+                <br>
+
+                -アーチャーインターバルシュータースキルが異常に適用される現象を修正
+                <br>
+                -武道家<span class="color-image1">音速かかと落とし</span>スキルの火ダメージオプションが異常に適用される現象を修正
+                <br>
+
+                -アルケミストの680T武器を<span class="color-image1">黄金のチケット</span>で交換できない現象を修正
+                <br>
+
+                -チュートリアルクエストが異常に適用される現象を修正
+                <br>
+                -霊術師スピリットインプリケイショナー</span>覚醒時に誤っスキル名出てくるツールチップの修正
+                <br>
+                - <span class="color-image1">インクを返せ</span>クエストでNPC悪魔ハンターが出現していない現象を修正
+                <br>
+                - PvPゾーンでアルケミストの<span class="color-image1">セラピーエリア</span>スキルが相手にも適用される現象を修正
+                <br>
+                -クイックスロットに登録したアイテムを装備した場合アイテム情報が異なって出力される現象を修正
+                <br>
+                - <span class="color-image1">万病治療薬</span>アイテム使用時、[逃げ]の状態異常効果が解除されない現象を修正
+                <br>
+
+
+                <br>
+
+                -サマナー<span class="color-image1">アルマジロローリング</span>スキル使用後再使用時、止まっている現象を修正
+                <br>
+                - <span class="color-image1">フライングエンパー</span>スキルの[火属性低下]が異常に適用される現象を修正
+                <br>
+                -アルケミストの<span class="color-image1">連携延性</span>パッシブスキルが異常に適用される現象を修正
+                <br>
+                - <span class="color-image1">血の覚醒</span>スキルが異常に適用される現象を修正
+                <br>
+                - <span class="color-image1">ゴリマ沼地</span>フィールドで移動できない区域に宝箱が登場する現象を修正
+                <br>
+
+
+                <br>
+
+                -ソールリアンのレザー[Nx]アイテムの2開放オプションを[誘惑された敵に+ 10％ダメージ追加>防御力56％増加]で修正
+                <br>
+                - <span class="color-image1">PvP防御力増加</span>オプションが異常に適用される現象を修正
+                <br>
+                -ビーストテイマー<span class="color-image1">特技命令</span>が持続時間の間に解ける現象を修正
+                <br>
+                -ヤティカヌPvPゾーンでオーラの種類の効果が適用されない現象を修正
+                <br>
+                -カーペットキットエンブレムを正常に使用できない現象を修正
+                <br>
+                -インフィニティストーンの[魔力の]オプション付与する場合の耐久度0％となる現象を修正
+                <br>
+                -マスケッティアの一部スキルがスロットに応じて使用条件が変わる現象を修正
+                <br>
+                -特定の秘密ダンジョンクリア後NPCと会話時の異常な会話の内容が公開される現象を修正
+                <br>
+                - <span class="color-image1">ハンターの</span>オプションを適用できない装置がツールチップに含まれている現象を修正
+                <br>
+                -ガイドシステムのコンテンツ>リードを通して瞬間移動した場合NPCユスピナ前方に移動されない現象を修正
+                <br>
+                -アルケミスト[連携延性]スキルのツールチップの修正（サンプリングアンバー→カタパルトアンバー）
+                <br>
+                -ノーマル・レア等級のコスチュームでスロットに装着した時にクレストが抽出されない現象を修正
+                <br>
+                - <span class="color-image1">ULTスロット再錬成道具箱</span>のツールチップが異常に出力される現象を修正
+                <br>
+                -異界強化を削除した後装備強化の進行を押す時、異常なUIが出力される現象を修正
+                <br>
+                -キャラクター選択ウィンドウでキャラクターの色が異常に出力される現象を修正
+                <br>
+                -アーチャー　<span class="color-image1">ハーモニックアロー</span>、<span class="color-image1">マシンアロー</span>、<span
+                    class="color-image1">ベラジンショット</span>スキルが攻撃速度が非常に速いときに、一部ダメージのみ適用される現象を修正
+                <br>
+                - <span class="color-image1">アーマークラッシャー</span>スキルのツールチップ内容の変更
+                <br>
+                -隠しコスチュームのパレットの色が異常に表記されている現象を修正
+                <br>
+                -闘士<span class="color-image1">チェンジクラシ</span>スキル発動時キャラクターが動く現象を修正
+                <br>
+
+
+                <br>
+
+                -剣士、戦士スキルのクールタイムが共有されている現象を修正
+                <br>
+                -秘密ダンジョン<span class="color-image1">犠牲祭の祭壇</span>でモンスターが壁後方選別される現象を修正
+                <br>
+                -霊術師</span>ソウルブレイズ</span>スキルのツールチップ内容追加
+                <br>
+                -スウェブタワーB11の一部区域の扉が正常に動作していない現象を修正
+                <br>
+                -統合ファーストポータル利用うち部のフィールドが非正常的に表示されている現象を修正
+                <br>
+                -ビショップ<span class="color-image1">レストレイション</span>スキルがPvP市会福数値が異常に適用される現象を修正
+                <br>
+                -黒魔術師</span>烙印</span>のCP消費が異常に適用される現象を修正
+                <br>
+                -黒魔術師</span>無限の苦痛</span>リアクションスキルが動作していなくても、CPが消費される現象を修正
+                <br>
+                - クライアント>オプション（REDSTONEシステム設定）に固定解像度（1024X768）モードリセット
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                [引用元] <a href="http://redstone.logickorea.co.kr/notice/noticeboard/view.aspx?sqn=7356">韓国公式ページ</a>より。
+                <br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/3c42afe3044cac23ffa42962f824782bc0a9632c.10.9.9.3.png"
+                    border="0" width="800px" alt="" name="insertImg" /><br><br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        </div>
+</body>
+
+</html>
