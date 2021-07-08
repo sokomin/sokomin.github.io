@@ -28,6 +28,11 @@ function calc1() {
         document.f.r2.value = "調査中";
         return;
     }
+    if (sup === 0) {
+        document.f.r1.value = 1;
+        document.f.r2.value = 1;
+        return;
+    }
     if (sup === -1) {
         document.f.r1.value = "適正外";
         document.f.r2.value = "適正外";
@@ -142,7 +147,7 @@ function def_celestial_sup(lv) {
         return (3.1 - (lv - 850) * 0.01);
     }
     if (lv >= 1160) {
-        return 1;
+        return 0;
     }
 }
 
