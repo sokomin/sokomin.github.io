@@ -90,6 +90,51 @@ const default_html_txt = ['<table id="table1"><colgroup><col span="1" width="40"
     '</td></tr></tbody></table>'
 ];
 
+// Nxじゃない版のhtml
+const single_html_txt = ['<table id="table1"><colgroup><col span="1" width="40"><col span="1" width="135"><col span="1" width="135"><col span="2"><col span="1"><col span="1" width="40"><col span="1" width="135"><col span="1" width="135"><col span="2"><col span="1"></colgroup><tbody><tr><th colspan="6"><font color="#e8c898">',
+    // アイテム名
+    '</font></th><th colspan="6"><font color="#cc6633">',
+    // Nx名
+    '</font></th></tr><tr><td rowspan="2"><img src="../item/design/image/item/iconItem_',
+    // item_id
+    '.png"></td><td colspan="5" valign="top"><font color="#00f8f8">&lt;基本情報&gt;</font><br>',
+    // NOPリスト 3
+            // - 火 水 風大地 抵抗 <font color="#f8f800">+14%</font> <br />
+    '<font color="#f8f800">錬成 可能</font><br></td><td rowspan="2"><img src="../item/design/image/item/iconItem_',
+    //item_id 4
+    '.png"></td><td colspan="5" valign="top"><font color="#00f8f8">&lt;基本情報&gt;</font><br>',
+    // NxOPリスト 5
+            // - 火 水 風大地 抵抗 <font color="#f8f800">+14%</font> <br />
+    '<br><font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>',
+    // 解放OPリスト 6
+            // - アイテム着用レベル -<font color="#f8f800">100</font> <br />
+            // - 攻撃速度 <font color="#f8f800">+10</font> ％<br />
+            // - CP獲得ボーナス <font color="#f8f800">20</font> ％<br />
+            // - 魔法致命打 <font color="#f8f800">+5</font>％<br>
+    '</td></tr><tr><td valign="top"><font color="#00f8f8">&lt;要求能力値&gt;</font><br>',
+            // レベル 1000<br>
+            // 知識 800<br>
+            // カリスマ 400<br>
+    '</td><td valign="top" colspan="4"><font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>',
+    // TODO 8
+            // - 男性キャラクター専用アイテム
+    '</td><td valign="top"><font color="#00f8f8">&lt;要求能力値&gt;</font><br>',
+    // Nx時に変わるケースに注意 9 
+            // レベル 1000<br>
+            // 知識 800<br>
+            // カリスマ 400<br>
+    '</td><td valign="top" colspan="4"><font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>',
+    // TODO 10
+            // - 男性キャラクター専用アイテム
+    '</td></tr><tr><td colspan="2" valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>1000/1000</td><td valign="top" colspan="4"><font color="#00f8f8">&lt;価格&gt;</font><br></td><td colspan="2" valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>1000/1000</td><td valign="top" colspan="4"><font color="#00f8f8">&lt;価格&gt;</font><br></td></tr><tr><td colspan="12"><font color="#00f8f8">&lt;説明&gt;</font><br>',
+    // a3
+            // - あるやんちゃな天才が気まぐれいに作ったマント。
+            // ただ派手なマントに見えるが、使用者は自分の周りに漂う強い力を感じられるという。
+            // <br>
+    '</td></tr></tbody></table>'
+];
+
+
 function init2() {
     //TODO localstorage辺りから引っ張ってきたい。
 }
