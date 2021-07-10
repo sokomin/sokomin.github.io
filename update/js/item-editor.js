@@ -82,10 +82,20 @@ const default_html_txt = ['<table id="table1"><colgroup><col span="1" width="40"
     '</td><td valign="top" colspan="4"><font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>',
     // TODO 10
             // - 男性キャラクター専用アイテム
-    '</td></tr><tr><td colspan="2" valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>1000/1000</td><td valign="top" colspan="4"><font color="#00f8f8">&lt;価格&gt;</font><br></td><td colspan="2" valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>1000/1000</td><td valign="top" colspan="4"><font color="#00f8f8">&lt;価格&gt;</font><br></td></tr><tr><td colspan="12"><font color="#00f8f8">&lt;説明&gt;</font><br>',
-    // a3
-            // - あるやんちゃな天才が気まぐれいに作ったマント。
-            // ただ派手なマントに見えるが、使用者は自分の周りに漂う強い力を感じられるという。
+    '</td></tr><tr><td colspan="2" valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>',
+    // 11 ないときはデフォうめ
+    // '1000 / 1000',
+    '</td > <td valign="top" colspan="4"><font color="#00f8f8">&lt;価格&gt;</font><br>',
+    // 12 価格
+    '</td><td colspan="2" valign="top"><font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>',
+    // nx係数
+    // '1000/1000'
+    '</td><td valign="top" colspan="4"><font color="#00f8f8">&lt;価格&gt;</font><br>',
+    // 14 nx価格
+    '</td></tr><tr><td colspan="12"><font color="#00f8f8">&lt;説明&gt;</font><br>',
+        // a3　15
+        // - あるやんちゃな天才が気まぐれいに作ったマント。
+        // ただ派手なマントに見えるが、使用者は自分の周りに漂う強い力を感じられるという。
             // <br>
     '</td></tr></tbody></table>'
 ];
@@ -233,7 +243,7 @@ function calc1() {
                 res_text += "<br>";
             }
         }
-        if (i == 11) {
+        if (i == 15) {
             res_text += "- ";
             res_text += a3;
         }

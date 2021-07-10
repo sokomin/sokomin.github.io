@@ -28,33 +28,45 @@ function calc2(evt) {
                 name: "",
                 image_id: "0000",
                 op: [],
-                nxop: [], //nxアイテムの場合
-                lbop: [], //lbアイテムの場合
+                nxop: [], //nxアイテムの場合：OP変動
+                lbop: [], //nxアイテムの場合：封印解放
                 req: [],
+                reqnx: [], //nxアイテムの要求値
                 job: [],
                 // nxアイテムは扱わないのでスルーしたい…
                 txt: "",
                 system: "", // DropLv/係数
                 price: "", //販売価格
+                nxsystem: "",　// Nxのドロップ係数
+                nxprice: "", //Nx販売価格
                 stack: 1, // スタック数
                 type: "", //アイテムの種類(ここから職業を判定する)＋フィルタ用
             };
+            var nx_subkey = null;
             var re;
             var phase = 0;
+            var sys_txt = "";
             for (var i = 0; i < data.length; i++) {
                 var txt = data[i];
-                var sys_txt = "";
                 if (!txt || txt == "") {
                     continue;
                 }
                 // 初手は必ずitemで、Nxはスルーする
                 if (item_info[key].name == "") {
-                    if (txt.includes("[Nx]")) {
-                        item_info[key] = {};
-                        // TODO Nxは通常アイテムに結合させたい。(通常アイテムが先に出力される前提)
-                        break;
-                    }
                     var name = txt.split(" ");
+                    if (txt.includes("[Nx]")) {
+                        for (var nxkey in item_info) {
+                            var nxname = name[2].split("[Nx]")[0];
+                            if (item_info[nxkey].name == nxname) {
+                                item_info[nxkey].is_nx = true;
+                                nx_subkey = nxkey;
+                                break;
+                            }
+                        }
+                        // item_info[key] = {};
+                        // TODO Nxは通常アイテムに結合させたい。(通常アイテムが先に出力される前提)
+                        // break;
+                    }
                     item_info[key].image_id = ( '0000' + name[1] ).slice( -4 );
                     item_info[key].name = name[2];
                     phase = 1;
@@ -65,6 +77,9 @@ function calc2(evt) {
                     continue;
                 } else if (txt.includes("<要求能力値>")) {
                     phase = 3;
+                    continue;
+                } else if (txt.includes("<錬成 オプション 情報>")) {
+                    phase = 25;
                     continue;
                 } else if (txt.includes("<着用可能な職業>")) {
                     phase = 4;
@@ -83,10 +98,27 @@ function calc2(evt) {
                     var replace_txt = '<font color="#f8f800">$1</font>';
                     re = /(-?\d+(?:\.\d*)?)/g; //小数点・負の値にも対応してる
                     txt = txt.replace(re, replace_txt);
-                    item_info[key].op.push(txt);
+                    if (nx_subkey) {
+                        item_info[nx_subkey].nxop.push(txt);
+                    } else {
+                        item_info[key].op.push(txt);
+                    }
+                }
+                if (phase == 25) {
+                    re=/#[0-9]: /g;
+                    txt = txt.replace(re, "");
+                    txt = txt.replace("*", "-");
+                    var replace_txt = '<font color="#f8f800">$1</font>';
+                    re = /(-?\d+(?:\.\d*)?)/g; //小数点・負の値にも対応してる
+                    txt = txt.replace(re, replace_txt);
+                    item_info[nx_subkey].lbop.push(txt);
                 }
                 if (phase == 3) {
-                    item_info[key].req.push(txt);
+                    if (nx_subkey) {
+                        item_info[key].reqnx.push(txt);
+                    } else {
+                        item_info[key].req.push(txt);
+                    }
                 }
                 if (phase == 4) {
                     item_info[key].job.push(txt);
@@ -116,14 +148,26 @@ function calc2(evt) {
                     } else if (txt.includes("- Item Price: ")) {
                         txt = txt.replace("- Item Price: ", "");
                         // TODO 補正値とかありそう
-                        item_info[key].price = txt + '<font color="#f8f800">ゴールド</font>';
+                        if (nx_subkey) {
+                            item_info[nxkey].nxprice = '<font color="#f8f800">' + txt + '</font> Gold<br>';
+                        } else {
+                            item_info[key].price = '<font color="#f8f800">' + txt + '</font> Gold<br>';
+                        }
                     } else if (txt.includes("- Item Type: ")) {
                         txt = txt.replace("- Item Type: ", "");
                         item_info[key].item_type = txt;
                     }
                 }
             }
-            item_info[key].system = sys_txt
+            if (nx_subkey) {
+                item_info[nxkey].nxsystem = sys_txt;
+            } else {
+                item_info[key].system = sys_txt;
+            }
+            // Nxアイテムは後続の処理で邪魔になるので削除しておく
+            if (nx_subkey) {
+                item_info[key] = {};
+            }
         }
         console.log(item_info);
 
@@ -136,47 +180,135 @@ function calc2(evt) {
             var a1 = item_info[key].name;
             var a2 = item_info[key].image_id;
             var nop_ary = item_info[key].op;
+            var nxop_ary = item_info[key].nxop;
+            var lbop_ary = item_info[key].lbop;
             var req_ary = item_info[key].req;
+            var reqnx_ary = item_info[key].reqnx;
             var job_ary = item_info[key].job;
             var a5 = item_info[key].system;
             var a6 = item_info[key].price;
             var a7 = item_info[key].txt;
-            for (var i = 0; i < single_html_txt.length; i++) {
-                res_text += single_html_txt[i];
-                if (i == 0) {
-                    res_text += a1;
-                }
-                if (i == 1) {
-                    res_text += a2;
-                }
-                if (i == 2 && nop_ary && nop_ary.length > 0) {
-                    // for文で回すなりして頑張る
-                    for (var j = 0; j < nop_ary.length; j++) {
-                        res_text += nop_ary[j];
-                        res_text += "<br>";
+            var a13 = item_info[key].nxsystem;
+            var a14 = item_info[key].nxprice;
+            if (item_info[key].is_nx) {
+                for (var i = 0; i < default_html_txt.length; i++) {
+                    res_text += default_html_txt[i];
+                    if (i == 0) {
+                        res_text += a1;
+                    }
+                    if (i == 1) {
+                        res_text += a1;
+                        res_text += "[Nx]";
+                    }
+                    if (i == 2) {
+                        res_text += a2;
+                    }
+                    if (i == 3 && nop_ary && nop_ary.length > 0) {
+                        // for文で回すなりして頑張る
+                        for (var j = 0; j < nop_ary.length; j++) {
+                            res_text += nop_ary[j];
+                            res_text += "<br>";
+                        }
+                    }
+                    if (i == 4) {
+                        res_text += a2;
+                    }
+                    if (i == 5 && nxop_ary && nxop_ary.length > 0) {
+                        // for文で回すなりして頑張る
+                        for (var j = 0; j < nxop_ary.length; j++) {
+                            res_text += nxop_ary[j];
+                            res_text += "<br>";
+                        }
+                    }
+                    if (i == 6 && lbop_ary && lbop_ary.length > 0) {
+                        // for文で回すなりして頑張る
+                        for (var j = 0; j < lbop_ary.length; j++) {
+                            res_text += lbop_ary[j];
+                            res_text += "<br>";
+                        }
+                    }
+
+                    if (i == 7 && req_ary && req_ary.length > 0) {
+                        for (var j = 0; j < req_ary.length; j++) {
+                            res_text += req_ary[j];
+                            res_text += "<br>";
+                        }
+                    }
+                    if (i == 8 && job_ary && job_ary.length > 0) {
+                        // TODO 職業も出したい
+                        for (var j = 0; j < job_ary.length; j++) {
+                            res_text += job_ary[j];
+                            res_text += "<br>";
+                        }
+                    }
+                    if (i == 9 && reqnx_ary && reqnx_ary.length > 0) {
+                        for (var j = 0; j < reqnx_ary.length; j++) {
+                            res_text += reqnx_ary[j];
+                            res_text += "<br>";
+                        }
+                    }
+                    if (i == 8 && job_ary && job_ary.length > 0) {
+                        // TODO 職業も出したい
+                        for (var j = 0; j < job_ary.length; j++) {
+                            res_text += job_ary[j];
+                            res_text += "<br>";
+                        }
+                    }
+                    if (i == 11) {
+                        res_text += a5;
+                    }
+                    if (i == 12) {
+                        res_text += a6;
+                    }
+                    if (i == 13) {
+                        res_text += a13;
+                    }
+                    if (i == 14) {
+                        res_text += a14;
+                    }
+                    if (i == 15) {
+                        res_text += a7;
                     }
                 }
-                if (i == 3 && req_ary && req_ary.length > 0) {
-                    for (var j = 0; j < req_ary.length; j++) {
-                        res_text += req_ary[j];
-                        res_text += "<br>";
+    
+            } else {
+                for (var i = 0; i < single_html_txt.length; i++) {
+                    res_text += single_html_txt[i];
+                    if (i == 0) {
+                        res_text += a1;
                     }
-                }
-                if (i == 4 && job_ary && job_ary.length > 0) {
-                    // TODO 職業も出したい
-                    for (var j = 0; j < job_ary.length; j++) {
-                        res_text += job_ary[j];
-                        res_text += "<br>";
+                    if (i == 1) {
+                        res_text += a2;
                     }
-                }
-                if (i == 5) {
-                    res_text += a5;
-                }
-                if (i == 6) {
-                    res_text += a6;
-                }
-                if (i == 7) {
-                    res_text += a7;
+                    if (i == 2 && nop_ary && nop_ary.length > 0) {
+                        // for文で回すなりして頑張る
+                        for (var j = 0; j < nop_ary.length; j++) {
+                            res_text += nop_ary[j];
+                            res_text += "<br>";
+                        }
+                    }
+                    if (i == 3 && req_ary && req_ary.length > 0) {
+                        for (var j = 0; j < req_ary.length; j++) {
+                            res_text += req_ary[j];
+                            res_text += "<br>";
+                        }
+                    }
+                    if (i == 4 && job_ary && job_ary.length > 0) {
+                        // TODO 職業も出したい
+                        for (var j = 0; j < job_ary.length; j++) {
+                            res_text += job_ary[j];
+                            res_text += "<br>";
+                        }
+                    }
+                    if (i == 5) {
+                        res_text += a5;
+                    }
+                    if (i == 6) {
+                        res_text += a6;
+                    }
+                    if (i == 7) {
+                        res_text += a7;
+                    }
                 }
             }
         }
