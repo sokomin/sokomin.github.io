@@ -54,10 +54,11 @@ function calc2(evt) {
                 // 初手は必ずitemで、Nxはスルーする
                 if (item_info[key].name == "") {
                     var name = txt.split(" ");
-                    if (txt.includes("[Nx]")) {
+                    re = /\[Nx\]/; //$一番後ろにつけてもうまくいかないので何か変な文字入ってること多い
+                    if (re.test(name[2])) {
                         for (var nxkey in item_info) {
                             var nxname = name[2].split("[Nx]")[0];
-                            if (item_info[nxkey].name == nxname) {
+                            if (item_info[nxkey].name == nxname && !item_info[nxkey].is_nx) {
                                 item_info[nxkey].is_nx = true;
                                 nx_subkey = nxkey;
                                 break;
@@ -95,6 +96,16 @@ function calc2(evt) {
                     re=/#[0-9]: /g;
                     txt = txt.replace(re, "");
                     txt = txt.replace("*", "-");
+
+                    // 職専用スキルレベル変換
+                    re = /(\- )(.*?)\(([0-9]+)(系列職業)\)/;
+                    if (re.test(txt)) {
+                        var job = chara_code[txt.match(/[0-9]+/g)[1]].name;
+                        // var replace_skill = '<font color="#f8f800">'+job+'</font> $1'
+                        var replace_skill = '$1' + job + ' $2';
+                        txt = txt.replace(re,replace_skill);
+                    }
+
                     var replace_txt = '<font color="#f8f800">$1</font>';
                     re = /(-?\d+(?:\.\d*)?)/g; //小数点・負の値にも対応してる
                     txt = txt.replace(re, replace_txt);
@@ -111,11 +122,16 @@ function calc2(evt) {
                     var replace_txt = '<font color="#f8f800">$1</font>';
                     re = /(-?\d+(?:\.\d*)?)/g; //小数点・負の値にも対応してる
                     txt = txt.replace(re, replace_txt);
-                    item_info[nx_subkey].lbop.push(txt);
+                    if (nx_subkey) {
+                        item_info[nx_subkey].lbop.push(txt);
+                    } else {
+                        item_info[key].lbop.push(txt);
+                    }
+                    // item_info[nx_subkey].lbop.push(txt);
                 }
                 if (phase == 3) {
                     if (nx_subkey) {
-                        item_info[key].reqnx.push(txt);
+                        item_info[nx_subkey].reqnx.push(txt);
                     } else {
                         item_info[key].req.push(txt);
                     }
@@ -156,6 +172,9 @@ function calc2(evt) {
                     } else if (txt.includes("- Item Type: ")) {
                         txt = txt.replace("- Item Type: ", "");
                         item_info[key].item_type = txt;
+                    } else if (txt.includes("- Required Job: ")) {
+                        txt = txt.replace("- Required Job: ", "");
+                        item_info[key].job = create_joblist(txt);
                     }
                 }
             }
@@ -247,7 +266,7 @@ function calc2(evt) {
                             res_text += "<br>";
                         }
                     }
-                    if (i == 8 && job_ary && job_ary.length > 0) {
+                    if (i == 10 && job_ary && job_ary.length > 0) {
                         // TODO 職業も出したい
                         for (var j = 0; j < job_ary.length; j++) {
                             res_text += job_ary[j];
@@ -321,4 +340,100 @@ function calc2(evt) {
         warn_html.innerHTML = '<p style="text-align: left">' + warn_text + '</p>';
 
     }
+}
+
+// 20-3: 女性専用
+// 20-4: 男性専用
+// ※両方1の場合は性別制限なし
+
+// 22-1: 武道家
+// 22-2: シーフ
+// 22-3: 追放天使
+// 22-4: ビショップ
+// 22-5: ウルフマン
+// 22-6: ウィザード
+// 22-7: 戦士
+// 22-8: 剣士
+
+// 23-1: 悪魔
+// 23-2: ネクロマンサー
+// 23-3: リトルウィッチ
+// 23-4: プリンセス
+// 23-5: サマナー
+// 23-6: ビーストテイマー
+// 23-7: アーチャー
+// 23-8: ランサー
+
+// 24-1: アルケミスト
+// 24-2: マスケッティア
+// 24-3: 黒魔術師
+// 24-4: メイド
+// 24-5: 獣人
+// 24-6: 光奏師
+// 24-7: 闘士
+// 24-8: 霊術師
+// ※1ブロックに1が7つ以上並んでる所はスルーした方がいい。
+// (22と23が11111111なら職制限無しでいいかも、最初期は16職構成だったからここ2つが全部1->制限無しって実装してるんだと思う)
+
+// 大体決め打ちの着用可能な職業リスト
+function create_joblist(txt){
+    var res = [];
+    var all_flag = 0; //2なら全部装備可能
+    txt = txt.split(" ");
+    if(txt)
+    for (var i = 0; i < 3; i++) {
+        var val = Number(txt[i]);
+        var sub = reverse(val.toString(2)); // リトルエンディアンで
+        if (i == 0) {
+            var a = sub.substr(4,2);
+            if (a == '01') {
+                res.push("- 女性キャラクター専用アイテム");
+                break;
+            } else if (a == '10') {
+                res.push("- 男性キャラクター専用アイテム");
+                break;
+            }
+        }
+        if (i == 1) {
+            if (sub == '11111111') {
+                all_flag++;
+                continue;
+            }
+            for (var j = 0; j < sub.length; j++) {
+                var a = sub.substr(j,1);
+                if (a == "1") {
+                    res.push("- " + chara_code[j].name);
+                }
+            }
+        }
+        if (i == 2) {
+            if (sub == '11111111') {
+                all_flag++;
+                if (all_flag >= 2) {
+                    break;
+                }
+            }
+            for (var j = 0; j < sub.length; j++) {
+                var a = sub.substr(j,1);
+                if (a == "1") {
+                    res.push("- " + chara_code[j + 8].name);
+                }
+            }
+        }
+        if (i == 3) {
+            for (var j = 0; j < sub.length; j++) {
+                var a = sub.substr(j,1);
+                if (a == "1") {
+                    res.push("- " + chara_code[j + 16].name);
+                }
+            }
+        }
+    }
+    return res;
+}
+
+// 8bitリトルエンディアン
+function reverse(s) {
+    s = ('00000000' + s).slice(-8);
+    return s.split("").reverse().join("");
 }
