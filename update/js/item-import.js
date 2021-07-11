@@ -97,6 +97,9 @@ function calc2(evt) {
                     txt = txt.replace(re, "");
                     txt = txt.replace("*", "-");
 
+                    // 変な文字を消す
+                    re = /<(.*?)>/g;
+                    txt = txt.replace(re, "");
                     // 職専用スキルレベル変換
                     re = /(\- )(.*?)\(([0-9]+)(系列職業)\)/;
                     if (re.test(txt)) {
@@ -119,6 +122,19 @@ function calc2(evt) {
                     re=/#[0-9]: /g;
                     txt = txt.replace(re, "");
                     txt = txt.replace("*", "-");
+
+                    // 変な文字を消す
+                    re = /<(.*?)>/g;
+                    txt = txt.replace(re, "");
+                    // 職専用スキルレベル変換
+                    re = /(\- )(.*?)\(([0-9]+)(系列職業)\)/;
+                    if (re.test(txt)) {
+                        var job = chara_code[txt.match(/[0-9]+/g)[1]].name;
+                        // var replace_skill = '<font color="#f8f800">'+job+'</font> $1'
+                        var replace_skill = '$1' + job + ' $2';
+                        txt = txt.replace(re,replace_skill);
+                    }
+                    
                     var replace_txt = '<font color="#f8f800">$1</font>';
                     re = /(-?\d+(?:\.\d*)?)/g; //小数点・負の値にも対応してる
                     txt = txt.replace(re, replace_txt);
@@ -381,7 +397,7 @@ function create_joblist(txt){
     var all_flag = 0; //2なら全部装備可能
     txt = txt.split(" ");
     if(txt)
-    for (var i = 0; i < 3; i++) {
+    for (var i = 0; i < 4; i++) {
         var val = Number(txt[i]);
         var sub = reverse(val.toString(2)); // リトルエンディアンで
         if (i == 0) {
