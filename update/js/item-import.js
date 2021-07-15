@@ -1,3 +1,16 @@
+// unknown5_84
+// 0 N
+// 1 DX
+// 2 UM
+// 3 Ex
+// 4 U
+// 5 DxU
+// 6 UMU
+// 7 Nx
+// 8 DXUNx
+// 9 UMUNx
+
+
 
 function calc2(evt) {
     var file = document.getElementById('files').files;
@@ -35,7 +48,10 @@ function calc2(evt) {
                 job: [],
                 // nxアイテムは扱わないのでスルーしたい…
                 txt: "",
+                grade: "", // 0-9 NとかNxとか
+                nxgrade: "", // 0-9
                 system: "", // DropLv/係数
+                price_type: -1, // [補正値]の種類
                 price: "", //販売価格
                 nxsystem: "",　// Nxのドロップ係数
                 nxprice: "", //Nx販売価格
@@ -167,6 +183,13 @@ function calc2(evt) {
                         txt = txt.replace("- Drop Level: ", "");
                         sys_txt += txt;
                         sys_txt += "/";
+                    } else if (txt.includes("- Item Grade: ")) {
+                        txt = txt.replace("- Item Grade: ", "");
+                        if (nx_subkey) {
+                            item_info[nxkey].nxgrade = Number(txt);
+                        } else {
+                            item_info[key].grade = Number(txt);
+                        }
                     } else if (txt.includes("- Drop Factor: ")) {
                         txt = txt.replace("- Drop Factor: ", "");
                         sys_txt += txt;
@@ -177,13 +200,22 @@ function calc2(evt) {
                             sys_txt += txt;
                             item_info[key].stack = txt;
                         }
+                    } else if (txt.includes("- Price Type: ")) {
+                        // 必ずItemPriceの1個上になるよう入れてね
+                        txt = txt.replace("- Price Type: ", "");
+                        if (nx_subkey) {
+                            item_info[nxkey].nxprice = '[補正値] * ';
+                            item_info[nxkey].price_type = Number(txt);
+                        } else {
+                            item_info[key].price = '[補正値] * ';
+                            item_info[key].price_type = Number(txt);
+                        }
                     } else if (txt.includes("- Item Price: ")) {
                         txt = txt.replace("- Item Price: ", "");
-                        // TODO 補正値とかありそう
                         if (nx_subkey) {
-                            item_info[nxkey].nxprice = '<font color="#f8f800">' + txt + '</font> Gold<br>';
+                            item_info[nxkey].nxprice += '<font color="#f8f800">' + txt + '</font> Gold<br>';
                         } else {
-                            item_info[key].price = '<font color="#f8f800">' + txt + '</font> Gold<br>';
+                            item_info[key].price += '<font color="#f8f800">' + txt + '</font> Gold<br>';
                         }
                     } else if (txt.includes("- Item Type: ")) {
                         txt = txt.replace("- Item Type: ", "");
