@@ -57,6 +57,7 @@ function calc2(evt) {
                 nxprice: "", //Nx販売価格
                 stack: 1, // スタック数
                 type: "", //アイテムの種類(ここから職業を判定する)＋フィルタ用
+                // is_rankex: false, //rank武器かどうか？
             };
             var nx_subkey = null;
             var re;
@@ -70,22 +71,20 @@ function calc2(evt) {
                 // 初手は必ずitemで、Nxはスルーする
                 if (item_info[key].name == "") {
                     var name = txt.split(" ");
-                    re = /\[Nx\]/; //$一番後ろにつけてもうまくいかないので何か変な文字入ってること多い
-                    if (re.test(name[2])) {
-                        for (var nxkey in item_info) {
-                            var nxname = name[2].split("[Nx]")[0];
-                            if (item_info[nxkey].name == nxname && !item_info[nxkey].is_nx) {
-                                item_info[nxkey].is_nx = true;
-                                nx_subkey = nxkey;
-                                break;
-                            }
-                        }
-                        // item_info[key] = {};
-                        // TODO Nxは通常アイテムに結合させたい。(半角スペースが入ってるとnameで死ぬ。シャイエン陰陽とか)
-                        // break;
+                    var item_name = "";
+                    for (var l = 2; l < name.length; l++) {
+                        item_name += name[l];
                     }
-                    item_info[key].image_id = ( '0000' + name[1] ).slice( -4 );
-                    item_info[key].name = name[2];
+                    re = /Rank(.*?)-EX/; // RankEx武器の判定
+                    if (re.test(item_name)) {
+                        // TODO できればRank値もいれたいけど、使わないと思うんだよなあ
+                        item_info[key].is_rankex = true;
+                    }
+                    re = /\[Nx\]/; //$一番後ろにつけてもうまくいかないので何か変な文字入ってること多い
+                    if (re.test(item_name)) {
+                    }
+                    item_info[key].image_id = ('0000' + name[1]).slice(-4);
+                    item_info[key].name = item_name;
                     phase = 1;
                 }
                 // TODO 取引不可とかその辺りの情報も自動で仕込みたい
@@ -174,6 +173,7 @@ function calc2(evt) {
                 if (phase == 5) {
                     item_info[key].txt += txt;
                     item_info[key].txt += "<br>";
+                    // TODO　多分これ動いてない
                     if (txt == "※ 封印された力を解放するには 封印解放道具箱 が必要です") {
                         item_info[key].txt += '<font color="#ef6cef">※ 封印された力を解放するには</font> <font color="#e8c898">封印解放道具箱</font> <font color="#ef6cef">が必要です</font><br>';
                     }
@@ -203,12 +203,14 @@ function calc2(evt) {
                     } else if (txt.includes("- Price Type: ")) {
                         // 必ずItemPriceの1個上になるよう入れてね
                         txt = txt.replace("- Price Type: ", "");
-                        if (nx_subkey) {
-                            item_info[nxkey].nxprice = '[補正値] * ';
-                            item_info[nxkey].price_type = Number(txt);
-                        } else {
-                            item_info[key].price = '[補正値] * ';
-                            item_info[key].price_type = Number(txt);
+                        if (Number(txt) > 0) {
+                            if (nx_subkey) {
+                                item_info[nxkey].nxprice = '[補正値] * ';
+                                item_info[nxkey].price_type = Number(txt);
+                            } else {
+                                item_info[key].price = '[補正値] * ';
+                                item_info[key].price_type = Number(txt);
+                            }
                         }
                     } else if (txt.includes("- Item Price: ")) {
                         txt = txt.replace("- Item Price: ", "");
@@ -252,6 +254,8 @@ function calc2(evt) {
             var req_ary = item_info[key].req;
             var reqnx_ary = item_info[key].reqnx;
             var job_ary = item_info[key].job;
+            var grade = item_info[key].grade;
+            var is_rankex = item_info[key].is_rankex;
             var a5 = item_info[key].system;
             var a6 = item_info[key].price;
             var a7 = item_info[key].txt;
@@ -340,7 +344,15 @@ function calc2(evt) {
                 for (var i = 0; i < single_html_txt.length; i++) {
                     res_text += single_html_txt[i];
                     if (i == 0) {
-                        res_text += a1;
+                        if (grade < 4) {
+                            if (is_rankex) {
+                                res_text +=  '<font color="#9999ff">' + a1 + '</font>';
+                            } else {
+                                res_text +=  '<font color="#ffffff">' + a1 + '</font>';
+                            }
+                        } else {
+                            res_text += a1;
+                        }
                     }
                     if (i == 1) {
                         res_text += a2;
