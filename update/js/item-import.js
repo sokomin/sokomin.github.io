@@ -81,7 +81,7 @@ function calc2(evt) {
                             }
                         }
                         // item_info[key] = {};
-                        // TODO Nxは通常アイテムに結合させたい。(通常アイテムが先に出力される前提)
+                        // TODO Nxは通常アイテムに結合させたい。(半角スペースが入ってるとnameで死ぬ。シャイエン陰陽とか)
                         // break;
                     }
                     item_info[key].image_id = ( '0000' + name[1] ).slice( -4 );
@@ -302,7 +302,6 @@ function calc2(evt) {
                         }
                     }
                     if (i == 8 && job_ary && job_ary.length > 0) {
-                        // TODO 職業も出したい
                         for (var j = 0; j < job_ary.length; j++) {
                             res_text += job_ary[j];
                             res_text += "<br>";
@@ -315,7 +314,6 @@ function calc2(evt) {
                         }
                     }
                     if (i == 10 && job_ary && job_ary.length > 0) {
-                        // TODO 職業も出したい
                         for (var j = 0; j < job_ary.length; j++) {
                             res_text += job_ary[j];
                             res_text += "<br>";
@@ -361,7 +359,6 @@ function calc2(evt) {
                         }
                     }
                     if (i == 4 && job_ary && job_ary.length > 0) {
-                        // TODO 職業も出したい
                         for (var j = 0; j < job_ary.length; j++) {
                             res_text += job_ary[j];
                             res_text += "<br>";
