@@ -9,7 +9,8 @@
 // 7 Nx
 // 8 DXUNx
 // 9 UMUNx
-
+const u_state_table = '<table id="table1"><tr><th colspan="6" valign="top"><a name="1"></a>U</th><th colspan="6" valign="top"><a name="3"></a>NxU</th></tr></table>';
+const dxu_state_table = '<br><br><br><table id="table1"><tr><th colspan="6" valign="top"><a name="2"></a>DXU</th><th colspan="6" valign="top"><a name="4"></a>NxDXU</th></tr></table>';
 
 
 function calc2(evt) {
@@ -282,6 +283,13 @@ function calc2(evt) {
 
         var warn_text = "";
         var res_text = "";
+        var is_dx_title = true;
+        // U,DXUの場合は接頭辞つける
+        if (item_info && item_info[0].grade) {
+            if (item_info[0].grade == 4) {
+                res_text += u_state_table;
+            }
+        }
         for (var key in item_info) {
             if (!item_info[key] || !item_info[key].name) {
                 continue;
@@ -320,6 +328,10 @@ function calc2(evt) {
             var a13 = item_info[key].nxsystem;
             var a14 = item_info[key].nxprice;
             if (item_info[key].is_nx) {
+                if (item_info[key].grade == 5 && is_dx_title) {
+                    res_text += dxu_state_table;
+                    is_dx_title = false;
+                }
                 for (var i = 0; i < default_html_txt.length; i++) {
                     res_text += default_html_txt[i];
                     if (i == 0) {
