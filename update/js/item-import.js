@@ -81,7 +81,15 @@ function calc2(evt) {
                         item_info[key].is_rankex = true;
                     }
                     re = /\[Nx\]/; //$一番後ろにつけてもうまくいかないので何か変な文字入ってること多い
-                    if (re.test(item_name)) {
+                    if (re.test(name[2])) {
+                        for (var nxkey in item_info) {
+                            var nxname = name[2].split("[Nx]")[0];
+                            if (item_info[nxkey].name == nxname && !item_info[nxkey].is_nx) {
+                                item_info[nxkey].is_nx = true;
+                                nx_subkey = nxkey;
+                                break;
+                            }
+                        }
                     }
                     item_info[key].image_id = ('0000' + name[1]).slice(-4);
                     item_info[key].name = item_name;
