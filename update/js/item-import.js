@@ -179,11 +179,11 @@ function calc2(evt) {
                     item_info[key].job.push(txt);
                 }
                 if (phase == 5) {
-                    item_info[key].txt += txt;
-                    item_info[key].txt += "<br>";
-                    // TODO　多分これ動いてない
                     if (txt == "※ 封印された力を解放するには 封印解放道具箱 が必要です") {
                         item_info[key].txt += '<font color="#ef6cef">※ 封印された力を解放するには</font> <font color="#e8c898">封印解放道具箱</font> <font color="#ef6cef">が必要です</font><br>';
+                    } else {
+                        item_info[key].txt += txt;
+                        item_info[key].txt += "<br>";
                     }
                 }
                 if (phase == 6) {
@@ -204,7 +204,7 @@ function calc2(evt) {
                     } else if (txt.includes("- Stack Size: ")) {
                         txt = txt.replace("- Stack Size: ", "");
                         if (Number(txt) > 1) {
-                            sys_txt += "<br>";
+                            sys_txt += "<br>スタック数：";
                             sys_txt += txt;
                             item_info[key].stack = txt;
                         }
