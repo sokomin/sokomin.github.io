@@ -47,6 +47,12 @@ function calc2(evt) {
                 reqnx: [], //nxアイテムの要求値
                 job: [],
                 // nxアイテムは扱わないのでスルーしたい…
+                // is_nontrade: false, //取引不可？
+                // is_nonbank: false ,//銀行取引不可？
+                // is_enchant: false,//エンチャントの何か
+                // is_nonbreak: false, //破壊不可？
+                // is_npc: false, //NPC売却不可？
+                // is_belt: false, //ベルト着用可？
                 txt: "",
                 grade: "", // 0-9 NとかNxとか
                 nxgrade: "", // 0-9
@@ -95,7 +101,27 @@ function calc2(evt) {
                     item_info[key].name = item_name;
                     phase = 1;
                 }
-                // TODO 取引不可とかその辺りの情報も自動で仕込みたい
+                // 取引不可とかその辺りの情報も自動で仕込みたい
+                if (phase == 1) {
+                    if (txt.includes("<取引不可>")) {
+                        item_info[key].is_nontrade = true;
+                    }
+                    if (txt.includes("<銀行取引不可>")) {
+                        item_info[key].is_nonbank = true;
+                    }
+                    if (txt.includes("<破壊不可>")) {
+                        item_info[key].is_nonbreak = true;
+                    }
+                    if (txt.includes("<エンチャント>")) {
+                        item_info[key].enchant = true;
+                    }
+                    if (txt.includes("<NPC売却禁止>")) {
+                        item_info[key].is_nontrade = true;
+                    }
+                    if (txt.includes("<ベルト着用可>")) {
+                        item_info[key].is_belt = true;
+                    }
+                }
                 if (txt.includes("<基本情報>")) {
                     phase = 2;
                     continue;
@@ -267,6 +293,24 @@ function calc2(evt) {
             var a5 = item_info[key].system;
             var a6 = item_info[key].price;
             var a7 = item_info[key].txt;
+            if (item_info[key].is_nontrade) {
+                a7 +=  '<br>- <font color="#ff0033">取引不可</font>';
+            }
+            if (item_info[key].is_nobank) {
+                a7 +=  '<br>- <font color="#ff0033">銀行取引不可</font>';
+            }
+            if (item_info[key].is_nonbreak) {
+                a7 +=  '<br>- <font color="#ff0033">破壊不可</font>';
+            }
+            if (item_info[key].enchant) {
+                a7 +=  '<br>- <font color="#ff0033">エンチャント</font>';
+            }
+            if (item_info[key].is_nontrade) {
+                a7 +=  '<br>- <font color="#ff0033">NPC売却不可</font>';
+            }
+            if (item_info[key].is_belt) {
+                a7 +=  '<br>- <font color="#ff0033">ベルト着用可</font>';
+            }
             var a13 = item_info[key].nxsystem;
             var a14 = item_info[key].nxprice;
             if (item_info[key].is_nx) {
@@ -392,6 +436,25 @@ function calc2(evt) {
                     }
                     if (i == 7) {
                         res_text += a7;
+                        // res_text += "<br>";
+                        // if (item_info[key].is_nontrade) {
+                        //     res_text +=  '<br>- <font color="#ff0033">取引不可</font>';
+                        // }
+                        // if (item_info[key].is_nobank) {
+                        //     res_text +=  '<br>- <font color="#ff0033">銀行取引不可</font>';
+                        // }
+                        // if (item_info[key].is_nonbreak) {
+                        //     res_text +=  '<br>- <font color="#ff0033">破壊不可</font>';
+                        // }
+                        // if (item_info[key].enchant) {
+                        //     res_text +=  '<br>- <font color="#ff0033">エンチャント</font>';
+                        // }
+                        // if (item_info[key].is_nontrade) {
+                        //     res_text +=  '<br>- <font color="#ff0033">NPC売却不可</font>';
+                        // }
+                        // if (item_info[key].is_belt) {
+                        //     res_text +=  '<br>- <font color="#ff0033">ベルト着用可</font>';
+                        // }
                     }
                 }
             }
