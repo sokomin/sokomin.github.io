@@ -9,8 +9,8 @@
 // 7 Nx
 // 8 DXUNx
 // 9 UMUNx
-const u_state_table = '<table id="table1"><tr><th colspan="6" valign="top"><a name="1"></a>U</th><th colspan="6" valign="top"><a name="3"></a>NxU</th></tr></table>';
-const dxu_state_table = '<br><br><br><table id="table1"><tr><th colspan="6" valign="top"><a name="2"></a>DXU</th><th colspan="6" valign="top"><a name="4"></a>NxDXU</th></tr></table>';
+const u_state_table = '<div class="tag1"><table id="table1"><tr><th colspan="6" valign="top"><a name="1"></a>U</th><th colspan="6" valign="top"><a name="3"></a>NxU</th></tr></table>';
+const dxu_state_table = '</div><br><br><br><div class="tag2"><table id="table1"><tr><th colspan="6" valign="top"><a name="2"></a>DXU</th><th colspan="6" valign="top"><a name="4"></a>NxDXU</th></tr></table>';
 
 
 function calc2(evt) {
@@ -91,7 +91,7 @@ function calc2(evt) {
                         item_info[key].is_rankex = true;
                     }
                     re = /\[Nx\]/; //$一番後ろにつけてもうまくいかないので何か変な文字入ってること多い
-                    if (txt.includes("元素の糾合")) {
+                    if (txt.includes("エリアン")) {
                         console.log("txt");
                     }
                     if (re.test(item_name)) {
@@ -411,6 +411,10 @@ function calc2(evt) {
                 }
     
             } else {
+                if (item_info[key].grade == 5 && is_dx_title) {
+                    res_text += dxu_state_table;
+                    is_dx_title = false;
+                }
                 for (var i = 0; i < single_html_txt.length; i++) {
                     res_text += single_html_txt[i];
                     if (i == 0) {
@@ -477,6 +481,7 @@ function calc2(evt) {
                 }
             }
         }
+        res_text += "</div>";
         // r2はr1の内容をDOM化して直接貼り付け
         document.import_form.import_field.value = res_text;
         var prev_html = document.getElementById('import_preview_html');
