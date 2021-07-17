@@ -76,6 +76,9 @@ function calc2(evt) {
                 }
                 // 初手は必ずitemで、Nxはスルーする
                 if (item_info[key].name == "") {
+                    // 変な文字を消す
+                    re = /<(.*?)>/g;
+                    txt = txt.replace(re, "");
                     var name = txt.split(" ");
                     var item_name = "";
                     for (var l = 2; l < name.length; l++) {
@@ -87,9 +90,12 @@ function calc2(evt) {
                         item_info[key].is_rankex = true;
                     }
                     re = /\[Nx\]/; //$一番後ろにつけてもうまくいかないので何か変な文字入ってること多い
-                    if (re.test(name[2])) {
+                    if (txt.includes("元素の糾合")) {
+                        console.log("txt");
+                    }
+                    if (re.test(item_name)) {
                         for (var nxkey in item_info) {
-                            var nxname = name[2].split("[Nx]")[0];
+                            var nxname = item_name.split("[Nx]")[0];
                             if (item_info[nxkey].name == nxname && !item_info[nxkey].is_nx) {
                                 item_info[nxkey].is_nx = true;
                                 nx_subkey = nxkey;
