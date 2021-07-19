@@ -12,9 +12,12 @@
 const u_state_table = '<div class="tag1"><table id="table1"><tr><th colspan="6" valign="top"><a name="1"></a>U</th><th colspan="6" valign="top"><a name="3"></a>NxU</th></tr></table>';
 const dxu_state_table = '</div><br><br><br><div class="tag2"><table id="table1"><tr><th colspan="6" valign="top"><a name="2"></a>DXU</th><th colspan="6" valign="top"><a name="4"></a>NxDXU</th></tr></table>';
 
+function sort_calc() {
+    calc2(true);
+}
 
-function calc2(evt) {
-    var file = document.getElementById('files').files;
+function calc2(is_sort) {
+    var file = is_sort ? document.getElementById('sort_files').files : document.getElementById('files').files;
 
     //FileReaderの作成
     var reader = new FileReader();
@@ -281,6 +284,10 @@ function calc2(evt) {
         }
         console.log(item_info);
 
+        // TODO item_infoのソート
+        if (sort_calc) {
+            item_info = item_sort_func(item_info);
+        }
         var warn_text = "";
         var res_text = "";
         var is_dx_title = true;
@@ -587,4 +594,31 @@ function create_joblist(txt){
 function reverse(s) {
     s = ('00000000' + s).slice(-8);
     return s.split("").reverse().join("");
+}
+
+// アイテムを職順にソート
+function item_sort_func(item_info) {
+    var res_item_info = {};
+    var res_cnt = 0;
+    // 二重ループいやだけど…
+    for (var typekey in sort_item_type_text) {
+        var type = sort_item_type_text[typekey];
+        for (var key in item_info) {
+            var data = item_info[key];
+            if (type == data.item_type) {
+                res_item_info[res_cnt] = data;
+                item_info[key].flag0 = true;
+                res_cnt++;
+            }
+        }
+    }
+    // ソート対象外アイテムはそのまま出す
+    for (var key in item_info) {
+        var data = item_info[key];
+        if (!data.flag0) {
+            res_item_info[res_cnt] = data;
+            res_cnt++;
+        }
+    }
+    return res_item_info
 }
