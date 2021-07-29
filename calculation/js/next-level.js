@@ -283,6 +283,9 @@ function calc3() {
         }
         var per = parseInt(exp_2017array[a1 - 1] * a2 / 100);
         var exp1 = exp_sum_2017array[a1 - 2] + per + a3;
+        if(a1 == 1){
+            exp1 = per + a3;
+        }
         r1 = findReturnerLv(exp1, b1);
         console.log(exp1);
     } else if (b1 === 1) {
@@ -301,6 +304,9 @@ function calc3() {
             per = parseInt(exp_2011array[a1 - 909] * a2 / 100);
         }
         var exp1 = a1 < 910 ? (exp_sum_2017array[a1 - 2] + per + a3) : (exp_sum_2011array[a1 - 910] + per + a3);
+        if(a1 == 1){
+            exp1 = per + a3;
+        }
         r1 = findReturnerLv(exp1, b1);
         console.log(exp1);
     } else if (b1 === 3) {
@@ -316,6 +322,9 @@ function calc3() {
             per = parseInt(exp_2015array[a1 - 909] * a2 / 100);
         }
         var exp1 = a1 < 910 ? (exp_sum_2017array[a1 - 2] + per + a3) : (exp_sum_2015array[a1 - 910] + per +　a3);
+        if(a1 == 1){
+            exp1 = per + a3;
+        }
         r1 = findReturnerLv(exp1, b1);
         console.log(exp1);
     } else if (b1 === 5) {
@@ -332,6 +341,9 @@ function calc3() {
         }
         //簡易計算機だし、直接足し算でOK(1000以降なら直接EXP調整してね。)
         var exp1 = a1 <= 850 ? (exp_sum_2017array[a1 - 2] + per + a3) : (exp_sum_2019array[a1 - 851] + per + a3);
+        if(a1 == 1){
+            exp1 = per + a3;
+        }
         r1 = findReturnerLv(exp1, b1);
         console.log(exp1);
     } else {
