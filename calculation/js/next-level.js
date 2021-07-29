@@ -23,10 +23,30 @@ function init1() {
     document.f.b2.options[2] = new Option('2011～2015', 2);
     document.f.b2.options[3] = new Option('2015～2016', 3);
     document.f.b2.options[4] = new Option('2017～2018', 4);
+
+    //獲得経験値計算用
+    document.f.a31.value = 1;
+    document.f.a32.value = 0;
+    document.f.a33.value = 0;
+
+    document.f.b31.value = 0;
+
+    document.f.r31.value = 0;
+    document.f.b31.options[0] = new Option('2019～(暫定版)', 5, 1, 1);
+    document.f.b31.options[1] = new Option('2005～2011', 1);
+    document.f.b31.options[2] = new Option('2011～2015', 2);
+    document.f.b31.options[3] = new Option('2015～2016', 3);
+    document.f.b31.options[4] = new Option('2017～2018', 4);
+
 }
 
 function init2() {
     //TODO localstorage辺りから引っ張ってきたい。
+}
+
+// 100億打ち込むの桁考えると面倒だろうから、ボタンにしといた
+function input_support3(){
+    document.f.a33.value = 10000000000;
 }
 
 function calc1() {
@@ -232,4 +252,94 @@ function calc2() {
     }
 
     document.f.r21.value = Math.floor(r1);
+}
+
+
+function calc3() {
+    var r1 = 0;
+    var a1 = parseInt(document.f.a31.value) ? parseInt(document.f.a31.value) : 0;
+    var a2 = Number(document.f.a32.value) ? Number(document.f.a32.value) : 0;
+    var a3 = Number(document.f.a33.value) ? Number(document.f.a33.value) : 0;
+    var b1 = parseInt(document.f.b31.value) ? parseInt(document.f.b31.value) : 0;
+
+    // init
+    document.f.r31.value = "";
+    document.f.r32.value = "";
+
+    if (a1 <= 0) {
+        document.f.r31.value = "レベルは1以上";
+        return;
+    }
+    if (a2 < 0 || a2 >= 100) {
+        alert("％以下は0以上100未満で入力してください。");
+        return;
+    }
+
+    if (b1 === 4) {
+        //2017～2018
+        if (a1 >= 1500) {
+            document.f.r31.value = "最高レベルは1500です。";
+            return;
+        }
+        var per = parseInt(exp_2017array[a1 - 1] * a2 / 100);
+        var exp1 = exp_sum_2017array[a1 - 2] + per + a3;
+        r1 = findReturnerLv(exp1, b1);
+        console.log(exp1);
+    } else if (b1 === 1) {
+        // 2005～2011
+        document.f.r31.value = "未実装です";
+        return;
+    } else if (b1 === 2) {
+        // 2011～2015
+        if (a1 > 1000) {
+            document.f.r21.value = "最高レベルは1000です。";
+            return;
+        }
+        if (a1 < 909) {
+            per = parseInt(exp_2017array[a1 - 1] * a2 / 100);
+        } else {
+            per = parseInt(exp_2011array[a1 - 909] * a2 / 100);
+        }
+        var exp1 = a1 < 910 ? (exp_sum_2017array[a1 - 2] + per + a3) : (exp_sum_2011array[a1 - 910] + per + a3);
+        r1 = findReturnerLv(exp1, b1);
+        console.log(exp1);
+    } else if (b1 === 3) {
+        //2015～2016
+        if (a1 > 1000) {
+            document.f.r21.value = "最高レベルは1000です。";
+            return;
+        }
+        var per = 0;
+        if (a1 < 909) {
+            per = parseInt(exp_2017array[a1 - 1] * a2 / 100);
+        } else {
+            per = parseInt(exp_2015array[a1 - 909] * a2 / 100);
+        }
+        var exp1 = a1 < 910 ? (exp_sum_2017array[a1 - 2] + per + a3) : (exp_sum_2015array[a1 - 910] + per +　a3);
+        r1 = findReturnerLv(exp1, b1);
+        console.log(exp1);
+    } else if (b1 === 5) {
+        //2019～
+        if (a1 >= 1500) {
+            document.f.r21.value = "最高レベルは1500です。";
+            return;
+        }
+        var per = 0;
+        if (a1 < 850 || a1 >= 1000) {
+            per = parseInt(exp_2017array[a1 - 1] * a2 / 100);
+        } else {
+            per = parseInt(exp_2019array[a1 - 850] * a2 / 100);
+        }
+        //簡易計算機だし、直接足し算でOK(1000以降なら直接EXP調整してね。)
+        var exp1 = a1 <= 850 ? (exp_sum_2017array[a1 - 2] + per + a3) : (exp_sum_2019array[a1 - 851] + per + a3);
+        r1 = findReturnerLv(exp1, b1);
+        console.log(exp1);
+    } else {
+        //ここ通らないはずです。
+        console.log("ｚｚｚ");
+    }
+
+    document.f.r31.value = r1.lv;
+    document.f.r32.value = r1.per;
+
 }
