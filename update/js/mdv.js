@@ -48,6 +48,8 @@ function convertCSVtoArray(str) {// 読み込んだCSVデータが文字列と�
     createMobTable();
 }
 
+var DROP_TEXT_CONST = "<b><ドロップアイテム></b><br>";
+var SKILL_TEXT_CONST = "<b><使用スキル></b><br>";
 
 function calc1() {
     // モンスターデータ読み込み(同期の関係上、これ以外呼ばない)
@@ -55,13 +57,24 @@ function calc1() {
 }
 
 function createMobTable() {
+    var MOBSPEC = getParam('spec') ? parseInt(getParam('spec')) : 0;
+    var MOBRANK = getParam('rank') ? parseInt(getParam('rank')) : 0;
+    var DEBUG = getParam('debug') ? parseInt(getParam('debug')) : 0;
     var $div_main = $('<div>');
-    var cnt = 0;
+    var title_text = "<h4>" + mobSpec[MOBSPEC] + " " + mobRank[MOBRANK] + " の一覧" + "</h4>";
+    $div_main.append(title_text);
+    var cnt = 0; //セーフティをはっておく
     for (var i in monster_data) {
-        if (i == 10) {
+        if (cnt >= 300) {
+            console.log("３００件以上はhtml重くて出せないよ");
             break;
         }
         var data = monster_data[i];
+        var drop_txt = createDropItem(i);
+        var skill_txt = createSkillName(i);
+        if (validateData(data, MOBSPEC, MOBRANK, DEBUG, drop_txt, skill_txt)) {
+            continue;
+        }
         // var tnum = 62;
         // if (Number(data["unknown_29"]) == tnum ||
         //     Number(data["unknown_33"]) == tnum ||
@@ -96,7 +109,7 @@ function createMobTable() {
             id: id + "flv",
             name: i,
             type: "text",
-            value: "900"
+            value: "600"
         }).addClass("inputlvform").css("width", "100px").bind("keyup", function () {
             var has = $(this).attr("id");
             has = has.substr(0, (has.length - 3));
@@ -222,7 +235,8 @@ function createMobTable() {
 
         // 画像
         var mImage = Number(data["EffectId"]).toString(16);
-        mImage = "https://sokomin.github.io/monster/design/image/monster/00" + mImage.toLowerCase() + "000" + data["EffectId_2"] + ".png";
+        mImage = ('0' + mImage).slice(-3)
+        mImage = "https://sokomin.github.io/monster/design/image/monster/0" + mImage.toLowerCase() + "000" + data["EffectId_2"] + ".png";
         $tr_row2.append($('<th>').attr({
             "colspan": "2"
         }).css({
@@ -231,10 +245,11 @@ function createMobTable() {
             .append($("<img>").attr({ src: mImage, })))
         );
 
-        // 変動する能力は全部ここにくっつける
+        // mobに関連する情報はここに
         var $tr_row3 = $('<tr>');
         // 出現マップ情報取得
         // TODO　(事前に計算・集計しておいて出力。)
+        // 作りたいけど、どこに何のmobいるか把握しきれてないので見送っておきます。
         var $mapDiv = $('<div>');
 
         $tr_row3.append($('<td>').css({
@@ -253,7 +268,7 @@ function createMobTable() {
             "padding": "3px 0 0 5px",
             "text-align": "left",
             "vertical-align": "top"
-        }).append(createSkillName(i)));
+        }).append(skill_txt));
 
         //ドロップアイテム
         $tr_row3.append($('<td>').attr({
@@ -263,7 +278,7 @@ function createMobTable() {
             "padding": "3px 0 0 5px",
             "text-align": "left",
             "vertical-align": "top"
-        }).append(createDropItem(i)));
+        }).append(drop_txt));
 
         $table.append($tr_Name);
         $table.append($tr_Type);
@@ -278,12 +293,63 @@ function createMobTable() {
     // 各パラメタの文字出力
     cnt = 0;
     for (var i in monster_data) {
-        statusUpdate("tmain" + cnt, i);
+        if (cnt >= 300) {
+            break;
+        }
+        var data = monster_data[i];
+        var drop_txt = createDropItem(i);
+        var skill_txt = createSkillName(i);
+        if (validateData(data, MOBSPEC, MOBRANK, DEBUG, drop_txt, skill_txt)) {
+            continue;
+        }
+        statusUpdate("tmain" + i, i);
         cnt++;
     }
 
 }
 
+/**
+ * Get the URL parameter value
+ *
+ * @param  name {string} パラメータのキー文字列
+ * @return  url {url} 対象のURL文字列(任意)
+ */
+ function getParam(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+
+function validateData(data, spec, rank, debug, drop_txt, skill_txt) {
+    if (Number(data["Species"]) != Number(spec)) {
+        return true;
+    }
+    if (Number(data["Lineage"]) != Number(rank)) {
+        return true;
+    }
+    // 最低限種族と等級は絞ってくれ
+    if (Number(debug) == 9999) {
+        return false;
+    }
+    if (drop_txt == DROP_TEXT_CONST && skill_txt == SKILL_TEXT_CONST) {
+        return true;
+    }
+    if (Number(data["DefaultHP"]) <= 0) {
+        return true;
+    }
+    if (Number(data["EffectId_2"]) < 0) {
+        return true;
+    }
+    if (data["name"] == "自爆テスター") {
+        return true;
+    }
+    return false;
+}
 
 // Lv対応ステータス入力更新用
 function statusUpdate(tableid, mobid) {
@@ -413,7 +479,7 @@ function statusUpdate(tableid, mobid) {
 
 // スキル表入れる
 function createSkillName(mobid) {
-    var txt = "<b><使用スキル></b><br>";
+    var txt = SKILL_TEXT_CONST;
     var md = monster_data[mobid];
     // 0は垂直斬りだけど、多分使うmobいないからわざと弾いてる
     // これ以上スキル使うmobはいないと信じてる
@@ -469,9 +535,9 @@ function createSkillName(mobid) {
     return txt;
 }
 
-// どろっぷあいてむテキスト
+// どろっぷあいてむテキスト（何もドロップしないmobは弾いておく・・・）
 function createDropItem(mobid) {
-    var txt = "<b><ドロップアイテム></b><br>";
+    var txt = DROP_TEXT_CONST;
     var md = monster_data[mobid];
     // 0は垂直斬りだけど、多分使うmobいないからわざと弾いてる
     // これ以上スキル使うmobはいないと信じてる
