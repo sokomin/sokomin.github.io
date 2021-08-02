@@ -14,6 +14,10 @@ var prefix_data = {};
 
 // 読み込んだCSVデータをオブジェクトに変換
 function convertCSVtoArray(str) {// 読み込んだCSVデータが文字列として渡される
+    // 初期化
+    obj_format = {};
+    prefix_data = {};
+
     var result = [];// 最終的な二次元配列を入れるための配列
     var tmp = str.split("\n");// 改行を区切り文字として行を要素とした配列を生成
     // 各行ごとにカンマで区切った文字列を要素とした二次元配列を生成
@@ -28,6 +32,7 @@ function convertCSVtoArray(str) {// 読み込んだCSVデータが文字列と�
                 txt = txt.replace(re, "");
                 obj_format[j] = txt;
             }
+            // TODO フォーマット違ったらエラー出すなりしたい
             console.log(obj_format);
         } else {
             var md = {};
@@ -42,14 +47,11 @@ function convertCSVtoArray(str) {// 読み込んだCSVデータが文字列と�
             prefix_data[result[i][0]] = md;
         }
     }
-    console.log(prefix_data);
+    // console.log(prefix_data);
 
     // モンスターデータ解析
     createMobTable();
 }
-
-var DROP_TEXT_CONST = "<b><ドロップアイテム></b><br>";
-var SKILL_TEXT_CONST = "<b><使用スキル></b><br>";
 
 function calc1() {
     // モンスターデータ読み込み(同期の関係上、これ以外呼ばない)
@@ -59,8 +61,7 @@ function calc1() {
 function createMobTable() {
     var DEBUG = getParam('debug') ? parseInt(getParam('debug')) : 0;
     var $div_main = $('<div>');
-    // var title_text = "<h4>" + mobSpec[MOBSPEC] + " " + mobRank[MOBRANK] + " の一覧" + "</h4>";
-    // $div_main.append(title_text);
+    // TODO OP名のタイトルいれたい
     prefix_data = Object.values(prefix_data).sort(function (a, b) {
         return Number(a.op_id) - Number(b.op_id);
     });
@@ -84,7 +85,7 @@ function createMobTable() {
         $th_Name.append($('<th>').text("要求Lv上昇"));
         $th_Name.append($('<th>').text("付加係数"));
 
-        // 3万台を除外
+        // TODO 協会OPやNPC称号についても記載したいので、判別方法考えとく
         var $tr_Name = $('<tr>');
         $tr_Name.append($('<td>').append(createOpTxt(data["text1"])));
         $tr_Name.append($('<td>').append(
