@@ -94,9 +94,9 @@ function calc2(is_sort) {
                         item_info[key].is_rankex = true;
                     }
                     re = /\[Nx\]/; //$一番後ろにつけてもうまくいかないので何か変な文字入ってること多い
-                    if (txt.includes("エリアン")) {
-                        console.log("txt");
-                    }
+                    // if (txt.includes("エリアン")) {
+                    //     console.log("txt");
+                    // }
                     if (re.test(item_name)) {
                         for (var nxkey in item_info) {
                             var nxname = item_name.split("[Nx]")[0];
