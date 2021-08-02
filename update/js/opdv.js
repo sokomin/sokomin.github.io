@@ -116,7 +116,7 @@ function validateData(data, debug) {
     // 遺物OPなどを表示したい時だけは?debug=40000指定で
     if (id > 40000 && id < 50000 && Number(debug) == 40000) {
         return false;
-    } else if (id <= 40000 && id >= 50000 && Number(debug) == 40000) {
+    } else if ((id <= 40000 || id >= 50000) && Number(debug) == 40000) {
         return true;
     }
     if (id > 40000 && id < 50000) {
