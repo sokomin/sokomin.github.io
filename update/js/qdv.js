@@ -301,6 +301,7 @@ function createQuestTable() {
                             quest_txt += '<span class="color-image17">関連アイテム</span><br><hr class="quest-hr">';
                             header_flag = false;
                         }
+                        // TODO qt1はitem_idが直で入ってることもある。ここは手動で対応。
                         var qt1_txt = '$1'
                         var qt2_txt = '$2'
                         var qt1 = "";
@@ -344,6 +345,30 @@ function createQuestTable() {
                             quest_txt += '<span class="color-image2">' + pos[0] + '</span> ' + "(" + pos[1] + "," + pos[2] + ") ";
                             quest_txt += '<span class="color-image1">' + qt2 + '</span>';
                         }
+                        quest_txt += "<br>";
+                        continue;
+                    }
+
+                    re = /switch (.*?) \'(.*?)\';/;
+                    re2 = /switch (.*?) \'(.*?)\'(.*?)/;
+                    if (re.test(qt[k]) || re2.test(qt[k])) {
+                        if (header_flag) {
+                            quest_txt += '<span class="color-image17">関連アイテム</span><br><hr class="quest-hr">';
+                            header_flag = false;
+                        }
+                        var qt1_txt = '$1'
+                        var qt2_txt = '$2'
+                        var qt1 = "";
+                        var qt2 = "";
+                        if (re.test(qt[k]) ) {
+                            qt1 = qt[k].replace(re, qt1_txt);
+                            qt2 = qt[k].replace(re, qt2_txt);
+                        } else {
+                            qt1 = qt[k].replace(re2, qt1_txt);
+                            qt2 = qt[k].replace(re2, qt2_txt);
+                        }
+                        quest_txt += '<span class="color-image20">' + qt1 + '</span> ';
+                        quest_txt += qt2;
                         quest_txt += "<br>";
                         continue;
                     }
@@ -459,6 +484,24 @@ function convText(str) {
         str = str.replace(re, replace_txt);
     }
 
+    re = /<c:RED>(.*?)<n>/g;
+    if (re.test(str)) {
+        var replace_txt = '<span class="color-image1">$1</span>'
+        str = str.replace(re, replace_txt);
+    }
+
+    re = /<c:CYAN>(.*?)<n>/g;
+    if (re.test(str)) {
+        var replace_txt = '<span class="color-image17">$1</span>'
+        str = str.replace(re, replace_txt);
+    }
+
+    re = /<c:LTCYAN>(.*?)<n>/g;
+    if (re.test(str)) {
+        var replace_txt = '<span class="color-image15">$1</span>'
+        str = str.replace(re, replace_txt);
+    }
+
     re = /<c:LTRED>(.*?)<n>/g;
     if (re.test(str)) {
         var replace_txt = '<span class="color-image11">$1</span>'
@@ -471,9 +514,27 @@ function convText(str) {
         str = str.replace(re, replace_txt);
     }
 
+    re = /<c:LTYELLOW>(.*?)<n>/g;
+    if (re.test(str)) {
+        var replace_txt = '<span class="color-image13">$1</span>'
+        str = str.replace(re, replace_txt);
+    }
+
+    re = /<c:GOLDYELLOW>(.*?)<n>/g;
+    if (re.test(str)) {
+        var replace_txt = '<span class="color-image3">$1</span>'
+        str = str.replace(re, replace_txt);
+    }
+
     re = /<c:CTPURPLE>(.*?)<n>/g;
     if (re.test(str)) {
         var replace_txt = '<span class="color-image5">$1</span>'
+        str = str.replace(re, replace_txt);
+    }
+
+    re = /<c:LTPURPLE>(.*?)<n>/g;
+    if (re.test(str)) {
+        var replace_txt = '<span class="color-image18">$1</span>'
         str = str.replace(re, replace_txt);
     }
 
