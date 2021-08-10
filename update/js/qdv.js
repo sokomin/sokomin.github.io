@@ -31,9 +31,6 @@ function convertCSVtoArray(str, map_str) {// 読み込んだCSVデータが文�
     map_data = {};
 
     var result = [];// 最終的な二次元配列を入れるための配列
-    // str = str.split('\\n\\n');
-    // str = str.join("<br>");
-    // var tmp = str.split("\n");// 改行を区切り文字として行を要素とした配列を生成
     var tmp = str.split("\"\n\"");// 改行を区切り文字として行を要素とした配列を生成
     // 各行ごとにカンマで区切った文字列を要素とした二次元配列を生成
     for (var i = 0; i < tmp.length; ++i) {
@@ -52,9 +49,10 @@ function convertCSVtoArray(str, map_str) {// 読み込んだCSVデータが文�
             // TODO フォーマット違ったらエラー出すなりしたい
             console.log(obj_format);
         } else {
-            if (i >= 500 && i < 550) {
-                console.log(result[i]);
-            }
+            // FIXME 謎の空行が入る問題対応したい
+            // if (i >= 410 && i < 420) {
+            //     console.log(result[i]);
+            // }
             var md = {};
             for (var j = 1; j < result[i].length; j++) {
                 var txt = result[i][j];
@@ -113,9 +111,29 @@ function calc1() {
     getCSV();
 }
 
+// ０：一般・イベントクエなど色々
+// １：マスクエ
+// ２：称号クエ
+// ３：MQ
+// ４：ギルドクエ
+// ５：BF系連作クエ
+// ６：ギルドデイリー
+// ７：韓国専用イベクエ
+// ８：恩寵・ダリン・デリンクエ
+// ９：復帰者クエ
+// １０：韓国専用イベントクエ
+// １１：ウィークリークエスト
+// １２：ヤティカヌキャンプクエ（受諾不可能）
+// １３：ディメンション・ハブクエ
+// 凡例
+// MQ Season2を取得(最後のMQ1-5が入ってくるから手動ではじく)
+// https://sokomin.github.io/update/quest_converter.html?type=3&lv=250
+
 function createQuestTable() {
     var a1 = $('input[name="a1"]').val()? Number($('input[name="a1"]').val()) : 0;
-    var a2 = $('input[name="a2"]').val()? Number($('input[name="a2"]').val()) : 10;
+    var a2 = $('input[name="a2"]').val()? Number($('input[name="a2"]').val()) : 9999;
+    var QTYPE = getParam('type') ? parseInt(getParam('type')) : 0;
+    var REQ_LEVEL = getParam('lv') ? parseInt(getParam('lv')) : 0;
     var DEBUG = getParam('debug') ? parseInt(getParam('debug')) : 0;
     var $div_main = $('<div>');
     // var title_text = "<h4>" + mobSpec[MOBSPEC] + " " + mobRank[MOBRANK] + " の一覧" + "</h4>";
@@ -127,15 +145,13 @@ function createQuestTable() {
             break;
         }
         var data = quest_data[i];
-        // クエストは目視バリデーションするからあんま使わなさそう
-        // var drop_txt = createDropItem(i);
-        // var skill_txt = createSkillName(i);
         if (Number(i) < a1 || Number(i) > a2) {
             continue;
         }
-        // if (validateData(data, MOBSPEC, MOBRANK, DEBUG, drop_txt, skill_txt)) {
-        //     continue;
-        // }
+        // クエストは目視バリデーションするからあんま使わなさそう
+        if (validateData(data, QTYPE, REQ_LEVEL, DEBUG)) {
+            continue;
+        }
         
         // デバッグ用
         // var tnum = 62;
@@ -162,7 +178,6 @@ function createQuestTable() {
         // クエストタイトル
         var quest_title = '<a name="'+ i + '"><font style="color:#00ff00;">' + data["name"] + "</font>"
         $tr_Name.append($('<th>').attr("colspan", "2").append(quest_title));
-        var related_npc = "";
 
         // クエスト概要解析：ゲーム内表記に即して記述したいけど、できるところまでにしよう。
         var $tr_txt = $('<tr>');
@@ -275,7 +290,6 @@ function createQuestTable() {
                             // qt2 = qt[k].replace(re2, qt2_txt);
                         }
                         quest_txt += convText(qt1);
-                        // quest_txt += '(n) / ' +  + '</span>';
                         quest_txt += "<br>";
                         continue;
                     }
@@ -359,10 +373,16 @@ function createQuestTable() {
             var txt = '<span class="color-image2"> </span> <span class="color-image4">' + data["str_unknown2"] + "</sapn>"
             $client.append($('<td>').append(txt));
         }
+
+        // 要求レベル
         var $req_lv = $('<tr>');
         if (data["unknown2_0"] != void 0) {
+            // TODO 1次転生や特殊条件を満たした場合などに対応しきれていないので、手動で編集すること。
             $req_lv.append($('<th>').append("受諾条件"));
             var txt = 'Lv ' + data["unknown2_0"] + "～" + data["unknown2_1"]
+            if (Number(data["unknown2_0"]) == Number(data["unknown2_1"]) && Number(data["unknown2_0"]) == 0) {
+                txt = "Lv制限無し"
+            }
             $req_lv.append($('<td>').append(txt));
         }
 
@@ -395,29 +415,27 @@ function createQuestTable() {
 }
 
 
-function validateData(data, spec, rank, debug, drop_txt, skill_txt) {
-    if (Number(data["Species"]) != Number(spec)) {
+function validateData(data, qtype, lv, debug) {
+    // type2は未実装っぽいから非表示にしてもいいかも…
+    if (!data) {
         return true;
     }
-    if (Number(data["Lineage"]) != Number(rank)) {
+    if (!data["name"]) {
         return true;
     }
-    // 最低限種族と等級は絞ってくれ
     if (Number(debug) == 9999) {
         return false;
     }
-    if (drop_txt == DROP_TEXT_CONST && skill_txt == SKILL_TEXT_CONST) {
+    // クエストのタイプで絞りたい時に
+    if (data["unknown1"] != qtype) {
         return true;
     }
-    if (Number(data["DefaultHP"]) <= 0) {
+    // クエストの要求レベルで絞りたい時に
+    if (data["unknown2_0"]　< lv) {
         return true;
     }
-    if (Number(data["EffectId_2"]) < 0) {
-        return true;
-    }
-    if (data["name"] == "自爆テスター") {
-        return true;
-    }
+
+
     return false;
 }
 
