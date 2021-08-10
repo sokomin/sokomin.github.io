@@ -233,7 +233,7 @@ function createQuestTable() {
                             qt2 = qt[k].replace(re2, qt2_txt);
                         }
                         if (map_data[qt1]) {
-                            quest_txt += '<span class="color-image2">' + map_data[qt1].name + '</span> ';
+                            quest_txt += '<span class="color-image2"><a href="https://sokomin.github.io/map/map_viewer.html?map_id='+ qt1 +'">' + map_data[qt1].name + '</a></span> ';
                             quest_txt += '<span class="color-image4">' + qt2 + '</span>';
                         } else {
                             // quest_txt += '<span class="color-image2">' + qt1 + '</span> ';
@@ -263,7 +263,7 @@ function createQuestTable() {
                             qt2 = qt[k].replace(re2, qt2_txt);
                         }
                         if (map_data[qt1]) {
-                            quest_txt += '<span class="color-image2">' + map_data[qt1].name + '</span> ';
+                            quest_txt += '<span class="color-image2"><a href="https://sokomin.github.io/map/map_viewer.html?map_id='+ qt1 +'">' + map_data[qt1].name + '</a></span> ';
                             quest_txt += '<span class="color-image1">' + qt2 + '</span>';
                         } else {
                             // quest_txt += '<span class="color-image2">' + qt1 + '</span> ';
