@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>友情 称号クエ 赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <a href="../index.html">トップ</a> >> <a href="../quest/quest.html">クエスト</a> >> <a
+                href="../quest/designation_list.html">称号</a><br>
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+                <h3>称号効果</h3>
+                <a href="#0">基本情報</a><br>
+                <a href="#1">友情Lv1</a><br>
+                <a href="#2">友情Lv2</a><br>
+                <a href="#3">友情Lv3</a><br>
+                <a href="#4">友情Lv4</a><br>
+                <a href="#5">友情Lv5</a><br>
+                <br>
+                <br>
+                <br>
+                <a name="0"></a>
+                <span class="color-image1">&lt;称号効果&gt;</span><br>
+                - ペット、召喚獣の全ての状態異常抵抗 <span class="color-image3">+[5~25]</span>％増加<br>
+                <br>
+                <span class="color-image1">&lt;説明&gt;</span><br>
+                - ペット、召喚獣との友情の力が増幅され、各種状態異常への体制が高まる。<br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <h5>補足</h5>
+                - ビーストテイマー、サマナー、ネクロマンサー、アルケミストのペット・召喚獣が対象。<br>
+                - 他キャラクターでもクエスト進行、称号獲得は可能ですが、効果は発揮されません。<br>
+                - 2020/2/19に状態異常関連に大幅な仕様変更が入りました。<a href="../skill/above_head_icon.html">詳細はこちら</a><br>
+                <br>
+                <br>
+                <br>
+                <table id="table10" style="max-width:760px">
+                    <colgroup>
+                        <col span="1" width="165">
+                        <col span="10" width="50">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="11">称号効果</th>
+                        </tr>
+                        <tr>
+                            <th>称号Lv</th>
+                            <td><a href="#1">1</a>
+                            </td>
+                            <td><a href="#2">2</a>
+                            </td>
+                            <td><a href="#3">3</a>
+                            </td>
+                            <td><a href="#4">4</a>
+                            </td>
+                            <td><a href="#5">5</a></td>
+                            <td>6</td>
+                            <td>7</td>
+                            <td>8</td>
+                            <td>9</td>
+                            <td>10</td>
+                        </tr>
+                        <tr>
+                            <th><br>状態異常抵抗増加量<br>
+                                <br></th>
+                            <td>5</td>
+                            <td>10</td>
+                            <td>15</td>
+                            <td>20</td>
+                            <td>25</td>
+                            <td>30</td>
+                            <td>35</td>
+                            <td>40</td>
+                            <td>45</td>
+                            <td>50</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+                <font color="#e95388">
+                    <a name="1"></a>
+                    <h4>友情1</h4>
+                </font>
+                <table id="table14" style="text-align: left;">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tr>
+                        <th colspan="2">
+                            <a name="1466">
+                                <font style="color:#00ff00;">繋がる想い(1)</font>
+                            </a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <span class="color-image17">関連モンスター</span>
+                            <br>
+                            <hr class="quest-hr">
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=1">中央プラトン街道 / グレートフォレスト入口付近</a>
+                            </span>
+                            <span class="color-image1">キリン</span>
+                            <br>
+                            <span class="color-image1">罪悪の輪</span>
+                            <span class="color-image20">1個</span>
+                            <br>
+                            <br>
+                            <span class="color-image17">クエスト情報</span>
+                            <br>
+                            <hr class="quest-hr">中央プラトン街道/グレートフォレスト入口付近のキリンを退治し、
+                            <span class="color-image3">罪悪の輪</span>を獲得しよう。
+                            <br>
+                            <br>
+                            <hr>
+                            <br>
+                            <span class="color-image17">関連NPC</span>
+                            <br>
+                            <hr class="quest-hr">
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=443">農村ラカリフサ</a>
+                            </span>
+                            <span class="color-image4">放浪の少女</span>
+                            <br>
+                            <br>
+                            <span class="color-image17">クエスト情報</span>
+                            <br>
+                            <hr class="quest-hr">罪悪の輪を獲得した。放浪の少女
+                            <span class="color-image4">ミント</span>のところに戻ろう。
+                            <br>
+                            <br>
+                            <hr>
+                            <br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>受諾場所</th>
+                        <td>
+                            <span class="color-image2">農村ラカリフサ</span>
+                            <span class="color-image4">放浪の少女</span> (7,28)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>受諾条件</th>
+                        <td>Lv 100～9999</td>
+                    </tr>
+                </table>
+                <table id="table14" style="text-align:left">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th>報酬</th>
+                            <td>称号　友情Lv1<br>
+                                経験値 126000 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">農村ラカリフサ</span></td>
+                            <td>
+                                <span class="color-image2">農村ラカリフサ</span>
+                                <span class="color-image4">放浪の少女</span> (7,28)と話す。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">中央プラトン街道／グレートフォレスト入口付近</span></td>
+                            <td>
+                                <span class="color-image2">
+                                    <a href="https://sokomin.github.io/map/map_viewer.html?map_id=1">中央プラトン街道 / グレートフォレスト入口付近</a>
+                                </span>
+                                <span class="color-image1">キリン</span>（Lv100） (169,70)を倒す。<br>
+                                リポップ40秒。ドロップ率30%程度。<br>
+                                (ミラーテレポーター11145より。)<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">農村ラカリフサ</span></td>
+                            <td>
+                                <span class="color-image2">農村ラカリフサ</span>
+                                <span class="color-image4">放浪の少女</span> (7,28)と話す。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+                <br>
+                <font color="#e95388">
+                    <a name="2"></a>
+                    <h4>友情2</h4>
+                </font>
+                <table id="table14" style="text-align: left;">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tr>
+                        <th colspan="2">
+                            <a name="1467">
+                                <font style="color:#00ff00;">繋がる想い(2)</font>
+                            </a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <span class="color-image17">関連モンスター</span>
+                            <br>
+                            <hr class="quest-hr">
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=439">ネイダック平原 / ラカリフサ北部地域</a>
+                            </span>
+                            <span class="color-image1">アンドラス</span>
+                            <br>
+                            <span class="color-image1">罪悪の輪</span>
+                            <span class="color-image20">1個</span>
+                            <br>
+                            <br>
+                            <span class="color-image17">クエスト情報</span>
+                            <br>
+                            <hr class="quest-hr">ネイダック平原 / ラカリフサ北部地域のアンドラスを退治し、
+                            <span class="color-image3">罪悪の輪</span>を獲得しよう。
+                            <br>
+                            <br>
+                            <hr>
+                            <br>
+                            <span class="color-image17">関連NPC</span>
+                            <br>
+                            <hr class="quest-hr">
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=443">農村ラカリフサ</a>
+                            </span>
+                            <span class="color-image4">放浪の少女</span>
+                            <br>
+                            <br>
+                            <span class="color-image17">クエスト情報</span>
+                            <br>
+                            <hr class="quest-hr">罪悪の輪を獲得した。放浪の少女
+                            <span class="color-image4">ミント</span>のところに戻ろう。
+                            <br>
+                            <br>
+                            <hr>
+                            <br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>受諾場所</th>
+                        <td>
+                            <span class="color-image2"></span>
+                            <span class="color-image4">放浪の少女</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>受諾条件</th>
+                        <td>Lv 200～9999</td>
+                    </tr>
+                </table>
+                <table id="table14" style="text-align:left">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th>報酬</th>
+                            <td>称号　友情Lv2<br>
+                                経験値 720000 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">農村ラカリフサ</span></td>
+                            <td>
+                                <span class="color-image2">農村ラカリフサ</span>
+                                <span class="color-image4">放浪の少女</span> (7,28)と話す。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ネイダック平原／ラカリフサ北部地域</span></td>
+                            <td>
+                                <span class="color-image2">
+                                    <a href="https://sokomin.github.io/map/map_viewer.html?map_id=439">ネイダック平原 / ラカリフサ北部地域</a>
+                                </span>
+                                <span class="color-image1">アンドラス</span>（Lv200）(104,216)を倒す。<br>
+                                リポップ40秒。ドロップ率40%程度。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">農村ラカリフサ</span></td>
+                            <td>
+                                <span class="color-image2">農村ラカリフサ</span>
+                                <span class="color-image4">放浪の少女</span> (7,28)と話す。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <br>
+                <br>
+                <br>
+                <br>
+                <font color="#e95388">
+                    <a name="3"></a>
+                    <h4>友情3</h4>
+                </font>
+                <table id="table14" style="text-align: left;">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tr>
+                        <th colspan="2">
+                            <a name="1468">
+                                <font style="color:#00ff00;">繋がる想い(3)</font>
+                            </a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <span class="color-image17">関連モンスター</span>
+                            <br>
+                            <hr class="quest-hr">
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=434">グレートマウンテン北部</a>
+                            </span>
+                            <span class="color-image1">ピトン</span>
+                            <br>
+                            <span class="color-image1">罪悪の輪</span>
+                            <span class="color-image20">1個</span>
+                            <br>
+                            <br>
+                            <span class="color-image17">クエスト情報</span>
+                            <br>
+                            <hr class="quest-hr">グレートマウンテンのピトンを退治し、
+                            <span class="color-image3">罪悪の輪</span>を獲得しよう。
+                            <br>
+                            <br>
+                            <hr>
+                            <br>
+                            <span class="color-image17">関連NPC</span>
+                            <br>
+                            <hr class="quest-hr">
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=443">農村ラカリフサ</a>
+                            </span>
+                            <span class="color-image4">放浪の少女</span>
+                            <br>
+                            <br>
+                            <span class="color-image17">クエスト情報</span>
+                            <br>
+                            <hr class="quest-hr">罪悪の輪を獲得した。放浪の少女
+                            <span class="color-image4">ミント</span>のところに戻ろう。
+                            <br>
+                            <br>
+                            <hr>
+                            <br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>受諾場所</th>
+                        <td>
+                            <span class="color-image2"></span>
+                            <span class="color-image4">放浪の少女</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>受諾条件</th>
+                        <td>Lv 300～9999</td>
+                    </tr>
+                </table>
+                <table id="table14" style="text-align:left">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th>報酬</th>
+                            <td>称号　友情Lv3<br>
+                                経験値 1460000 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">農村ラカリフサ</span></td>
+                            <td>
+                                <span class="color-image2">農村ラカリフサ</span>
+                                <span class="color-image4">放浪の少女</span> (7,28)と話す。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">グレートマウンテン北部</span></td>
+                            <td>
+                                <span class="color-image2">
+                                    <a href="https://sokomin.github.io/map/map_viewer.html?map_id=434">グレートマウンテン北部</a>
+                                </span>
+                                <span class="color-image1">ピトン</span>（Lv300）(166,27)を倒す。<br>
+                                リポップ40秒。ドロップ率30%程度。<br>
+                                (ミラーテレポーター11186より。)<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">農村ラカリフサ</span></td>
+                            <td>
+                                <span class="color-image2">農村ラカリフサ</span>
+                                <span class="color-image4">放浪の少女</span> (7,28)と話す。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <br>
+                <br>
+                <br>
+                <br>
+                <font color="#e95388">
+                    <a name="4"></a>
+                    <h4>友情4</h4>
+                </font>
+                <table id="table14" style="text-align: left;">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tr>
+                        <th colspan="2">
+                            <a name="1469">
+                                <font style="color:#00ff00;">繋がる想い(4)</font>
+                            </a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <span class="color-image17">関連モンスター</span>
+                            <br>
+                            <hr class="quest-hr">
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=365">ガディウス大砂漠 / モリネルタワー付近</a>
+                            </span>
+                            <span class="color-image1">ブルカヌ</span>
+                            <br>
+                            <span class="color-image1">罪悪の輪</span>
+                            <span class="color-image20">1個</span>
+                            <br>
+                            <br>
+                            <span class="color-image17">クエスト情報</span>
+                            <br>
+                            <hr class="quest-hr">ガディウス大砂漠 / モリネルタワー付近のブルカヌを退治し、罪悪の輪を獲得しよう。
+                            <br>
+                            <br>
+                            <hr>
+                            <br>
+                            <span class="color-image17">関連NPC</span>
+                            <br>
+                            <hr class="quest-hr">
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=443">農村ラカリフサ</a>
+                            </span>
+                            <span class="color-image4">放浪の少女</span>
+                            <br>
+                            <br>
+                            <span class="color-image17">クエスト情報</span>
+                            <br>
+                            <hr class="quest-hr">罪悪の輪を獲得した。放浪の少女
+                            <span class="color-image4">ミント</span>のところに戻ろう。
+                            <br>
+                            <br>
+                            <hr>
+                            <br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>受諾場所</th>
+                        <td>
+                            <span class="color-image2"></span>
+                            <span class="color-image4">放浪の少女</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>受諾条件</th>
+                        <td>Lv 400～9999</td>
+                    </tr>
+                </table>
+                <table id="table14" style="text-align:left">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th>報酬</th>
+                            <td>称号　友情Lv4<br>
+                                経験値 3240000 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">農村ラカリフサ</span></td>
+                            <td>
+                                <span class="color-image2">農村ラカリフサ</span>
+                                <span class="color-image4">放浪の少女</span> (7,28)と話す。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ガディウス大砂漠 / モリネルタワー付近</span></td>
+                            <td>
+                                <span class="color-image2">
+                                    <a href="https://sokomin.github.io/map/map_viewer.html?map_id=365">ガディウス大砂漠 / モリネルタワー付近</a>
+                                </span>
+                                <span class="color-image1">ブルカヌ</span>（Lv400）(35,91)を倒す。<br>
+                                リポップ40秒。ドロップ率30%程度。<br>
+                                (ミラーテレポーター11128より。)<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">農村ラカリフサ</span></td>
+                            <td>
+                                <span class="color-image2">農村ラカリフサ</span>
+                                <span class="color-image4">放浪の少女</span> (7,28)と話す。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <br>
+                <br>
+                <br>
+                <br>
+                <font color="#e95388">
+                    <a name="5"></a>
+                    <h4>友情5</h4>
+                </font>
+                <table id="table14" style="text-align: left;">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tr>
+                        <th colspan="2">
+                            <a name="1470">
+                                <font style="color:#00ff00;">繋がる想い(5)</font>
+                            </a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <span class="color-image17">関連モンスター</span>
+                            <br>
+                            <hr class="quest-hr">
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=222">スウェブタワー　Ｂ１０</a>
+                            </span>
+                            <span class="color-image1">リムモン</span>
+                            <br>
+                            <span class="color-image1">罪悪の輪</span>
+                            <span class="color-image20">1個</span>
+                            <br>
+                            <br>
+                            <span class="color-image17">クエスト情報</span>
+                            <br>
+                            <hr class="quest-hr">スウェブタワーB10階のリムモンを退治し、
+                            <span class="color-image3">罪悪の輪</span>を獲得しよう。
+                            <br>
+                            <br>
+                            <hr>
+                            <br>
+                            <span class="color-image17">関連NPC</span>
+                            <br>
+                            <hr class="quest-hr">
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=443">農村ラカリフサ</a>
+                            </span>
+                            <span class="color-image4">放浪の少女</span>
+                            <br>
+                            <br>
+                            <span class="color-image17">クエスト情報</span>
+                            <br>
+                            <hr class="quest-hr">罪悪の輪を獲得した。放浪の少女
+                            <span class="color-image4">ミント</span>のところに戻ろう。
+                            <br>
+                            <br>
+                            <hr>
+                            <br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>受諾場所</th>
+                        <td>
+                            <span class="color-image2"></span>
+                            <span class="color-image4">放浪の少女</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>受諾条件</th>
+                        <td>Lv 500～9999</td>
+                    </tr>
+                </table>
+                <table id="table14" style="text-align:left">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th>報酬</th>
+                            <td>称号　友情Lv5<br>
+                                経験値 6280000 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">農村ラカリフサ</span></td>
+                            <td>
+                                <span class="color-image2">農村ラカリフサ</span>
+                                <span class="color-image4">放浪の少女</span> (7,28)と話す。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ガディウス大砂漠 / モリネルタワー付近</span></td>
+                            <td>
+                                <span class="color-image2">
+                                    <a href="https://sokomin.github.io/map/map_viewer.html?map_id=222">スウェブタワー　Ｂ１０</a>
+                                </span>
+                                <span class="color-image1">リムモン</span>（Lv500）(158,105)を倒す。<br>
+                                リポップ40秒。ドロップ率30%程度。<br>
+                                (ガイドシステムLv400より。)<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">農村ラカリフサ</span></td>
+                            <td>
+                                <span class="color-image2">農村ラカリフサ</span>
+                                <span class="color-image4">放浪の少女</span> (7,28)と話す。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font class="color-image1">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+        </div>
+</body>
+
+</html>
