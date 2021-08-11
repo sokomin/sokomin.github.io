@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>一般クエスト Lv1000～1250 赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <a href="../index.html">トップ</a> >> <a href="../quest/quest.html">クエスト</a> >> <a
+                href="../quest/normalquest_list.html">一般クエスト</a><br>
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+                <h3>一般クエスト　Lv1000～1250</h3>
+                <br>
+                <b>[連作クエスト](探検隊「ガレリオン」)</b>：スフィアパワキ込みで合計990億EXP、2000スキルポイント獲得可能。<br>
+                <a href="#1565">探検隊「ガレリオン」</a> -> <a href="#1566">海へと続く手がかり</a> -> <a href="#1567">まだ認めることは出来ない！</a> -> <a href="#1568">それぞれの役割</a><br>
+                ヤティカヌフィールド入場に必要な前提クエスト。<br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <table id="table14" style="text-align: left;">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tr>
+                        <th colspan="2">
+                            <a name="1565">
+                                <font style="color:#00ff00;">探検隊「ガレリオン」</font>
+                            </a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <span class="color-image17">関連NPC</span>
+                            <br>
+                            <hr class="quest-hr">
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=257">冒険家協会スマグ支部 / スマグ旅館</a>
+                            </span>
+                            <span class="color-image4">旅館主人</span>
+                            <br>
+                            <br>
+                            <span class="color-image17">クエスト情報</span>
+                            <br>
+                            <hr class="quest-hr">魔法都市スマグで何かが起こったようだ。近くの旅館主人に何が起こったのか詳しく聞いてみよう。
+                            <br>
+                            <br>
+                            <hr>
+                            <br>
+                            <span class="color-image17">関連NPC</span>
+                            <br>
+                            <hr class="quest-hr">
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=252">グローティング酒場</a>
+                            </span>
+                            <span class="color-image4">リヤン</span>
+                            <br>
+                            <br>
+                            <span class="color-image17">クエスト情報</span>
+                            <br>
+                            <hr class="quest-hr">魔法都市スマグのグローティング酒場で見慣れない者たちを見つけた。旅館主人が言っていた'探検隊の隊長'を知る者とは彼らのことなのか？彼らに話しかけてみよう。
+                            <br>
+                            <br>
+                            <hr>
+                            <br>
+                            <br>
+                            <span class="color-image17">クエスト情報</span>
+                            <br>
+                            <hr class="quest-hr">メモをよく見てみると、まず
+                            <span class="color-image13">生命の森中心部</span>で謎を解かなければならないようだ。
+                            <span class="color-image13">残されたメモ</span>をよく読んで謎を解いてみよう。
+                            <br>
+                            <br>
+                            <hr>
+                            <br>
+                            <span class="color-image17">関連NPC</span>
+                            <br>
+                            <hr class="quest-hr">
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=880">枯渇した生命の森</a>
+                            </span>
+                            <span class="color-image4">ハイドネル</span>
+                            <br>
+                            <br>
+                            <span class="color-image17">クエスト情報</span>
+                            <br>
+                            <hr class="quest-hr">無事に謎が解けた！銅像から出てきたメモの通り、枯渇した生命の森に行き、探検隊の隊長という人に会ってみよう。
+                            <br>
+                            <br>
+                            <hr>
+                            <br>
+                            <span class="color-image17">関連NPC</span>
+                            <br>
+                            <hr class="quest-hr">
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=252">グローティング酒場</a>
+                            </span>
+                            <span class="color-image4">ハイドネル</span>
+                            <br>
+                            <br>
+                            <span class="color-image17">クエスト情報</span>
+                            <br>
+                            <hr class="quest-hr">いきなり探検隊に入隊しろって…？いったい何が何だか分からないが、とりあえず彼女を待っている人たちがいるから、一旦魔法都市スマグのグローティング酒場に戻ろう。
+                            <br>
+                            <br>
+                            <hr>
+                            <br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>受諾場所</th>
+                        <td>
+                            <span class="color-image2">	冒険家協会スマグ支部／スマグ旅館</span>
+                            <span class="color-image4">協会調査官</span> (23,47)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>受諾条件</th>
+                        <td>Lv 1000～9999</td>
+                    </tr>
+                </table>
+                <table id="table14" style="text-align:left">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20"><b>500万ゴールド, 経験値 150億</b></span>(スフィア・パワキ込みで450億EXP)<br>
+                                ヤティカヌ入場前提クエスト(1)<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">冒険家協会スマグ支部／スマグ旅館</span></td>
+                            <td><span class="color-image4">協会調査官</span> (23,47)と話す(<span class="color-image1">★</span>)<br>
+                            ガイドシステム(Lv1000)より直通。<br>
+                            <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/2e9edf1faa62f57b8efe13c8fe3d96c9f3300039.10.9.9.3.png" border="0" alt="" name="insertImg" /><br><br>
+                        </td>
+
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">冒険家協会スマグ支部／スマグ旅館</span></td>
+                            <td><span class="color-image4">旅館主人</span> (10,11)と話す(<span class="color-image2">★</span>)<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">グローティング酒場</span></td>
+                            <td><span class="color-image4">リヤン</span> (8,13)と話す<br>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/239454fe6310b2653fea2dd44edf37a20a23a02d.10.9.9.3.png" border="0" alt="" name="insertImg" /><br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">生命の森中心部</span></td>
+                            <td><a href="https://sokomin.github.io/map/map_viewer.html?map_id=879">生命の森中心部</a>にてクエ品3種を出す。<br>
+                                残されたメモは以下。<br>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/c92edaa42a26b4a2c100a80663fd8fd6b0870edd.10.9.9.3.png" border="0" alt="" name="insertImg" /><br><br>
+                                生命のオーラは<span class="color-image1">生命の精霊</span>から入手。<br>
+                                ドロップ率5～10%程度。<br>
+                                入手したら①(30,164)のオブジェクトをクリック。<br>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/429a7ae6b93a5fa94dbf770147af8253591ae33f.10.9.9.3.png" border=0 name="insertImg" /><br><br>
+                                <br>
+                                森のオーラは<span class="color-image1">森の司令</span>から入手。<br>
+                                ドロップ率5～10%程度。<br>
+                                入手したら②(176,94)のオブジェクトをクリック。<br>
+                                <br>
+                                森のオーラは<span class="color-image1">神聖トカゲ、サーペントマン</span>から入手。<br>
+                                ドロップ率5～10%程度。<br>
+                                入手したら③(126,84)のオブジェクトをクリック。<br>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/a1433f0a67a28887b30c2665943a9feffa90b1b2.10.9.9.3.png" border="0" alt="" name="insertImg" /><br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">生命の森中心部</span></td>
+                            <td>
+                                3つのオーラ解放後に④(184,189)の岩をクリック。<br>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/429a7ae6b93a5fa94dbf770147af8253591ae33f.10.9.9.3.png" border=0 name="insertImg" /><br><br>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/fccba04d8f440595b71ea7336294667154c9e7c0.10.9.9.3.png" border="0" alt="" name="insertImg" /><br><br>
+                                クリック後はすぐ横のポータルから枯渇した生命の森に移動。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">枯渇した生命の森</span></td>
+                            <td>
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=880">枯渇した生命の森</a> ハイドネル(11,10)と話す。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">グローティング酒場</span></td>
+                            <td><span class="color-image2">グローティング酒場</span> <span class="color-image4">ハイドネル</span> (4,13)と話す<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <br>
+                <br>
+                <table id="table14" style="text-align: left;">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tr>
+                        <th colspan="2">
+                            <a name="1566">
+                                <font style="color:#00ff00;">海へと続く手掛かり</font>
+                            </a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <span class="color-image17">関連NPC</span>
+                            <br>
+                            <hr class="quest-hr">
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=252">グローティング酒場</a>
+                            </span>
+                            <span class="color-image4">ヘイズ</span>
+                            <br>
+                            <br>
+                            <span class="color-image17">クエスト情報</span>
+                            <br>
+                            <hr class="quest-hr">ヘイズは冒険家に何か頼み事があるようだ。少し様子を見てから彼に話しかけてみよう。
+                            <br>
+                            <br>
+                            <hr>
+                            <br>
+                            <span class="color-image17">関連アイテム</span>
+                            <br>
+                            <hr class="quest-hr">
+                            <span class="color-image20">1</span> 流れ着いた痕跡 1
+                            <br>
+                            <span class="color-image20">2</span> 流れ着いた痕跡 2
+                            <br>
+                            <span class="color-image20">3</span> 流れ着いた痕跡 3
+                            <br>
+                            <br>
+                            <span class="color-image17">クエスト情報</span>
+                            <br>
+                            <hr class="quest-hr">ヘイズによると、'ヤティカヌの茂み'は今まで交流が無かった土地だったが、非公式で海を通じて何かを積んだ筏が流れ着いたという。その筏は
+                            <span class="color-image13">ハンヒ山脈 / ドレム川付近</span>で時々目撃されていたという。そこに何か痕跡があるか調査してみよう。
+                            <br>
+                            <br>
+                            <hr>
+                            <br>
+                            <span class="color-image17">関連NPC</span>
+                            <br>
+                            <hr class="quest-hr">
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=252">グローティング酒場</a>
+                            </span>
+                            <span class="color-image4">ヘイズ</span>
+                            <br>
+                            <br>
+                            <span class="color-image17">クエスト情報</span>
+                            <br>
+                            <hr class="quest-hr">ある程度調査を終えたようだ。再び、魔法都市スマグのグローティング酒場にいるヘイズの所に戻ろう。
+                            <br>
+                            <br>
+                            <hr>
+                            <br>
+                            <span class="color-image17">関連アイテム</span>
+                            <br>
+                            <hr class="quest-hr">
+                            <span class="color-image20">1</span> 住民たちの証言 1
+                            <br>
+                            <span class="color-image20">2</span> 住民たちの証言 2
+                            <br>
+                            <span class="color-image20">3</span> 住民たちの証言 3
+                            <br>
+                            <span class="color-image20">4</span> 住民たちの証言 4
+                            <br>
+                            <br>
+                            <span class="color-image17">クエスト情報</span>
+                            <br>
+                            <hr class="quest-hr">ヘイズと話し合った結果、ヤティカヌの茂みにある筏は
+                            <span class="color-image13">鉱山町ハノブ</span>から流通された可能性が高いという結論に至った。ハノブに行き、住民たちの話を聞いてみよう。
+                            <br>
+                            <br>
+                            <hr>
+                            <br>
+                            <span class="color-image17">関連NPC</span>
+                            <br>
+                            <hr class="quest-hr">
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=252">グローティング酒場</a>
+                            </span>
+                            <span class="color-image4">ヘイズ</span>
+                            <br>
+                            <br>
+                            <span class="color-image17">クエスト情報</span>
+                            <br>
+                            <hr class="quest-hr">ある程度調査を終えたようだ。再び、魔法都市スマグのグローティング酒場にいるヘイズの所に戻ろう。
+                            <br>
+                            <br>
+                            <hr>
+                            <br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>受諾場所</th>
+                        <td>
+                            <span class="color-image2">グローティング酒場</span>
+                            <span class="color-image4">ヘイズ</span> (7,13)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>受諾条件</th>
+                        <td>Lv 1000～9999</td>
+                    </tr>
+                </table>
+                <table id="table14" style="text-align:left">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20"><b>100万ゴールド, 経験値 50億</b></span>(スフィア・パワキ込みで150億EXP)<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">グローティング酒場</span></td>
+                            <td><span class="color-image4">ヘイズ</span> (7,13)と話す<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">グローティング酒場</span></td>
+                            <td>もう一度<span class="color-image4">ヘイズ</span> (7,13)と話す<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">ハンヒ山脈／ドレム川付近</span></td>
+                            <td>筏が漂着した痕跡を3つ探す。(①～③)<br>
+                            ファストポータル(廃墟スバイン要塞)からすぐ下の移動ポータルを使うと速い。<br>
+                            <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/5095c1eb14b32bbcbb29ae0fc19465c3be64d07d.10.9.9.3.png" border=0 name="insertImg" /><br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">グローティング酒場</span></td>
+                            <td><span class="color-image4">ヘイズ</span> (7,13)と話す<br>
+                                途中の3択は<b>2)ハノブ</b>を選択。<br>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/e6c3232678af662d4003d51c132bc53033938e0b.10.9.9.3.png" border="0" alt="" name="insertImg" /><br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">鉱山町ハノブ</span></td>
+                            <td><span class="color-image4">住民</span> 4人と話す(<span class="color-image2">★</span>) (順不同)<br>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/e6af0a1a7bce502abf9839bf5e06d8e0bf998220.10.9.9.3.png" border=0 name="insertImg" /><br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">グローティング酒場</span></td>
+                            <td><span class="color-image4">ヘイズ</span> (7,13)と話す<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">グローティング酒場</span></td>
+                            <td>もう一度<span class="color-image4">ヘイズ</span> (7,13)と話す<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <table id="table14" style="text-align: left;">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tr>
+                        <th colspan="2">
+                            <a name="1567">
+                                <font style="color:#00ff00;">まだ認めることはできない！</font>
+                            </a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <span class="color-image17">関連モンスター</span>
+                            <br>
+                            <hr class="quest-hr">
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=825">忘れられた地下収容所B2</a>
+                            </span>
+                            <span class="color-image1">囚われた降神術師</span>
+                            <br>
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=825">忘れられた地下収容所B2</a>
+                            </span>
+                            <span class="color-image1">収容所番人</span>
+                            <br>
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=825">忘れられた地下収容所B2</a>
+                            </span>
+                            <span class="color-image1">束縛された魔法師</span>
+                            <br>
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=825">忘れられた地下収容所B2</a>
+                            </span>
+                            <span class="color-image1">収容所怪物ネズミ</span>
+                            <br>
+                            <br>
+                            <span class="color-image17">進行状況</span>
+                            <br>
+                            <hr class="quest-hr">モンスター (n) / 30体退治
+                            <br>
+                            <br>
+                            <span class="color-image17">クエスト情報</span>
+                            <br>
+                            <hr class="quest-hr">どうやらカイリンは冒険家を認めることができないようだ。仕方ないが、
+                            <span class="color-image13">忘れられた地下収容所 B2</span>に行き、モンスターを退治しよう。
+                            <br>
+                            <br>
+                            <hr>
+                            <br>
+                            <span class="color-image17">関連NPC</span>
+                            <br>
+                            <hr class="quest-hr">
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=252">グローティング酒場</a>
+                            </span>
+                            <span class="color-image4">カイリン</span>
+                            <br>
+                            <br>
+                            <span class="color-image17">クエスト情報</span>
+                            <br>
+                            <hr class="quest-hr">この位ならモンスターを十分退治した。カイリンの所に戻ろう。
+                            <br>
+                            <br>
+                            <hr>
+                            <br>
+                            <span class="color-image17">関連モンスター</span>
+                            <br>
+                            <hr class="quest-hr">
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=885">生命の森外郭</a>
+                            </span>
+                            <span class="color-image1">光輝のペガサス</span>
+                            <br>
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=885">生命の森外郭</a>
+                            </span>
+                            <span class="color-image1">パープルペガサス</span>
+                            <br>
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=885">生命の森外郭</a>
+                            </span>
+                            <span class="color-image1">森の生霊</span>
+                            <br>
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=885">生命の森外郭</a>
+                            </span>
+                            <span class="color-image1">森の呪術者</span>
+                            <br>
+                            <br>
+                            <span class="color-image17">進行状況</span>
+                            <br>
+                            <hr class="quest-hr">モンスター (n) / 50体退治
+                            <br>
+                            <br>
+                            <span class="color-image17">クエスト情報</span>
+                            <br>
+                            <hr class="quest-hr">どうやらカイリンはまだ冒険家を認めることができないようだ。今度は、
+                            <span class="color-image13">生命の森外郭</span>に行き、モンスターを退治しよう。
+                            <br>
+                            <br>
+                            <hr>
+                            <br>
+                            <span class="color-image17">関連NPC</span>
+                            <br>
+                            <hr class="quest-hr">
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=252">グローティング酒場</a>
+                            </span>
+                            <span class="color-image4">カイリン</span>
+                            <br>
+                            <br>
+                            <span class="color-image17">クエスト情報</span>
+                            <br>
+                            <hr class="quest-hr">この位ならモンスターを十分退治した。再び、カイリンの所に戻ろう。
+                            <br>
+                            <br>
+                            <hr>
+                            <br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>受諾場所</th>
+                        <td>
+                            <span class="color-image2">グローティング酒場</span>
+                            <span class="color-image4">カイリン</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>受諾条件</th>
+                        <td>Lv 1000～9999</td>
+                    </tr>
+                </table>
+                <table id="table14" style="text-align:left">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20"><b>スキルポイント 1000, 経験値 100億</b></span>(スフィア・パワキ込みで30億EXP)<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">グローティング酒場</span></td>
+                            <td><span class="color-image4">カイリン</span> (4,16)と話す<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">忘れられた地下収容所B2</span></td>
+                            <td><a href="https://sokomin.github.io/map/map_viewer.html?map_id=825">忘れられた地下収容所B2</a>にて対象モンスターを30体狩る。<br>
+                            ガイドシステム(Lv1000)より。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">グローティング酒場</span></td>
+                            <td><span class="color-image4">カイリン</span> (4,16)と話す<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">生命の森外郭</span></td>
+                            <td><a href="https://sokomin.github.io/map/map_viewer.html?map_id=825">生命の森外郭</a>にて対象モンスターを50体狩る。<br>
+                            ガイドシステム(Lv1050)より。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">グローティング酒場</span></td>
+                            <td><span class="color-image4">カイリン</span> (4,16)と話す<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <br>
+                <br>
+                <table id="table14" style="text-align: left;">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tr>
+                        <th colspan="2">
+                            <a name="1568">
+                                <font style="color:#00ff00;">それぞれの役割</font>
+                            </a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <span class="color-image17">関連NPC</span>
+                            <br>
+                            <hr class="quest-hr">
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=252">グローティング酒場</a>
+                            </span>
+                            <span class="color-image4">リヤン</span>
+                            <br>
+                            <br>
+                            <span class="color-image17">クエスト情報</span>
+                            <br>
+                            <hr class="quest-hr">リヤンは冒険家に何か頼み事があるようだ。少し様子を見てから再び彼に話しかけてみよう。
+                            <br>
+                            <br>
+                            <hr>
+                            <br>
+                            <span class="color-image17">関連アイテム</span>
+                            <br>
+                            <hr class="quest-hr">
+                            <span class="color-image20">1</span> 特別な痕跡 1
+                            <br>
+                            <span class="color-image20">2</span> 特別な痕跡 2
+                            <br>
+                            <span class="color-image20">3</span> 特別な痕跡 3
+                            <br>
+                            <span class="color-image20">4</span> 特別な痕跡 4
+                            <br>
+                            <br>
+                            <span class="color-image17">クエスト情報</span>
+                            <br>
+                            <hr class="quest-hr">リヤンによると'ヤティカヌの茂み'はそこに住んでいる妖精たちの不思議な力で塞がれていたという。でも、最近発見した原住民の暗号を解読すると、ヤティカヌの茂みに行く方法の手掛かりが見つかったという。他にも何か手掛かりがあるかも知れないから、
+                            <span class="color-image13">タトバ山東部</span>に行き手掛かりを探そう。
+                            <br>
+                            <br>
+                            <hr>
+                            <br>
+                            <span class="color-image17">関連NPC</span>
+                            <br>
+                            <hr class="quest-hr">
+                            <span class="color-image2">
+                                <a href="https://sokomin.github.io/map/map_viewer.html?map_id=252">グローティング酒場</a>
+                            </span>
+                            <span class="color-image4">リヤン</span>
+                            <br>
+                            <br>
+                            <span class="color-image17">クエスト情報</span>
+                            <br>
+                            <hr class="quest-hr">この位なら十分手掛かりになるだろう。一旦、リヤンの所に戻ろう。
+                            <br>
+                            <br>
+                            <hr>
+                            <br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>受諾場所</th>
+                        <td>
+                            <span class="color-image2">グローティング酒場</span>
+                            <span class="color-image4">リヤン</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>受諾条件</th>
+                        <td>Lv 1000～9999</td>
+                    </tr>
+                </table>
+                <table id="table14" style="text-align:left">
+                    <colgroup>
+                        <col span="1" width="240">
+                        <col span="1" width="640">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th>報酬</th>
+                            <td><span class="color-image20"><b>スキルポイント 500, 経験値 30億</b></span>(スフィア・パワキ込みで90億EXP)<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">グローティング酒場</span></td>
+                            <td><span class="color-image4">リヤン</span> (8,14)と話す<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">グローティング酒場</span></td>
+                            <td>もう一度<span class="color-image4">リヤン</span> (8,14)と話す<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">タトバ山東部地域</span></td>
+                            <td>ヤティカヌの茂みに行く方法の手掛かりを4つ探す。(①～④)(順不同)<br>
+                            ミラーテレポーター(11184)より。<br>
+                            <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/956c29d553aedb4f87566cc6096a04187a154f7b.10.9.9.3.png" border=0 name="insertImg" /><br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">グローティング酒場</span></td>
+                            <td><span class="color-image4">リヤン</span> (8,14)と話す<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"><span class="color-image2">グローティング酒場</span></td>
+                            <td>もう一度<span class="color-image4">リヤン</span> (8,14)と話す<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+        </div>
+</body>
+
+</html>
