@@ -226,10 +226,10 @@ function createQuestTable() {
                         var qt1 = "";
                         var qt2 = "";
                         if (re.test(qt[k]) ) {
-                            qt1 = qt[k].replace(re, qt1_txt);
+                            qt1 = Number(qt[k].replace(re, qt1_txt));
                             qt2 = qt[k].replace(re, qt2_txt);
                         } else {
-                            qt1 = qt[k].replace(re2, qt1_txt);
+                            qt1 = Number(qt[k].replace(re2, qt1_txt));
                             qt2 = qt[k].replace(re2, qt2_txt);
                         }
                         if (map_data[qt1]) {
@@ -256,10 +256,10 @@ function createQuestTable() {
                         var qt1 = "";
                         var qt2 = "";
                         if (re.test(qt[k]) ) {
-                            qt1 = qt[k].replace(re, qt1_txt);
+                            qt1 = Number(qt[k].replace(re, qt1_txt));
                             qt2 = qt[k].replace(re, qt2_txt);
                         } else {
-                            qt1 = qt[k].replace(re2, qt1_txt);
+                            qt1 = Number(qt[k].replace(re2, qt1_txt));
                             qt2 = qt[k].replace(re2, qt2_txt);
                         }
                         if (map_data[qt1]) {
@@ -338,8 +338,8 @@ function createQuestTable() {
                             qt2 = qt[k].replace(re2, qt2_txt);
                         }
                         var pos = qt1.split(",");
-                        if (map_data[pos[0]]) {
-                            quest_txt += '<span class="color-image2">' + map_data[pos[0]].name + '</span> ' + "(" + pos[1] + "," + pos[2] + ") ";
+                        if (map_data[Number(pos[0])]) {
+                            quest_txt += '<span class="color-image2">' + map_data[Number(pos[0])].name + '</span> ' + "(" + pos[1] + "," + pos[2] + ") ";
                             quest_txt += '<span class="color-image1">' + qt2 + '</span>';
                         } else {
                             quest_txt += '<span class="color-image2">' + pos[0] + '</span> ' + "(" + pos[1] + "," + pos[2] + ") ";
