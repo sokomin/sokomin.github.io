@@ -366,8 +366,8 @@ function statusUpdate(tableid, mobid) {
     else { MobLv = parseFloat(MobLv); }
 
     var Hp1 = parseFloat(md["DefaultHP"]) / 100.0; //基礎HP　	係数/100
-    var Hp2 = parseFloat(md["LevelUpBonus"]) / 10.0;//上昇HP　	係数/10
-    var Hp3 = parseFloat(md["ConditionBonus"]) / 10.0;//健康補正 	係数/10
+    var Hp2 = parseFloat(md["LevelUpBonus"]) > 0 ? (parseFloat(md["LevelUpBonus"]) / 10.0) : (parseFloat(md["unknown_109"]) / 10.0);//上昇HP　	係数/10
+    var Hp3 = parseFloat(md["ConditionBonus"]) > 0 ? (parseFloat(md["ConditionBonus"]) / 10.0) : (parseFloat(md["unknown_112"]) / 10.0);//健康補正 	係数/10
 
     var STRup = parseFloat(md["STR"]) * parseFloat(md["StatusFactor"]) / 100000.0;//力上昇  	力基礎/100000
     var AGIup = parseFloat(md["AGI"]) * parseFloat(md["StatusFactor"]) / 100000.0;//敏捷上昇  	力基礎/100000
