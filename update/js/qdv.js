@@ -132,7 +132,7 @@ function calc1() {
 function createQuestTable() {
     var a1 = $('input[name="a1"]').val()? Number($('input[name="a1"]').val()) : 0;
     var a2 = $('input[name="a2"]').val()? Number($('input[name="a2"]').val()) : 9999;
-    var QTYPE = getParam('type') ? parseInt(getParam('type')) : 0;
+    var QTYPE = getParam('type') ? parseInt(getParam('type')) : -1;
     var REQ_LEVEL = getParam('lv') ? parseInt(getParam('lv')) : 0;
     var DEBUG = getParam('debug') ? parseInt(getParam('debug')) : 0;
     var $div_main = $('<div>');
@@ -452,7 +452,7 @@ function validateData(data, qtype, lv, debug) {
         return false;
     }
     // クエストのタイプで絞りたい時に
-    if (data["unknown1"] != qtype) {
+    if (qtype!= -1 && data["unknown1"] != qtype) {
         return true;
     }
     // クエストの要求レベルで絞りたい時に
