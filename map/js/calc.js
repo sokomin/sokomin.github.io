@@ -312,12 +312,13 @@ function checkSubInfo(SubInfo) {
 
 // 左下のモンスター・NPCマーキング用＋NPCデータ出力
 function outputInfo() {
-    $('.main-background-map').css({ 'min-height': "200%" });
+    // スマホレイアウト死亡問題回避用。PCだと横がちょっと長く見える…
+    $('.main-background-map').css({ 'min-height': "200%", 'min-width': "140%" });
     // $('.main-background-map').css({'height':$(window).height()});
 
     // テーブルを頑張って作る係
     var map_concat = '<table border="0"><colgroup><col span="1" width="360px" /><col span="1" width="960px" /></colgroup><tbody><tr><td valign="top">';
-    var npc_doc = '<table id="table10" border="0" style="max-width: 360px;" cellspacing="1" cellpadding="2">';
+    var npc_doc = '<table id="table10" border="0" style="width: 360px;" cellspacing="1" cellpadding="2">';
     npc_doc = npc_doc + '<colgroup><col span="1" width="20%" /><col span="1" width="80%" /></colgroup><tbody>';
     npc_doc = npc_doc + '<tr><th colspan="2">NPC関連情報</th></tr>';
 
@@ -360,7 +361,7 @@ function outputInfo() {
     map_concat += '</td><td valign="top">';
     if (mob_data[0] && mob_data[0].mapid >= 0) {
         var is_header = false;
-        var npc_doc = '<table id="table10" border="0" style="max-width: 900px;" cellspacing="1" cellpadding="2">';
+        var npc_doc = '<table id="table10" border="0" style="width: 900px;" cellspacing="1" cellpadding="2">';
         npc_doc = npc_doc + '<colgroup><col span="1" width="270px" /><col span="1" width="150px" /><col span="1" width="120px" /><col span="1" width="150px" /><col span="1" width="210px" /></colgroup><tbody>';
         npc_doc = npc_doc + '<tr><th colspan="5">モンスター関連情報</th></tr>';
         npc_doc = npc_doc + '<tr><th>モンスター名</th><th>画像</th><th>種別</th><th>レベル</th><th>ドロップアイテム</th></tr>';
