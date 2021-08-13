@@ -171,5 +171,17 @@ MobData = {
 ]};
 
 AreaData = {
-    874: [
+    874: [ {"id":"0","type":0,"name":"_필드 전체","access_map":"","is_secret":0,"posx":0,"posx2":0,"posy":0,"posy2":0},
+    {"id":"1","type":0,"name":"_화면","access_map":"","is_secret":0,"posx":0,"posx2":0,"posy":0,"posy2":0},
+    {"id":"2","type":4,"name":"보물 상자 용 1","access_map":"","is_secret":0,"posx":11.47,"posx2":6.06,"posy":42.94,"posy2":17.3},
+    {"id":"3","type":4,"name":"보물 상자 용 2","access_map":"","is_secret":0,"posx":11.03,"posx2":41.27,"posy":70.08,"posy2":86},
+    {"id":"4","type":4,"name":"보물 상자 용 3","access_map":"","is_secret":0,"posx":46.66,"posx2":7.72,"posy":120.83,"posy2":35.13},
+    {"id":"5","type":4,"name":"보물 상자 용 4","access_map":"","is_secret":0,"posx":135.3,"posx2":13.83,"posy":185.66,"posy2":42.63},
+    {"id":"6","type":4,"name":"보물 상자 용 5","access_map":"","is_secret":0,"posx":129.36,"posx2":50.45,"posy":187.64,"posy2":87.41},
+    {"id":"7","type":5,"name":"시작 영역","access_map":"","is_secret":0,"posx":179.38,"posx2":10.25,"posy":181.94,"posy2":12.5},
+    {"id":"8","type":3,"name":"デフヒルズ西部地域","access_map":"[781]H01.rmd","is_secret":0,"posx":183.17,"posx2":9.17,"posy":185.95,"posy2":11.48},
+    {"id":"9","type":3,"name":"静寂の砂丘 - 星の谷","access_map":"[875]D01.rmd","is_secret":0,"posx":2.81,"posx2":92.3,"posy":5.47,"posy2":94.44},
+    {"id":"10","type":6,"name":"栄光の泉","access_map":"","is_secret":0,"posx":143.81,"posx2":26.75,"posy":147.44,"posy2":28.19},
+    {"id":"11","type":6,"name":"忘れられた戦場","access_map":"","is_secret":0,"posx":30.11,"posx2":10.73,"posy":34.14,"posy2":12.34},
+    {"id":"12","type":6,"name":"回帰の丘","access_map":"","is_secret":0,"posx":38.63,"posx2":68.34,"posy":43.34,"posy2":70.22},
 ]};
