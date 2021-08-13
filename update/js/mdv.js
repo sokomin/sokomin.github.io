@@ -64,6 +64,8 @@ function calc1() {
 function createMobTable() {
     var MOBSPEC = getParam('spec') ? parseInt(getParam('spec')) : 0;
     var MOBRANK = getParam('rank') ? parseInt(getParam('rank')) : 0;
+    var MOBID = getParam('mi') ? parseInt(getParam('mi')) : -1; //mobid直リンク専用
+    var DEF_LV = getParam('dlv') ? parseInt(getParam('dlv')) : "600"; //デフォルトレベル
     var DEBUG = getParam('debug') ? parseInt(getParam('debug')) : 0;
     var $div_main = $('<div>');
     var title_text = "<h4>" + mobSpec[MOBSPEC] + " " + mobRank[MOBRANK] + " の一覧" + "</h4>";
@@ -77,7 +79,11 @@ function createMobTable() {
         var data = monster_data[i];
         var drop_txt = createDropItem(i);
         var skill_txt = createSkillName(i);
-        if (validateData(data, MOBSPEC, MOBRANK, DEBUG, drop_txt, skill_txt)) {
+        if (MOBID >= 0) {
+            if (Number(MOBID) != Number(i)) {
+                continue;
+            }
+        } else if (validateData(data, MOBSPEC, MOBRANK, DEBUG, drop_txt, skill_txt)) {
             continue;
         }
         // var tnum = 62;
@@ -114,7 +120,7 @@ function createMobTable() {
             id: id + "flv",
             name: i,
             type: "text",
-            value: "600"
+            value: DEF_LV,
         }).addClass("inputlvform").css("width", "100px").bind("keyup", function () {
             var has = $(this).attr("id");
             has = has.substr(0, (has.length - 3));
@@ -304,7 +310,11 @@ function createMobTable() {
         var data = monster_data[i];
         var drop_txt = createDropItem(i);
         var skill_txt = createSkillName(i);
-        if (validateData(data, MOBSPEC, MOBRANK, DEBUG, drop_txt, skill_txt)) {
+        if (MOBID >= 0) {
+            if (Number(MOBID) != Number(i)) {
+                continue;
+            }
+        } else if (validateData(data, MOBSPEC, MOBRANK, DEBUG, drop_txt, skill_txt)) {
             continue;
         }
         statusUpdate("tmain" + i, i);
