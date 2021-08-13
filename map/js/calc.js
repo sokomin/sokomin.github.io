@@ -316,7 +316,7 @@ function outputInfo() {
     // $('.main-background-map').css({'height':$(window).height()});
 
     // テーブルを頑張って作る係
-    var map_concat = '<table border="0"><tr><td valign="top">';
+    var map_concat = '<table border="0"><colgroup><col span="1" width="360px" /><col span="1" width="960px" /></colgroup><tbody><tr><td valign="top">';
     var npc_doc = '<table id="table10" border="0" style="max-width: 360px;" cellspacing="1" cellpadding="2">';
     npc_doc = npc_doc + '<colgroup><col span="1" width="20%" /><col span="1" width="80%" /></colgroup><tbody>';
     npc_doc = npc_doc + '<tr><th colspan="2">NPC関連情報</th></tr>';
@@ -414,7 +414,7 @@ function outputInfo() {
         }
     }
 
-    map_concat += "</td></tr></table>";
+    map_concat += "</td></tr></tbody></table>";
     //NPCやモンスター名全部かくよ
     var npc_table = document.getElementById('npc_info');
     // npc_table.innerHTML = npc_doc;
