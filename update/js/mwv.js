@@ -271,8 +271,17 @@ function createMobPositionTable() {
     }
 
     moblist_text += "],";
-    $div_main.append("<br><br><br><br>mapdataのMoblistにアイ・コピー☆<br><br>");
+    $div_main.append('<br><br><br><br><span class="color-image1">mapdataのMoblistにアイ・コピー☆</span><br><br>');
     $div_main.append(moblist_text);
+
+    var map2csv = '';
+    for (var key in mob_inid_map) {
+        var name = mob_inid_map[key];
+        map2csv += (',' + a1 + ',' + name + ',' + a1 + ',' + Number(a2) + ',' + Number(a3) + ',100,100<br>')
+    }
+
+    $div_main.append('<br><br><br><br><span class="color-image1">map2csvの雛形作ったよ！</span><br><br>');
+    $div_main.append(map2csv);
 
     //monster.csvからinidの名前から順次、mobdbからそれっぽいモンスターを探してきたい。
     // 見つかったのだけでもmap2.csvに仕込みたい
@@ -290,7 +299,7 @@ function createMobPositionTable() {
             }
         }
     }
-    $div_main.append("<br><br><br><br>↓map2.csvに参考になりそうな情報↓<br><br>");
+    $div_main.append('<br><br><br><br><span class="color-image1">↓map2.csvに参考になりそうな情報↓</span><br><br>');
     $div_main.append(matched_mob);
 
 
