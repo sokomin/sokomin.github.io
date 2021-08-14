@@ -69,7 +69,9 @@ function createMobTable() {
     var DEBUG = getParam('debug') ? parseInt(getParam('debug')) : 0;
     var $div_main = $('<div>');
     var title_text = "<h4>" + mobSpec[MOBSPEC] + " " + mobRank[MOBRANK] + " の一覧" + "</h4>";
-    $div_main.append(title_text);
+    if (MOBID < 0) {
+        $div_main.append(title_text);
+    }
     var cnt = 0; //セーフティをはっておく
     for (var i in monster_data) {
         if (cnt >= 300) {
