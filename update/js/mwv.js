@@ -23,6 +23,7 @@ var obj_format = {};
 var monster_data = {};
 var map_data = {};
 var map_import = {};
+var a1 = 0; //map_id
 
 // 読み込んだCSVデータをオブジェクトに変換
 function convertCSVtoArray(is_area, str, map_str) {// 読み込んだCSVデータが文字列として渡される
@@ -30,7 +31,6 @@ function convertCSVtoArray(is_area, str, map_str) {// 読み込んだCSVデー�
     obj_format = {};
     monster_data = {};
     map_data = {};
-    map_import = {};
 
     var result = [];// 最終的な二次元配列を入れるための配列
     var tmp = str.split("\n");// 改行を区切り文字として行を要素とした配列を生成
@@ -113,6 +113,7 @@ function calc1() {
 
 function calc2() {
     var file = document.getElementById('files').files;
+    map_import = {};
 
     //FileReaderの作成
     var reader = new FileReader();
@@ -120,6 +121,8 @@ function calc2() {
     reader.readAsText(file[0]);
     //読込終了後の処理
     reader.onload = function (ev) {
+        var file_name = document.querySelector('#files').files[0].name;
+        a1 = Number(file_name.match(/\d+/)[0]);
         var map_str = reader.result;
         var result = [];// 最終的な二次元配列を入れるための配列
         var map_tmp = map_str.split("\r\n");// 改行を区切り文字として行を要素とした配列を生成
@@ -157,6 +160,7 @@ function calc2() {
 
 function calc3() {
     var file = document.getElementById('area_files').files;
+    map_import = {};
 
     //FileReaderの作成
     var reader = new FileReader();
@@ -164,6 +168,8 @@ function calc3() {
     reader.readAsText(file[0]);
     //読込終了後の処理
     reader.onload = function (ev) {
+        var file_name = document.querySelector('#area_files').files[0].name;
+        a1 = Number(file_name.match(/\d+/)[0]);
         var map_str = reader.result;
         var result = [];// 最終的な二次元配列を入れるための配列
         var map_tmp = map_str.split("\r\n");// 改行を区切り文字として行を要素とした配列を生成
@@ -204,7 +210,7 @@ var mob_inid_map = {}
 
 function createMobPositionTable() {
     // マップサイズはmaplistの値をもとに推測してみる。mapidを手動で入力
-    var a1 = $('input[name="a1"]').val()? Number($('input[name="a1"]').val()) : 0;
+    // var a1 = $('input[name="a1"]').val()? Number($('input[name="a1"]').val()) : 0;
     var a2 = $('input[name="a2"]').val()? Number($('input[name="a2"]').val()) : 0;
     var a3 = $('input[name="a3"]').val()? Number($('input[name="a3"]').val()) : 0;
     // var a2 = $('input[name="a2"]').val()? Number($('input[name="a2"]').val()) : 200;
@@ -297,7 +303,7 @@ function createMobPositionTable() {
 
 function createAreaPositionTable() {
     // マップサイズはmaplistの値をもとに推測してみる。mapidを手動で入力
-    var a1 = $('input[name="a1"]').val()? Number($('input[name="a1"]').val()) : 0;
+    // var a1 = $('input[name="a1"]').val()? Number($('input[name="a1"]').val()) : 0;
     // var a2 = $('input[name="a2"]').val()? Number($('input[name="a2"]').val()) : 200;
     var max_selected_data = map_data[a1];
     var max_x = max_selected_data["unknown_0"];
@@ -309,7 +315,8 @@ function createAreaPositionTable() {
     for (var i in map_import) {
         var data = map_import[i];
         testPosX(Number(data["posx"]), Number(max_x));
-        testPosY(Number(data["posy"]), Number(max_y));
+        // FIXME ジェネレータ側が間違ってるので、いずれここ正規対応が必要
+        testPosY(Number(data["posx2"]), Number(max_y));
     }
 
     var header = "AreaData = {<br>" + a1 + ": [ ";
@@ -350,8 +357,8 @@ function createAreaPositionTable() {
         // 画像にあわせて座標を再計算
         mobdb_tmp["posx"] = calcImgPos(Number(data["posx"]), Number(max_x), img_size["w"], tmp_divx);
         // FIXME ジェネレータ側が間違ってるので、いずれここ正規対応が必要
-        mobdb_tmp["posy"] = calcImgPos(Number(data["posx2"]), Number(max_x), img_size["h"], tmp_divx);
-        mobdb_tmp["posx2"] = calcImgPos(Number(data["posy"]), Number(max_y), img_size["w"], tmp_divy);
+        mobdb_tmp["posy"] = calcImgPos(Number(data["posx2"]), Number(max_x), img_size["h"], tmp_divy);
+        mobdb_tmp["posx2"] = calcImgPos(Number(data["posy"]), Number(max_y), img_size["w"], tmp_divx);
         mobdb_tmp["posy2"] = calcImgPos(Number(data["posy2"]), Number(max_y), img_size["h"], tmp_divy);
         var res =  JSON.stringify(mobdb_tmp) + ",<br>";
         $div_main.append(res);
