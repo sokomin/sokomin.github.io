@@ -2618,7 +2618,7 @@ function datalist(num) {
                     AreaMapName.push(data.name);
                     LnkA.push(data.name);
                     if (data.access_map && data.access_map != "none") {
-                        var map_idx = String(data.access_map).substr(1, 3);
+                        var map_idx = String(data.access_map).match(/\d+/)[0];
                         LnkP.push(map_idx);
                     } else {
                         LnkP.push(0);
