@@ -130,14 +130,16 @@ function getMobDB() {
                 var map_dot = document.getElementById('map-drawer');
                 var dot_txt = "";
                 var height = IMG_SYS_SIZE[mapid] ? IMG_SYS_SIZE[mapid].h : IMG_SIZE[mapid].h;
-                for (i = 0; i < (ObjX.length - 1); i++) {
+                // モンスターの位置を描画
+                for (i = 0; i < ObjX.length; i++) {
                     ObjY[i] = ObjY[i] * 200 / height;
                     ObjX[i] = ObjX[i] * 200 / height;
-                    // TODO 名前もとってきたい
+                    // FIXME ミラーテレポーターなどのNPCも全てこちらに統合するので、NPC関連の情報を取得する時はここからアイコン取ってこれるようにしたい。
                     dot_txt += "\t<div class=\"Obj Pa a" + (ObjN[i]) + "\" style=\"top:" + (ObjY[i]) + "px; left:" + (ObjX[i] + 20) + "px;\" title=\"" + (ObjT[i]) + "\">" + (ObjN[i]) + "</div>\n";
                     dot_txt += "\t<div class=\"Obj Pb a" + (ObjN[i]) + "\" style=\"top:" + (ObjY[i] - 1) + "px; left:" + (ObjX[i] + 19) + "px;\" title=\"" + MobMapName[i] + "\nリポップ時間：" + (ObjT[i]) + "秒\">" + (ObjN[i]) + "</div>\n";
                 }
                 map_dot.innerHTML = dot_txt;
+                // AreaTypeにおいて移動ポータル描画
                 // type3の時だけカウントが増える
                 PP = 0; PPP = 0;
                 var map_pot = document.getElementById('map-portal');
@@ -175,7 +177,8 @@ function getMobDB() {
                 }
                 map_pot.innerHTML = area_txt;
             } else {
-                for (i = 0; i < (ObjX.length - 1); i++) {
+                // 旧描画システム
+                for (i = 0; i <= (ObjX.length - 1); i++) {
                     document.write("\t<div class=\"Obj Pa a" + (ObjN[i]) + "\" style=\"top:" + (ObjY[i]) + "px; left:" + (ObjX[i] + 20) + "px;\" title=\"" + (ObjT[i]) + "\">" + (ObjN[i]) + "</div>\n");
                     document.write("\t<div class=\"Obj Pb a" + (ObjN[i]) + "\" style=\"top:" + (ObjY[i] - 1) + "px; left:" + (ObjX[i] + 19) + "px;\" title=\"" + (ObjT[i]) + "\">" + (ObjN[i]) + "</div>\n");
                 }
