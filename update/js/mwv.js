@@ -217,7 +217,8 @@ function createMobPositionTable() {
     var max_selected_data = map_data[a1];
     var max_x = max_selected_data["unknown_0"];
     var max_y = max_selected_data["unknown_1"];
-    var img_size = IMG_SIZE[a1];
+    // ない場合はmaplist.csvと同じサイズで問題ない。
+    var img_size = IMG_SIZE[a1] ? IMG_SIZE[a1] : { w:map_data[a1].unknown_0, h:map_data[a1].unknown_1};
 
     var $div_main = $('<div>');
     // 座標系の最大値計算
@@ -328,7 +329,7 @@ function createAreaPositionTable() {
     var max_selected_data = map_data[a1];
     var max_x = max_selected_data["unknown_0"];
     var max_y = max_selected_data["unknown_1"];
-    var img_size = IMG_SIZE[a1];
+    var img_size = IMG_SIZE[a1] ? IMG_SIZE[a1] : { w:map_data[a1].unknown_0, h:map_data[a1].unknown_1};
 
     var $div_main = $('<div>');
     // 座標系の最大値計算

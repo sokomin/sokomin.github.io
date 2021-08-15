@@ -124,7 +124,11 @@ function getMobDB() {
             AreaData = obj.a;
             Jump(mapid);
             //NameImgはcommon.jsで定義されてる
-            map_image.src = "../map/design/" + NameImg;
+            if (NameImg) {
+                map_image.src = "../map/design/" + NameImg;
+            } else {
+                map_image.src = "https://sokomin.github.io/sokomin_repository/db/map_img/" + NameImgBlack;
+            }
             //オブジェクトの描画
             if (mapid >= 0) {
                 var map_dot = document.getElementById('map-drawer');
@@ -221,6 +225,11 @@ function getMobDB() {
             console.log("御伽原エラー");
             Jump(mapid);
             //NameImgはcommon.jsで定義されてる
+            // if (NameImg) {
+            //     map_image.src = "../map/design/" + NameImg;
+            // } else {
+            //     map_image.src = "https://sokomin.github.io/sokomin_repository/db/map_img/" + NameImgBlack;
+            // }
             map_image.src = "../map/design/" + NameImg;
             outputInfo();
         },

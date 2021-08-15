@@ -1,4 +1,4 @@
-obData = {
+MobData = {
     782: [ {"id":"0","inid":3,"type":2,"name":"感染した熊","repop":30,"id_area":2,"lv_min":650,"lv_max":680,"is_npc":false,"real_posx":12.47,"real_posy":22.44,"posx":23.41,"posy":20.4},
     {"id":"1","inid":2,"type":2,"name":"ダイアーウルフ","repop":25,"id_area":7,"lv_min":650,"lv_max":680,"is_npc":false,"real_posx":34.63,"real_posy":62.69,"posx":65.01,"posy":56.99},
     {"id":"2","inid":3,"type":2,"name":"感染した熊","repop":30,"id_area":2,"lv_min":650,"lv_max":680,"is_npc":false,"real_posx":13.16,"real_posy":29.06,"posx":24.7,"posy":26.42},

@@ -28,6 +28,7 @@ MapId = 0;
 
 Name = "";
 NameImg = "";
+NameImgBlack = "";
 NameNpc = ["NPC"];
 NameMob = ["モンスター"];
 
