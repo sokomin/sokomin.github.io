@@ -324,8 +324,7 @@ function createAreaPositionTable() {
     for (var i in map_import) {
         var data = map_import[i];
         testPosX(Number(data["posx"]), Number(max_x));
-        // FIXME ジェネレータ側が間違ってるので、いずれここ正規対応が必要
-        testPosY(Number(data["posx2"]), Number(max_y));
+        testPosY(Number(data["posy"]), Number(max_y));
     }
 
     var header = "AreaData = {<br>" + a1 + ": [ ";
@@ -359,15 +358,13 @@ function createAreaPositionTable() {
         }
         mobdb_tmp["is_secret"] = 0;
         mobdb_tmp["real_posx"] = calcPos(Number(data["posx"]), Number(max_x), tmp_divx);
-        // FIXME ジェネレータ側が間違ってるので、いずれここ正規対応が必要
-        mobdb_tmp["real_posy"] = calcPos(Number(data["posx2"]), Number(max_x), tmp_divx);
-        mobdb_tmp["real_posx2"] = calcPos(Number(data["posy"]), Number(max_y), tmp_divy);
+        mobdb_tmp["real_posx2"] = calcPos(Number(data["posx2"]), Number(max_x), tmp_divx);
+        mobdb_tmp["real_posy"] = calcPos(Number(data["posy"]), Number(max_y), tmp_divy);
         mobdb_tmp["real_posy2"] = calcPos(Number(data["posy2"]), Number(max_y), tmp_divy);
         // 画像にあわせて座標を再計算
         mobdb_tmp["posx"] = calcImgPos(Number(data["posx"]), Number(max_x), img_size["w"], tmp_divx);
-        // FIXME ジェネレータ側が間違ってるので、いずれここ正規対応が必要
-        mobdb_tmp["posy"] = calcImgPos(Number(data["posx2"]), Number(max_x), img_size["h"], tmp_divy);
-        mobdb_tmp["posx2"] = calcImgPos(Number(data["posy"]), Number(max_y), img_size["w"], tmp_divx);
+        mobdb_tmp["posx2"] = calcImgPos(Number(data["posx2"]), Number(max_x), img_size["h"], tmp_divy);
+        mobdb_tmp["posy"] = calcImgPos(Number(data["posy"]), Number(max_y), img_size["w"], tmp_divx);
         mobdb_tmp["posy2"] = calcImgPos(Number(data["posy2"]), Number(max_y), img_size["h"], tmp_divy);
         var res =  JSON.stringify(mobdb_tmp) + ",<br>";
         $div_main.append(res);
