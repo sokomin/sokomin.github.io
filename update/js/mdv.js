@@ -1,11 +1,11 @@
 //CSVファイルを読み込む関数getCSV()の定義
-function getCSV() {
+function getCSV(mode) {
     var req = new XMLHttpRequest();// HTTPでファイルを読み込むためのXMLHttpRrequestオブジェクトを生成
     req.open("get", "https://sokomin.github.io/update/js/monster.csv", true);//アクセスするファイルを指定
     req.send(null);// HTTPリクエストの発行
     // レスポンスが返ってきたらconvertCSVtoArray()を呼ぶ	
     req.onload = function () {
-        convertCSVtoArray(req.responseText);// 渡されるのは読み込んだCSVデータ
+        convertCSVtoArray(mode, req.responseText);// 渡されるのは読み込んだCSVデータ
     }
 }
 
@@ -13,7 +13,7 @@ var obj_format = {};
 var monster_data = {};
 
 // 読み込んだCSVデータをオブジェクトに変換
-function convertCSVtoArray(str) {// 読み込んだCSVデータが文字列として渡される
+function convertCSVtoArray(mode, str) {// 読み込んだCSVデータが文字列として渡される
     // 初期化
     obj_format = {};
     monster_data = {};
@@ -50,7 +50,11 @@ function convertCSVtoArray(str) {// 読み込んだCSVデータが文字列と�
     // console.log(monster_data);
 
     // モンスターデータ解析
-    createMobTable();
+    if (mode == 2) {
+        createMobIconList();
+    } else {
+        createMobTable();
+    }
 }
 
 var DROP_TEXT_CONST = "<b><ドロップアイテム></b><br>";
@@ -61,11 +65,18 @@ function calc1() {
     getCSV();
 }
 
+function calcIcon() {
+    // モンスターデータ読み込み(同期の関係上、これ以外呼ばない)
+    getCSV(2);
+}
+
+
 function createMobTable() {
     var MOBSPEC = getParam('spec') ? parseInt(getParam('spec')) : 0;
     var MOBRANK = getParam('rank') ? parseInt(getParam('rank')) : 0;
     var MOBID = getParam('mi') ? parseInt(getParam('mi')) : -1; //mobid直リンク専用
     var DEF_LV = getParam('dlv') ? parseInt(getParam('dlv')) : "600"; //デフォルトレベル
+    var IMGID = getParam('imgid') ? parseInt(getParam('imgid')) : -1;
     var DEBUG = getParam('debug') ? parseInt(getParam('debug')) : 0;
     var $div_main = $('<div>');
     var title_text = "<h4>" + mobSpec[MOBSPEC] + " " + mobRank[MOBRANK] + " の一覧" + "</h4>";
@@ -81,7 +92,11 @@ function createMobTable() {
         var data = monster_data[i];
         var drop_txt = createDropItem(i);
         var skill_txt = createSkillName(i);
-        if (MOBID >= 0) {
+        if (IMGID >= 0) {
+            if (Number(data["EffectId"]) != IMGID) {
+                continue;
+            }
+        } else if (MOBID >= 0) {
             if (Number(MOBID) != Number(i)) {
                 continue;
             }
@@ -237,13 +252,17 @@ function createMobTable() {
 
         $state0Table.append($tr_sta0).append($tr_sta0_1).append($tr_reg2).append($tr_reg2_1).append($tr_reg3).append($tr_reg3_1);
 
+        var status_header_txt = '<基礎能力値>';
+        if (DEBUG == 9999) {
+            status_header_txt += (' _id:' + i)
+        }
         // 変動する能力は全部ここにくっつける
         var $tr_row2 = $('<tr>');
         $tr_row2.append($('<td>').attr("id", (id + "status")).append(($('<div>').css({
             "margin": "3px 0 0 5px",
             "text-align": "left",
             "vertical-align": "top"
-        }).text('<基礎能力値>')).append($statusTable).append("<br>").append($reg0Table).append("<br>").append($state0Table)
+        }).text(status_header_txt)).append($statusTable).append("<br>").append($reg0Table).append("<br>").append($state0Table)
         ));
 
         // 画像
@@ -312,7 +331,11 @@ function createMobTable() {
         var data = monster_data[i];
         var drop_txt = createDropItem(i);
         var skill_txt = createSkillName(i);
-        if (MOBID >= 0) {
+        if (IMGID >= 0) {
+            if (Number(data["EffectId"]) != IMGID) {
+                continue;
+            }
+        } else if (MOBID >= 0) {
             if (Number(MOBID) != Number(i)) {
                 continue;
             }
@@ -349,6 +372,9 @@ function validateData(data, spec, rank, debug, drop_txt, skill_txt) {
     if (Number(data["Lineage"]) != Number(rank)) {
         return true;
     }
+    // if (Number(data["EffectId"]) != imgid) {
+    //     return true;
+    // }
     // 最低限種族と等級は絞ってくれ
     if (Number(debug) == 9999) {
         return false;
@@ -489,7 +515,7 @@ function statusUpdate(tableid, mobid) {
     $("#" + tableid + "freg2_9").text(MobReg_10);
     $("#" + tableid + "freg2_10").text(MobReg_11);
     $("#" + tableid + "freg2_11").text(MobReg_12);
-    $("#" + tableid + "freg2_12").text(MobReg_13);
+    $("#" + tableid + "freg2_12").text(MobReg_13 + "(" +  md["Resistance13"] + ")");
     $("#" + tableid + "freg2_13").text(MobReg_14);
 
 }
@@ -640,4 +666,54 @@ function createDropItem(mobid) {
         txt += "<br>"
     }
     return txt;
+}
+
+
+function createMobIconList() {
+    var cnt = 0; //セーフティをはっておく
+    // 画像一覧を出すところから
+    var exist_icon_map = {};
+    var $div_main = $('<div>');
+
+    for (var i in monster_data) {
+        var data = monster_data[i];
+
+        var id = "tmain" + i;
+        var $table = $('<table>').attr("id", "table10")
+            .append($("<colgroup>").append($("<col>").attr("span", 1).attr("width", 550)));
+        var $tr_Name = $('<tr>');
+        // モンスター名
+        $tr_Name.append($('<th>').attr("id", (id + "name")).addClass("title").text(data["name"])
+            .attr("title", i).attr({ "rowspan": "2" }));
+
+        // 画像
+        var $tr_row2 = $('<tr>');
+        var mImage = Number(data["EffectId"]).toString(16);
+        var eid = data["EffectId_2"] >= 0 ? data["EffectId_2"] : 0;
+        var img_mapping_id = data["EffectId"] + "_" + eid;
+        if (exist_icon_map[img_mapping_id]) {
+            continue;
+        } else {
+            exist_icon_map[img_mapping_id] = { a: "a" };
+        }
+        var link_txt = '<a href="https://sokomin.github.io/update/monster_data_viewer.html?imgid=' + data["EffectId"] +'&debug=9999">調べる</a>';
+        mImage = ('0' + mImage).slice(-3)
+        mImage = "https://sokomin.github.io/monster/design/image/monster/0" + mImage.toLowerCase() + "000" + eid + ".png";
+        $tr_row2.append($('<th>').attr({
+            "colspan": "2"
+        }).css({
+            "background-color": "#000000"
+        }).append($('<div>').attr("id", (id + "image"))
+            .append($("<img>").attr({ src: mImage, })))
+            .append(link_txt)
+        );
+
+        $table.append($tr_Name);
+        $table.append($tr_row2);
+        $div_main.append($table);
+        $div_main.append("<br><br>");
+        cnt++;
+    }
+    $("#preview_html").empty().append($div_main);
+
 }
