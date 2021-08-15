@@ -271,6 +271,7 @@ function createMobPositionTable() {
                 moblist_text += '"';
                 moblist_text += "None.";
                 moblist_text += '",';
+                cnt++;
             }
         }
         moblist_text += '"';
