@@ -263,11 +263,20 @@ function createMobPositionTable() {
 
     // Mobのフィルタをしたい時用に
     var moblist_text = a1 + ': ["モンスター", ';
+    cnt = 0;
     for (var key in mob_inid_map) {
         var name = mob_inid_map[key];
+        if (cnt < Number(key)) {
+            for (var k = cnt; k < key; k++) {
+                moblist_text += '"';
+                moblist_text += "None.";
+                moblist_text += '",';
+            }
+        }
         moblist_text += '"';
         moblist_text += name;
         moblist_text += '",';
+        cnt++;
     }
 
     moblist_text += "],";
@@ -302,6 +311,7 @@ function createMobPositionTable() {
     $div_main.append('<br><br><br><br><span class="color-image1">↓map2.csvに参考になりそうな情報↓</span><br><br>');
     $div_main.append(matched_mob);
 
+    $div_main.append('<br><br><br><br><span class="color-image1">狩場の適正レベルはmapDataのNameListに、<br>画像サイズはIMG_SIZEに、抵抗低下情報はmapdata_subに記載してね！<br></span><br><br>');
 
     $("#preview_html").empty().append($div_main);
 

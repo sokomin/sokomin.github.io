@@ -349,6 +349,9 @@ function outputInfo() {
             } else {
                 // 1行目は「NPC」が固定で入ってるからね
                 var mob_num = NameNpc.length + i - 1;
+                if (NameMob[i] == "None.") {
+                    continue;
+                }
                 npc_doc = npc_doc + '<tr><td>' + mob_num + '</td>';
                 npc_doc = npc_doc + '<td><a href="javascript:void(0);" onclick="Yl(' + mob_num + ')">' + NameMob[i] + '</a></td>';
                 npc_doc = npc_doc + '</tr>';
