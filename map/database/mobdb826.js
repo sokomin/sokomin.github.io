@@ -341,14 +341,16 @@ MobData = {
 };
 
 AreaData = {
-826: [ {"id":"0","type":0,"name":"_필드 전체","access_map":"","is_secret":0,"real_posx":0,"real_posx2":0,"real_posy":0,"real_posy2":0,"posx":0,"posx2":0,"posy":0,"posy2":0},
+    826: [ {"id":"0","type":0,"name":"_필드 전체","access_map":"","is_secret":0,"real_posx":0,"real_posx2":0,"real_posy":0,"real_posy2":0,"posx":0,"posx2":0,"posy":0,"posy2":0},
     {"id":"1","type":0,"name":"_화면","access_map":"","is_secret":0,"real_posx":0,"real_posx2":0,"real_posy":0,"real_posy2":0,"posx":0,"posx2":0,"posy":0,"posy2":0},
-    {"id":"2","type":4,"name":"보물 상자 01","access_map":"","is_secret":0,"real_posx":16.95,"real_posx2":54.38,"real_posy":30.94,"real_posy2":84.53,"posx":62.4,"posx2":226.84,"posy":50.17,"posy2":155.35},
-    {"id":"3","type":4,"name":"보물 상자 02","access_map":"","is_secret":0,"real_posx":17.27,"real_posx2":59.61,"real_posy":94.97,"real_posy2":154.97,"posx":63.55,"posx2":248.68,"posy":154,"posy2":284.81},
-    {"id":"4","type":4,"name":"보물 상자 03","access_map":"","is_secret":0,"real_posx":59.53,"real_posx2":98.52,"real_posy":20.63,"real_posy2":76.88,"posx":219.13,"posx2":410.99,"posy":33.45,"posy2":141.28},
-    {"id":"5","type":4,"name":"보물 상자 04","access_map":"","is_secret":0,"real_posx":62.97,"real_posx2":99.61,"real_posy":92.5,"real_posy2":154.53,"posx":231.79,"posx2":415.55,"posy":150,"posy2":284},
-    {"id":"6","type":4,"name":"보물 상자 05","access_map":"","is_secret":0,"real_posx":103.69,"real_posx2":142.13,"real_posy":15.63,"real_posy2":78.75,"posx":381.67,"posx2":592.91,"posy":25.34,"posy2":144.73},
-    {"id":"7","type":4,"name":"보물 상자 06","access_map":"","is_secret":0,"real_posx":103.3,"real_posx2":138.92,"real_posy":92,"real_posy2":151.38,"posx":380.23,"posx2":579.55,"posy":149.19,"posy2":278.2},
-    {"id":"8","type":5,"name":"시작 영역","access_map":"","is_secret":0,"real_posx":42.77,"real_posx2":45.61,"real_posy":12.75,"real_posy2":17.5,"posx":157.42,"posx2":190.27,"posy":20.68,"posy2":32.16},
-    {"id":"9","type":3,"name":"忘れられた地下収容所B2","access_map":"[825]G16_D03_B03.rmd","is_secret":0,"real_posx":42.72,"real_posx2":45.53,"real_posy":12.47,"real_posy2":17.72,"posx":157.25,"posx2":189.95,"posy":20.22,"posy2":32.56},
-]};
+    {"id":"2","type":4,"name":"보물 상자 01","access_map":"","is_secret":0,"real_posx":16.95,"real_posx2":54.38,"real_posy":30.94,"real_posy2":84.53,"posx":62.4,"posx2":200.15,"posy":56.86,"posy2":155.35},
+    {"id":"3","type":4,"name":"보물 상자 02","access_map":"","is_secret":0,"real_posx":17.27,"real_posx2":59.61,"real_posy":94.97,"real_posy2":154.97,"posx":63.55,"posx2":219.42,"posy":174.54,"posy2":284.81},
+    {"id":"4","type":4,"name":"보물 상자 03","access_map":"","is_secret":0,"real_posx":59.53,"real_posx2":98.52,"real_posy":20.63,"real_posy2":76.88,"posx":219.13,"posx2":362.63,"posy":37.91,"posy2":141.28},
+    {"id":"5","type":4,"name":"보물 상자 04","access_map":"","is_secret":0,"real_posx":62.97,"real_posx2":99.61,"real_posy":92.5,"real_posy2":154.53,"posx":231.79,"posx2":366.66,"posy":170,"posy2":284},
+    {"id":"6","type":4,"name":"보물 상자 05","access_map":"","is_secret":0,"real_posx":103.69,"real_posx2":142.13,"real_posy":15.63,"real_posy2":78.75,"posx":381.67,"posx2":523.16,"posy":28.72,"posy2":144.73},
+    {"id":"7","type":4,"name":"보물 상자 06","access_map":"","is_secret":0,"real_posx":103.3,"real_posx2":138.92,"real_posy":92,"real_posy2":151.38,"posx":380.23,"posx2":511.37,"posy":169.08,"posy2":278.2},
+    {"id":"8","type":5,"name":"시작 영역","access_map":"","is_secret":0,"real_posx":42.77,"real_posx2":45.61,"real_posy":12.75,"real_posy2":17.5,"posx":157.42,"posx2":167.89,"posy":23.43,"posy2":32.16},
+    {"id":"9","type":3,"name":"忘れられた地下収容所B2","access_map":"[825]G16_D03_B03.rmd","is_secret":0,"real_posx":42.72,"real_posx2":45.53,"real_posy":12.47,"real_posy2":17.72,"posx":157.25,"posx2":167.6,"posy":22.92,"posy2":32.56},
+    ]
+};
+

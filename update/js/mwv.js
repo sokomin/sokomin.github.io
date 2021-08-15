@@ -374,8 +374,8 @@ function createAreaPositionTable() {
         mobdb_tmp["real_posy2"] = calcPos(Number(data["posy2"]), Number(max_y), tmp_divy);
         // 画像にあわせて座標を再計算
         mobdb_tmp["posx"] = calcImgPos(Number(data["posx"]), Number(max_x), img_size["w"], tmp_divx);
-        mobdb_tmp["posx2"] = calcImgPos(Number(data["posx2"]), Number(max_x), img_size["h"], tmp_divy);
-        mobdb_tmp["posy"] = calcImgPos(Number(data["posy"]), Number(max_y), img_size["w"], tmp_divx);
+        mobdb_tmp["posx2"] = calcImgPos(Number(data["posx2"]), Number(max_x), img_size["w"], tmp_divx);
+        mobdb_tmp["posy"] = calcImgPos(Number(data["posy"]), Number(max_y), img_size["h"], tmp_divy);
         mobdb_tmp["posy2"] = calcImgPos(Number(data["posy2"]), Number(max_y), img_size["h"], tmp_divy);
         var res =  JSON.stringify(mobdb_tmp) + ",<br>";
         $div_main.append(res);

@@ -379,22 +379,21 @@ MobData = {
 AreaData = {
     827: [ {"id":"0","type":0,"name":"_필드 전체","access_map":"","is_secret":0,"real_posx":0,"real_posx2":0,"real_posy":0,"real_posy2":0,"posx":0,"posx2":0,"posy":0,"posy2":0},
     {"id":"1","type":0,"name":"_화면","access_map":"","is_secret":0,"real_posx":0,"real_posx2":0,"real_posy":0,"real_posy2":0,"posx":0,"posx2":0,"posy":0,"posy2":0},
-    {"id":"2","type":3,"name":"ロングテール付近の狩場","access_map":"[792]G01.rmd","is_secret":0,"real_posx":191.73,"real_posx2":194.38,"real_posy":6.22,"real_posy2":9.84,"posx":383.47,"posx2":485.94,"posy":4.97,"posy2":9.84},
-    {"id":"3","type":5,"name":"시작 영역","access_map":"","is_secret":0,"real_posx":192.17,"real_posx2":193.89,"real_posy":6.41,"real_posy2":9.59,"posx":384.34,"posx2":484.73,"posy":5.13,"posy2":9.59},
-    {"id":"4","type":4,"name":"보물 상자 01","access_map":"","is_secret":0,"real_posx":15,"real_posx2":52.63,"real_posy":25.44,"real_posy2":62.41,"posx":30,"posx2":131.56,"posy":20.35,"posy2":62.41},
-    {"id":"5","type":4,"name":"보물 상자 02","access_map":"","is_secret":0,"real_posx":12.72,"real_posx2":58.97,"real_posy":93.69,"real_posy2":134.41,"posx":25.44,"posx2":147.42,"posy":74.95,"posy2":134.41},
-    {"id":"6","type":4,"name":"보물 상자 03","access_map":"","is_secret":0,"real_posx":14.38,"real_posx2":53.5,"real_posy":156.25,"real_posy2":186.75,"posx":28.75,"posx2":133.75,"posy":125,"posy2":186.75},
-    {"id":"7","type":4,"name":"보물 상자 04","access_map":"","is_secret":0,"real_posx":9.38,"real_posx2":71.25,"real_posy":205.38,"real_posy2":236,"posx":18.75,"posx2":178.13,"posy":164.3,"posy2":236},
-    {"id":"8","type":4,"name":"보물 상자 05","access_map":"","is_secret":0,"real_posx":118.5,"real_posx2":155.31,"real_posy":44.5,"real_posy2":81,"posx":237,"posx2":388.28,"posy":35.6,"posy2":81},
-    {"id":"9","type":4,"name":"보물 상자 06","access_map":"","is_secret":0,"real_posx":102.19,"real_posx2":174.75,"real_posy":91.5,"real_posy2":117.38,"posx":204.38,"posx2":436.88,"posy":73.2,"posy2":117.38},
-    {"id":"10","type":4,"name":"보물 상자 07","access_map":"","is_secret":0,"real_posx":106.94,"real_posx2":135.13,"real_posy":151,"real_posy2":223.13,"posx":213.88,"posx2":337.81,"posy":120.8,"posy2":223.13},
-    {"id":"11","type":4,"name":"보물 상자 08","access_map":"","is_secret":0,"real_posx":141.81,"real_posx2":189.94,"real_posy":191.75,"real_posy2":229.63,"posx":283.63,"posx2":474.84,"posy":153.4,"posy2":229.63},
-    {"id":"12","type":12,"name":"騒動鎮圧 3段階 調査1","access_map":"","is_secret":0,"real_posx":116.36,"real_posx2":120.75,"real_posy":141.19,"real_posy2":150.91,"posx":232.72,"posx2":301.88,"posy":112.95,"posy2":150.91},
-    {"id":"13","type":12,"name":"騒動鎮圧 3段階 調査2","access_map":"","is_secret":0,"real_posx":17.06,"real_posx2":19.8,"real_posy":19.22,"real_posy2":25.38,"posx":34.13,"posx2":49.49,"posy":15.38,"posy2":25.38},
-    {"id":"14","type":12,"name":"騒動鎮圧 3段階 調査3","access_map":"","is_secret":0,"real_posx":148.86,"real_posx2":152.08,"real_posy":37.84,"real_posy2":44.03,"posx":297.72,"posx2":380.2,"posy":30.28,"posy2":44.03},
+    {"id":"2","type":3,"name":"ロングテール付近の狩場","access_map":"[792]G01.rmd","is_secret":0,"real_posx":191.73,"real_posx2":194.38,"real_posy":6.22,"real_posy2":9.84,"posx":383.47,"posx2":388.75,"posy":6.22,"posy2":9.84},
+    {"id":"3","type":5,"name":"시작 영역","access_map":"","is_secret":0,"real_posx":192.17,"real_posx2":193.89,"real_posy":6.41,"real_posy2":9.59,"posx":384.34,"posx2":387.78,"posy":6.41,"posy2":9.59},
+    {"id":"4","type":4,"name":"보물 상자 01","access_map":"","is_secret":0,"real_posx":15,"real_posx2":52.63,"real_posy":25.44,"real_posy2":62.41,"posx":30,"posx2":105.25,"posy":25.44,"posy2":62.41},
+    {"id":"5","type":4,"name":"보물 상자 02","access_map":"","is_secret":0,"real_posx":12.72,"real_posx2":58.97,"real_posy":93.69,"real_posy2":134.41,"posx":25.44,"posx2":117.94,"posy":93.69,"posy2":134.41},
+    {"id":"6","type":4,"name":"보물 상자 03","access_map":"","is_secret":0,"real_posx":14.38,"real_posx2":53.5,"real_posy":156.25,"real_posy2":186.75,"posx":28.75,"posx2":107,"posy":156.25,"posy2":186.75},
+    {"id":"7","type":4,"name":"보물 상자 04","access_map":"","is_secret":0,"real_posx":9.38,"real_posx2":71.25,"real_posy":205.38,"real_posy2":236,"posx":18.75,"posx2":142.5,"posy":205.38,"posy2":236},
+    {"id":"8","type":4,"name":"보물 상자 05","access_map":"","is_secret":0,"real_posx":118.5,"real_posx2":155.31,"real_posy":44.5,"real_posy2":81,"posx":237,"posx2":310.63,"posy":44.5,"posy2":81},
+    {"id":"9","type":4,"name":"보물 상자 06","access_map":"","is_secret":0,"real_posx":102.19,"real_posx2":174.75,"real_posy":91.5,"real_posy2":117.38,"posx":204.38,"posx2":349.5,"posy":91.5,"posy2":117.38},
+    {"id":"10","type":4,"name":"보물 상자 07","access_map":"","is_secret":0,"real_posx":106.94,"real_posx2":135.13,"real_posy":151,"real_posy2":223.13,"posx":213.88,"posx2":270.25,"posy":151,"posy2":223.13},
+    {"id":"11","type":4,"name":"보물 상자 08","access_map":"","is_secret":0,"real_posx":141.81,"real_posx2":189.94,"real_posy":191.75,"real_posy2":229.63,"posx":283.63,"posx2":379.88,"posy":191.75,"posy2":229.63},
+    {"id":"12","type":12,"name":"騒動鎮圧 3段階 調査1","access_map":"","is_secret":0,"real_posx":116.36,"real_posx2":120.75,"real_posy":141.19,"real_posy2":150.91,"posx":232.72,"posx2":241.5,"posy":141.19,"posy2":150.91},
+    {"id":"13","type":12,"name":"騒動鎮圧 3段階 調査2","access_map":"","is_secret":0,"real_posx":17.06,"real_posx2":19.8,"real_posy":19.22,"real_posy2":25.38,"posx":34.13,"posx2":39.59,"posy":19.22,"posy2":25.38},
+    {"id":"14","type":12,"name":"騒動鎮圧 3段階 調査3","access_map":"","is_secret":0,"real_posx":148.86,"real_posx2":152.08,"real_posy":37.84,"real_posy2":44.03,"posx":297.72,"posx2":304.16,"posy":37.84,"posy2":44.03},
     ]
 };
-    
 
 
     
