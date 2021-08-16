@@ -10,7 +10,8 @@ var open4 = true;
 function calcDebug() {
     var area_text = "";
     var area_infos = AreaData[mapid];
-    var height = IMG_SYS_SIZE[mapid] ? IMG_SYS_SIZE[mapid].h : IMG_SIZE[mapid].h;
+    // var height = IMG_SYS_SIZE[mapid] ? IMG_SYS_SIZE[mapid].h : IMG_SIZE[mapid].h;
+    var height = IMG_SIZE[mapid].h;
     var map_area_info = document.getElementById('map-area');
     // エリア情報描画
     for (var i = 0; i < area_infos.length; i++) {
@@ -52,7 +53,8 @@ function AreaDebug(mode) {
     var objs = document.getElementsByTagName("div");
 
     var area_infos = AreaData[mapid];
-    var height = IMG_SYS_SIZE[mapid] ? IMG_SYS_SIZE[mapid].h : IMG_SIZE[mapid].h;
+    // var height = IMG_SYS_SIZE[mapid] ? IMG_SYS_SIZE[mapid].h : IMG_SIZE[mapid].h;
+    var height = IMG_SIZE[mapid].h;
     var j = 0;
     var k = 0;
     for (var i = 0; i < objs.length; i++) {

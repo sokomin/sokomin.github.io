@@ -133,7 +133,8 @@ function getMobDB() {
             if (mapid >= 0) {
                 var map_dot = document.getElementById('map-drawer');
                 var dot_txt = "";
-                var height = IMG_SYS_SIZE[mapid] ? IMG_SYS_SIZE[mapid].h : IMG_SIZE[mapid].h;
+                // var height = IMG_SYS_SIZE[mapid] ? IMG_SYS_SIZE[mapid].h : IMG_SIZE[mapid].h;
+                var height = IMG_SIZE[mapid].h;
                 // モンスターの位置を描画
                 for (i = 0; i < ObjX.length; i++) {
                     ObjY[i] = ObjY[i] * 200 / height;

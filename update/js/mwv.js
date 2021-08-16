@@ -221,11 +221,16 @@ function createMobPositionTable() {
     var img_size = IMG_SIZE[a1] ? IMG_SIZE[a1] : { w:map_data[a1].unknown_0, h:map_data[a1].unknown_1};
 
     var $div_main = $('<div>');
+    var max_inid = -1;
     // 座標系の最大値計算
     for (var i in map_import) {
         var data = map_import[i];
         testPosX(Number(data["posx"]), Number(max_x));
         testPosY(Number(data["posy"]), Number(max_y));
+        var tmp_inid = Number(data["inid"]);
+        if (tmp_inid > max_inid) {
+            max_inid = tmp_inid;
+        }
     }
 
     var header = "MobData = {<br>" + a1 + ": [ ";
@@ -245,7 +250,27 @@ function createMobPositionTable() {
         mobdb_tmp["inid"] = Number(data["inid"]);
         mobdb_tmp["type"] = Number(data["type"]);
         mobdb_tmp["name"] = data["name"];
-        mob_inid_map[mobdb_tmp["inid"]] = data["name"];
+        if (mob_inid_map[mobdb_tmp["inid"]] && mob_inid_map[mobdb_tmp["inid"]] == data["name"]) {
+            // 既にあるので追記しない
+        } else if (mob_inid_map[mobdb_tmp["inid"]] && mob_inid_map[mobdb_tmp["inid"]] != data["name"]) {
+            // コンフリクトしてるので、どっちかのinidを書き換える必要がある。
+            var inid_exist_flag = true;
+            for (var key in mob_inid_map) {
+                if (mob_inid_map[mobdb_tmp["inid"]] == data["name"]) {
+                    // 見つけた場合はそのinidで統合（名前かぶってたらどうしようもないけど、そんなケースはないはず）
+                    mobdb_tmp["inid"]　= key;
+                    inid_exist_flag = false;
+                    break;
+                }
+            }
+            if (inid_exist_flag) {
+                max_inid++;
+                mob_inid_map[max_inid] = data["name"];
+                mobdb_tmp["inid"] = max_inid;
+            }
+        } else {
+            mob_inid_map[mobdb_tmp["inid"]] = data["name"];
+        }
         mobdb_tmp["repop"] = Number(data["repop"]);
         mobdb_tmp["id_area"] = Number(data["id_area"]);
         mobdb_tmp["lv_min"] = Number(a2);
@@ -258,6 +283,7 @@ function createMobPositionTable() {
         var res =  JSON.stringify(mobdb_tmp) + ",<br>";
         $div_main.append(res);
     }
+    console.log(mob_inid_map);
 
     var footer = "]};";
     $div_main.append(footer);

@@ -25,7 +25,7 @@ Rendou2 = 0;
 SubInfo = {};
 ExtraInfo = {};
 MapId = 0;
-const map_padding = 5;
+const map_padding = 10;
 
 Name = "";
 NameImg = "";
