@@ -25,6 +25,7 @@ Rendou2 = 0;
 SubInfo = {};
 ExtraInfo = {};
 MapId = 0;
+const map_padding = 5;
 
 Name = "";
 NameImg = "";
@@ -98,11 +99,11 @@ function Ad(num) {
         if (objs[i].className.substr(0, 3) == "Obj") {
             $(objs[i + 0]).css({
                 "top": (ObjY[j]) * KS,
-                "left": (ObjX[j]) * KS + 20
+                "left": (ObjX[j]) * KS + map_padding
             })
             $(objs[i + 1]).css({
                 "top": (ObjY[j]) * KS - 1,
-                "left": (ObjX[j]) * KS + 20 - 1
+                "left": (ObjX[j]) * KS + map_padding - 1
             })
             i = i + 1;
             j = j + 1;
@@ -127,11 +128,11 @@ function Ad(num) {
         if (objs[i].className.substr(0, 3) == "Lnk") {
             $(objs[i + 0]).css({
                 "top": (LnkY[k]) * KS,
-                "left": (LnkX[k]) * KS + 20
+                "left": (LnkX[k]) * KS + map_padding
             })
             $(objs[i + 1]).css({
                 "top": (LnkY[k]) * KS - 1,
-                "left": (LnkX[k]) * KS + 20 - 1
+                "left": (LnkX[k]) * KS + map_padding - 1
             })
             i = i + 1;
             k = k + 1;

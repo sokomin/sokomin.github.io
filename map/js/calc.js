@@ -139,8 +139,8 @@ function getMobDB() {
                     ObjY[i] = ObjY[i] * 200 / height;
                     ObjX[i] = ObjX[i] * 200 / height;
                     // FIXME ミラーテレポーターなどのNPCも全てこちらに統合するので、NPC関連の情報を取得する時はここからアイコン取ってこれるようにしたい。
-                    dot_txt += "\t<div class=\"Obj Pa a" + (ObjN[i]) + "\" style=\"top:" + (ObjY[i]) + "px; left:" + (ObjX[i] + 20) + "px;\" title=\"" + (ObjT[i]) + "\">" + (ObjN[i]) + "</div>\n";
-                    dot_txt += "\t<div class=\"Obj Pb a" + (ObjN[i]) + "\" style=\"top:" + (ObjY[i] - 1) + "px; left:" + (ObjX[i] + 19) + "px;\" title=\"" + MobMapName[i] + "\nリポップ時間：" + (ObjT[i]) + "秒\">" + (ObjN[i]) + "</div>\n";
+                    dot_txt += "\t<div class=\"Obj Pa a" + (ObjN[i]) + "\" style=\"top:" + (ObjY[i]) + "px; left:" + (ObjX[i] + map_padding) + "px;\" title=\"" + (ObjT[i]) + "\">" + (ObjN[i]) + "</div>\n";
+                    dot_txt += "\t<div class=\"Obj Pb a" + (ObjN[i]) + "\" style=\"top:" + (ObjY[i] - 1) + "px; left:" + (ObjX[i] + map_padding -1) + "px;\" title=\"" + MobMapName[i] + "\nリポップ時間：" + (ObjT[i]) + "秒\">" + (ObjN[i]) + "</div>\n";
                 }
                 map_dot.innerHTML = dot_txt;
                 // AreaTypeにおいて移動ポータル描画
@@ -176,8 +176,8 @@ function getMobDB() {
                     }
                     LnkY[i] = LnkY[i] * 200 / height;
                     LnkX[i] = LnkX[i] * 200 / height;
-                    area_txt += "\t<div class=\"Lnk Pa\" style=\"top:" + (LnkY[i] - 10) + "px; left:" + (LnkX[i] + 20) + "px;\" title=\"" + alt + "\">" + nam + "</div>\n";
-                    area_txt += "\t<div class=\"Lnk\" style=\"top:" + (LnkY[i] - 9) + "px; left:" + (LnkX[i] + 19) + "px; color:" + col + "\" title=\"" + alt + "\">" + nam2 + "</div>\n";
+                    area_txt += "\t<div class=\"Lnk Pa\" style=\"top:" + (LnkY[i] - 10) + "px; left:" + (LnkX[i] + map_padding) + "px;\" title=\"" + alt + "\">" + nam + "</div>\n";
+                    area_txt += "\t<div class=\"Lnk\" style=\"top:" + (LnkY[i] - 9) + "px; left:" + (LnkX[i] + map_padding -1) + "px; color:" + col + "\" title=\"" + alt + "\">" + nam2 + "</div>\n";
                 }
                 map_pot.innerHTML = area_txt;
             } else {

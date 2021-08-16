@@ -1,5 +1,9 @@
 ﻿
-
+var open0 = true;
+var open1 = false;
+var open2 = false;
+var open3 = false;
+var open4 = true;
 
 
 // 
@@ -22,9 +26,10 @@ function calcDebug() {
         var raposy = aposy * 200 / height;
         var rawidth = (aposx2 * 200 / height) - raposx;
         var raheight = (aposy2 * 200 / height) - raposy;
-        if (atype == 4) {
+        // FIXME open4やopen0辺りがバグってる
+        if (atype == 4 && open4) {
             area_text += '<div class="AreaObj area_type04" style=\"top:' + raposy + "px; left:" + raposx + "px; width:" + rawidth + "px; height:" + raheight + "px;\" title=\"" + (aname) + "\"></div>\n";
-        } else if (atype == 0) {
+        } else if (atype == 0 && open0) {
             area_text += '<div class="AreaObj area_type00" style=\"top:' + raposy + "px; left:" + raposx + "px; width:" + (rawidth) + "px; height:" + (raheight) + "px;\" title=\"" + (aname) + "\"></div>\n";
 
         }
@@ -64,7 +69,7 @@ function AreaDebug(mode) {
                 var raposy = (aposy * 200 / height);
                 var rawidth = (aposx2 * 200 / height - raposx)  * arate;
                 var raheight = (aposy2 * 200 / height - raposy) * arate;
-                if (atype == 4) {
+                if (atype == 4 && open4) {
                     $(objs[i]).css({
                         "top": raposy * arate,
                         "left": (raposx) * arate,
@@ -72,7 +77,7 @@ function AreaDebug(mode) {
                         "height": raheight,
                     })
                     j = j + 1;
-                } else if (atype == 0) {
+                } else if (atype == 0 && open0) {
                     $(objs[i]).css({
                         "top": raposy * arate,
                         "left": (raposx) * arate,
