@@ -52,7 +52,7 @@ function convertCSVtoArray(str, monster_str) {// 読み込んだCSVデータが�
                 obj_format[j] = txt;
             }
             // TODO フォーマット違ったらエラー出すなりしたい
-            console.log(obj_format);
+            // console.log(obj_format);
         } else {
             var md = {};
             for (var j = 1; j < result[i].length; j++) {
@@ -72,7 +72,7 @@ function convertCSVtoArray(str, monster_str) {// 読み込んだCSVデータが�
             cnt++;
         }
     }
-    console.log(mob_data);
+    // console.log(mob_data);
 
     /**
      * モンスターデータ読み込み
@@ -94,7 +94,7 @@ function convertCSVtoArray(str, monster_str) {// 読み込んだCSVデータが�
                 obj_format[j] = txt;
             }
             // TODO フォーマット違ったらエラー出すなりしたい
-            console.log(obj_format);
+            // console.log(obj_format);
         } else {
             var md = {};
             for (var j = 1; j < result[i].length; j++) {
@@ -483,10 +483,14 @@ function validateData(data, drop_txt) {
         return true;
     }
     // FIXME -1で死んでる画像があるので、monster.csv側を見直したい。
-    if (Number(data["EffectId_2"]) < 0) {
+    // if (Number(data["EffectId_2"]) < 0) {
+    //     return true;
+    // }
+    // ヤティカヌ以降で登場。地面から出てくる「ズドン」の即死攻撃をする正体。
+    if (data["name"] == "自爆テスター") {
         return true;
     }
-    if (data["name"] == "自爆テスター") {
+    if (data["name"] == "自爆ヘルパー") {
         return true;
     }
     return false;

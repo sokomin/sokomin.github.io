@@ -386,9 +386,9 @@ function validateData(data, spec, rank, debug, drop_txt, skill_txt) {
         return true;
     }
     // FIXME -1で死んでる画像があるので、monster.csv側を見直したい。
-    if (Number(data["EffectId_2"]) < 0) {
-        return true;
-    }
+    // if (Number(data["EffectId_2"]) < 0) {
+    //     return true;
+    // }
     if (data["name"] == "自爆テスター") {
         return true;
     }

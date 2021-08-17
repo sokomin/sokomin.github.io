@@ -68,6 +68,9 @@ MapSubInfoList = {
     1010: { name: "ガレリオン野営地", mc2:12, mc:"A",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: true },
     1015: { name: "涼しい洞窟", mc2:4, mc:"-",req_map_lv:7, dfi:45, dwa:45, dwi:45, dea:45, dli:45, dda:45, st_down:25,lbd:70, non_resume: false },
     1016: { name: "寂しい群島", mc2: 4, mc: "-", req_map_lv: 7, dfi: 50, dwa: 50, dwi: 50, dea: 50, dli: 50, dda: 50, st_down: 25, lbd: 70, non_resume: false },
+    //FIXME mc2調べたい
+    1017: { name: "捨てられた地下墓地B2のメリス・リング", mc2:9, mc:"-",req_map_lv:99, dfi:40, dwa:20, dwi:20, dea:20, dli:20, dda:40, st_down:15,lbd:70, non_resume: true },
+    1018: { name: "捨てられた地下墓地B3のメリス・リング", mc2:9, mc:"-",req_map_lv:99, dfi:40, dwa:25, dwi:25, dea:25, dli:25, dda:40, st_down:15,lbd:70, non_resume: true },
 
 
     // イベント用マップ、マップは本来表示されない。
