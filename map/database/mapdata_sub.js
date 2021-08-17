@@ -14,7 +14,7 @@ MapSubInfoList = {
     826: { name: "忘れられた地下収容所 B3", mc2:9, mc:"C",req_map_lv:6, dfi:40, dwa:40, dwi:40, dea:40, dli:40, dda:40, st_down:20,lbd:70, non_resume: false  },
     874: { name: "静寂の砂丘 / 月の谷", mc2:12, mc:"C",req_map_lv:7, dfi:40, dwa:40, dwi:40, dea:40, dli:40, dda:40, st_down:30,lbd:70, non_resume: false  },
     875: { name: "静寂の砂丘 / 星の谷", mc2:12, mc:"C",req_map_lv:7, dfi:40, dwa:40, dwi:40, dea:40, dli:40, dda:40, st_down:30,lbd:70, non_resume: false  },
-    878: { name: "神獣の野原", mc2:2, mc:"B",req_map_lv:5, dfi:60, dwa:60, dwi:60, dea:60, dli:60, dda:60, st_down:20,lbd:70, non_resume: false  },
+    878: { name: "神獣の野原", mc2: 2, mc: "B", req_map_lv: 5, dfi: 60, dwa: 60, dwi: 60, dea: 60, dli: 60, dda: 60, st_down: 20, lbd: 70, non_resume: false },
     879: { name: "生命の森中心部", mc2:2, mc:"B",req_map_lv:6, dfi:60, dwa:60, dwi:60, dea:60, dli:60, dda:60, st_down:20,lbd:70, non_resume: false  },
     880: { name: "枯渇した生命の森", mc2:2, mc:"B",req_map_lv:7, dfi:70, dwa:70, dwi:70, dea:70, dli:70, dda:70, st_down:25,lbd:70, non_resume: false  },
     881: { name: "死の荒れ地", mc2:2, mc:"B",req_map_lv:7, dfi:70, dwa:70, dwi:70, dea:70, dli:70, dda:70, st_down:30,lbd:70, non_resume: false  },
@@ -52,7 +52,7 @@ MapSubInfoList = {
     870: { name: "ミラーダンジョン 忘れられた地下収容所 B3 1-3", mc2:12, mc:"C",req_map_lv:6, dfi:40, dwa:40, dwi:40, dea:40, dli:40, dda:40, st_down:20,lbd:70, non_resume: false  },
     871: { name: "ミラーダンジョン 忘れられた地下収容所 B3 1-4", mc2:12, mc:"C",req_map_lv:6, dfi:40, dwa:40, dwi:40, dea:40, dli:40, dda:40, st_down:20,lbd:70, non_resume: false  },
     872: { name: "ミラーダンジョン 忘れられた地下収容所 B3 1-5", mc2:12, mc:"C",req_map_lv:6, dfi:40, dwa:40, dwi:40, dea:40, dli:40, dda:40, st_down:20,lbd:70, non_resume: false  },
-    909: { name: "ミラーダンジョン 静寂の砂丘 / 月の谷 1-1", mc2:12, mc:"C",req_map_lv:7, dfi:40, dwa:40, dwi:40, dea:40, dli:40, dda:40, st_down:30,lbd:70, non_resume: false  },
+    909: { name: "ミラーダンジョン 静寂の砂丘 / 月の谷 1-1", mc2: 12, mc: "C", req_map_lv: 7, dfi: 40, dwa: 40, dwi: 40, dea: 40, dli: 40, dda: 40, st_down: 30, lbd: 70, non_resume: false },
     910: { name: "ミラーダンジョン 静寂の砂丘 / 月の谷 1-2", mc2:12, mc:"C",req_map_lv:7, dfi:40, dwa:40, dwi:40, dea:40, dli:40, dda:40, st_down:30,lbd:70, non_resume: false  },
     911: { name: "ミラーダンジョン 静寂の砂丘 / 月の谷 1-3", mc2:12, mc:"C",req_map_lv:7, dfi:40, dwa:40, dwi:40, dea:40, dli:40, dda:40, st_down:30,lbd:70, non_resume: false  },
     1000: { name: "ミラーダンジョン 静寂の砂丘 / 星の谷 1-1", mc2:2, mc:"C",req_map_lv:7, dfi:40, dwa:40, dwi:40, dea:40, dli:40, dda:40, st_down:30,lbd:70, non_resume: false  },
@@ -74,7 +74,16 @@ MapSubInfoList = {
 
 
     // イベント用マップ、マップは本来表示されない。
-    783: { name: "ロングテールの娼館", mc2:4, mc:"-",req_map_lv:99, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false},
+    783: { name: "ロングテールの娼館", mc2:4, mc:"-",req_map_lv:99, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: true},
+    784: { name: "エステルの別荘", mc2:4, mc:"-",req_map_lv:99, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: true},
+    785: { name: "ロズウェルトの邸宅", mc2:4, mc:"-",req_map_lv:99, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: true},
+    786: { name: "地下界の大使の所在", mc2:4, mc:"-",req_map_lv:99, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: true},
+    789: { name: "レッドアイ最初のアジト", mc2:4, mc:"-",req_map_lv:99, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: true},
+    790: { name: "トラップマウザーの隠れ家", mc2:4, mc:"-",req_map_lv:99, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: true},
+    876: { name: "黄金色の小麦畑亭客室", mc2:4, mc:"-",req_map_lv:99, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: true},
+    877: { name: "協会長邸宅", mc2:4, mc:"-",req_map_lv:99, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: true},
+    883: { name: "ハミングトーンのアルケミー工房", mc2:4, mc:"-",req_map_lv:99, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: true},
+    884: { name: "捨てられた実験室", mc2:4, mc:"-",req_map_lv:99, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: true},
 
     //以下、機械的に作ったデータ
     1:{ name: "中央プラトン街道 / グレートフォレスト入口付近", mc2:3, mc:"D",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
