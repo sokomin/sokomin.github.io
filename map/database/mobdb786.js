@@ -19,7 +19,7 @@ MobData = {
     ]
 };
 
-reaData = {
+AreaData = {
     786: [ {"id":"0","type":0,"name":"_필드 전체","access_map":"","is_secret":0,"real_posx":0,"real_posx2":0,"real_posy":0,"real_posy2":0,"posx":0,"posx2":0,"posy":0,"posy2":0},
     {"id":"1","type":0,"name":"_화면","access_map":"","is_secret":0,"real_posx":0,"real_posx2":0,"real_posy":0,"real_posy2":0,"posx":0,"posx2":0,"posy":0,"posy2":0},
     {"id":"2","type":5,"name":"시작 영역","access_map":"","is_secret":0,"real_posx":8.09,"real_posx2":9.86,"real_posy":13.56,"real_posy2":16.91,"posx":8.09,"posx2":9.86,"posy":13.56,"posy2":16.91},

@@ -1,0 +1,42 @@
+MobData = {
+    1010: [ {"id":"0","inid":3,"type":1,"name":"ヘイズ","repop":0,"id_area":256,"lv_min":0,"lv_max":0,"is_npc":true,"real_posx":64.95,"real_posy":10.34,"posx":155.89,"posy":12.41},
+    {"id":"1","inid":2,"type":1,"name":"カイリン","repop":0,"id_area":256,"lv_min":0,"lv_max":0,"is_npc":true,"real_posx":63.23,"real_posy":12.53,"posx":151.76,"posy":15.04},
+    {"id":"2","inid":1,"type":1,"name":"ハイドネル","repop":0,"id_area":256,"lv_min":0,"lv_max":0,"is_npc":true,"real_posx":70.48,"real_posy":9.88,"posx":169.16,"posy":11.85},
+    {"id":"3","inid":0,"type":1,"name":"リヤン","repop":0,"id_area":256,"lv_min":0,"lv_max":0,"is_npc":true,"real_posx":73.06,"real_posy":13.31,"posx":175.35,"posy":15.98},
+    {"id":"4","inid":4,"type":1,"name":"カリプス","repop":120,"id_area":256,"lv_min":0,"lv_max":0,"is_npc":false,"real_posx":91.42,"real_posy":59.25,"posx":219.41,"posy":71.1},
+    {"id":"5","inid":5,"type":1,"name":"イスメルダ","repop":0,"id_area":256,"lv_min":0,"lv_max":0,"is_npc":true,"real_posx":19.3,"real_posy":154.13,"posx":46.31,"posy":184.95},
+    {"id":"6","inid":11,"type":1,"name":"ラエル","repop":120,"id_area":256,"lv_min":0,"lv_max":0,"is_npc":false,"real_posx":123.52,"real_posy":33.16,"posx":296.44,"posy":39.79},
+    {"id":"7","inid":6,"type":1,"name":"協会派遣魔法師","repop":0,"id_area":256,"lv_min":0,"lv_max":0,"is_npc":true,"real_posx":136.84,"real_posy":189.94,"posx":328.43,"posy":227.93},
+    {"id":"8","inid":6,"type":1,"name":"協会派遣魔法師","repop":0,"id_area":256,"lv_min":0,"lv_max":0,"is_npc":true,"real_posx":31.27,"real_posy":153.22,"posx":75.04,"posy":183.86},
+    {"id":"9","inid":7,"type":18,"name":"探検隊鍛冶屋","repop":0,"id_area":256,"lv_min":0,"lv_max":0,"is_npc":true,"real_posx":121.28,"real_posy":13,"posx":291.08,"posy":15.6},
+    {"id":"10","inid":8,"type":5,"name":"薬草学者シルベス","repop":120,"id_area":256,"lv_min":0,"lv_max":0,"is_npc":true,"real_posx":125.27,"real_posy":9.13,"posx":300.64,"posy":10.95},
+    {"id":"11","inid":9,"type":4,"name":"刻印師モリス","repop":0,"id_area":256,"lv_min":0,"lv_max":0,"is_npc":true,"real_posx":129.5,"real_posy":7.91,"posx":310.8,"posy":9.49},
+    {"id":"12","inid":10,"type":1,"name":"恩寵商人メリア","repop":0,"id_area":256,"lv_min":0,"lv_max":0,"is_npc":true,"real_posx":132.59,"real_posy":12.16,"posx":318.23,"posy":14.59},
+    {"id":"13","inid":12,"type":1,"name":"探検隊分解師","repop":0,"id_area":256,"lv_min":0,"lv_max":0,"is_npc":true,"real_posx":27.31,"real_posy":146.25,"posx":65.55,"posy":175.5},
+    {"id":"14","inid":15,"type":16,"name":"探検隊治療師 ","repop":0,"id_area":256,"lv_min":0,"lv_max":0,"is_npc":true,"real_posx":132.75,"real_posy":19.22,"posx":318.6,"posy":23.06},
+    {"id":"15","inid":13,"type":14,"name":"植物交感師","repop":120,"id_area":256,"lv_min":0,"lv_max":0,"is_npc":true,"real_posx":151.86,"real_posy":142.69,"posx":364.46,"posy":171.23},
+    {"id":"16","inid":14,"type":1,"name":"ダナン族の守護者","repop":120,"id_area":256,"lv_min":0,"lv_max":0,"is_npc":true,"real_posx":182.42,"real_posy":76.13,"posx":437.81,"posy":91.35},
+    {"id":"17","inid":14,"type":1,"name":"ダナン族の守護者","repop":120,"id_area":256,"lv_min":0,"lv_max":0,"is_npc":true,"real_posx":178.91,"real_posy":79.72,"posx":429.38,"posy":95.66},
+    {"id":"18","inid":14,"type":1,"name":"ダナン族の守護者","repop":0,"id_area":256,"lv_min":0,"lv_max":0,"is_npc":true,"real_posx":130.58,"real_posy":151.13,"posx":313.39,"posy":181.35},
+    {"id":"19","inid":14,"type":1,"name":"ダナン族の守護者","repop":0,"id_area":256,"lv_min":0,"lv_max":0,"is_npc":true,"real_posx":134.22,"real_posy":155.25,"posx":322.13,"posy":186.3},
+    {"id":"20","inid":14,"type":1,"name":"ダナン族の守護者","repop":0,"id_area":256,"lv_min":0,"lv_max":0,"is_npc":false,"real_posx":142.64,"real_posy":150.09,"posx":342.34,"posy":180.11},
+    {"id":"21","inid":14,"type":1,"name":"ダナン族の守護者","repop":120,"id_area":256,"lv_min":0,"lv_max":0,"is_npc":true,"real_posx":140.72,"real_posy":183.34,"posx":337.73,"posy":220.01},
+    {"id":"22","inid":14,"type":1,"name":"ダナン族の守護者","repop":0,"id_area":256,"lv_min":0,"lv_max":0,"is_npc":true,"real_posx":163.63,"real_posy":194.97,"posx":392.7,"posy":233.96},
+    {"id":"23","inid":14,"type":1,"name":"ダナン族の守護者","repop":120,"id_area":256,"lv_min":0,"lv_max":0,"is_npc":true,"real_posx":140.72,"real_posy":194.19,"posx":337.73,"posy":233.03},
+    ]
+};
+
+AreaData = {
+    1010: [ {"id":"0","type":0,"name":"_필드 전체","access_map":"","is_secret":0,"real_posx":0,"real_posx2":0,"real_posy":0,"real_posy2":0,"posx":0,"posx2":0,"posy":0,"posy2":0},
+    {"id":"1","type":0,"name":"_화면","access_map":"","is_secret":0,"real_posx":0,"real_posx2":0,"real_posy":0,"real_posy2":0,"posx":0,"posx2":0,"posy":0,"posy2":0},
+    {"id":"2","type":5,"name":"시작 영역","access_map":"","is_secret":0,"real_posx":111.33,"real_posx2":113.05,"real_posy":4.97,"real_posy2":7.47,"posx":267.19,"posx2":271.31,"posy":5.96,"posy2":8.96},
+    {"id":"3","type":3,"name":"ヤティカヌ月の出森林","access_map":"[1007]YatikanuForest_1.rmd","is_secret":0,"real_posx":111.59,"real_posx2":112.64,"real_posy":5.31,"real_posy2":7.03,"posx":267.83,"posx2":270.34,"posy":6.38,"posy2":8.44},
+    {"id":"4","type":12,"name":"瞬間移動の魔法陣(1)","access_map":"","is_secret":0,"real_posx":126.34,"real_posx2":130.64,"real_posy":13.09,"real_posy2":17.78,"posx":303.23,"posx2":313.54,"posy":15.71,"posy2":21.34},
+    {"id":"5","type":12,"name":"瞬間移動の魔法陣(2)","access_map":"","is_secret":0,"real_posx":130.38,"real_posx2":136.59,"real_posy":187.19,"real_posy2":198.22,"posx":312.9,"posx2":327.83,"posy":224.63,"posy2":237.86},
+    {"id":"6","type":12,"name":"瞬間移動の魔法陣(3)","access_map":"","is_secret":0,"real_posx":32.42,"real_posx2":36.5,"real_posy":149.16,"real_posy2":154.34,"posx":77.81,"posx2":87.6,"posy":178.99,"posy2":185.21},
+    {"id":"7","type":0,"name":"WANDER_YATIKANOO_SHOP","access_map":"","is_secret":0,"real_posx":30.31,"real_posx2":32.11,"real_posy":143.69,"real_posy2":146.78,"posx":72.75,"posx2":77.06,"posy":172.43,"posy2":176.14},
+    {"id":"8","type":18,"name":"노점상 불가","access_map":"","is_secret":0,"real_posx":28,"real_posx2":164.72,"real_posy":0.09,"real_posy2":126,"posx":67.2,"posx2":395.33,"posy":0.11,"posy2":151.2},
+    {"id":"9","type":18,"name":"노점상 불가2","access_map":"","is_secret":0,"real_posx":164.78,"real_posx2":189.31,"real_posy":56.38,"real_posy2":126.19,"posx":395.48,"posx2":454.35,"posy":67.65,"posy2":151.43},
+    {"id":"10","type":18,"name":"노점상 불가3","access_map":"","is_secret":0,"real_posx":88.75,"real_posx2":196.94,"real_posy":94.19,"real_posy2":201.5,"posx":213,"posx2":472.65,"posy":113.03,"posy2":241.8},
+    ]
+};
