@@ -211,14 +211,14 @@ var mob_inid_map = {}
 function createMobPositionTable() {
     // マップサイズはmaplistの値をもとに推測してみる。mapidを手動で入力
     // var a1 = $('input[name="a1"]').val()? Number($('input[name="a1"]').val()) : 0;
-    var a2 = $('input[name="a2"]').val()? Number($('input[name="a2"]').val()) : 0;
-    var a3 = $('input[name="a3"]').val()? Number($('input[name="a3"]').val()) : 0;
+    var a2 = $('input[name="a2"]').val() ? Number($('input[name="a2"]').val()) : 0;
+    var a3 = $('input[name="a3"]').val() ? Number($('input[name="a3"]').val()) : 0;
     // var a2 = $('input[name="a2"]').val()? Number($('input[name="a2"]').val()) : 200;
     var max_selected_data = map_data[a1];
     var max_x = max_selected_data["unknown_0"];
     var max_y = max_selected_data["unknown_1"];
     // ない場合はmaplist.csvと同じサイズで問題ない。
-    var img_size = IMG_SIZE[a1] ? IMG_SIZE[a1] : { w:map_data[a1].unknown_0, h:map_data[a1].unknown_1};
+    var img_size = IMG_SIZE[a1] ? IMG_SIZE[a1] : { w: map_data[a1].unknown_0, h: map_data[a1].unknown_1 };
 
     var $div_main = $('<div>');
     var max_inid = -1;
@@ -258,7 +258,7 @@ function createMobPositionTable() {
             for (var key in mob_inid_map) {
                 if (mob_inid_map[mobdb_tmp["inid"]] == data["name"]) {
                     // 見つけた場合はそのinidで統合（名前かぶってたらどうしようもないけど、そんなケースはないはず）
-                    mobdb_tmp["inid"]　= key;
+                    mobdb_tmp["inid"] = key;
                     inid_exist_flag = false;
                     break;
                 }
@@ -280,7 +280,7 @@ function createMobPositionTable() {
         mobdb_tmp["real_posy"] = calcPos(Number(data["posy"]), Number(max_y), tmp_divy);
         mobdb_tmp["posx"] = calcImgPos(Number(data["posx"]), Number(max_x), img_size["w"], tmp_divx);
         mobdb_tmp["posy"] = calcImgPos(Number(data["posy"]), Number(max_y), img_size["h"], tmp_divy);
-        var res =  JSON.stringify(mobdb_tmp) + ",<br>";
+        var res = JSON.stringify(mobdb_tmp) + ",<br>";
         $div_main.append(res);
     }
     console.log(mob_inid_map);
@@ -332,7 +332,7 @@ function createMobPositionTable() {
         for (var key in mob_inid_map) {
             var name = mob_inid_map[key];
             if (sname.indexOf(name) != -1) {
-                matched_mob += (',' + a1 + ','+ sname +','+ Number(i) +',' + Number(a2) + ',' + Number(a3) +',100,100<br>')
+                matched_mob += (',' + a1 + ',' + sname + ',' + Number(i) + ',' + Number(a2) + ',' + Number(a3) + ',100,100<br>')
             }
         }
     }
@@ -355,7 +355,7 @@ function createAreaPositionTable() {
     var max_selected_data = map_data[a1];
     var max_x = max_selected_data["unknown_0"];
     var max_y = max_selected_data["unknown_1"];
-    var img_size = IMG_SIZE[a1] ? IMG_SIZE[a1] : { w:map_data[a1].unknown_0, h:map_data[a1].unknown_1};
+    var img_size = IMG_SIZE[a1] ? IMG_SIZE[a1] : { w: map_data[a1].unknown_0, h: map_data[a1].unknown_1 };
 
     var $div_main = $('<div>');
     // 座標系の最大値計算
@@ -404,7 +404,7 @@ function createAreaPositionTable() {
         mobdb_tmp["posx2"] = calcImgPos(Number(data["posx2"]), Number(max_x), img_size["w"], tmp_divx);
         mobdb_tmp["posy"] = calcImgPos(Number(data["posy"]), Number(max_y), img_size["h"], tmp_divy);
         mobdb_tmp["posy2"] = calcImgPos(Number(data["posy2"]), Number(max_y), img_size["h"], tmp_divy);
-        var res =  JSON.stringify(mobdb_tmp) + ",<br>";
+        var res = JSON.stringify(mobdb_tmp) + ",<br>";
         $div_main.append(res);
     }
 
@@ -464,6 +464,97 @@ function calcImgPos(x, max, n, div) {
  * @param {number} base どの桁で四捨五入するか（10→10の位、0.1→小数第１位）
  * @return {number} 四捨五入した値
  */
- function orgRound(value, base) {
+function orgRound(value, base) {
     return Math.round(value * base) / base;
+}
+
+
+// mobdbのテスト
+function test1() {
+    var MobData = null;
+    var AreaData = null;
+    var el = null;
+    var res_val = [];
+    var err_text = "";
+    const readMobDB = (param, callback) => {
+        const result = callback();
+        return new Promise((resolve, reject) => {
+            appendScript(param, function (res) {
+                console.log(res);
+                if (res) {
+                    resolve(result);
+                } else {
+                    reject("失敗");
+                }
+            });
+        });
+    }
+    // readMobDB("https://sokomin.github.io/map/database/mobdb0.js", () => {
+    //     console.log("1こめ");
+    //     return 1;
+    // }).then(value => {
+    //     res_val.push(value);
+    //     return readMobDB("https://sokomin.github.io/map/database/mobdb1.js", () => {
+    //         console.log("2こめ");
+    //         return 2;
+    //     })
+    // }).catch(console.error);
+    for (var i = 0; i <= 1018; i++) {
+        readMobDB("https://sokomin.github.io/map/database/mobdb"+ i +".js", () => {
+            // console.log("1こめ");
+            return 1;
+        }).then(value => {
+            res_val.push(value);
+            if (!MobData) {
+                err_text += ("モンスターデータがない" + i + "<br>");
+            } else if (!MobData[i]) {
+                err_text += ("モンスターデータの番号が違う" + i + "<br>");
+            } else {
+
+            }
+            if (!AreaData) {
+                err_text += ("エリアデータがない" + i + "<br>");
+            } else if (!AreaData[i]) {
+                err_tesxt += ("エリアデータの番号が違う" + i + "<br>");
+            } else {
+
+            }
+            // return removeScript(el, () => {
+            //     return 2;
+            // })
+        }).catch(console.error);
+
+        // try {
+        //     el = appendScript("https://sokomin.github.io/map/database/mobdb" + i + ".js");
+        //     if (!el) {
+        //         throw ("404 Not Found. " + i);
+        //     }
+        // } catch (e) {
+        //     console.log(e);
+        // } finally {
+        //     // MobData = MobData[i];
+        //     // AreaData = AreaData[i];
+        //     if (!MobData) {
+        //         err_text += ("モンスターデータがない" + i + "<br>");
+        //     } else if (!MobData[i]) {
+        //         err_text += ("モンスターデータの番号が違う" + i + "<br>");
+        //     } else {
+
+        //     }
+        //     if (!AreaData) {
+        //         err_text += ("エリアデータがない" + i + "<br>");
+        //     } else if (!AreaData[i]) {
+        //         err_tesxt += ("エリアデータの番号が違う" + i + "<br>");
+        //     } else {
+
+        //     }
+        //     removeScript(el);
+        // }
+    }
+    $("#test_area_result").empty().append(err_text);
+
+}
+
+function test2() {
+
 }

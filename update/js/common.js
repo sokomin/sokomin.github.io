@@ -15,3 +15,26 @@
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
+/**
+ * 内部のファイル呼び出し用
+ *
+ * @param  URL {url} 対象のファイル名 パス指定 https://sokomin.github.io/map/database/mobdb874.js
+ */
+function appendScript(URL, callback) {
+    var el = document.createElement('script');
+    el.src = URL;
+    document.body.appendChild(el);
+    callback(el);
+    // return el;
+};
+
+
+/**
+ * 逆にscript削減したいとき
+ *
+ * @param  el 対象オブジェクト
+ */
+function removeScript(el, callback) {
+    document.body.removeChild(el);
+    callback(true);
+};
