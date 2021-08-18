@@ -347,8 +347,9 @@ function outputInfo() {
             if (i === 0) {
                 npc_doc = npc_doc + '<tr><th colspan="2">NPC</th></tr>';
             } else {
-                npc_doc = npc_doc + '<tr><td>' + i + '</td>';
-                npc_doc = npc_doc + '<td><a href="javascript:void(0);" onclick="Yl(' + i + ')">' + NameNpc[i] + '</a></td>';
+                var mob_num = i - 1;
+                npc_doc = npc_doc + '<tr><td>' + mob_num + '</td>';
+                npc_doc = npc_doc + '<td><a href="javascript:void(0);" onclick="Yl(' + mob_num + ')">' + NameNpc[i] + '</a></td>';
                 npc_doc = npc_doc + '</tr>';
             }
         }
