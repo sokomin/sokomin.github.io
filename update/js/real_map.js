@@ -11,7 +11,7 @@ function getCSV(is_area) {
 // 入れ子じゃん・・・ジェネレータだから許して。
 function getMapCSV(is_area, monster_str) {
     var req = new XMLHttpRequest();
-    req.open("get", "https://sokomin.github.io/sokomin_repository/db/maptiledb/maptile1.csv", true);
+    req.open("get", "https://sokomin.github.io/sokomin_repository/db/maptiledb/maptile0.csv", true);
     req.send(null);
     req.onload = function () {
         convertCSVtoArray(is_area, monster_str, req.responseText);
@@ -118,13 +118,14 @@ var mob_inid_map = {}
 
 function createTile() {
 
+    $('.main-background-map').css({ 'min-height': "200%", 'min-width': "1000%" });
     var $div_main = $('<div>');
 
     var html_append = "<br>";
     for (var i in map_img_map) {
         var data = map_img_map[i];
         for (var j = 0; j < data.length; j++) {
-            if (j > 25) {
+            if (j > 400) {
                 break;
             }
             var num = ('0000' + data[j]).slice(-4);
