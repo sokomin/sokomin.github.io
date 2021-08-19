@@ -147,7 +147,7 @@ function createTile() {
 
     var map_type = $('select[name="b1"]').val() ? Number($('select[name="b1"]').val()) : 0;
 
-    $('.main-background-map').css({ 'min-height': "200%", 'min-width': "1000%" });
+    $('.main-background-map').css({ 'min-height': "200%", 'min-width': "1200%" });
     var $div_main = $('<div>');
 
     var html_append = "<br>";
