@@ -108,7 +108,7 @@ var SKILL_TEXT_CONST = "<b><使用スキル></b><br>";
 
 function calc1() {
     // モンスターデータ読み込み(同期の関係上、これ以外呼ばない)
-    getCSV(is_area);
+    getCSV();
 }
 
 function calc2() {
