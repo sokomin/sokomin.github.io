@@ -124,12 +124,12 @@ function createTile() {
     for (var i in map_img_map) {
         var data = map_img_map[i];
         for (var j = 0; j < data.length; j++) {
-            if (j > 20) {
+            if (j > 25) {
                 break;
             }
             var num = ('0000' + data[j]).slice(-4);
             // html_append += '<img width="8px" height="4px" src="https://sokomin.github.io/sokomin_repository/db/mapset/Grassland/tile/tile_'+ num +'.png">'
-            html_append += '<img src="https://sokomin.github.io/sokomin_repository/db/mapset/Grassland/tile/tile_'+ num +'.png">'
+            html_append += '<img src="https://sokomin.github.io/sokomin_repository/db/mapset/Brunenstig/tile/tile_'+ num +'.png">'
         }
         html_append += '<br>'
     }
