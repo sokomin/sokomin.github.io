@@ -1,20 +1,20 @@
 //CSVファイルを読み込む関数getCSV()の定義
-function getCSV(is_area) {
+function getCSV(mapid) {
     var req = new XMLHttpRequest();// HTTPでファイルを読み込むためのXMLHttpRrequestオブジェクトを生成
     req.open("get", "https://sokomin.github.io/update/js/monster.csv", true);//アクセスするファイルを指定
     req.send(null);
     req.onload = function () {
-        getMapCSV(is_area, req.responseText);// 渡されるのは読み込んだCSVデータ
+        getMapCSV(mapid, req.responseText);// 渡されるのは読み込んだCSVデータ
     }
 }
 
 // 入れ子じゃん・・・ジェネレータだから許して。
-function getMapCSV(is_area, monster_str) {
+function getMapCSV(mapid, monster_str) {
     var req = new XMLHttpRequest();
-    req.open("get", "https://sokomin.github.io/sokomin_repository/db/maptiledb/maptile0.csv", true);
+    req.open("get", "https://sokomin.github.io/sokomin_repository/db/maptiledb/maptile"+ mapid +"_0.csv", true);
     req.send(null);
     req.onload = function () {
-        convertCSVtoArray(is_area, monster_str, req.responseText);
+        convertCSVtoArray(mapid, monster_str, req.responseText);
     }
 }
 
@@ -108,8 +108,9 @@ var DROP_TEXT_CONST = "<b><ドロップアイテム></b><br>";
 var SKILL_TEXT_CONST = "<b><使用スキル></b><br>";
 
 function calc1() {
+    var mapid = $('input[name="a2"]').val() ? Number($('input[name="a2"]').val()) : 0;
     // モンスターデータ読み込み(同期の関係上、これ以外呼ばない)
-    getCSV();
+    getCSV(mapid);
 }
 
 var tmp_divx = -1;
