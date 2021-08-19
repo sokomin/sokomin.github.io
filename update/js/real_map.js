@@ -125,7 +125,7 @@ function createTile() {
     for (var i in map_img_map) {
         var data = map_img_map[i];
         for (var j = 0; j < data.length; j++) {
-            if (j > 400) {
+            if (j > 450) {
                 break;
             }
             var num = ('0000' + data[j]).slice(-4);
