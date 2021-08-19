@@ -108,7 +108,7 @@ var DROP_TEXT_CONST = "<b><ドロップアイテム></b><br>";
 var SKILL_TEXT_CONST = "<b><使用スキル></b><br>";
 
 function calc1() {
-    var mapid = $('input[name="a2"]').val() ? Number($('input[name="a2"]').val()) : 0;
+    var mapid = $('input[name="a2"]').val() ? $('input[name="a2"]').val() : 0;
     // モンスターデータ読み込み(同期の関係上、これ以外呼ばない)
     getCSV(mapid);
 }
@@ -117,7 +117,17 @@ var tmp_divx = -1;
 var tmp_divy = -1;
 var mob_inid_map = {}
 
+map_type_map = {
+    0: "Brunenstig",
+    1: "Arian",
+    2: "Grassland",
+    7: "Yatikanu",
+}
+
 function createTile() {
+    
+
+    var map_type = $('select[name="b1"]').val() ? Number($('select[name="b1"]').val()) : 0;
 
     $('.main-background-map').css({ 'min-height': "200%", 'min-width': "1000%" });
     var $div_main = $('<div>');
@@ -131,7 +141,7 @@ function createTile() {
             }
             var num = ('0000' + data[j]).slice(-4);
             // html_append += '<img width="8px" height="4px" src="https://sokomin.github.io/sokomin_repository/db/mapset/Grassland/tile/tile_'+ num +'.png">'
-            html_append += '<img src="https://sokomin.github.io/sokomin_repository/db/mapset/Brunenstig/tile/tile_'+ num +'.png">'
+            html_append += ('<img src="https://sokomin.github.io/sokomin_repository/db/mapset/'+ map_type_map[map_type] +'/tile/tile_'+ num +'.png">')
         }
         html_append += '<br>'
     }
