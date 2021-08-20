@@ -271,52 +271,85 @@ window.addEventListener('DOMContentLoaded', () => {
 
 });
 
+// var is_downloaded = false;
+
 function setCanvasImage() {
     var map_type = $('select[name="b1"]').val() ? Number($('select[name="b1"]').val()) : 0;
 
     const dcv = document.getElementById('cvpreview');
     const context = dcv.getContext('2d');
+    const img_width = 16;
+    const img_height = 8;
 
+    var min_width = 300;
+    var max_length = 0;
     var image_path_array = []
-    for (var i in map_img_map) {
+    for (let i in map_img_map) {
         var data = map_img_map[i];
         // image_path_array[i] = [];
-        for (var j = 0; j < data.length; j++) {
-            if (j > 999) {
+        max_length = max_length < data.length ? data.length : max_length;
+        for (let j = 0; j < data.length; j++) {
+            if (data.length != max_length) {
                 break;
             }
-            var num = ('0000' + data[j]).slice(-4);
-            image_path_array.push('https://sokomin.github.io/sokomin_repository/db/mapset/' + map_type_map[map_type] + '/tile/tile_' + num + '.png');
-        }
-    }
+            let image1 = new Image();
+            let num = ('0000' + data[j]).slice(-4);
+            let txt = 'https://sokomin.github.io/sokomin_repository/db/mapset/' + map_type_map[map_type] + '/tile/tile_' + num + '.png';
+            image_path_array.push(txt);
+            image1.src = txt;
+            image1.addEventListener('load', function() {
+                context.drawImage(image1, j*img_width, i* img_height, img_width, img_height);
+            }, false);
 
-    // 描画処理
-    var setImage = () => {
-        // lists.forEach(e => e.disabled = false);
-        context.clearRect(0, 0, 1920, 1080);
-        context.save();
-        for (var i in map_img_map) {
-            var data = map_img_map[i];
-            var length = data.length;
-            for (var j = 0; j < data.length; j++) {
-                context.drawImage(image[length * Number(i) + j], j*64, i*32);
+            if (i == 0) {
+                min_width += (img_width/10);
             }
         }
-        context.restore();
-        saveCanvas("cvpreview");
-    };
+    }
+    $('.main-background-map').css({ 'min-height': "200%", 'min-width': ("" + min_width + "%") });
+
+
+    // context.clearRect(0, 0, 1920, 1080);
+
+    // for (var i = 0; i < image_path_array.length; i++) {
+    //     var image1 = new Image();
+    //     image1.src = image_path_array[i];
+    //     var j = i % max_length;
+    //     var k = parseInt(i / max_length);
+    //     image1.addEventListener('load', function() {
+    //         context.drawImage(image1, 0, 0, 150, 100);
+    //     }, false);
+    
+    // }
+
+    // // 描画処理
+    // var setImage = (i) => {
+    //     // lists.forEach(e => e.disabled = false);
+    //     context.clearRect(0, 0, 1920, 1080);
+    //     context.save();
+    //     var j = i % max_length;
+    //     var k = parseInt(i / max_length);
+    //     // for (var key in map_img_map) {
+    //     //     var data = map_img_map[key];
+    //     //     for (var l = 0; l < data.length; l++) {
+    //             context.drawImage(image[i], k*64, j*32);
+    //     //     }
+    //     // }
+    //     context.restore();
+    //     // saveCanvas("cvpreview");
+    // };
 
     
-    // イメージオブジェクト作成　＆　画像読み込み待ち
-    var image = ((imagePath) => {
-        // for (var k = 0; k < imagePaths.length; k++) {
-        //     var imagePath = imagePaths[k];
-            const im = imagePath.map(e => new Image());
-            im.forEach(e => e.onload = () => im.every(e => e.complete) ? setImage() : null);
-            im.forEach((e, i) => e.src = imagePath[i]);
-            return im;
-        // }
-    })(image_path_array);
+    // // イメージオブジェクト作成　＆　画像読み込み待ち
+    // var image = ((imagePath) => {
+    //     // for (var k = 0; k < imagePaths.length; k++) {
+    //     //     var imagePath = imagePaths[k];
+    //         const im = imagePath.map(e => new Image());
+    //         im.forEach((e, i) => e.onload = () => im.every(e => e.complete) ? setImage(i) : null);
+    //         im.forEach((e, i) => e.src = imagePath[i]);
+    //         return im;
+    //     // }
+    // })(image_path_array);
 
 }
 
