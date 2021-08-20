@@ -516,7 +516,10 @@ MapSubInfoList = {
     // 428:{ name: "ガルカス悪魔軍集結地　Ｂ２", mc2:11, mc:"D",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
     // 429:{ name: "砂漠地帯 悪党集団のアジト", mc2:1, mc:"?",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
     // 430:{ name: "砂漠地帯 悪党集団のアジト", mc2:1, mc:"?",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
-    433:{ name: "冒険家協会　冒険家訓練所", mc2:1, mc:"C",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
+    429:{ name: "ガルカス悪魔軍集結地　Ｂ１", mc2:11, mc:"D",req_map_lv:6,dfi:80,dwa:40,dwi:50,dea:40,dli:0,dda:90, st_down:0,lbd:0, non_resume: false  },
+    430:{ name: "ガルカス悪魔軍集結地　Ｂ２", mc2:11, mc:"D",req_map_lv:8,dfi:60,dwa:60,dwi:40,dea:40,dli:40,dda:120, st_down:0,lbd:0, non_resume: false  },
+    
+    433: { name: "冒険家協会　冒険家訓練所", mc2: 1, mc: "C", req_map_lv: 0, dfi: 0, dwa: 0, dwi: 0, dea: 0, dli: 0, dda: 0, st_down: 0, lbd: 0, non_resume: false },
     434:{ name: "グレートマウンテン北部", mc2:2, mc:"C",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
     435:{ name: "ナラダ平原 / ウエストスワンプ", mc2:2, mc:"C",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
     436:{ name: "ナラダ平原の沼地帯 / ノーススワンプ", mc2:2, mc:"C",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
