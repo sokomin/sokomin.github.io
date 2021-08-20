@@ -355,13 +355,14 @@ function setCanvasImage() {
 
 function saveCanvas(canvas_id)
 {
+    var mapid = $('input[name="a2"]').val() ? $('input[name="a2"]').val() : 0;
 	var canvas = document.getElementById(canvas_id);
 	//アンカータグを作成
 	var a = document.createElement('a');
 	//canvasをJPEG変換し、そのBase64文字列をhrefへセット
 	a.href = canvas.toDataURL('image/jpeg', 0.85);
 	//ダウンロード時のファイル名を指定
-	a.download = 'download.jpg';
+	a.download = 'maptile_'+ mapid +'.jpg';
 	//クリックイベントを発生させる
 	a.click();
 }
