@@ -131,6 +131,7 @@ function getMobDB() {
             }
             //オブジェクトの描画
             if (mapid >= 0) {
+                var icon_size = KS ? 15 * KS : 15;
                 var map_dot = document.getElementById('map-drawer');
                 var dot_txt = "";
                 var height = IMG_SYS_SIZE[mapid] ? IMG_SYS_SIZE[mapid].h : IMG_SIZE[mapid].h;
@@ -140,8 +141,14 @@ function getMobDB() {
                     ObjY[i] = ObjY[i] * 200 / height;
                     ObjX[i] = ObjX[i] * 200 / height;
                     // FIXME ミラーテレポーターなどのNPCも全てこちらに統合するので、NPC関連の情報を取得する時はここからアイコン取ってこれるようにしたい。
-                    dot_txt += "\t<div class=\"Obj Pa a" + (ObjN[i]) + "\" style=\"top:" + (ObjY[i]) + "px; left:" + (ObjX[i] + map_padding) + "px;\" title=\"" + (ObjT[i]) + "\">" + (ObjN[i]) + "</div>\n";
-                    dot_txt += "\t<div class=\"Obj Pb a" + (ObjN[i]) + "\" style=\"top:" + (ObjY[i] - 1) + "px; left:" + (ObjX[i] + map_padding -1) + "px;\" title=\"" + MobMapName[i] + "\nリポップ時間：" + (ObjT[i]) + "秒\">" + (ObjN[i]) + "</div>\n";
+                    if (MobMapName[i] == "ミラーテレポータ" || MobMapName[i] == "ミラーテレポータ") {
+                        var mticon = ('<img width="' + icon_size + '" height="' + icon_size + '" src="https://sokomin.github.io/sokomin_repository/db/interface2/interface2_0047.png">');
+                        dot_txt += "\t<div class=\"Obj Pa a" + (ObjN[i]) + "\" style=\"top:" + (ObjY[i]) + "px; left:" + (ObjX[i] + map_padding) + "px;\" title=\"" + MobMapName[i] + "\">" + mticon + "</div>\n";
+                        dot_txt += "\t<div class=\"Obj Pb a" + (ObjN[i]) + "\" style=\"top:" + (ObjY[i] - 1) + "px; left:" + (ObjX[i] + map_padding -1) + "px;\" title=\"" + MobMapName[i] + ">" + mticon + "</div>\n";
+                    } else {
+                        dot_txt += "\t<div class=\"Obj Pa a" + (ObjN[i]) + "\" style=\"top:" + (ObjY[i]) + "px; left:" + (ObjX[i] + map_padding) + "px;\" title=\"" + (ObjT[i]) + "\">" + (ObjN[i]) + "</div>\n";
+                        dot_txt += "\t<div class=\"Obj Pb a" + (ObjN[i]) + "\" style=\"top:" + (ObjY[i] - 1) + "px; left:" + (ObjX[i] + map_padding -1) + "px;\" title=\"" + MobMapName[i] + "\nリポップ時間：" + (ObjT[i]) + "秒\">" + (ObjN[i]) + "</div>\n";
+                    }
                 }
                 map_dot.innerHTML = dot_txt;
                 // AreaTypeにおいて移動ポータル描画
@@ -151,14 +158,18 @@ function getMobDB() {
                 var area_txt = "";
                 for (i = 0; i < LnkX.length; i++) {
                     alt = ""; nam2 = "";
+                    // 秘密入り口
                     if (LnkS[i] == 2) {
-                        col = "#ff00ff"; nam = "п"; nam2 = "п";
+                        // col = "#ff00ff"; nam = "п"; nam2 = "п";
+                        col = "#00ffff";
+                        nam = '<img width="'+ icon_size+ '" height="'+ icon_size+ '" title="秘密ダンジョン入り口" src="https://sokomin.github.io/sokomin_repository/db/etc_anm/etc_anm_0064.png">';
+                        nam2 = '<img width="'+ icon_size+ '" height="'+ icon_size+ '" title="秘密ダンジョン入り口" src="https://sokomin.github.io/sokomin_repository/db/etc_anm/etc_anm_0064.png">';
                     }
+                    // 移動ポータル
                     if (LnkS[i] == 3) {
-                        col = "#00ffff"; nam = "●";
-                        // リンク先を配列にしたがって追加していく
-                        // nam2 = "<a href=\"javascript:void(0);\" onclick=Jump(" + LnkP[PPP] + ") style=\"color:" + col + "\">●</a>";
-                        nam2 = "<a href=\"map_viewer.html?map_id=" + parseInt(LnkP[PPP]) + "\" style=\"color:" + col + "\">●</a>";
+                        col = "#00ffff";
+                        nam = '<img width="'+ icon_size+ '" height="'+ icon_size+ '" src="https://sokomin.github.io/sokomin_repository/db/etc_anm/etc_anm_0022.png">';
+                        nam2 = "<a href=\"map_viewer.html?map_id=" + parseInt(LnkP[PPP]) + "\" style=\"color:" + col + "\"><img width='"+ icon_size+ "' height='"+ icon_size+ "' src='https://sokomin.github.io/sokomin_repository/db/etc_anm/etc_anm_0022.png'></a>";
                         alt = LnkA[PP];
                         PP++;
                         PPP++;

@@ -2638,6 +2638,7 @@ function datalist(num) {
         AreaMapName = [];
         for (var i in AreaData[num]) {
             var data = AreaData[num][i];
+            // 移動ポータル
             if (data.type === 3) {
                 LnkX.push(data.posx);
                 LnkY.push(data.posy);
@@ -2654,6 +2655,12 @@ function datalist(num) {
                     AreaMapName.push("_");
                 }
                 LnkS.push(3);
+            }
+            // 秘密ダンジョン入り口
+            if (data.type === 2) {
+                LnkX.push(data.posx);
+                LnkY.push(data.posy);
+                LnkS.push(data.type);
             }
             // TODO 次これやる
             // if (data.type === 6) {
