@@ -527,7 +527,8 @@ function setAIndexImage() {
             }
             if (adata[j] >= 1) {
                 let image1 = new Image();
-                let txt = 'https://sokomin.github.io/sokomin_repository/db/mapset/Dungeon/tile/tile_0391.png';
+                // let txt = 'https://sokomin.github.io/sokomin_repository/db/mapset/Dungeon/tile/tile_0391.png';
+                let txt = 'https://sokomin.github.io/sokomin_repository/db/mapset/Hell/tile/tile_0022.png';
                 image1.src = txt;
                 image1.addEventListener('load', function() {
                     context.drawImage(image1, j*img_width, i* img_height, img_width, img_height);
@@ -573,6 +574,7 @@ function setZIndexImage() {
             if (zdata[j] < 1) {
                 let image1 = new Image();
                 let txt = 'https://sokomin.github.io/sokomin_repository/db/mapset/Dungeon/tile/tile_0391.png';
+                // let txt = 'https://sokomin.github.io/sokomin_repository/db/mapset/Yatikanu/tile/tile_0415.png';
                 image1.src = txt;
                 image1.addEventListener('load', function() {
                     context.drawImage(image1, j*img_width, i* img_height, img_width, img_height);
@@ -639,6 +641,12 @@ function set4IndexImage() {
                 context.font = text_font_size;
                 context.fillStyle = "blue";
                 context.fillText(data4[j], (j*img_width+2), i* img_height+1);
+                // let image1 = new Image();
+                // let txt = 'https://sokomin.github.io/sokomin_repository/db/mapset/Dungeon/tile/tile_0391.png';
+                // image1.src = txt;
+                // image1.addEventListener('load', function() {
+                //     context.drawImage(image1, j*img_width, i* img_height, img_width, img_height);
+                // }, false);
             }
         }
     }
@@ -662,6 +670,12 @@ function set5IndexImage() {
                 context.font = text_font_size;
                 context.fillStyle = "red";
                 context.fillText(data5[j], (j*img_width+4), i* img_height+2);
+                // let image1 = new Image();
+                // let txt = 'https://sokomin.github.io/sokomin_repository/db/mapset/Dungeon/tile/tile_0391.png';
+                // image1.src = txt;
+                // image1.addEventListener('load', function() {
+                //     context.drawImage(image1, j*img_width, i* img_height, img_width, img_height);
+                // }, false);
             }
         }
     }
