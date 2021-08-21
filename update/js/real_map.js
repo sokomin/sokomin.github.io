@@ -668,6 +668,27 @@ function set5IndexImage() {
 }
 
 
+function calcPos() {
+    var xpos = $('input[name="x1"]').val() ? Number($('input[name="x1"]').val()) : 0;
+    var ypos = $('input[name="y1"]').val() ? Number($('input[name="y1"]').val()) : 0;
+
+    const dcv = document.getElementById('cvpreview');
+    const context = dcv.getContext('2d');
+
+    let image1 = new Image();
+    let txt = 'https://sokomin.github.io/sokomin_repository/db/interface/interface_0278.png';
+    image1.src = txt;
+    image1.addEventListener('load', function() {
+        context.drawImage(image1, xpos*img_width, ypos* img_height, img_width, img_height);
+    }, false);
+    context.font = text_font_size;
+    context.fillStyle = "black";
+    var text = "(" + xpos + ","+ ypos + ")"
+    context.fillText(text,  xpos*img_width, ypos* img_height);
+
+}
+
+
 function saveCanvas(canvas_id)
 {
     var mapid = $('input[name="a2"]').val() ? $('input[name="a2"]').val() : 0;
