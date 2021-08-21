@@ -521,7 +521,7 @@ AreaData = {
     {"id":"36","type":4,"name":"3-13","access_map":"","is_secret":0,"real_posx":1.55,"real_posy":113.42,"real_posx2":68.94,"real_posy2":238.53,"posx":2.48,"posy":181.48,"posx2":55.15,"posy2":190.83},
     {"id":"37","type":4,"name":"3-14","access_map":"","is_secret":0,"real_posx":20.41,"real_posy":122.75,"real_posx2":56.88,"real_posy2":259.66,"posx":32.65,"posy":196.4,"posx2":45.5,"posy2":207.73},
     {"id":"38","type":4,"name":"3-15","access_map":"","is_secret":0,"real_posx":1.14,"real_posy":133.06,"real_posx2":39.56,"real_posy2":273.81,"posx":1.83,"posy":212.9,"posx2":31.65,"posy2":219.05},
-    {"id":"39","type":2,"name":"Area 38","access_map":"","is_secret":0,"real_posx":3.38,"real_posy":3.09,"real_posx2":10.75,"real_posy2":10.66,"posx":5.4,"posy":4.95,"posx2":8.6,"posy2":8.53},
+    {"id":"39","type":2,"name":"Area 38","access_map":"","is_secret":1,"real_posx":3.38,"real_posy":3.09,"real_posx2":10.75,"real_posy2":10.66,"posx":5.4,"posy":4.95,"posx2":8.6,"posy2":8.53},
     {"id":"40","type":0,"name":"다리3","access_map":"","is_secret":0,"real_posx":144.63,"real_posy":97.5,"real_posx2":311,"real_posy2":214.38,"posx":231.4,"posy":156,"posx2":248.8,"posy2":171.5},
     {"id":"41","type":12,"name":"強烈な光の石碑","access_map":"","is_secret":0,"real_posx":294.64,"real_posy":165.63,"real_posx2":596.5,"real_posy2":337,"posx":471.43,"posy":265,"posx2":477.2,"posy2":269.6},
     {"id":"42","type":4,"name":"5-3","access_map":"","is_secret":0,"real_posx":123.38,"real_posy":109.81,"real_posx2":314.13,"real_posy2":235.13,"posx":197.4,"posy":175.7,"posx2":251.3,"posy2":188.1},

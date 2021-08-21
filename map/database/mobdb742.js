@@ -294,11 +294,11 @@ AreaData = {
     {"id":"44","type":4,"name":"Area 43","access_map":"","is_secret":0,"real_posx":206.41,"real_posx2":226.41,"real_posy":48.19,"real_posy2":82.56,"posx":330.25,"posx2":362.25,"posy":38.55,"posy2":66.05},
     {"id":"45","type":3,"name":"希望と絶望の境目","access_map":"[773]BF02_bridge.rmd","is_secret":0,"real_posx":293.98,"real_posx2":297.97,"real_posy":123.72,"real_posy2":130.66,"posx":470.38,"posx2":476.75,"posy":98.98,"posy2":104.53},
     {"id":"46","type":4,"name":"개발팀 패밀리","access_map":"","is_secret":0,"real_posx":233.47,"real_posx2":245.47,"real_posy":208.88,"real_posy2":225,"posx":373.55,"posx2":392.75,"posy":167.1,"posy2":180},
-    {"id":"47","type":2,"name":"비밀던전 문","access_map":"","is_secret":0,"real_posx":290.91,"real_posx2":295.95,"real_posy":33.06,"real_posy2":43.16,"posx":465.45,"posx2":473.53,"posy":26.45,"posy2":34.53},
+    {"id":"47","type":2,"name":"비밀던전 문","access_map":"","is_secret":1,"real_posx":290.91,"real_posx2":295.95,"real_posy":33.06,"real_posy2":43.16,"posx":465.45,"posx2":473.53,"posy":26.45,"posy2":34.53},
     {"id":"48","type":12,"name":"闇の中の罠1","access_map":"","is_secret":0,"real_posx":138.36,"real_posx2":143.41,"real_posy":236.34,"real_posy2":243.22,"posx":221.38,"posx2":229.45,"posy":189.08,"posy2":194.58},
     {"id":"49","type":12,"name":"闇の中の罠2","access_map":"","is_secret":0,"real_posx":148.94,"real_posx2":152.13,"real_posy":253.25,"real_posy2":259.38,"posx":238.3,"posx2":243.4,"posy":202.6,"posy2":207.5},
     {"id":"50","type":12,"name":"闇の中の罠3","access_map":"","is_secret":0,"real_posx":102.38,"real_posx2":105.72,"real_posy":205.63,"real_posy2":211.25,"posx":163.8,"posx2":169.15,"posy":164.5,"posy2":169},
-    {"id":"51","type":2,"name":"두자매 비던","access_map":"","is_secret":0,"real_posx":200.83,"real_posx2":204.19,"real_posy":162.38,"real_posy2":168.84,"posx":321.33,"posx2":326.7,"posy":129.9,"posy2":135.07},
+    { "id": "51", "type": 2, "name": "두자매 비던", "access_map": "", "is_secret": 1, "real_posx": 200.83, "real_posx2": 204.19, "real_posy": 162.38, "real_posy2": 168.84, "posx": 321.33, "posx2": 326.7, "posy": 129.9, "posy2": 135.07 },
     ]
 };
 

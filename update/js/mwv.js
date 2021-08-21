@@ -394,7 +394,7 @@ function createAreaPositionTable() {
                 mobdb_tmp["access_map"] = next_map_data.filename;
             }
         }
-        mobdb_tmp["is_secret"] = 0;
+        mobdb_tmp["is_secret"] = isSecret(data);
         mobdb_tmp["real_posx"] = calcPos(Number(data["posx"]), Number(max_x), tmp_divx);
         mobdb_tmp["real_posx2"] = calcPos(Number(data["posx2"]), Number(max_x), tmp_divx);
         mobdb_tmp["real_posy"] = calcPos(Number(data["posy"]), Number(max_y), tmp_divy);
@@ -416,6 +416,16 @@ function createAreaPositionTable() {
 
 }
 
+
+// 秘密ダンジョンかどうかの判定。これ以外のtype2は扉なので注意。
+function isSecret(data) {
+    var res = 0;
+    if (Number(data["unknown_1_8"]) == 1 && Number(data["unknown_1_11"]) == 1
+        && Number(data["unknown_1_6"]) == 1000 && Number(data["unknown_1_4"]) == 10000) {
+        res = 1;
+    }
+    return res;
+}
 // XとYで違う座標を仕込まないとダメ
 function testPosX(tmp, max_x) {
     var x = tmp;
