@@ -283,6 +283,7 @@ function setCanvasImage() {
 
     var min_width = 300;
     var max_length = 0;
+    var max_height = 0;
     var image_path_array = []
     for (let i in map_img_map) {
         var data = map_img_map[i];
@@ -302,11 +303,13 @@ function setCanvasImage() {
             }, false);
 
             if (i == 0) {
-                min_width += (img_width/10);
+                min_width += (img_width/15);
             }
         }
+        max_height++;
     }
     $('.main-background-map').css({ 'min-height': "200%", 'min-width': ("" + min_width + "%") });
+    $('#cvpreview').attr({ 'width': img_width * max_length, 'height': img_height * max_height});
 
 
     // context.clearRect(0, 0, 1920, 1080);
