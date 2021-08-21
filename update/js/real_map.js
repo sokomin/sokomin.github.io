@@ -17,8 +17,19 @@ function getMapCSV(mapid, monster_str) {
         convertCSVtoArray(mapid, monster_str, req.responseText);
     }
 }
+// 入れ子じゃん・・・ジェネレータだから許して。
+function getMapCSV2(mapid) {
+    var req = new XMLHttpRequest();
+    req.open("get", "https://sokomin.github.io/sokomin_repository/db/maptiledb/maptile" + mapid + "_2.csv", true);
+    req.send(null);
+    req.onload = function () {
+        convertZIndexCSVtoArray(mapid, req.responseText);
+    }
+}
+
 
 var map_img_map = {};
+var zindex_map = {};
 var obj_format = {};
 var monster_data = {};
 var map_data = {};
@@ -27,7 +38,7 @@ var a1 = 0; //map_id
 var is_canvas = false;
 
 // 読み込んだCSVデータをオブジェクトに変換
-function convertCSVtoArray(is_area, str, map_img) {// 読み込んだCSVデータが文字列として渡される
+function convertCSVtoArray(mapid, str, map_img) {// 読み込んだCSVデータが文字列として渡される
     // 初期化
     obj_format = {};
     monster_data = {};
@@ -109,22 +120,45 @@ function convertCSVtoArray(is_area, str, map_img) {// 読み込んだCSVデー�
     }
 }
 
+// 読み込んだCSVデータをオブジェクトに変換
+function convertZIndexCSVtoArray(mapid, map_zindex) {// 読み込んだCSVデータが文字列として渡される
+    // 初期化
+    zindex_map = {};
+
+    var result = [];// 最終的な二次元配列を入れるための配列
+    var map_tmp = map_zindex.split("\n");// 改行を区切り文字として行を要素とした配列を生成
+    // 各行ごとにカンマで区切った文字列を要素とした二次元配列を生成
+    for (var i = 0; i < map_tmp.length; ++i) {
+        result[i] = map_tmp[i].split(',');
+        zindex_map[i] = result[i];
+    }
+    console.log(zindex_map);
+
+    setZIndexImage();
+}
+
+
 var DROP_TEXT_CONST = "<b><ドロップアイテム></b><br>";
 var SKILL_TEXT_CONST = "<b><使用スキル></b><br>";
 
 function calc1() {
     is_canvas = false;
     var mapid = $('input[name="a2"]').val() ? $('input[name="a2"]').val() : 0;
-    // モンスターデータ読み込み(同期の関係上、これ以外呼ばない)
     getCSV(mapid);
 }
 
 function calc2() {
     is_canvas = true;
     var mapid = $('input[name="a2"]').val() ? $('input[name="a2"]').val() : 0;
-    // モンスターデータ読み込み(同期の関係上、これ以外呼ばない)
     getCSV(mapid);
 }
+
+function calc3() {
+    is_canvas = true;
+    var mapid = $('input[name="a2"]').val() ? $('input[name="a2"]').val() : 0;
+    getMapCSV2(mapid);
+}
+
 
 
 var tmp_divx = -1;
@@ -355,6 +389,55 @@ function setCanvasImage() {
     // })(image_path_array);
 
 }
+
+
+// z軸が1以上の部分でフィルタ
+function setZIndexImage() {
+    var map_type = $('select[name="b1"]').val() ? Number($('select[name="b1"]').val()) : 0;
+
+    const dcv = document.getElementById('cvpreview');
+    const context = dcv.getContext('2d');
+    const img_width = 16;
+    const img_height = 8;
+
+    var min_width = 300;
+    var max_length = 0;
+    var max_height = 0;
+    for (let i in map_img_map) {
+        var data = map_img_map[i];
+        var zdata = zindex_map[i];
+        max_length = max_length < data.length ? data.length : max_length;
+        for (let j = 0; j < data.length; j++) {
+            if (data.length != max_length) {
+                break;
+            }
+            if (zdata[j] < 1) {
+                let image1 = new Image();
+                let txt = 'https://sokomin.github.io/sokomin_repository/db/mapset/Dungeon/tile/tile_0391.png';
+                image1.src = txt;
+                image1.addEventListener('load', function() {
+                    context.drawImage(image1, j*img_width, i* img_height, img_width, img_height);
+                }, false);
+            } else {
+                let image1 = new Image();
+                let num = ('0000' + data[j]).slice(-4);
+                let txt = 'https://sokomin.github.io/sokomin_repository/db/mapset/' + map_type_map[map_type] + '/tile/tile_' + num + '.png';
+                image1.src = txt;
+                image1.addEventListener('load', function() {
+                    context.drawImage(image1, j*img_width, i* img_height, img_width, img_height);
+                }, false);
+            }
+            if (i == 0) {
+                min_width += (img_width/15);
+            }
+        }
+        max_height++;
+    }
+    $('.main-background-map').css({ 'min-height': "200%", 'min-width': ("" + min_width + "%") });
+    $('#cvpreview').attr({ 'width': img_width * max_length, 'height': img_height * max_height});
+
+}
+
 
 function saveCanvas(canvas_id)
 {

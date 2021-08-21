@@ -585,9 +585,9 @@ MapSubInfoList = {
     //酷寒の地
     497:{ name: "セントロード　Ｂ１", mc2:11, mc:"D",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
     498:{ name: "セントロード　Ｂ２", mc2:11, mc:"D",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
-    499:{ name: "EMの隠れ家(1)", mc2:1, mc:"?",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
-    500:{ name: "EMの隠れ家(2)", mc2:1, mc:"?",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
-    501:{ name: "EMの隠れ家(3)", mc2:1, mc:"?",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
+    499:{ name: "EMの隠れ家(1)", mc2:1, mc:"B",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
+    500:{ name: "EMの隠れ家(2)", mc2:1, mc:"B",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
+    501:{ name: "EMの隠れ家(3)", mc2:1, mc:"B",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
     502:{ name: "冒険家協会ブルンネンシュティグ本部", mc2:2, mc:"C",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
     503:{ name: "冒険家協会ブリッジヘッド支部", mc2:11, mc:"D",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
     504:{ name: "エルン山　迂回路", mc2:2, mc:"C",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: false  },
