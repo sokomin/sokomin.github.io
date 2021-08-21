@@ -270,7 +270,7 @@ AreaData = {
     {"id":"6","type":4,"name":"보스4","access_map":"","is_secret":0,"real_posx":135.44,"real_posx2":196.75,"real_posy":-2.12,"real_posy2":79.75,"posx":325.05,"posx2":472.2,"posy":-2.55,"posy2":95.7},
     {"id":"7","type":4,"name":"보스5","access_map":"","is_secret":0,"real_posx":58.63,"real_posx2":127.06,"real_posy":48.88,"real_posy2":124.63,"posx":140.7,"posx2":304.95,"posy":58.65,"posy2":149.55},
     {"id":"8","type":3,"name":"ブラックファイヤー中心地","access_map":"[737]BF_U03.rmd","is_secret":0,"real_posx":197.16,"real_posx2":198.98,"real_posy":144.72,"real_posy2":147.56,"posx":473.18,"posx2":477.56,"posy":173.66,"posy2":177.08},
-    {"id":"9","type":2,"name":"Area 8","access_map":"","is_secret":0,"real_posx":6.03,"real_posx2":10.47,"real_posy":6.75,"real_posy2":15.53,"posx":14.48,"posx2":25.13,"posy":8.1,"posy2":18.64},
+    {"id":"9","type":2,"name":"Area 8","access_map":"","is_secret":1,"real_posx":6.03,"real_posx2":10.47,"real_posy":6.75,"real_posy2":15.53,"posx":14.48,"posx2":25.13,"posy":8.1,"posy2":18.64},
     ]
 };
 

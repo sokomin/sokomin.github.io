@@ -226,7 +226,7 @@ AreaData = {
     {"id":"67","type":4,"name":"Area 5-12","access_map":"","is_secret":0,"real_posx":174.83,"real_posx2":189.47,"real_posy":3.25,"real_posy2":13.34,"posx":419.59,"posx2":454.73,"posy":5.2,"posy2":21.35},
     {"id":"68","type":4,"name":"Area 1-11","access_map":"","is_secret":0,"real_posx":35.59,"real_posx2":40.84,"real_posy":91.47,"real_posy2":102.44,"posx":85.43,"posx2":98.03,"posy":146.35,"posy2":163.9},
     {"id":"69","type":4,"name":"1-12","access_map":"","is_secret":0,"real_posx":0.36,"real_posx2":8.41,"real_posy":54.22,"real_posy2":68.69,"posx":0.86,"posx2":20.18,"posy":86.75,"posy2":109.9},
-    {"id":"70","type":2,"name":"비던입장","access_map":"","is_secret":0,"real_posx":178.44,"real_posx2":181.67,"real_posy":27.06,"real_posy2":35.72,"posx":428.25,"posx2":436.01,"posy":43.3,"posy2":57.15},
+    {"id":"70","type":2,"name":"비던입장","access_map":"","is_secret":1,"real_posx":178.44,"real_posx2":181.67,"real_posy":27.06,"real_posy2":35.72,"posx":428.25,"posx2":436.01,"posy":43.3,"posy2":57.15},
     {"id":"71","type":12,"name":"秘密ダンジョンを出る","access_map":"","is_secret":0,"real_posx":180.8,"real_posx2":183.38,"real_posy":39.31,"real_posy2":42.56,"posx":433.91,"posx2":440.1,"posy":62.9,"posy2":68.1},
     {"id":"72","type":0,"name":"비던존-필드","access_map":"","is_secret":0,"real_posx":189.5,"real_posx2":192.44,"real_posy":55.41,"real_posy2":59.41,"posx":454.8,"posx2":461.85,"posy":88.65,"posy2":95.05},
     {"id":"73","type":12,"name":"移動オブジェクト2","access_map":"","is_secret":0,"real_posx":9.19,"real_posx2":13.19,"real_posy":122.25,"real_posy2":128.5,"posx":22.05,"posx2":31.65,"posy":195.6,"posy2":205.6},

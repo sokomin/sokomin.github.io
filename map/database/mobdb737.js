@@ -324,6 +324,7 @@ MobData = {
 { id: "322",name:"汚染ピエンド",type:2,inid:8,repop:120,isptboss:0,posx:260.05,posy:42.95, lv_min:0, lv_max:0, is_npc: false  },
     ]
 };
+
 AreaData = {
     737: [ {"id":"0","type":0,"name":"_필드 전체","access_map":"","is_secret":0,"real_posx":0,"real_posx2":0,"real_posy":7.97,"real_posy2":0,"posx":0,"posx2":0,"posy":6.38,"posy2":0},
     {"id":"1","type":0,"name":"_화면","access_map":"","is_secret":0,"real_posx":0,"real_posx2":0,"real_posy":0,"real_posy2":0,"posx":0,"posx2":0,"posy":0,"posy2":0},
@@ -404,7 +405,7 @@ AreaData = {
     {"id":"80","type":3,"name":"ブラックファイヤー洞窟","access_map":"[740]BF_U05.rmd","is_secret":0,"real_posx":117.2,"real_posx2":119.55,"real_posy":63.94,"real_posy2":68.25,"posx":187.53,"posx2":191.28,"posy":51.15,"posy2":54.6},
     {"id":"81","type":12,"name":"隠された目的3","access_map":"","is_secret":0,"real_posx":178,"real_posx2":183.91,"real_posy":31.75,"real_posy2":38.19,"posx":284.8,"posx2":294.25,"posy":25.4,"posy2":30.55},
     {"id":"82","type":12,"name":"b'\\x89B\\x82\\xb3\\x82\\xea\\x82\\xbd\\x96\\xda\\x93I\\xcb'","access_map":"","is_secret":0,"real_posx":120.5,"real_posx2":125.53,"real_posy":44.75,"real_posy2":51.09,"posx":192.8,"posx2":200.85,"posy":35.8,"posy2":40.88},
-    {"id":"83","type":2,"name":"투영의 동굴","access_map":"","is_secret":0,"real_posx":89.22,"real_posx2":92.38,"real_posy":160.72,"real_posy2":167.53,"posx":142.75,"posx2":147.8,"posy":128.57,"posy2":134.03},
+    {"id":"83","type":2,"name":"투영의 동굴","access_map":"","is_secret":1,"real_posx":89.22,"real_posx2":92.38,"real_posy":160.72,"real_posy2":167.53,"posx":142.75,"posx2":147.8,"posy":128.57,"posy2":134.03},
     {"id":"84","type":3,"name":"没落した悪魔の地","access_map":"[780]BF_U08.rmd","is_secret":0,"real_posx":189.75,"real_posx2":191.95,"real_posy":55.56,"real_posy2":59.16,"posx":303.6,"posx2":307.13,"posy":44.45,"posy2":47.33},
     {"id":"180","type":4,"name":"Area 74","access_map":"","is_secret":0,"real_posx":145.17,"real_posx2":159.28,"real_posy":114.81,"real_posy2":144.5,"posx":232.28,"posx2":254.85,"posy":91.85,"posy2":115.6},
     {"id":"204","type":4,"name":"Area 50","access_map":"","is_secret":0,"real_posx":58.89,"real_posx2":69.2,"real_posy":47.75,"real_posy2":63.53,"posx":94.23,"posx2":110.73,"posy":38.2,"posy2":50.83},
@@ -412,4 +413,3 @@ AreaData = {
     {"id":"253","type":5,"name":"시작 영역","access_map":"","is_secret":0,"real_posx":190.13,"real_posx2":193.34,"real_posy":190.94,"real_posy2":196.41,"posx":304.2,"posx2":309.35,"posy":152.75,"posy2":157.13},
     ]
 };
-

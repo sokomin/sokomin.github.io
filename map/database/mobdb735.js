@@ -205,3 +205,43 @@ MobData = {
     ]
 };
 
+AreaData = {
+    735: [ {"id":"0","type":0,"name":"_필드 전체","access_map":"","is_secret":0,"real_posx":0,"real_posx2":0,"real_posy":0,"real_posy2":0,"posx":0,"posx2":0,"posy":0,"posy2":0},
+    {"id":"1","type":0,"name":"_화면","access_map":"","is_secret":0,"real_posx":0,"real_posx2":0,"real_posy":0,"real_posy2":0,"posx":0,"posx2":0,"posy":0,"posy2":0},
+    {"id":"2","type":5,"name":"시작 영역","access_map":"","is_secret":0,"real_posx":2.48,"real_posx2":4.09,"real_posy":160.03,"real_posy2":162.88,"posx":3.98,"posx2":6.55,"posy":128.03,"posy2":130.3},
+    {"id":"3","type":4,"name":"해골지역","access_map":"","is_secret":0,"real_posx":64.75,"real_posx2":80.58,"real_posy":109.84,"real_posy2":133.78,"posx":103.6,"posx2":128.93,"posy":87.88,"posy2":107.03},
+    {"id":"4","type":4,"name":"해골지역2","access_map":"","is_secret":0,"real_posx":17.52,"real_posx2":31.22,"real_posy":83.28,"real_posy2":106.09,"posx":28.03,"posx2":49.95,"posy":66.63,"posy2":84.88},
+    {"id":"5","type":4,"name":"해골지역3","access_map":"","is_secret":0,"real_posx":36.97,"real_posx2":61.38,"real_posy":118.88,"real_posy2":138.25,"posx":59.15,"posx2":98.2,"posy":95.1,"posy2":110.6},
+    {"id":"6","type":4,"name":"해골지역4","access_map":"","is_secret":0,"real_posx":34.7,"real_posx2":55.08,"real_posy":96.59,"real_posy2":118.19,"posx":55.53,"posx2":88.13,"posy":77.28,"posy2":94.55},
+    {"id":"7","type":4,"name":"해골지역5","access_map":"","is_secret":0,"real_posx":52.11,"real_posx2":66.61,"real_posy":85.28,"real_posy2":105,"posx":83.38,"posx2":106.58,"posy":68.22,"posy2":84},
+    {"id":"8","type":4,"name":"펌프킨지역","access_map":"","is_secret":0,"real_posx":28.47,"real_posx2":48.47,"real_posy":167.16,"real_posy2":191.06,"posx":45.55,"posx2":77.55,"posy":133.73,"posy2":152.85},
+    {"id":"9","type":4,"name":"펌프킨지역2","access_map":"","is_secret":0,"real_posx":52.89,"real_posx2":69.22,"real_posy":152.88,"real_posy2":181.56,"posx":84.63,"posx2":110.75,"posy":122.3,"posy2":145.25},
+    {"id":"10","type":4,"name":"서큐버스지역","access_map":"","is_secret":0,"real_posx":183.25,"real_posx2":193.36,"real_posy":6.53,"real_posy2":20.13,"posx":293.2,"posx2":309.38,"posy":5.23,"posy2":16.1},
+    {"id":"11","type":4,"name":"서큐버스지역2","access_map":"","is_secret":0,"real_posx":162.95,"real_posx2":174.67,"real_posy":31.84,"real_posy2":50.5,"posx":260.73,"posx2":279.48,"posy":25.48,"posy2":40.4},
+    {"id":"12","type":4,"name":"서큐버스지역3","access_map":"","is_secret":0,"real_posx":164.39,"real_posx2":181.53,"real_posy":71.53,"real_posy2":104.28,"posx":263.02,"posx2":290.45,"posy":57.23,"posy2":83.43},
+    {"id":"13","type":4,"name":"서큐버스지역4","access_map":"","is_secret":0,"real_posx":161.81,"real_posx2":179.69,"real_posy":105.88,"real_posy2":139.38,"posx":258.9,"posx2":287.5,"posy":84.7,"posy2":111.5},
+    {"id":"14","type":4,"name":"서큐버스지역2 - Copy","access_map":"","is_secret":0,"real_posx":139.38,"real_posx2":151.09,"real_posy":148.69,"real_posy2":167.34,"posx":223,"posx2":241.75,"posy":118.95,"posy2":133.88},
+    {"id":"15","type":4,"name":"서큐버스지역2 - Copy - Copy","access_map":"","is_secret":0,"real_posx":148.44,"real_posx2":160.16,"real_posy":168.03,"real_posy2":186.69,"posx":237.5,"posx2":256.25,"posy":134.43,"posy2":149.35},
+    {"id":"16","type":4,"name":"펌프킨지역3","access_map":"","is_secret":0,"real_posx":156.77,"real_posx2":170.59,"real_posy":145.78,"real_posy2":158.69,"posx":250.83,"posx2":272.95,"posy":116.63,"posy2":126.95},
+    {"id":"17","type":4,"name":"펌프킨지역4","access_map":"","is_secret":0,"real_posx":75.02,"real_posx2":91.94,"real_posy":154.66,"real_posy2":174.41,"posx":120.03,"posx2":147.1,"posy":123.73,"posy2":139.53},
+    {"id":"18","type":4,"name":"펌프킨지역4 - Copy","access_map":"","is_secret":0,"real_posx":92.64,"real_posx2":109.56,"real_posy":163.03,"real_posy2":182.78,"posx":148.23,"posx2":175.3,"posy":130.43,"posy2":146.23},
+    {"id":"19","type":4,"name":"서큐버스지역5","access_map":"","is_secret":0,"real_posx":104.92,"real_posx2":119.75,"real_posy":13.81,"real_posy2":33.28,"posx":167.88,"posx2":191.6,"posy":11.05,"posy2":26.63},
+    {"id":"20","type":4,"name":"펌프킨지역5","access_map":"","is_secret":0,"real_posx":104.23,"real_posx2":116.88,"real_posy":42,"real_posy2":63.5,"posx":166.78,"posx2":187,"posy":33.6,"posy2":50.8},
+    {"id":"21","type":4,"name":"서큐버스지역6","access_map":"","is_secret":0,"real_posx":79.5,"real_posx2":96.58,"real_posy":44.47,"real_posy2":63.72,"posx":127.2,"posx2":154.53,"posy":35.58,"posy2":50.98},
+    {"id":"22","type":4,"name":"타천사 지역1","access_map":"","is_secret":0,"real_posx":20.06,"real_posx2":34.64,"real_posy":6.94,"real_posy2":25.13,"posx":32.1,"posx2":55.43,"posy":5.55,"posy2":20.1},
+    {"id":"23","type":4,"name":"타천사 지역1 - Copy","access_map":"","is_secret":0,"real_posx":13.25,"real_posx2":27.83,"real_posy":63.47,"real_posy2":81.66,"posx":21.2,"posx2":44.53,"posy":50.78,"posy2":65.33},
+    {"id":"24","type":4,"name":"광전사지역","access_map":"","is_secret":0,"real_posx":38.88,"real_posx2":52.61,"real_posy":74.94,"real_posy2":91.63,"posx":62.2,"posx2":84.18,"posy":59.95,"posy2":73.3},
+    {"id":"25","type":4,"name":"서큐버스지역7","access_map":"","is_secret":0,"real_posx":147.72,"real_posx2":163.53,"real_posy":45.63,"real_posy2":74.69,"posx":236.35,"posx2":261.65,"posy":36.5,"posy2":59.75},
+    {"id":"26","type":4,"name":"서큐버스지역8","access_map":"","is_secret":0,"real_posx":114.03,"real_posx2":130.88,"real_posy":134.06,"real_posy2":151.44,"posx":182.45,"posx2":209.4,"posy":107.25,"posy2":121.15},
+    {"id":"27","type":3,"name":"ブラックファイヤー中心地","access_map":"[737]BF_U03.rmd","is_secret":0,"real_posx":0.77,"real_posx2":3.11,"real_posy":3.53,"real_posy2":7.41,"posx":1.23,"posx2":4.97,"posy":2.83,"posy2":5.93},
+    {"id":"28","type":3,"name":"深淵の地底湖外郭","access_map":"[738]BF_U04.rmd","is_secret":0,"real_posx":83.39,"real_posx2":85.94,"real_posy":68.28,"real_posy2":71.94,"posx":133.43,"posx2":137.5,"posy":54.63,"posy2":57.55},
+    {"id":"29","type":3,"name":"漆黒の城","access_map":"[506]BF_U01.rmd","is_secret":0,"real_posx":0.45,"real_posx2":2.88,"real_posy":159.47,"real_posy2":163.28,"posx":0.73,"posx2":4.6,"posy":127.58,"posy2":130.63},
+    {"id":"30","type":4,"name":"npc","access_map":"","is_secret":0,"real_posx":7.31,"real_posx2":23.89,"real_posy":143.47,"real_posy2":162.03,"posx":11.7,"posx2":38.23,"posy":114.78,"posy2":129.63},
+    {"id":"31","type":12,"name":"隠された目的","access_map":"","is_secret":0,"real_posx":28.84,"real_posx2":33.23,"real_posy":5.06,"real_posy2":11.09,"posx":46.15,"posx2":53.18,"posy":4.05,"posy2":8.88},
+    {"id":"32","type":12,"name":"隠された目的2","access_map":"","is_secret":0,"real_posx":172.44,"real_posx2":177.28,"real_posy":2.69,"real_posy2":8.28,"posx":275.9,"posx2":283.65,"posy":2.15,"posy2":6.63},
+    {"id":"33","type":16,"name":"Area 32","access_map":"","is_secret":0,"real_posx":25.81,"real_posx2":27.36,"real_posy":145.94,"real_posy2":148.44,"posx":41.3,"posx2":43.78,"posy":116.75,"posy2":118.75},
+    {"id":"34","type":2,"name":"비밀던전 입구","access_map":"","is_secret":1,"real_posx":4.83,"real_posx2":8.64,"real_posy":94.16,"real_posy2":102.22,"posx":7.73,"posx2":13.83,"posy":75.33,"posy2":81.78},
+    {"id":"35","type":12,"name":"誘導作戦Ⅰ","access_map":"","is_secret":0,"real_posx":121.83,"real_posx2":127.03,"real_posy":68.19,"real_posy2":79.66,"posx":194.93,"posx2":203.25,"posy":54.55,"posy2":63.73},
+    ]
+};
+

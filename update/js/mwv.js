@@ -420,8 +420,12 @@ function createAreaPositionTable() {
 // 秘密ダンジョンかどうかの判定。これ以外のtype2は扉なので注意。
 function isSecret(data) {
     var res = 0;
-    if (Number(data["unknown_1_8"]) == 1 && Number(data["unknown_1_11"]) == 1
-        && Number(data["unknown_1_6"]) == 1000 && Number(data["unknown_1_4"]) == 10000) {
+    if (Number(data["unknown_1_8"]) == 1
+        // && Number(data["unknown_1_11"]) == 1 秘密Dとは関係無し
+        && Number(data["unknown_1_6"]) == 1000
+        && Number(data["unknown_1_4"]) == 10000
+        && Number(data["unknown_1_19"]) > 0 //多分これだけ調べれば秘密Dのidなので大丈夫では…？ 
+        ){
         res = 1;
     }
     return res;

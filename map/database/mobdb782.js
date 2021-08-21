@@ -266,7 +266,6 @@ AreaData = {
     {"id":"63","type":12,"name":"それぞれの役割2","access_map":"","is_secret":0,"real_posx":228.08,"real_posx2":230.92,"real_posy":9.44,"real_posy2":15.09,"posx":428.23,"posx2":433.57,"posy":8.58,"posy2":13.72},
     {"id":"64","type":12,"name":"それぞれの役割3","access_map":"","is_secret":0,"real_posx":231.36,"real_posx2":234.31,"real_posy":18.31,"real_posy2":24.91,"posx":434.39,"posx2":439.93,"posy":16.65,"posy2":22.64},
     {"id":"65","type":12,"name":"それぞれの役割4","access_map":"","is_secret":0,"real_posx":226.23,"real_posx2":229.97,"real_posy":39.78,"real_posy2":47.16,"posx":424.77,"posx2":431.78,"posy":36.16,"posy2":42.87},
-    {"id":"66","type":2,"name":"Area 65","access_map":"","is_secret":0,"real_posx":234.33,"real_posx2":238.69,"real_posy":1.34,"real_posy2":9.81,"posx":439.96,"posx2":448.15,"posy":1.22,"posy2":8.92},
+    {"id":"66","type":2,"name":"Area 65","access_map":"","is_secret":1,"real_posx":234.33,"real_posx2":238.69,"real_posy":1.34,"real_posy2":9.81,"posx":439.96,"posx2":448.15,"posy":1.22,"posy2":8.92},
     ]
 };
-
