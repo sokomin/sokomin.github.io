@@ -2662,23 +2662,12 @@ function datalist(num) {
                 LnkY.push(data.posy);
                 LnkS.push(data.type);
             }
-            // TODO 次これやる
-            // if (data.type === 6) {
-            //     LnkX.push(data.posx);
-            //     LnkY.push(data.posy);
-            //     if (data.area_name && data.area_name != "none") {
-            //         // LnkA.push("");
-            //         if (data.access_map && data.access_map != "none") {
-            //             // var map_idx = String(data.access_map).substr(1,3);
-            //             LnkA.push(data.area_name);
-            //         } else {
-            //             LnkA.push("");
-            //         }
-            //     } else {
-            //         // AreaMapName.push("_");
-            //     }
-            //     LnkS.push(6);
-            // }
+            if (data.type === 6) {
+                LnkX.push(data.posx);
+                LnkY.push(data.posy);
+                LnkS.push(data.type);
+                LnkP.push(data.name);
+            }
         }
         // 最終文字の0は特に使わない
     }

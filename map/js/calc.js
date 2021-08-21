@@ -140,7 +140,6 @@ function getMobDB() {
                 for (i = 0; i < ObjX.length; i++) {
                     ObjY[i] = ObjY[i] * 200 / height;
                     ObjX[i] = ObjX[i] * 200 / height;
-                    // FIXME ミラーテレポーターなどのNPCも全てこちらに統合するので、NPC関連の情報を取得する時はここからアイコン取ってこれるようにしたい。
                     if (MobMapName[i] == "ミラーテレポータ" || MobMapName[i] == "ミラーテレポータ") {
                         var mticon = ('<img width="' + icon_size + '" height="' + icon_size + '" src="https://sokomin.github.io/sokomin_repository/db/interface2/interface2_0047.png">');
                         dot_txt += "\t<div class=\"Obj Pa a" + (ObjN[i]) + "\" style=\"top:" + (ObjY[i]) + "px; left:" + (ObjX[i] + map_padding) + "px;\" title=\"" + MobMapName[i] + "\">" + mticon + "</div>\n";
@@ -153,7 +152,8 @@ function getMobDB() {
                 map_dot.innerHTML = dot_txt;
                 // AreaTypeにおいて移動ポータル描画
                 // type3の時だけカウントが増える
-                PP = 0; PPP = 0;
+                var PP = 0;　//LnkA用のcnt
+                var PPP = 0; //LnkP用のcnt
                 var map_pot = document.getElementById('map-portal');
                 var area_txt = "";
                 for (i = 0; i < LnkX.length; i++) {
@@ -167,21 +167,36 @@ function getMobDB() {
                     }
                     // 移動ポータル
                     if (LnkS[i] == 3) {
-                        col = "#00ffff";
-                        nam = '<img width="'+ icon_size+ '" height="'+ icon_size+ '" src="https://sokomin.github.io/sokomin_repository/db/etc_anm/etc_anm_0022.png">';
-                        nam2 = "<a href=\"map_viewer.html?map_id=" + parseInt(LnkP[PPP]) + "\" style=\"color:" + col + "\"><img width='"+ icon_size+ "' height='"+ icon_size+ "' src='https://sokomin.github.io/sokomin_repository/db/etc_anm/etc_anm_0022.png'></a>";
-                        alt = LnkA[PP];
+                        if (LnkA[PP] == "길드 홀 입구") {
+                            nam = '<img width="'+ icon_size+ '" height="'+ icon_size+ '" title="ギルドホール入り口" src="https://sokomin.github.io/sokomin_repository/db/interface2/interface2_0187.png">';
+                            nam2 = '<img width="'+ icon_size+ '" height="'+ icon_size+ '" title="ギルドホール入り口" src="https://sokomin.github.io/sokomin_repository/db/interface2/interface2_0187.png">';
+                            alt = "ギルドホール入り口";
+                        } else {
+                            // TODO 可能ならgifアニメで移動ポータルなどを表記したい。
+                            col = "#00ffff";
+                            nam = '<img width="'+ icon_size+ '" height="'+ icon_size+ '" src="https://sokomin.github.io/sokomin_repository/db/etc_anm/etc_anm_0022.png">';
+                            nam2 = "<a href=\"map_viewer.html?map_id=" + parseInt(LnkP[PPP]) + "\" style=\"color:" + col + "\"><img width='"+ icon_size+ "' height='"+ icon_size+ "' src='https://sokomin.github.io/sokomin_repository/db/etc_anm/etc_anm_0022.png'></a>";
+                            alt = LnkA[PP];
+                        }
                         PP++;
                         PPP++;
                     }
                     if (LnkS[i] == 5) {
                         col = "#ff7fff"; nam = "○"; nam2 = "○";
                     }
+                    // エリア名
                     if (LnkS[i] == 6) {
-                        col = "#00ff00"; nam = "＋"; nam2 = "＋"; alt = LnkP[PPP]; PPP++;
+                        col = "#00ff00";
+                        nam = '<img title="'+ LnkP[PPP]+ '" src="https://sokomin.github.io/sokomin_repository/db/interface2/interface2_0633.png">';
+                        nam2 = '<img title="'+ LnkP[PPP]+ '" src="https://sokomin.github.io/sokomin_repository/db/interface2/interface2_0633.png">';
+                        // col = "#00ff00"; nam = "＋";
+                        // nam2 = "＋";
+                        alt = LnkP[PPP];
+                        PPP++;
                     }
                     if (LnkS[i] == 12) {
-                        col = "#00ffff"; nam = "＋"; nam2 = "＋"; alt = LnkP[PPP]; PPP++;
+                        col = "#00ffff"; nam = "＋"; nam2 = "＋"; alt = LnkP[PPP];
+                        PPP++;
                     }
                     if (LnkS[i] == 13) {
                         col = "#ffff00"; nam = "＄"; nam2 = "＄"; alt = "[" + Math.round(LnkX[i] / 2) + "." + Math.round(LnkY[i]) + "]";
@@ -207,7 +222,6 @@ function getMobDB() {
                     if (LnkS[i] == 3) {
                         col = "#00ffff"; nam = "●";
                         // リンク先を配列にしたがって追加していく
-                        // nam2 = "<a href=\"javascript:void(0);\" onclick=Jump(" + LnkP[PPP] + ") style=\"color:" + col + "\">●</a>";
                         nam2 = "<a href=\"map_viewer.html?map_id=" + parseInt(LnkP[PPP]) + "\" style=\"color:" + col + "\">●</a>";
                         alt = LnkA[PP];
                         PP++;
