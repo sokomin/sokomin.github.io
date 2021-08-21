@@ -1,3 +1,7 @@
+const img_width = 64;
+const img_height = 32;
+const text_font_size = "16px sans-serif";
+
 //CSVファイルを読み込む関数getCSV()の定義
 function getCSV(mapid) {
     var req = new XMLHttpRequest();// HTTPでファイルを読み込むためのXMLHttpRrequestオブジェクトを生成
@@ -17,19 +21,55 @@ function getMapCSV(mapid, monster_str) {
         convertCSVtoArray(mapid, monster_str, req.responseText);
     }
 }
-// 入れ子じゃん・・・ジェネレータだから許して。
-function getMapCSV2(mapid) {
+
+//移動可能領域
+function getMapCSV1(mapid) {
     var req = new XMLHttpRequest();
-    req.open("get", "https://sokomin.github.io/sokomin_repository/db/maptiledb/maptile" + mapid + "_2.csv", true);
+    req.open("get", "https://sokomin.github.io/sokomin_repository/db/maptiledb/maptile" + mapid + "_1.csv", true);
     req.send(null);
     req.onload = function () {
-        convertZIndexCSVtoArray(mapid, req.responseText);
+        convertAIndexCSVtoArray(mapid, req.responseText);
+    }
+}
+
+//0_3
+function getMapCSV3(mapid) {
+    var req = new XMLHttpRequest();
+    req.open("get", "https://sokomin.github.io/sokomin_repository/db/maptiledb/maptile" + mapid + "_3.csv", true);
+    req.send(null);
+    req.onload = function () {
+        convert3IndexCSVtoArray(mapid, req.responseText);
+    }
+}
+
+
+//0_4
+function getMapCSV4(mapid) {
+    var req = new XMLHttpRequest();
+    req.open("get", "https://sokomin.github.io/sokomin_repository/db/maptiledb/maptile" + mapid + "_4.csv", true);
+    req.send(null);
+    req.onload = function () {
+        convert4IndexCSVtoArray(mapid, req.responseText);
+    }
+}
+
+//0_5
+function getMapCSV5(mapid) {
+    var req = new XMLHttpRequest();
+    req.open("get", "https://sokomin.github.io/sokomin_repository/db/maptiledb/maptile" + mapid + "_5.csv", true);
+    req.send(null);
+    req.onload = function () {
+        convert5IndexCSVtoArray(mapid, req.responseText);
     }
 }
 
 
 var map_img_map = {};
 var zindex_map = {};
+var aindex_map = {};
+var index_map3 = {};
+var index_map4 = {};
+var index_map5 = {};
 var obj_format = {};
 var monster_data = {};
 var map_data = {};
@@ -45,8 +85,8 @@ function convertCSVtoArray(mapid, str, map_img) {// 読み込んだCSVデータ�
     map_data = {};
     map_img_map = {};
 
-    var result = [];// 最終的な二次元配列を入れるための配列
-    var tmp = str.split("\n");// 改行を区切り文字として行を要素とした配列を生成
+    var result = [];
+    var tmp = str.split("\n");
     // 各行ごとにカンマで区切った文字列を要素とした二次元配列を生成
     for (var i = 0; i < tmp.length; ++i) {
         result[i] = tmp[i].split(',');
@@ -76,8 +116,8 @@ function convertCSVtoArray(mapid, str, map_img) {// 読み込んだCSVデータ�
     }
 
 
-    var result = [];// 最終的な二次元配列を入れるための配列
-    // var map_tmp = map_str.split("\n");// 改行を区切り文字として行を要素とした配列を生成
+    var result = [];
+    // var map_tmp = map_str.split("\n");
     // // 各行ごとにカンマで区切った文字列を要素とした二次元配列を生成
     // for (var i = 0; i < map_tmp.length; ++i) {
     //     result[i] = map_tmp[i].split(',');
@@ -105,7 +145,7 @@ function convertCSVtoArray(mapid, str, map_img) {// 読み込んだCSVデータ�
     //         map_data[result[i][0]] = md;
     //     }
     // }
-    var map_tmp = map_img.split("\n");// 改行を区切り文字として行を要素とした配列を生成
+    var map_tmp = map_img.split("\n");
     // 各行ごとにカンマで区切った文字列を要素とした二次元配列を生成
     for (var i = 0; i < map_tmp.length; ++i) {
         result[i] = map_tmp[i].split(',');
@@ -120,14 +160,12 @@ function convertCSVtoArray(mapid, str, map_img) {// 読み込んだCSVデータ�
     }
 }
 
-// 読み込んだCSVデータをオブジェクトに変換
-function convertZIndexCSVtoArray(mapid, map_zindex) {// 読み込んだCSVデータが文字列として渡される
+function convertZIndexCSVtoArray(mapid, map_zindex) {
     // 初期化
     zindex_map = {};
 
-    var result = [];// 最終的な二次元配列を入れるための配列
-    var map_tmp = map_zindex.split("\n");// 改行を区切り文字として行を要素とした配列を生成
-    // 各行ごとにカンマで区切った文字列を要素とした二次元配列を生成
+    var result = [];
+    var map_tmp = map_zindex.split("\n");
     for (var i = 0; i < map_tmp.length; ++i) {
         result[i] = map_tmp[i].split(',');
         zindex_map[i] = result[i];
@@ -135,6 +173,65 @@ function convertZIndexCSVtoArray(mapid, map_zindex) {// 読み込んだCSVデー
     console.log(zindex_map);
 
     setZIndexImage();
+}
+
+function convertAIndexCSVtoArray(mapid, map_zindex) {
+    // 初期化
+    aindex_map = {};
+
+    var result = [];
+    var map_tmp = map_zindex.split("\n");
+    for (var i = 0; i < map_tmp.length; ++i) {
+        result[i] = map_tmp[i].split(',');
+        aindex_map[i] = result[i];
+    }
+    console.log(aindex_map);
+
+    setAIndexImage();
+}
+
+function convert3IndexCSVtoArray(mapid, map_zindex) {
+    // 初期化
+    index_map3 = {};
+
+    var result = [];
+    var map_tmp = map_zindex.split("\n");
+    for (var i = 0; i < map_tmp.length; ++i) {
+        result[i] = map_tmp[i].split(',');
+        index_map3[i] = result[i];
+    }
+    console.log(index_map3);
+
+    set3IndexImage();
+}
+
+function convert4IndexCSVtoArray(mapid, map_zindex) {
+    // 初期化
+    index_map4 = {};
+
+    var result = [];
+    var map_tmp = map_zindex.split("\n");
+    for (var i = 0; i < map_tmp.length; ++i) {
+        result[i] = map_tmp[i].split(',');
+        index_map4[i] = result[i];
+    }
+    console.log(index_map4);
+
+    set4IndexImage();
+}
+function convert5IndexCSVtoArray(mapid, map_zindex) {
+    // 初期化
+    index_map5 = {};
+
+    var result = [];
+    var map_tmp = map_zindex.split("\n");
+    for (var i = 0; i < map_tmp.length; ++i) {
+        result[i] = map_tmp[i].split(',');
+        index_map5[i] = result[i];
+    }
+    console.log(index_map5);
+
+    set5IndexImage();
 }
 
 
@@ -159,6 +256,29 @@ function calc3() {
     getMapCSV2(mapid);
 }
 
+function calc4() {
+    is_canvas = true;
+    var mapid = $('input[name="a2"]').val() ? $('input[name="a2"]').val() : 0;
+    getMapCSV1(mapid);
+}
+
+function calc5() {
+    is_canvas = true;
+    var mapid = $('input[name="a2"]').val() ? $('input[name="a2"]').val() : 0;
+    getMapCSV3(mapid);
+}
+
+function calc6() {
+    is_canvas = true;
+    var mapid = $('input[name="a2"]').val() ? $('input[name="a2"]').val() : 0;
+    getMapCSV4(mapid);
+}
+
+function calc7() {
+    is_canvas = true;
+    var mapid = $('input[name="a2"]').val() ? $('input[name="a2"]').val() : 0;
+    getMapCSV5(mapid);
+}
 
 
 var tmp_divx = -1;
@@ -305,15 +425,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
 });
 
-// var is_downloaded = false;
-
 function setCanvasImage() {
     var map_type = $('select[name="b1"]').val() ? Number($('select[name="b1"]').val()) : 0;
 
     const dcv = document.getElementById('cvpreview');
     const context = dcv.getContext('2d');
-    const img_width = 16;
-    const img_height = 8;
 
     var min_width = 300;
     var max_length = 0;
@@ -391,14 +507,57 @@ function setCanvasImage() {
 }
 
 
+// aが1以上の部分をフィルタ
+function setAIndexImage() {
+    var map_type = $('select[name="b1"]').val() ? Number($('select[name="b1"]').val()) : 0;
+
+    const dcv = document.getElementById('cvpreview');
+    const context = dcv.getContext('2d');
+
+    var min_width = 300;
+    var max_length = 0;
+    var max_height = 0;
+    for (let i in map_img_map) {
+        var data = map_img_map[i];
+        var adata = aindex_map[i];
+        max_length = max_length < data.length ? data.length : max_length;
+        for (let j = 0; j < data.length; j++) {
+            if (data.length != max_length) {
+                break;
+            }
+            if (adata[j] >= 1) {
+                let image1 = new Image();
+                let txt = 'https://sokomin.github.io/sokomin_repository/db/mapset/Dungeon/tile/tile_0391.png';
+                image1.src = txt;
+                image1.addEventListener('load', function() {
+                    context.drawImage(image1, j*img_width, i* img_height, img_width, img_height);
+                }, false);
+            } else {
+                let image1 = new Image();
+                let num = ('0000' + data[j]).slice(-4);
+                let txt = 'https://sokomin.github.io/sokomin_repository/db/mapset/' + map_type_map[map_type] + '/tile/tile_' + num + '.png';
+                image1.src = txt;
+                image1.addEventListener('load', function() {
+                    context.drawImage(image1, j*img_width, i* img_height, img_width, img_height);
+                }, false);
+            }
+            if (i == 0) {
+                min_width += (img_width/15);
+            }
+        }
+        max_height++;
+    }
+    $('.main-background-map').css({ 'min-height': "200%", 'min-width': ("" + min_width + "%") });
+    $('#cvpreview').attr({ 'width': img_width * max_length, 'height': img_height * max_height});
+
+}
+
 // z軸が1以上の部分でフィルタ
 function setZIndexImage() {
     var map_type = $('select[name="b1"]').val() ? Number($('select[name="b1"]').val()) : 0;
 
     const dcv = document.getElementById('cvpreview');
     const context = dcv.getContext('2d');
-    const img_width = 16;
-    const img_height = 8;
 
     var min_width = 300;
     var max_length = 0;
@@ -436,6 +595,76 @@ function setZIndexImage() {
     $('.main-background-map').css({ 'min-height': "200%", 'min-width': ("" + min_width + "%") });
     $('#cvpreview').attr({ 'width': img_width * max_length, 'height': img_height * max_height});
 
+}
+
+
+// 3が1以上の部分では文字も打ち込む
+function set3IndexImage() {
+    const dcv = document.getElementById('cvpreview');
+    const context = dcv.getContext('2d');
+
+    var max_length = 0;
+    for (let i in map_img_map) {
+        var data = map_img_map[i];
+        var data3 = index_map3[i];
+        max_length = max_length < data.length ? data.length : max_length;
+        for (let j = 0; j < data.length; j++) {
+            if (data.length != max_length) {
+                break;
+            }
+            if (data3[j] >= 1) {
+                context.font = text_font_size;
+                context.fillStyle = "orange";
+                context.fillText(data3[j], (j*img_width+2), i* img_height);
+            }
+        }
+    }
+}
+
+// 4が1以上の部分では文字も打ち込む
+function set4IndexImage() {
+    const dcv = document.getElementById('cvpreview');
+    const context = dcv.getContext('2d');
+
+    var max_length = 0;
+    for (let i in map_img_map) {
+        var data = map_img_map[i];
+        var data4 = index_map4[i];
+        max_length = max_length < data.length ? data.length : max_length;
+        for (let j = 0; j < data.length; j++) {
+            if (data.length != max_length) {
+                break;
+            }
+            if (data4[j] >= 1) {
+                context.font = text_font_size;
+                context.fillStyle = "blue";
+                context.fillText(data4[j], (j*img_width+2), i* img_height+1);
+            }
+        }
+    }
+}
+
+// 5が1以上の部分では文字も打ち込む
+function set5IndexImage() {
+    const dcv = document.getElementById('cvpreview');
+    const context = dcv.getContext('2d');
+
+    var max_length = 0;
+    for (let i in map_img_map) {
+        var data = map_img_map[i];
+        var data5 = index_map5[i];
+        max_length = max_length < data.length ? data.length : max_length;
+        for (let j = 0; j < data.length; j++) {
+            if (data.length != max_length) {
+                break;
+            }
+            if (data5[j] >= 1) {
+                context.font = text_font_size;
+                context.fillStyle = "red";
+                context.fillText(data5[j], (j*img_width+4), i* img_height+2);
+            }
+        }
+    }
 }
 
 
