@@ -502,6 +502,7 @@ function outputInfo() {
 }
 
 function validateData(data, drop_txt) {
+    // 何もドロップしないモンスターは表示しない。(ステータス確認用は現状未対応にします)
     if (drop_txt == DROP_TEXT_CONST) {
         return true;
     }
