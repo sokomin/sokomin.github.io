@@ -1,6 +1,12 @@
 ﻿//イレギュラーすぎて対応しきれん情報とかは全部ここに直書きしといてください
 //配列テキストが改行されてそのまんま表示されます。
 MapExtraInfoList = {
+    293: ["秘密ダンジョン「<a href='../secret/secretdgn535-585.html'>名も無き遺跡のデーモンキングのねぐら</a>」"],
+    319: ["秘密ダンジョン「<a href='../secret/secretdgn550-600.html'>ヘソパルの洞窟</a>」"],
+    325: ["秘密ダンジョン「<a href='../secret/secretdgn600-640.html'>ビックマウスダンジョンのラットキング区域</a>」"],
+    326: ["秘密ダンジョン「<a href='../secret/secretdgn600-640.html'>ビックマウスダンジョンのラットキング区域</a>」"],
+    382: ["秘密ダンジョン「<a href='../secret/secretdgn580-620.html'>モリネルタワーの隠された研究所</a>」"],
+    383: ["秘密ダンジョン「<a href='../secret/secretdgn680-620.html'>モリネルタワーの隠された研究所</a>」"],
     450: ["秘密ダンジョン「<a href='../secret/secretdgn900-975.html'>逃亡者たちの山</a>」"],
     471: ["秘密ダンジョン「<a href='../secret/secretdgn651-680.html'>ヴァンパイア・キングダム</a>」"],
     474: ["秘密ダンジョン「<a href='../secret/secretdgn681-710.html'>ヴァンパイア・キングダム</a>」"],
