@@ -66,6 +66,8 @@ MapSubInfoList = {
     1008: { name: "ヤティカヌ日の出森林", mc2:12, mc:"A",req_map_lv:8, dfi:80, dwa:80, dwi:80, dea:80, dli:80, dda:80, st_down:30,lbd:50, non_resume: true },
     1009: { name: "ヤティカヌ星降る森林", mc2:12, mc:"A",req_map_lv:8, dfi:85, dwa:85, dwi:85, dea:85, dli:85, dda:85, st_down:30,lbd:50, non_resume: true },
     1010: { name: "ガレリオン野営地", mc2:12, mc:"A",req_map_lv:0, dfi:0, dwa:0, dwi:0, dea:0, dli:0, dda:0, st_down:0,lbd:0, non_resume: true },
+    1011: { name: "メガンテリオンの巣", mc2:12, mc:"-",req_map_lv:0, dfi:80, dwa:80, dwi:80, dea:80, dli:80, dda:80, st_down:30,lbd:50, non_resume: true },
+    1012: { name: "アリドネ生息地", mc2:12, mc:"-",req_map_lv:0, dfi:85, dwa:85, dwi:85, dea:85, dli:85, dda:85, st_down:30,lbd:50, non_resume: true },
     1015: { name: "涼しい洞窟", mc2:4, mc:"-",req_map_lv:7, dfi:45, dwa:45, dwi:45, dea:45, dli:45, dda:45, st_down:25,lbd:70, non_resume: false },
     1016: { name: "寂しい群島", mc2: 4, mc: "-", req_map_lv: 7, dfi: 50, dwa: 50, dwi: 50, dea: 50, dli: 50, dda: 50, st_down: 25, lbd: 70, non_resume: false },
     //FIXME mc2調べたい
