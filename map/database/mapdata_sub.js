@@ -644,7 +644,8 @@ var MapSubInfoList = {
     743:{ name: 'ケルベロス生息地',req_map_lv: 0,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: false,mc2: 1,mc: '-' },
     744:{ name: '骸骨王の地下ダンジョン',req_map_lv: 0,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: false,mc2: 1,mc: '-' },
     745:{ name: 'ドラゴート出没地',req_map_lv: 0,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: false,mc2: 1,mc: '-' },
-    746:{ name: 'ミラーダンジョンガルカス悪魔軍集結地 B1 1-3',mc2: 12,mc: 'D',req_map_lv: 0,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: false },
+    //まだ反映してない
+    746: { name: 'ミラーダンジョンガルカス悪魔軍集結地 B1 1-3', mc2: 12, mc: 'D', req_map_lv: 0, dfi: 0, dwa: 0, dwi: 0, dea: 0, dli: 0, dda: 0, st_down: 0, lbd: 0, non_resume: false },
     747:{ name: 'ミラーダンジョンガルカス悪魔軍集結地 B1 1-4',mc2: 12,mc: 'D',req_map_lv: 0,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: false },
     748:{ name: 'ミラーダンジョンガルカス悪魔軍集結地 B1 1-5',mc2: 12,mc: 'D',req_map_lv: 0,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: false },
     749:{ name: '',mc2: 12,mc: 'D',req_map_lv: 0,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: false },
@@ -665,14 +666,15 @@ var MapSubInfoList = {
     764:{ name: '',mc2: 12,mc: 'A',req_map_lv: 0,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: false },
     765:{ name: '',mc2: 12,mc: 'A',req_map_lv: 0,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: false },
     766:{ name: '',mc2: 12,mc: 'A',req_map_lv: 0,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: false },
-    767:{ name: '',mc2: 12,mc: 'A',req_map_lv: 0,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: false },
-    768:{ name: '',mc2: 12,mc: 'A',req_map_lv: 0,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: false },
-    769:{ name: '',mc2: 12,mc: 'A',req_map_lv: 0,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: false },
-    770:{ name: '',mc2: 12,mc: 'A',req_map_lv: 0,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: false },
-    771:{ name: '',mc2: 12,mc: 'A',req_map_lv: 0,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: false },
-    772:{ name: '',mc2: 12,mc: 'A',req_map_lv: 0,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: false },
+    767:{ name: '',mc2: 12,mc: 'A',req_map_lv: 3,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: false },
+    768:{ name: '',mc2: 12,mc: 'A',req_map_lv: 3,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: false },
+    769:{ name: '',mc2: 12,mc: 'A',req_map_lv: 4,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: false },
+    770:{ name: '',mc2: 12,mc: 'A',req_map_lv: 4,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: false },
+    771:{ name: 'ミラーダンジョン  モリネルタワー　地上５階 1-1',mc2: 12,mc: 'A',req_map_lv: 0,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: false },
+    772:{ name: 'ミラーダンジョン  モリネルタワー　地上５階 1-2',mc2: 12,mc: 'A',req_map_lv: 0,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: false },
     773:{ name: '希望と絶望の境目',mc2: 9,mc: 'C',req_map_lv: 6,dfi: 30,dwa: 30,dwi: 30,dea: 30,dli: 30,dda: 30,st_down: 0,lbd: 0,non_resume: false },
-    774:{ name: '埋没した古代遺跡',mc2: 9,mc: 'C',req_map_lv: 6,dfi: 30,dwa: 30,dwi: 30,dea: 30,dli: 30,dda: 30,st_down: 0,lbd: 0,non_resume: false },
+    774: { name: '埋没した古代遺跡', mc2: 9, mc: 'C', req_map_lv: 6, dfi: 30, dwa: 30, dwi: 30, dea: 30, dli: 30, dda: 30, st_down: 0, lbd: 0, non_resume: false },
+    // この辺りまで低下情報反映した
     775:{ name: '',mc2: 9,mc: 'C',req_map_lv: 0,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: false },
     776:{ name: '',mc2: 9,mc: 'C',req_map_lv: 0,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: false },
     777:{ name: '',mc2: 9,mc: 'C',req_map_lv: 0,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: false },
@@ -822,7 +824,7 @@ function datasublist(num) {
         Rendou2 = SubInfoBase[num].mc2 ? SubInfoBase[num].mc2 : 0;
     }
     SubInfo = MapSubInfoList[num];
-    //誰だこんなやりかたでリリース許可だしたのは！！！(コンバージョン対応)
+    // 今は使ってない。消していい処理
     if (SubInfoBase[num]) {
         SubInfo.dfi = SubInfoBase[num].dfi;
         SubInfo.dwa = SubInfoBase[num].dwa;
