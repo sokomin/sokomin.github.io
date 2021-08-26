@@ -111,6 +111,8 @@ function calc1() {
     // モンスターデータ読み込み(同期の関係上、これ以外呼ばない)
     getCSV();
 }
+var JN, SS;
+
 
 function createSkillTable() {
     // var a1 = $('input[name="a1"]').val()? Number($('input[name="a1"]').val()) : 0;
@@ -119,7 +121,7 @@ function createSkillTable() {
     // var REQ_LEVEL = getParam('lv') ? parseInt(getParam('lv')) : 0;
     var DEBUG = getParam('debug') ? parseInt(getParam('debug')) : 0;
     var $div_main = $('<div>');
-    var cnt = 0; //セーフティをはっておく
+    defdata(JOBID);　//JNとSSをいれる
     for (var i in skill_data) {
         var data = skill_data[i];
         if (validateData(data, JOBID, DEBUG)) {
@@ -135,6 +137,8 @@ function createSkillTable() {
         if (i > 100000) {
             skill_txt = skill_txt + '<br><font color="#ff0033">[PVP専用]</font>';
         }
+        var powerup_txt = data["str_progress"];
+        var req_txt = calcReqText(JN, SS, data["str_name"]);
 
 
         if (data["unknown10_139"] != 0 && data["unknown10_139"] != 3) {
@@ -164,26 +168,35 @@ function createSkillTable() {
             } else {
                 //覚醒スキル
                 $table = $('<table>').attr("id", "table10").css("min-width", "700px").css("text-align", "left")
-                    .append($("<colgroup>").append($("<col>").attr("span", 1).attr("width", 100)));
+                    .append($("<colgroup>").append($("<col>").attr("span", 1).attr("width", 130)));
                 var $tr_Name = $('<tr>');
                 var skill_title = '<a name="' + i + '"></a>' + data["str_name"];
                 $tr_Name.append($('<th>').append(skill_icon))
                     .append($('<th>').attr("colspan", "8").css("text-align", "left").css("padding-left", "5%").append(skill_title));
                 var $tr_icon = $('<tr>');
                 var des_txt = 'スキル難易度';
-                $tr_icon.append($('<th>').append(des_txt))
+                $tr_icon.append($('<th>').css("text-align", "left").append(des_txt))
                     .append($('<td>').append(data["unknown2_0"]))
                     .append($('<td>').attr("colspan", "7").append(""))
-                // TODO 必要スキルも出したい
+                var $tr_req = $('<tr>');
+                var des_txt = '必要スキル'
+                $tr_req.append($('<th>').attr("colspan", "1").css("text-align", "left").append(des_txt))
+                    .append($('<td>').attr("colspan", "8").css("text-align", "left").append(req_txt))
                 var $tr_detail = $('<tr>');
                 var des_txt = 'スキル説明'
                 $tr_detail.append($('<th>').attr("colspan", "1").css("text-align", "left").append(des_txt))
                     .append($('<td>').attr("colspan", "8").css("text-align", "left").append(skill_txt))
+                var $tr_power = $('<tr>');
+                var des_txt = 'パワーアップ形態'
+                $tr_power.append($('<th>').attr("colspan", "1").css("text-align", "left").append(des_txt))
+                    .append($('<td>').attr("colspan", "8").css("text-align", "left").append(powerup_txt))
                 // TODO スキル効果の詳細も書けたらここに…
-                
+
                 $table.append($tr_Name);
                 $table.append($tr_icon);
+                $table.append($tr_req);
                 $table.append($tr_detail);
+                $table.append($tr_power);
                 $div_main.append($table);
                 $div_main.append("<br><br>");
 
@@ -191,26 +204,36 @@ function createSkillTable() {
         } else {
             //通常スキル
             $table = $('<table>').attr("id", "table10").css("min-width", "700px").css("text-align", "left")
-            .append($("<colgroup>").append($("<col>").attr("span", 1).attr("width", 100)));
+            .append($("<colgroup>").append($("<col>").attr("span", 1).attr("width", 130)));
             var $tr_Name = $('<tr>');
             var skill_title = '<a name="' + i + '"></a>' + data["str_name"];
             $tr_Name.append($('<th>').append(skill_icon))
                 .append($('<th>').attr("colspan", "14").css("text-align", "left").css("padding-left", "5%").append(skill_title));
             var $tr_icon = $('<tr>');
             var des_txt = 'スキル難易度';
-            $tr_icon.append($('<th>').append(des_txt))
+            $tr_icon.append($('<th>').css("text-align", "left").append(des_txt))
                 .append($('<td>').append(data["unknown2_0"]))
                 .append($('<td>').attr("colspan", "13").append(""))
-            // TODO 必要スキルも出したい
+            var $tr_req = $('<tr>');
+            var des_txt = '必要スキル'
+            $tr_req.append($('<th>').attr("colspan", "1").css("text-align", "left").append(des_txt))
+                .append($('<td>').attr("colspan", "14").css("text-align", "left").append(req_txt))
             var $tr_detail = $('<tr>');
             var des_txt = 'スキル説明'
             $tr_detail.append($('<th>').attr("colspan", "1").css("text-align", "left").append(des_txt))
                 .append($('<td>').attr("colspan", "14").css("text-align", "left").append(skill_txt))
+            var $tr_power = $('<tr>');
+            var des_txt = 'パワーアップ形態'
+            $tr_power.append($('<th>').attr("colspan", "1").css("text-align", "left").append(des_txt))
+                .append($('<td>').attr("colspan", "14").css("text-align", "left").append(powerup_txt))
+
             // TODO スキル効果の詳細も書けたらここに…
             
             $table.append($tr_Name);
             $table.append($tr_icon);
+            $table.append($tr_req);
             $table.append($tr_detail);
+            $table.append($tr_power);
             $div_main.append($table);
             $div_main.append("<br><br>");
 
