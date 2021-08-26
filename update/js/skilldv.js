@@ -138,7 +138,7 @@ function createSkillTable() {
             skill_txt = skill_txt + '<br><font color="#ff0033">[PVP専用]</font>';
         }
         var powerup_txt = data["str_progress"];
-        var req_txt = calcReqText(JN, SS, data["str_name"]);
+        var req_txt = calcReqText(JN, SS, data["str_name"], JOBID);
 
 
         if (data["unknown10_139"] != 0 && data["unknown10_139"] != 3) {
@@ -329,7 +329,7 @@ function createCostCP(data, mode) {
                 }
             }
         } else {
-            res_html += '<td colspan="14">' + data["unknown2_12"] +  '</td>'
+            res_html += '<td colspan="14">' + (Math.round(Number(data["unknown2_12"]) / 10) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
         }
     }
     res_html += "</tr>"
@@ -368,7 +368,7 @@ function createGetCP(data, mode) {
                 }
             }
         } else {
-            res_html += '<td colspan="14">' + data["unknown2_15"] +  '</td>'
+            res_html += '<td colspan="14">' + (Math.round(Number(data["unknown2_15"]) / 10) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
         }
     }
     res_html += "</tr>"
@@ -379,6 +379,26 @@ function createGetCP(data, mode) {
 function createGetDamage(data, mode) {
     res_html = ""
     if (mode == 8) {
+        // 物理ダメージ覚醒
+        if (data["unknown2_136"] != 0 || data["unknown2_138"] > 0) {
+            res_html += "<tr><th>◆物理ダメージ</th>"
+            if (Number(data["unknown2_138"]) > 0) {
+                for (var i = 1; i <= 50; i++) {
+                    if (i >= 7) {
+                        res_html += '<td>...</td>'
+                        i += 44;
+                    }
+                    var ccp = Number(data["unknown2_136"]) + Number(data["unknown2_138"]) * i / 10;
+                    if (ccp >= 0) {
+                        res_html += '<td>+' + Math.round(ccp / 10) + '%</td>'
+                    } else {
+                        res_html += '<td>' + Math.round(ccp / 10) + '%</td>'
+                    }
+                }
+            } else {
+                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_136"]) / 10) +  '</td>'
+            }
+        }
         // 火属性覚醒
         if (data["unknown2_144"] > 0) {
             res_html += "<tr><th><span class='color-fire'>◆</span>炎ダメージ</th>"
@@ -579,6 +599,25 @@ function createGetDamage(data, mode) {
         }
 
     } else {
+        // 物理ダメージ通常
+        if (data["unknown2_136"] != 0 || data["unknown2_138"] > 0) {
+            res_html += "<tr><th>◆物理ダメージ</th>"
+            if (Number(data["unknown2_138"]) > 0) {
+                for (var i = 1; i <= 50; i++) {
+                    var ccp = Number(data["unknown2_136"]) + Number(data["unknown2_138"]) * i / 10;
+                    if (ccp >= 0) {
+                        res_html += '<td>+' + Math.round(ccp / 10) + '%</td>'
+                    } else {
+                        res_html += '<td>' + Math.round(ccp / 10) + '%</td>'
+                    }
+                    if (i >= 10) {
+                        i += 9;
+                    }
+                }
+            } else {
+                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_136"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '％</td>'
+            }
+        }
         // 通常炎
         if (data["unknown2_144"] > 0) {
             res_html += "<tr><th><span class='color-fire'>◆</span>炎ダメージ</th>"
