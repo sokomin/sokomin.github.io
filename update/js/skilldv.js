@@ -145,7 +145,7 @@ function createSkillTable() {
             //覚醒スキル
             if (data["unknown10_143"] == 0) {
                 //覚醒パッシブ
-                $table = $('<table>').attr("id", "table10").css("min-width", "700px").css("text-align", "left")
+                $table = $('<table>').attr("id", "table10").css("min-width", "700px").css("max-width", "1200px").css("text-align", "left")
                     .append($("<colgroup>").append($("<col>").attr("span", 1).attr("width", 40)));
                 var $tr_Name = $('<tr>');
                 var skill_title = '<a name="' + i + '"></a><font color="#f8f800">[専用パッシブ] ' + data["str_name"] + '</font>';
@@ -167,7 +167,7 @@ function createSkillTable() {
                 $div_main.append("<br><br>");
             } else {
                 //覚醒スキル
-                $table = $('<table>').attr("id", "table10").css("min-width", "700px").css("text-align", "left")
+                $table = $('<table>').attr("id", "table10").css("min-width", "700px").css("max-width", "1200px").css("text-align", "left")
                     .append($("<colgroup>").append($("<col>").attr("span", 1).attr("width", 130)));
                 var $tr_Name = $('<tr>');
                 var skill_title = '<a name="' + i + '"></a>' + data["str_name"];
@@ -190,20 +190,31 @@ function createSkillTable() {
                 var des_txt = 'パワーアップ形態'
                 $tr_power.append($('<th>').attr("colspan", "1").css("text-align", "left").append(des_txt))
                     .append($('<td>').attr("colspan", "8").css("text-align", "left").append(powerup_txt))
-                // TODO スキル効果の詳細も書けたらここに…
+                /*
+                 *スキル効果の詳細
+                 */
+                var $tr_lv_header = "<tr><th>レベル</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>...</th><th>50</th></tr>";
+                var $tr_cost_cp = createCostCP(data, 8);
+                var $tr_get_cp = createGetCP(data, 8);
+                var $tr_get_damage = createGetDamage(data, 8);
 
                 $table.append($tr_Name);
                 $table.append($tr_icon);
                 $table.append($tr_req);
                 $table.append($tr_detail);
                 $table.append($tr_power);
+                // ここからスキル表
+                $table.append($tr_lv_header);
+                $table.append($tr_cost_cp);
+                $table.append($tr_get_cp);
+                $table.append($tr_get_damage);
                 $div_main.append($table);
                 $div_main.append("<br><br>");
 
             }
         } else {
             //通常スキル
-            $table = $('<table>').attr("id", "table10").css("min-width", "700px").css("text-align", "left")
+            $table = $('<table>').attr("id", "table10").css("min-width", "700px").css("max-width", "1200px").css("text-align", "left")
             .append($("<colgroup>").append($("<col>").attr("span", 1).attr("width", 130)));
             var $tr_Name = $('<tr>');
             var skill_title = '<a name="' + i + '"></a>' + data["str_name"];
@@ -227,13 +238,26 @@ function createSkillTable() {
             $tr_power.append($('<th>').attr("colspan", "1").css("text-align", "left").append(des_txt))
                 .append($('<td>').attr("colspan", "14").css("text-align", "left").append(powerup_txt))
 
-            // TODO スキル効果の詳細も書けたらここに…
-            
+            // スキル詳細もわかるところまで…
+            /*
+            *スキル効果の詳細
+            */
+            var $tr_lv_header = "<tr><th>レベル</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>20</th><th>30</th><th>40</th><th>50</th></tr>";
+            var $tr_cost_cp = createCostCP(data, 14);
+            var $tr_get_cp = createGetCP(data, 14);
+            var $tr_get_damage = createGetDamage(data, 14);
+
+
             $table.append($tr_Name);
             $table.append($tr_icon);
             $table.append($tr_req);
             $table.append($tr_detail);
             $table.append($tr_power);
+            // ここからスキル表
+            $table.append($tr_lv_header);
+            $table.append($tr_cost_cp);
+            $table.append($tr_get_cp);
+            $table.append($tr_get_damage);
             $div_main.append($table);
             $div_main.append("<br><br>");
 
@@ -273,4 +297,483 @@ function validateData(data, jobid, debug) {
     }
     return false;
 }
+
+function createCostCP(data, mode) {
+    var res_html = "<tr><th>消費CP</th>"
+    if (mode == 8) {
+        if (data["unknown2_13"] > 0) {
+            for (var i = 1; i <= 50; i++) {
+                if (i >= 7) {
+                    res_html += '<td>...</td>'
+                    i += 44;
+                }
+                var ccp = Number(data["unknown2_12"]) + Number(data["unknown2_13"]) * i;
+                if (Number(data["unknown2_14"]) > 0 && ccp > Number(data["unknown2_14"]) ) {
+                    ccp = Number(data["unknown2_14"]);
+                }
+                res_html += '<td>' + (Math.round(ccp / 10) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+            }
+        } else {
+            res_html += '<td colspan="8">' + data["unknown2_12"] +  '</td>'
+        }
+    } else {
+        if (data["unknown2_13"] > 0) {
+            for (var i = 1; i <= 50; i++) {
+                var ccp = Number(data["unknown2_12"]) + Number(data["unknown2_13"]) * i;
+                if (Number(data["unknown2_14"]) > 0 && ccp > Number(data["unknown2_14"]) ) {
+                    ccp = Number(data["unknown2_14"]);
+                }
+                res_html += '<td>' + (Math.round(ccp / 10) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+                if (i >= 10) {
+                    i += 9;
+                }
+            }
+        } else {
+            res_html += '<td colspan="14">' + data["unknown2_12"] +  '</td>'
+        }
+    }
+    res_html += "</tr>"
+    return res_html;
+}
+
+
+function createGetCP(data, mode) {
+    var res_html = "<tr><th>獲得CP</th>"
+    if (mode == 8) {
+        if (data["unknown2_16"] > 0) {
+            for (var i = 1; i <= 50; i++) {
+                if (i >= 7) {
+                    res_html += '<td>...</td>'
+                    i += 44;
+                }
+                var ccp = Number(data["unknown2_15"]) + Number(data["unknown2_16"]) * i;
+                if (Number(data["unknown2_17"]) > 0 && ccp > Number(data["unknown2_17"]) ) {
+                    ccp = Number(data["unknown2_17"]);
+                }
+                res_html += '<td>' + (Math.round(ccp / 10) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+            }
+        } else {
+            res_html += '<td colspan="8">' + data["unknown2_15"] +  '</td>'
+        }
+    } else {
+        if (data["unknown2_16"] > 0) {
+            for (var i = 1; i <= 50; i++) {
+                var ccp = Number(data["unknown2_15"]) + Number(data["unknown2_16"]) * i;
+                if (Number(data["unknown2_17"]) > 0 && ccp > Number(data["unknown2_17"]) ) {
+                    ccp = Number(data["unknown2_17"]);
+                }
+                res_html += '<td>' + (Math.round(ccp / 10) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+                if (i >= 10) {
+                    i += 9;
+                }
+            }
+        } else {
+            res_html += '<td colspan="14">' + data["unknown2_15"] +  '</td>'
+        }
+    }
+    res_html += "</tr>"
+    return res_html;
+}
+
+
+function createGetDamage(data, mode) {
+    res_html = ""
+    if (mode == 8) {
+        // 火属性覚醒
+        if (data["unknown2_144"] > 0) {
+            res_html += "<tr><th><span class='color-fire'>◆</span>炎ダメージ</th>"
+            if (Number(data["unknown2_145"]) > 0) {
+                for (var i = 1; i <= 50; i++) {
+                    if (i >= 7) {
+                        res_html += '<td>...</td>'
+                        i += 44;
+                    }
+                    var ccp = Number(data["unknown2_144"]) + Number(data["unknown2_145"]) * i;
+                    if (Number(data["unknown2_146"]) > 0) {
+                        // ダメージ幅 パターン１
+                        var min = ccp - Number(data["unknown2_146"]) / 10;
+                        min = (Math.round(min / 10))
+                        var max = ccp +  Number(data["unknown2_146"]) / 10;
+                        max = (Math.round(max / 10))
+                        res_html += '<td>' + min + '～' + max + '</td>'
+
+                    } else if (Number(data["unknown2_147"]) > 0) {
+                        // ダメージ幅パターン２：レベル連動
+                        var min = ccp -  i * Number(data["unknown2_147"]) / 10;
+                        min = (Math.round(min / 10))
+                        var max = ccp +  i * Number(data["unknown2_147"]) / 10;
+                        max = (Math.round(max / 10))
+                        res_html += '<td>' + min + '～' + max + '</td>'
+                    } else {
+                        res_html += '<td>' + Math.round(ccp / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
+                    }
+                }
+            } else {
+                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_144"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+            }
+        }
+        //水属性覚醒
+        if (data["unknown2_151"] > 0) {
+            res_html += "<tr><th><span class='color-water'>◆</span>水ダメージ</th>"
+            if (Number(data["unknown2_152"]) > 0) {
+                for (var i = 1; i <= 50; i++) {
+                    if (i >= 7) {
+                        res_html += '<td>...</td>'
+                        i += 44;
+                    }
+                    var ccp = Number(data["unknown2_151"]) + Number(data["unknown2_152"]) * i;
+                    if (Number(data["unknown2_153"]) > 0) {
+                        // ダメージ幅 パターン１
+                        var min = ccp - Number(data["unknown2_153"]) / 10;
+                        min = (Math.round(min / 10))
+                        var max = ccp +  Number(data["unknown2_153"]) / 10;
+                        max = (Math.round(max / 10))
+                        res_html += '<td>' + min + '～' + max + '</td>'
+
+                    } else if (Number(data["unknown2_154"]) > 0) {
+                        // ダメージ幅パターン２：レベル連動
+                        var min = ccp -  i * Number(data["unknown2_154"]) / 10;
+                        min = (Math.round(min / 10))
+                        var max = ccp +  i * Number(data["unknown2_154"]) / 10;
+                        max = (Math.round(max / 10))
+                        res_html += '<td>' + min + '～' + max + '</td>'
+                    } else {
+                        res_html += '<td>' + Math.round(ccp / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
+                    }
+                }
+            } else {
+                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_151"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+            }
+        }
+        //風属性覚醒
+        if (data["unknown2_158"] > 0) {
+            res_html += "<tr><th><span class='color-wind'>◆</span>風ダメージ</th>"
+            if (Number(data["unknown2_159"]) > 0) {
+                for (var i = 1; i <= 50; i++) {
+                    if (i >= 7) {
+                        res_html += '<td>...</td>'
+                        i += 44;
+                    }
+                    var ccp = Number(data["unknown2_158"]) + Number(data["unknown2_159"]) * i;
+                    if (Number(data["unknown2_160"]) > 0) {
+                        // ダメージ幅 パターン１
+                        var min = ccp - Number(data["unknown2_160"]) / 10;
+                        min = (Math.round(min / 10))
+                        var max = ccp +  Number(data["unknown2_160"]) / 10;
+                        max = (Math.round(max / 10))
+                        res_html += '<td>' + min + '～' + max + '</td>'
+
+                    } else if (Number(data["unknown2_161"]) > 0) {
+                        // ダメージ幅パターン２：レベル連動
+                        var min = ccp -  i * Number(data["unknown2_161"]) / 10;
+                        min = (Math.round(min / 10))
+                        var max = ccp +  i * Number(data["unknown2_161"]) / 10;
+                        max = (Math.round(max / 10))
+                        res_html += '<td>' + min + '～' + max + '</td>'
+                    } else {
+                        res_html += '<td>' + Math.round(ccp / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
+                    }
+                }
+            } else {
+                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_158"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+            }
+        }
+        //大地属性覚醒
+        if (data["unknown2_165"] > 0) {
+            res_html += "<tr><th><span class='color-earth'>◆</span>大地ダメージ</th>"
+            if (Number(data["unknown2_166"]) > 0) {
+                for (var i = 1; i <= 50; i++) {
+                    if (i >= 7) {
+                        res_html += '<td>...</td>'
+                        i += 44;
+                    }
+                    var ccp = Number(data["unknown2_165"]) + Number(data["unknown2_166"]) * i;
+                    if (Number(data["unknown2_167"]) > 0) {
+                        // ダメージ幅 パターン１
+                        var min = ccp - Number(data["unknown2_167"]) / 10;
+                        min = (Math.round(min / 10))
+                        var max = ccp +  Number(data["unknown2_167"]) / 10;
+                        max = (Math.round(max / 10))
+                        res_html += '<td>' + min + '～' + max + '</td>'
+
+                    } else if (Number(data["unknown2_168"]) > 0) {
+                        // ダメージ幅パターン２：レベル連動
+                        var min = ccp -  i * Number(data["unknown2_168"]) / 10;
+                        min = (Math.round(min / 10))
+                        var max = ccp +  i * Number(data["unknown2_168"]) / 10;
+                        max = (Math.round(max / 10))
+                        res_html += '<td>' + min + '～' + max + '</td>'
+                    } else {
+                        res_html += '<td>' + Math.round(ccp / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
+                    }
+                }
+            } else {
+                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_165"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+            }
+        }
+        //光属性覚醒
+        if (data["unknown2_172"] > 0) {
+            res_html += "<tr><th><span class='color-shine'>◆</span>光ダメージ</th>"
+            if (Number(data["unknown2_173"]) > 0) {
+                for (var i = 1; i <= 50; i++) {
+                    if (i >= 7) {
+                        res_html += '<td>...</td>'
+                        i += 44;
+                    }
+                    var ccp = Number(data["unknown2_172"]) + Number(data["unknown2_173"]) * i;
+                    if (Number(data["unknown2_174"]) > 0) {
+                        // ダメージ幅 パターン１
+                        var min = ccp - Number(data["unknown2_174"]) / 10;
+                        min = (Math.round(min / 10))
+                        var max = ccp +  Number(data["unknown2_174"]) / 10;
+                        max = (Math.round(max / 10))
+                        res_html += '<td>' + min + '～' + max + '</td>'
+
+                    } else if (Number(data["unknown2_175"]) > 0) {
+                        // ダメージ幅パターン２：レベル連動
+                        var min = ccp -  i * Number(data["unknown2_175"]) / 10;
+                        min = (Math.round(min / 10))
+                        var max = ccp +  i * Number(data["unknown2_175"]) / 10;
+                        max = (Math.round(max / 10))
+                        res_html += '<td>' + min + '～' + max + '</td>'
+                    } else {
+                        res_html += '<td>' + Math.round(ccp / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
+                    }
+                }
+            } else {
+                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_172"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+            }
+        }
+        //闇属性覚醒
+        if (data["unknown2_179"] > 0) {
+            res_html += "<tr><th><span class='color-dark'>◆</span>闇ダメージ</th>"
+            if (Number(data["unknown2_180"]) > 0) {
+                for (var i = 1; i <= 50; i++) {
+                    if (i >= 7) {
+                        res_html += '<td>...</td>'
+                        i += 44;
+                    }
+                    var ccp = Number(data["unknown2_179"]) + Number(data["unknown2_180"]) * i;
+                    if (Number(data["unknown2_181"]) > 0) {
+                        // ダメージ幅 パターン１
+                        var min = ccp - Number(data["unknown2_181"]) / 10;
+                        min = (Math.round(min / 10))
+                        var max = ccp +  Number(data["unknown2_181"]) / 10;
+                        max = (Math.round(max / 10))
+                        res_html += '<td>' + min + '～' + max + '</td>'
+
+                    } else if (Number(data["unknown2_182"]) > 0) {
+                        // ダメージ幅パターン２：レベル連動
+                        var min = ccp -  i * Number(data["unknown2_182"]) / 10;
+                        min = (Math.round(min / 10))
+                        var max = ccp +  i * Number(data["unknown2_182"]) / 10;
+                        max = (Math.round(max / 10))
+                        res_html += '<td>' + min + '～' + max + '</td>'
+                    } else {
+                        res_html += '<td>' + Math.round(ccp / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
+                    }
+                }
+            } else {
+                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_179"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+            }
+        }
+
+    } else {
+        // 通常炎
+        if (data["unknown2_144"] > 0) {
+            res_html += "<tr><th><span class='color-fire'>◆</span>炎ダメージ</th>"
+            if (Number(data["unknown2_145"]) > 0) {
+                for (var i = 1; i <= 50; i++) {
+                    var ccp = Number(data["unknown2_144"]) + Number(data["unknown2_145"]) * i;
+                    if (Number(data["unknown2_146"]) > 0) {
+                        // ダメージ幅 パターン１
+                        var min = ccp - Number(data["unknown2_146"]) / 10;
+                        min = (Math.round(min / 10))
+                        var max = ccp +  Number(data["unknown2_146"]) / 10;
+                        max = (Math.round(max / 10))
+                        res_html += '<td>' + min + '～' + max + '</td>'
+
+                    } else if (Number(data["unknown2_147"]) > 0) {
+                        // ダメージ幅パターン２：レベル連動
+                        var min = ccp -  i * Number(data["unknown2_147"]) / 10;
+                        min = (Math.round(min / 10))
+                        var max = ccp +  i * Number(data["unknown2_147"]) / 10;
+                        max = (Math.round(max / 10))
+                        res_html += '<td>' + min + '～' + max + '</td>'
+                    } else {
+                        res_html += '<td>' + Math.round(ccp / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
+                    }
+                    if (i >= 10) {
+                        i += 9;
+                    }
+                }
+            } else {
+                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_144"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+            }
+        }
+        // 通常水
+        if (data["unknown2_151"] > 0) {
+            res_html += "<tr><th><span class='color-water'>◆</span>水ダメージ</th>"
+            if (Number(data["unknown2_152"]) > 0) {
+                for (var i = 1; i <= 50; i++) {
+                    var ccp = Number(data["unknown2_151"]) + Number(data["unknown2_152"]) * i;
+                    if (Number(data["unknown2_153"]) > 0) {
+                        // ダメージ幅 パターン１
+                        var min = ccp - Number(data["unknown2_153"]) / 10;
+                        min = (Math.round(min / 10))
+                        var max = ccp +  Number(data["unknown2_153"]) / 10;
+                        max = (Math.round(max / 10))
+                        res_html += '<td>' + min + '～' + max + '</td>'
+
+                    } else if (Number(data["unknown2_154"]) > 0) {
+                        // ダメージ幅パターン２：レベル連動
+                        var min = ccp -  i * Number(data["unknown2_154"]) / 10;
+                        min = (Math.round(min / 10))
+                        var max = ccp +  i * Number(data["unknown2_154"]) / 10;
+                        max = (Math.round(max / 10))
+                        res_html += '<td>' + min + '～' + max + '</td>'
+                    } else {
+                        res_html += '<td>' + Math.round(ccp / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
+                    }
+                    if (i >= 10) {
+                        i += 9;
+                    }
+                }
+            } else {
+                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_151"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+            }
+        }
+        // 通常風
+        if (data["unknown2_158"] > 0) {
+            res_html += "<tr><th><span class='color-wind'>◆</span>風ダメージ</th>"
+            if (Number(data["unknown2_159"]) > 0) {
+                for (var i = 1; i <= 50; i++) {
+                    var ccp = Number(data["unknown2_158"]) + Number(data["unknown2_159"]) * i;
+                    if (Number(data["unknown2_160"]) > 0) {
+                        // ダメージ幅 パターン１
+                        var min = ccp - Number(data["unknown2_160"]) / 10;
+                        min = (Math.round(min / 10))
+                        var max = ccp +  Number(data["unknown2_160"]) / 10;
+                        max = (Math.round(max / 10))
+                        res_html += '<td>' + min + '～' + max + '</td>'
+
+                    } else if (Number(data["unknown2_161"]) > 0) {
+                        // ダメージ幅パターン２：レベル連動
+                        var min = ccp -  i * Number(data["unknown2_161"]) / 10;
+                        min = (Math.round(min / 10))
+                        var max = ccp +  i * Number(data["unknown2_161"]) / 10;
+                        max = (Math.round(max / 10))
+                        res_html += '<td>' + min + '～' + max + '</td>'
+                    } else {
+                        res_html += '<td>' + Math.round(ccp / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
+                    }
+                    if (i >= 10) {
+                        i += 9;
+                    }
+                }
+            } else {
+                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_158"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+            }
+        }
+        // 通常大地
+        if (data["unknown2_165"] > 0) {
+            res_html += "<tr><th><span class='color-earth'>◆</span>大地ダメージ</th>"
+            if (Number(data["unknown2_166"]) > 0) {
+                for (var i = 1; i <= 50; i++) {
+                    var ccp = Number(data["unknown2_165"]) + Number(data["unknown2_166"]) * i;
+                    if (Number(data["unknown2_167"]) > 0) {
+                        // ダメージ幅 パターン１
+                        var min = ccp - Number(data["unknown2_167"]) / 10;
+                        min = (Math.round(min / 10))
+                        var max = ccp +  Number(data["unknown2_167"]) / 10;
+                        max = (Math.round(max / 10))
+                        res_html += '<td>' + min + '～' + max + '</td>'
+
+                    } else if (Number(data["unknown2_168"]) > 0) {
+                        // ダメージ幅パターン２：レベル連動
+                        var min = ccp -  i * Number(data["unknown2_168"]) / 10;
+                        min = (Math.round(min / 10))
+                        var max = ccp +  i * Number(data["unknown2_168"]) / 10;
+                        max = (Math.round(max / 10))
+                        res_html += '<td>' + min + '～' + max + '</td>'
+                    } else {
+                        res_html += '<td>' + Math.round(ccp / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
+                    }
+                    if (i >= 10) {
+                        i += 9;
+                    }
+                }
+            } else {
+                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_165"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+            }
+        }
+        // 通常光
+        if (data["unknown2_172"] > 0) {
+            res_html += "<tr><th><span class='color-shine'>◆</span>光ダメージ</th>"
+            if (Number(data["unknown2_173"]) > 0) {
+                for (var i = 1; i <= 50; i++) {
+                    var ccp = Number(data["unknown2_172"]) + Number(data["unknown2_173"]) * i;
+                    if (Number(data["unknown2_174"]) > 0) {
+                        // ダメージ幅 パターン１
+                        var min = ccp - Number(data["unknown2_174"]) / 10;
+                        min = (Math.round(min / 10))
+                        var max = ccp +  Number(data["unknown2_174"]) / 10;
+                        max = (Math.round(max / 10))
+                        res_html += '<td>' + min + '～' + max + '</td>'
+
+                    } else if (Number(data["unknown2_175"]) > 0) {
+                        // ダメージ幅パターン２：レベル連動
+                        var min = ccp -  i * Number(data["unknown2_175"]) / 10;
+                        min = (Math.round(min / 10))
+                        var max = ccp +  i * Number(data["unknown2_175"]) / 10;
+                        max = (Math.round(max / 10))
+                        res_html += '<td>' + min + '～' + max + '</td>'
+                    } else {
+                        res_html += '<td>' + Math.round(ccp / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
+                    }
+                    if (i >= 10) {
+                        i += 9;
+                    }
+                }
+            } else {
+                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_172"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+            }
+        }
+        // 通常闇
+        if (data["unknown2_179"] > 0) {
+            res_html += "<tr><th><span class='color-dark'>◆</span>闇ダメージ</th>"
+            if (Number(data["unknown2_180"]) > 0) {
+                for (var i = 1; i <= 50; i++) {
+                    var ccp = Number(data["unknown2_179"]) + Number(data["unknown2_180"]) * i;
+                    if (Number(data["unknown2_181"]) > 0) {
+                        // ダメージ幅 パターン１
+                        var min = ccp - Number(data["unknown2_181"]) / 10;
+                        min = (Math.round(min / 10))
+                        var max = ccp +  Number(data["unknown2_181"]) / 10;
+                        max = (Math.round(max / 10))
+                        res_html += '<td>' + min + '～' + max + '</td>'
+
+                    } else if (Number(data["unknown2_182"]) > 0) {
+                        // ダメージ幅パターン２：レベル連動
+                        var min = ccp -  i * Number(data["unknown2_182"]) / 10;
+                        min = (Math.round(min / 10))
+                        var max = ccp +  i * Number(data["unknown2_182"]) / 10;
+                        max = (Math.round(max / 10))
+                        res_html += '<td>' + min + '～' + max + '</td>'
+                    } else {
+                        res_html += '<td>' + Math.round(ccp / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
+                    }
+                    if (i >= 10) {
+                        i += 9;
+                    }
+                }
+            } else {
+                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_179"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+            }
+        }
+
+    }
+    return res_html;
+}
+
 
