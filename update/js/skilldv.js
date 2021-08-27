@@ -347,9 +347,9 @@ function createGetCP(data, mode) {
                     i += 44;
                 }
                 var ccp = Number(data["unknown2_15"]) + Number(data["unknown2_16"]) * i;
-                if (Number(data["unknown2_17"]) > 0 && ccp > Number(data["unknown2_17"]) ) {
-                    ccp = Number(data["unknown2_17"]);
-                }
+                // if (Number(data["unknown2_17"]) > 0 && ccp > Number(data["unknown2_17"]) ) {
+                //     ccp = Number(data["unknown2_17"]);
+                // }
                 res_html += '<td>' + (Math.round(ccp / 10) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
             }
         } else {
@@ -359,9 +359,9 @@ function createGetCP(data, mode) {
         if (data["unknown2_16"] > 0) {
             for (var i = 1; i <= 50; i++) {
                 var ccp = Number(data["unknown2_15"]) + Number(data["unknown2_16"]) * i;
-                if (Number(data["unknown2_17"]) > 0 && ccp > Number(data["unknown2_17"]) ) {
-                    ccp = Number(data["unknown2_17"]);
-                }
+                // if (Number(data["unknown2_17"]) > 0 && ccp > Number(data["unknown2_17"]) ) {
+                //     ccp = Number(data["unknown2_17"]);
+                // }
                 res_html += '<td>' + (Math.round(ccp / 10) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
                 if (i >= 10) {
                     i += 9;
