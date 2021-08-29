@@ -107,12 +107,25 @@ function convertCSVtoArray(skill_str, mob_str) {// 読み込んだCSVデータ�
     createSkillTable();
 }
 
+var is_simple = false;
+
 function calc1() {
     // モンスターデータ読み込み(同期の関係上、これ以外呼ばない)
+    is_simple = false;
     getCSV();
 }
-var JN, SS;
 
+function calc2() {
+    // 赤石の民衆フォーマットとして使えそうなデータだけに絞りたい時に。
+    is_simple = true;
+    getCSV();
+}
+
+var JN, SS;
+// 備考に追記したい情報をここに。
+var refs = "";
+// スキル上限をここに
+var reflimit = "";
 
 function createSkillTable() {
     // var a1 = $('input[name="a1"]').val()? Number($('input[name="a1"]').val()) : 0;
@@ -123,13 +136,18 @@ function createSkillTable() {
     var $div_main = $('<div>');
     defdata(JOBID);　//JNとSSをいれる
     for (var i in skill_data) {
+        refs = "";
+        reflimit = "";
         var data = skill_data[i];
         if (validateData(data, JOBID, DEBUG)) {
             continue;
         }
         var $table;
         var imgid = ('0000' + data["imageid"]).slice(-4);
-        var skill_icon = '<img width="34" height="34" src="https://sokomin.github.io/skill/design/image/skill/iconSkill_'+ imgid +'.png"border="0">';
+        var skill_icon = '<img width="34" height="34" src="https://sokomin.github.io/skill/design/image/skill/iconSkill_' + imgid + '.png"border="0">';
+        if (JOBID == 32) {
+            skill_icon = '<img width="34" height="34" src="https://sokomin.github.io/item/design/image/item/iconItem_1470.png"border="0">';
+        }
         var re=/\\r\\n/g;
         var skill_txt = data["str_description"].replace(re, "<br>");
         var re=/。/g;
@@ -197,6 +215,16 @@ function createSkillTable() {
                 var $tr_cost_cp = createCostCP(data, 8);
                 var $tr_get_cp = createGetCP(data, 8);
                 var $tr_get_damage = createGetDamage(data, 8);
+                var $tr_get_buff = createGetBuff(data, 8);
+                var $tr_get_subinfo = createGetSubInfo(data, 8);
+                var $tr_refs = "";
+                var $tr_refslimit = "";
+                if (refs != "") {
+                    $tr_refs = '<tr><th>備考</th><td colspan="8">' + refs + '</td></tr>';
+                }
+                if (reflimit != "") {
+                    $tr_refslimit = '<tr><th>上限</th><td colspan="8">' + reflimit + '</td></tr>';
+                }
 
                 $table.append($tr_Name);
                 $table.append($tr_icon);
@@ -208,9 +236,14 @@ function createSkillTable() {
                 $table.append($tr_cost_cp);
                 $table.append($tr_get_cp);
                 $table.append($tr_get_damage);
+                if (!is_simple) {
+                    $table.append($tr_get_buff);
+                }
+                $table.append($tr_get_subinfo);
+                $table.append($tr_refs);
+                $table.append($tr_refslimit);
                 $div_main.append($table);
                 $div_main.append("<br><br>");
-
             }
         } else {
             //通常スキル
@@ -246,7 +279,16 @@ function createSkillTable() {
             var $tr_cost_cp = createCostCP(data, 14);
             var $tr_get_cp = createGetCP(data, 14);
             var $tr_get_damage = createGetDamage(data, 14);
-
+            var $tr_get_buff = createGetBuff(data, 14);
+            var $tr_get_subinfo = createGetSubInfo(data, 14);
+            var $tr_refs = "";
+            var $tr_refslimit = "";
+            if (refs != "") {
+                $tr_refs = '<tr><th>備考</th><td colspan="14">' + refs + '</td></tr>';
+            }
+            if (reflimit != "") {
+                $tr_refslimit = '<tr><th>上限</th><td colspan="14">' + reflimit + '</td></tr>';
+            }
 
             $table.append($tr_Name);
             $table.append($tr_icon);
@@ -258,6 +300,12 @@ function createSkillTable() {
             $table.append($tr_cost_cp);
             $table.append($tr_get_cp);
             $table.append($tr_get_damage);
+            if (!is_simple) {
+                $table.append($tr_get_buff);
+            }
+            $table.append($tr_get_subinfo);
+            $table.append($tr_refs);
+            $table.append($tr_refslimit);
             $div_main.append($table);
             $div_main.append("<br><br>");
 
@@ -815,4 +863,273 @@ function createGetDamage(data, mode) {
     return res_html;
 }
 
+function createGetSubInfo(data, mode) {
+    res_html = ""
+    if (mode == 8) {
+        // クールタイム
+        if (data["unknown2_91"] == 12 || data["unknown2_92"] > 0) {
+            res_html += "<tr><th>クールタイム</th>"
+            if (Number(data["unknown2_93"]) != 0) {
+                var min = Number(data["unknown2_94"]);
+                for (var i = 1; i <= 50; i++) {
+                    if (i >= 7) {
+                        res_html += '<td>...</td>'
+                        i += 44;
+                    }
+                    var ccp = Number(data["unknown2_92"]) + Number(data["unknown2_93"]) * i;
+                    if (min > ccp) {
+                        ccp = min;
+                    }
+                    res_html += '<td>' + Math.round(ccp / 100) + '秒</td>'
+                }
+                if (min > 0) {
+                    var slv = 50 + Math.ceil((Number(data["unknown2_94"]) - Number(data["unknown2_92"])) / Number(data["unknown2_93"]))
+                    reflimit += "クールタイム最小: " + Math.round(min / 100) + "秒 (SLv" +slv + ")<br>"
+                }
+
+            } else {
+                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_92"]) / 100) +  '秒</td>'
+            }
+        }
+    } else {
+        // クールタイム通常
+        if (data["unknown2_91"] == 12 || data["unknown2_92"] > 0) {
+            res_html += "<tr><th>クールタイム</th>"
+            if (Number(data["unknown2_93"]) != 0) {
+                var min = Number(data["unknown2_94"]);
+                for (var i = 1; i <= 50; i++) {
+                    var ccp = Number(data["unknown2_92"]) + Number(data["unknown2_93"]) * i;
+                    if (min > ccp) {
+                        ccp = min;
+                    }
+                    res_html += '<td>' + Math.round(ccp / 100) + '秒</td>'
+                    if (i >= 10) {
+                        i += 9;
+                    }
+                }
+                if (min > 0) {
+                    var slv = Math.ceil((Number(data["unknown2_94"]) - Number(data["unknown2_92"])) / Number(data["unknown2_93"]))
+                    reflimit += "クールタイム最小: " + Math.round(min / 100)+ "秒 (SLv" +slv + ")<br>"
+                }
+            } else {
+                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_92"]) / 100).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '秒</td>'
+            }
+        }
+    }
+    if (!res_html) {
+        res_html += "</tr>";
+    }
+    return res_html;
+}
+
+
+function createGetBuff(data, mode) {
+    res_html = ""
+    var cnt = 189;
+    if (mode == 8) {
+        // 万能覚醒
+        for (var j = 0; j < 9; j++) {
+            if (data["unknown2_" + cnt] != -1) {
+                var txt = skillSpec[data["unknown2_" + cnt]];　//189
+                if (!txt) {
+                    txt = data["unknown2_" + cnt];
+                }
+                // ０  １  ２     ３   ４  ５  ６  ７   ８  ９
+                //  id  確率,係数,時間,係数,量,計算式,係数,式,上限(189～198など)
+                // 462	0	0	70	    0	500	　0	20	0　2500	
+                // 　0	2500	0	0	0	2500	0	1013	0	0	0	0	0	0	0	0	0	0	0	10000
+                //-1	-1	1	0	0	0	0	0	0	0	0	0	3974	0
+                // 確率 / 100・上昇係数
+                // 持続時間 /10・上昇量係数
+                // 上昇量基礎 / 100・上昇係数 (計算式は0のみ対応)
+                // 上限は備考に書く。
+                // 　189～198はこの計算式。199～232はわからん
+                // わからんものはパラメタ直接出す
+
+                // 確率
+                var tmp = cnt + 1;
+                if (Number(data["unknown2_" + tmp]) != 0) {
+                    res_html += "<tr><th>" + txt + "確率</th>"
+                    if (Number(data["unknown2_"+(tmp+1)]) != 0) {
+                        for (var i = 1; i <= 50; i++) {
+                            if (i >= 7) {
+                                res_html += '<td>...</td>'
+                                i += 44;
+                            }
+                            var ccp = Number(data["unknown2_"+tmp]) + Number(data["unknown2_"+(tmp+1)]) * i;
+                            res_html += '<td>' + Math.round(ccp / 100) + '%</td>'
+                        }
+                        res_html += "</tr>";
+                    } else {
+                        res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_"+tmp]) / 100) +  '%</td></tr>'
+                    }
+                } else {
+                    // 定義無し
+                }
+                // 持続時間
+                var tmp = cnt + 3;
+                if (Number(data["unknown2_" + tmp]) != 0) {
+                    res_html += "<tr><th>" + txt + "時間</th>"
+                    if (Number(data["unknown2_"+(tmp+1)]) != 0) {
+                        for (var i = 1; i <= 50; i++) {
+                            if (i >= 7) {
+                                res_html += '<td>...</td>'
+                                i += 44;
+                            }
+                            var ccp = Number(data["unknown2_"+tmp]) + Number(data["unknown2_"+(tmp+1)]) * i;
+                            res_html += '<td>' + Math.round(ccp / 10) + '秒</td>'
+                        }
+                        res_html += "</tr>";
+                    } else {
+                        res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_"+tmp]) / 10) +  '秒</td></tr>'
+                    }
+                } else {
+                    // 定義無し
+                }
+                // 量
+                var tmp = cnt + 5;
+                if (Number(data["unknown2_" + tmp]) != 0) {
+                    res_html += "<tr><th>" + txt + "量</th>"
+                    // 計算式が定義されてるかどうか？
+                    if (Number(data["unknown2_" + (tmp + 1)]) == 0) {
+                        if (Number(data["unknown2_" + (tmp + 2)]) != 0) {
+                            var lim = Number(data["unknown2_"+ (tmp + 4)]);
+                            for (var i = 1; i <= 50; i++) {
+                                if (i >= 7) {
+                                    res_html += '<td>...</td>'
+                                    i += 44;
+                                }
+                                // FIXME 全部1/100であってるのか？
+                                var ccp = Number(data["unknown2_" + tmp]) + Number(data["unknown2_" + (tmp + 2)]) * i;
+                                //TODO 上限計算あってないデータもあるので諦め
+                                // if (lim > ccp) {
+                                //     ccp = lim;
+                                // 
+                                res_html += '<td>' + Math.round(ccp / 100) + '</td>'
+                            }
+                            if (lim > 0) {
+                                var slv = 50 + Math.ceil((lim - Number(data["unknown2_" + tmp])) / Number(data["unknown2_" + (tmp + 2)]))
+                                reflimit += txt + "上限: " + Math.round(lim / 100)+ " (SLv" +slv + ")<br>"
+                            }
+                            res_html += "</tr>";
+                        } else {
+                            res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_" + tmp]) / 100) + '</td></tr>'
+                        }
+                    } else {
+                        for (var i = 1; i <= 8; i++) {
+                            var o_tmp = tmp + i;
+                            res_html += '<td>'+ o_tmp+ ':' + Number(data["unknown2_" + o_tmp]) + '</td>'
+                        }
+                        res_html += "</tr>";
+                    }
+                } else {
+                    // 定義無し
+                }
+            }
+            // 次の万能覚醒へ
+            cnt += 44;
+        }
+    } else {
+        // // 万能通常
+        for (var j = 0; j < 9; j++) {
+            if (data["unknown2_" + cnt] != -1) {
+                var txt = skillSpec[data["unknown2_" + cnt]];　//189
+                if (!txt) {
+                    txt = data["unknown2_" + cnt];
+                }
+                // ０  １  ２     ３   ４  ５  ６  ７   ８  ９
+                //  id  確率,係数,時間,係数,量,計算式,係数,式,上限(189～198など)
+                // 462	0	0	70	    0	500	　0	20	0　2500	
+                // 　0	2500	0	0	0	2500	0	1013	0	0	0	0	0	0	0	0	0	0	0	10000
+                //-1	-1	1	0	0	0	0	0	0	0	0	0	3974	0
+                // 確率 / 100・上昇係数
+                // 持続時間 /10・上昇量係数
+                // 上昇量基礎 / 100・上昇係数 (計算式は0のみ対応)
+                // 上限は備考に書く。
+                // 　189～198はこの計算式。199～232はわからん
+                // わからんものはパラメタ直接出す
+
+                // 確率
+                var tmp = cnt + 1;
+                if (Number(data["unknown2_" + tmp]) != 0) {
+                    res_html += "<tr><th>" + txt + "確率</th>"
+                    if (Number(data["unknown2_"+(tmp+1)]) != 0) {
+                        for (var i = 1; i <= 50; i++) {
+                            var ccp = Number(data["unknown2_"+tmp]) + Number(data["unknown2_"+(tmp+1)]) * i;
+                            res_html += '<td>' + Math.round(ccp / 100) + '%</td>'
+                            if (i >= 10) {
+                                i += 9;
+                            }
+                        }
+                        res_html += "</tr>";
+                    } else {
+                        res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_"+tmp]) / 100) +  '%</td></tr>'
+                    }
+                } else {
+                    // 定義無し
+                }
+                // 持続時間
+                var tmp = cnt + 3;
+                if (Number(data["unknown2_" + tmp]) != 0) {
+                    res_html += "<tr><th>" + txt + "時間</th>"
+                    if (Number(data["unknown2_"+(tmp+1)]) != 0) {
+                        for (var i = 1; i <= 50; i++) {
+                            var ccp = Number(data["unknown2_"+tmp]) + Number(data["unknown2_"+(tmp+1)]) * i;
+                            res_html += '<td>' + Math.round(ccp / 10) + '秒</td>'
+                            if (i >= 10) {
+                                i += 9;
+                            }
+                        }
+                        res_html += "</tr>";
+                    } else {
+                        res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_"+tmp]) / 10) +  '秒</td></tr>'
+                    }
+                } else {
+                    // 定義無し
+                }
+                // 量
+                var tmp = cnt + 5;
+                if (Number(data["unknown2_" + tmp]) != 0) {
+                    res_html += "<tr><th>" + txt + "量</th>"
+                    // 計算式が定義されてるかどうか？
+                    if (Number(data["unknown2_" + (tmp + 1)]) == 0) {
+                        if (Number(data["unknown2_" + (tmp + 2)]) != 0) {
+                            var lim = Number(data["unknown2_"+ (tmp + 4)]);
+                            for (var i = 1; i <= 50; i++) {
+                                // FIXME 全部1/100であってるのか？
+                                var ccp = Number(data["unknown2_" + tmp]) + Number(data["unknown2_" + (tmp + 2)]) * i;
+                                //TODO 上限計算あってないデータもあるので諦め
+                                // if (lim > ccp) {
+                                //     ccp = lim;
+                                // 
+                                res_html += '<td>' + Math.round(ccp / 100) + '</td>'
+                                if (i >= 10) {
+                                    i += 9;
+                                }
+                            }
+                            if (lim > 0) {
+                                var slv = 50 + Math.ceil((lim - Number(data["unknown2_" + tmp])) / Number(data["unknown2_" + (tmp + 2)]))
+                                reflimit += txt + "上限: " + Math.round(lim / 100)+ " (SLv" +slv + ")<br>"
+                            }
+                            res_html += "</tr>";
+                        } else {
+                            res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_" + tmp]) / 100) + '</td></tr>'
+                        }
+                    } else {
+                        for (var i = 1; i <= 8; i++) {
+                            var o_tmp = tmp + i;
+                            res_html += '<td>'+ o_tmp+ ':' + Number(data["unknown2_" + o_tmp]) + '</td>'
+                        }
+                        res_html += "</tr>";
+                    }
+                } else {
+                    // 定義無し
+                }
+            }
+            // 次の万能覚醒へ
+            cnt += 44;
+        }
+    }
+    return res_html;
+}
 
