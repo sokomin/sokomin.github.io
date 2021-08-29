@@ -155,9 +155,11 @@ function createSkillTable() {
         if (i > 100000) {
             skill_txt = skill_txt + '<br><font color="#ff0033">[PVP専用]</font>';
         }
+        if (skill_txt == "no comment") {
+            skill_txt = "";
+        }
         var powerup_txt = data["str_progress"];
-        var req_txt = calcReqText(JN, SS, data["str_name"], JOBID);
-
+        var req_txt = JOBID == 32 ? calcUseMob(Number(i), data["str_name"]) : calcReqText(JN, SS, data["str_name"], JOBID);
 
         if (data["unknown10_139"] != 0 && data["unknown10_139"] != 3) {
             //覚醒スキル
@@ -197,7 +199,7 @@ function createSkillTable() {
                     .append($('<td>').append(data["unknown2_0"]))
                     .append($('<td>').attr("colspan", "7").append(""))
                 var $tr_req = $('<tr>');
-                var des_txt = '必要スキル'
+                var des_txt = JOBID == 32 ? '使用モンスター' : '必要スキル'
                 $tr_req.append($('<th>').attr("colspan", "1").css("text-align", "left").append(des_txt))
                     .append($('<td>').attr("colspan", "8").css("text-align", "left").append(req_txt))
                 var $tr_detail = $('<tr>');
@@ -1296,7 +1298,7 @@ function createGetBuff(data, mode) {
                             res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_" + tmp]) / 100) + '</td></tr>'
                         }
                     } else {
-                        for (var i = 1; i <= 8; i++) {
+                        for (var i = 1; i <= 14; i++) {
                             var o_tmp = tmp + i;
                             res_html += '<td>'+ o_tmp+ ':' + Number(data["unknown2_" + o_tmp]) + '</td>'
                         }
@@ -1313,3 +1315,38 @@ function createGetBuff(data, mode) {
     return res_html;
 }
 
+
+function calcUseMob(id, name) {
+    var txt = "";
+    var cnt = 0;
+    var flag = true;
+    for (var mobid in mob_data) {
+        // 0は垂直斬りだけど、多分使うmobいないからわざと弾いてる
+        // これ以上スキル使うmobはいないと信じてる
+        var md = mob_data[mobid];
+        if (flag && cnt > 10) {
+            txt += "...など";
+            flag = false;
+        }
+        if (Number(md["unknown_69"]) == id
+            || Number(md["unknown_71"]) == id
+            || Number(md["unknown_73"]) == id
+            || Number(md["unknown_75"]) == id
+            || Number(md["unknown_77"]) == id
+            || Number(md["unknown_79"]) == id
+            || Number(md["unknown_81"]) == id
+            || Number(md["unknown_83"]) == id
+            || Number(md["unknown_85"]) == id
+            || Number(md["unknown_87"]) == id
+        ) {
+            if (flag) {
+                txt += "<a href='https://sokomin.github.io/monster/monster-list-detail.html?mi=" +mobid+ "'>"
+                txt += md["name"];
+                txt += "</a>, "
+            }
+            cnt++;
+        }
+    }
+    txt += " (合計" + cnt +"種)"
+    return txt;
+}
