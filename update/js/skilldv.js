@@ -160,7 +160,7 @@ function createSkillTable() {
         }
         var powerup_txt = data["str_progress"];
         var req_txt = JOBID == 32 ? calcUseMob(Number(i), data["str_name"]) : calcReqText(JN, SS, data["str_name"], JOBID);
-        if (req_txt == "(合計0種)" && DEBUG != 9999) {
+        if (req_txt == " (合計0種)" && DEBUG != 9999) {
             continue;
         }
 
