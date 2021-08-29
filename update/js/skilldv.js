@@ -215,7 +215,6 @@ function createSkillTable() {
                 var $tr_cost_cp = createCostCP(data, 8);
                 var $tr_get_cp = createGetCP(data, 8);
                 var $tr_get_damage = createGetDamage(data, 8);
-                var $tr_get_buff = createGetBuff(data, 8);
                 var $tr_get_subinfo = createGetSubInfo(data, 8);
                 var $tr_refs = "";
                 var $tr_refslimit = "";
@@ -237,6 +236,7 @@ function createSkillTable() {
                 $table.append($tr_get_cp);
                 $table.append($tr_get_damage);
                 if (!is_simple) {
+                    var $tr_get_buff = createGetBuff(data, 8);
                     $table.append($tr_get_buff);
                 }
                 $table.append($tr_get_subinfo);
@@ -279,7 +279,6 @@ function createSkillTable() {
             var $tr_cost_cp = createCostCP(data, 14);
             var $tr_get_cp = createGetCP(data, 14);
             var $tr_get_damage = createGetDamage(data, 14);
-            var $tr_get_buff = createGetBuff(data, 14);
             var $tr_get_subinfo = createGetSubInfo(data, 14);
             var $tr_refs = "";
             var $tr_refslimit = "";
@@ -301,6 +300,7 @@ function createSkillTable() {
             $table.append($tr_get_cp);
             $table.append($tr_get_damage);
             if (!is_simple) {
+                var $tr_get_buff = createGetBuff(data, 14);
                 $table.append($tr_get_buff);
             }
             $table.append($tr_get_subinfo);
@@ -425,7 +425,7 @@ function createGetCP(data, mode) {
 
 
 function createGetDamage(data, mode) {
-    res_html = ""
+    var res_html = ""
     if (mode == 8) {
         // 物理ダメージ覚醒
         if (data["unknown2_136"] != 0 || data["unknown2_138"] > 0) {
@@ -864,7 +864,7 @@ function createGetDamage(data, mode) {
 }
 
 function createGetSubInfo(data, mode) {
-    res_html = ""
+    var res_html = ""
     if (mode == 8) {
         // クールタイム
         if (data["unknown2_91"] == 12 || data["unknown2_92"] > 0) {
@@ -890,7 +890,100 @@ function createGetSubInfo(data, mode) {
             } else {
                 res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_92"]) / 100) +  '秒</td>'
             }
+            res_html += "</tr>";
         }
+        //最小距離
+        if (data["unknown2_641"] > 0) {
+            res_html += "<tr><th>最小距離</th>"
+            res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_641"]))/100 +  'm</td>'
+            res_html += "</tr>";
+        }
+        //最大距離
+        if (data["unknown2_642"] > 0) {
+            res_html += "<tr><th>最大距離</th>"
+            if (Number(data["unknown2_643"]) > 0) {
+                for (var i = 1; i <= 50; i++) {
+                    if (i >= 7) {
+                        res_html += '<td>...</td>'
+                        i += 44;
+                    }
+                    var ccp = Number(data["unknown2_642"]) + Number(data["unknown2_643"]) * i;
+                    res_html += '<td>' + Math.round(ccp)/100 + 'm</td>'
+                }
+            } else {
+                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_642"]))/100 +  'm</td>'
+            }
+            res_html += "</tr>";
+        }
+        //攻撃範囲
+        if (data["unknown2_648"]  > 0) {
+            res_html += "<tr><th>攻撃範囲</th>"
+            if (Number(data["unknown2_649"]) > 0) {
+                var lim = Number(data["unknown2_650"]);
+                for (var i = 1; i <= 50; i++) {
+                    if (i >= 7) {
+                        res_html += '<td>...</td>'
+                        i += 44;
+                    }
+                    var ccp = Number(data["unknown2_648"]) + Number(data["unknown2_649"])/10 * i;
+                    if (lim > 0 && lim < ccp) {
+                        ccp = lim;
+                    }
+                    // 初項の時点でおかしかったら初項優先（多分バグ）
+                    if (i == 1 && lim < ccp) {
+                        console.log(data["str_name"] + "のデータがおかしい。攻撃範囲:" + lim);
+                        ccp = Number(data["unknown2_648"]) + Number(data["unknown2_649"])/10 * i;
+                        res_html += '<td colspan="8">' + Math.round(ccp / 10)/100 +  'm</td>'
+                        break;
+                    }
+                    res_html += '<td>' + Math.round(ccp / 10)/100 + 'm</td>'
+                }
+                if (lim > 0) {
+                    var slv = 49 + Math.ceil((Number(data["unknown2_650"]) - Number(data["unknown2_648"])) * 10 / Number(data["unknown2_649"]))
+                    reflimit += "攻撃範囲最大: " + Math.round(lim / 100)/10 + "m (SLv" +slv + ")<br>"
+                }
+            } else {
+                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_648"]) / 100)/10 +  'm</td>'
+            }
+            res_html += "</tr>";
+        }
+        //攻撃回数
+        if (data["unknown2_722"]  > 0) {
+            res_html += "<tr><th>攻撃回数</th>"
+            if (Number(data["unknown2_723"]) > 0) {
+                var lim = Number(data["unknown2_721"]);
+                if (lim == 1000) {
+                    // システム上の上限回数に合わせる
+                    lim = 12;
+                }
+                for (var i = 1; i <= 50; i++) {
+                    if (i >= 7) {
+                        res_html += '<td>...</td>'
+                        i += 44;
+                    }
+                    var ccp = Number(data["unknown2_722"]) + Number(data["unknown2_723"]) * i;
+                    if (lim > 0 && lim < ccp/ 100) {
+                        ccp = lim * 100;
+                    }
+                    // 初項の時点でおかしかったら初項優先（多分バグ）
+                    if (i == 1 && lim < ccp) {
+                        console.log(data["str_name"] + "のデータがおかしい。攻撃回数:" + lim);
+                        ccp = Number(data["unknown2_722"]) + Number(data["unknown2_723"]) * i;
+                        res_html += '<td colspan="8">' + Math.round(ccp) / 100 +  '回</td>'
+                        break;
+                    }
+                    res_html += '<td>' + Math.round(ccp) / 100 + '</td>'
+                }
+                if (lim > 0) {
+                    var slv = 49 + Math.ceil(lim * 100 - Number(data["unknown2_722"])) / Number(data["unknown2_723"])
+                    reflimit += "攻撃回数最大: " + Math.round(lim) + "回 (SLv" +slv + ")<br>"
+                }
+            } else {
+                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_722"]))/100 +  '回</td>'
+            }
+            res_html += "</tr>";
+        }
+
     } else {
         // クールタイム通常
         if (data["unknown2_91"] == 12 || data["unknown2_92"] > 0) {
@@ -914,17 +1007,104 @@ function createGetSubInfo(data, mode) {
             } else {
                 res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_92"]) / 100).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '秒</td>'
             }
+            res_html += "</tr>";
         }
-    }
-    if (!res_html) {
-        res_html += "</tr>";
+        //最小距離
+        if (data["unknown2_641"] > 0) {
+            res_html += "<tr><th>最小距離</th>"
+            res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_641"]))/100 +  'm</td>'
+            res_html += "</tr>";
+        }
+        //最大距離
+        if (data["unknown2_642"] > 0) {
+            res_html += "<tr><th>最大距離</th>"
+            if (Number(data["unknown2_643"]) > 0) {
+                for (var i = 1; i <= 50; i++) {
+                    var ccp = Number(data["unknown2_642"]) + Number(data["unknown2_643"]) * i;
+                    res_html += '<td>' + Math.round(ccp) / 100 + 'm</td>'
+                    if (i >= 10) {
+                        i += 9;
+                    }
+                }
+            } else {
+                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_642"]))/100 +  'm</td>'
+            }
+            res_html += "</tr>";
+        }
+        //攻撃範囲
+        if (data["unknown2_648"]  > 0) {
+            res_html += "<tr><th>攻撃範囲</th>"
+            if (Number(data["unknown2_649"]) > 0) {
+                var lim = Number(data["unknown2_650"]);
+                for (var i = 1; i <= 50; i++) {
+                    var ccp = Number(data["unknown2_648"]) + Number(data["unknown2_649"])/10 * i;
+                    if (lim > 0 && lim < ccp) {
+                        ccp = lim;
+                    }
+                    // 初項の時点でおかしかったら初項優先（多分バグ）
+                    if (i == 1 && lim < ccp) {
+                        console.log(data["str_name"] + "のデータがおかしい。攻撃範囲:" + lim);
+                        ccp = Number(data["unknown2_648"]) + Number(data["unknown2_649"])/10 * i;
+                        res_html += '<td colspan="14">' + Math.round(ccp / 10)/100 +  'm</td>'
+                        break;
+                    }
+                    res_html += '<td>' + Math.round(ccp / 10) / 100 + 'm</td>'
+                    if (i >= 10) {
+                        i += 9;
+                    }
+                }
+                if (lim > 0) {
+                    var slv = Math.ceil((Number(data["unknown2_650"]) - Number(data["unknown2_648"])) * 10 / Number(data["unknown2_649"]))
+                    reflimit += "攻撃範囲最大: " + Math.round(lim / 100)/10 + "m (SLv" +slv + ")<br>"
+                }
+            } else {
+                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_648"]) / 100)/10 +  'm</td>'
+            }
+            res_html += "</tr>";
+        }
+        //攻撃回数
+        if (data["unknown2_722"]  > 0) {
+            res_html += "<tr><th>攻撃回数</th>"
+            if (Number(data["unknown2_723"]) > 0) {
+                var lim = Number(data["unknown2_721"]);
+                if (lim == 1000) {
+                    // システム上の上限回数に合わせる
+                    lim = 12;
+                }
+                for (var i = 1; i <= 50; i++) {
+                    var ccp = Number(data["unknown2_722"]) + Number(data["unknown2_723"]) * i;
+                    if (lim > 0 && lim < ccp/100) {
+                        ccp = lim * 100;
+                    }
+                    // 初項の時点でおかしかったら初項優先（多分バグ）
+                    if (i == 1 && lim < ccp/100) {
+                        console.log(data["str_name"] + "のデータがおかしい。攻撃回数:" + lim);
+                        ccp = Number(data["unknown2_722"]) + Number(data["unknown2_723"]) * i;
+                        res_html += '<td colspan="14">' + Math.round(ccp) / 100 +  '回</td>'
+                        break;
+                    }
+                    res_html += '<td>' + Math.round(ccp) / 100 + '</td>'
+                    if (i >= 10) {
+                        i += 9;
+                    }
+                }
+                if (lim > 0) {
+                    var slv = Math.ceil((lim * 100 - Number(data["unknown2_722"])) / Number(data["unknown2_723"]))
+                    reflimit += "攻撃回数最大: " + Math.round(lim) + "回 (SLv" +slv + ")<br>"
+                }
+            } else {
+                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_722"]))/100 +  '回</td>'
+            }
+            res_html += "</tr>";
+        }
+        
     }
     return res_html;
 }
 
 
 function createGetBuff(data, mode) {
-    res_html = ""
+    var res_html = ""
     var cnt = 189;
     if (mode == 8) {
         // 万能覚醒
@@ -1005,10 +1185,10 @@ function createGetBuff(data, mode) {
                                 // if (lim > ccp) {
                                 //     ccp = lim;
                                 // 
-                                res_html += '<td>' + Math.round(ccp / 100) + '</td>'
+                                res_html += '<td>' + Math.round(ccp / 10)/10 + '</td>'
                             }
                             if (lim > 0) {
-                                var slv = 50 + Math.ceil((lim - Number(data["unknown2_" + tmp])) / Number(data["unknown2_" + (tmp + 2)]))
+                                var slv = 49 + Math.ceil((lim - Number(data["unknown2_" + tmp])) / Number(data["unknown2_" + (tmp + 2)]))
                                 reflimit += txt + "上限: " + Math.round(lim / 100)+ " (SLv" +slv + ")<br>"
                             }
                             res_html += "</tr>";
@@ -1102,13 +1282,13 @@ function createGetBuff(data, mode) {
                                 // if (lim > ccp) {
                                 //     ccp = lim;
                                 // 
-                                res_html += '<td>' + Math.round(ccp / 100) + '</td>'
+                                res_html += '<td>' + Math.round(ccp / 10)/10 + '</td>'
                                 if (i >= 10) {
                                     i += 9;
                                 }
                             }
                             if (lim > 0) {
-                                var slv = 50 + Math.ceil((lim - Number(data["unknown2_" + tmp])) / Number(data["unknown2_" + (tmp + 2)]))
+                                var slv = Math.ceil((lim - Number(data["unknown2_" + tmp])) / Number(data["unknown2_" + (tmp + 2)]))
                                 reflimit += txt + "上限: " + Math.round(lim / 100)+ " (SLv" +slv + ")<br>"
                             }
                             res_html += "</tr>";
