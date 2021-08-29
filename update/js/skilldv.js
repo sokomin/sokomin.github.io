@@ -160,6 +160,9 @@ function createSkillTable() {
         }
         var powerup_txt = data["str_progress"];
         var req_txt = JOBID == 32 ? calcUseMob(Number(i), data["str_name"]) : calcReqText(JN, SS, data["str_name"], JOBID);
+        if (req_txt == "(合計0種)" && DEBUG != 9999) {
+            continue;
+        }
 
         if (data["unknown10_139"] != 0 && data["unknown10_139"] != 3) {
             //覚醒スキル
@@ -238,7 +241,7 @@ function createSkillTable() {
                 $table.append($tr_get_cp);
                 $table.append($tr_get_damage);
                 if (!is_simple) {
-                    var $tr_get_buff = createGetBuff(data, 8);
+                    var $tr_get_buff = createGetBuff(data, 8, DEBUG);
                     $table.append($tr_get_buff);
                 }
                 $table.append($tr_get_subinfo);
@@ -302,7 +305,7 @@ function createSkillTable() {
             $table.append($tr_get_cp);
             $table.append($tr_get_damage);
             if (!is_simple) {
-                var $tr_get_buff = createGetBuff(data, 14);
+                var $tr_get_buff = createGetBuff(data, 14, DEBUG);
                 $table.append($tr_get_buff);
             }
             $table.append($tr_get_subinfo);
@@ -968,7 +971,7 @@ function createGetSubInfo(data, mode) {
                         ccp = lim * 100;
                     }
                     // 初項の時点でおかしかったら初項優先（多分バグ）
-                    if (i == 1 && lim < ccp) {
+                    if (i == 1 && lim < ccp / 100) {
                         console.log(data["str_name"] + "のデータがおかしい。攻撃回数:" + lim);
                         ccp = Number(data["unknown2_722"]) + Number(data["unknown2_723"]) * i;
                         res_html += '<td colspan="8">' + Math.round(ccp) / 100 +  '回</td>'
@@ -1105,7 +1108,7 @@ function createGetSubInfo(data, mode) {
 }
 
 
-function createGetBuff(data, mode) {
+function createGetBuff(data, mode, DEBUG) {
     var res_html = ""
     var cnt = 189;
     if (mode == 8) {
@@ -1115,6 +1118,8 @@ function createGetBuff(data, mode) {
                 var txt = skillSpec[data["unknown2_" + cnt]];　//189
                 if (!txt) {
                     txt = data["unknown2_" + cnt];
+                } else if (DEBUG == 9999) {
+                    txt = data["unknown2_" + cnt] + ": " + skillSpec[data["unknown2_" + cnt]];
                 }
                 // ０  １  ２     ３   ４  ５  ６  ７   ８  ９
                 //  id  確率,係数,時間,係数,量,計算式,係数,式,上限(189～198など)
@@ -1173,7 +1178,7 @@ function createGetBuff(data, mode) {
                 if (Number(data["unknown2_" + tmp]) != 0) {
                     res_html += "<tr><th>" + txt + "量</th>"
                     // 計算式が定義されてるかどうか？
-                    if (Number(data["unknown2_" + (tmp + 1)]) == 0) {
+                    if (Number(data["unknown2_" + (tmp + 1)]) <= 0) {
                         if (Number(data["unknown2_" + (tmp + 2)]) != 0) {
                             var lim = Number(data["unknown2_"+ (tmp + 4)]);
                             for (var i = 1; i <= 50; i++) {
@@ -1198,9 +1203,13 @@ function createGetBuff(data, mode) {
                             res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_" + tmp]) / 100) + '</td></tr>'
                         }
                     } else {
-                        for (var i = 1; i <= 8; i++) {
-                            var o_tmp = tmp + i;
-                            res_html += '<td>'+ o_tmp+ ':' + Number(data["unknown2_" + o_tmp]) + '</td>'
+                        if (DEBUG == 9999) {
+                            for (var i = 1; i <= 8; i++) {
+                                var o_tmp = tmp + i;
+                                res_html += '<td>' + o_tmp + ':' + Number(data["unknown2_" + o_tmp]) + '</td>'
+                            }
+                        } else {
+                            res_html += '<td colspan="8">No Data.</td></tr>'
                         }
                         res_html += "</tr>";
                     }
@@ -1218,6 +1227,8 @@ function createGetBuff(data, mode) {
                 var txt = skillSpec[data["unknown2_" + cnt]];　//189
                 if (!txt) {
                     txt = data["unknown2_" + cnt];
+                } else if (DEBUG == 9999) {
+                    txt = data["unknown2_" + cnt] + ": " + skillSpec[data["unknown2_" + cnt]];
                 }
                 // ０  １  ２     ３   ４  ５  ６  ７   ８  ９
                 //  id  確率,係数,時間,係数,量,計算式,係数,式,上限(189～198など)
@@ -1274,7 +1285,7 @@ function createGetBuff(data, mode) {
                 if (Number(data["unknown2_" + tmp]) != 0) {
                     res_html += "<tr><th>" + txt + "量</th>"
                     // 計算式が定義されてるかどうか？
-                    if (Number(data["unknown2_" + (tmp + 1)]) == 0) {
+                    if (Number(data["unknown2_" + (tmp + 1)]) <= 0) {
                         if (Number(data["unknown2_" + (tmp + 2)]) != 0) {
                             var lim = Number(data["unknown2_"+ (tmp + 4)]);
                             for (var i = 1; i <= 50; i++) {
@@ -1298,9 +1309,13 @@ function createGetBuff(data, mode) {
                             res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_" + tmp]) / 100) + '</td></tr>'
                         }
                     } else {
-                        for (var i = 1; i <= 14; i++) {
-                            var o_tmp = tmp + i;
-                            res_html += '<td>'+ o_tmp+ ':' + Number(data["unknown2_" + o_tmp]) + '</td>'
+                        if (DEBUG == 9999) {
+                            for (var i = 1; i <= 14; i++) {
+                                var o_tmp = tmp + i;
+                                res_html += '<td>'+ o_tmp+ ':' + Number(data["unknown2_" + o_tmp]) + '</td>'
+                            }
+                        } else {
+                            res_html += '<td colspan="14">No Data.</td></tr>'
                         }
                         res_html += "</tr>";
                     }
