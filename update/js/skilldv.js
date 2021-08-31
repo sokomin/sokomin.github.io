@@ -108,18 +108,29 @@ function convertCSVtoArray(skill_str, mob_str) {// 読み込んだCSVデータ�
 }
 
 var is_simple = false;
+var subtype = -1;
 
 function calc1() {
     // モンスターデータ読み込み(同期の関係上、これ以外呼ばない)
+    subtype = -1;
     is_simple = false;
     getCSV();
 }
 
 function calc2() {
     // 赤石の民衆フォーマットとして使えそうなデータだけに絞りたい時に。
+    subtype = -1;
     is_simple = true;
     getCSV();
 }
+
+function calc3() {
+    // 赤石の民衆フォーマットとして使えそうなデータだけに絞りたい時に。
+    subtype = $('input[name="s1"]').val()? Number($('input[name="s1"]').val()) : -1;
+    is_simple = false;
+    getCSV();
+}
+
 
 var JN, SS;
 // 備考に追記したい情報をここに。
@@ -342,9 +353,25 @@ function validateData(data, jobid, debug) {
     if (!data) {
         return true;
     }
-    if (data["unknown1_6"] != jobid) {
-        return true;
+    // マッチするスキルタイプでの検索
+    var j_cnt = 189;
+    var jflag = false;
+    if (subtype != -1) {
+        for (var j = 0; j < 9; j++) {
+            if (Number(data["unknown2_" + j_cnt]) == subtype) {
+                return false;
+            }
+            j_cnt += 44;
+        }
+        if (!jflag) {
+            return true;
+        }
+    } else if (subtype == -1) {
+        if (data["unknown1_6"] != jobid) {
+            return true;
+        }
     }
+
     if (Number(debug) == 9999) {
         return false;
     }
