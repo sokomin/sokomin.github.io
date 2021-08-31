@@ -367,7 +367,7 @@ function createCostCP(data, mode) {
                 res_html += '<td>' + (Math.round(ccp / 10) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
             }
         } else {
-            res_html += '<td colspan="8">' + data["unknown2_12"] +  '</td>'
+            res_html += '<td colspan="8">' + Number(data["unknown2_12"])/100 +  '</td>'
         }
     } else {
         if (data["unknown2_13"] > 0) {
