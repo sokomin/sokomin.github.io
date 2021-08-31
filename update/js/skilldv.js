@@ -406,7 +406,7 @@ function createGetCP(data, mode) {
                 res_html += '<td>' + (Math.round(ccp / 10) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
             }
         } else {
-            res_html += '<td colspan="8">' + data["unknown2_15"] +  '</td>'
+            res_html += '<td colspan="8">' + Number(data["unknown2_15"])/100 +  '</td>'
         }
     } else {
         if (data["unknown2_16"] > 0) {
@@ -905,7 +905,7 @@ function createGetSubInfo(data, mode) {
         }
         //最大距離
         if (data["unknown2_642"] > 0) {
-            res_html += "<tr><th>最大距離</th>"
+            res_html += "<tr><th>射程距離</th>"
             if (Number(data["unknown2_643"]) > 0) {
                 for (var i = 1; i <= 50; i++) {
                     if (i >= 7) {
@@ -1022,7 +1022,7 @@ function createGetSubInfo(data, mode) {
         }
         //最大距離
         if (data["unknown2_642"] > 0) {
-            res_html += "<tr><th>最大距離</th>"
+            res_html += "<tr><th>射程距離</th>"
             if (Number(data["unknown2_643"]) > 0) {
                 for (var i = 1; i <= 50; i++) {
                     var ccp = Number(data["unknown2_642"]) + Number(data["unknown2_643"]) * i;
