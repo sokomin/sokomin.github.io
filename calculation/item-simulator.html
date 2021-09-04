@@ -33,10 +33,10 @@
     <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png">
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
-    <!-- <script language="JavaScript" src="js/creature-passive.js"></script> -->
-    <script language="JavaScript" src="js/item/item-simulator.js.js"></script>
-    <script language="JavaScript" src="../update/js/itemtype_list.js"></script>
+    <!-- <script language="JavaScript" src="../update/js/itemtype_list.js"></script> -->
     <script language="JavaScript" src="../update/js/option-list.js"></script>
+    <!-- <script language="JavaScript" src="js/creature-passive.js"></script> -->
+    <script language="JavaScript" src="js/item/item-simulator.js"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
@@ -165,11 +165,13 @@
                 <h3>装備シミュレータ</h3>
                 <br>
                 <a href="#1">通常シミュレータ</a><br>
-                <a href="#2">オプション逆引き</a><br>
                 <br>
                 <p style="text-align: left; padding-left: 100px">
                     下の一覧から装備を選ぶとオプションの補正値が反映されます。<br>
                     登録解除は個別にクリックするか、[全装備解除]ボタンを押してください。<br>
+                    ※刻印系装備のOPは未対応<br>
+                    ※将来やりたいこと：エクスポートとインポートを入れたい。データ保存したいので。<br>
+                    <input type="button" value="エクスポート" onclick="exportitem()">
                     <br>
                 </p>
                 <a name="1"></a><br>
@@ -185,79 +187,98 @@
                                         <table id="table9">
                                             <tbody>
                                                 <tr>
-                                                    <td>メイン</td>
-                                                    <td>
+                                                    <td colspan="12">
+                                                        <table id="table9">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td></td>
+                                                                    <td><input onclick="reset(-1, 0)" type="image"
+                                                                            src="https://sokomin.github.io/sokomin_repository/db/interface/interface_0047.png"
+                                                                            title="武器"></td>
+                                                                    <td><input onclick="reset(-1, 1)" type="image"
+                                                                            src="https://sokomin.github.io/sokomin_repository/db/interface/interface_0063.png"
+                                                                            title="補助武器"></td>
+                                                                    <td><input onclick="reset(-1, 2)" type="image"
+                                                                            src="https://sokomin.github.io/sokomin_repository/db/interface/interface_0032_ex1.png"
+                                                                            title="首"></td>
+                                                                    <td><input onclick="reset(-1, 3)" type="image"
+                                                                            src="https://sokomin.github.io/sokomin_repository/db/interface/interface_0032_ex2.png"
+                                                                            title="頭"></td>
+                                                                    <td><input onclick="reset(-1, 4)" type="image"
+                                                                            src="https://sokomin.github.io/sokomin_repository/db/interface/interface_0066.png"
+                                                                            title="背/耳"></td>
+                                                                    <td></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td><input onclick="reset(-1, 5)" type="image"
+                                                                            src="https://sokomin.github.io/sokomin_repository/db/interface/interface_0032_ex3.png"
+                                                                            title="腰"></td>
+                                                                    <td><input onclick="reset(-1, 6)" type="image"
+                                                                            src="https://sokomin.github.io/sokomin_repository/db/interface/interface_0032_ex4.png"
+                                                                            title="手"></td>
+                                                                    <td><input onclick="reset(-1, 7)" type="image"
+                                                                            src="https://sokomin.github.io/sokomin_repository/db/interface/interface_0032_ex5.png"
+                                                                            title="鎧"></td>
+                                                                    <td><input onclick="reset(-1, 8)" type="image"
+                                                                            src="https://sokomin.github.io/sokomin_repository/db/interface/interface_0032_ex6.png"
+                                                                            title="足"></td>
+                                                                    <td></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>
+                                                                    <td><input onclick="reset(-1, 90)" type="image"
+                                                                            src="https://sokomin.github.io/sokomin_repository/db/interface/interface_0032_ex7.png"
+                                                                            title="指１"></td>
+                                                                    <td><input onclick="reset(-1, 91)" type="image"
+                                                                            src="https://sokomin.github.io/sokomin_repository/db/interface/interface_0032_ex7.png"
+                                                                            title="指２"></td>
+                                                                    <td><input onclick="reset(-1, 92)" type="image"
+                                                                            src="https://sokomin.github.io/sokomin_repository/db/interface/interface_0032_ex7.png"
+                                                                            title="指３"></td>
+                                                                    <td><input onclick="reset(-1, 93)" type="image"
+                                                                            src="https://sokomin.github.io/sokomin_repository/db/interface/interface_0032_ex7.png"
+                                                                            title="指４"></td>
+                                                                    <td><input onclick="reset(-1, 94)" type="image"
+                                                                            src="https://sokomin.github.io/sokomin_repository/db/interface/interface_0032_ex7.png"
+                                                                            title="指５"></td>
+                                                                    <td></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>
+                                                                    <td><input onclick="reset(-1, 95)" type="image"
+                                                                            src="https://sokomin.github.io/sokomin_repository/db/interface/interface_0032_ex7.png"
+                                                                            title="指６"></td>
+                                                                    <td><input onclick="reset(-1, 96)" type="image"
+                                                                            src="https://sokomin.github.io/sokomin_repository/db/interface/interface_0032_ex7.png"
+                                                                            title="指７"></td>
+                                                                    <td><input onclick="reset(-1, 97)" type="image"
+                                                                            src="https://sokomin.github.io/sokomin_repository/db/interface/interface_0032_ex7.png"
+                                                                            title="指８"></td>
+                                                                    <td><input onclick="reset(-1, 98)" type="image"
+                                                                            src="https://sokomin.github.io/sokomin_repository/db/interface/interface_0032_ex7.png"
+                                                                            title="指９"></td>
+                                                                    <td><input onclick="reset(-1, 99)" type="image"
+                                                                            src="https://sokomin.github.io/sokomin_repository/db/interface/interface_0032_ex7.png"
+                                                                            title="指１０"></td>
+                                                                    <td></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
                                                     </td>
-                                                    <td></td>
-                                                    <td id="main_c">
-                                                        <input onclick="setCreature(-1, 0)" type="image"
-                                                            src="../calculation/image//interface2_0767.png" title="メイン">
-                                                        <!-- ここにメインクリーチャー君がはいる。画像変わるけどﾕﾙｼﾃ -->
-                                                    </td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>
-                                                <tr>
-                                                    <td></td>
-                                                    <td>
-                                                        サブ１
-                                                    </td>
-                                                    <td></td>
-                                                    <td>
-                                                        サブ２
-                                                    </td>
-                                                    <td></td>
-                                                    <td>
-                                                        サブ３
-                                                    </td>
-                                                    <td></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>サブ</td>
-                                                    <td id="sub_c1">
-                                                        <input onclick="reset(-1, 1)" type="image"
-                                                            src="../calculation/image//interface2_0767-1.png"
-                                                            title="サブ１">
-                                                        <!-- ここにサブクリーチャー君１がはいる -->
-                                                    </td>
-                                                    <td></td>
-                                                    <td id="sub_c2">
-                                                        <input onclick="reset(-1, 2)" type="image"
-                                                            src="../calculation/image//interface2_0767-1.png"
-                                                            title="サブ２">
-                                                        <!-- ここにサブクリーチャー君２がはいる -->
-                                                    </td>
-                                                    <td></td>
-                                                    <td id="sub_c3">
-                                                        <input onclick="reset(-1, 3)" type="image"
-                                                            src="../calculation/image//interface2_0767-1.png"
-                                                            title="サブ３">
-                                                        <!-- ここにサブクリーチャー君３がはいる -->
-                                                    </td>
-                                                    <td></td>
                                                 </tr>
                                                 <tr>
                                                     <td align="center" colspan="7">
                                                         <br>
                                                         <input onclick="resetCreature()" type="button"
-                                                            value="チーム解散"><br>
+                                                            value="全ての装備を解除"><br>
                                                         <br>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td align="center" colspan="7">
-                                                        セットしたクリーチャー
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td align="center" colspan="7">
-                                                        <textarea name="res1" rows="7" cols="80"></textarea>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td align="center" colspan="7">
-                                                        パッシブ状態
+                                                        補正値合計
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -280,716 +301,154 @@
                     </form>
                 </div>
                 <br>
-                <table id="table8">
-                    <colgroup>
-                    </colgroup>
-                    <tbody>
-                        <tr>
-                            <th colspan="12">(覚醒・パッシブ合成用)パッシブを選んでクリーチャを作る</th>
-                        </tr>
-                        <tr>
-                            <td colspan="12">
-                                <table id="table9">
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <input onclick="setCreature('9999')" type="image"
-                                                    src="../item/design/image/item/iconItem_2036.png"
-                                                    title="クリックで任意パッシブのクリーチャー生成">
-                                                <br>
-                                                任意クリーチャー<br>
-                                            </td>
-                                            <td>
-                                                メイン SLv
-                                            </td>
-                                            <td>
-                                                <input id="sub_e1" type="text" name="e1" size="4">
-                                            </td>
-                                            <td>
-                                                サブ１ SLv
-                                            </td>
-                                            <td>
-                                                <input id="sub_e2" type="text" name="e2" size="4">
-                                            </td>
-                                            <td>
-                                                サブ２ SLv
-                                            </td>
-                                            <td>
-                                                <input id="sub_e3" type="text" name="e3" size="4">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td colspan="2">
-                                                <!-- ここにサブクリーチャー君１がはいる -->
-                                                <select id="sub_d1" name="d1">
-                                                </select>
-                                            </td>
-                                            <td colspan="2">
-                                                <select id="sub_d2" name="d2">
-                                                </select>
-                                                <!-- ここにサブクリーチャー君２がはいる -->
-                                            </td>
-                                            <td colspan="2">
-                                                <select id="sub_d3" name="d3">
-                                                </select>
-                                                <!-- ここにサブクリーチャー君３がはいる -->
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th colspan="12">N ノーマル</th>
-                        </tr>
-                        <tr>
-                            <td><input onclick="setCreature('0000')" type="image"
-                                    src="../information/creature2_files/creature_0000.png" title="ブリザード火炎犬"></td>
-                            <td><input onclick="setCreature('0001')" type="image"
-                                    src="../information/creature2_files/creature_0001.png" title="青の火炎犬"></td>
-                            <td><input onclick="setCreature('0002')" type="image"
-                                    src="../information/creature2_files/creature_0002.png" title="緑の火炎犬"></td>
-                            <td><input onclick="setCreature('0003')" type="image"
-                                    src="../information/creature2_files/creature_0003.png" title="紫の火炎犬"></td>
-                            <td><input onclick="setCreature('0004')" type="image"
-                                    src="../information/creature2_files/creature_0004.png" title="灰色の火炎犬"></td>
-                            <td><input onclick="setCreature('0005')" type="image"
-                                    src="../information/creature2_files/creature_0005.png" title="赤の火炎犬"></td>
-                            <td><input onclick="setCreature('0006')" type="image"
-                                    src="../information/creature2_files/creature_0006.png" title="紫の閃光犬"></td>
-                            <td><input onclick="setCreature('0007')" type="image"
-                                    src="../information/creature2_files/creature_0007.png" title="水色の閃光犬"></td>
-                            <td><input onclick="setCreature('0008')" type="image"
-                                    src="../information/creature2_files/creature_0008.png" title="赤の閃光犬"></td>
-                            <td><input onclick="setCreature('0009')" type="image"
-                                    src="../information/creature2_files/creature_0009.png" title="青の閃光犬"></td>
-                            <td><input onclick="setCreature('0010')" type="image"
-                                    src="../information/creature2_files/creature_0010.png" title="変異火炎犬"></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td><input onclick="setCreature('0011')" type="image"
-                                    src="../information/creature2_files/creature_0011.png" title="乙女ミニゴースト"></td>
-                            <td><input onclick="setCreature('0012')" type="image"
-                                    src="../information/creature2_files/creature_0012.png" title="海ミニゴースト"></td>
-                            <td><input onclick="setCreature('0013')" type="image"
-                                    src="../information/creature2_files/creature_0013.png" title="森ミニゴースト"></td>
-                            <td><input onclick="setCreature('0014')" type="image"
-                                    src="../information/creature2_files/creature_0014.png" title="崖ミニゴースト"></td>
-                            <td><input onclick="setCreature('0015')" type="image"
-                                    src="../information/creature2_files/creature_0015.png" title="岩ミニゴースト"></td>
-                            <td><input onclick="setCreature('0016')" type="image"
-                                    src="../information/creature2_files/creature_0016.png" title="砂漠ミニゴースト"></td>
-                            <td><input onclick="setCreature('0017')" type="image"
-                                    src="../information/creature2_files/creature_0017.png" title="滝ミニゴースト"></td>
-                            <td><input onclick="setCreature('0018')" type="image"
-                                    src="../information/creature2_files/creature_0018.png" title="平原ミニゴースト"></td>
-                            <td><input onclick="setCreature('0019')" type="image"
-                                    src="../information/creature2_files/creature_0019.png" title="紳士ミニゴースト"></td>
-                            <td><input onclick="setCreature('0020')" type="image"
-                                    src="../information/creature2_files/creature_0020.png" title="墓地ミニゴースト"></td>
-                            <td><input onclick="setCreature('0021')" type="image"
-                                    src="../information/creature2_files/creature_0021.png" title="地下ミニゴースト"></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td><input onclick="setCreature('0022')" type="image"
-                                    src="../information/creature2_files/creature_0022.png" title="強欲のゴーレム"></td>
-                            <td><input onclick="setCreature('0023')" type="image"
-                                    src="../information/creature2_files/creature_0023.png" title="忘却のゴーレム"></td>
-                            <td><input onclick="setCreature('0024')" type="image"
-                                    src="../information/creature2_files/creature_0024.png" title="貪欲のゴーレム"></td>
-                            <td><input onclick="setCreature('0025')" type="image"
-                                    src="../information/creature2_files/creature_0025.png" title="祝福のゴーレム"></td>
-                            <td><input onclick="setCreature('0026')" type="image"
-                                    src="../information/creature2_files/creature_0026.png" title="勇気のゴーレム"></td>
-                            <td><input onclick="setCreature('0027')" type="image"
-                                    src="../information/creature2_files/creature_0027.png" title="正義のゴーレム"></td>
-                            <td><input onclick="setCreature('0028')" type="image"
-                                    src="../information/creature2_files/creature_0028.png" title="不屈のゴーレム"></td>
-                            <td><input onclick="setCreature('0029')" type="image"
-                                    src="../information/creature2_files/creature_0029.png" title="幸福のゴーレム"></td>
-                            <td><input onclick="setCreature('0030')" type="image"
-                                    src="../information/creature2_files/creature_0030.png" title="希望のゴーレム"></td>
-                            <td><input onclick="setCreature('0031')" type="image"
-                                    src="../information/creature2_files/creature_0031.png" title="憤怒のゴーレム"></td>
-                            <td><input onclick="setCreature('0032')" type="image"
-                                    src="../information/creature2_files/creature_0032.png" title="復讐のゴーレム"></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td><input onclick="setCreature('0033')" type="image"
-                                    src="../information/creature2_files/creature_0033.png" title="レビット"></td>
-                            <td><input onclick="setCreature('0034')" type="image"
-                                    src="../information/creature2_files/creature_0034.png" title="リビット"></td>
-                            <td><input onclick="setCreature('0035')" type="image"
-                                    src="../information/creature2_files/creature_0035.png" title="ルビット"></td>
-                            <td><input onclick="setCreature('0036')" type="image"
-                                    src="../information/creature2_files/creature_0036.png" title="ロビット"></td>
-                            <td><input onclick="setCreature('0037')" type="image"
-                                    src="../information/creature2_files/creature_0037.png" title="ブビット"></td>
-                            <td><input onclick="setCreature('0038')" type="image"
-                                    src="../information/creature2_files/creature_0038.png" title="レイット"></td>
-                            <td><input onclick="setCreature('0039')" type="image"
-                                    src="../information/creature2_files/creature_0039.png" title="ルイット"></td>
-                            <td><input onclick="setCreature('0040')" type="image"
-                                    src="../information/creature2_files/creature_0040.png" title="ロイット"></td>
-                            <td><input onclick="setCreature('0041')" type="image"
-                                    src="../information/creature2_files/creature_0041.png" title="ライット"></td>
-                            <td><input onclick="setCreature('0042')" type="image"
-                                    src="../information/creature2_files/creature_0042.png" title="レビント"></td>
-                            <td><input onclick="setCreature('0043')" type="image"
-                                    src="../information/creature2_files/creature_0043.png" title="ルビント"></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td><input onclick="setCreature('0044')" type="image"
-                                    src="../information/creature2_files/creature_0044.png" title="花霊アサガオ"></td>
-                            <td><input onclick="setCreature('0045')" type="image"
-                                    src="../information/creature2_files/creature_0045.png" title="花霊ローズ"></td>
-                            <td><input onclick="setCreature('0046')" type="image"
-                                    src="../information/creature2_files/creature_0046.png" title="花霊スミレ"></td>
-                            <td><input onclick="setCreature('0047')" type="image"
-                                    src="../information/creature2_files/creature_0047.png" title="花霊ベル"></td>
-                            <td><input onclick="setCreature('0048')" type="image"
-                                    src="../information/creature2_files/creature_0048.png" title="花霊ナノハ"></td>
-                            <td><input onclick="setCreature('0049')" type="image"
-                                    src="../information/creature2_files/creature_0049.png" title="花霊カスミ"></td>
-                            <td><input onclick="setCreature('0050')" type="image"
-                                    src="../information/creature2_files/creature_0050.png" title="花霊ノウゼン"></td>
-                            <td><input onclick="setCreature('0051')" type="image"
-                                    src="../information/creature2_files/creature_0051.png" title="花霊ワスレナ"></td>
-                            <td><input onclick="setCreature('0052')" type="image"
-                                    src="../information/creature2_files/creature_0052.png" title="花霊アマドコロ"></td>
-                            <td><input onclick="setCreature('0053')" type="image"
-                                    src="../information/creature2_files/creature_0053.png" title="花霊ウィロウ"></td>
-                            <td><input onclick="setCreature('0054')" type="image"
-                                    src="../information/creature2_files/creature_0054.png" title="花霊アイリス"></td>
-                            <td></td>
-                        </tr>
-
-
-                        <!--ここからR(レア)-->
-                        <tr>
-                            <th colspan="12">
-                                <font color="#00F800">R レア</font>
-                            </th>
-                        </tr>
-                        <tr>
-                            <td><input onclick="setCreature('0055')" type="image"
-                                    src="../information/creature2_files/creature_0055.png" title="黄昏のフレア"></td>
-                            <td><input onclick="setCreature('0056')" type="image"
-                                    src="../information/creature2_files/creature_0056.png" title="堕落のフレア"></td>
-                            <td><input onclick="setCreature('0057')" type="image"
-                                    src="../information/creature2_files/creature_0057.png" title="呪いのフレア"></td>
-                            <td><input onclick="setCreature('0058')" type="image"
-                                    src="../information/creature2_files/creature_0058.png" title="暗闇のフレア"></td>
-                            <td><input onclick="setCreature('0059')" type="image"
-                                    src="../information/creature2_files/creature_0059.png" title="地獄のフレア"></td>
-                            <td><input onclick="setCreature('0060')" type="image"
-                                    src="../information/creature2_files/creature_0060.png" title="ボーンナイト"></td>
-                            <td><input onclick="setCreature('0061')" type="image"
-                                    src="../information/creature2_files/creature_0061.png" title="ボーンウォリアー"></td>
-                            <td><input onclick="setCreature('0062')" type="image"
-                                    src="../information/creature2_files/creature_0062.png" title="ボーンヒーロー"></td>
-                            <td><input onclick="setCreature('0063')" type="image"
-                                    src="../information/creature2_files/creature_0063.png" title="ボーンソルジャー"></td>
-                            <td><input onclick="setCreature('0064')" type="image"
-                                    src="../information/creature2_files/creature_0064.png" title="ボーンシーフ"></td>
-                            <td><input onclick="setCreature('0065')" type="image"
-                                    src="../information/creature2_files/creature_0065.png" title="空色のルジュエ"></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td><input onclick="setCreature('0066')" type="image"
-                                    src="../information/creature2_files/creature_0066.png" title="血色のルジュエ"></td>
-                            <td><input onclick="setCreature('0067')" type="image"
-                                    src="../information/creature2_files/creature_0067.png" title="リボンのルジュエ"></td>
-                            <td><input onclick="setCreature('0068')" type="image"
-                                    src="../information/creature2_files/creature_0068.png" title="太糸のルジュエ"></td>
-                            <td><input onclick="setCreature('0069')" type="image"
-                                    src="../information/creature2_files/creature_0069.png" title="ルジュエ"></td>
-                            <td><input onclick="setCreature('0070')" type="image"
-                                    src="../information/creature2_files/creature_0070.png" title="ヴィド"></td>
-                            <td><input onclick="setCreature('0071')" type="image"
-                                    src="../information/creature2_files/creature_0071.png" title="モヒカンキャロ"></td>
-                            <td><input onclick="setCreature('0072')" type="image"
-                                    src="../information/creature2_files/creature_0072.png" title="リーゼントキャロ"></td>
-                            <td><input onclick="setCreature('0073')" type="image"
-                                    src="../information/creature2_files/creature_0073.png" title="アフロキャロ"></td>
-                            <td><input onclick="setCreature('0074')" type="image"
-                                    src="../information/creature2_files/creature_0074.png" title="ファフ"></td>
-                            <td><input onclick="setCreature('0075')" type="image"
-                                    src="../information/creature2_files/creature_0075.png" title="ポフ"></td>
-                            <td><input onclick="setCreature('0076')" type="image"
-                                    src="../information/creature2_files/creature_0076.png" title="パフ"></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td><input onclick="setCreature('0077')" type="image"
-                                    src="../information/creature2_files/creature_0077.png" title="プフ"></td>
-                            <td><input onclick="setCreature('0078')" type="image"
-                                    src="../information/creature2_files/creature_0078.png" title="レッドアブソル"></td>
-                            <td><input onclick="setCreature('0079')" type="image"
-                                    src="../information/creature2_files/creature_0079.png" title="ブルーアブソル"></td>
-                            <td><input onclick="setCreature('0080')" type="image"
-                                    src="../information/creature2_files/creature_0080.png" title="グリーンアブソル"></td>
-                            <td><input onclick="setCreature('0081')" type="image"
-                                    src="../information/creature2_files/creature_0081.png" title="パープルアブソル"></td>
-                            <td><input onclick="setCreature('0082')" type="image"
-                                    src="../information/creature2_files/creature_0082.png" title="ロードアブソル"></td>
-                            <td><input onclick="setCreature('0083')" type="image"
-                                    src="../information/creature2_files/creature_0083.png" title="強靭なヒヨコ戦士"></td>
-                            <td><input onclick="setCreature('0084')" type="image"
-                                    src="../information/creature2_files/creature_0084.png" title="強運のヒヨコ戦士"></td>
-                            <td><input onclick="setCreature('0085')" type="image"
-                                    src="../information/creature2_files/creature_0085.png" title="賢明なヒヨコ戦士"></td>
-                            <td><input onclick="setCreature('0086')" type="image"
-                                    src="../information/creature2_files/creature_0086.png" title="疾風のヒヨコ戦士"></td>
-                            <td><input onclick="setCreature('0087')" type="image"
-                                    src="../information/creature2_files/creature_0087.png" title="壮健なヒヨコ戦士"></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td><input onclick="setCreature('0117')" type="image"
-                                    src="../information/creature2_files/creature_0117.png" title="ワイアットピグ"></td>
-                            <td><input onclick="setCreature('0118')" type="image"
-                                    src="../information/creature2_files/creature_0118.png" title="コリントピグ"></td>
-                            <td><input onclick="setCreature('0119')" type="image"
-                                    src="../information/creature2_files/creature_0119.png" title="フィルバートピグ"></td>
-                            <td><input onclick="setCreature('0120')" type="image"
-                                    src="../information/creature2_files/creature_0120.png" title="メイソンピグ"></td>
-                            <td><input onclick="setCreature('0123')" type="image"
-                                    src="../information/creature2_files/creature_0123.png" title="骸骨仮面バット"></td>
-                            <td><input onclick="setCreature('0124')" type="image"
-                                    src="../information/creature2_files/creature_0124.png" title="ピエロ仮面バット"></td>
-                            <td><input onclick="setCreature('0125')" type="image"
-                                    src="../information/creature2_files/creature_0125.png" title="舞台仮面バット"></td>
-                            <td><input onclick="setCreature('0126')" type="image"
-                                    src="../information/creature2_files/creature_0126.png" title="トガリ仮面バット"></td>
-                            <td><input onclick="setCreature('0135')" type="image"
-                                    src="../information/creature2_files/creature_0135.png" title="ピンクチビット"></td>
-                            <td><input onclick="setCreature('0136')" type="image"
-                                    src="../information/creature2_files/creature_0136.png" title="ブルーチビット"></td>
-                            <td><input onclick="setCreature('0137')" type="image"
-                                    src="../information/creature2_files/creature_0137.png" title="グリーンチビット"></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td><input onclick="setCreature('0138')" type="image"
-                                    src="../information/creature2_files/creature_0138.png" title="オレンジチビット"></td>
-                            <td><input onclick="setCreature('0141')" type="image"
-                                    src="../information/creature2_files/creature_0141.png" title="花精マリアカラス"></td>
-                            <td><input onclick="setCreature('0142')" type="image"
-                                    src="../information/creature2_files/creature_0142.png" title="花精シャルル"></td>
-                            <td><input onclick="setCreature('0143')" type="image"
-                                    src="../information/creature2_files/creature_0143.png" title="花精サンブライト"></td>
-                            <td><input onclick="setCreature('0144')" type="image"
-                                    src="../information/creature2_files/creature_0144.png" title="花精ブルームーン"></td>
-                            <td><input onclick="setCreature('0145')" type="image"
-                                    src="../information/creature2_files/creature_0145.png" title="ブラウンモス"></td>
-                            <td><input onclick="setCreature('0146')" type="image"
-                                    src="../information/creature2_files/creature_0146.png" title="バイオレットモス"></td>
-                            <td><input onclick="setCreature('0147')" type="image"
-                                    src="../information/creature2_files/creature_0147.png" title="オリーブモス"></td>
-                            <td><input onclick="setCreature('0148')" type="image"
-                                    src="../information/creature2_files/creature_0148.png" title="ミュータントモス"></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td><input onclick="setCreature('0153')" type="image"
-                                    src="../information/creature2_files/creature_0153.png" title="パープルエリーズ"></td>
-                            <td><input onclick="setCreature('0154')" type="image"
-                                    src="../information/creature2_files/creature_0154.png" title="ブルーエリーズ"></td>
-                            <td><input onclick="setCreature('0155')" type="image"
-                                    src="../information/creature2_files/creature_0155.png" title="レッドエリーズ"></td>
-                            <td><input onclick="setCreature('0156')" type="image"
-                                    src="../information/creature2_files/creature_0156.png" title="グリーンエリーズ"></td>
-                            <td><input onclick="setCreature('0157')" type="image"
-                                    src="../information/creature2_files/creature_0157.png" title="チャンピオンマモ"></td>
-                            <td><input onclick="setCreature('0158')" type="image"
-                                    src="../information/creature2_files/creature_0158.png" title="チャンピオンシマ"></td>
-                            <td><input onclick="setCreature('0159')" type="image"
-                                    src="../information/creature2_files/creature_0159.png" title="チャンピオンモモ"></td>
-                            <td><input onclick="setCreature('0160')" type="image"
-                                    src="../information/creature2_files/creature_0160.png" title="チャンピオンジリ"></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td><input onclick="setCreature('0165')" type="image"
-                                    src="../information/creature2_files/creature_0165.png" title="プリンスリオン"></td>
-                            <td><input onclick="setCreature('0166')" type="image"
-                                    src="../information/creature2_files/creature_0166.png" title="プリンスラオン"></td>
-                            <td><input onclick="setCreature('0167')" type="image"
-                                    src="../information/creature2_files/creature_0167.png" title="プリンスロウン"></td>
-                            <td><input onclick="setCreature('0168')" type="image"
-                                    src="../information/creature2_files/creature_0168.png" title="プリンスルウン"></td>
-                            <td><input onclick="setCreature('0169')" type="image"
-                                    src="../information/creature2_files/creature_0169.png" title="アスター"></td>
-                            <td><input onclick="setCreature('0170')" type="image"
-                                    src="../information/creature2_files/creature_0170.png" title="エスター"></td>
-                            <td><input onclick="setCreature('0171')" type="image"
-                                    src="../information/creature2_files/creature_0171.png" title="ウスター"></td>
-                            <td><input onclick="setCreature('0172')" type="image"
-                                    src="../information/creature2_files/creature_0172.png" title="イスター"></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td><input onclick="setCreature('0193')" type="image"
-                                    src="../information/creature2_files/creature_0193.png" title="オローニ"></td>
-                            <td><input onclick="setCreature('0194')" type="image"
-                                    src="../information/creature2_files/creature_0194.png" title="オローナ"></td>
-                            <td><input onclick="setCreature('0195')" type="image"
-                                    src="../information/creature2_files/creature_0195.png" title="オローネ"></td>
-                            <td><input onclick="setCreature('0196')" type="image"
-                                    src="../information/creature2_files/creature_0196.png" title="オローヌ"></td>
-                            <td><input onclick="setCreature('0197')" type="image"
-                                    src="../information/creature2_files/creature_0197.png" title="ソードガーディアン"></td>
-                            <td><input onclick="setCreature('0198')" type="image"
-                                    src="../information/creature2_files/creature_0198.png" title="アックスガーディアン"></td>
-                            <td><input onclick="setCreature('0199')" type="image"
-                                    src="../information/creature2_files/creature_0199.png" title="ハンマーガーディアン"></td>
-                            <td><input onclick="setCreature('0200')" type="image"
-                                    src="../information/creature2_files/creature_0200.png" title="スピアガーディアン"></td>
-                            <td><input onclick="setCreature('0211')" type="image"
-                                    src="../information/creature2_files/creature_0211.png" title="アウルナイト"></td>
-                            <td><input onclick="setCreature('0212')" type="image"
-                                    src="../information/creature2_files/creature_0212.png" title="アウルスカウト"></td>
-                            <td><input onclick="setCreature('0213')" type="image"
-                                    src="../information/creature2_files/creature_0213.png" title="アウルスコラ"></td>
-                            <td><input onclick="setCreature('0214')" type="image"
-                                    src="../information/creature2_files/creature_0214.png" title="アウルバンディット"></td>
-                        </tr>
-
-                        <tr>
-                            <th colspan="12">
-                                <font color="#50A0F8">HR ハイレア</font>
-                            </th>
-                        </tr>
-                        <tr>
-                            <td><input onclick="setCreature('0088')" type="image"
-                                    src="../information/creature2_files/creature_0088.png" title="コボルト大魔導師"></td>
-                            <td><input onclick="setCreature('0089')" type="image"
-                                    src="../information/creature2_files/creature_0089.png" title="ウィッチマゴ"></td>
-                            <td><input onclick="setCreature('0090')" type="image"
-                                    src="../information/creature2_files/creature_0090.png" title="ドレアス"></td>
-                            <td><input onclick="setCreature('0091')" type="image"
-                                    src="../information/creature2_files/creature_0091.png" title="ナイトスピア"></td>
-                            <td><input onclick="setCreature('0092')" type="image"
-                                    src="../information/creature2_files/creature_0092.png" title="ドベルト"></td>
-                            <td><input onclick="setCreature('0093')" type="image"
-                                    src="../information/creature2_files/creature_0093.png" title="タイムシュラット"></td>
-                            <td><input onclick="setCreature('0094')" type="image"
-                                    src="../information/creature2_files/creature_0094.png" title="エマティース"></td>
-                            <td><input onclick="setCreature('0095')" type="image"
-                                    src="../information/creature2_files/creature_0095.png" title="トゥルイク"></td>
-                            <td><input onclick="setCreature('0096')" type="image"
-                                    src="../information/creature2_files/creature_0096.png" title="グリフォン"></td>
-                            <td><input onclick="setCreature('0097')" type="image"
-                                    src="../information/creature2_files/creature_0097.png" title="マスクグール"></td>
-                            <td><input onclick="setCreature('0105')" type="image"
-                                    src="../information/creature2_files/creature_0105.png" title="泣き虫ルドルフ"></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td><input onclick="setCreature('0106')" type="image"
-                                    src="../information/creature2_files/creature_0106.png" title="クリスマスフェアリー"></td>
-                            <td><input onclick="setCreature('0108')" type="image"
-                                    src="../information/creature2_files/creature_0108.png" title="フォクシーテール"></td>
-                            <td><input onclick="setCreature('0109')" type="image"
-                                    src="../information/creature2_files/creature_0109.png" title="ハウンデブル"></td>
-                            <td><input onclick="setCreature('0113')" type="image"
-                                    src="../information/creature2_files/creature_0113.png" title="ペンギン大佐"></td>
-                            <td><input onclick="setCreature('0114')" type="image"
-                                    src="../information/creature2_files/creature_0114.png" title="プリンセスルーナ"></td>
-                            <td><input onclick="setCreature('0121')" type="image"
-                                    src="../information/creature2_files/creature_0121.png" title="クマーン"></td>
-                            <td><input onclick="setCreature('0127')" type="image"
-                                    src="../information/creature2_files/creature_0127.png" title="見習い魔女リトル"></td>
-                            <td><input onclick="setCreature('0139')" type="image"
-                                    src="../information/creature2_files/creature_0139.png" title="ライカンスロープ"></td>
-                            <td><input onclick="setCreature('0149')" type="image"
-                                    src="../information/creature2_files/creature_0149.png" title="キングクレバネット"></td>
-                            <td><input onclick="setCreature('0150')" type="image"
-                                    src="../information/creature2_files/creature_0150.png" title="ガイア"></td>
-                            <td><input onclick="setCreature('0161')" type="image"
-                                    src="../information/creature2_files/creature_0161.png" title="トリックスター"></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td><input onclick="setCreature('0173')" type="image"
-                                    src="../information/creature2_files/creature_0173.png" title="ドリーマー"></td>
-                            <td><input onclick="setCreature('0174')" type="image"
-                                    src="../information/creature2_files/creature_0174.png" title="ノーマド"></td>
-                            <td><input onclick="setCreature('0175')" type="image"
-                                    src="../information/creature2_files/creature_0175.png" title="シッティングダイル"></td>
-                            <td><input onclick="setCreature('0176')" type="image"
-                                    src="../information/creature2_files/creature_0176.png" title="メラニー"></td>
-                            <td><input onclick="setCreature('0177')" type="image"
-                                    src="../information/creature2_files/creature_0177.png" title="シーウォーカー"></td>
-                            <td><input onclick="setCreature('0178')" type="image"
-                                    src="../information/creature2_files/creature_0178.png" title="カイザー"></td>
-                            <td><input onclick="setCreature('0179')" type="image"
-                                    src="../information/creature2_files/creature_0179.png" title="クレア"></td>
-                            <td><input onclick="setCreature('0183')" type="image"
-                                    src="../information/creature2_files/creature_0183.png" title="サキュバスヴェラ"></td>
-                            <td><input onclick="setCreature('0185')" type="image"
-                                    src="../information/creature2_files/creature_0185.png" title="ヴィーナス"></td>
-                            <td><input onclick="setCreature('0186')" type="image"
-                                    src="../information/creature2_files/creature_0186.png" title="イフリート"></td>
-                            <td><input onclick="setCreature('0187')" type="image"
-                                    src="../information/creature2_files/creature_0187.png" title="かんがえるさかな"></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td><input onclick="setCreature('0201')" type="image"
-                                    src="../information/creature2_files/creature_0201.png" title="ブラックウィドー"></td>
-                            <td><input onclick="setCreature('0202')" type="image"
-                                    src="../information/creature2_files/creature_0202.png" title="ホワイトレディー"></td>
-                            <td><input onclick="setCreature('0205')" type="image"
-                                    src="../information/creature2_files/creature_0205.png" title="プチデリン"></td>
-                            <td><input onclick="setCreature('0206')" type="image"
-                                    src="../information/creature2_files/creature_0206.png" title="プチダリン"></td>
-                            <td><input onclick="setCreature('0215')" type="image"
-                                    src="../information/creature2_files/creature_0215.png" title="エルダーハーミット"></td>
-                            <td><input onclick="setCreature('0227')" type="image"
-                                    src="../information/creature2_files/creature_0227.png" title="タイニーフォックス"></td>
-                            <td><input onclick="setCreature('0228')" type="image"
-                                    src="../information/creature2_files/creature_0228.png" title="リトルロトル"></td>
-                            <td><input onclick="setCreature('0229')" type="image"
-                                    src="../information/creature2_files/creature_0229.png" title="ホエーリ"></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th colspan="12">
-                                <font color="#D080F8">SR スーパーレア</font>
-                            </th>
-                        </tr>
-                        <tr>
-                            <td><input onclick="setCreature('0098')" type="image"
-                                    src="../information/creature2_files/creature_0098.png" title="インキュバス"></td>
-                            <td><input onclick="setCreature('0099')" type="image"
-                                    src="../information/creature2_files/creature_0099.png" title="吸血姫"></td>
-                            <td><input onclick="setCreature('0100')" type="image"
-                                    src="../information/creature2_files/creature_0100.png" title="アイスクイーン"></td>
-                            <td><input onclick="setCreature('0101')" type="image"
-                                    src="../information/creature2_files/creature_0101.png" title="ラストウィッチ"></td>
-                            <td><input onclick="setCreature('0102')" type="image"
-                                    src="../information/creature2_files/creature_0102.png" title="ラミア"></td>
-                            <td><input onclick="setCreature('0107')" type="image"
-                                    src="../information/creature2_files/creature_0107.png" title="サンタレビット"></td>
-                            <td><input onclick="setCreature('0110')" type="image"
-                                    src="../information/creature2_files/creature_0110.png" title="レオフォールド"></td>
-                            <td><input onclick="setCreature('0111')" type="image"
-                                    src="../information/creature2_files/creature_0111.png" title="メリアス"></td>
-                            <td><input onclick="setCreature('0115')" type="image"
-                                    src="../information/creature2_files/creature_0115.png" title="コモルコクーン"></td>
-                            <td><input onclick="setCreature('0116')" type="image"
-                                    src="../information/creature2_files/creature_0116.png" title="マートン所長"></td>
-                            <td><input onclick="setCreature('0122')" type="image"
-                                    src="../information/creature2_files/creature_0122.png" title="スペクター"></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td><input onclick="setCreature('0128')" type="image"
-                                    src="../information/creature2_files/creature_0128.png" title="パンプキンナイト"></td>
-                            <td><input onclick="setCreature('0129')" type="image"
-                                    src="../information/creature2_files/creature_0129.png" title="アサシン"></td>
-                            <td><input onclick="setCreature('0130')" type="image"
-                                    src="../information/creature2_files/creature_0130.png" title="アーチャー"></td>
-                            <td><input onclick="setCreature('0131')" type="image"
-                                    src="../information/creature2_files/creature_0131.png" title="バーサーカー"></td>
-                            <td><input onclick="setCreature('0132')" type="image"
-                                    src="../information/creature2_files/creature_0132.png" title="ランサー"></td>
-                            <td><input onclick="setCreature('0140')" type="image"
-                                    src="../information/creature2_files/creature_0140.png" title="ケンタウロスナイト"></td>
-                            <td><input onclick="setCreature('0151')" type="image"
-                                    src="../information/creature2_files/creature_0151.png" title="クレセンティ"></td>
-                            <td><input onclick="setCreature('0162')" type="image"
-                                    src="../information/creature2_files/creature_0162.png" title="オーロラ"></td>
-                            <td><input onclick="setCreature('0163')" type="image"
-                                    src="../information/creature2_files/creature_0163.png" title="アレクサンダ"></td>
-                            <td><input onclick="setCreature('0180')" type="image"
-                                    src="../information/creature2_files/creature_0180.png" title="マキュリア"></td>
-                            <td><input onclick="setCreature('0181')" type="image"
-                                    src="../information/creature2_files/creature_0181.png" title="トワイライト"></td>
-                            <td><input onclick="setCreature('0184')" type="image"
-                                    src="../information/creature2_files/creature_0184.png" title="ラクネーラ"></td>
-                        </tr>
-                        <tr>
-                            <td><input onclick="setCreature('0189')" type="image"
-                                    src="../information/creature2_files/creature_0189.png" title="橘 清音"></td>
-                            <td><input onclick="setCreature('0190')" type="image"
-                                    src="../information/creature2_files/creature_0190.png" title="枇々木 丈"></td>
-                            <td><input onclick="setCreature('0191')" type="image"
-                                    src="../information/creature2_files/creature_0191.png" title="宮 うつつ"></td>
-                            <td><input onclick="setCreature('0192')" type="image"
-                                    src="../information/creature2_files/creature_0192.png" title="爾乃美家 累"></td>
-                            <td><input onclick="setCreature('0203')" type="image"
-                                    src="../information/creature2_files/creature_0203.png" title="シーカー"></td>
-                            <td><input onclick="setCreature('0216')" type="image"
-                                    src="../information/creature2_files/creature_0216.png" title="アマニタマジシャン"></td>
-                            <td><input onclick="setCreature('0230')" type="image"
-                                    src="../information/creature2_files/creature_0230.png" title="セイクリッドフォックス"></td>
-                            <td><input onclick="setCreature('0231')" type="image"
-                                    src="../information/creature2_files/creature_0231.png" title="ドレカニア"></td>
-                            <td><input onclick="setCreature('0232')" type="image"
-                                    src="../information/creature2_files/creature_0232.png" title="ホエーザランド"></td>
-                            <td><input onclick="setCreature('0235')" type="image"
-                                    src="../information/creature2_files/creature_0235.png" title="アルティナ・オライオン"></td>
-                            <td><input onclick="setCreature('0236')" type="image"
-                                    src="../information/creature2_files/creature_0236.png" title="アリサ・ラインフォルト"></td>
-                            <td><input onclick="setCreature('0237')" type="image"
-                                    src="../information/creature2_files/creature_0237.png" title="ラウラ・S・アルゼイド"></td>
-                        </tr>
-                        <tr>
-                            <th colspan="12">
-                                <font color="#E8C898">LR レジェンドレア</font>
-                            </th>
-                        </tr>
-                        <tr>
-                            <td><input onclick="setCreature('0103')" type="image"
-                                    src="../information/creature2_files/creature_0103.png" title="ヴァルキリー"></td>
-                            <td><input onclick="setCreature('0104')" type="image"
-                                    src="../information/creature2_files/creature_0104.png" title="アグレアス"></td>
-                            <td><input onclick="setCreature('0112')" type="image"
-                                    src="../information/creature2_files/creature_0112.png" title="アビス"></td>
-                            <td><input onclick="setCreature('0133')" type="image"
-                                    src="../information/creature2_files/creature_0133.png" title="セイバー"></td>
-                            <td><input onclick="setCreature('0134')" type="image"
-                                    src="../information/creature2_files/creature_0134.png" title="ライダー"></td>
-                            <td><input onclick="setCreature('0152')" type="image"
-                                    src="../information/creature2_files/creature_0152.png" title="グラビティアナ"></td>
-                            <td><input onclick="setCreature('0164')" type="image"
-                                    src="../information/creature2_files/creature_0164.png" title="タナトス"></td>
-                            <td><input onclick="setCreature('0182')" type="image"
-                                    src="../information/creature2_files/creature_0182.png" title="ハーモニー"></td>
-                            <td><input onclick="setCreature('0188')" type="image"
-                                    src="../information/creature2_files/creature_0188.png" title="一ノ瀬はじめ"></td>
-                            <td><input onclick="setCreature('0204')" type="image"
-                                    src="../information/creature2_files/creature_0204.png" title="ゴールド・エンペラー"></td>
-                            <td><input onclick="setCreature('0217')" type="image"
-                                    src="../information/creature2_files/creature_0217.png" title="ダークネスネビュラ"></td>
-                            <td><input onclick="setCreature('0218')" type="image"
-                                    src="../information/creature2_files/creature_0218.png" title="ワンインオール"></td>
-                        </tr>
-                        <tr>
-                            <td><input onclick="setCreature('0233')" type="image"
-                                    src="../information/creature2_files/creature_0233.png" title="プチランサー"></td>
-                            <td><input onclick="setCreature('0234')" type="image"
-                                    src="../information/creature2_files/creature_0234.png" title="プチウィザード"></td>
-                            <td><input onclick="setCreature('0238')" type="image"
-                                    src="../information/creature2_files/creature_0238.png" title="リィン・シュバルツァー"></td>
-                            <td><input onclick="setCreature('0239')" type="image"
-                                    src="../information/creature2_files/creature_0239.png" title="クロウ・アームブラスト"></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
+                <table id="table8" style="min-width: 1400px;"></table>
+                <tbody>
+                    <tr>
+                        <th colspan="12"><b>装備選択</b></th>
+                    </tr>
+                    <tr>
+                        <td colspan="12">
+                            <table id="table9" style="min-width: 1400px;">
+                                <tbody>
+                                    <tr>
+                                        <td>職業<br>
+                                            <select id="jobtype" name="j0"></select>
+                                        </td>
+                                        <td colspan="2">武器<br>
+                                            <select id="sub_0" name="d0"></select>
+                                        </td>
+                                        <td colspan="2">
+                                            補助<br>
+                                            <select id="sub_1" name="d1"></select>
+                                        </td>
+                                        <td colspan="2">
+                                            首<br>
+                                            <select id="sub_2" name="d2"></select>
+                                        </td>
+                                        <td colspan="2">
+                                            頭<br><select id="sub_3" name="d3"></select>
+                                        </td>
+                                        <td colspan="2">
+                                            背/耳<br><select id="sub_4" name="d4"></select>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td colspan="2">
+                                            腰<br><select id="sub_5" name="d5"></select>
+                                        </td>
+                                        <td colspan="2">
+                                            手<br><select id="sub_6" name="d6"></select>
+                                        </td>
+                                        <td colspan="2">
+                                            鎧<br><select id="sub_7" name="d7"></select>
+                                        </td>
+                                        <td colspan="2">
+                                            足<br><select id="sub_8" name="d8"></select>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>指</td>
+                                        <td colspan="10"></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td colspan="2"><select id="sub_9_1" name="d9_1"></select></td>
+                                        <td colspan="2"><select id="sub_9_2" name="d9_2"></select></td>
+                                        <td colspan="2"><select id="sub_9_3" name="d9_3"></select></td>
+                                        <td colspan="2"><select id="sub_9_4" name="d9_4"></select></td>
+                                        <td colspan="2"><select id="sub_9_5" name="d9_5"></select></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td colspan="2"><select id="sub_9_6" name="d9_6"></select></td>
+                                        <td colspan="2"><select id="sub_9_7" name="d9_7"></select></td>
+                                        <td colspan="2"><select id="sub_9_8" name="d9_8"></select></td>
+                                        <td colspan="2"><select id="sub_9_9" name="d9_9"></select></td>
+                                        <td colspan="2"><select id="sub_9_10" name="d9_10"></select></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="12"><b><br><br>オプション選択</b></th>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>OP1</td>
+                                        <td colspan="2"><select id="op1" name="op_1"></select></td>
+                                        <td colspan="2">補正１<input type="text" name="op1_d1" size="10"></td>
+                                        <td colspan="2">補正２<input type="text" name="op1_d2" size="10"></td>
+                                        <td colspan="2">補正３<input type="text" name="op1_d3" size="10"></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>OP2</td>
+                                        <td colspan="2"><select id="op2" name="op_2"></select></td>
+                                        <td colspan="2">補正１<input type="text" name="op2_d1" size="10"></td>
+                                        <td colspan="2">補正２<input type="text" name="op2_d2" size="10"></td>
+                                        <td colspan="2">補正３<input type="text" name="op2_d3" size="10"></td>
+                                        <td></td>
+                                        <td><input type="button" value="op1と同じ" onclick="sameop(1)"></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>OP3</td>
+                                        <td colspan="2"><select id="op3" name="op_3"></select></td>
+                                        <td colspan="2">補正１<input type="text" name="op3_d1" size="10"></td>
+                                        <td colspan="2">補正２<input type="text" name="op3_d2" size="10"></td>
+                                        <td colspan="2">補正３<input type="text" name="op3_d3" size="10"></td>
+                                        <td></td>
+                                        <td><input type="button" value="op2と同じ" onclick="csameop(2)"></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>封印開放<br>※Nxのみ有効</td>
+                                        <td colspan="2"><select id="nxrank" name="nx_rank"></select></td>
+                                        <td>BFOP</td>
+                                        <td colspan="2"><select id="bfop" name="bfop1"></select></td>
+                                        <td>図案書</select></td>
+                                        <td colspan="2"><select id="scroll" name="scrolls"></select></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>製錬OP1</td>
+                                        <td><select id="seirenop1" name="seirenop_1"></select></td>
+                                        <td>製錬OP2</td>
+                                        <td><select id="seirenop2" name="seirenop_2"></select></td>
+                                        <td>製錬OP3</td>
+                                        <td><select id="seirenop3" name="seirenop_3"></select></td>
+                                        <td>製錬OP4</td>
+                                        <td><select id="seirenop4" name="seirenop_4"></select></td>
+                                        <td>製錬Lv</td>
+                                        <td><select id="seirenLv1" name="seirenLv1"></select></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
                 </table>
-                <br>
-                <br>
-
-                <!-- メモ：時間あるときにクリーチャーを選ぶモーダル作りたい。<br> -->
-                <br>
-                <h3>オプション逆引き</h3>
-                欲しい効果を最大限得るためにはどのような組み合わせがベストか探索します。<br>
-                探索したいパッシブスキルを選んで[組み合わせを探す]ボタンを押してください。<br>
-                <span class="color-image１">※注意※　2019/6/18現在の最大値であるSLv50を超える結果が出てくることがあります。</span><br>
-                <br>
-                <!-- メモ：「経験値Lv50にできるペットの組み合わせ」みたいなシミュレータも出したい。<br> -->
-                <a name="2"></a><br>
-                <div id="creature_op">
-                    <form name="optionlist">
-                        <table id="table8">
-                            <tbody>
-                                <tr>
-                                    <th>オプション逆引き</th>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <table id="table9">
-                                            <tbody>
-                                                <tr>
-                                                    <td>探索したいパッシブスキル
-                                                    </td>
-                                                    <td>
-                                                    </td>
-                                                    <td></td>
-                                                    <td id="main_c">
-                                                        <select class="memorize" name="a2">
-                                                        </select>
-                                                    </td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>
-                                                <tr>
-                                                    <td align="center" colspan="7">
-                                                        <br>
-                                                        <input onclick="searchPassiveSkill()" type="button"
-                                                            value="組み合わせを探す！"><br>
-                                                        <br>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td align="center" colspan="7">
-                                                        検索結果
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td align="center" colspan="7">
-                                                        <textarea name="res3" rows="7" cols="80"></textarea>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td align="center" colspan="7">
-                                                        パッシブ状態
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td id="passive_state2" align="left" colspan="3">
-                                                    </td>
-                                                    <td></td>
-                                                    <td></td>
-
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </form>
-                </div>
+                <h5>アイテムプレビュー</h5>
+                ※オプション等は未反映<br>
+                <div id="preview_html"></div>
+                <input type="button" value="このアイテムをセット" onclick="setitem()">
                 <br>
                 <br>
                 <br>
-                <!-- 備考：「全組み合わせ出力して」って要望はナップザック問題になりかねないので計算機科学的に厳しいです。<br> -->
-                [参考] <a href="../information/creature3.html">クリーチャーパッシブ効果一覧</a><br>
                 <br>
                 <br>
-
+                <br>
+                <br>
                 <footer class="android-footer mdl-mega-footer">
                     <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
                         許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
