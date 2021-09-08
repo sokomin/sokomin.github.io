@@ -126,7 +126,7 @@ function calc2() {
 
 function calc3() {
     // 赤石の民衆フォーマットとして使えそうなデータだけに絞りたい時に。
-    subtype = $('input[name="s1"]').val()? Number($('input[name="s1"]').val()) : -1;
+    subtype = $('input[name="s1"]').val() ? Number($('input[name="s1"]').val()) : -1;
     is_simple = false;
     getCSV();
 }
@@ -159,9 +159,9 @@ function createSkillTable() {
         if (JOBID == 32) {
             skill_icon = '<img width="34" height="34" src="https://sokomin.github.io/item/design/image/item/iconItem_1470.png"border="0">';
         }
-        var re=/\\r\\n/g;
+        var re = /\\r\\n/g;
         var skill_txt = data["str_description"].replace(re, "<br>");
-        var re=/。/g;
+        var re = /。/g;
         skill_txt = skill_txt.replace(re, "。<br>");
         if (i > 100000) {
             skill_txt = skill_txt + '<br><font color="#ff0033">[PVP専用]</font>';
@@ -264,7 +264,7 @@ function createSkillTable() {
         } else {
             //通常スキル
             $table = $('<table>').attr("id", "table10").css("min-width", "700px").css("max-width", "1200px").css("text-align", "left")
-            .append($("<colgroup>").append($("<col>").attr("span", 1).attr("width", 130)));
+                .append($("<colgroup>").append($("<col>").attr("span", 1).attr("width", 130)));
             var $tr_Name = $('<tr>');
             var skill_title = '<a name="' + i + '"></a>' + data["str_name"];
             $tr_Name.append($('<th>').append(skill_icon))
@@ -337,7 +337,7 @@ function createSkillTable() {
  * @param  name {string} パラメータのキー文字列
  * @return  url {url} 対象のURL文字列(任意)
  */
- function getParam(name, url) {
+function getParam(name, url) {
     if (!url) url = window.location.href;
     name = name.replace(/[\[\]]/g, "\\$&");
     var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
@@ -388,28 +388,28 @@ function createCostCP(data, mode) {
                     i += 44;
                 }
                 var ccp = Number(data["unknown2_12"]) + Number(data["unknown2_13"]) * i;
-                if (Number(data["unknown2_14"]) > 0 && ccp > Number(data["unknown2_14"]) ) {
+                if (Number(data["unknown2_14"]) > 0 && ccp > Number(data["unknown2_14"])) {
                     ccp = Number(data["unknown2_14"]);
                 }
-                res_html += '<td>' + (Math.round(ccp / 10) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+                res_html += '<td>' + (Math.round(ccp / 10) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
             }
         } else {
-            res_html += '<td colspan="8">' + Number(data["unknown2_12"])/100 +  '</td>'
+            res_html += '<td colspan="8">' + Number(data["unknown2_12"]) / 100 + '</td>'
         }
     } else {
         if (data["unknown2_13"] > 0) {
             for (var i = 1; i <= 50; i++) {
                 var ccp = Number(data["unknown2_12"]) + Number(data["unknown2_13"]) * i;
-                if (Number(data["unknown2_14"]) > 0 && ccp > Number(data["unknown2_14"]) ) {
+                if (Number(data["unknown2_14"]) > 0 && ccp > Number(data["unknown2_14"])) {
                     ccp = Number(data["unknown2_14"]);
                 }
-                res_html += '<td>' + (Math.round(ccp / 10) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+                res_html += '<td>' + (Math.round(ccp / 10) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
                 if (i >= 10) {
                     i += 9;
                 }
             }
         } else {
-            res_html += '<td colspan="14">' + (Math.round(Number(data["unknown2_12"]) / 10) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+            res_html += '<td colspan="14">' + (Math.round(Number(data["unknown2_12"]) / 10) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
         }
     }
     res_html += "</tr>"
@@ -430,10 +430,10 @@ function createGetCP(data, mode) {
                 // if (Number(data["unknown2_17"]) > 0 && ccp > Number(data["unknown2_17"]) ) {
                 //     ccp = Number(data["unknown2_17"]);
                 // }
-                res_html += '<td>' + (Math.round(ccp / 10) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+                res_html += '<td>' + (Math.round(ccp / 10) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
             }
         } else {
-            res_html += '<td colspan="8">' + Number(data["unknown2_15"])/100 +  '</td>'
+            res_html += '<td colspan="8">' + Number(data["unknown2_15"]) / 100 + '</td>'
         }
     } else {
         if (data["unknown2_16"] > 0) {
@@ -442,13 +442,13 @@ function createGetCP(data, mode) {
                 // if (Number(data["unknown2_17"]) > 0 && ccp > Number(data["unknown2_17"]) ) {
                 //     ccp = Number(data["unknown2_17"]);
                 // }
-                res_html += '<td>' + (Math.round(ccp / 10) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+                res_html += '<td>' + (Math.round(ccp / 10) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
                 if (i >= 10) {
                     i += 9;
                 }
             }
         } else {
-            res_html += '<td colspan="14">' + (Math.round(Number(data["unknown2_15"]) / 10) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+            res_html += '<td colspan="14">' + (Math.round(Number(data["unknown2_15"]) / 10) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
         }
     }
     res_html += "</tr>"
@@ -476,7 +476,7 @@ function createGetDamage(data, mode) {
                     }
                 }
             } else {
-                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_136"]) / 10) +  '</td>'
+                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_136"]) / 10) + '</td>'
             }
         }
         // 火属性覚醒
@@ -493,15 +493,15 @@ function createGetDamage(data, mode) {
                         // ダメージ幅 パターン１
                         var min = ccp - Number(data["unknown2_146"]) / 10;
                         min = (Math.round(min / 10))
-                        var max = ccp +  Number(data["unknown2_146"]) / 10;
+                        var max = ccp + Number(data["unknown2_146"]) / 10;
                         max = (Math.round(max / 10))
                         res_html += '<td>' + min + '～' + max + '</td>'
 
                     } else if (Number(data["unknown2_147"]) > 0) {
                         // ダメージ幅パターン２：レベル連動
-                        var min = ccp -  i * Number(data["unknown2_147"]) / 10;
+                        var min = ccp - i * Number(data["unknown2_147"]) / 10;
                         min = (Math.round(min / 10))
-                        var max = ccp +  i * Number(data["unknown2_147"]) / 10;
+                        var max = ccp + i * Number(data["unknown2_147"]) / 10;
                         max = (Math.round(max / 10))
                         res_html += '<td>' + min + '～' + max + '</td>'
                     } else {
@@ -509,7 +509,7 @@ function createGetDamage(data, mode) {
                     }
                 }
             } else {
-                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_144"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_144"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
             }
         }
         //水属性覚醒
@@ -526,15 +526,15 @@ function createGetDamage(data, mode) {
                         // ダメージ幅 パターン１
                         var min = ccp - Number(data["unknown2_153"]) / 10;
                         min = (Math.round(min / 10))
-                        var max = ccp +  Number(data["unknown2_153"]) / 10;
+                        var max = ccp + Number(data["unknown2_153"]) / 10;
                         max = (Math.round(max / 10))
                         res_html += '<td>' + min + '～' + max + '</td>'
 
                     } else if (Number(data["unknown2_154"]) > 0) {
                         // ダメージ幅パターン２：レベル連動
-                        var min = ccp -  i * Number(data["unknown2_154"]) / 10;
+                        var min = ccp - i * Number(data["unknown2_154"]) / 10;
                         min = (Math.round(min / 10))
-                        var max = ccp +  i * Number(data["unknown2_154"]) / 10;
+                        var max = ccp + i * Number(data["unknown2_154"]) / 10;
                         max = (Math.round(max / 10))
                         res_html += '<td>' + min + '～' + max + '</td>'
                     } else {
@@ -542,7 +542,7 @@ function createGetDamage(data, mode) {
                     }
                 }
             } else {
-                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_151"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_151"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
             }
         }
         //風属性覚醒
@@ -559,15 +559,15 @@ function createGetDamage(data, mode) {
                         // ダメージ幅 パターン１
                         var min = ccp - Number(data["unknown2_160"]) / 10;
                         min = (Math.round(min / 10))
-                        var max = ccp +  Number(data["unknown2_160"]) / 10;
+                        var max = ccp + Number(data["unknown2_160"]) / 10;
                         max = (Math.round(max / 10))
                         res_html += '<td>' + min + '～' + max + '</td>'
 
                     } else if (Number(data["unknown2_161"]) > 0) {
                         // ダメージ幅パターン２：レベル連動
-                        var min = ccp -  i * Number(data["unknown2_161"]) / 10;
+                        var min = ccp - i * Number(data["unknown2_161"]) / 10;
                         min = (Math.round(min / 10))
-                        var max = ccp +  i * Number(data["unknown2_161"]) / 10;
+                        var max = ccp + i * Number(data["unknown2_161"]) / 10;
                         max = (Math.round(max / 10))
                         res_html += '<td>' + min + '～' + max + '</td>'
                     } else {
@@ -575,7 +575,7 @@ function createGetDamage(data, mode) {
                     }
                 }
             } else {
-                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_158"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_158"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
             }
         }
         //大地属性覚醒
@@ -592,15 +592,15 @@ function createGetDamage(data, mode) {
                         // ダメージ幅 パターン１
                         var min = ccp - Number(data["unknown2_167"]) / 10;
                         min = (Math.round(min / 10))
-                        var max = ccp +  Number(data["unknown2_167"]) / 10;
+                        var max = ccp + Number(data["unknown2_167"]) / 10;
                         max = (Math.round(max / 10))
                         res_html += '<td>' + min + '～' + max + '</td>'
 
                     } else if (Number(data["unknown2_168"]) > 0) {
                         // ダメージ幅パターン２：レベル連動
-                        var min = ccp -  i * Number(data["unknown2_168"]) / 10;
+                        var min = ccp - i * Number(data["unknown2_168"]) / 10;
                         min = (Math.round(min / 10))
-                        var max = ccp +  i * Number(data["unknown2_168"]) / 10;
+                        var max = ccp + i * Number(data["unknown2_168"]) / 10;
                         max = (Math.round(max / 10))
                         res_html += '<td>' + min + '～' + max + '</td>'
                     } else {
@@ -608,7 +608,7 @@ function createGetDamage(data, mode) {
                     }
                 }
             } else {
-                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_165"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_165"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
             }
         }
         //光属性覚醒
@@ -625,15 +625,15 @@ function createGetDamage(data, mode) {
                         // ダメージ幅 パターン１
                         var min = ccp - Number(data["unknown2_174"]) / 10;
                         min = (Math.round(min / 10))
-                        var max = ccp +  Number(data["unknown2_174"]) / 10;
+                        var max = ccp + Number(data["unknown2_174"]) / 10;
                         max = (Math.round(max / 10))
                         res_html += '<td>' + min + '～' + max + '</td>'
 
                     } else if (Number(data["unknown2_175"]) > 0) {
                         // ダメージ幅パターン２：レベル連動
-                        var min = ccp -  i * Number(data["unknown2_175"]) / 10;
+                        var min = ccp - i * Number(data["unknown2_175"]) / 10;
                         min = (Math.round(min / 10))
-                        var max = ccp +  i * Number(data["unknown2_175"]) / 10;
+                        var max = ccp + i * Number(data["unknown2_175"]) / 10;
                         max = (Math.round(max / 10))
                         res_html += '<td>' + min + '～' + max + '</td>'
                     } else {
@@ -641,7 +641,7 @@ function createGetDamage(data, mode) {
                     }
                 }
             } else {
-                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_172"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_172"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
             }
         }
         //闇属性覚醒
@@ -658,15 +658,15 @@ function createGetDamage(data, mode) {
                         // ダメージ幅 パターン１
                         var min = ccp - Number(data["unknown2_181"]) / 10;
                         min = (Math.round(min / 10))
-                        var max = ccp +  Number(data["unknown2_181"]) / 10;
+                        var max = ccp + Number(data["unknown2_181"]) / 10;
                         max = (Math.round(max / 10))
                         res_html += '<td>' + min + '～' + max + '</td>'
 
                     } else if (Number(data["unknown2_182"]) > 0) {
                         // ダメージ幅パターン２：レベル連動
-                        var min = ccp -  i * Number(data["unknown2_182"]) / 10;
+                        var min = ccp - i * Number(data["unknown2_182"]) / 10;
                         min = (Math.round(min / 10))
-                        var max = ccp +  i * Number(data["unknown2_182"]) / 10;
+                        var max = ccp + i * Number(data["unknown2_182"]) / 10;
                         max = (Math.round(max / 10))
                         res_html += '<td>' + min + '～' + max + '</td>'
                     } else {
@@ -674,7 +674,7 @@ function createGetDamage(data, mode) {
                     }
                 }
             } else {
-                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_179"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_179"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
             }
         }
 
@@ -695,7 +695,7 @@ function createGetDamage(data, mode) {
                     }
                 }
             } else {
-                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_136"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '％</td>'
+                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_136"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '％</td>'
             }
         }
         // 通常炎
@@ -708,15 +708,15 @@ function createGetDamage(data, mode) {
                         // ダメージ幅 パターン１
                         var min = ccp - Number(data["unknown2_146"]) / 10;
                         min = (Math.round(min / 10))
-                        var max = ccp +  Number(data["unknown2_146"]) / 10;
+                        var max = ccp + Number(data["unknown2_146"]) / 10;
                         max = (Math.round(max / 10))
                         res_html += '<td>' + min + '～' + max + '</td>'
 
                     } else if (Number(data["unknown2_147"]) > 0) {
                         // ダメージ幅パターン２：レベル連動
-                        var min = ccp -  i * Number(data["unknown2_147"]) / 10;
+                        var min = ccp - i * Number(data["unknown2_147"]) / 10;
                         min = (Math.round(min / 10))
-                        var max = ccp +  i * Number(data["unknown2_147"]) / 10;
+                        var max = ccp + i * Number(data["unknown2_147"]) / 10;
                         max = (Math.round(max / 10))
                         res_html += '<td>' + min + '～' + max + '</td>'
                     } else {
@@ -727,7 +727,7 @@ function createGetDamage(data, mode) {
                     }
                 }
             } else {
-                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_144"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_144"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
             }
         }
         // 通常水
@@ -740,15 +740,15 @@ function createGetDamage(data, mode) {
                         // ダメージ幅 パターン１
                         var min = ccp - Number(data["unknown2_153"]) / 10;
                         min = (Math.round(min / 10))
-                        var max = ccp +  Number(data["unknown2_153"]) / 10;
+                        var max = ccp + Number(data["unknown2_153"]) / 10;
                         max = (Math.round(max / 10))
                         res_html += '<td>' + min + '～' + max + '</td>'
 
                     } else if (Number(data["unknown2_154"]) > 0) {
                         // ダメージ幅パターン２：レベル連動
-                        var min = ccp -  i * Number(data["unknown2_154"]) / 10;
+                        var min = ccp - i * Number(data["unknown2_154"]) / 10;
                         min = (Math.round(min / 10))
-                        var max = ccp +  i * Number(data["unknown2_154"]) / 10;
+                        var max = ccp + i * Number(data["unknown2_154"]) / 10;
                         max = (Math.round(max / 10))
                         res_html += '<td>' + min + '～' + max + '</td>'
                     } else {
@@ -759,7 +759,7 @@ function createGetDamage(data, mode) {
                     }
                 }
             } else {
-                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_151"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_151"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
             }
         }
         // 通常風
@@ -772,15 +772,15 @@ function createGetDamage(data, mode) {
                         // ダメージ幅 パターン１
                         var min = ccp - Number(data["unknown2_160"]) / 10;
                         min = (Math.round(min / 10))
-                        var max = ccp +  Number(data["unknown2_160"]) / 10;
+                        var max = ccp + Number(data["unknown2_160"]) / 10;
                         max = (Math.round(max / 10))
                         res_html += '<td>' + min + '～' + max + '</td>'
 
                     } else if (Number(data["unknown2_161"]) > 0) {
                         // ダメージ幅パターン２：レベル連動
-                        var min = ccp -  i * Number(data["unknown2_161"]) / 10;
+                        var min = ccp - i * Number(data["unknown2_161"]) / 10;
                         min = (Math.round(min / 10))
-                        var max = ccp +  i * Number(data["unknown2_161"]) / 10;
+                        var max = ccp + i * Number(data["unknown2_161"]) / 10;
                         max = (Math.round(max / 10))
                         res_html += '<td>' + min + '～' + max + '</td>'
                     } else {
@@ -791,7 +791,7 @@ function createGetDamage(data, mode) {
                     }
                 }
             } else {
-                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_158"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_158"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
             }
         }
         // 通常大地
@@ -804,15 +804,15 @@ function createGetDamage(data, mode) {
                         // ダメージ幅 パターン１
                         var min = ccp - Number(data["unknown2_167"]) / 10;
                         min = (Math.round(min / 10))
-                        var max = ccp +  Number(data["unknown2_167"]) / 10;
+                        var max = ccp + Number(data["unknown2_167"]) / 10;
                         max = (Math.round(max / 10))
                         res_html += '<td>' + min + '～' + max + '</td>'
 
                     } else if (Number(data["unknown2_168"]) > 0) {
                         // ダメージ幅パターン２：レベル連動
-                        var min = ccp -  i * Number(data["unknown2_168"]) / 10;
+                        var min = ccp - i * Number(data["unknown2_168"]) / 10;
                         min = (Math.round(min / 10))
-                        var max = ccp +  i * Number(data["unknown2_168"]) / 10;
+                        var max = ccp + i * Number(data["unknown2_168"]) / 10;
                         max = (Math.round(max / 10))
                         res_html += '<td>' + min + '～' + max + '</td>'
                     } else {
@@ -823,7 +823,7 @@ function createGetDamage(data, mode) {
                     }
                 }
             } else {
-                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_165"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_165"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
             }
         }
         // 通常光
@@ -836,15 +836,15 @@ function createGetDamage(data, mode) {
                         // ダメージ幅 パターン１
                         var min = ccp - Number(data["unknown2_174"]) / 10;
                         min = (Math.round(min / 10))
-                        var max = ccp +  Number(data["unknown2_174"]) / 10;
+                        var max = ccp + Number(data["unknown2_174"]) / 10;
                         max = (Math.round(max / 10))
                         res_html += '<td>' + min + '～' + max + '</td>'
 
                     } else if (Number(data["unknown2_175"]) > 0) {
                         // ダメージ幅パターン２：レベル連動
-                        var min = ccp -  i * Number(data["unknown2_175"]) / 10;
+                        var min = ccp - i * Number(data["unknown2_175"]) / 10;
                         min = (Math.round(min / 10))
-                        var max = ccp +  i * Number(data["unknown2_175"]) / 10;
+                        var max = ccp + i * Number(data["unknown2_175"]) / 10;
                         max = (Math.round(max / 10))
                         res_html += '<td>' + min + '～' + max + '</td>'
                     } else {
@@ -855,7 +855,7 @@ function createGetDamage(data, mode) {
                     }
                 }
             } else {
-                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_172"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_172"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
             }
         }
         // 通常闇
@@ -868,15 +868,15 @@ function createGetDamage(data, mode) {
                         // ダメージ幅 パターン１
                         var min = ccp - Number(data["unknown2_181"]) / 10;
                         min = (Math.round(min / 10))
-                        var max = ccp +  Number(data["unknown2_181"]) / 10;
+                        var max = ccp + Number(data["unknown2_181"]) / 10;
                         max = (Math.round(max / 10))
                         res_html += '<td>' + min + '～' + max + '</td>'
 
                     } else if (Number(data["unknown2_182"]) > 0) {
                         // ダメージ幅パターン２：レベル連動
-                        var min = ccp -  i * Number(data["unknown2_182"]) / 10;
+                        var min = ccp - i * Number(data["unknown2_182"]) / 10;
                         min = (Math.round(min / 10))
-                        var max = ccp +  i * Number(data["unknown2_182"]) / 10;
+                        var max = ccp + i * Number(data["unknown2_182"]) / 10;
                         max = (Math.round(max / 10))
                         res_html += '<td>' + min + '～' + max + '</td>'
                     } else {
@@ -887,7 +887,7 @@ function createGetDamage(data, mode) {
                     }
                 }
             } else {
-                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_179"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '</td>'
+                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_179"]) / 10).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '</td>'
             }
         }
 
@@ -916,18 +916,18 @@ function createGetSubInfo(data, mode) {
                 }
                 if (min > 0) {
                     var slv = 50 + Math.ceil((Number(data["unknown2_94"]) - Number(data["unknown2_92"])) / Number(data["unknown2_93"]))
-                    reflimit += "クールタイム最小: " + Math.round(min / 100) + "秒 (SLv" +slv + ")<br>"
+                    reflimit += "クールタイム最小: " + Math.round(min / 100) + "秒 (SLv" + slv + ")<br>"
                 }
 
             } else {
-                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_92"]) / 100) +  '秒</td>'
+                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_92"]) / 100) + '秒</td>'
             }
             res_html += "</tr>";
         }
         //最小距離
         if (data["unknown2_641"] > 0) {
             res_html += "<tr><th>最小距離</th>"
-            res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_641"]))/100 +  'm</td>'
+            res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_641"])) / 100 + 'm</td>'
             res_html += "</tr>";
         }
         //最大距離
@@ -940,15 +940,15 @@ function createGetSubInfo(data, mode) {
                         i += 44;
                     }
                     var ccp = Number(data["unknown2_642"]) + Number(data["unknown2_643"]) * i;
-                    res_html += '<td>' + Math.round(ccp)/100 + 'm</td>'
+                    res_html += '<td>' + Math.round(ccp) / 100 + 'm</td>'
                 }
             } else {
-                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_642"]))/100 +  'm</td>'
+                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_642"])) / 100 + 'm</td>'
             }
             res_html += "</tr>";
         }
         //攻撃範囲
-        if (data["unknown2_648"]  > 0) {
+        if (data["unknown2_648"] > 0) {
             res_html += "<tr><th>攻撃範囲</th>"
             if (Number(data["unknown2_649"]) > 0) {
                 var lim = Number(data["unknown2_650"]);
@@ -957,30 +957,72 @@ function createGetSubInfo(data, mode) {
                         res_html += '<td>...</td>'
                         i += 44;
                     }
-                    var ccp = Number(data["unknown2_648"]) + Number(data["unknown2_649"])/10 * i;
+                    var ccp = Number(data["unknown2_648"]) + Number(data["unknown2_649"]) / 10 * i;
                     if (lim > 0 && lim < ccp) {
                         ccp = lim;
                     }
                     // 初項の時点でおかしかったら初項優先（多分バグ）
                     if (i == 1 && lim < ccp) {
                         console.log(data["str_name"] + "のデータがおかしい。攻撃範囲:" + lim);
-                        ccp = Number(data["unknown2_648"]) + Number(data["unknown2_649"])/10 * i;
-                        res_html += '<td colspan="8">' + Math.round(ccp / 10)/100 +  'm</td>'
+                        ccp = Number(data["unknown2_648"]) + Number(data["unknown2_649"]) / 10 * i;
+                        res_html += '<td colspan="8">' + Math.round(ccp / 10) / 100 + 'm</td>'
                         break;
                     }
-                    res_html += '<td>' + Math.round(ccp / 10)/100 + 'm</td>'
+                    res_html += '<td>' + Math.round(ccp / 10) / 100 + 'm</td>'
                 }
                 if (lim > 0) {
                     var slv = 49 + Math.ceil((Number(data["unknown2_650"]) - Number(data["unknown2_648"])) * 10 / Number(data["unknown2_649"]))
-                    reflimit += "攻撃範囲最大: " + Math.round(lim / 100)/10 + "m (SLv" +slv + ")<br>"
+                    reflimit += "攻撃範囲最大: " + Math.round(lim / 100) / 10 + "m (SLv" + slv + ")<br>"
                 }
             } else {
-                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_648"]) / 100)/10 +  'm</td>'
+                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_648"]) / 100) / 10 + 'm</td>'
+            }
+            res_html += "</tr>";
+        }
+        //命中率
+        if (Number(data["unknown2_654"]) != 0) {
+            res_html += "<tr><th>命中率</th>"
+            if (Number(data["unknown2_655"]) != 0) {
+                for (var i = 1; i <= 50; i++) {
+                    if (i >= 7) {
+                        res_html += '<td>...</td>'
+                        i += 44;
+                    }
+                    var ccp = Number(data["unknown2_654"]) + Number(data["unknown2_655"]) * i;
+                    res_html += '<td>' + Math.round(ccp / 10) / 10 + '%</td>'
+                }
+            } else {
+                if (Number(data["unknown2_656"]) != 0) {
+                    res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_656"]) / 10) / 10 + '%固定</td>'
+                } else {
+                    res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_654"]) / 10) / 10 + '%</td>'
+                }
+            }
+            res_html += "</tr>";
+        }
+        //回避率
+        if (Number(data["unknown2_657"]) != 0) {
+            res_html += "<tr><th>回避率</th>"
+            if (Number(data["unknown2_658"]) != 0) {
+                for (var i = 1; i <= 50; i++) {
+                    if (i >= 7) {
+                        res_html += '<td>...</td>'
+                        i += 44;
+                    }
+                    var ccp = Number(data["unknown2_657"]) + Number(data["unknown2_658"]) * i;
+                    res_html += '<td>' + Math.round(ccp / 10) / 10 + '%</td>'
+                }
+            } else {
+                if (Number(data["unknown2_659"]) != 0) {
+                    res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_659"]) / 10) / 10 + '%固定</td>'
+                } else {
+                    res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_657"]) / 10) / 10 + '%</td>'
+                }
             }
             res_html += "</tr>";
         }
         //攻撃回数
-        if (data["unknown2_722"]  > 0) {
+        if (data["unknown2_722"] > 0) {
             res_html += "<tr><th>攻撃回数</th>"
             if (Number(data["unknown2_723"]) > 0) {
                 var lim = Number(data["unknown2_721"]);
@@ -994,24 +1036,24 @@ function createGetSubInfo(data, mode) {
                         i += 44;
                     }
                     var ccp = Number(data["unknown2_722"]) + Number(data["unknown2_723"]) * i;
-                    if (lim > 0 && lim < ccp/ 100) {
+                    if (lim > 0 && lim < ccp / 100) {
                         ccp = lim * 100;
                     }
                     // 初項の時点でおかしかったら初項優先（多分バグ）
                     if (i == 1 && lim < ccp / 100) {
                         console.log(data["str_name"] + "のデータがおかしい。攻撃回数:" + lim);
                         ccp = Number(data["unknown2_722"]) + Number(data["unknown2_723"]) * i;
-                        res_html += '<td colspan="8">' + Math.round(ccp) / 100 +  '回</td>'
+                        res_html += '<td colspan="8">' + Math.round(ccp) / 100 + '回</td>'
                         break;
                     }
                     res_html += '<td>' + Math.round(ccp) / 100 + '</td>'
                 }
                 if (lim > 0) {
                     var slv = 49 + Math.ceil(lim * 100 - Number(data["unknown2_722"])) / Number(data["unknown2_723"])
-                    reflimit += "攻撃回数最大: " + Math.round(lim) + "回 (SLv" +slv + ")<br>"
+                    reflimit += "攻撃回数最大: " + Math.round(lim) + "回 (SLv" + slv + ")<br>"
                 }
             } else {
-                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_722"]))/100 +  '回</td>'
+                res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_722"])) / 100 + '回</td>'
             }
             res_html += "</tr>";
         }
@@ -1034,17 +1076,17 @@ function createGetSubInfo(data, mode) {
                 }
                 if (min > 0) {
                     var slv = Math.ceil((Number(data["unknown2_94"]) - Number(data["unknown2_92"])) / Number(data["unknown2_93"]))
-                    reflimit += "クールタイム最小: " + Math.round(min / 100)+ "秒 (SLv" +slv + ")<br>"
+                    reflimit += "クールタイム最小: " + Math.round(min / 100) + "秒 (SLv" + slv + ")<br>"
                 }
             } else {
-                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_92"]) / 100).toLocaleString(undefined, { maximumFractionDigits: 2 }) +  '秒</td>'
+                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_92"]) / 100).toLocaleString(undefined, { maximumFractionDigits: 2 }) + '秒</td>'
             }
             res_html += "</tr>";
         }
         //最小距離
         if (data["unknown2_641"] > 0) {
             res_html += "<tr><th>最小距離</th>"
-            res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_641"]))/100 +  'm</td>'
+            res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_641"])) / 100 + 'm</td>'
             res_html += "</tr>";
         }
         //最大距離
@@ -1059,25 +1101,25 @@ function createGetSubInfo(data, mode) {
                     }
                 }
             } else {
-                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_642"]))/100 +  'm</td>'
+                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_642"])) / 100 + 'm</td>'
             }
             res_html += "</tr>";
         }
         //攻撃範囲
-        if (data["unknown2_648"]  > 0) {
+        if (data["unknown2_648"] > 0) {
             res_html += "<tr><th>攻撃範囲</th>"
             if (Number(data["unknown2_649"]) > 0) {
                 var lim = Number(data["unknown2_650"]);
                 for (var i = 1; i <= 50; i++) {
-                    var ccp = Number(data["unknown2_648"]) + Number(data["unknown2_649"])/10 * i;
+                    var ccp = Number(data["unknown2_648"]) + Number(data["unknown2_649"]) / 10 * i;
                     if (lim > 0 && lim < ccp) {
                         ccp = lim;
                     }
                     // 初項の時点でおかしかったら初項優先（多分バグ）
                     if (i == 1 && lim < ccp) {
                         console.log(data["str_name"] + "のデータがおかしい。攻撃範囲:" + lim);
-                        ccp = Number(data["unknown2_648"]) + Number(data["unknown2_649"])/10 * i;
-                        res_html += '<td colspan="14">' + Math.round(ccp / 10)/100 +  'm</td>'
+                        ccp = Number(data["unknown2_648"]) + Number(data["unknown2_649"]) / 10 * i;
+                        res_html += '<td colspan="14">' + Math.round(ccp / 10) / 100 + 'm</td>'
                         break;
                     }
                     res_html += '<td>' + Math.round(ccp / 10) / 100 + 'm</td>'
@@ -1087,15 +1129,56 @@ function createGetSubInfo(data, mode) {
                 }
                 if (lim > 0) {
                     var slv = Math.ceil((Number(data["unknown2_650"]) - Number(data["unknown2_648"])) * 10 / Number(data["unknown2_649"]))
-                    reflimit += "攻撃範囲最大: " + Math.round(lim / 100)/10 + "m (SLv" +slv + ")<br>"
+                    reflimit += "攻撃範囲最大: " + Math.round(lim / 100) / 10 + "m (SLv" + slv + ")<br>"
                 }
             } else {
-                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_648"]) / 100)/10 +  'm</td>'
+                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_648"]) / 100) / 10 + 'm</td>'
             }
             res_html += "</tr>";
         }
+        //命中率
+        if (Number(data["unknown2_654"]) != 0) {
+            res_html += "<tr><th>命中率</th>"
+            if (Number(data["unknown2_655"]) != 0) {
+                for (var i = 1; i <= 50; i++) {
+                    var ccp = Number(data["unknown2_654"]) + Number(data["unknown2_655"]) * i;
+                    res_html += '<td>' + Math.round(ccp / 10) / 10 + '%</td>'
+                    if (i >= 10) {
+                        i += 9;
+                    }
+                }
+            } else {
+                if (Number(data["unknown2_656"]) != 0) {
+                    res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_656"]) / 10) / 10 + '%固定</td>'
+                } else {
+                    res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_654"]) / 10) / 10 + '%</td>'
+                }
+            }
+            res_html += "</tr>";
+        }
+        //回避率
+        if (Number(data["unknown2_657"]) != 0) {
+            res_html += "<tr><th>回避率</th>"
+            if (Number(data["unknown2_658"]) != 0) {
+                for (var i = 1; i <= 50; i++) {
+                    var ccp = Number(data["unknown2_657"]) + Number(data["unknown2_658"]) * i;
+                    res_html += '<td>' + Math.round(ccp / 10) / 10 + '%</td>'
+                    if (i >= 10) {
+                        i += 9;
+                    }
+                }
+            } else {
+                if (Number(data["unknown2_659"]) != 0) {
+                    res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_659"]) / 10) / 10 + '%固定</td>'
+                } else {
+                    res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_657"]) / 10) / 10 + '%</td>'
+                }
+            }
+            res_html += "</tr>";
+        }
+
         //攻撃回数
-        if (data["unknown2_722"]  > 0) {
+        if (data["unknown2_722"] > 0) {
             res_html += "<tr><th>攻撃回数</th>"
             if (Number(data["unknown2_723"]) > 0) {
                 var lim = Number(data["unknown2_721"]);
@@ -1105,14 +1188,14 @@ function createGetSubInfo(data, mode) {
                 }
                 for (var i = 1; i <= 50; i++) {
                     var ccp = Number(data["unknown2_722"]) + Number(data["unknown2_723"]) * i;
-                    if (lim > 0 && lim < ccp/100) {
+                    if (lim > 0 && lim < ccp / 100) {
                         ccp = lim * 100;
                     }
                     // 初項の時点でおかしかったら初項優先（多分バグ）
-                    if (i == 1 && lim < ccp/100) {
+                    if (i == 1 && lim < ccp / 100) {
                         console.log(data["str_name"] + "のデータがおかしい。攻撃回数:" + lim);
                         ccp = Number(data["unknown2_722"]) + Number(data["unknown2_723"]) * i;
-                        res_html += '<td colspan="14">' + Math.round(ccp) / 100 +  '回</td>'
+                        res_html += '<td colspan="14">' + Math.round(ccp) / 100 + '回</td>'
                         break;
                     }
                     res_html += '<td>' + Math.round(ccp) / 100 + '</td>'
@@ -1122,14 +1205,14 @@ function createGetSubInfo(data, mode) {
                 }
                 if (lim > 0) {
                     var slv = Math.ceil((lim * 100 - Number(data["unknown2_722"])) / Number(data["unknown2_723"]))
-                    reflimit += "攻撃回数最大: " + Math.round(lim) + "回 (SLv" +slv + ")<br>"
+                    reflimit += "攻撃回数最大: " + Math.round(lim) + "回 (SLv" + slv + ")<br>"
                 }
             } else {
-                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_722"]))/100 +  '回</td>'
+                res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_722"])) / 100 + '回</td>'
             }
             res_html += "</tr>";
         }
-        
+
     }
     return res_html;
 }
@@ -1164,18 +1247,18 @@ function createGetBuff(data, mode, DEBUG) {
                 var tmp = cnt + 1;
                 if (Number(data["unknown2_" + tmp]) != 0) {
                     res_html += "<tr><th>" + txt + "確率</th>"
-                    if (Number(data["unknown2_"+(tmp+1)]) != 0) {
+                    if (Number(data["unknown2_" + (tmp + 1)]) != 0) {
                         for (var i = 1; i <= 50; i++) {
                             if (i >= 7) {
                                 res_html += '<td>...</td>'
                                 i += 44;
                             }
-                            var ccp = Number(data["unknown2_"+tmp]) + Number(data["unknown2_"+(tmp+1)]) * i;
+                            var ccp = Number(data["unknown2_" + tmp]) + Number(data["unknown2_" + (tmp + 1)]) * i;
                             res_html += '<td>' + Math.round(ccp / 100) + '%</td>'
                         }
                         res_html += "</tr>";
                     } else {
-                        res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_"+tmp]) / 100) +  '%</td></tr>'
+                        res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_" + tmp]) / 100) + '%</td></tr>'
                     }
                 } else {
                     // 定義無し
@@ -1184,18 +1267,18 @@ function createGetBuff(data, mode, DEBUG) {
                 var tmp = cnt + 3;
                 if (Number(data["unknown2_" + tmp]) != 0) {
                     res_html += "<tr><th>" + txt + "時間</th>"
-                    if (Number(data["unknown2_"+(tmp+1)]) != 0) {
+                    if (Number(data["unknown2_" + (tmp + 1)]) != 0) {
                         for (var i = 1; i <= 50; i++) {
                             if (i >= 7) {
                                 res_html += '<td>...</td>'
                                 i += 44;
                             }
-                            var ccp = Number(data["unknown2_"+tmp]) + Number(data["unknown2_"+(tmp+1)]) * i;
+                            var ccp = Number(data["unknown2_" + tmp]) + Number(data["unknown2_" + (tmp + 1)]) * i;
                             res_html += '<td>' + Math.round(ccp / 10) + '秒</td>'
                         }
                         res_html += "</tr>";
                     } else {
-                        res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_"+tmp]) / 10) +  '秒</td></tr>'
+                        res_html += '<td colspan="8">' + Math.round(Number(data["unknown2_" + tmp]) / 10) + '秒</td></tr>'
                     }
                 } else {
                     // 定義無し
@@ -1207,7 +1290,7 @@ function createGetBuff(data, mode, DEBUG) {
                     // 計算式が定義されてるかどうか？
                     if (Number(data["unknown2_" + (tmp + 1)]) <= 0) {
                         if (Number(data["unknown2_" + (tmp + 2)]) != 0) {
-                            var lim = Number(data["unknown2_"+ (tmp + 4)]);
+                            var lim = Number(data["unknown2_" + (tmp + 4)]);
                             for (var i = 1; i <= 50; i++) {
                                 if (i >= 7) {
                                     res_html += '<td>...</td>'
@@ -1219,11 +1302,11 @@ function createGetBuff(data, mode, DEBUG) {
                                 // if (lim > ccp) {
                                 //     ccp = lim;
                                 // 
-                                res_html += '<td>' + Math.round(ccp / 10)/10 + '</td>'
+                                res_html += '<td>' + Math.round(ccp / 10) / 10 + '</td>'
                             }
                             if (lim > 0) {
                                 var slv = 49 + Math.ceil((lim - Number(data["unknown2_" + tmp])) / Number(data["unknown2_" + (tmp + 2)]))
-                                reflimit += txt + "上限: " + Math.round(lim / 100)+ " (SLv" +slv + ")<br>"
+                                reflimit += txt + "上限: " + Math.round(lim / 100) + " (SLv" + slv + ")<br>"
                             }
                             res_html += "</tr>";
                         } else {
@@ -1273,9 +1356,9 @@ function createGetBuff(data, mode, DEBUG) {
                 var tmp = cnt + 1;
                 if (Number(data["unknown2_" + tmp]) != 0) {
                     res_html += "<tr><th>" + txt + "確率</th>"
-                    if (Number(data["unknown2_"+(tmp+1)]) != 0) {
+                    if (Number(data["unknown2_" + (tmp + 1)]) != 0) {
                         for (var i = 1; i <= 50; i++) {
-                            var ccp = Number(data["unknown2_"+tmp]) + Number(data["unknown2_"+(tmp+1)]) * i;
+                            var ccp = Number(data["unknown2_" + tmp]) + Number(data["unknown2_" + (tmp + 1)]) * i;
                             res_html += '<td>' + Math.round(ccp / 100) + '%</td>'
                             if (i >= 10) {
                                 i += 9;
@@ -1283,7 +1366,7 @@ function createGetBuff(data, mode, DEBUG) {
                         }
                         res_html += "</tr>";
                     } else {
-                        res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_"+tmp]) / 100) +  '%</td></tr>'
+                        res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_" + tmp]) / 100) + '%</td></tr>'
                     }
                 } else {
                     // 定義無し
@@ -1292,9 +1375,9 @@ function createGetBuff(data, mode, DEBUG) {
                 var tmp = cnt + 3;
                 if (Number(data["unknown2_" + tmp]) != 0) {
                     res_html += "<tr><th>" + txt + "時間</th>"
-                    if (Number(data["unknown2_"+(tmp+1)]) != 0) {
+                    if (Number(data["unknown2_" + (tmp + 1)]) != 0) {
                         for (var i = 1; i <= 50; i++) {
-                            var ccp = Number(data["unknown2_"+tmp]) + Number(data["unknown2_"+(tmp+1)]) * i;
+                            var ccp = Number(data["unknown2_" + tmp]) + Number(data["unknown2_" + (tmp + 1)]) * i;
                             res_html += '<td>' + Math.round(ccp / 10) + '秒</td>'
                             if (i >= 10) {
                                 i += 9;
@@ -1302,7 +1385,7 @@ function createGetBuff(data, mode, DEBUG) {
                         }
                         res_html += "</tr>";
                     } else {
-                        res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_"+tmp]) / 10) +  '秒</td></tr>'
+                        res_html += '<td colspan="14">' + Math.round(Number(data["unknown2_" + tmp]) / 10) + '秒</td></tr>'
                     }
                 } else {
                     // 定義無し
@@ -1314,7 +1397,7 @@ function createGetBuff(data, mode, DEBUG) {
                     // 計算式が定義されてるかどうか？
                     if (Number(data["unknown2_" + (tmp + 1)]) <= 0) {
                         if (Number(data["unknown2_" + (tmp + 2)]) != 0) {
-                            var lim = Number(data["unknown2_"+ (tmp + 4)]);
+                            var lim = Number(data["unknown2_" + (tmp + 4)]);
                             for (var i = 1; i <= 50; i++) {
                                 // FIXME 全部1/100であってるのか？
                                 var ccp = Number(data["unknown2_" + tmp]) + Number(data["unknown2_" + (tmp + 2)]) * i;
@@ -1322,14 +1405,14 @@ function createGetBuff(data, mode, DEBUG) {
                                 // if (lim > ccp) {
                                 //     ccp = lim;
                                 // 
-                                res_html += '<td>' + Math.round(ccp / 10)/10 + '</td>'
+                                res_html += '<td>' + Math.round(ccp / 10) / 10 + '</td>'
                                 if (i >= 10) {
                                     i += 9;
                                 }
                             }
                             if (lim > 0) {
                                 var slv = Math.ceil((lim - Number(data["unknown2_" + tmp])) / Number(data["unknown2_" + (tmp + 2)]))
-                                reflimit += txt + "上限: " + Math.round(lim / 100)+ " (SLv" +slv + ")<br>"
+                                reflimit += txt + "上限: " + Math.round(lim / 100) + " (SLv" + slv + ")<br>"
                             }
                             res_html += "</tr>";
                         } else {
@@ -1339,7 +1422,7 @@ function createGetBuff(data, mode, DEBUG) {
                         if (DEBUG == 9999) {
                             for (var i = 1; i <= 14; i++) {
                                 var o_tmp = tmp + i;
-                                res_html += '<td>'+ o_tmp+ ':' + Number(data["unknown2_" + o_tmp]) + '</td>'
+                                res_html += '<td>' + o_tmp + ':' + Number(data["unknown2_" + o_tmp]) + '</td>'
                             }
                         } else {
                             res_html += '<td colspan="14">No Data.</td></tr>'
@@ -1382,13 +1465,13 @@ function calcUseMob(id, name) {
             || Number(md["unknown_87"]) == id
         ) {
             if (flag) {
-                txt += "<a href='https://sokomin.github.io/monster/monster-list-detail.html?mi=" +mobid+ "'>"
+                txt += "<a href='https://sokomin.github.io/monster/monster-list-detail.html?mi=" + mobid + "'>"
                 txt += md["name"];
                 txt += "</a>, "
             }
             cnt++;
         }
     }
-    txt += " (合計" + cnt +"種)"
+    txt += " (合計" + cnt + "種)"
     return txt;
 }
