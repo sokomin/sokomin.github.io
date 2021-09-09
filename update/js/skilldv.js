@@ -951,7 +951,7 @@ function createGetSubInfo(data, mode) {
         if (data["unknown2_648"] > 0) {
             res_html += "<tr><th>攻撃範囲</th>"
             if (Number(data["unknown2_649"]) > 0) {
-                var lim = Number(data["unknown2_650"]);
+                var lim = Number(data["unknown2_650"]) > 0 ? Number(data["unknown2_650"]) : 9999999;
                 for (var i = 1; i <= 50; i++) {
                     if (i >= 7) {
                         res_html += '<td>...</td>'
@@ -1109,7 +1109,7 @@ function createGetSubInfo(data, mode) {
         if (data["unknown2_648"] > 0) {
             res_html += "<tr><th>攻撃範囲</th>"
             if (Number(data["unknown2_649"]) > 0) {
-                var lim = Number(data["unknown2_650"]);
+                var lim = Number(data["unknown2_650"]) > 0 ? Number(data["unknown2_650"]) : 9999999;
                 for (var i = 1; i <= 50; i++) {
                     var ccp = Number(data["unknown2_648"]) + Number(data["unknown2_649"]) / 10 * i;
                     if (lim > 0 && lim < ccp) {
