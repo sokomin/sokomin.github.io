@@ -1273,7 +1273,7 @@ function createGetBuff(data, mode, DEBUG) {
                                 res_html += '<td>...</td>'
                                 i += 44;
                             }
-                            var ccp = Number(data["unknown2_" + tmp]) + Number(data["unknown2_" + (tmp + 1)]) * i;
+                            var ccp = Number(data["unknown2_" + tmp]) + Number(data["unknown2_" + (tmp + 1)] / 10) * i;
                             res_html += '<td>' + Math.round(ccp / 10) + '秒</td>'
                         }
                         res_html += "</tr>";
@@ -1371,13 +1371,13 @@ function createGetBuff(data, mode, DEBUG) {
                 } else {
                     // 定義無し
                 }
-                // 持続時間
+                // 持続時間(ここだけ増加率に1/10補正がかかってるかも)
                 var tmp = cnt + 3;
                 if (Number(data["unknown2_" + tmp]) != 0) {
                     res_html += "<tr><th>" + txt + "時間</th>"
                     if (Number(data["unknown2_" + (tmp + 1)]) != 0) {
                         for (var i = 1; i <= 50; i++) {
-                            var ccp = Number(data["unknown2_" + tmp]) + Number(data["unknown2_" + (tmp + 1)]) * i;
+                            var ccp = Number(data["unknown2_" + tmp]) + Number(data["unknown2_" + (tmp + 1)] / 10) * i;
                             res_html += '<td>' + Math.round(ccp / 10) + '秒</td>'
                             if (i >= 10) {
                                 i += 9;
