@@ -1274,7 +1274,7 @@ function createGetBuff(data, mode, DEBUG) {
                                 i += 44;
                             }
                             var ccp = Number(data["unknown2_" + tmp]) + Number(data["unknown2_" + (tmp + 1)] / 10) * i;
-                            res_html += '<td>' + Math.round(ccp / 10) + '秒</td>'
+                            res_html += '<td>' + Math.round(ccp)/10 + '秒</td>'
                         }
                         res_html += "</tr>";
                     } else {
@@ -1378,7 +1378,7 @@ function createGetBuff(data, mode, DEBUG) {
                     if (Number(data["unknown2_" + (tmp + 1)]) != 0) {
                         for (var i = 1; i <= 50; i++) {
                             var ccp = Number(data["unknown2_" + tmp]) + Number(data["unknown2_" + (tmp + 1)] / 10) * i;
-                            res_html += '<td>' + Math.round(ccp / 10) + '秒</td>'
+                            res_html += '<td>' + Math.round(ccp)/10 + '秒</td>'
                             if (i >= 10) {
                                 i += 9;
                             }
