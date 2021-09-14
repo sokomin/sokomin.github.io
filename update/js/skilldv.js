@@ -686,9 +686,9 @@ function createGetDamage(data, mode) {
                 for (var i = 1; i <= 50; i++) {
                     var ccp = Number(data["unknown2_136"]) + Number(data["unknown2_138"]) * i / 10;
                     if (ccp >= 0) {
-                        res_html += '<td>+' + Math.round(ccp / 10) + '%</td>'
+                        res_html += '<td>+' + Math.round(ccp)/10 + '%</td>'
                     } else {
-                        res_html += '<td>' + Math.round(ccp / 10) + '%</td>'
+                        res_html += '<td>' + Math.round(ccp)/10 + '%</td>'
                     }
                     if (i >= 10) {
                         i += 9;
