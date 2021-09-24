@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=960">
+        <!-- Page styles -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css">
+        <link rel="stylesheet" href="../styles.css">
+        <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32">
+        <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192">
+        <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png">
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+        </script>
+        <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+        <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+        </script>
+        <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+        </style>
+    </head>
+    <body>
+        <title>各種強化アイテムの確率 赤石の民衆</title>
+        <meta name="description" content="レッドストーン総合攻略情報ポータルページ">
+        <meta http-equiv="Content-Style-Type" content="text/css">
+        <meta http-equiv="Content-Script-Type" content="text/javascript">
+        <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報">
+        <link
+            rel="alternate"
+            type="application/rss+xml"
+            title="RSS"
+            href="/rss.xml"
+        >
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <a name="container"></a>
+            <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+                <div class="mdl-layout__header-row">
+                    <span class="android-title mdl-layout-title">
+                        <a href="https://sokomin.github.io/index.html">
+                            <img class="android-logo-image" src="../design/logo3.png">
+                        </a>
+                    </span>
+                    <!-- Add spacer, to align navigation to the right in desktop -->
+                    <div class="android-header-spacer mdl-layout-spacer"></div>
+                    <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                        <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                            <i class="material-icons">search</i>
+                        </label>
+                        <div class="mdl-textfield__expandable-holder">
+                            <input
+                                placeholder="サイト内検索(Enterで実行)"
+                                class="mdl-textfield__input"
+                                type="text"
+                                onkeypress="enter();"
+                                id="search-field"
+                            >
+                        </div>
+                    </div>
+                    <!-- Navigation -->
+                    <div class="android-navigation-container">
+                        <nav class="android-navigation mdl-navigation">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/index.html">ホーム</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                        </nav>
+                    </div>
+                    <span class="android-mobile-title mdl-layout-title">
+                        <a href="https://sokomin.github.io/index.html">
+                            <img class="android-logo-image" src="../design/logo3.png">
+                        </a>
+                    </span>
+                    <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
+                        <i class="material-icons">more_vert</i>
+                    </button>
+                    <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                        <li class="mdl-menu__item">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+                        </li>
+                        <li class="mdl-menu__item">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+                        </li>
+                        <li disabled class="mdl-menu__item">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+                        </li>
+                        <li class="mdl-menu__item">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="android-drawer mdl-layout__drawer">
+                <span class="mdl-layout-title">
+                    <h3>メニュー</h3>
+                </span>
+                <nav class="mdl-navigation">
+                    <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html">
+                        <strong>アイテム</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html">
+                        <strong>スキル</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html">
+                        <strong>モンスター</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html">
+                        <strong>ダンジョン</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html">
+                        <strong>クエスト</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html">
+                        <strong>ギルド</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html">
+                        <strong>韓国情報</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html">
+                        <strong>雑学</strong>
+                    </a>
+                </nav>
+            </div>
+            <div class="android-large-table mdl-layout__content">
+                <!--main-->
+                <div class="main-background mdl-typography--text-center korea-content">
+                    <br>
+                    <h3>インターフェース</h3>
+                    ゲーム上で利用できる短縮キーまとめ。<br>
+                    <br>
+                    <br>
+                    <br>
+                    <a href="#0">全体図</a><br>
+                    <a href="#1">ミニマップ</a><br>
+                    <a href="#2">クイックスキル登録</a><br>
+                    <a href="#3">キャラクター状態ウィンドウ</a><br>
+                    <a href="#4">ベルトとメニューウィンドウ</a><br>
+                    <a href="#5">チャット</a><br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <font color="#e95388">
+                        <a name="0"></a>
+                        <h4>全体図</h4>
+                    </font>
+                    <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/b6a579973e70f9f78fcb8cde26e06f2382ecd429.10.9.9.3.jpeg" border=0 name="insertImg" /><br><br>
+                    <table id="table10" style="max-width:640px">
+                        <tbody><tr><th>マップ内移動</th><td>【↑】【↓】【←】【→】</td></tr>
+                        <tr><th>チャット欄表示</th><td>【Enter】</td></tr>
+                        <tr><th>アイテムを拾う</th><td>【Space】</td></tr>
+                        <tr><th>ドロップアイテム表示</th><td>【Alt】</td></tr>
+                        <tr><th>左クリック</th><td>カーソルの所に移動 / ターゲットに攻撃・話す</td></tr>
+                        <tr><th>右クリック</th><td>右クリックスキル使用</td></tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <br>
+                    <br>
+                    <font color="#e95388">
+                        <a name="1"></a>
+                        <h4>ミニマップ</h4>
+                    </font>
+                    <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/7d25151a0c703b085416addb367b48f501e41c1e.10.9.9.3.jpeg" border=0 name="insertImg" /><br><br>
+                    <table id="table10" style="max-width:760px">
+                        <tbody>
+                            <tr>
+                                <th width="40">No</th>
+                                <th width="200">メニュー名</th>
+                                <th width="480">説明</th>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>チェック</td>
+                                <td>ログインボーナス画面を開きます。<br>
+                                ログインボーナスは1日1回受け取ることができます。</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>マップ表示</td>
+                                <td>現在地の全域のマップを表示することができます。<br>
+                                「J」キーでも表示することが可能です。<br>
+                                ※マップ製作者が低いと表示されないマップあり。</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>ミニクエストリスト</td>
+                                <td>現在進行しているクエストの簡易情報が確認できます。</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>ワールドマップ</td>
+                                <td>フランデル大陸全域のマップを表示することができます。</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>ミニマップオプション</td>
+                                <td>ミニマップに表示したいNPCを選ぶことができます。</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>現フィールド名</td>
+                                <td>現在キャラクターが存在するフィールド名を表示します。</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>ミニマップ拡大/縮小</td>
+                                <td>右上のミニマップの大きさを調節します。</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <br>
+                    <table id="table10" style="max-width:640px">
+                        <tbody>
+                            <tr><th>マップ表示</th><td>【Ｊ】</td></tr>
+                            <tr><th>ワールドマップ表示</th><td>【Ｍ】</td></tr>
+                            <tr><th>ミニマップオプション</th><td>【Ｏ】</td></tr>
+                            <tr><th>ミニマップ拡大</th><td>【＋】</td></tr>
+                            <tr><th>ミニマップ縮小</th><td>【－】</td></tr>
+                        </tbody>
+                    </table>
+
+                    <br>
+                    <br>
+                    <br>
+                    <font color="#e95388">
+                        <a name="2"></a>
+                        <h4>クイックスキル登録</h4>
+                    </font>
+                    取得したスキルを使うために登録する場所です。<br>
+                    左側に2つと右側に2つ、合計4つのスキルを種類別に登録できます。<br>
+                    <br>
+                    左側は基本攻撃スキルと自動攻撃スキルを<br>
+                    右側は特殊攻撃スキルと補助スキルをスキルウィンドウからドラッグ＆ドロップして登録できます。<br>
+                    <br>
+
+                    クイックスキルスロットとは、取得したスキルをすぐ使えるように登録しておくウィンドウです。<br>
+                    10個のスキルウィンドウはそれぞれキーボードの「Q、W、E、R、T、A、S、D、F、G」と対応しており<br>
+                    ↑、↓のボタンを利用して10個1グループずつ、10グループまで登録できます。<br>
+                    ※TABキーを入力することでグループの切り替えが可能です。<br>
+                    <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/8c7fe529bdf22909d25e52c5af9c24303c2f7d52.10.9.9.3.jpeg" border=0 name="insertImg" /><br><br>
+                    <br>
+                    <br>
+                    <br>
+                    <font color="#e95388">
+                        <a name="3"></a>
+                        <h4>キャラクター状態ウィンドウ</h4>
+                    </font>
+                    キャラクターの状態を表示するウィンドウです。<br>
+                    HP、CP（チャージポイント）、経験値、スキルポイントの状態を確認できます。<br>
+                    歩く/走る、変身/武器交換、座る/立つ　の切り替えも可能です。<br>
+                    <br>
+                    <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/f0fc7c717be6aa5e7b0036fb2c7724440ca4e31a.10.9.9.3.jpeg" border=0 name="insertImg" /><br><br>
+                    <br>
+                    <br>
+                    <br>
+                    <font color="#e95388">
+                        <a name="4"></a>
+                        <h4>ベルトとメニューウィンドウ</h4>
+                    </font>
+                    ベルトウィンドウはベルトを装備していないと使用できません。<br>
+                    ポーションなどの消費型アイテムを入れておくと緊急の時迅速に使用できます。<br>
+                    <br>
+                    ベルトウィンドウは左側から数字キー1～5を押して使えます。<br>
+                    リロードしたいときは数字キー6を押してください。<br>
+                    <br>
+                    メニューウィンドウには合計8個のメニューがあり、F2～F9とEscキーと対応しています。<br>
+                    <br>
+                    <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/2640ec2b9944954632847e6327511a0471dad8d6.10.9.9.3.jpeg" border="0" alt="" name="insertImg" /><br><br>
+                    <table id="table10" style="max-width:840px">
+                        <tbody>
+                            <tr>
+                                <th width="160">メニュー名</th>
+                                <th width="680">説明</th>
+                            </tr>
+                            <tr>
+                                <td>ヘルプ（F1）</td>
+                                <td>ゲーム内にてヘルプ画面の表示。もう1度F1を押すことで解除されます。</td>
+                            </tr>
+                            <tr>
+                                <td>能力（F2）</td>
+                                <td>キャラクターの能力に関するものをひと目で確認できます。<br>
+                                レベルアップの時加えられたステータスポイントを配分することができます。</td>
+                            </tr>
+                            <tr>
+                                <td>装備（F3）</td>
+                                <td>アイテムを扱うウィンドウです。武器や防具の装備や取得したアイテムの確認ができます。<br>
+                                「取引」ボタンを使って取引（キャラクターレベル4以上）ができます。</td>
+                            </tr>
+                            <tr>
+                                <td>スキル（F4）</td>
+                                <td>スキルアップ時、スキルポイントの分配ができます。<br>
+                                スキルレベルが上がるほど、1つあげるのに必要なスキルポイントが増えていきます。<br>
+                                他のクラスのスキルがあれば、その職業に変身、または武器交換ができます。</td>
+                            </tr>
+                            <tr>
+                                <td>パーティー（F5）</td>
+                                <td>「申し込み」ボタンを押した後、一緒にパーティーを組みたいキャラクターをクリックします。<br>
+                                相手が承諾すれば自分がパーティーのリーダーになり、パーティーが結成されます。</td>
+                            </tr>
+                            <tr>
+                                <td>クエスト（F6）</td>
+                                <td>現在進行中のクエスト一覧が表示されます。<br>
+                                クエストの「取り消し」もここで出来ます。※取り消しが不可能なクエストも存在します。</td>
+                            </tr>
+                            <tr>
+                                <td>ギルド（F7）</td>
+                                <td>ギルドに関しての情報が表示されます。ギルドの「申込み」もここで出来ます。<br>
+                                ※ギルドに加入するには「市民権」称号が必要です。</td>
+                            </tr>
+                            <tr>
+                                <td>友達（F8）</td>
+                                <td>友達登録したキャラクターの一覧が表示されます。<br>
+                                「友達追加」「友達削除」「友達検索」「耳打ち」もここで出来ます。</td>
+                            </tr>
+                            <tr>
+                                <td>システム（F9/ESC）</td>
+                                <td>ゲームのオプションとゲームを終了する際に使うボタンがあります。<br>
+                                キャラクターが死んだ際に、このウィンドウから街へ戻ることができます。</td>
+                            </tr>
+                            <tr>
+                                <td>スクリーンショット（F12/PRTSC）</td>
+                                <td>詳細は<a href="../information/screenshot.html">スクリーンショット</a>より。</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <br>
+                    <br>
+                    <font color="#e95388">
+                        <a name="5"></a>
+                        <h4>チャット</h4>
+                    </font>
+                    Enterキーを押し、「こんにちは」など会話内容を入力して再度Enterキーを押すと、メッセージが表示されます<br>
+                    チャットには一般チャット / PT専用チャット / ギルドチャット / 耳打ちの4種類があります。<br>
+                    ※「叫ぶ」は、5レベル以上のキャラクターが使用できます。<br>
+                    <br>
+                    <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/226b682d4d8d80c51c604cd145e5d0e1147e53ea.10.9.9.3.jpeg" border=0 name="insertImg" /><br><br>
+                    <br>
+                    <table id="table10" style="max-width:640px">
+                        <tbody>
+                            <tr><th>チャットウィンドウ拡大</th><td>【,】</td></tr>
+                            <tr><th>チャットウィンドウ縮小</th><td>【.】</td></tr>
+                            <tr><th>チャットフィルタ変更</th><td>【/】</td></tr>
+                            <tr><th>一般チャット</th><td>【Ctrl+A】</td></tr>
+                            <tr><th>PTチャット</th><td>【Ctrl+S】</td></tr>
+                            <tr><th>ギルドチャット</th><td>【Ctrl+D】</td></tr>
+                            <tr><th>耳打ち</th><td>【Ctrl+F】</td></tr>
+                            <tr><th colspan="2">チャットコマンド</th></tr>
+                            <tr><th>耳打ち</th><td>【 /キャラクター名 内容 】</td></tr>
+                            <tr><th>叫び</th><td>【 ! 内容 】</td></tr>
+                            <tr><th>全体叫び</th><td>【 !! 内容 】</td></tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    [参考]<a href="https://service.redsonline.jp/library/172">インターフェース(公式ページ)</a>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <footer class="android-footer mdl-mega-footer">
+                        <font color="red">
+                            当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。
+                            <br>
+                            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。
+                            <br>
+                        </font>
+                        Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                    </footer>
+                    <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+                </div>
+                <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+            </div>
+        </body>
+    </html>
