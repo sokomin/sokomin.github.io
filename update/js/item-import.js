@@ -489,8 +489,9 @@ function calc2(is_sort) {
             }
         }
         res_text += "</div>";
+        // ここコメントアウトするとかなり軽量化するのでおすすめ
+        // document.import_form.import_field.value = res_text;
         // r2はr1の内容をDOM化して直接貼り付け
-        document.import_form.import_field.value = res_text;
         var prev_html = document.getElementById('import_preview_html');
         prev_html.innerHTML = '<p style="text-align: left">' + res_text + '</p>';
 
