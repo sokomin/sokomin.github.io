@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=960">
+        <!-- Page styles -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css">
+        <link rel="stylesheet" href="../styles.css">
+        <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32">
+        <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192">
+        <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png">
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+        </script>
+        <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+        <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+        </script>
+        <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+        </style>
+    </head>
+    <body>
+        <title>ステータス詳細 赤石の民衆</title>
+        <meta name="description" content="レッドストーン総合攻略情報ポータルページ">
+        <meta http-equiv="Content-Style-Type" content="text/css">
+        <meta http-equiv="Content-Script-Type" content="text/javascript">
+        <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報">
+        <link
+            rel="alternate"
+            type="application/rss+xml"
+            title="RSS"
+            href="/rss.xml"
+        >
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <a name="container"></a>
+            <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+                <div class="mdl-layout__header-row">
+                    <span class="android-title mdl-layout-title">
+                        <a href="https://sokomin.github.io/index.html">
+                            <img class="android-logo-image" src="../design/logo3.png">
+                        </a>
+                    </span>
+                    <!-- Add spacer, to align navigation to the right in desktop -->
+                    <div class="android-header-spacer mdl-layout-spacer"></div>
+                    <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                        <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                            <i class="material-icons">search</i>
+                        </label>
+                        <div class="mdl-textfield__expandable-holder">
+                            <input
+                                placeholder="サイト内検索(Enterで実行)"
+                                class="mdl-textfield__input"
+                                type="text"
+                                onkeypress="enter();"
+                                id="search-field"
+                            >
+                        </div>
+                    </div>
+                    <!-- Navigation -->
+                    <div class="android-navigation-container">
+                        <nav class="android-navigation mdl-navigation">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/index.html">ホーム</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                        </nav>
+                    </div>
+                    <span class="android-mobile-title mdl-layout-title">
+                        <a href="https://sokomin.github.io/index.html">
+                            <img class="android-logo-image" src="../design/logo3.png">
+                        </a>
+                    </span>
+                    <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
+                        <i class="material-icons">more_vert</i>
+                    </button>
+                    <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                        <li class="mdl-menu__item">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+                        </li>
+                        <li class="mdl-menu__item">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+                        </li>
+                        <li disabled class="mdl-menu__item">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+                        </li>
+                        <li class="mdl-menu__item">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="android-drawer mdl-layout__drawer">
+                <span class="mdl-layout-title">
+                    <h3>メニュー</h3>
+                </span>
+                <nav class="mdl-navigation">
+                    <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html">
+                        <strong>アイテム</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html">
+                        <strong>スキル</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html">
+                        <strong>モンスター</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html">
+                        <strong>ダンジョン</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html">
+                        <strong>クエスト</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html">
+                        <strong>ギルド</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html">
+                        <strong>韓国情報</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html">
+                        <strong>雑学</strong>
+                    </a>
+                </nav>
+            </div>
+            <div class="android-large-table mdl-layout__content">
+                <!--main-->
+                <a href="../index.html">トップ</a> >> <a href="../information/information.html">雑学</a>
+                <div class="main-background mdl-typography--text-center korea-content">
+                    <br>
+                    <h3>ステータス解説</h3>
+                    ステータスの役割や上昇システムについて紹介。<br>
+                    <br>
+                    <br>
+                    <br>
+                    <a href="#1">ステータスの種類と効果</a><br>
+                    <a href="#2">各職業のレベルアップによる上昇</a><br>
+                    <a href="#3">変身によるステータス反転</a><br>
+                    <br>
+                    <br>
+                    <br>
+                    <font color="#e95388">
+                        <a name="1"></a>
+                        <h4>ステータスの種類と効果</h4>
+                    </font>
+                    <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/23c66d297c3f596f8cd68fd06454893db7f576bb.10.9.9.3.jpeg" border=0 name="insertImg" /><br><br>
+                    ステータス7種類の内容はそれぞれ特性があります。<br>
+                    レベルアップした時、F2キーを押してステータスウィンドウを開くと、追加されたステータスポイントが確認できます。<br>
+                    強化したい能力値の隣の「＋」をクリックすると該当の能力値が強化されます。<br>
+                    <br>
+                    <table id="table10" style="max-width:880px">
+                        <thead>
+                            <tr>
+                                <th style="width: 120px">
+                                    ステータス</th>
+                                <th style="width: 760px">
+                                    ステータスの特性</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    力<br>
+                                    (物理攻撃力）</td>
+                                <td style="text-align: left;">
+                                    主に武器での攻撃力（物理攻撃）に影響します。力を上げると攻撃力も上がります。<br>
+                                    物理攻撃のダメージ表記は白字で表示されます。</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    敏捷<br>
+                                    (命中率）</td>
+                                <td style="text-align: left;">
+                                    主に武器での攻撃（物理攻撃）の命中率に影響を与えます。<br>
+                                    「力」の能力値が高いキャラクターが強大な攻撃力を誇る武器を装備しても、<br>
+                                    「敏捷」が極端に低い場合、強力な攻撃も当たらない事になります。<br>
+                                    また通常の攻撃の２倍のダメージを与える、クリティカルヒット発生確率にも影響します。<br>
+                                    <span style="font-size: 8px">（クリティカル発生時は、攻撃中のモンスターの頭上に「CRITICAL!!」の文字と共に赤字で数値が表示されます。）</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    健康<br>
+                                    (HP・防御力）</td>
+                                <td style="text-align: left;">
+                                    最大HP（キャラクターの生命力値）や防御力が上昇します。<br>
+                                    上昇させればキャラクターの頑強さにつながる能力値です。</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    運<br>
+                                    (成功率・ダブクリ)</td>
+                                <td style="text-align: left;">
+                                    敵に通常攻撃の約４倍のダメージを与えるダブルクリティカルの発生確率や、<br>
+                                    状態異常抵抗力に影響を与えます。<br>
+                                    またアイテム取得率や「エンチャント文書」などを使用した<br>
+                                    アイテムへの称号付与（エンチャント）の成功率にも関わってくる能力値です。<br>
+                                    <span style="font-size: 8px">(ダブルクリティカル発生時は、攻撃中のモンスターの頭上に「DOUBLE CRITICAL!!」の文字と共に赤字で数値が表示されます。)</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    知識<br>
+                                    (魔法攻撃力)</td>
+                                <td style="text-align: left;">
+                                    魔法攻撃の攻撃力に影響を与えます。<br>
+                                    魔法攻撃のダメージ表記は黄色い文字で表示されます。<br>
+                                    主に魔法属性のある攻撃スキルをメインスキルとして使用したい場合、<br>
+                                    この能力値を上昇させます。</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    知恵<br>
+                                    (抵抗力)</td>
+                                <td style="text-align: left;">
+                                    魔法攻撃ダメージ抵抗力、状態異常抵抗力に影響を与えます。<br>
+                                    <span style="color: #f00"><span style="font-size: 8px">※　「知恵」を20上昇させるたびに、各種魔法攻撃ダメージ抵抗力に+1％加算されます。</span></span><br>
+                                    魔法攻撃のダメージを減少するためには魔法ダメージ抵抗力を上げるのが効果的です。<br>
+                                    魔法攻撃に対して耐性をつけたい場合は「知恵」を上げ、魔法攻撃ダメージ抵抗力を上げてみましょう。<br>
+                                    <span style="color: #f00"><span style="font-size: 8px">※　魔法攻撃は防御力が高くてもダメージを減少する事は出来ません。</span></span><br>
+                                    また、知恵をたくさん上げると経験値にボーナスがつきます。</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    カリスマ<br>
+                                    (CP量)</td>
+                                <td style="text-align: left;">
+                                    最大CP（チャージポイント）が上昇します。<br>
+                                    CP（チャージポイント）はスキルを使用する時に必要なので、<br>
+                                    スキルをたくさん使いたい場合、「カリスマ」を上げてみるといいでしょう。</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <br>
+                    <!-- TODO　ペットに関する仕様も追記。 -->
+                    <br>
+                    <br>
+                    <br>
+                    <font color="#e95388">
+                        <a name="2"></a>
+                        <h4>各職業のレベルアップによる上昇</h4>
+                    </font>
+                    各能力値を上げるには能力値のポイントを消費する事によって、上げることが可能です。<br>
+                    能力値のポイントはレベルアップするごとに5ポイントずつキャラクターに与えられます。<br>
+                    与えられたポイントを各能力値に振り分けることで、自分好みの能力を持つキャラクターを作ることが可能です。<br>
+                    <br>
+                    なお、キャラクターのジョブ（職種）によってレベルアップ時に受け取る能力値のポイントのうち、<br>
+                    1ポイントが固定の能力値に自動的に振り分けられる職とそうでない職業が存在します。<br>
+                    「フリー」の職業はレベルアップ時にもらえる5ポイント全てを自由に各ステータスに振り分けることが可能です。<br>
+                    <br>
+                    <table id="table10" style="max-width:640px">
+                        <tbody>
+                            <tr><th>剣士/戦士</th><td>力</td></tr>
+                            <tr><th>ランサ/アチャ</th><td>敏捷</td></tr>
+                            <tr><th>WIZ/犬</th><td>知識(力)</td></tr>
+                            <tr><th>BIS/天使</th><td>カリスマ</td></tr>
+                            <tr><th>テイマ/サマナ</th><td>知恵</td></tr>
+                            <tr><th>シーフ/武道</th><td>運</td></tr>
+                            <tr><th>プリ/リトル</th><td>健康</td></tr>
+                            <tr><th>その他</th><td>フリー</td></tr>
+                        </tbody>
+                    </table>
+                    ※上記は実装順にソートしてあります。<br>
+                    <!-- TODO 各職業特有のパッシブについて追記 -->
+                    <br>
+                    各職業の初期ステータスは以下。<br>
+                    <br>
+                    <table id="table10" style="max-width:700px">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 124px">
+                                    職業</th>
+                                <th scope="col" style="width: 64px">
+                                    力</th>
+                                <th scope="col" style="width: 64px">
+                                    運</th>
+                                <th scope="col" style="width: 64px">
+                                    知恵</th>
+                                <th scope="col" style="width: 64px">
+                                    カリスマ</th>
+                                <th scope="col" style="width: 64px">
+                                    健康</th>
+                                <th scope="col" style="width: 64px">
+                                    敏捷</th>
+                                <th scope="col" style="width: 64px">
+                                    知識</th>
+                                <th scope="col" style="width: 64px">
+                                    基本HP</th>
+                                <th scope="col" style="width: 64px">
+                                    基本CP</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align: center">
+                                    剣士</td>
+                                <td style="text-align: center">
+                                    25</td>
+                                <td style="text-align: center">
+                                    0</td>
+                                <td style="text-align: center">
+                                    10</td>
+                                <td style="text-align: center">
+                                    15</td>
+                                <td style="text-align: center">
+                                    20</td>
+                                <td style="text-align: center">
+                                    15</td>
+                                <td style="text-align: center">
+                                    5</td>
+                                <td style="text-align: center">
+                                    51</td>
+                                <td style="text-align: center">
+                                    16</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center">
+                                    ランサ</td>
+                                <td style="text-align: center">
+                                    15</td>
+                                <td style="text-align: center">
+                                    5</td>
+                                <td style="text-align: center">
+                                    10</td>
+                                <td style="text-align: center">
+                                    10</td>
+                                <td style="text-align: center">
+                                    15</td>
+                                <td style="text-align: center">
+                                    25</td>
+                                <td style="text-align: center">
+                                    10</td>
+                                <td style="text-align: center">
+                                    31</td>
+                                <td style="text-align: center">
+                                    26</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center">
+                                    WIZ</td>
+                                <td style="text-align: center">
+                                5</td>
+                                <td style="text-align: center">
+                                5</td>
+                                <td style="text-align: center">
+                                20</td>
+                                <td style="text-align: center">
+                                20</td>
+                                <td style="text-align: center">
+                                10</td>
+                                <td style="text-align: center">
+                                5</td>
+                                <td style="text-align: center">
+                                25</td>
+                                <td style="text-align: center">
+                                26</td>
+                                <td style="text-align: center">
+                                36</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center">
+                                    BIS</td>
+                                <td style="text-align: center">
+                                    20</td>
+                                <td style="text-align: center">
+                                    0</td>
+                                <td style="text-align: center">
+                                    20</td>
+                                <td style="text-align: center">
+                                    10</td>
+                                <td style="text-align: center">
+                                    15</td>
+                                <td style="text-align: center">
+                                    10</td>
+                                <td style="text-align: center">
+                                    15</td>
+                                <td style="text-align: center">
+                                    41</td>
+                                <td style="text-align: center">
+                                    16</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center">
+                                    テイマ</td>
+                                <td style="text-align: center">
+                                    5</td>
+                                <td style="text-align: center">
+                                    10</td>
+                                <td style="text-align: center">
+                                    20</td>
+                                <td style="text-align: center">
+                                    20</td>
+                                <td style="text-align: center">
+                                    5</td>
+                                <td style="text-align: center">
+                                    10</td>
+                                <td style="text-align: center">
+                                    20</td>
+                                <td style="text-align: center">
+                                    26</td>
+                                <td style="text-align: center">
+                                    31</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center">
+                                    シーフ</td>
+                                <td style="text-align: center">
+                                    15</td>
+                                <td style="text-align: center">
+                                    10</td>
+                                <td style="text-align: center">
+                                    5</td>
+                                <td style="text-align: center">
+                                    15</td>
+                                <td style="text-align: center">
+                                    10</td>
+                                <td style="text-align: center">
+                                    25</td>
+                                <td style="text-align: center">
+                                    10</td>
+                                <td style="text-align: center">
+                                    31</td>
+                                <td style="text-align: center">
+                                    26</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center">
+                                    プリ</td>
+                                <td style="text-align: center">
+                                    10</td>
+                                <td style="text-align: center">
+                                    5</td>
+                                <td style="text-align: center">
+                                    20</td>
+                                <td style="text-align: center">
+                                    15</td>
+                                <td style="text-align: center">
+                                    15</td>
+                                <td style="text-align: center">
+                                    10</td>
+                                <td style="text-align: center">
+                                    15</td>
+                                <td style="text-align: center">
+                                    41</td>
+                                <td style="text-align: center">
+                                    21</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center">
+                                    ネクロ</td>
+                                <td style="text-align: center">
+                                    25</td>
+                                <td style="text-align: center">
+                                    0</td>
+                                <td style="text-align: center">
+                                    10</td>
+                                <td style="text-align: center">
+                                    15</td>
+                                <td style="text-align: center">
+                                    20</td>
+                                <td style="text-align: center">
+                                    15</td>
+                                <td style="text-align: center">
+                                    5</td>
+                                <td style="text-align: center">
+                                    41</td>
+                                <td style="text-align: center">
+                                    26</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center">
+                                    霊術</td>
+                                <td style="text-align: center">
+                                    20</td>
+                                <td style="text-align: center">
+                                    1</td>
+                                <td style="text-align: center">
+                                    10</td>
+                                <td style="text-align: center">
+                                    15</td>
+                                <td style="text-align: center">
+                                    15</td>
+                                <td style="text-align: center">
+                                    15</td>
+                                <td style="text-align: center">
+                                    15</td>
+                                <td style="text-align: center">
+                                    31</td>
+                                <td style="text-align: center">
+                                    31</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center">
+                                    光奏師</td>
+                                <td style="text-align: center">
+                                    20</td>
+                                <td style="text-align: center">
+                                    10</td>
+                                <td style="text-align: center">
+                                    10</td>
+                                <td style="text-align: center">
+                                    10</td>
+                                <td style="text-align: center">
+                                    10</td>
+                                <td style="text-align: center">
+                                    10</td>
+                                <td style="text-align: center">
+                                    20</td>
+                                <td style="text-align: center">
+                                    26</td>
+                                <td style="text-align: center">
+                                    26</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center">
+                                    メイド</td>
+                                <td style="text-align: center;">20</td>
+                                <td style="text-align: center;">20</td>
+                                <td style="text-align: center;">5</td>
+                                <td style="text-align: center;">10</td>
+                                <td style="text-align: center;">15</td>
+                                <td style="text-align: center;">15</td>
+                                <td style="text-align: center;">5</td>
+                                <td style="text-align: center;">31</td>
+                                <td style="text-align: center;">26</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center">
+                                    マスケ</td>
+                                <td style="text-align: center;">15</td>
+                                <td style="text-align: center;">10</td>
+                                <td style="text-align: center;">10</td>
+                                <td style="text-align: center;">10</td>
+                                <td style="text-align: center;">15</td>
+                                <td style="text-align: center;">25</td>
+                                <td style="text-align: center;">5</td>
+                                <td style="text-align: center;">31</td>
+                                <td style="text-align: center;">26</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <br>
+                    <br>
+                    <font color="#e95388">
+                        <a name="3"></a>
+                        <h4>変身によるステータス反転</h4>
+                    </font>
+                    「ウィザード/ウルフマン」「メイド/黒魔術師」「マスケッティア/アルケミスト」は変身すると一部ステータスが反転します。<br>
+                    <span class="color-image1">力と知識、敏捷と知恵、健康とカリスマが反転します</span>。(F2ステータス画面で言う上下反転)<br>
+                    <br>
+                    このステータス反転は装備のオプションに対しても有効です。<br>
+                    例)ウルフマンで健康を上げたい場合は「威厳比率上昇(カリスマ上昇)」のオプションで上昇。<br>
+                    装備要求についても変身後で満たす必要があります。<br>
+                    <br>
+                    ステータス振りの際は変身時点でステータスを振ることで正しく変身時点でのステータスに反映されます。<br>
+                    職業が正しく変身されているか確認を忘れずに。<br>
+                    <br>
+                    変身職(犬、天使、リトル、悪魔、獣人、黒魔術師)はCPがカリスマのマイナス1/2以下になると変身が強制解除されます。<br>
+                    <br>
+                    <br>
+                    <br>
+
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    [参考]<a href="https://service.redsonline.jp/library/180">ステータスの種類と効果(公式ページ)</a>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <footer class="android-footer mdl-mega-footer">
+                        <font color="red">
+                            当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。
+                            <br>
+                            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。
+                            <br>
+                        </font>
+                        Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                    </footer>
+                    <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+                </div>
+                <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+            </div>
+        </body>
+    </html>
