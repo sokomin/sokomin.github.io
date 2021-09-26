@@ -215,6 +215,9 @@ function createMobPositionTable() {
     var a3 = $('input[name="a3"]').val() ? Number($('input[name="a3"]').val()) : 0;
     // var a2 = $('input[name="a2"]').val()? Number($('input[name="a2"]').val()) : 200;
     var max_selected_data = map_data[a1];
+    if (!max_selected_data) {
+        alert("maplistが古い可能性あり");
+    }
     var max_x = max_selected_data["unknown_0"];
     var max_y = max_selected_data["unknown_1"];
     // ない場合はmaplist.csvと同じサイズで問題ない。

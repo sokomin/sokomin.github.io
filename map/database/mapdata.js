@@ -85,6 +85,7 @@ NameList = {
     1012: { name: "アリドネ生息地", img: "", black: "[1012]YatikanuRaid02.img.png", lvmin: 1375, lvmax: 1375 },
     1017: { name: "捨てられた地下墓地B2のメリス・リング", img: "", black: "[1017]Hidden_layers_D01_02.img.png", lvmin: 925, lvmax: 930 },
     1018: { name: "捨てられた地下墓地B3のメリス・リング", img: "", black: "[1018]Hidden_layers_D01_03.img.png", lvmin: 970, lvmax: 975 },
+    1019: { name: "冒険家協会ブルンネンシュティグ本部？", img: "", black: "[1019]T01_I01.img.png", lvmin: 1100, lvmax: 1100 },
 
     //以下、機械的に作ったデータ
     1: { name: "中央プラトン街道 / グレートフォレスト入口付近", img: "[001]G07.rmd.png", black: "[000]T01.rmd.png", lvmin: 5, lvmax: 30 },
