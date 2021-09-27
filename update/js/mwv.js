@@ -218,9 +218,12 @@ function createMobPositionTable() {
     if (!max_selected_data) {
         alert("maplistが古い可能性あり");
     }
-    var max_x = max_selected_data["unknown_0"];
-    var max_y = max_selected_data["unknown_1"];
+    var max_x = max_selected_data["x"] ? max_selected_data["x"] : max_selected_data["unknown_0"];
+    var max_y = max_selected_data["y"] ? max_selected_data["y"] : max_selected_data["unknown_1"];
     // ない場合はmaplist.csvと同じサイズで問題ない。
+    if (!max_x || !max_y) {
+        alert("maplistから最大x,yが取れてないからposx, posy取れないよ");
+    }
     var img_size = IMG_SIZE[a1] ? IMG_SIZE[a1] : { w: map_data[a1].unknown_0, h: map_data[a1].unknown_1 };
 
     var $div_main = $('<div>');
@@ -356,8 +359,12 @@ function createAreaPositionTable() {
     // var a1 = $('input[name="a1"]').val()? Number($('input[name="a1"]').val()) : 0;
     // var a2 = $('input[name="a2"]').val()? Number($('input[name="a2"]').val()) : 200;
     var max_selected_data = map_data[a1];
-    var max_x = max_selected_data["unknown_0"];
-    var max_y = max_selected_data["unknown_1"];
+    var max_x = max_selected_data["x"] ? max_selected_data["x"] : max_selected_data["unknown_0"];
+    var max_y = max_selected_data["y"] ? max_selected_data["y"] : max_selected_data["unknown_1"];
+    // ない場合はmaplist.csvと同じサイズで問題ない。
+    if (!max_x || !max_y) {
+        alert("maplistから最大x,yが取れてないからposx, posy取れないよ");
+    }
     var img_size = IMG_SIZE[a1] ? IMG_SIZE[a1] : { w: map_data[a1].unknown_0, h: map_data[a1].unknown_1 };
 
     var $div_main = $('<div>');
