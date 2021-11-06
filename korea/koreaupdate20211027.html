@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32">
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192">
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>2021年10月 韓国アプデ 赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報">
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml">
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png">
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field">
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png">
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                    </li>
+                    <li class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                    </li>
+                    <li disabled class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                    </li>
+                    <li class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html">
+                    <strong>アイテム</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html">
+                    <strong>スキル</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html">
+                    <strong>モンスター</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html">
+                    <strong>ダンジョン</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html">
+                    <strong>クエスト</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html">
+                    <strong>ギルド</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html">
+                    <strong>韓国情報</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html">
+                    <strong>雑学</strong>
+                </a>
+            </nav>
+        </div>
+        <div class="android-large-table mdl-layout__content">
+            <!--main-->
+            <div class="korea-content main-background">
+                <br>
+                <h3>韓国 2021/10/27 アップデート</h3>
+                <h5>
+                    <font color="#ff0000">
+                        <strong>
+                            [重要！] 韓国公式の情報を基にしています。
+                            <br>
+                            誤訳や韓国独自仕様の可能性もありますので、予めご了承下さい。
+                        </strong>
+                    </font>
+                    <br>
+                </h5>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/f56ab4a98deecd4b1d868543051b55455e5c6dd6.10.9.9.3.png" border=0 name="insertImg" /><br><br>
+                <a href="#1">スキル改変</a><br>
+                <a href="#2">新規エピソード型クエスト</a><br>
+                <a href="#3">クリーチャー冒険・PVP統合</a><br>
+                <a href="#4">メインクエスト1繰り返しクエスト動線改善</a><br>
+                <a href="#5">レベルアップ区間の改善</a><br>
+                <br>
+                <br>
+                <br>
+                <br>
+
+                <a name="0"></a>
+                <font color="#e95388">
+                    <h4>スキル改変
+                    </h4>
+                </font>
+                -一部の職業のスキルバランス変更や利便性が改善されます。<br>
+                ※下記の更新履歴中に修正事項が発生した場合は、当該通知を通じて修正された内容をご案内いたします。<br>
+                アップデート履歴に含まれていないスキルの場合は、従来と同じ仕様で維持されます。<br>
+                <br>
+                <b>■見習い記事[シミッタカッティング(Scimitar Cutting)]</b>：敵一周りをぐるぐる回しながら刃で連続価格。攻撃中に回避率が上がるだけでなく、敵の盾ブロック率を無視して攻撃できる
+                ＞敵一つまわりをぐるぐる回しながら刃で周りを連続価格。<b><img><br>＜スキル変更点＞</b>-敵ブロック無視効果が削除されますました。-打撃数が変更されました。-獲得CPが変更されました。-攻撃範囲が追加されました。<br /><br /><b>■悪魔[スパイダー
+                    Web (Spider Web) ]</b>：自分が攻撃されたら、自分の周りの一定地域に移動を封鎖するクモの巣を吐き出す
+                ＞自分の周りの一定地域に移動速度を下げるクモの巣を吐き出す。<b><img><br>＜スキル変更点＞</b>-移動不可効果が削除されますました。-クールタイムが削除されますました。-攻撃範囲が変更されました。-移動速度減少効果が追加されました。-スキル追加効果が追加されました。<b>【スパイダーマッシュ（Spider
+                    Mesh）】</b>：自分の周りのスケジュールエリアに移動を封鎖するクモの巣を吐き出す。さらに敵に炎ダメージを与える。
+                ＞自分の周りの一定地域に移動速度を下げるクモの巣を吐き出す。さらに持続時間が増える。<b><img><br>＜スキル変更点＞</b>-火ダメージが削除されますました。-打撃数が削除されますました。-移動不可効果が削除されますました。-クールタイムが削除されますました。-スキル持続時間が変更されました。-攻撃範囲が変更されました。-移動速度減少効果が追加されました。-スキル追加効果が追加されました。<b>[アラクノフォビア(Arachnophobia)
+                    ]</b>：周囲の一定の地域に移動を妨げるクモの巣を吐き出す。逃げられなかった敵は、中から広がるクモの攻撃を受ける<b><img><br>＜スキル変更点＞</b>-移動速度低下効果が除去されました。-移動不可効果が追加されました。<b>【ナインテールブレイズ（Lash
+                    Blaze）】</b>：強烈な地獄の炎を積んだ鞭で敵を攻撃する。地獄の炎は数回にわたって瞬間的にダメージを与える。ダメージとCP獲得量が増加
+                ＞強烈な地獄の炎を積んだ鞭で敵を攻撃する。地獄の炎は数回にわたって瞬間的にダメージを与える。ダメージとCP獲得量が増加。
+                スパイダーウェブ、スパイダーマッシュ上の敵にダメージを与える場合、範囲内のすべての敵に半分だけ打撃する。<b><img><br>＜スキル変更点＞</b>-スキル説明が変更されました。<b>■強神術師[陰謀の影(Plot
+                    of Shadow) ]</b>：邪悪な陰謀を飾り、自分を自学する。アイテム、スキル、持続時間の経過などの理由で効果が除去される場合、スキルの効果が持続した時間だけダメージを敵に与える
+                ＞邪悪な陰謀を飾り、自分を自学する。アイテム、スキル、持続時間の経過などの理由で効果が除去される場合、スキルの効果が持続した時間だけダメージを敵に与える。該当スキルにより敵が死ぬ場合、6範囲にダメージをもう一度与える。<b><img><br>＜スキル変更点＞</b>-スキル追加効果が追加されました。<b>[胸系の影(Revelation
+                    of Death )
+                    ]</b>：邪悪な胸系を飾り、自分を自学する。アイテム、スキル、持続時間の経過などの理由で効果が除去される場合、スキルの効果が持続した時間だけ、従来よりも大きなダメージを敵に与える＞邪悪な胸系を飾り、自分を自学する。アイテム、スキル、持続時間の経過などの理由で効果が除去される場合、スキルの効果が持続した時間だけ、従来よりも大きなダメージを敵に与える。該当スキルにより敵が死ぬ場合、6範囲にダメージをもう一度与える。<b><img><br>＜スキル変更点＞</b>-スキル追加効果が追加されました。<b>■ウルフマン【グランドクロー（Grand
+                    Claw）】</b>：大きなフリック。前方の広い敵にダメージを与える<b><img><br>＜スキル変更点＞</b>-射程距離が変更されます。-獲得CPが変更されます。-打撃数が追加されました。<b>■リトルウィッチ[派手な変身(Splendid
+                    Ransformation )
+                    ]</b>：ローズガーデン範囲内にあるとき、変身スキルが解除されない＞スキルによって変身が解除されない。<b><img><br>＜スキル変更点＞</b>-パッシブ効果が変わります。<b>■アルケミスト【ホリフィックエリア（Horrific
+                    Area）】</b>：一定範囲に猛毒ポーションを振りかけて錬金術を詠唱。範囲内に入った敵に攻撃サイクル当たりの病気効果を残す。<b><img><br>＜スキル変更点＞</b>-スキル追加効果が追加されました。<b>■
+                    PVP -シーフ</b>- PVEの場合、従来と同じスキル仕様で適用されます。<b>[卑劣な戦略（Mean
+                    Strategy）]</b>：敵の弱点を素早く把握し、致命的な一撃を加られますようになる。攻撃された敵は出血持続ダメージを受け、コインシデンス描画スキルの回数が12打に固定される。<b><img><br>＜スキル変更点＞</b>-出血期間が変更されます。-出血ダメージが変更されます。<b>■
+                    PVP -リトルウィッチ</b>- PVEの場合、従来と同じスキル仕様で適用されます。<b>[カミットシュート(Comet Shooting)
+                    ]</b>：大きな彗星を魔法棒から取り出し、敵に馬鹿発射する。彗星に遭遇した少ない出血状態になる<b><img><br>＜スキル変更点＞</b>-出血期間が変更されます。-出血ダメージが変更されます。<b>[カミット発売(
+                    CommetLaunching )
+                    ]</b>：大きな彗星を魔法棒から取り出し、敵に馬鹿発射する。攻撃した敵の周りの天の川の状態が出た他の敵に出血効果を移す。<b><img><br>＜スキル変更点＞</b>-出血期間が変更されます。-出血ダメージが変更されます。
+                <br>
+                <br>
+                <br>
+                <a name="1"></a>
+                <font color="#e95388">
+                    <h4>- 新規サブクエスト追加
+                    </h4>
+                </font>
+                -新規サブクエストは
+                <span class="color-image1">レベル900以上</span>のキャラクターで実行が可能です。<br>
+                -新規サブクエストは
+                <span class="color-image1">港町ブリッジヘッド</span>のNPC
+                <span class="color-image1">貿易船員</span>を通して行わことができます。<br>
+                -すべての新規クエストは連続して表示されます。<br>
+                <br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <b>要求レベル</b>
+                            </td>
+                            <td>
+                                <b>クエスト名</b>
+                            </td>
+                            <td>
+                                <b>位置</b>
+                            </td>
+                            <td>
+                                <b>関連NPC</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>900レベル以上</td>
+                            <td>港町騒ぎ</td>
+                            <td>港町ブリッジヘッド</td>
+                            <td rowspan="4">NPC貿易船員
+                                <br>（18、139）
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>浜に噂</td>
+                        </tr>
+                        <tr>
+                            <td>乱暴な海賊</td>
+                        </tr>
+                        <tr>
+                            <td>波をオン者</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                ※新規のサブクエストは一般クエストで進行中のキャンセルが可能です。<br>
+                <br>
+                <br>
+                <br>
+                <a name="2"></a>
+                <font color="#e95388">
+                    <h4>- メインクエスト1,2改善
+                    </h4>
+                </font>
+                -一部のメインクエスト1章5 -天上界ボーナスステータス報酬が改善されます。<br>
+                -改善後ボーナスステータス報酬を受け取りする場合、取得する傾向数値が100に変更されます。（性向値は最大100）<br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <b>報酬の種類</b>
+                            </td>
+                            <td colspan="2">
+                                <b>1回完了報酬</b>
+                            </td>
+                            <td rowspan="2">
+                                <b>報酬受け取り
+                                    <br>（最大値）
+                                </b>
+                            </td>
+                            <td colspan="2">
+                                <b>報酬受け取り回数制限</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>既存の</td>
+                            <td>改善</td>
+                            <td>既存の</td>
+                            <td>改善後</td>
+                        </tr>
+                        <tr>
+                            <td>能力値ボーナスポイント</td>
+                            <td>5</td>
+                            <td>50</td>
+                            <td>50</td>
+                            <td>10</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>スキルポイントのボーナス</td>
+                            <td>100</td>
+                            <td>1000</td>
+                            <td>1000</td>
+                            <td>10</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>最大HPボーナス</td>
+                            <td>10％</td>
+                            <td>100％</td>
+                            <td>100％</td>
+                            <td>10</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>最大CPボーナス</td>
+                            <td>10％</td>
+                            <td>100％</td>
+                            <td>100％</td>
+                            <td>10</td>
+                            <td>1</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                ※改善される報酬のほか、他の種類の報酬は、従来と同じです。<br>
+                ※更新前に改善されている報酬を1回でも受け取りしたことがある場合は、更新後の改善された報酬に反映されます。<br>
+                ※体力UIに最大HPボーナス関連ツールチップが改善された内容に変更されます。<br>
+                - [最大HP、CPボーナス]が1回受け取りに変更に応じて、[ボーナス受け取り回数、ペナルティ]で[100％のペナルティ]に変更されます。<br>
+                ：[能力再修練カード]、[技術再修練カード]使用時に適用されるペナルティは、従来と同じです。<br>
+                -既存のに適用されていたペナルティのステップは維持されます。（ペナルティ1回10％）<br>
+                地下界報酬[血の浄化]、[精神の浄化]によるペナルティの初期化は、既存のと同じです。<br>
+                - [新しいREDSTONEの完成]クエストの中で[冒険者協会の居酒屋- NPCのRAM （90、40）]が販売している クエストアイテムの関連情報フレーズが追加されます。<br>
+                <br>
+                <b>2）メインクエスト2の改善</b><br>
+                - [冒険者協会の居酒屋- NPCのRAM （90、40）]に[反復浄化作業]クエスト関連アイテムを購入できるように改善されます。<br>
+                - [反復浄化処理]クエストの中で[冒険者協会の居酒屋- NPCのRAM （90、40）]が販売している クエストアイテムの関連情報フレーズが追加されます。<br>
+                <br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <b>アイテム名</b>
+                            </td>
+                            <td>
+                                <b>価格（本あたり）</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>曲がった牙</td>
+                            <td>10,000ゴールド</td>
+                        </tr>
+                        <tr>
+                            <td>怪しい羊皮紙作品</td>
+                            <td>50,000ゴールド</td>
+                        </tr>
+                        <tr>
+                            <td>変色した皮</td>
+                            <td>10,000ゴールド</td>
+                        </tr>
+                        <tr>
+                            <td>悪魔の青銅石</td>
+                            <td>10,000ゴールド</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                - [冒険者協会の居酒屋- NPCデボラ（94、42）]を使用して、[地下界大使の住まい]に移動が可能なように改善されます。<br>
+                ※ [反復浄化作業]クエスト進行の最終段階でのみ利用が可能です。<br>
+
+                <a name="3"></a>
+                <font color="#e95388">
+                    <h4>- レイド経験値の変更（920～999）</h4>
+                </font>
+                920～999レベルのレイド経験値報酬が上方修正されます。<br>
+                <br>
+                <br>
+                <br>
+                <font color="#e95388">
+                    <a name="99"></a>
+                    <h4>変更・修正</h4>
+                </font>
+                <h5>変更</h5>
+                - NPC [会長シュルト]、[アイノガーフィールド]のモデリングが変更されます。<br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/328cef51272d92f38e36569e9c2302ffdd1d4521.10.9.9.3.jpeg" border=0 name="insertImg" /><br><br>
+                <br>
+
+                - アイテム数を表示フォントの改善
+                <br>
+                
+                
+                <br>
+                
+                 - [フィールド - プレイヤーステータス低下]が適用された場合でも、キャラクターウィンドウで能力値の基本情報を表示できるように改善
+                <br>
+                
+                
+                <br>
+                
+                 - 銀行の金庫の両方が拡張された状態で、銀行の金庫の拡張権をカートから取り出すことができないように改善
+                <br>
+                
+                
+                <br>
+                
+                 - インベントリが不足している状態で、遺物錬成しようとする場合、案内メッセージが表示されるように改善
+                <br>
+                
+                
+                <br>
+                
+                 - お店でアイテムを購入する時に数変更ボタンに数調節関連ツールチップを追加
+                <br>
+                
+                
+                <br>
+                
+                 - 【ブラックファイアー外郭]フィールドにNPCネルウァが位置した地域でモンスターが入ってくることができないように改善
+                <br>
+                
+                
+                <br>
+                
+                 - 銀行に保管不可アイテムの表記をアイテムの基本情報も公開されるように改善
+                <br>
+                
+                
+                <br>
+                
+                 - 統合ファーストポータルで移動する地域の推奨レベルの場合関連表記を追加
+                <br>
+                
+                
+                <br>
+                
+                 - 図案書で[怒り1段5セット】効果 - ダメージ表記が個別に表記されるように改善
+                <br>
+                
+                
+                <br>
+                
+                 - 魔力注入効果により増加する能力値がアイテム要求値に適用されない案内フレーズを追加
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <h5>修正</h5>
+                - 超越スキル4スロット時間を一定時間以上追加延長する場合、持続時間が初期化される現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - ゲーム内[新規ニンジン店】で商品検索時のアイコンが異常に表記されている現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - ステータス反覚醒業のキャラクターがステータス再分配巻物を使用する場合、キャラクターが表示されない現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - 変身職業は、PC部屋以外の場所で有効期間が過ぎたPC部屋の機器を着用した状態である場合、現在の職業のスキルを使用できない現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - ゲームの解像度を変更するとUIが異常な位置に表示されている現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - 一部のUIを終了後もボタンが残存する現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - UIがポップアップされた状態でクリックするキャラクターが移動される現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - 統合ファーストポータルの一部の地域が地図上で選択して移動が不可能な現象
+                <br>
+                
+                
+                <br>
+                
+                 - 統合ファーストポータルで解像度に応じて上部のタイトルがサイズが異常に表示されている現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - PTメンバーの体力UIで同じフィールド内のPTメンバーの実際の体力と異なって見える現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - コスチュームエフェクト[透明]の効果が適用されない現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - コスチューム【Mainにスペシャルコスチューム、Lookに一般コスチューム】装着後、一般コスチューム装着解除時、スペシャルコスチュームエフェクトが表示されない現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - バッグの最初のスロットで開放道具箱の使用時に、クライアントが終了する現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - エピソードクエストシリーズ[永遠の行方]のNPC<span class="color-image1">レニー</span>の名前を<span class="color-image1">セルビア</span>に変更修正
+                <br>
+                
+                
+                <br>
+                
+                 - 一部のクエストアイテム誤字修正 
+                <br>
+                
+                
+                <br>
+                
+                 - メインクエスト[オートダンジョンの探索]が正常に行われていない現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - メインクエスト[情報収集]の一部のNPCが目に見えない現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - [クエスト全リスト]からのエピソードクエスト達成率が異常に表記されている現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - [転生クエストに影響なし]に記載さクエストだけ保有した状態で、転生クエスト進行が不可能な現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - [呪われた墓で、REDSTONE類の部分を検索]クエスト進行と関連のない 
+                <br>
+                
+                
+                <br>
+                
+                   同名のNPCにクエストアイコンが公開される現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - [対人専用武器のランス（NX）]アイテムがドロップされる場合、エフェクトが表示されない現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - 思い出の指輪[ソウルガード]効果エフェクトが表示されない現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - 錬成スロット開放時のスロット情報表記方式を変更
+                <br>
+                
+                
+                <br>
+                
+                 - [ディメンション異界強化]時の要求の材料よりも少ない量の多次元の結晶をバッグ前面に配置する場合、進行が不可能な現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - アイテム割れる案内ポップアップのカーペットに乗っ以降割る進行時スフィアアイテムが破棄される現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - 特定の秘密ダンジョンクリア時ミッションブックに回数がすぐに反映されない現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - 4転生800レベル未満のキャラクターが、一部の条件満たして討伐許可証を取得、毎週ドロップ制限回数が増加する現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - 混沌の大地完了後、断続的に移動が不可能な地域に移動される現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - 攻城戦（Lv5）フィールドで特定の戦略ポイントを城壁の外攻撃できないように修正
+                <br>
+                
+                
+                <br>
+                
+                 - 決闘PVP終了後に戻るための[OK]ボタンが表示されない現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - クリーチャーPVPランキング順位表記が正常に表示されない現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - クリーチャー合成確率案内ツールチップのテキストの内容をより正確な内容に修正
+                <br>
+                
+                
+                <br>
+                
+                 - クリーチャー解除後、再接続されるまで、[ゴールド自動拾い]が維持される現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - クリーチャー[アレクサンダー、トワイライト、ラクミネラル、オーロラ]の [キングシールド、夕暮れ、静かなささやき、可視ドトヒム、平和の歌]スキルのツールチップに％表記の変更
+                <br>
+                
+                
+                <br>
+                
+                 - 特定のクリーチャーを獲得するコクーンアイテムツールチップでコクーンのスキル情報が異なって表記される現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - [蛇ポリクハンズ]スキル発動中に他の体力回復効果が正常に適用されない現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - 打撃数の多いスキルを多数のモンスターに使用時にしばらくゲームの遅延が発生する現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - 画面の外に使用された[トラップ系]スキルの襲撃時にスキルエフェクトが表示されない現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - [ウサギ変身、死んだふり、ビッグバルーン、スキップジャンプ]スキル使用時、[サンクチュアリ]スキルエフェクトが表示されている現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - プリンセス【ビッグバルーンアタック]スキル使用中のアイテムとゴールドを獲得していない現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - 獣人のキャラクターがPVPフィールドにあるとき[アゲインスト・トベッド/ピア]スキルがモンスターにPVPダメージで適用される現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - 獣人[アゲインスト・トベッド/ピア]スキルにクリティカルとダブルクリティカルダメージが適用されない現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - シーフ[ブービートラップ]スキルがPVPで硬直と移動不可効果が適用されない現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - ビショップ[リカバリー]スキル使用時、キャラクター、上記体力バーの表記がすぐに更新されない現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - ネクロマンサー[悪口]スキル効果を万病治療薬で解除できない現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - ネクロマンサー[催眠術]スキルでスリープ状態にある敵に連打型スキルがクリティカルで適用されない現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - ランサー[ロージングストライク]スキル使用時、一部のオブジェクト、地形、ボスモンスターにエフェクト残存する現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - ランサー[ガーディアンポスト]スキルが正常に発動されない現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - ランサー[ロージングインパクト、ラピッドスティンガー]スキルの物理ダメ係数が誤って適用されている現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - アーチャー【ベラジンショット/マシンアロー]と[デッドリー/テイルチェイサー]を同時に使用する際、一部のダメージが適用されない現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - 追放天使[想起]、黒魔術師[浄化の炎]スキルが適用される属性のほかCPの消費量を増加させる現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - エターナルプロジェクター、ボイドボウ、ビジョンキャスタースキルのニーズの機器の[矢]削除
+                <br>
+                
+                
+                <br>
+                
+                 - ファルコン登場演出画面でワールドマップをオン場合、画面が黒で表示される現象を修正
+                <br>
+                
+                
+                <br>
+                
+                 - クイックスロットに消耗品がいっぱいになった状態で、ベルトアイテム解体後、[異界強化を削除]進行時正常に表示されない問題を修正<br>
+                
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                [引用元]
+                <a href="http://redstone.logickorea.co.kr/notice/noticeboard/view.aspx?sqn=7421">[8月25日アップデート案内](韓国公式ページ)</a>
+                <br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/2e6b522a5998dc8945745762bbb0326ff6e0949d.10.9.9.3.png"
+                    border="0" width="800px" name="insertImg">
+                <br>
+                <br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">
+                        当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。
+                        <br>
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。
+                        <br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+            </div>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        </div>
+</body>
+
+</html>

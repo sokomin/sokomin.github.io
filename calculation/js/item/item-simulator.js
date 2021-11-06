@@ -41,6 +41,7 @@ const chara_code = {
     23: { name: "アルケミスト", },
 };
 
+var job_itemtype_list = [18, 19, 10];
 
 function convertJson(itemJson) {
     item_data = JSON.parse(itemJson);
@@ -79,7 +80,7 @@ function convertJson(itemJson) {
         elements.setAttribute('value', e.Id);
         elements.innerHTML = e.Name;
         switch (e.Type) {
-            case 18:
+            case job_itemtype_list[0]:
             // case 19:以降はタブ変わったら出す
                 d0dom.appendChild(elements);
                 break;
@@ -87,7 +88,7 @@ function convertJson(itemJson) {
             // case 13:
             // case 14:
             // case 15:
-            case 19:
+            case job_itemtype_list[1]:
                 d1dom.appendChild(elements);
                 break;
             case 8:
@@ -97,8 +98,8 @@ function convertJson(itemJson) {
             case 1:
                 d3dom.appendChild(elements);
                 break;
-            case 10:
-            case 11:
+            case job_itemtype_list[2]:
+            // case 11:
                 d4dom.appendChild(elements);
                 break;
             case 6:
