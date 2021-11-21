@@ -38,3 +38,34 @@ function removeScript(el, callback) {
     document.body.removeChild(el);
     callback(true);
 };
+
+/**
+ * 日付をYYYYMMSSの形式で返す
+ *
+ * @param ds 2021-11-20の形式で送る
+ */
+function getNowYMDStr(ds) {
+    const date = new Date(ds)
+    const Y = date.getFullYear()
+    const M = ("00" + (date.getMonth() + 1)).slice(-2)
+    const D = ("00" + date.getDate()).slice(-2)
+
+    return Y + M + D
+}
+
+/**
+ * 日付をYYYYMMSSHHMMSSの形式で返す
+ * inputフォームからDateオブジェクト作って送ればOK
+ *
+ * @param ds 2021-11-20の形式で送る。
+ */
+function getNowYMDhmsStr(ds){
+    const date = new Date(ds)
+    const Y = date.getFullYear()
+    const M = ("00" + (date.getMonth()+1)).slice(-2)
+    const D = ("00" + date.getDate()).slice(-2)
+    const h = ("00" + date.getHours()).slice(-2)
+    const m = ("00" + date.getMinutes()).slice(-2)
+    const s = ("00" + date.getSeconds()).slice(-2)
+    return Y + M + D + h + m + s
+}
