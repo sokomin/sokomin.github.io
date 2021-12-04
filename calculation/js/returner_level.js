@@ -528,7 +528,7 @@ function calc3() {
         }
         var per = 0;
         for (var i = 0; i < 600; i++) {
-            //1LV引いて調べてみる
+            //1Lv引いて調べてみる
             lv = a1 - i;
             var exp1 = exp_sum_2017array[lv - 2] + per + exp_300_600_2017;
             best = findReturnerLv(exp1, b1);
@@ -559,7 +559,7 @@ function calc3() {
         }
         var per = 0;
         for (var i = 0; i < 600; i++) {
-            //1LV引いて調べてみる
+            //1Lv引いて調べてみる
             lv = a1 - i;
             var exp1 = lv < 910 ? (exp_sum_2017array[lv - 2] + per + exp_300_600_2011) : (exp_sum_2011array[lv - 910] + per + exp_300_600_2011);
             best = findReturnerLv(exp1, b1);
@@ -585,7 +585,7 @@ function calc3() {
         }
         var per = 0;
         for (var i = 0; i < 600; i++) {
-            //1LV引いて調べてみる
+            //1Lv引いて調べてみる
             lv = a1 - i;
             var exp1 = lv < 910 ? (exp_sum_2017array[lv - 2] + per + exp_300_600_2011) : (exp_sum_2015array[lv - 910] + per + exp_300_600_2011);
             best = findReturnerLv(exp1, b1);
@@ -611,7 +611,7 @@ function calc3() {
         }
         var per = 0;
         for (var i = 0; i < 600; i++) {
-            //1LV引いて調べてみる
+            //1Lv引いて調べてみる
             lv = a1 - i;
             var exp1 = lv <= 850 ? (exp_sum_2017array[lv - 2] + per + exp_300_600_2017) : (exp_sum_2019array[lv - 851] + per + exp_300_600_2017);
             best = findReturnerLv(exp1, b1);
