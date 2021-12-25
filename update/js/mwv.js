@@ -397,7 +397,7 @@ function createAreaPositionTable() {
             // var re = /\[(.*?)\](.*?)/;
             // var replace_txt = "$1"
             // var next_map_id = Number(data["access_map"].replace(re, replace_txt));
-            var next_map_id = data["access_map"].match(/\d+/)[0];
+            var next_map_id = data["access_map"]>=0 ? data["access_map"].match(/\d+/)[0] : -1;
             var next_map_data = map_data[next_map_id];
             if (next_map_data && next_map_data.name) {
                 mobdb_tmp["name"] = next_map_data.name;
