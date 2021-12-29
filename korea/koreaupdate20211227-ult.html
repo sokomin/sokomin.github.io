@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+      https://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32">
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192">
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>2021年12月 韓国アプデ 赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報">
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml">
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png">
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field">
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png">
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                    </li>
+                    <li class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                    </li>
+                    <li disabled class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                    </li>
+                    <li class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html">
+                    <strong>アイテム</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html">
+                    <strong>スキル</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html">
+                    <strong>モンスター</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html">
+                    <strong>ダンジョン</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html">
+                    <strong>クエスト</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html">
+                    <strong>ギルド</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html">
+                    <strong>韓国情報</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html">
+                    <strong>雑学</strong>
+                </a>
+            </nav>
+        </div>
+        <div class="android-large-table mdl-layout__content">
+            <!--main-->
+            <div class="korea-content main-background">
+                <br>
+                <h3>韓国 2021/12/27 アップデート</h3>
+                <h5>
+                    <font color="#ff0000">
+                        <strong>
+                            [重要！] 韓国公式の情報を基にしています。
+                            <br>
+                            誤訳や韓国独自仕様の可能性もありますので、予めご了承下さい。
+                        </strong>
+                    </font>
+                    <br>
+                </h5>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/f1df4c658bb5fbc9c1fd2ed25a929e5c5b1d7fe5.10.9.9.3.png"
+                    border="0" alt="" name="insertImg" /><br>
+                <br>
+                <br>
+                ■新規ULTユニーク専用24種はこちら。<br>
+                要求レベルは1000～、Nx可能。職鎧部類。<br>
+                <table id="table10" style="min-width: 960px; max-width: 1200px; text-align: left;">
+                    <colgroup>
+                        <col span="1" width="200px" />
+                        <col span="1" width="300px" />
+                        <col span="1" width="240px" />
+                        <col span="1" width="400px" />
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <td><b>アイテム名</b></td>
+                            <td><b>アイテム基本情報</b></td>
+                            <td><b>着用条件</b></td>
+                            <td><b>ユニーク能力値と錬成情報</b></td>
+                        </tr>
+                        <tr>
+                            <td>先奉台帳</td>
+                            <td>＜職鎧＞ <br /> -防御力60～70増加</td>
+                            <td>レベル:1000<br />力:600<br />健康:600<br />剣士/戦士</td>
+                            <td><br>-異常系状態異常で受けるダメージ60％減少（出血、中毒、火傷）<br /> -敵致命打抵抗率15％減少<br /> -物理ダメ50％増加<br /> -防御力100％<br /> -力200増加
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>先輩隊長[Nx]</td>
+                            <td>＜職鎧＞ <br /> -防御力60～70増加</td>
+                            <td>レベル:1000<br />力:600<br />健康:600<br />剣士/戦士</td>
+                            <td><br>-異常系状態異常で受けるダメージ60％減少（出血、中毒、火傷）<br /> -敵致命打抵抗率15％減少<br /> 
+                                -物理ダメ60％増加<br /> -防御力150％<br /> -力300増加
+                                <br /><br /> ＜ 錬成 情報 ＞ <br /> - このアイテム着用レベル 120減少<br />
+                                -ラウンドレベル4当たり1増加<br /> -敵致命打抵抗5%減少<br /> -ダブルクリティカルダメージ10%増加</td>
+                        </tr>
+                        <tr>
+                            <td>正義の誓い</td>
+                            <td>＜職鎧＞ <br /> -防御力60～70増加</td>
+                            <td>レベル:1000<br />敏捷:600<br />知識:600<br />剣士/戦士</td>
+                            <td><br>-水属性ダメージ40%強化<br /> -風属性ダメージ40%強化<br /> -知識レベル3当たり1増加<br /> -物理ダメ50%増加<br /> -最大CP 60%増加</td>
+                        </tr>
+                        <tr>
+                            <td>正義の誓い[Nx]</td>
+                            <td>＜職鎧＞ <br /> -防御力60～70増加</td>
+                            <td>レベル:1000<br />敏捷:600<br />知識:600<br />剣士/戦士</td>
+                            <td>-水属性ダメージ45%強化<br /> -風属性ダメージ45%強化<br /> -知識レベル3当たり1増加<br /> -物理ダメ60%増加<br /> -最大CP 70%増加<br><br>
+                                ＜ 錬成 情報 ＞<br>
+                                - このアイテム着用レベル 120減少<br /> - 知識レベル 4当たり1増加<br>
+                                 -魔法クリティカル5%<br>
+                                -魔法クリティカル5%<br /></td>
+                        </tr>
+                        <tr>
+                            <td>アンドリス</td>
+                            <td>＜職鎧＞ <br /> -防御力60～70増加</td>
+                            <td>レベル:1000<br />健康:700<br />知恵:500<br />アーチャー/ランサー兵</td>
+                            <td><br>-防御力100%増加<br /> -全属性抵抗20%増加<br /> -健康がレベル3当たり1増加<br /> -防御者の回避率補正値を無視<br /> -ダブルクリティカルダメージ5%増加</td>
+                        </tr>
+                        <tr>
+                            <td>アンドリス[Nx]</td>
+                            <td>＜職鎧＞ <br /> -防御力60～70増加</td>
+                            <td>レベル:1000<br />健康:700<br />知恵:500<br />アーチャー/ランサー兵</td>
+                            <td><br>-防御力150%増加<br /> -全属性抵抗25%増加<br /> -健康がレベル3当たり1増加<br /> -防御者の回避率補正値を無視<br />
+                                -ダブルクリティカルダメージ5%増加<br /><br /> ＜錬成情報＞ <br /> -このアイテム着用レベル120減少<br /> -運レベル4当たり1増加<br />
+                                -ダブルクリティカルダメージ5％増加<br /> -ダブルクリティカルダメージ8％増加</td>
+                        </tr>
+                        <tr>
+                            <td>ベテランの成果</td>
+                            <td>＜職鎧＞ <br /> -防御力60～70増加</td>
+                            <td>レベル:1000<br />知識:1000<br />カリスマ:200<br />アーチャー/ランサー兵</td>
+                            <td><br>-ターゲットすべての属性抵抗力-30% <br /> -防御力100%増加<br /> -すべての属性ダメージ40%増加<br /> -知識レベル2当たり1増加<br /> -最大CP 70%増加
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>ベテランの成果[Nx]</td>
+                            <td>＜職鎧＞ <br /> -防御力60～70増加</td>
+                            <td>レベル:1000<br />知識:1000<br />カリスマ:200<br />アーチャー/ランサー兵</td>
+                            <td><br>-ターゲットすべての属性抵抗力-30% <br /> -防御力150%増加<br /> -すべての属性ダメージ45%増加<br /> -知識レベル2当たり1増加<br /> -最大CP
+                                80%増加<br /><br /> ＜錬成情報＞ <br /> -このアイテム着用レベル120減少<br /> -知識レベル4当たり1増加<br /> -魔法クリティカル5% <br />
+                                -魔法クリティカル5%</td>
+                        </tr>
+                        <tr>
+                            <td>達した人</td>
+                            <td>＜職鎧＞ <br /> -防御力50～60増加<br /> -知識が60増加</td>
+                            <td>レベル：1000<br />カリスマ：600<br />健康：600<br />ウィザード/ウルフマン</td>
+                            <td><br>-ダブルクリティカルダメージ5%増加<br /> -最終ダメージ3%増加<br /> - HPが30%以下の時、すべての属性抵抗力、防御力10%増加<br /> -防御力100%増加<br />
+                                -武器最大ダメ30増加<br /> -武器最小ダメ15増加</td>
+                        </tr>
+                        <tr>
+                            <td>達した人[Nx]</td>
+                            <td>＜職鎧＞ <br /> -防御力50～60増加<br /> -知識が60増加</td>
+                            <td>レベル：1000<br />カリスマ：600<br />健康：600<br />ウィザード/ウルフマン</td>
+                            <td><br>-ダブルクリティカルダメージ5%増加<br /> -最終ダメージ3%増加<br /> - HPが30%以下の時、すべての属性抵抗力、防御力10%増加<br /> -防御力150%増加<br />
+                                -武器最大ダメ35増加<br /> -武器最小ダメ20増加<br /><br /> ＜錬成情報＞ <br /> -このアイテム着用レベル120減少<br /> -最大体力30%増加<br />
+                                -ダブルクリティカルダメージ5%増加<br /> -ダブルクリティカルダメージ8%増加</td>
+                        </tr>
+                        <tr>
+                            <td>野性的な泣き</td>
+                            <td>＜職鎧＞ <br /> -防御力50～60増加<br /> -知識が60増加</td>
+                            <td>レベル：1000<br />力：400<br />健康：400<br />知識：400<br />ウィザード/ウルフマン</td>
+                            <td><br>-ターゲット全ての属性抵抗力- 25% <br /> -ターゲット魔法抵抗力35%弱化<br /> -知識レベル2当たり1増加<br /> -力レベル1当たり1増加<br /> -防御力100%増加
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>野性的な泣き[Nx]</td>
+                            <td>＜職鎧＞ <br /> -防御力50～60増加<br /> -知識が60増加</td>
+                            <td>レベル：1000<br />力：400<br />健康：400<br />知識：400<br />ウィザード/ウルフマン</td>
+                            <td><br>-ターゲット全ての属性抵抗力- 25% <br /> -ターゲット魔法抵抗力35%弱化<br /> -知識レベル2当たり1増加<br /> -力レベル2当たり1増加<br /> -防御力150%増加
+                                <br /><br /> ＜ 錬成 情報 ＞ <br /> -このアイテム着用レベル120減少 <br /> - 知識レベル4当たり1増加<br />
+                                -魔法クリティカル5% <br /> -魔法クリティカル5%</td>
+                        </tr>
+                        <tr>
+                            <td>スピリチュアルリーダー</td>
+                            <td>＜職鎧＞ <br /> -火、水、風、大地に対する抵抗40％増加<br /> -防御力50～60増加</td>
+                            <td>レベル：1000<br />カリスマ：600<br />知恵：600<br />健康：300<br />ビーストテイマー/サマナー</td>
+                            <td><br>-防御力100％増加<br /> -すべてのステータス200増加<br /> - (ペット、召喚獣)攻撃速度40%増加<br /> - (ペット、召喚獣)クリティカル確率5%増加<br />
+                                -すべてのスキルレベル12</td>
+                        </tr>
+                        <tr>
+                            <td>スピリチュアルリーダー[Nx]</td>
+                            <td>＜職鎧＞ <br /> -火、水、風、大地に対する抵抗40％増加<br /> -防御力50～60増加</td>
+                            <td>レベル：1000<br />カリスマ：600<br />知恵：600<br />健康：300<br />ビーストテイマー/サマナー</td>
+                            <td><br>-防御力150％増加<br /> -すべてのステータス200増加<br /> - (ペット、召喚獣)攻撃速度40%増加<br /> - (ペット、召喚獣)クリティカル確率8%増加<br />
+                                -すべてのスキルレベル13 <br /><br /> ＜錬成情報＞ <br /> -このアイテム着用レベル120減少<br /> - (ペット、召喚獣）最大体力50％増加<br /> -
+                                （ペット、召喚獣）敵致命打抵抗5％減少<br /> - （ペット、召喚獣）敵致命打抵抗5％減少</td>
+                        </tr>
+                        <tr>
+                            <td>自然のインド</td>
+                            <td>＜職鎧＞ <br /> -火、水、風、大地に対する抵抗40％増加<br /> -防御力50～60増加</td>
+                            <td>レベル：1000<br />カリスマ：600<br />知恵：600<br />健康：300<br />ビーストテイマー/サマナー</td>
+                            <td><br>-防御力100%増加<br /> -すべてのステータス200増加<br /> -ペット、召喚獣攻撃速度40%増加<br /> -ペット、召喚獣状態異常抵抗30%増加<br /> -最大体力50%増加
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>自然のインド[Nx]</td>
+                            <td>＜職鎧＞ <br /> -火、水、風、大地に対する抵抗40％増加<br /> -防御力50～60増加</td>
+                            <td>レベル：1000<br />カリスマ：600<br />知恵：600<br />健康：300<br />ビーストテイマー/サマナー</td>
+                            <td><br>-防御力150％増加<br /> -すべてのステータス200増加<br /> -ペット、召喚獣攻撃速度40％増加<br /> -ペット、召喚獣状態異常抵抗35％増加<br />
+                                -最大体力60％増加<br /><br /> ＜錬成情報＞ <br /> -このアイテム着用レベル120減少<br /> - (ペット、召喚獣）最大体力50％増加<br /> -
+                                （ペット、召喚獣）最終ダメージ5％増加<br /> - （ペット、召喚獣）最終ダメージ5％増加</td>
+                        </tr>
+                        <tr>
+                            <td>純粋と堕落</td>
+                            <td>＜職鎧＞ <br /> -防御力60～70増加</td>
+                            <td>レベル：1000<br />力：500<br />健康：700<br />ビショップ/追放天使</td>
+                            <td><br>-防御力100%増加<br /> -最大体力50%増加<br /> -武器最小ダメ15増加<br /> -武器最大ダメ30増加<br /> -ダブルクリティカルダメージ5%増加</td>
+                        </tr>
+                        <tr>
+                            <td>純粋と堕落[Nx]</td>
+                            <td>＜職鎧＞ <br /> -防御力60～70増加</td>
+                            <td>レベル：1000<br />力：500<br />健康：700<br />ビショップ/追放天使</td>
+                            <td><br>-防御力150%増加<br /> -最大体力60%増加<br /> -武器最小ダメ20増加<br /> -武器最大ダメ35増加<br /> -ダブルクリティカルダメージ5%増加<br /><br />
+                                ＜錬成情報＞ <br /> -このアイテム着用レベル120減少<br /> -運レベル4当たり1増加<br /> -敵致命打抵抗5%減少<br /> -ダブルクリティカルダメージ10%増加</td>
+                        </tr>
+                        <tr>
+                            <td>裏面の存在</td>
+                            <td>＜職鎧＞ <br /> -防御力60～70増加</td>
+                            <td>レベル：1000<br />知識：1000<br />知恵：200<br />ビショップ/追放天使</td>
+                            <td><br>-防御力100％増加<br /> -すべてのスキルレベル10増加<br /> -光属性攻撃力50％増加<br />
+                                -襲撃時に致命ダメージ（ダブクリ、魔法を含む）を着た場合、10秒間受けるダメージの10％減少。<br><br /> -最大体力50％増加</td>
+                        </tr>
+                        <tr>
+                            <td>裏面の存在[Nx]</td>
+                            <td>＜職鎧＞ <br /> -防御力60～70増加</td>
+                            <td>レベル：1000<br />知識：1000<br />知恵：200<br />ビショップ/追放天使</td>
+                            <td><br>-防御力150％増加<br /> -すべてのスキルレベル12増加<br /> -光属性攻撃力50％増加<br />
+                                -襲撃時に致命ダメージ（ダブクリ、魔法を含む）を着た場合、10秒間受けるダメージの10％減少。<br><br /> -最大体力60%増加<br /><br /> ＜錬成情報＞ <br />
+                                -このアイテム着用レベル120減少<br /> -知識レベル4当たり1増加<br /> -魔法クリティカル5% <br /> -魔法クリティカル5%</td>
+                        </tr>
+                        <tr>
+                            <td>漆黒の岩</td>
+                            <td>＜職鎧＞ <br /> -防御力60～70増加</td>
+                            <td>レベル：1000<br />敏捷：1200<br />シーフ/武道家</td>
+                            <td><br>-命中率補正値を無視<br /> -回避率補正値を無視<br /> -防御力100％増加<br /> -力がレベル2当たり1増加<br /> -敏捷がレベル2当たり1増加</td>
+                        </tr>
+                        <tr>
+                            <td>漆黒の中の暗闇[Nx]</td>
+                            <td>＜職鎧＞ <br /> -防御力60～70増加</td>
+                            <td>レベル：1000<br />敏捷：1200<br />シーフ/武道家</td>
+                            <td><br>-命中率補正値を無視<br /> -回避率補正値を無視<br /> -防御力150%増加<br /> -力がレベル2当たり1増加<br /> -敏捷がレベル2当たり1増加<br /><br />
+                                ＜錬成情報＞ <br /> -このアイテム着用レベル120減少<br /> -運レベル4当たり1増加<br /> -敵致命打抵抗5%減少<br /> -ダブルクリティカルダメージ10%増加</td>
+                        </tr>
+                        <tr>
+                            <td>疾風スタッフ</td>
+                            <td>＜職鎧＞ <br /> -防御力60～70増加</td>
+                            <td>レベル：1000<br />健康：600<br />知識：600<br />シーフ/武道家</td>
+                            <td><br>-防御力100%増加<br /> -最大体力50%増加<br /> -火属性ダメージ40%増加<br /> -ターゲット火抵抗力20%弱化<br /> -魔法クリティカル5%</td>
+                        </tr>
+                        <tr>
+                            <td>疾風スタッフ[Nx]</td>
+                            <td>＜職鎧＞ <br /> -防御力60～70増加</td>
+                            <td>レベル：1000<br />健康：600<br />知識：600<br />シーフ/武道家</td>
+                            <td><br>-防御力150%増加<br /> -最大体力60%増加<br /> -火属性ダメージ45%増加<br /> -ターゲット火抵抗力25%弱化<br /> -魔法クリティカル5% <br /><br />
+                                ＜錬成情報＞ <br /> -このアイテム着用レベル120減少<br /> -知識レベル4当たり1増加<br /> -魔法クリティカル5% <br /> -魔法クリティカルダメージ3%増加</td>
+                        </tr>
+                        <tr>
+                            <td>気品ある姿</td>
+                            <td>＜職鎧＞ <br /> -防御力55～65増加</td>
+                            <td>レベル：1000<br />力：800<br />カリスマ：400<br />プリンセス/リトルウィッチ</td>
+                            <td><br>-防御力100%増加<br /> -最大体力50%増加<br /> -ダブルクリティカルダメージ3%増加<br /> -敵致命打抵抗15%減少<br /> -健康がレベル2当たり1増加</td>
+                        </tr>
+                        <tr>
+                            <td>気品ある姿[Nx]</td>
+                            <td>＜職鎧＞ <br /> -防御力55～65増加</td>
+                            <td>レベル：1000<br />力：800<br />カリスマ：400<br />プリンセス/リトルウィッチ</td>
+                            <td><br>-防御力150%増加<br /> -最大体力50%増加<br /> -ダブルクリティカルダメージ3%増加<br /> -敵致命打抵抗20%減少<br />
+                                -健康レベル2当たり1増加<br /><br /> ＜錬成情報＞ <br /> -このアイテム着用レベル120減少<br /> -運レベル4当たり1増加<br /> -敵致命打抵抗率5%減少<br />
+                                -ダブルクリティカルダメージ10%増加</td>
+                        </tr>
+                        <tr>
+                            <td>デビュータント</td>
+                            <td>＜職鎧＞ <br /> -防御力55～65増加</td>
+                            <td>レベル：1000<br />健康：800<br />知識：400<br />プリンセス/リトルウィッチ</td>
+                            <td><br>-防御力100%増加<br /> -すべての属性ダメージ50%強化<br /> -クールタイム減少10% <br /> -知識レベル2当たり1増加<br /> -最大体力50%増加</td>
+                        </tr>
+                        <tr>
+                            <td>デビュータント[Nx]</td>
+                            <td>＜職鎧＞ <br /> -防御力55～65増加</td>
+                            <td>レベル：1000<br />健康：800<br />知識：400<br />プリンセス/リトルウィッチ</td>
+                            <td><br>-防御力150%増加<br /> -すべての属性ダメージ60%強化<br /> -クールタイム減少10% <br /> -知識レベル2当たり1増加<br />
+                                -最大体力60%増加<br /><br /> ＜錬成情報＞ <br /> -このアイテム着用レベル120減少<br /> -知識レベル4当たり1増加<br /> -魔法クリティカル5％<br />
+                                -魔法クリティカル5％</td>
+                        </tr>
+                        <tr>
+                            <td>3回の試練</td>
+                            <td>＜職鎧＞ <br /> -防御力55～65増加</td>
+                            <td>レベル:1000<br />健康:1200<br />ネクロマンサー/悪魔</td>
+                            <td><br>-防御力100%増加<br /> -受けるダメージ減少10% <br /> -魔法ダメージ吸収10% <br /> -受けるダメージの60%を返す。<br><br /> -最大体力60％増加</td>
+                        </tr>
+                        <tr>
+                            <td>3回の試練[Nx]</td>
+                            <td>＜職鎧＞ <br /> -防御力55～65増加</td>
+                            <td>レベル:1000<br />健康:1200<br />ネクロマンサー/悪魔</td>
+                            <td><br>-防御力150%増加<br /> -受けるダメージ減少10% <br /> -魔法ダメージ吸収10% <br /> -受けるダメージの60%を返す。<br><br />
+                                -最大体力70%増加<br /><br /> ＜錬成情報＞ <br /> -このアイテム着用レベル120減少<br /> -運レベル4当たり1増加<br /> -敵致命打抵抗率5%減少<br />
+                                -ダブルクリティカルダメージ10%増加</td>
+                        </tr>
+                        <tr>
+                            <td>混沌のマスター</td>
+                            <td>＜職鎧＞ <br /> -防御力55～65増加</td>
+                            <td>レベル：1000<br />カリスマ：700<br />健康：400<br />ネクロマンサー/悪魔</td>
+                            <td><br>-防御力100%増加<br /> -魔法ダメージ50%増加<br /> -ターゲットすべての属性抵抗力- 20% <br /> -健康レベル2当たり1増加<br /> -全スキルレベル6増加</td>
+                        </tr>
+                        <tr>
+                            <td>混沌の主人[Nx]</td>
+                            <td>＜職鎧＞ <br /> -防御力55～65増加</td>
+                            <td>レベル：1000<br />カリスマ：700<br />健康：400<br />ネクロマンサー/悪魔</td>
+                            <td><br>-防御力150%増加<br /> -魔法ダメージ60%増加<br /> -ターゲットすべての属性抵抗力- 25% <br /> -健康レベル2当たり1増加<br />
+                                -全スキルレベル8増加<br /><br /> ＜錬成情報＞ <br /> -このアイテム着用レベル120減少<br /> -知識レベル4当たり1増加<br /> -魔法クリティカル5％<br />
+                                -魔法クリティカル5％</td>
+                        </tr>
+                        <tr>
+                            <td>浮かぶ星</td>
+                            <td>＜職鎧＞ <br /> -防御力50～60増加<br /> -クリティカル発生確率7増加</td>
+                            <td>レベル:1000<br />力:600<br />敏捷:600<br />霊術師/闘士</td>
+                            <td><br>-防御力100%増加<br /> -敵致命打抵抗15%減少<br /> -フィールド抵抗低下に対する抵抗5% <br /> -全属性抵抗20%増加<br /> -移動速度20%増加</td>
+                        </tr>
+                        <tr>
+                            <td>浮かぶ星[Nx]</td>
+                            <td>＜職鎧＞ <br /> -防御力50～60増加<br /> -クリティカル発生確率7増加</td>
+                            <td>レベル:1000<br />力:600<br />敏捷:600<br />霊術師/闘士</td>
+                            <td><br>-防御力150%増加<br /> -敵致命打抵抗15%減少<br /> -フィールド抵抗低下に対する抵抗5% <br /> -全属性抵抗25%増加<br />
+                                -移動速度25%増加<br /><br /> ＜錬成情報＞ <br /> -このアイテム着用レベル120減少<br /> -運レベル4 当たり 1増加<br /> -敵致命打抵抗率5%減少<br />
+                                -ダブルクリティカルダメージ10%増加</td>
+                        </tr>
+                        <tr>
+                            <td>亡霊のささやき</td>
+                            <td>＜職鎧＞ <br /> -防御力50～60増加<br /> -クリティカル発生確率7増加</td>
+                            <td>レベル：1000<br />カリスマ：600<br />知識：600<br />霊術師/闘士</td>
+                            <td><br>-防御力100%増加<br /> -低周界状態異常にかかった対象攻撃時魔法ダメージ50%増加<br /> -全属性抵抗20%増加<br /> -全スキルレベル6増加<br />
+                                -魔法クリティカルダメージ3%増加</td>
+                        </tr>
+                        <tr>
+                            <td>亡霊のささやき[Nx]</td>
+                            <td>＜職鎧＞ <br /> -防御力50～60増加<br /> -クリティカル発生確率7増加</td>
+                            <td>レベル：1000<br />カリスマ：600<br />知識：600<br />霊術師/闘士</td>
+                            <td><br>-防御力150%増加<br /> -低周界状態異常にかかった対象攻撃時魔法ダメージ50%増加<br /> -全属性抵抗25%増加<br /> -全スキルレベル8増加<br />
+                                -魔法クリティカルダメージ5%増加<br /><br /> ＜錬成情報＞ <br /> -このアイテム着用レベル120減少<br /> -知識レベル4当たり1増加<br /> -魔法クリティカル5%
+                                <br /> -魔法クリティカル5%</td>
+                        </tr>
+                        <tr>
+                            <td>ブライトニング</td>
+                            <td>＜職鎧＞ <br /> -防御力50～60増加</td>
+                            <td>レベル: 1000<br />力: 600<br />知識: 600<br />光奏師/獣人</td>
+                            <td><br>-防御力100%増加<br /> -ダブルクリティカルダメージ5%増加<br /> -回避率10%増加<br /> -物理致命打発動確率30%増加<br /> -最大体力60%増加</td>
+                        </tr>
+                        <tr>
+                            <td>ブライトニング[Nx]</td>
+                            <td>＜職鎧＞ <br /> -防御力50～60増加</td>
+                            <td>レベル: 1000<br />力: 600<br />知識: 600<br />光奏師/獣人</td>
+                            <td><br>-防御力150%増加<br /> -ダブルクリティカルダメージ5%増加<br /> -回避率10%増加<br /> -物理致命打発動確率40%増加<br />
+                                -最大体力70%増加<br /><br /> ＜錬成情報＞ <br /> -このアイテム着用レベル120減少<br /> -運レベル4当たり1増加<br />
+                                -ダブルクリティカルダメージ5％増加<br /> -ダブルクリティカルダメージ8％増加</td>
+                        </tr>
+                        <tr>
+                            <td>耳孔子</td>
+                            <td>＜職鎧＞ <br /> -防御力50～60増加</td>
+                            <td>レベル: 1000<br />知識: 800<br />健康: 400<br />光奏師/獣人</td>
+                            <td><br>-最終ダメージ3%増加<br /> -防御力100%増加<br /> -魔法クリティカル10% <br /> -最大CP 100%増加<br /> -最大体力60%増加</td>
+                        </tr>
+                        <tr>
+                            <td>耳孔子[Nx]</td>
+                            <td>＜職鎧＞ <br /> -防御力50～60増加</td>
+                            <td>レベル: 1000<br />知識: 800<br />健康: 400<br />光奏師/獣人</td>
+                            <td><br>-最終ダメージ4%増加<br /> -防御力150%増加<br /> -魔法クリティカル10% <br /> -最大CP 120%増加<br /> -最大体力70%増加<br /><br />
+                                ＜錬成情報＞ <br /> -このアイテム着用レベル120減少<br /> -知識レベル4当たり1増加<br /> -魔法クリティカル5% <br /> -魔法クリティカル5%</td>
+                        </tr>
+                        <tr>
+                            <td>ゲスト</td>
+                            <td>＜職鎧＞ <br /> -運が40～50増加<br /> -防御力50～60増加</td>
+                            <td>レベル：1000<br />健康：1200<br />メイド/黒魔術師</td>
+                            <td><br>-最大 CP 250%増加<br /> - CP獲得ボーナス30%増加<br /> -防御力100%増加<br /> -最大体力60%増加<br /> -力がレベル2当たり1増加</td>
+                        </tr>
+                        <tr>
+                            <td>ゲストフィット[Nx]</td>
+                            <td>＜職鎧＞ <br /> -運が40～50増加<br /> -防御力50～60増加</td>
+                            <td>レベル：1000<br />健康：1200<br />メイド/黒魔術師</td>
+                            <td><br>-最大 CP 260%増加<br /> - CP獲得ボーナス40%増加<br /> -防御力150%増加<br /> -最大体力70%増加<br /> -力がレベル2当たり1増加
+                                <br /><br /> ＜ 錬成 情報 ＞ <br />  -このアイテム着用レベル120減少 <br /> - 運 レベル 4 当たり 1増加<br />
+                                -敵致命打抵抗率5％減少<br /> -限界ダメージ増加物理ダメージ1000魔法2％ 増加</td>
+                        </tr>
+                        <tr>
+                            <td>王室の影</td>
+                            <td>＜職鎧＞ <br /> -運が40～50増加<br /> -防御力50～60増加</td>
+                            <td>レベル：1000<br />知識：900<br />健康：300<br />メイド/黒魔術師</td>
+                            <td><br>-火属性ダメージ40%増加<br /> -闇属性ダメージ40%増加<br /> -魔法クリティカルダメージ5%増加<br /> -防御力100%増加<br /> -ターゲットすべての属性抵抗力-20%
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>王室の影[Nx]</td>
+                            <td>＜職鎧＞ <br /> -運が40～50増加<br /> -防御力50～60増加</td>
+                            <td>レベル：1000<br />知識：900<br />健康：300<br />メイド/黒魔術師</td>
+                            <td><br>-火属性ダメージ45%増加<br /> -闇属性ダメージ45%増加<br /> -魔法クリティカルダメージ5%増加<br /> -防御力150%増加<br /> -ターゲット全ての属性抵抗力-25%
+                                <br /><br /> ＜錬成情報＞ <br /> -このアイテム着用レベル120減少<br /> -知識レベル4 1個増加<br /> -魔法クリティカル5% <br />
+                                -魔法クリティカルダメージ3%増加</td>
+                        </tr>
+                        <tr>
+                            <td>隠された本性</td>
+                            <td>＜職鎧＞ <br /> -敏捷が70～90増加<br /> -防御力50～70増加</td>
+                            <td>レベル:1000<br />健康:300<br />知恵:300<br />カリスマ:300<br />運:300<br />マスケッティア/アルケミスト</td>
+                            <td><br>-物理致命打発動確率50%増加<br /> -健康がレベル2当たり1増加<br /> -ダブルクリティカルダメージ5%増加<br /> -防御力100%増加<br /> -命中率10%増加</td>
+                        </tr>
+                        <tr>
+                            <td>隠された本性[Nx]</td>
+                            <td>＜職鎧＞ <br /> -敏捷が70～90増加<br /> -防御力50～70増加</td>
+                            <td>レベル:1000<br />健康:300<br />知恵:300<br />カリスマ:300<br />運:300<br />マスケッティア/アルケミスト</td>
+                            <td><br>-物理致命打発動確率50%増加<br /> -健康がレベル2当たり1増加<br /> -ダブルクリティカルダメージ5%増加<br /> -防御力150%増加<br /> -命中率20%増加
+                                <br /><br /> ＜ 錬成 情報 ＞ <br />  -このアイテム着用レベル120減少 <br /> - 運 レベル 4 当たり 1増加<br />
+                                -敵致命打抵抗率5%減少<br /> -ダブルクリティカルダメージ10%増加</td>
+                        </tr>
+                        <tr>
+                            <td>ウエストコート</td>
+                            <td>＜職鎧＞ <br /> -敏捷が70～90増加<br /> -防御力50～70増加</td>
+                            <td>レベル:1000<br />力:400<br />知識:400<br />敏捷:400<br />マスケッティア/アルケミスト</td>
+                            <td><br>-すべての属性攻撃が35％増加しました<br /> -ターゲットのすべての属性抵抗弱化-25％<br />
+                                -すべての属性抵抗が20％増加<br /> -すべてのステータスが150増加<br /> -防御力が100％増加</td>
+                        </tr>
+                        <tr>
+                            <td>ウエストコート[Nx]</td>
+                            <td>＜職鎧＞ <br /> -敏捷が70～90増加<br /> -防御力50～70増加</td>
+                            <td>レベル:1000<br />力:400<br />知識:400<br />敏捷:400<br />マスケッティア/アルケミスト</td>
+                            <td><br>-すべての属性ダメージ40%増加<br /> -ターゲットすべての属性抵抗力- 30% <br /> -すべての属性抵抗25%増加<br /> -すべてのステータス150増加<br />
+                                -防御力150%増加<br /><br /> ＜錬成情報＞ <br /> -このアイテム着用レベル120減少<br /> -知識レベル4あたり1増加<br /> -魔法クリティカル5％<br />
+                                -魔法クリティカル5％</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <br><br><b></b><br>
+                <br>
+                <br>
+                <br>
+                [引用元]
+                <a
+                    href="http://redstone.logickorea.co.kr/notice/noticeboard/view.aspx?sqn=7497">[12月27日アップデート案内](ULT)</a>
+                <br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/0d16f157fdfa1b1c290d05101da6c37c0a964d8f.10.9.9.3.png"
+                    border="0" alt="" name="insertImg" /><br><br> <br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">
+                        当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。
+                        <br>
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。
+                        <br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+            </div>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        </div>
+</body>
+
+</html>
