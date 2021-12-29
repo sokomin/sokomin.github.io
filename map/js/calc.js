@@ -1,6 +1,7 @@
 ﻿
 mapid = mapid ? mapid : 0;
-const file_url = "https://sokomin.github.io/map/database/mobdb" + mapid + ".js";
+// const file_url = "https://sokomin.github.io/map/database/mobdb" + mapid + ".js";
+const file_url = "https://sokomin.github.io/sokomin_repository/db/mobdb/mobdb" + mapid + ".js";
 //モンスターとのリンク作成用
 const mob_file_url = "https://sokomin.github.io/sokomin_repository/db/map2.csv";
 var DROP_TEXT_CONST = "";
@@ -119,9 +120,11 @@ function getMobDB() {
         url: file_url,
         // mobdb見つかったらsuccess、なかったらエラー
         success: function (result) {
-            var obj = (new Function(result + "return{m:MobData,a:AreaData}"))();
+            var obj = (new Function(result + "return{m:MobData,l:MobList,a:AreaData}"))();
+            // var obj = (new Function(result + "return{m:MobData,a:AreaData}"))();
             MobData = obj.m;
             AreaData = obj.a;
+            NameMob = obj.l && obj.l[mapid] ? obj.l[mapid] : NameMob;
             Jump(mapid);
             //NameImgはcommon.jsで定義されてる
             if (NameImg) {

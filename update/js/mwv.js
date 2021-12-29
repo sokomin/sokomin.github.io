@@ -24,6 +24,10 @@ var monster_data = {};
 var map_data = {};
 var map_import = {};
 var a1 = 0; //map_id
+var tmp_divx = -1;
+var tmp_divy = -1;
+var mob_inid_map = {}
+
 
 // 読み込んだCSVデータをオブジェクトに変換
 function convertCSVtoArray(is_area, str, map_str) {// 読み込んだCSVデータが文字列として渡される
@@ -31,6 +35,8 @@ function convertCSVtoArray(is_area, str, map_str) {// 読み込んだCSVデー�
     obj_format = {};
     monster_data = {};
     map_data = {};
+    tmp_divx = -1;
+    tmp_divy = -1;
 
     var result = [];// 最終的な二次元配列を入れるための配列
     var tmp = str.split("\n");// 改行を区切り文字として行を要素とした配列を生成
@@ -204,9 +210,6 @@ function calc3() {
     }
 }
 
-var tmp_divx = -1;
-var tmp_divy = -1;
-var mob_inid_map = {}
 
 function createMobPositionTable() {
     // マップサイズはmaplistの値をもとに推測してみる。mapidを手動で入力

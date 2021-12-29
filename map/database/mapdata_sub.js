@@ -802,6 +802,10 @@ var MapSubInfoList = {
     1017:{ name: '捨てられた地下墓地B2のメリス・リング',mc2: 9,mc: '-',req_map_lv: 99,dfi: 40,dwa: 20,dwi: 20,dea: 20,dli: 20,dda: 40,st_down: 15,lbd: 70,non_resume: true },
     1018:{ name: '捨てられた地下墓地B3のメリス・リング',mc2: 9,mc: '-',req_map_lv: 99,dfi: 40,dwa: 25,dwi: 25,dea: 25,dli: 25,dda: 40,st_down: 15,lbd: 70,non_resume: true },
     1019:{ name: '冒険家協会ブルンネンシュティグ本部？',mc2: 4,mc: '-',req_map_lv: 99,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: true },
+    1020:{ name: 'デフヒルズ西部峡谷',mc2: 3,mc: '-',req_map_lv: 5,dfi: 20,dwa: 20,dwi: 20,dea: 20,dli: 20,dda: 20,st_down: 10,lbd: 70,non_resume: false },
+    1021:{ name: 'デフヒルズ峡谷の深い所',mc2: 3,mc: '-',req_map_lv: 5,dfi: 20,dwa: 20,dwi: 20,dea: 20,dli: 20,dda: 20,st_down: 10,lbd: 70,non_resume: true },
+    1022:{ name: '聖なる懺悔の部屋 ３Ｆ',mc2: 4,mc: '-',req_map_lv: 99,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: true },
+    1023:{ name: 'シェイット士官学校',mc2: 4,mc: '-',req_map_lv: 99,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: true },
     9999: { name: 'そこみん王国', mc: 'S', req_map_lv: 4, dfi: 40, dwa: 40, dwi: 40, dea: 40, dli: 40, dda: 40, st_down: 40, lbd: 40, non_resume: true, mc2: 1 }
 }
 
