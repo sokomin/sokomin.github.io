@@ -6,11 +6,12 @@ function init1() {
     document.f.r1.value = 0;
     document.f.r2.value = 0;
 
-    document.f.b1.options[0] = new Option('2019～(暫定版)', 5, 1, 1);
+    document.f.b1.options[0] = new Option('2022～', 6, 1, 1);
     document.f.b1.options[1] = new Option('2005～2011', 1);
     document.f.b1.options[2] = new Option('2011～2015', 2);
     document.f.b1.options[3] = new Option('2015～2016', 3);
     document.f.b1.options[4] = new Option('2017～2018', 4);
+    document.f.b1.options[5] = new Option('2019～2021', 5);
     //もっと賢い定義方法あるよね？わかる。
     document.f.a21.value = 1;
     document.f.a22.value = 1;
@@ -18,26 +19,27 @@ function init1() {
     document.f.b2.value = 0;
 
     document.f.r21.value = 0;
-    document.f.b2.options[0] = new Option('2019～(暫定版)', 5, 1, 1);
+    document.f.b2.options[0] = new Option('2022～', 6,1,1);
     document.f.b2.options[1] = new Option('2005～2011', 1);
     document.f.b2.options[2] = new Option('2011～2015', 2);
     document.f.b2.options[3] = new Option('2015～2016', 3);
     document.f.b2.options[4] = new Option('2017～2018', 4);
+    document.f.b2.options[5] = new Option('2019～2021', 5);
 
     //獲得経験値計算用
     document.f.a31.value = 1;
     document.f.a32.value = 0;
     document.f.a33.value = 0;
 
-    document.f.b31.value = 0;
+    document.f.b3.value = 0;
 
     document.f.r31.value = 0;
-    document.f.b31.options[0] = new Option('2019～(暫定版)', 5, 1, 1);
-    document.f.b31.options[1] = new Option('2005～2011', 1);
-    document.f.b31.options[2] = new Option('2011～2015', 2);
-    document.f.b31.options[3] = new Option('2015～2016', 3);
-    document.f.b31.options[4] = new Option('2017～2018', 4);
-
+    document.f.b3.options[0] = new Option('2022～', 6, 1, 1);
+    document.f.b3.options[1] = new Option('2005～2011', 1);
+    document.f.b3.options[2] = new Option('2011～2015', 2);
+    document.f.b3.options[3] = new Option('2015～2016', 3);
+    document.f.b3.options[4] = new Option('2017～2018', 4);
+    document.f.b3.options[5] = new Option('2019～2021', 5);
 }
 
 function init2() {
@@ -113,12 +115,28 @@ function calc1() {
             document.f.r1.value = 200000000000;
             document.f.r2.value = "最高レベルは1500です。";
             return;
-        } else if (a1 >= 850 && a1 <= 999) {
+        } else if (a1 >= 850 && a1 <= 1000) {
             r1 = exp_2019array[a1 - 850];
             r2 = exp_sum_2019array[a1 - 850];
-        } else if (a1 >= 1000) {
+        } else if (a1 >= 1001) {
             r1 = exp_2017array[a1 - 1];
-            //合計は850～999がズレた分、変わっちゃうからね
+            //合計は850～1000がズレた分、変わっちゃうからね
+            r2 = exp_sum_2019array[a1 - 850];
+        } else {
+            r1 = exp_2017array[a1 - 1];
+            r2 = exp_sum_2017array[a1 - 1];
+        }
+    } else if (b1 === 6) {
+        if (a1 >= 2000) {
+            document.f.r1.value = 200000000000;
+            document.f.r2.value = "最高レベルは2000です。";
+            return;
+        } else if (a1 >= 850 && a1 <= 1000) {
+            r1 = exp_2019array[a1 - 850];
+            r2 = exp_sum_2019array[a1 - 850];
+        } else if (a1 >= 1001) {
+            r1 = exp_2017array[a1 - 1];
+            //合計は850～1000がズレた分、変わっちゃうからね。sum_2019arrayに追記。
             r2 = exp_sum_2019array[a1 - 850];
         } else {
             r1 = exp_2017array[a1 - 1];
@@ -237,12 +255,30 @@ function calc2() {
         var a2_2 = 0;
         if (a1 <= 850) {
             a1_2 = a1 >= 2 ? exp_sum_2017array[a1 - 2] : 0;
-        } else if (a1 <= 1500) {
+        } else {
             a1_2 = exp_sum_2019array[a1 - 851];
         }
         if (a2 <= 850) {
             a2_2 = a2 >= 2 ? exp_sum_2017array[a2 - 2] : 0;
-        } else if (a2 <= 1500) {
+        } else {
+            a2_2 = exp_sum_2019array[a2 - 851];
+        }
+        r1 = a2_2 - a1_2;
+    } else if (b1 === 6) {
+        if (a1 >= 2000 || a2 >= 2000) {
+            document.f.r21.value = "最高レベルは2000です。";
+            return;
+        }
+        var a1_2 = 0;
+        var a2_2 = 0;
+        if (a1 <= 850) {
+            a1_2 = a1 >= 2 ? exp_sum_2017array[a1 - 2] : 0;
+        } else {
+            a1_2 = exp_sum_2019array[a1 - 851];
+        }
+        if (a2 <= 850) {
+            a2_2 = a2 >= 2 ? exp_sum_2017array[a2 - 2] : 0;
+        } else {
             a2_2 = exp_sum_2019array[a2 - 851];
         }
         r1 = a2_2 - a1_2;
@@ -260,7 +296,7 @@ function calc3() {
     var a1 = parseInt(document.f.a31.value) ? parseInt(document.f.a31.value) : 0;
     var a2 = Number(document.f.a32.value) ? Number(document.f.a32.value) : 0;
     var a3 = Number(document.f.a33.value) ? Number(document.f.a33.value) : 0;
-    var b1 = parseInt(document.f.b31.value) ? parseInt(document.f.b31.value) : 0;
+    var b1 = parseInt(document.f.b3.value) ? parseInt(document.f.b3.value) : 0;
 
     // init
     document.f.r31.value = "";
@@ -330,11 +366,30 @@ function calc3() {
     } else if (b1 === 5) {
         //2019～
         if (a1 >= 1500) {
-            document.f.r21.value = "最高レベルは1500です。";
+            document.f.r31.value = "最高レベルは1500です。";
             return;
         }
         var per = 0;
-        if (a1 < 850 || a1 >= 1000) {
+        if (a1 < 850 || a1 > 1000) {
+            per = parseInt(exp_2017array[a1 - 1] * a2 / 100);
+        } else {
+            per = parseInt(exp_2019array[a1 - 850] * a2 / 100);
+        }
+        //簡易計算機だし、直接足し算でOK(1000以降なら直接EXP調整してね。)
+        var exp1 = a1 <= 850 ? (exp_sum_2017array[a1 - 2] + per + a3) : (exp_sum_2019array[a1 - 851] + per + a3);
+        if(a1 == 1){
+            exp1 = per + a3;
+        }
+        r1 = findReturnerLv(exp1, b1);
+        console.log(exp1);
+    } else if (b1 === 6) {
+        //2019～
+        if (a1 >= 2000) {
+            document.f.r31.value = "最高レベルは2000です。";
+            return;
+        }
+        var per = 0;
+        if (a1 < 850 || a1 > 1000) {
             per = parseInt(exp_2017array[a1 - 1] * a2 / 100);
         } else {
             per = parseInt(exp_2019array[a1 - 850] * a2 / 100);
