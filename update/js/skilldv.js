@@ -16,7 +16,6 @@ function getMobCSV(skill_str) {
     }
 }
 
-
 var obj_format = {};
 var skill_data = {};
 var mob_data = {};
@@ -102,8 +101,6 @@ function convertCSVtoArray(skill_str, mob_str) {// 読み込んだCSVデータ�
     }
     // console.log(map_data);
 
-
-
     createSkillTable();
 }
 
@@ -130,7 +127,6 @@ function calc3() {
     is_simple = false;
     getCSV();
 }
-
 
 var JN, SS;
 // 備考に追記したい情報をここに。
@@ -347,7 +343,6 @@ function getParam(name, url) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-
 function validateData(data, jobid, debug) {
     // type2は未実装っぽいから非表示にしてもいいかも…
     if (!data) {
@@ -416,7 +411,6 @@ function createCostCP(data, mode) {
     return res_html;
 }
 
-
 function createGetCP(data, mode) {
     var res_html = "<tr><th>獲得CP</th>"
     if (mode == 8) {
@@ -454,7 +448,6 @@ function createGetCP(data, mode) {
     res_html += "</tr>"
     return res_html;
 }
-
 
 function createGetDamage(data, mode) {
     var res_html = ""
@@ -1217,7 +1210,6 @@ function createGetSubInfo(data, mode) {
     return res_html;
 }
 
-
 function createGetBuff(data, mode, DEBUG) {
     var res_html = ""
     var cnt = 189;
@@ -1439,7 +1431,6 @@ function createGetBuff(data, mode, DEBUG) {
     }
     return res_html;
 }
-
 
 function calcUseMob(id, name) {
     var txt = "";

@@ -112,7 +112,6 @@ var skillIdMap = [
     { id: 310, value: "ペット&召喚獣敵致命打減少", passive_rank: 1 },//合成
 ];
 
-
 var skillData = [
     { name: "ブリザード火炎犬", id: 0, mainId: "攻撃力", mainLv: 8, sub1Id: "経験値", sub1IdLv: 4, sub2Id: "体力吸収", sub2IdLv: 4 },
     { name: "青の火炎犬", id: 1, mainId: "ドロップ率", mainLv: 8, sub1Id: "回避率", sub1IdLv: 4, sub2Id: "ドロップ率", sub2IdLv: 4 },
@@ -347,8 +346,6 @@ var skillData = [
     { name: "サブ２", id: 9998, used: false, mainId: "test", mainLv: 20, sub1Id: "test", sub1IdLv: 10, sub2Id: "test", sub2IdLv: 10 },
     { name: "サブ３", id: 9999, used: false, mainId: "test", mainLv: 20, sub1Id: "test", sub1IdLv: 10, sub2Id: "test", sub2IdLv: 10 },
 ];
-
-
 
 function searchPassiveSkill() {
     var a2 = document.optionlist.a2.value ? document.optionlist.a2.value : "";

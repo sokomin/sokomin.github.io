@@ -152,7 +152,6 @@ function calc1() {
 
 }
 
-
 function calc_2005exp(lv) {
     var ans = 0;
 
@@ -289,7 +288,6 @@ function calc2() {
 
     document.f.r21.value = Math.floor(r1);
 }
-
 
 function calc3() {
     var r1 = 0;

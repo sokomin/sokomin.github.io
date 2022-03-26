@@ -12,7 +12,6 @@ AwakeSwitch = 0;
 var TransType = [0, 0, 0, 0];
 var TransPoint = [0, 0, 0, 0];
 
-
 function SkillReset() {
   AwakeSwitch = 0;
   AwakeText.innerHTML = "なし"

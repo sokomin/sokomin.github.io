@@ -25,7 +25,6 @@ function getMonsterCSV(mapCSV) {
     }
 }
 
-
 var obj_format = {};
 var mob_data = {};
 var monster_data = {};
@@ -111,7 +110,6 @@ function convertCSVtoArray(str, monster_str) {// 読み込んだCSVデータが�
 
     getMobDB();
 }
-
 
 function getMobDB() {
     $.ajax({
@@ -266,7 +264,6 @@ function getMobDB() {
  * 実行
  */
 getMap2CSV();
-
 
 //連動わかりやすくするために色付けるだけの関数
 function createRendouColor(rendou) {
@@ -439,7 +436,6 @@ function outputInfo() {
                     var spec = mobSpec[md["Species"]] + "<br>" + mobRank[md["Lineage"]];
                     npc_doc = npc_doc + '<td>' + spec + '</td>';
 
-
                     // レベルは書いてる。
                     var lv = mob_data[i].lvmin + "～" + mob_data[i].lvmax;
                     npc_doc = npc_doc + '<td>' + lv + '</td>';
@@ -462,7 +458,6 @@ function outputInfo() {
     var npc_table = document.getElementById('npc_info');
     // npc_table.innerHTML = npc_doc;
     npc_table.innerHTML = map_concat;
-
 
     //マップ名の初期描画担当さん
     var greet = document.getElementById('map_title_name');
@@ -522,7 +517,6 @@ function validateData(data, drop_txt) {
     }
     return false;
 }
-
 
 // 頭いい人は共通化したくなるあれ
 function createDropItem(mobid) {

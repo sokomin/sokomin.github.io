@@ -603,7 +603,6 @@ function calc2() {
     document.f.r26.value = r3.per;
 }
 
-
 function calc3() {
     var r1 = {};
     var r2 = {};

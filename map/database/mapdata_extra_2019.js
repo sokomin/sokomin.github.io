@@ -30,7 +30,6 @@ MapExtraInfoList = {
     9999: ["test<font color='red'>aaa</font>", "test2"], //HTMLにも対応してるテスト
 };
 
-
 function dataextralist(num) {
     // そのマップねぇから！！
     if (num == void 0) {

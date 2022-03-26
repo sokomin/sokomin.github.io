@@ -109,8 +109,6 @@ const item_type_text = {
     79: "？？？", //TODO ヤティカヌ以降に実装された何か
 }
 
-
-
 const sort_item_type_text = {
     1011: "片手剣",
     1012: "両手剣",

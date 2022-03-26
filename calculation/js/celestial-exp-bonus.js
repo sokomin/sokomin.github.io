@@ -151,7 +151,6 @@ function def_celestial_sup(lv) {
     }
 }
 
-
 function calc_2005exp(lv) {
     var ans = 0;
 

@@ -158,7 +158,6 @@ function calc1() {
 
 }
 
-
 function calcIntOption(intParam) { 
     //えぐい条件文になってるぞ…そんなコードで大丈夫か？
     if (!intParam) {

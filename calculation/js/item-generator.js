@@ -23,7 +23,6 @@ function init1() {
     document.f.c13.value = 0;
     document.f.c14.value = 0;
 
-
     document.f.r1.value = "";
 
     document.f.b1.options[0] = new Option('Nxあり', 0, 1, 1);
@@ -39,7 +38,6 @@ function init1() {
 function init2() {
     //TODO localstorage辺りから引っ張ってきたい。
 }
-
 
 function set1() {
     var c1 = parseInt(document.f.c1.value) ? parseInt(document.f.c1.value) : 0;
@@ -335,8 +333,6 @@ function calc1() {
     }
 
 
-
-
     /////////////////// ここからNx関連の表記 //////////////
     r1 += template6;
     r1 += a34;
@@ -351,7 +347,6 @@ function calc1() {
         r1 += temp2;
     }
 
-
     //武器の場合はここ通る
     if (a41 !== "") {
         var dame = "攻撃力 " + a41 + a42 + "(" + a43 + "秒)<br />"
@@ -363,7 +358,6 @@ function calc1() {
         r1 += pet;
     }
 
-
     r1 = createOption(a4, a5, a6, r1);
     r1 = createOption(a7, a8, a9, r1);
     r1 = createOption(a10, a11, a12, r1);
@@ -374,7 +368,6 @@ function calc1() {
     r1 = createOption(a25, a26, a27, r1);
     r1 = createOption(a28, a29, a30, r1);
     r1 = createOption(a31, a32, a33, r1);
-
 
     r1 += template8;
     var a44 = document.f.a44.value ? document.f.a44.value : "";

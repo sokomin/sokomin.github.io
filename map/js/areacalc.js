@@ -5,7 +5,6 @@ var open2 = false;
 var open3 = false;
 var open4 = true;
 
-
 // 
 function calcDebug() {
     var area_text = "";
@@ -37,7 +36,6 @@ function calcDebug() {
     }
     map_area_info.innerHTML = area_text;
 }
-
 
 function AreaDebug(mode) {
     var arate = KS + mode;

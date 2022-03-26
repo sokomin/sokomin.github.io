@@ -5,7 +5,6 @@ function init2() {
     //TODO localstorage辺りから引っ張ってきたい。
 }
 
-
 function tweet() {
     if (!document.f.res2.value) {
         alert("組分け帽子の診断を受けてからツイートボタンを押してください。");
@@ -21,7 +20,6 @@ function tweet() {
 	);
 	return !1;
 }
-
 
 // ネタだから。連絡くれれば消すよ。
 var ban_list = ["ネトゲ廃人ken", "廃ken"];
@@ -86,7 +84,6 @@ function calc1(num) {
         ],
     ];
     // テスト関数はmochaとか使って外部実行のため、省略。ロジックとか仕様は.test側に書いといた
-
 
     if (a_name) {
         for (var i = 0; i < ban_list.length; i++) {
@@ -285,7 +282,6 @@ function calc1(num) {
         document.f.res2.value = "なるほど迷う…。\nならばワシが決めよう。オススメのサーバは…" + rand_s + "！";
         return;
     }
-
 
     // V鯖とB鯖優勢みたいなケース
     if (b_per === v_per && num === 1) {

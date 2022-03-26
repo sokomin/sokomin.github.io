@@ -28,7 +28,6 @@ function appendScript(URL, callback) {
     // return el;
 };
 
-
 /**
  * 逆にscript削減したいとき
  *

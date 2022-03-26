@@ -18,7 +18,6 @@ function getMapCSV(quest_str) {
     }
 }
 
-
 var obj_format = {};
 var quest_data = {};
 var map_data = {};
@@ -97,8 +96,6 @@ function convertCSVtoArray(str, map_str) {// 読み込んだCSVデータが文�
         }
     }
     // console.log(map_data);
-
-
 
     createQuestTable();
 }
@@ -439,7 +436,6 @@ function createQuestTable() {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-
 function validateData(data, qtype, lv, debug) {
     // type2は未実装っぽいから非表示にしてもいいかも…
     if (!data) {
@@ -460,10 +456,8 @@ function validateData(data, qtype, lv, debug) {
         return true;
     }
 
-
     return false;
 }
-
 
 function convText(str) {
     var re = /<c:YELLOW>\%d<n>/g;

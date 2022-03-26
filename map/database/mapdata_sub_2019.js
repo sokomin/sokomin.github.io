@@ -807,7 +807,6 @@ var MapSubInfoList = {
 
 var SubInfoBase = {};
 
-
 function datasublist(num) {
     // そのマップねぇから！！
     if (num == void 0) {

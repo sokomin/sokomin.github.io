@@ -79,7 +79,6 @@ function testCalcStage1() {
     return level_sum * 80;
 }
 
-
 function calcStage1() {
     //そんなコードで大丈夫か？
     var level_sum = 0;
@@ -168,7 +167,6 @@ function testCalcStage2() {
     level_sum += 430;
     level_sum += 310;
 
-
     return level_sum * 80;
 }
 
@@ -191,7 +189,6 @@ function calcStage2() {
     level_sum += 430;
     level_sum += 430;
     //バーノンの幻影
-
 
     for (var i = 0; i < 10; i++) {
         var gago = Math.floor(Math.random() * 16) + 325;
@@ -259,7 +256,6 @@ function testCalcStage3() {
     level_sum += 450;
     level_sum += 450;
 
-
     return level_sum * 80;
 }
 function calcStage3() {
@@ -300,7 +296,6 @@ function calcStage3() {
     // 一番いい乱数を頼む(MT)
     return level_sum * 80;
 }
-
 
 function calcStage4() {
     //神は言っている

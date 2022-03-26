@@ -42,7 +42,6 @@ function getMapCSV3(mapid) {
     }
 }
 
-
 //0_4
 function getMapCSV4(mapid) {
     var req = new XMLHttpRequest();
@@ -62,7 +61,6 @@ function getMapCSV5(mapid) {
         convert5IndexCSVtoArray(mapid, req.responseText);
     }
 }
-
 
 var map_img_map = {};
 var zindex_map = {};
@@ -114,7 +112,6 @@ function convertCSVtoArray(mapid, str, map_img) {// 読み込んだCSVデータ�
             monster_data[result[i][0]] = md;
         }
     }
-
 
     var result = [];
     // var map_tmp = map_str.split("\n");
@@ -234,7 +231,6 @@ function convert5IndexCSVtoArray(mapid, map_zindex) {
     set5IndexImage();
 }
 
-
 var DROP_TEXT_CONST = "<b><ドロップアイテム></b><br>";
 var SKILL_TEXT_CONST = "<b><使用スキル></b><br>";
 
@@ -280,7 +276,6 @@ function calc7() {
     getMapCSV5(mapid);
 }
 
-
 var tmp_divx = -1;
 var tmp_divy = -1;
 var mob_inid_map = {}
@@ -312,7 +307,6 @@ map_type_map = {
 
 function createTile() {
 
-
     var map_type = $('select[name="b1"]').val() ? Number($('select[name="b1"]').val()) : 0;
 
     // FIXME 画像サイズもっと大きく…1500ぐらい？
@@ -339,7 +333,6 @@ function createTile() {
     $div_main.append(html_append);
     $("#preview_html").empty().append($div_main);
 
-
 }
 
 // FIXME　これ使って1枚絵にする
@@ -364,7 +357,6 @@ function createTile() {
 //   context4.drawImage(createImage(context3),0,0)
 
 //   document.body.appendChild(createImage(context4))
-
 
 // ref: https://note.affi-sapo-sv.com/js-globalcompositeoperation.php
 window.addEventListener('DOMContentLoaded', () => {
@@ -461,7 +453,6 @@ function setCanvasImage() {
     $('.main-background-map').css({ 'min-height': "200%", 'min-width': ("" + min_width + "%") });
     $('#cvpreview').attr({ 'width': img_width * max_length, 'height': img_height * max_height});
 
-
     // context.clearRect(0, 0, 1920, 1080);
 
     // for (var i = 0; i < image_path_array.length; i++) {
@@ -505,7 +496,6 @@ function setCanvasImage() {
     // })(image_path_array);
 
 }
-
 
 // aが1以上の部分をフィルタ
 function setAIndexImage() {
@@ -599,7 +589,6 @@ function setZIndexImage() {
 
 }
 
-
 // 3が1以上の部分では文字も打ち込む
 function set3IndexImage() {
     const dcv = document.getElementById('cvpreview');
@@ -681,7 +670,6 @@ function set5IndexImage() {
     }
 }
 
-
 function calcPos() {
     var xpos = $('input[name="x1"]').val() ? Number($('input[name="x1"]').val()) : 0;
     var ypos = $('input[name="y1"]').val() ? Number($('input[name="y1"]').val()) : 0;
@@ -701,7 +689,6 @@ function calcPos() {
     context.fillText(text,  xpos*img_width, ypos* img_height);
 
 }
-
 
 function saveCanvas(canvas_id)
 {

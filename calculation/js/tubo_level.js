@@ -14,8 +14,6 @@ function init1() {
     document.f.a24.value = 8;
     document.f.a25.value = 100000000;
 
-
-
     document.f.a1.value = 900;
     document.f.a2.value = 0;
     document.f.a10.value = 900;
@@ -621,7 +619,6 @@ function calc3() {
     a5 = a5 + (26200 + 6500 * a1) * (1 + (a47 / 100));
     //ギルドスキルとギルドバフはここでまとめて(で合ってるのか？ベリーと同じ計算式らしい)
     a5 = a5 + (26200 + 6500 * a1) * guild_buff;
-
 
     //壺で獲得できる経験値は一緒なので、ここでまとめて計算して代入する。(53bit超える値入れたら1500なるので平気)
     var tubo_exp = a5 * a3 * a4;

@@ -37,8 +37,6 @@ mapid = getParam('map_id') ? parseInt(getParam('map_id')) : 0;
 
 // Jump(mapid);
 
-
-
 function Up() {
     KS = KS + 0.2;
     Ad();
@@ -139,7 +137,6 @@ function Ad(num) {
         }
     }
 }
-
 
 /**
  * Get the URL parameter value

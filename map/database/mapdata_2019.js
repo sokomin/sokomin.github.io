@@ -2628,7 +2628,6 @@ IMG_SYS_SIZE = {
 999:{ w:400,h:200},
 }
 
-
 function datalist(num) {
     // そのマップねぇから！！
     if (!num && num != 0) {

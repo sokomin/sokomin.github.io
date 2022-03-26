@@ -138,7 +138,6 @@ function validateData(data, debug) {
     return false;
 }
 
-
 function createOpTxt(txt) {
     if (!txt) {
         return txt;

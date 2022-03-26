@@ -124,7 +124,6 @@ const single_html_txt = ['<table id="table1"><colgroup><col span="1" width="40">
     '</td></tr></tbody></table>'
 ];
 
-
 function init2() {
     //TODO localstorage辺りから引っ張ってきたい。
 }
@@ -259,7 +258,6 @@ function calc1() {
 
 }
 
-
 // 通常OPの配列を生成
 function create_op_ary(str) {
     var res_ary = [];
@@ -331,7 +329,6 @@ function create_lbop_ary(str) {
     }
     return res_ary;
 }
-
 
 function create_op_text(obj) {
     var res_text = "- ";

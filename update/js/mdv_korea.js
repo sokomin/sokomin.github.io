@@ -70,7 +70,6 @@ function calcIcon() {
     getCSV(2);
 }
 
-
 function createMobTable() {
     var MOBSPEC = getParam('spec') ? parseInt(getParam('spec')) : 0;
     var MOBRANK = getParam('rank') ? parseInt(getParam('rank')) : 0;
@@ -127,7 +126,6 @@ function createMobTable() {
         // モンスター名
         $tr_Name.append($('<th>').attr("id", (id + "name")).addClass("title").text(data["name"])
             .attr("title", i).attr({ "rowspan": "2" }));
-
 
         // Lv入力欄
         $tr_Name.append($('<td>').attr({
@@ -364,7 +362,6 @@ function createMobTable() {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-
 function validateData(data, spec, rank, debug, drop_txt, skill_txt) {
     if (Number(data["Species"]) != Number(spec)) {
         return true;
@@ -520,7 +517,6 @@ function statusUpdate(tableid, mobid) {
 
 }
 
-
 // スキル表入れる
 function createSkillName(mobid) {
     var txt = SKILL_TEXT_CONST;
@@ -667,7 +663,6 @@ function createDropItem(mobid) {
     }
     return txt;
 }
-
 
 function createMobIconList() {
     var cnt = 0; //セーフティをはっておく

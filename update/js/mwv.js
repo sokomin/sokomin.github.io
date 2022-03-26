@@ -18,7 +18,6 @@ function getMapCSV(is_area, monster_str) {
     }
 }
 
-
 var obj_format = {};
 var monster_data = {};
 var map_data = {};
@@ -27,7 +26,6 @@ var a1 = 0; //map_id
 var tmp_divx = -1;
 var tmp_divy = -1;
 var mob_inid_map = {}
-
 
 // 読み込んだCSVデータをオブジェクトに変換
 function convertCSVtoArray(is_area, str, map_str) {// 読み込んだCSVデータが文字列として渡される
@@ -68,7 +66,6 @@ function convertCSVtoArray(is_area, str, map_str) {// 読み込んだCSVデー�
         }
     }
 
-
     var result = [];// 最終的な二次元配列を入れるための配列
     var map_tmp = map_str.split("\n");// 改行を区切り文字として行を要素とした配列を生成
     // 各行ごとにカンマで区切った文字列を要素とした二次元配列を生成
@@ -99,8 +96,6 @@ function convertCSVtoArray(is_area, str, map_str) {// 読み込んだCSVデー�
         }
     }
     // console.log(map_data);
-
-
 
     if (is_area) {
         createAreaPositionTable();
@@ -163,7 +158,6 @@ function calc2() {
     }
 }
 
-
 function calc3() {
     var file = document.getElementById('area_files').files;
     map_import = {};
@@ -209,7 +203,6 @@ function calc3() {
         getCSV(true);
     }
 }
-
 
 function createMobPositionTable() {
     // マップサイズはmaplistの値をもとに推測してみる。mapidを手動で入力
@@ -352,10 +345,7 @@ function createMobPositionTable() {
 
     $("#preview_html").empty().append($div_main);
 
-
 }
-
-
 
 function createAreaPositionTable() {
     // マップサイズはmaplistの値をもとに推測してみる。mapidを手動で入力
@@ -426,9 +416,7 @@ function createAreaPositionTable() {
 
     $("#preview_area_html").empty().append($div_main);
 
-
 }
-
 
 // 秘密ダンジョンかどうかの判定。これ以外のtype2は扉なので注意。
 function isSecret(data) {
@@ -494,7 +482,6 @@ function calcImgPos(x, max, n, div) {
 function orgRound(value, base) {
     return Math.round(value * base) / base;
 }
-
 
 // mobdbのテスト
 function test1() {
