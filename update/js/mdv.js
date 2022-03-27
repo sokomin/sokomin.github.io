@@ -6,18 +6,43 @@ function getCSV(mode) {
     req.send(null);// HTTPリクエストの発行
     // レスポンスが返ってきたらconvertCSVtoArray()を呼ぶ	
     req.onload = function () {
-        convertCSVtoArray(mode, req.responseText);// 渡されるのは読み込んだCSVデータ
+        getCSV2(mode, req.responseText);// 渡されるのは読み込んだCSVデータ
     }
 }
 
+// 出現マップ一覧に使用する
+function getCSV2(mode, monster) {
+    var req = new XMLHttpRequest();
+    req.open("get", "https://sokomin.github.io/sokomin_repository/db/map2.csv", true);
+    req.send(null);
+    req.onload = function () {
+        getMapCSV(mode, monster, req.responseText);
+    }
+}
+
+// マップ一覧
+function getMapCSV(is_area, monster_str, map2_str) {
+    var req = new XMLHttpRequest();
+    req.open("get", "https://sokomin.github.io/sokomin_repository/db/maplist.csv", true);
+    req.send(null);
+    req.onload = function () {
+        convertCSVtoArray(is_area, monster_str, map2_str, req.responseText);
+    }
+}
+
+
 var obj_format = {};
 var monster_data = {};
+var map_mob_data = {};
+var maplist_data = {};
 
 // 読み込んだCSVデータをオブジェクトに変換
-function convertCSVtoArray(mode, str) {// 読み込んだCSVデータが文字列として渡される
+function convertCSVtoArray(mode, str, map2, map_str) {// 読み込んだCSVデータが文字列として渡される
     // 初期化
     obj_format = {};
     monster_data = {};
+    map_mob_data = {};
+    maplist_data = {};
 
     var result = [];// 最終的な二次元配列を入れるための配列
     var tmp = str.split("\n");// 改行を区切り文字として行を要素とした配列を生成
@@ -49,6 +74,66 @@ function convertCSVtoArray(mode, str) {// 読み込んだCSVデータが文字�
         }
     }
     // console.log(monster_data);
+
+    // マップ一覧からmobid引いてくる
+    var tmp = map2.split("\n");
+    var p=0;
+    for (var i = 0; i < tmp.length; ++i) {
+        result[i] = tmp[i].split(',');
+        var re;
+        if (i == 0) {
+            for (var j = 0; j < result[i].length; j++) {
+                var txt = result[i][j];
+                re = /\"/g;
+                txt = txt.replace(re, "");
+                obj_format[j] = txt;
+            }
+            // TODO フォーマット違ったらエラー出すなりしたい
+            console.log(obj_format);
+        } else {
+            var md = {};
+            for (var j = 1; j < result[i].length; j++) {
+                var txt = result[i][j];
+                re = /\"/g;
+                txt = txt.replace(re, "");
+                md[obj_format[j]] = txt;
+            }
+            re = /\"/g;
+            result[i][0] = result[i][0].replace(re, "");
+            map_mob_data[p] = md;
+            p++;
+        }
+    }
+    console.log(map_mob_data);
+
+    // 出現マップ一覧で引くときに使う
+    var result = [];
+    var map_tmp = map_str.split("\n");
+    for (var i = 0; i < map_tmp.length; ++i) {
+        result[i] = map_tmp[i].split(',');
+        var re;
+        if (i == 0) {
+            for (var j = 0; j < result[i].length; j++) {
+                var txt = result[i][j];
+                re = /\"/g;
+                txt = txt.replace(re, "");
+                obj_format[j] = txt;
+            }
+            // TODO フォーマット違ったらエラー出すなりしたい
+            console.log(obj_format);
+        } else {
+            var md = {};
+            for (var j = 1; j < result[i].length; j++) {
+                var txt = result[i][j];
+                re = /\"/g;
+                txt = txt.replace(re, "");
+                md[obj_format[j]] = txt;
+            }
+            re = /\"/g;
+            result[i][0] = result[i][0].replace(re, "");
+            maplist_data[result[i][0]] = md;
+        }
+    }
 
     // モンスターデータ解析
     if (mode == 2) {
@@ -282,13 +367,14 @@ function createMobTable() {
         // TODO　(事前に計算・集計しておいて出力。)
         // 作りたいけど、どこに何のmobいるか把握しきれてないので見送っておきます。
         var $mapDiv = $('<div>');
+        var area_map = createMapMob(map_mob_data,i);
 
         $tr_row3.append($('<td>').css({
             "margin": "3px 0 0 5px",
             "text-align": "left",
             "vertical-align": "top"
         }).attr("id", (id + "mapDiv"))
-            .append(($('<div>').text('<出現マップ>')).append($mapDiv)
+            .append(($('<div>').text('<出現マップ>')).append(area_map)
             ));
 
         //使用スキル
@@ -663,6 +749,32 @@ function createDropItem(mobid) {
         txt += "<br>"
     }
     return txt;
+}
+
+function createMapMob(map_mob, mobid) {
+    var res_text = "<br>"
+    if(!maplist_data){
+        return "map data error.";
+    }
+    // 同じマップが何度も結果表示されないようにするために
+    var exist_mapid = {};
+    for(var key in map_mob){
+        var mb = map_mob[key];
+        if(Number(mb["mobid"]) == mobid){
+            if(maplist_data[mb["mapid"]]){
+                if(!exist_mapid[mb["mapid"]]){
+                    res_text += "- ";
+                    var link_id = mb["mapid"]
+                    var map_name = maplist_data[mb["mapid"]].name
+                    res_text += "<a href=https://sokomin.github.io/map/map_viewer.html?map_id=" + link_id+ ">"+ map_name+ "</a><br>"
+                    exist_mapid[mb["mapid"]] = mb["mapid"]
+                }
+            } else {
+                // res_text += "- マップ情報不明<br>";
+            }
+        }
+    }
+    return res_text;
 }
 
 function createMobIconList() {
