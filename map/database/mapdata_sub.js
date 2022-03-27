@@ -806,7 +806,11 @@ var MapSubInfoList = {
     1021:{ name: 'デフヒルズ峡谷の深い所',mc2: 3,mc: '-',req_map_lv: 5,dfi: 20,dwa: 20,dwi: 20,dea: 20,dli: 20,dda: 20,st_down: 10,lbd: 70,non_resume: true },
     1022:{ name: '聖なる懺悔の部屋 ３Ｆ',mc2: 4,mc: '-',req_map_lv: 99,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: true },
     1023:{ name: 'シェイット士官学校',mc2: 4,mc: '-',req_map_lv: 99,dfi: 0,dwa: 0,dwi: 0,dea: 0,dli: 0,dda: 0,st_down: 0,lbd: 0,non_resume: true },
-    9999: { name: 'そこみん王国', mc: 'S', req_map_lv: 4, dfi: 40, dwa: 40, dwi: 40, dea: 40, dli: 40, dda: 40, st_down: 40, lbd: 40, non_resume: true, mc2: 1 }
+    1024:{ name: 'ウエストスワンプ大空洞 B1',mc2: 9,mc: '-',req_map_lv: 7,dfi: 70,dwa: 70,dwi: 70,dea: 70,dli: 70,dda: 70,st_down: 30,lbd: 70,non_resume: false },
+    1025:{ name: 'ヤティカヌ微風の森林',mc2: 9,mc: '-',req_map_lv: 8,dfi: 100,dwa: 100,dwi: 100,dea: 100,dli: 100,dda: 100,st_down: 35,lbd: 50,non_resume: true },
+    1026:{ name: 'ヤティカヌ夜影の森林',mc2: 9,mc: '-',req_map_lv: 8,dfi: 100,dwa: 100,dwi: 100,dea: 100,dli: 100,dda: 100,st_down: 35,lbd: 50,non_resume: true },
+    1027:{ name: 'ヤティカヌ暁の森林',mc2: 9,mc: '-',req_map_lv: 8,dfi: 100,dwa: 100,dwi: 100,dea: 100,dli: 100,dda: 100,st_down: 35,lbd: 50,non_resume: true },
+    9999: { name: 'そこみん王国',mc2: 40, mc: 'S', req_map_lv: 4, dfi: 40, dwa: 40, dwi: 40, dea: 40, dli: 40, dda: 40, st_down: 40, lbd: 40, non_resume: true, mc2: 1 }
 }
 
 var SubInfoBase = {};

@@ -90,6 +90,10 @@ NameList = {
     1021: { name: "デフヒルズ峡谷の深い所", img: "[1021]D04.rmd.png", black: "[1021]D04.img.png", lvmin: 850, lvmax: 900 },
     1022: { name: "聖なる懺悔の部屋 ３Ｆ", img: "", black: "[1022]confession_repetitive.img.png", lvmin: 0, lvmax: 0 },
     1023: { name: "シェイット士官学校", img: "", black: "[1023]L02.img.png", lvmin: 0, lvmax: 0 },
+    1024: { name: "ウエストスワンプ大空洞 B1", img: "[1024]WestSwamp_Cave_B1.rmd.png", black: "[1024]WestSwamp_Cave_B1.rmd.png", lvmin: 1250, lvmax: 1300 },
+    1025: { name: "ヤティカヌ微風の森林", img: "[1025]YatikanuForest_4.rmd.png", black: "[1025]YatikanuForest_4.rmd.png", lvmin: 1400, lvmax: 1450 },
+    1026: { name: "ヤティカヌ夜影の森林", img: "[1026]YatikanuForest_5.rmd.png", black: "[1026]YatikanuForest_5.rmd.png", lvmin: 1450, lvmax: 1500 },
+    1027: { name: "ヤティカヌ暁の森林", img: "[1027]YatikanuForest_6.rmd.png", black: "[1027]YatikanuForest_6.rmd.png", lvmin: 1500, lvmax: 1550 },
 
     //以下、機械的に作ったデータ
     1: { name: "中央プラトン街道 / グレートフォレスト入口付近", img: "[001]G07.rmd.png", black: "[000]T01.rmd.png", lvmin: 5, lvmax: 30 },
