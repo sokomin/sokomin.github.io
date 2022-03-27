@@ -518,29 +518,36 @@ function statusUpdate(tableid, mobid) {
     var MobAtcMax = Math.floor((((AtcMaxup * (MobLv - 1.0) + parseFloat(md["AtcMaxValue"]))) * (1.0 + MobSTR / 200.0)));//最大攻撃力最終値
     var MobDef = Math.floor((((Defup * (MobLv - 1.0) + parseFloat(md["DefenseValue"]))) * (1.0 + MobCON / 100.0)));//防御力最終値
 
-    var MobEl_Fire = Math.floor(parseFloat(md["FireResistance"]) + (MobWIS / 20.0));
-    var MobEl_Water = Math.floor(parseFloat(md["WaterResistance"]) + (MobWIS / 20.0));
-    var MobEl_Wind = Math.floor(parseFloat(md["WindResistance"]) + (MobWIS / 20.0));
-    var MobEl_Earth = Math.floor(parseFloat(md["EarthResistance"]) + (MobWIS / 20.0));
-    var MobEl_Light = Math.floor(parseFloat(md["LightResistance"]) + (MobWIS / 20.0));
-    var MobEl_Dark = Math.floor(parseFloat(md["DarkResistance"]) + (MobWIS / 20.0));
+    // RoundMobWisdom: 知恵の最大を2000で丸める
+    var RMS = MobWIS > 2000 ? 2000 : MobWIS;
+    // RoundMobChrisma: カリスマの最大を2000で丸める
+    var RMC = MobCHS > 2000 ? 2000 : MobCHS;
+    // 状態異常の最大値を2倍に丸めたい
+    var RRMS = (MobWIS + MobCHS) > 1000 ? 1000 : (MobWIS + MobCHS);
 
-    var MobReg_1 = Math.floor(parseFloat(md["Resistance1"]) + (parseFloat(md["Resistance10"]) * ((MobWIS + MobCHS) / 1000.0)));
-    var MobReg_2 = Math.floor(parseFloat(md["Resistance2"]) + (parseFloat(md["Resistance10"]) * ((MobWIS + MobCHS) / 1000.0)));
-    var MobReg_3 = Math.floor(parseFloat(md["Resistance3"]) + (parseFloat(md["Resistance10"]) * ((MobWIS + MobCHS) / 1000.0)));
-    var MobReg_4 = Math.floor(parseFloat(md["Resistance4"]) + (parseFloat(md["Resistance10"]) * ((MobWIS + MobCHS) / 1000.0)));
-    var MobReg_5 = Math.floor(parseFloat(md["Resistance5"]) + (parseFloat(md["Resistance10"]) * ((MobWIS + MobCHS) / 1000.0)));
-    var MobReg_6 = Math.floor(parseFloat(md["Resistance6"]) + (parseFloat(md["Resistance10"]) * ((MobWIS + MobCHS) / 1000.0)));
-    var MobReg_7 = Math.floor(parseFloat(md["Resistance7"]) + (parseFloat(md["Resistance10"]) * ((MobWIS + MobCHS) / 1000.0)));
-    var MobReg_8 = Math.floor(parseFloat(md["Resistance8"]) + (parseFloat(md["Resistance10"]) * ((MobWIS + MobCHS) / 1000.0)));
-    var MobReg_9 = Math.floor(parseFloat(md["Resistance9"]) + (parseFloat(md["Resistance10"]) * ((MobWIS + MobCHS) / 1000.0)));
+    var MobEl_Fire = Math.floor(parseFloat(md["FireResistance"]) + (RMS / 20.0));
+    var MobEl_Water = Math.floor(parseFloat(md["WaterResistance"]) + (RMS / 20.0));
+    var MobEl_Wind = Math.floor(parseFloat(md["WindResistance"]) + (RMS / 20.0));
+    var MobEl_Earth = Math.floor(parseFloat(md["EarthResistance"]) + (RMS / 20.0));
+    var MobEl_Light = Math.floor(parseFloat(md["LightResistance"]) + (RMS / 20.0));
+    var MobEl_Dark = Math.floor(parseFloat(md["DarkResistance"]) + (RMS / 20.0));
 
-    var MobReg_10 = Math.floor(parseFloat(md["Resistance10"]) * (1 + ((MobWIS + MobCHS) / 500.0)));//異常
-    var MobReg_11 = Math.floor(parseFloat(md["Resistance11"]) * (1 + ((MobWIS + MobCHS) / 1000.0)));//低下
-    var MobReg_12 = Math.floor(parseFloat(md["Resistance12"]) * (1 + ((MobWIS + MobCHS) / 1000.0)));//呪い
+    var MobReg_1 = Math.floor(parseFloat(md["Resistance1"]) + (parseFloat(md["Resistance10"]) * (RRMS / 1000.0)));
+    var MobReg_2 = Math.floor(parseFloat(md["Resistance2"]) + (parseFloat(md["Resistance10"]) * (RRMS / 1000.0)));
+    var MobReg_3 = Math.floor(parseFloat(md["Resistance3"]) + (parseFloat(md["Resistance10"]) * (RRMS / 1000.0)));
+    var MobReg_4 = Math.floor(parseFloat(md["Resistance4"]) + (parseFloat(md["Resistance10"]) * (RRMS / 1000.0)));
+    var MobReg_5 = Math.floor(parseFloat(md["Resistance5"]) + (parseFloat(md["Resistance10"]) * (RRMS / 1000.0)));
+    var MobReg_6 = Math.floor(parseFloat(md["Resistance6"]) + (parseFloat(md["Resistance10"]) * (RRMS / 1000.0)));
+    var MobReg_7 = Math.floor(parseFloat(md["Resistance7"]) + (parseFloat(md["Resistance10"]) * (RRMS / 1000.0)));
+    var MobReg_8 = Math.floor(parseFloat(md["Resistance8"]) + (parseFloat(md["Resistance10"]) * (RRMS / 1000.0)));
+    var MobReg_9 = Math.floor(parseFloat(md["Resistance9"]) + (parseFloat(md["Resistance10"]) * (RRMS / 1000.0)));
 
-    var MobReg_13 = Math.floor(parseFloat(md["Resistance13"]) * (1 + ((MobWIS + MobCHS) / 1000.0)));//致命打
-    var MobReg_14 = Math.floor(parseFloat(md["Resistance14"]) * (1 + ((MobWIS + MobCHS) / 1000.0)));//決定打
+    var MobReg_10 = Math.floor(parseFloat(md["Resistance10"]) * (1 + (RRMS / 500.0)));//異常
+    var MobReg_11 = Math.floor(parseFloat(md["Resistance11"]) * (1 + (RRMS / 1000.0)));//低下
+    var MobReg_12 = Math.floor(parseFloat(md["Resistance12"]) * (1 + (RRMS / 1000.0)));//呪い
+
+    var MobReg_13 = Math.floor(parseFloat(md["Resistance13"]) * (1 + (RRMS / 1000.0)));//致命打
+    var MobReg_14 = Math.floor(parseFloat(md["Resistance14"]) * (1 + (RRMS / 1000.0)));//決定打
 
     var ActivRange = parseInt(md["ActiveRange"]);//視野射程
     var Blocking = parseInt(md["Blocking"]);//ブロック率
