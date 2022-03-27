@@ -19,7 +19,8 @@ function getMap2CSV() {
 //モンスターDBも読まないと動かないので・・・重いけど全部読む
 function getMonsterCSV(mapCSV) {
     var req = new XMLHttpRequest();
-    req.open("get", "https://sokomin.github.io/update/js/monster.csv", true);
+    // req.open("get", "https://sokomin.github.io/update/js/monster.csv", true);
+    req.open("get", "https://sokomin.github.io/sokomin_repository/db/monster.csv", true);
     req.send(null);
     req.onload = function () {
         convertCSVtoArray(mapCSV, req.responseText);// 渡されるのは読み込んだCSVデータ
