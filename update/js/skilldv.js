@@ -9,7 +9,8 @@ function getCSV() {
 
 function getMobCSV(skill_str) {
     var req = new XMLHttpRequest();
-    req.open("get", "https://sokomin.github.io/update/js/monster.csv", true);
+    // req.open("get", "https://sokomin.github.io/update/js/monster.csv", true);//アクセスするファイルを指定
+    req.open("get", "https://sokomin.github.io/sokomin_repository/db/monster.csv", true);
     req.send(null);
     req.onload = function () {
         convertCSVtoArray(skill_str, req.responseText);

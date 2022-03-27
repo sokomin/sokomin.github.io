@@ -1,7 +1,8 @@
 //CSVファイルを読み込む関数getCSV()の定義
 function getCSV(is_area) {
     var req = new XMLHttpRequest();// HTTPでファイルを読み込むためのXMLHttpRrequestオブジェクトを生成
-    req.open("get", "https://sokomin.github.io/update/js/monster.csv", true);//アクセスするファイルを指定
+    // req.open("get", "https://sokomin.github.io/update/js/monster.csv", true);//アクセスするファイルを指定
+    req.open("get", "https://sokomin.github.io/sokomin_repository/db/monster.csv", true);
     req.send(null);
     req.onload = function () {
         getMapCSV(is_area, req.responseText);// 渡されるのは読み込んだCSVデータ
