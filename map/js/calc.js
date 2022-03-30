@@ -418,6 +418,7 @@ function outputInfo() {
                     if (!md) {
                         continue;
                     }
+                    // ドロップアイテムの存在しないモンスターは表示対象外
                     var drop_txt = createDropItem(mob_data[i].mobid);
                     if (validateData(md, drop_txt)) {
                         continue;
