@@ -518,10 +518,10 @@ function statusUpdate(tableid, mobid) {
     var MobAtcMax = Math.floor((((AtcMaxup * (MobLv - 1.0) + parseFloat(md["AtcMaxValue"]))) * (1.0 + MobSTR / 200.0)));//最大攻撃力最終値
     var MobDef = Math.floor((((Defup * (MobLv - 1.0) + parseFloat(md["DefenseValue"]))) * (1.0 + MobCON / 100.0)));//防御力最終値
 
-    // RoundMobWisdom: 知恵の最大を2000で丸める
-    var RMS = MobWIS > 2000 ? 2000 : MobWIS;
-    // RoundMobChrisma: カリスマの最大を2000で丸める
-    var RMC = MobCHS > 2000 ? 2000 : MobCHS;
+    // RoundMobWisdom: 知恵の最大を10000で丸める
+    var RMS = MobWIS > 10000 ? 10000 : MobWIS;
+    // RoundMobChrisma: カリスマの最大を10000で丸める
+    var RMC = MobCHS > 10000 ? 10000 : MobCHS;
     // 状態異常の最大値を2倍に丸めたい
     var RRMS = (MobWIS + MobCHS) > 1000 ? 1000 : (MobWIS + MobCHS);
 
