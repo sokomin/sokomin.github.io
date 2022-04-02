@@ -351,11 +351,11 @@ function createTable() {
             rank: Number(data["rank"]), //N,HR...など
             type: data["type"], //サポートとかそういうの
             mainId:data["skill_0_id"],
-            mainLv:data["skill_0_lv"],
+            mainLv:Number(data["skill_0_lv"]),
             sub1Id:data["skill_2_id"],
-            sub1IdLv:data["skill_2_lv"],
+            sub1IdLv:Number(data["skill_2_lv"]),
             sub2Id:data["skill_3_id"],
-            sub2IdLv:data["skill_3_lv"],
+            sub2IdLv:Number(data["skill_3_lv"]),
         };
         skillData.push(temp);
     }
@@ -371,7 +371,7 @@ function createTable() {
         if(!e.name){
             return;
         }
-        document.optionlist.a2.options[index] = new Option(index, e.name);
+        document.optionlist.a2.options[index] = new Option(e.name, index);
         // .options[index] = new Option(e.value, e.value);
         var element1 = document.createElement('option');
         element1.setAttribute('value', index);
@@ -433,7 +433,7 @@ function calc() {
                     var sub2 = {
                         skillName: Number(skillData[j].sub2Id),
                         skillLv: Number(skillData[j].sub2IdLv),
-                        passive_rank: Number(searchaPassiveRank(skillData[j].sub2Id)),
+                        rank: Number(searchaPassiveRank(skillData[j].sub2Id)),
                     }
                     merge(skillset, sub2);
                 }
@@ -567,3 +567,109 @@ function createOpDetail(txt, n0min, n0max, n1min, n1max, n2) {
 
     return txt;
 }
+
+function searchPassiveSkill() {
+    var a2 = document.optionlist.a2.value ? document.optionlist.a2.value : "";
+    if (!a2) {
+        alert("何も選ばれてないよ");
+        return;
+    }
+    var memo_main = [];
+    var memo_sub = [];
+    var skillset = [];
+    var nameList = "";
+    var tmpSkill = {
+        skillName: a2,
+        skillLv: 0,
+    }
+    skillData.forEach(function (e) {
+        if (e.mainId === a2) {
+            memo_main.push(e);
+            nameList += e.name
+            nameList += ", "
+        }
+        if (e.sub1Id === a2) {
+            memo_sub.push(e);
+            nameList += e.name
+            nameList += ", "
+        }
+        if (e.sub2Id === a2) {
+            memo_sub.push(e);
+            nameList += e.name
+            nameList += ", "
+        }
+    });
+    var match = matchSkill(memo_main, memo_sub, a2);
+    tmpSkill.skillLv = match.best_slv;
+    skillset.push(tmpSkill);
+    var resultRes3 = "[該当スキルを所持しているクリーチャー]\n" + nameList + "\n\n"
+    if (match.best_slv > 0) {
+        resultRes3 = resultRes3 + "最大効果は" + match.best + "] を組み合わせることで\n SLv" + match.best_slv + "が得られます。\n"
+    } else {
+        resultRes3 = resultRes3 + "このパッシブはクリーチャーパッシブ変換スキルでのみ入手できます。\n"
+    }
+
+    document.optionlist.res3.value = resultRes3;
+    // オプション効果も引っ張ってきちゃう
+    var greet4 = document.getElementById('passive_state2');
+    greet4.innerHTML = '<p style="text-align: left">' + output2(skillset) + '</p>';
+
+}
+function matchSkill(main, sub, name) {
+    var result = {
+        matched: [], // その他(ロジック上出せる範囲で)
+        best: "[ ", //最大値
+        best_main: null,
+        best3: null,
+        best_slv: 0,
+    }
+    //メインは最大値を取るように選ぶ(それ以外は選ばない)
+    if (main.length > 0) {
+        var tmp_b = "";
+        main.forEach(function (e, index) {
+            if (e.mainLv > result.best_slv) {
+                result.best_slv = e.mainLv;
+                tmp_b = e.name;
+            }
+        });
+        result.best += (tmp_b + ", ");
+    }
+    //メインは確定したので、サブだけで組む。(ロジック上同じの２匹は選ばれない)
+    var best3 = [{ id: -1, name: "", slv: 0 }, { id: -1, name: "", slv: 0 }, { id: -1, name: "", slv: 0 }];
+    sub.forEach(function (e, index) {
+        if (e.sub1Id === name) {
+            if (e.sub1IdLv > best3[0].slv) {
+                best3[0] = { id: e.id, name: e.name, slv: e.sub1IdLv };
+                best3.sort(function (a, b) {
+                    if (a.slv > b.slv) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                });
+            }
+        }
+        if (e.sub2Id === name) {
+            if (e.sub2IdLv > best3[0].slv) {
+                best3[0] = { id: e.id, name: e.name, slv: e.sub2IdLv };
+                best3.sort(function (a, b) {
+                    if (a.slv > b.slv) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                });
+            }
+        }
+    });
+
+    //結果出力
+    result.best3 = best3;
+    best3.forEach(function (e) {
+        if (e.id !== -1) {
+            result.best += (e.name + ", ");
+            result.best_slv += parseInt(e.slv);
+        }
+    });
+    return result;
+};
