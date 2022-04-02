@@ -33,9 +33,9 @@ function convertCSVtoArray(str, map_str) {// 読み込んだCSVデータが文�
     var tmp = str.split("\"\n\"");// 改行を区切り文字として行を要素とした配列を生成
     // 各行ごとにカンマで区切った文字列を要素とした二次元配列を生成
     for (var i = 0; i < tmp.length; ++i) {
-            var tmp_txt = tmp[i].split('\",\"');//文中に,出てくる問題への対処
-            tmp_txt = tmp_txt.join('",,,,,"');
-            result[i] = tmp_txt.split(',,,,,');
+        var tmp_txt = tmp[i].split('\",\"');//文中に,出てくる問題への対処
+        tmp_txt = tmp_txt.join('",,,,,"');
+        result[i] = tmp_txt.split(',,,,,');
         var re;
         if (i == 0) {
             // 列定義
