@@ -196,6 +196,24 @@ function getMobDB() {
                         alt = LnkP[PPP];
                         PPP++;
                     }
+                    // 闇商人
+                    if (LnkS[i] == 21) {
+                        col = "#00ff00";
+                        nam = '<img title="'+ LnkP[PPP]+ '" src="https://sokomin.github.io/sokomin_repository/db/interface2/interface2_1024.png">';
+                        // col = "#00ff00"; nam = "＋";
+                        // nam2 = "＋";
+                        alt = LnkP[PPP];
+                        PPP++;
+                    }
+                    // ヤティカヌPVP
+                    if (LnkS[i] == 22) {
+                        col = "#00ff00";
+                        nam = '<img title="'+ LnkP[PPP]+ '" src="https://sokomin.github.io/sokomin_repository/db/interface2/interface2_0678.png">';
+                        // col = "#00ff00"; nam = "＋";
+                        // nam2 = "＋";
+                        alt = LnkP[PPP];
+                        PPP++;
+                    }
                     if (LnkS[i] == 12) {
                         col = "#00ffff"; nam = "＋"; nam2 = "＋"; alt = LnkP[PPP];
                         PPP++;

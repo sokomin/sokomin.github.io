@@ -1418,6 +1418,28 @@ function datalist(num) {
                     LnkP.push(data.name);
                 }
             }
+            // ヤティカヌ闇商人
+            if (data.type === 21) {
+                LnkX.push(data.posx);
+                LnkY.push(data.posy);
+                LnkS.push(data.type);
+                if (data.area_name && data.area_name != "none") {
+                    LnkP.push(data.area_name);  
+                } else {
+                    LnkP.push(data.name);
+                }
+            }
+            // ヤティカヌPVP
+            if (data.type === 22) {
+                LnkX.push(data.posx);
+                LnkY.push(data.posy);
+                LnkS.push(data.type);
+                if (data.area_name && data.area_name != "none") {
+                    LnkP.push(data.area_name);  
+                } else {
+                    LnkP.push(data.name);
+                }
+            }
         }
         // 最終文字の0は特に使わない
     }
