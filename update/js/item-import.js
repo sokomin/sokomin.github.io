@@ -540,7 +540,7 @@ function create_joblist(txt){
     var all_flag = 0; //2なら全部装備可能
     txt = txt.split(" ");
     if(txt)
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < 5; i++) {
         var val = Number(txt[i]);
         var sub = reverse(val.toString(2)); // リトルエンディアンで
         if (i == 0) {
@@ -584,6 +584,15 @@ function create_joblist(txt){
                 var a = sub.substr(j,1);
                 if (a == "1") {
                     res.push("- " + chara_code[j + 16].name);
+                }
+            }
+        }
+        // キャプテン以降
+        if (i == 4) {
+            for (var j = 0; j < sub.length; j++) {
+                var a = sub.substr(j,1);
+                if (a == "1") {
+                    res.push("- " + chara_code[j + 24].name);
                 }
             }
         }
