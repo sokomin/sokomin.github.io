@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+      https://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+<body>
+    <title>インフィニティアンカー 赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+        <div class="android-content mdl-layout__content">
+            <!--main-->
+            <a href="../index.html">トップ</a> >> <a href="../item/item.html">アイテム</a> >> <a
+                href="../information/infinityweapon.html">インフィニティ武器</a><br>
+            <div class="main-background mdl-typography--text-center">
+                <br>
+                <h3>インフィニティアンカー</h3>
+                <a href="#1">U</a><br>
+                <a href="#2">DXU</a><br>
+                <a href="#5">UMU</a><br>
+                <br>
+            </div>
+            <br>
+            <br>
+            <br>
+            <div class="tag1">
+                <table id="table1">
+                    <tr>
+                        <th colspan="6" valign="top">
+                            <a name="1"></a>U
+                        </th>
+                        <th colspan="6" valign="top">
+                            <a name="3"></a>NxU
+                        </th>
+                    </tr>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="180">
+                        <col span="1" width="180">
+                        <col span="1">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="5" valign="top">
+                                <font color="#e8c898">インフィニティアンカー1</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4088.png"></td>
+                            <td colspan="4" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                - アンカー<br>
+                                - 攻撃力 <font color="#f8f800">38</font>~<font color="#f8f800">56</font>(<font color="#f8f800">1.50
+                                </font>秒)<br>
+                                - 射程距離 <font color="#f8f800">120</font><br>
+                                - 物理ダメージ <font color="#f8f800">60</font>％ 増加<br>
+                                - 致命打発動確率 +<font color="#f8f800">4</font>％<br>
+                                - 命中率 +<font color="#f8f800">2</font>％<br>
+                                - 力 <font color="#f8f800">50</font> 増加<br>
+                                - 水ダメージ <font color="#f8f800">50</font>~<font color="#f8f800">50</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                                - レベル 100<br>
+                                - 力 80<br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                                9999/0
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">4000</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                - 古代都市タティリスの最高の武器職人が一つに集まって神秘の鉄床という組織<br>
+                                が結成され、その神秘の鉄床で製造された究極の進化系武器を「インフィニテ<br>
+                                ィシリーズ」と呼んだ。<br>
+                                武器職人ジャネットがデザインした錨で、「豪快な意志」を具現化したもの。<br>
+                                - レベル1 エハド級の武器職人の技術で作られたインフィニティアンカー<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="180">
+                        <col span="1" width="180">
+                        <col span="1">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="5" valign="top">
+                                <font color="#e8c898">インフィニティアンカー2</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4089.png"></td>
+                            <td colspan="4" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                - アンカー<br>
+                                - 攻撃力 <font color="#f8f800">50</font>~<font color="#f8f800">76</font>(<font color="#f8f800">1.50
+                                </font>秒)<br>
+                                - 射程距離 <font color="#f8f800">120</font><br>
+                                - 物理ダメージ <font color="#f8f800">70</font>％ 増加<br>
+                                - 致命打発動確率 +<font color="#f8f800">5</font>％<br>
+                                - 命中率 +<font color="#f8f800">3</font>％<br>
+                                - 力 <font color="#f8f800">80</font> 増加<br>
+                                - 水ダメージ <font color="#f8f800">100</font>~<font color="#f8f800">100</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                                - レベル 200<br>
+                                - 力 120<br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                                9999/0
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">4000</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                - 古代都市タティリスの最高の武器職人が一つに集まって神秘の鉄床という組織<br>
+                                が結成され、その神秘の鉄床で製造された究極の進化系武器を「インフィニテ<br>
+                                ィシリーズ」と呼んだ。<br>
+                                武器職人ジャネットがデザインした錨で、「豪快な意志」を具現化したもの。<br>
+                                - レベル2<br>
+                                シュナイム級の武器職人の技術で作られたインフィニティアンカー<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="180">
+                        <col span="1" width="180">
+                        <col span="1">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="5" valign="top">
+                                <font color="#e8c898">インフィニティアンカー3</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4092.png"></td>
+                            <td colspan="4" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                - アンカー<br>
+                                - 攻撃力 <font color="#f8f800">57</font>~<font color="#f8f800">76</font>(<font color="#f8f800">1.50
+                                </font>秒)<br>
+                                - 射程距離 <font color="#f8f800">120</font><br>
+                                - 物理ダメージ <font color="#f8f800">80</font>％ 増加<br>
+                                - 致命打発動確率 +<font color="#f8f800">6</font>％<br>
+                                - 命中率 +<font color="#f8f800">4</font>％<br>
+                                - 力 <font color="#f8f800">100</font> 増加<br>
+                                - 水ダメージ <font color="#f8f800">150</font>~<font color="#f8f800">150</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                                - レベル 300<br>
+                                - 力 140<br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                                9999/0
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">40000</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                - 古代都市タティリスの最高の武器職人が一つに集まって神秘の鉄床という組織<br>
+                                が結成され、その神秘の鉄床で製造された究極の進化系武器を「インフィニテ<br>
+                                ィシリーズ」と呼んだ。<br>
+                                武器職人ジャネットがデザインした錨で、「豪快な意志」を具現化したもの。<br>
+                                - レベル3<br>
+                                シャロシュ級の武器職人の技術で作られたインフィニティアンカー<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br>
+            <br>
+            <br>
+            <div class="tag2">
+                <table id="table1">
+                    <tr>
+                        <th colspan="6" valign="top">
+                            <a name="2"></a>DXU
+                        </th>
+                        <th colspan="6" valign="top">
+                            <a name="4"></a>NxDXU
+                        </th>
+                    </tr>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="180">
+                        <col span="1" width="180">
+                        <col span="1">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="5" valign="top">
+                                <font color="#e8c898">インフィニティアンカー4</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4205.png"></td>
+                            <td colspan="4" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                - アンカー<br>
+                                - 攻撃力 <font color="#f8f800">68</font>~<font color="#f8f800">77</font>(<font color="#f8f800">1.50
+                                </font>秒)<br>
+                                - 射程距離 <font color="#f8f800">120</font><br>
+                                - 物理ダメージ <font color="#f8f800">100</font>％ 増加<br>
+                                - 致命打発動確率 +<font color="#f8f800">7</font>％<br>
+                                - 命中率 +<font color="#f8f800">5</font>％<br>
+                                - 力 <font color="#f8f800">140</font> 増加<br>
+                                - 水ダメージ <font color="#f8f800">200</font>~<font color="#f8f800">200</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                                - レベル 400<br>
+                                - 力 200<br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                                9999/0
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">40000</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                - 古代都市タティリスの最高の武器職人が一つに集まって神秘の鉄床という組織<br>
+                                が結成され、その神秘の鉄床で製造された究極の進化系武器を「インフィニテ<br>
+                                ィシリーズ」と呼んだ。<br>
+                                武器職人ジャネットがデザインした錨で、「豪快な意志」を具現化したもの。<br>
+                                - レベル4 アルバ級の武器職人の技術で作られたインフィニティアンカー<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="180">
+                        <col span="1" width="180">
+                        <col span="1">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="5" valign="top">
+                                <font color="#e8c898">インフィニティアンカー5</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4231.png"></td>
+                            <td colspan="4" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                - アンカー<br>
+                                - 攻撃力 <font color="#f8f800">72</font>~<font color="#f8f800">81</font>(<font color="#f8f800">1.50
+                                </font>秒)<br>
+                                - 射程距離 <font color="#f8f800">120</font><br>
+                                - 物理ダメージ <font color="#f8f800">120</font>％ 増加<br>
+                                - 致命打発動確率 +<font color="#f8f800">7</font>％<br>
+                                - 命中率 +<font color="#f8f800">5</font>％<br>
+                                - 力 <font color="#f8f800">150</font> 増加<br>
+                                - 水ダメージ <font color="#f8f800">250</font>~<font color="#f8f800">250</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                                - レベル 400<br>
+                                - 力 200<br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                                9999/0
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">200000</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                - 古代都市タティリスの最高の武器職人が一つに集まって神秘の鉄床という組織<br>
+                                が結成され、その神秘の鉄床で製造された究極の進化系武器を「インフィニテ<br>
+                                ィシリーズ」と呼んだ。<br>
+                                武器職人ジャネットがデザインした錨で、「豪快な意志」を具現化したもの。<br>
+                                - レベル5<br>
+                                ハメスィ級の武器職人の技術で作られたインフィニティアンカー<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="180">
+                        <col span="1" width="180">
+                        <col span="1">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="5" valign="top">
+                                <font color="#e8c898">インフィニティアンカー6</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4233.png"></td>
+                            <td colspan="4" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                - アンカー<br>
+                                - 攻撃力 <font color="#f8f800">103</font>~<font color="#f8f800">114</font>(<font color="#f8f800">1.50
+                                </font>秒)<br>
+                                - 射程距離 <font color="#f8f800">120</font><br>
+                                - 物理ダメージ <font color="#f8f800">140</font>％ 増加<br>
+                                - 致命打発動確率 +<font color="#f8f800">8</font>％<br>
+                                - 命中率 +<font color="#f8f800">7</font>％<br>
+                                - 力 <font color="#f8f800">160</font> 増加<br>
+                                - 水ダメージ <font color="#f8f800">300</font>~<font color="#f8f800">300</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                                - レベル 500<br>
+                                - 力 300<br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                                9999/0
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">200000</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                - 古代都市タティリスの最高の武器職人が一つに集まって神秘の鉄床という組織<br>
+                                が結成され、その神秘の鉄床で製造された究極の進化系武器を「インフィニテ<br>
+                                ィシリーズ」と呼んだ。<br>
+                                武器職人ジャネットがデザインした錨で、「豪快な意志」を具現化したもの。<br>
+                                - レベル6<br>
+                                シェイシャ級の武器職人の技術で作られたインフィニティアンカー<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="180">
+                        <col span="1" width="180">
+                        <col span="1">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="5" valign="top">
+                                <font color="#e8c898">インフィニティアンカー7</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4195.png"></td>
+                            <td colspan="4" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                - アンカー<br>
+                                - 攻撃力 <font color="#f8f800">106</font>~<font color="#f8f800">120</font>(<font color="#f8f800">1.50
+                                </font>秒)<br>
+                                - 射程距離 <font color="#f8f800">120</font><br>
+                                - 物理ダメージ <font color="#f8f800">160</font>％ 増加<br>
+                                - 致命打発動確率 +<font color="#f8f800">8</font>％<br>
+                                - 命中率 +<font color="#f8f800">7</font>％<br>
+                                - 力 <font color="#f8f800">170</font> 増加<br>
+                                - 水ダメージ <font color="#f8f800">350</font>~<font color="#f8f800">350</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                                - レベル 500<br>
+                                - 力 300<br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                                9999/0
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">400000</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                - 古代都市タティリスの最高の武器職人が一つに集まって神秘の鉄床という組織<br>
+                                が結成され、その神秘の鉄床で製造された究極の進化系武器を「インフィニテ<br>
+                                ィシリーズ」と呼んだ。<br>
+                                武器職人ジャネットがデザインした錨で、「豪快な意志」を具現化したもの。<br>
+                                - レベル7<br>
+                                シュブア級の武器職人の技術で作られたインフィニティアンカー<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">インフィニティアンカー8</font>
+                            </th>
+                            <th colspan="6">
+                                <font color="#cc6633">インフィニティアンカー8[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4204.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                - アンカー<br>
+                                - 攻撃力 <font color="#f8f800">110</font>~<font color="#f8f800">124</font>(<font color="#f8f800">1.50
+                                </font>秒)<br>
+                                - 射程距離 <font color="#f8f800">120</font><br>
+                                - 物理ダメージ <font color="#f8f800">180</font>％ 増加<br>
+                                - 致命打発動確率 +<font color="#f8f800">10</font>％<br>
+                                - 命中率 +<font color="#f8f800">9</font>％<br>
+                                - 力 <font color="#f8f800">180</font> 増加<br>
+                                - 水ダメージ <font color="#f8f800">400</font>~<font color="#f8f800">400</font><br>
+                                <font color="#f8f800">錬成 可能</font><br>
+                            </td>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4204.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                - アンカー<br>
+                                - 攻撃力 <font color="#f8f800">110</font>~<font color="#f8f800">124</font>(<font color="#f8f800">1.50
+                                </font>秒)<br>
+                                - 射程距離 <font color="#f8f800">120</font><br>
+                                - 物理ダメージ <font color="#f8f800">180</font>％ 増加<br>
+                                - 致命打発動確率 +<font color="#f8f800">10</font>％<br>
+                                - 命中率 +<font color="#f8f800">9</font>％<br>
+                                - 力 <font color="#f8f800">180</font> 増加<br>
+                                - 水ダメージ <font color="#f8f800">400</font>~<font color="#f8f800">400</font><br>
+                                <br>
+                                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>
+                                - このアイテムの着用レベル <font color="#f8f800">-110</font><br>
+                                - 物理ダメージ <font color="#f8f800">50</font>％ 増加<br>
+                                - 最終ダメージ +<font color="#f8f800">10</font>％<br>
+                                - ダブルクリティカルダメージ <font color="#f8f800">10</font>％ 増加<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                                - レベル 600<br>
+                                - 力 400<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                                - レベル 600<br>
+                                - 力 400<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                                9999/0
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">400000</font> Gold<br>
+                            </td>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                                9999/0
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">600000</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="12">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                - 古代都市タティリスの最高の武器職人が一つに集まって神秘の鉄床という組織<br>
+                                が結成され、その神秘の鉄床で製造された究極の進化系武器を「インフィニテ<br>
+                                ィシリーズ」と呼んだ。<br>
+                                武器職人ジャネットがデザインした錨で、「豪快な意志」を具現化したもの。<br>
+                                - レベル8<br>
+                                シュモナ級の武器職人の技術で作られたインフィニティアンカー<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">インフィニティアンカー9</font>
+                            </th>
+                            <th colspan="6">
+                                <font color="#cc6633">インフィニティアンカー9[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4207.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                - アンカー<br>
+                                - 攻撃力 <font color="#f8f800">115</font>~<font color="#f8f800">129</font>(<font color="#f8f800">1.50
+                                </font>秒)<br>
+                                - 射程距離 <font color="#f8f800">120</font><br>
+                                - 物理ダメージ <font color="#f8f800">200</font>％ 増加<br>
+                                - 致命打発動確率 +<font color="#f8f800">10</font>％<br>
+                                - 命中率 +<font color="#f8f800">9</font>％<br>
+                                - 力 <font color="#f8f800">200</font> 増加<br>
+                                - 水ダメージ <font color="#f8f800">450</font>~<font color="#f8f800">450</font><br>
+                                <font color="#f8f800">錬成 可能</font><br>
+                            </td>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4207.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                - アンカー<br>
+                                - 攻撃力 <font color="#f8f800">115</font>~<font color="#f8f800">129</font>(<font color="#f8f800">1.50
+                                </font>秒)<br>
+                                - 射程距離 <font color="#f8f800">120</font><br>
+                                - 物理ダメージ <font color="#f8f800">200</font>％ 増加<br>
+                                - 致命打発動確率 +<font color="#f8f800">10</font>％<br>
+                                - 命中率 +<font color="#f8f800">9</font>％<br>
+                                - 力 <font color="#f8f800">200</font> 増加<br>
+                                - 水ダメージ <font color="#f8f800">450</font>~<font color="#f8f800">450</font><br>
+                                <br>
+                                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>
+                                - このアイテムの着用レベル <font color="#f8f800">-110</font><br>
+                                - 物理ダメージ <font color="#f8f800">50</font>％ 増加<br>
+                                - 最終ダメージ +<font color="#f8f800">10</font>％<br>
+                                - ダブルクリティカルダメージ <font color="#f8f800">10</font>％ 増加<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                                - レベル 600<br>
+                                - 力 400<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                                - レベル 600<br>
+                                - 力 400<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                                9999/0
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">600000</font> Gold<br>
+                            </td>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                                9999/0
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">800000</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="12">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                - 古代都市タティリスの最高の武器職人が一つに集まって神秘の鉄床という組織<br>
+                                が結成され、その神秘の鉄床で製造された究極の進化系武器を「インフィニテ<br>
+                                ィシリーズ」と呼んだ。<br>
+                                武器職人ジャネットがデザインした錨で、「豪快な意志」を具現化したもの。<br>
+                                - レベル9<br>
+                                テイシャ級の武器職人の技術で作られたインフィニティアンカー<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">インフィニティアンカー'大胆'</font>
+                            </th>
+                            <th colspan="6">
+                                <font color="#cc6633">インフィニティアンカー'大胆'[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4223.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                - アンカー<br>
+                                - 攻撃力 <font color="#f8f800">125</font>~<font color="#f8f800">146</font>(<font color="#f8f800">1.50
+                                </font>秒)<br>
+                                - 射程距離 <font color="#f8f800">120</font><br>
+                                - 物理ダメージ <font color="#f8f800">250</font>％ 増加<br>
+                                - 致命打発動確率 +<font color="#f8f800">15</font>％<br>
+                                - 命中率 +<font color="#f8f800">10</font>％<br>
+                                - 力 <font color="#f8f800">250</font> 増加<br>
+                                - 水属性ダメージを <font color="#f8f800">20</font>％ 強化させる。<br>
+                                - 水ダメージ <font color="#f8f800">500</font>~<font color="#f8f800">500</font><br>
+                                <font color="#f8f800">錬成 可能</font><br>
+                            </td>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4223.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                - アンカー<br>
+                                - 攻撃力 <font color="#f8f800">125</font>~<font color="#f8f800">146</font>(<font color="#f8f800">1.50
+                                </font>秒)<br>
+                                - 射程距離 <font color="#f8f800">120</font><br>
+                                - 物理ダメージ <font color="#f8f800">250</font>％ 増加<br>
+                                - 致命打発動確率 +<font color="#f8f800">15</font>％<br>
+                                - 命中率 +<font color="#f8f800">10</font>％<br>
+                                - 力 <font color="#f8f800">250</font> 増加<br>
+                                - 水属性ダメージを <font color="#f8f800">20</font>％ 強化させる。<br>
+                                - 水ダメージ <font color="#f8f800">500</font>~<font color="#f8f800">500</font><br>
+                                <br>
+                                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>
+                                - このアイテムの着用レベル <font color="#f8f800">-130</font><br>
+                                - 物理ダメージ <font color="#f8f800">50</font>％ 増加<br>
+                                - 最終ダメージ +<font color="#f8f800">10</font>％<br>
+                                - ダブルクリティカルダメージ <font color="#f8f800">10</font>％ 増加<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                                - レベル 700<br>
+                                - 力 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                                - レベル 700<br>
+                                - 力 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                                9999/0
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">800000</font> Gold<br>
+                            </td>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                                9999/0
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">1200000</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="12">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                - 古代都市タティリスの最高の武器職人が一つに集まって神秘の鉄床という組織<br>
+                                が結成され、その神秘の鉄床で製造された究極の進化系武器を「インフィニテ<br>
+                                ィシリーズ」と呼んだ。<br>
+                                武器職人ジャネットがデザインした錨で、「豪快な意志」を具現化したもの。<br>
+                                - レベル10<br>
+                                エセル級の武器職人の技術で作られた最終形態のインフィニティアンカー<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br>
+            <br>
+            <br>
+            <div class="tag3">
+                <table id="table1">
+                    <tr>
+                        <th colspan="6" valign="top">
+                            <a name="5"></a>
+                            UMU
+                        </th>
+                        <th colspan="6" valign="top">
+                            <a name="6"></a>
+                            NxUMU
+                        </th>
+                    </tr>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="180">
+                        <col span="1" width="180">
+                        <col span="1">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="5" valign="top">
+                                <font color="#e8c898">インフィニティアンカー'豪傑-力'</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4224.png"></td>
+                            <td colspan="4" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                - アンカー<br>
+                                - 攻撃力 <font color="#f8f800">162</font>~<font color="#f8f800">189</font>(<font color="#f8f800">1.50
+                                </font>秒)<br>
+                                - 射程距離 <font color="#f8f800">120</font><br>
+                                - 物理ダメージ <font color="#f8f800">250</font>％ 増加<br>
+                                - 致命打発動確率 +<font color="#f8f800">15</font>％<br>
+                                - 命中率 +<font color="#f8f800">10</font>％<br>
+                                - 力 <font color="#f8f800">250</font> 増加<br>
+                                - 水属性ダメージを <font color="#f8f800">20</font>％ 強化させる。<br>
+                                - 水ダメージ <font color="#f8f800">500</font>~<font color="#f8f800">500</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                                - レベル 700<br>
+                                - 力 500<br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                                9999/0
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">0</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                - 古代都市タティリスの最高の武器職人が一つに集まって神秘の鉄床という組織<br>
+                                が結成され、その神秘の鉄床で製造された究極の進化系武器を「インフィニテ<br>
+                                ィシリーズ」と呼んだ。<br>
+                                武器職人ジャネットがデザインした錨で、「豪快な意志」を具現化したもの。<br>
+                                - レベル10<br>
+                                エセル級の武器職人の技術で作られた最終形態のインフィニティアンカー<br>
+                                - 純粋な機能が強化されたインフィニティ武器<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="180">
+                        <col span="1" width="180">
+                        <col span="1">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="5" valign="top">
+                                <font color="#e8c898">インフィニティアンカー'豪傑-技'</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4225.png"></td>
+                            <td colspan="4" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                - アンカー<br>
+                                - 攻撃力 <font color="#f8f800">125</font>~<font color="#f8f800">146</font>(<font color="#f8f800">1.50
+                                </font>秒)<br>
+                                - 射程距離 <font color="#f8f800">120</font><br>
+                                - 物理ダメージ <font color="#f8f800">325</font>％ 増加<br>
+                                - 致命打発動確率 +<font color="#f8f800">19</font>％<br>
+                                - 命中率 +<font color="#f8f800">13</font>％<br>
+                                - 力 <font color="#f8f800">325</font> 増加<br>
+                                - 水属性ダメージを <font color="#f8f800">20</font>％ 強化させる。<br>
+                                - 水ダメージ <font color="#f8f800">550</font>~<font color="#f8f800">550</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                                - レベル 700<br>
+                                - 力 500<br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                                9999/0
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">0</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                - 古代都市タティリスの最高の武器職人が一つに集まって神秘の鉄床という組織<br>
+                                が結成され、その神秘の鉄床で製造された究極の進化系武器を「インフィニテ<br>
+                                ィシリーズ」と呼んだ。<br>
+                                武器職人ジャネットがデザインした錨で、「豪快な意志」を具現化したもの。<br>
+                                - レベル10<br>
+                                エセル級の武器職人の技術で作られた最終形態のインフィニティアンカー<br>
+                                - 効果が強化されたインフィニティ武器<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">インフィニティアンカー'豪傑-極'</font>
+                            </th>
+                            <th colspan="6">
+                                <font color="#cc6633">インフィニティアンカー'豪傑-極'[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4226.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                - アンカー<br>
+                                - 攻撃力 <font color="#f8f800">155</font>~<font color="#f8f800">181</font>(<font color="#f8f800">1.50
+                                </font>秒)<br>
+                                - 射程距離 <font color="#f8f800">120</font><br>
+                                - 物理ダメージ <font color="#f8f800">310</font>％ 増加<br>
+                                - 致命打発動確率 +<font color="#f8f800">18</font>％<br>
+                                - 命中率 +<font color="#f8f800">12</font>％<br>
+                                - 力 <font color="#f8f800">310</font> 増加<br>
+                                - 水属性ダメージを <font color="#f8f800">20</font>％ 強化させる。<br>
+                                - 水ダメージ <font color="#f8f800">550</font>~<font color="#f8f800">550</font><br>
+                                <font color="#f8f800">錬成 可能</font><br>
+                            </td>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4226.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>
+                                - アンカー<br>
+                                - 攻撃力 <font color="#f8f800">155</font>~<font color="#f8f800">181</font>(<font color="#f8f800">1.50
+                                </font>秒)<br>
+                                - 射程距離 <font color="#f8f800">120</font><br>
+                                - 物理ダメージ <font color="#f8f800">310</font>％ 増加<br>
+                                - 致命打発動確率 +<font color="#f8f800">18</font>％<br>
+                                - 命中率 +<font color="#f8f800">12</font>％<br>
+                                - 力 <font color="#f8f800">310</font> 増加<br>
+                                - 水属性ダメージを <font color="#f8f800">20</font>％ 強化させる。<br>
+                                - 水ダメージ <font color="#f8f800">550</font>~<font color="#f8f800">550</font><br>
+                                <br>
+                                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>
+                                - このアイテムの着用レベル <font color="#f8f800">-150</font><br>
+                                - 物理ダメージ <font color="#f8f800">50</font>％ 増加<br>
+                                - 最終ダメージ +<font color="#f8f800">10</font>％<br>
+                                - ダブルクリティカルダメージ <font color="#f8f800">10</font>％ 増加<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                                - レベル 700<br>
+                                - 力 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>
+                                - レベル 700<br>
+                                - 力 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                                9999/0
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">0</font> Gold<br>
+                            </td>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>
+                                9999/0
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">0</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="12">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>
+                                - 古代都市タティリスの最高の武器職人が一つに集まって神秘の鉄床という組織<br>
+                                が結成され、その神秘の鉄床で製造された究極の進化系武器を「インフィニテ<br>
+                                ィシリーズ」と呼んだ。<br>
+                                武器職人ジャネットがデザインした錨で、「豪快な意志」を具現化したもの。<br>
+                                - レベル10<br>
+                                エセル級の武器職人の技術で作られた最終形態のインフィニティアンカー<br>
+                                - 全ての機能が強化されたより強力なインフィニティ武器<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <footer class="android-footer mdl-mega-footer">
+                <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                    許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                </font>
+                Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+            </footer>
+            <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+        </div>
+        <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    </div>
+</body>
+</html>
