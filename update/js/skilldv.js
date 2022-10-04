@@ -172,7 +172,8 @@ function createSkillTable() {
             continue;
         }
 
-        if (data["unknown10_139"] != 0 && data["unknown10_139"] != 3) {
+        if (data["unknown10_143"] != 0 && data["unknown10_143"] != 3) {
+        // if (data["unknown10_139"] != 0 && data["unknown10_139"] != 3) {
             //覚醒スキル
             if (data["unknown10_143"] == 0) {
                 //覚醒パッシブ
