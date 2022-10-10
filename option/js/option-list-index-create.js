@@ -5,7 +5,7 @@ function getCSV(mode) {
     req.open("get", "https://sokomin.github.io/sokomin_repository/db/prefix.csv", true);
     req.send(null);
     req.onload = function () {
-        convertCSVtoArray(req.responseText);
+        convertCSVtoArray(mode, req.responseText);
     }
 }
 
@@ -14,7 +14,7 @@ var obj_format = {};
 var prefix_data = {};
 
 // 読み込んだCSVデータをオブジェクトに変換
-function convertCSVtoArray(prefix_str) {
+function convertCSVtoArray(mode, prefix_str) {
     // 初期化
     obj_format = {};
     prefix_data = {};
@@ -50,8 +50,12 @@ function convertCSVtoArray(prefix_str) {
             cnt++;
         }
     }
-    // 分岐が必要ならここで
-    createMobTable();
+    // 付与可能部位との分岐
+    if(mode==2){
+        createPrefixAddTable();
+    } else {
+        createOptionTable();
+    }
 }
 
 // 何回かやってみたけどjQuery使いづら過ぎるのでNGで
@@ -76,7 +80,11 @@ function calc1() {
     getCSV();
 }
 
-function createMobTable() {
+function calc2() {
+    getCSV(2);
+}
+
+function createOptionTable() {
     // var $div_main = $('#option_index');
     var $div_main = document.getElementById('option_index');
     var bef_sort_id = 0;
@@ -94,6 +102,65 @@ function createMobTable() {
 
         var id = "opid_" + i;
         // i = sortid
+        var sort_id = Number(data["sortid"]);
+        var op_id = Number(data["op_id"]);
+        if(sort_id < bef_sort_id || op_id != bef_op_id){
+            $table += table_header_tail;
+            summary_html += $table;
+            summary_html += enter_double;
+            // 初期化してテーブル作り直す
+            $table = table_header;
+            $table += $tr_Name;
+        } else if(bef_sort_id == 0){
+            $table += $tr_Name;
+        }
+        bef_sort_id = sort_id;
+        bef_op_id = op_id;
+
+        // 中身
+        var op_color = def_item_color(data, Number(i));
+        if(!op_color || !data["名称"]){
+            continue;
+        }
+        var text_color = def_text_color(data["効果"]);
+        var $tr_Type = '<tr id="sort_id_'+ sort_id +'"><td id="id_'+ id +'">'
+            + op_color +'</td><td>'+text_color+ '</td><td><span class="option-color">'+data["要求レベル上昇"]+'</span></td><td><span class="option-color">'+data["付加係数"]+'</span></td></tr>'
+
+        // var $tr_Type = $('<tr>').attr("id", (sort_id));
+        // $tr_Type.append($('<td>').attr("id", (id)).text(data["名称"]));
+        // $tr_Type.append($('<td>').text(data["効果"]));
+        // $tr_Type.append($('<td>').text(data["要求レベル上昇"]));
+        // $tr_Type.append($('<td>').text(data["付加係数"]));
+        $table += $tr_Type
+
+
+    }
+    // 最後に変なオプション入ってるから不要になった行
+    // $div_main.append($table);
+    // $div_main.append("<br><br>");
+    // summary_html += $table;
+    // summary_html += enter_double;
+    $div_main.innerHTML = summary_html;
+}
+
+
+function createPrefixAddTable() {
+    var $div_main = document.getElementById('option_index');
+    var bef_sort_id = 0;
+    var bef_op_id = 0;
+    var $table = table_header
+    var $tr_Name = header_format;
+    var summary_html = "";
+
+    for (var i in prefix_data) {
+        var data = prefix_data[i];
+        // 不要なデータを弾く
+        if (validateData(data)) {
+            continue;
+        }
+
+        var id = "opid_" + i;
+        // 特定列を表示から除外する
         var sort_id = Number(data["sortid"]);
         var op_id = Number(data["op_id"]);
         if(sort_id < bef_sort_id || op_id != bef_op_id){
