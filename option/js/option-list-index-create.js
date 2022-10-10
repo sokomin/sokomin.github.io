@@ -1,11 +1,11 @@
 
 // オプションデータ作成用
-function getCSV(mode) {
+function getCSV(mode, mode_sub) {
     var req = new XMLHttpRequest();
     req.open("get", "https://sokomin.github.io/sokomin_repository/db/prefix.csv", true);
     req.send(null);
     req.onload = function () {
-        convertCSVtoArray(mode, req.responseText);
+        convertCSVtoArray(mode, mode_sub, req.responseText);
     }
 }
 
@@ -14,7 +14,7 @@ var obj_format = {};
 var prefix_data = {};
 
 // 読み込んだCSVデータをオブジェクトに変換
-function convertCSVtoArray(mode, prefix_str) {
+function convertCSVtoArray(mode, mode_sub, prefix_str) {
     // 初期化
     obj_format = {};
     prefix_data = {};
@@ -52,7 +52,7 @@ function convertCSVtoArray(mode, prefix_str) {
     }
     // 付与可能部位との分岐
     if(mode==2){
-        createPrefixAddTable();
+        createPrefixAddTable(mode_sub);
     } else {
         createOptionTable();
     }
@@ -80,8 +80,8 @@ function calc1() {
     getCSV();
 }
 
-function calc2() {
-    getCSV(2);
+function calc2(mode_sub) {
+    getCSV(2, mode_sub);
 }
 
 function createOptionTable() {
@@ -144,12 +144,43 @@ function createOptionTable() {
 }
 
 
-function createPrefixAddTable() {
+const table_header_sub = '<table id="table10" style=\'max-width="1920px"; background-color:black\';><colgroup>';
+const table_header_tail_sub = '</table>'
+const header_format_sub = '<tr><th>OP名</th>'
+const header_format_tail_sub = '</tr>'
+const enter_double_sub ="<br><br>"
+
+
+const column_weapon = ["片手剣","両手剣","槍","弓","杖","牙","メイス","翼","笛","短剣","格闘武器","スリング","ワンド","鞭","鎌","爪武器","本","双剣","ほうき","ダークコア","双拳銃","錬金石"]
+const column_protector = ["ネックレス","ヘルメット","冠","イヤリング","マント","ベルト","グローブ","投擲機","爪","ブレスレット","共用鎧","専用鎧","ブーツ","リング"]
+const column_subweapon = ["盾","鞘","矢","腕刺青","ブローチ","獣毛装飾","十字架","肩刺青","マスターキー","保護帯","スリング弾丸","星群","契約霊","ウォーペイント","コサージュ","魔弾石","触媒石","宝石"]
+
+function createPrefixAddTable(mode_sub) {
+    var header_addition = "";
+    var th_addition = "";
+    var header_ary = [];
+    if(mode_sub == 1){
+        header_ary = column_weapon;
+    } else if(mode_sub ==2){
+        header_ary = column_protector;
+    } else if(mode_sub ==3){
+        header_ary = column_subweapon;
+    }
     var $div_main = document.getElementById('option_index');
     var bef_sort_id = 0;
     var bef_op_id = 0;
-    var $table = table_header
-    var $tr_Name = header_format;
+    var $table = table_header_sub
+    var $tr_Name = header_format_sub;
+    header_addition += '<col span="1" width="150px">';
+    for(var j=0; j<header_ary.length; j++){
+        header_addition += '<col span="1" width="50px"></col>';
+        th_addition += ('<th>' + header_ary[j] + '</th>');
+    }
+    header_addition += '</colgroup>';
+    $table += header_addition;
+    $tr_Name += th_addition;
+    $tr_Name += header_format_tail_sub;
+
     var summary_html = "";
 
     for (var i in prefix_data) {
@@ -164,11 +195,13 @@ function createPrefixAddTable() {
         var sort_id = Number(data["sortid"]);
         var op_id = Number(data["op_id"]);
         if(sort_id < bef_sort_id || op_id != bef_op_id){
-            $table += table_header_tail;
+            $table += table_header_tail_sub;
             summary_html += $table;
             summary_html += enter_double;
             // 初期化してテーブル作り直す
-            $table = table_header;
+            $table = table_header_sub;
+            $table+= header_addition;
+            header_addition += '</colgroup>';
             $table += $tr_Name;
         } else if(bef_sort_id == 0){
             $table += $tr_Name;
@@ -181,22 +214,14 @@ function createPrefixAddTable() {
         if(!op_color || !data["名称"]){
             continue;
         }
-        var text_color = def_text_color(data["効果"]);
+        var op_on_off = def_op_on_off(data, header_ary, mode_sub);
         var $tr_Type = '<tr id="sort_id_'+ sort_id +'"><td id="id_'+ id +'">'
-            + op_color +'</td><td>'+text_color+ '</td><td><span class="option-color">'+data["要求レベル上昇"]+'</span></td><td><span class="option-color">'+data["付加係数"]+'</span></td></tr>'
+            + op_color +'</td>' + op_on_off + '</tr>'
 
-        // var $tr_Type = $('<tr>').attr("id", (sort_id));
-        // $tr_Type.append($('<td>').attr("id", (id)).text(data["名称"]));
-        // $tr_Type.append($('<td>').text(data["効果"]));
-        // $tr_Type.append($('<td>').text(data["要求レベル上昇"]));
-        // $tr_Type.append($('<td>').text(data["付加係数"]));
         $table += $tr_Type
 
 
     }
-    // 最後に変なオプション入ってるから不要になった行
-    // $div_main.append($table);
-    // $div_main.append("<br><br>");
     // summary_html += $table;
     // summary_html += enter_double;
     $div_main.innerHTML = summary_html;
@@ -246,10 +271,40 @@ function def_item_color(data, id){
 
 
 // オプションテキストの色塗り
-// TODO 普通にデータから取りたい
 function def_text_color(text){
     text = text.replace(/([0-9]+)/g, '<font color="#f8f800">'+"$1"+'</font>')
     return '<font color="#ffffff">'+ text +'</font>'
+}
+
+
+
+// ON, OFFの判定
+// TODO 韓国と日本でデータが違う部分の振り分けを行いたい
+function def_op_on_off(data, header_ary, mode_sub){
+    var res_text = "";
+    for(var k=0; k<header_ary.length; k++){
+        var is_op = data[header_ary[k]];
+        if(mode_sub == 3){
+            if(is_op){
+                res_text += '<td><font color="#ff80c0">●</font></td>';
+            } else {
+                res_text += '<td>-</td>';
+            }
+        } else if(mode_sub == 2){
+            if(is_op){
+                res_text += '<td><font color="#ff80c0">●</font></td>';
+            } else {
+                res_text += '<td>-</td>';
+            }
+        } else if(mode_sub == 1){
+            if(is_op){
+                res_text += '<td><font color="#ff80c0">●</font></td>';
+            } else {
+                res_text += '<td>-</td>';
+            }
+        }
+    }
+    return res_text;
 }
 /**
  * Get the URL parameter value
