@@ -71,7 +71,7 @@ function convertCSVtoArray(mode, mode_sub, prefix_str) {
 // .append($('<th>').text("要求Lv上昇"))
 // .append($('<th>').text("付与係数"))
 
-const table_header = '<table id="table10" style="background-color:black; max-width: 1200px;"><colgroup><col span="1" width="300px"><col span="1" width="500px"></colgroup>';
+const table_header = '<table id="table10" style=\'min-width="1600px"; max-width="1920px"; background-color:black\';><colgroup><col span="1" width="300px"><col span="1" width="500px"><col span="1" width="100px"><col span="1" width="100px"></colgroup>';
 const table_header_tail = '</table>'
 const header_format = '<tr><th>オプション</th><th>効果</th><th>要求Lv上昇</th><th>付与係数</th></tr>'
 const enter_double="<br><br>"
@@ -144,7 +144,7 @@ function createOptionTable() {
 }
 
 
-const table_header_sub = '<table id="table10" style=\'max-width="1920px"; background-color:black\';><colgroup>';
+const table_header_sub = '<table id="table10" style=\'min-width="1600px"; max-width="1920px"; background-color:black\';><colgroup>';
 const table_header_tail_sub = '</table>'
 const header_format_sub = '<tr><th>OP名</th>'
 const header_format_tail_sub = '</tr>'
@@ -171,6 +171,12 @@ function createPrefixAddTable(mode_sub) {
     var bef_op_id = 0;
     var $table = table_header_sub
     var $tr_Name = header_format_sub;
+    // var index_text = "";
+    // for (var i in prefix_data) {
+    //     var op_id = Number(data["op_id"]);
+    //     index_text += ('<a href="'+op_id+'">+'+ op_id +'+</a>')
+    // }
+
     header_addition += '<col span="1" width="150px">';
     for(var j=0; j<header_ary.length; j++){
         header_addition += '<col span="1" width="50px"></col>';
@@ -198,6 +204,7 @@ function createPrefixAddTable(mode_sub) {
             $table += table_header_tail_sub;
             summary_html += $table;
             summary_html += enter_double;
+            summary_html += ('<a name="'+op_id+'"></a>');
             // 初期化してテーブル作り直す
             $table = table_header_sub;
             $table+= header_addition;
