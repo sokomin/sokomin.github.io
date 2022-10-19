@@ -172,10 +172,10 @@ function createSkillTable() {
             continue;
         }
 
-        if (data["unknown10_143"] != 0 && data["unknown10_143"] != 3) {
+        if (data["awake_flag_0"] != 0 && data["awake_flag_0"] != 3) {
         // if (data["unknown10_139"] != 0 && data["unknown10_139"] != 3) {
             //覚醒スキル
-            if (data["unknown10_143"] == 0) {
+            if (data["awake_flag_4"] == 0) {
                 //覚醒パッシブ
                 $table = $('<table>').attr("id", "table10").css("min-width", "700px").css("max-width", "1200px").css("text-align", "left")
                     .append($("<colgroup>").append($("<col>").attr("span", 1).attr("width", 40)));
