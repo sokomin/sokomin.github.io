@@ -1,0 +1,1835 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+      https://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+<body>
+    <title>1250UMU 防具 赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+        <div class="android-content mdl-layout__content">
+            <!--main-->
+            <a href="../index.html">トップ</a> >> <a href="../item/item.html">アイテム</a><br>
+            <div class="main-background mdl-typography--text-center">
+                <br>
+                <h3>1250UMU 防具</h3>
+                <p class="sokomin-style">
+                    <a
+                        href="http://members.redsonline.jp/news/maintenance_body.asp?ntc_num=14989">2022/12アップデート</a>で追加されたUMU防具。<br>
+                    1250Lv以上のモンスターから入手可能。<br>
+                    ヤティカヌ以外のフィールドでも入手可能との報告あり。<br>
+                    <!-- １３６６７にかいてる -->
+                    <br>
+                    <br>
+                    エンチャント情報は以下の通り。<br>
+                    <table id="table10" style="max-width:480px">
+                        <tbody>
+                            <tr>
+                                <th>
+                                    <center>使用アイテム</center>
+                                </th>
+                                <th>
+                                    <center>使用可否</center>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <center>
+                                        <font color="black">鏡の魔法書</font>
+                                    </center>
+                                </td>
+                                <td>
+                                    <font color="black">
+                                        <center>使用不可</center>
+                                    </font>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <center>
+                                        <font color="black">異次元BOX</font>
+                                    </center>
+                                </td>
+                                <td>
+                                    <font color="black">
+                                        <center>使用可</center>
+                                    </font>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <center>
+                                        <font color="black">各種神秘鏡</font>
+                                    </center>
+                                </td>
+                                <td>
+                                    <font color="black">
+                                        <center>使用可</center>
+                                    </font>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <center>
+                                        <font color="black">各種神秘鏡のかけら</font>
+                                    </center>
+                                </td>
+                                <td>
+                                    <font color="black">
+                                        <center>使用可</center>
+                                    </font>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <center>
+                                        <font color="black">金色の魔力増幅機</font>
+                                    </center>
+                                </td>
+                                <td>
+                                    <font color="black">
+                                        <center>使用可</center>
+                                    </font>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <center>
+                                        <font color="black">金色の魔力増幅魔法書</font>
+                                    </center>
+                                </td>
+                                <td>
+                                    <font color="black">
+                                        <center>使用可</center>
+                                    </font>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <center>
+                                        <font color="black">魔力結晶体</font>
+                                    </center>
+                                </td>
+                                <td>
+                                    <font color="black">
+                                        <center>使用不可</center>
+                                    </font>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                </p>
+                <br>
+                <a href="#1">首</a><br>
+                <a href="#2">兜</a><br>
+                <a href="#3">冠</a><br>
+                <a href="#4">イヤリング</a><br>
+                <a href="#5">マント</a><br>
+                <a href="#6">ベルト</a><br>
+                <a href="#7">グローブ</a><br>
+                <a href="#8">鎧</a><br>
+                <a href="#9">足</a><br>
+                <br>
+                <br>
+                <br>
+                
+                <table id="table1">
+                    <tbody>
+                        <tr>
+                            <th colspan="12"><a name="1"></a>首</th>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">一時の不滅</font>
+                            </th>
+                            <th colspan="6">
+                                <font color="#cc6633">一時の不滅[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4523.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- ネックレス<br>- 物理致命打抵抗 [<font color="#f8f800">30</font>~<font
+                                    color="#f8f800">35</font>]％ 増加<br>- 決定打 抵抗 [<font color="#f8f800">30</font>~<font color="#f8f800">35
+                                </font>]％ 増加<br>- 発動時、スキルのすべての効果を無視する。 (発動確率 <font color="#f8f800">100</font>％、クールタイム <font
+                                    color="#f8f800">7</font> 秒)<br>- すべての能力値 +<font color="#f8f800">100</font><br>- 防御力 +<font
+                                    color="#f8f800">50</font>％<br>- 最大HP +<font color="#f8f800">40</font>％<br>
+                                <font color="#f8f800">錬成 可能</font><br>
+                            </td>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4523.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- ネックレス<br>- 物理致命打抵抗 [<font color="#f8f800">35</font>~<font
+                                    color="#f8f800">40</font>]％ 増加<br>- 決定打 抵抗 [<font color="#f8f800">35</font>~<font color="#f8f800">40
+                                </font>]％ 増加<br>- 発動時、スキルのすべての効果を無視する。 (発動確率 <font color="#f8f800">100</font>％、クールタイム <font
+                                    color="#f8f800">7</font> 秒)<br>- すべての能力値 +<font color="#f8f800">120</font><br>- 防御力 +<font
+                                    color="#f8f800">60</font>％<br>- 最大HP +<font color="#f8f800">48</font>％<br><br>
+                                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>- このアイテムの着用レベル <font color="#f8f800">-200</font>
+                                <br>- 回避率 +<font color="#f8f800">10</font>％<br>- 命中率 +<font color="#f8f800">10</font>％<br>- 最終ダメージ +
+                                <font color="#f8f800">10</font>％<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- カリスマ 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- カリスマ 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>1250/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>9999/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="12">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>- 秘密の契約が交わされたネックレス。一時的ではあるが、このネックレスの所<br>有者は不滅が約束されるという。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">変化の一滴</font>
+                            </th>
+                            <th colspan="6">
+                                <font color="#cc6633">変化の一滴[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4524.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- ネックレス<br>- 全てのスキルレベル [<font color="#f8f800">1</font>~
+                                <font color="#f8f800">3</font>] 増加<br>- 物理ダメージ増加 <font color="#f8f800">50</font>％ 当たり ターゲットの全ての属性抵抗を
+                                <font color="#f8f800">1</font>％ 弱化させる。 (最大<font color="#f8f800">50</font>％)<br>- 魔法ダメージ強化 <font
+                                    color="#f8f800">25</font>％ 当たり ターゲットの最終防御力を <font color="#f8f800">1</font>％ 無視する。 (最大<font
+                                    color="#f8f800">10</font>％)<br>- 攻撃速度 +<font color="#f8f800">20</font>％<br>- 移動速度 +<font
+                                    color="#f8f800">20</font>％<br>
+                                <font color="#f8f800">錬成 可能</font><br>
+                            </td>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4524.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- ネックレス<br>- 全てのスキルレベル [<font color="#f8f800">3</font>~
+                                <font color="#f8f800">5</font>] 増加<br>- 物理ダメージ増加 <font color="#f8f800">50</font>％ 当たり ターゲットの全ての属性抵抗を
+                                <font color="#f8f800">1</font>％ 弱化させる。 (最大<font color="#f8f800">50</font>％)<br>- 魔法ダメージ強化 <font
+                                    color="#f8f800">25</font>％ 当たり ターゲットの最終防御力を <font color="#f8f800">1</font>％ 無視する。 (最大<font
+                                    color="#f8f800">10</font>％)<br>- 攻撃速度 +<font color="#f8f800">24</font>％<br>- 移動速度 +<font
+                                    color="#f8f800">24</font>％<br><br>
+                                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>- このアイテムの着用レベル <font color="#f8f800">-200</font>
+                                <br>- 回避率 +<font color="#f8f800">10</font>％<br>- 命中率 +<font color="#f8f800">10</font>％<br>- 最終ダメージ +
+                                <font color="#f8f800">10</font>％<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- 知恵 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- 知恵 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>1250/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>9999/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="12">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>-
+                                さらに強くなるためには、1つの力に頼って強くなる状況から抜け出す必要が<br>ある。このペンダントがその変化の第一歩を踏み出す契機になるかもしれない<br>。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <table id="table1">
+                    <tbody>
+                        <tr>
+                            <th colspan="12"><a name="2"></a>兜</th>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">イグゼキュター</font>
+                            </th>
+                            <th colspan="6">
+                                <font color="#cc6633">イグゼキュター[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4533.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- ヘルメット<br>- 防御力 [<font color="#f8f800">30</font>~<font
+                                    color="#f8f800">33</font>] 増加<br>- 物理致命打抵抗 [<font color="#f8f800">30</font>~<font color="#f8f800">40
+                                </font>]％ 増加<br>- 装備で増加する 敵致命打抵抗減少 <font color="#f8f800">1</font>％ 当たり 物理致命打発動確率 <font color="#f8f800">1
+                                </font>％ 増加 (最大<font color="#f8f800">100</font>％)<br>- 運 <font color="#f8f800">400</font> 増加<br>- 最大HP +
+                                <font color="#f8f800">40</font>％<br>
+                                <font color="#f8f800">錬成 可能</font><br>
+                            </td>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4533.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- ヘルメット<br>- 防御力 [<font color="#f8f800">33</font>~<font
+                                    color="#f8f800">36</font>] 増加<br>- 物理致命打抵抗 [<font color="#f8f800">40</font>~<font color="#f8f800">50
+                                </font>]％ 増加<br>- 装備で増加する 敵致命打抵抗減少 <font color="#f8f800">1</font>％ 当たり 物理致命打発動確率 <font color="#f8f800">1
+                                </font>％ 増加 (最大<font color="#f8f800">100</font>％)<br>- 運 <font color="#f8f800">480</font> 増加<br>- 最大HP +
+                                <font color="#f8f800">48</font>％<br><br>
+                                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>- このアイテムの着用レベル <font color="#f8f800">-200</font>
+                                <br>- 力 <font color="#f8f800">200</font> 増加<br>- 最大HP +<font color="#f8f800">50</font>％<br>-
+                                ダブルクリティカルダメージ <font color="#f8f800">10</font>％ 増加<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- 力 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- 力 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>1250/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>9999/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="12">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>- そう、最期に言い残す言葉はないか？<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">孤独な名誉</font>
+                            </th>
+                            <th colspan="6">
+                                <font color="#cc6633">孤独な名誉[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4534.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- ヘルメット<br>- 防御力 [<font color="#f8f800">32</font>~<font
+                                    color="#f8f800">35</font>] 増加<br>- 物理致命打抵抗 [<font color="#f8f800">30</font>~<font color="#f8f800">40
+                                </font>]％ 増加<br>- 致命打が発動しない<br>- 物理強打発動確率 <font color="#f8f800">30
+                                </font>％ 増加<br>- 最大HP +<font color="#f8f800">40</font>％<br>- 大地属性抵抗 +<font color="#f8f800">30</font>
+                                ％<br>
+                                <font color="#f8f800">錬成 可能</font><br>
+                            </td>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4534.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- ヘルメット<br>- 防御力 [<font color="#f8f800">35</font>~<font
+                                    color="#f8f800">38</font>] 増加<br>- 物理致命打抵抗 [<font color="#f8f800">40</font>~<font color="#f8f800">50
+                                </font>]％ 増加<br>- 致命打が発動しない<br>- 物理強打発動確率 <font color="#f8f800">30
+                                </font>％ 増加<br>- 最大HP +<font color="#f8f800">48</font>％<br>- 大地属性抵抗 +<font color="#f8f800">36</font>
+                                ％<br><br>
+                                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>- このアイテムの着用レベル <font color="#f8f800">-200</font>
+                                <br>- 力 <font color="#f8f800">200</font> 増加<br>- 最大HP +<font color="#f8f800">50</font>％<br>-
+                                被ダメージ時、物理ダブル クリティカルダメージ <font color="#f8f800">12</font>％ 減少<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- 力 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- 力 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>1250/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>9999/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="12">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>-
+                                このヘルメットを着用できるのは、戦いが続く戦場でたった1人生き抜いた者<br>のみ。その名誉は輝かしいが孤独だ。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <table id="table1">
+                    <tbody>
+                        <tr>
+                            <th colspan="12"><a name="3"></a>冠</th>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">ミッドサマーナイト</font>
+                            </th>
+                            <th colspan="6">
+                                <font color="#cc6633">ミッドサマーナイト[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4520.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- 冠<br>- 防御力 [<font color="#f8f800">22</font>~<font
+                                    color="#f8f800">25</font>] 増加<br>- すべての状態異常 抵抗 [<font color="#f8f800">30</font>~<font
+                                    color="#f8f800">40</font>]％ 増加<br>- 魔法致命打確率の<font color="#f8f800">100</font>％を超えた値 <font
+                                    color="#f8f800">1</font>％ 当たり 魔法ダメージ強化限界 <font color="#f8f800">4</font>％ 増加 (最大<font
+                                    color="#f8f800">100</font>％)<br>- 魔法ダメージを <font color="#f8f800">30</font>％ 強化させる。<br>-
+                                ターゲットの全ての属性抵抗を <font color="#f8f800">30</font>％ 弱化させる。<br>
+                                <font color="#f8f800">錬成 可能</font><br>
+                            </td>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4520.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- 冠<br>- 防御力 [<font color="#f8f800">25</font>~<font
+                                    color="#f8f800">28</font>] 増加<br>- すべての状態異常 抵抗 [<font color="#f8f800">40</font>~<font
+                                    color="#f8f800">50</font>]％ 増加<br>- 魔法致命打確率の<font color="#f8f800">100</font>％を超えた値 <font
+                                    color="#f8f800">1</font>％ 当たり 魔法ダメージ強化限界 <font color="#f8f800">4</font>％ 増加 (最大<font
+                                    color="#f8f800">100</font>％)<br>- 魔法ダメージを <font color="#f8f800">36</font>％ 強化させる。<br>-
+                                ターゲットの全ての属性抵抗を <font color="#f8f800">36</font>％ 弱化させる。<br><br>
+                                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>- このアイテムの着用レベル <font color="#f8f800">-200</font>
+                                <br>- 知識 <font color="#f8f800">200</font> 増加<br>- スキルレベル+<font color="#f8f800">2</font><br>- 魔法致命打<font
+                                    color="#f8f800">10</font>％<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- カリスマ 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- カリスマ 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>1250/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>9999/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="12">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>-
+                                美しい花で飾られた花冠。この花冠をかぶると、まるで真夏の夜の奇妙な夢の<br>ように夢幻的なオーラが感じられるという。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">グランドフィナーレ</font>
+                            </th>
+                            <th colspan="6">
+                                <font color="#cc6633">グランドフィナーレ[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4519.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- 冠<br>- 防御力 [<font color="#f8f800">23</font>~<font
+                                    color="#f8f800">26</font>] 増加<br>- すべての状態異常 抵抗 [<font color="#f8f800">30</font>~<font
+                                    color="#f8f800">40</font>]％ 増加<br>- 致命打が発動しない<br>- 魔法強打発動確率
+                                <font color="#f8f800">15</font>％ 増加<br>- ターゲットの全ての属性抵抗を <font color="#f8f800">40</font>％ 弱化させる。<br>-
+                                すべての属性ダメージ <font color="#f8f800">20</font>％ 増加<br>
+                                <font color="#f8f800">錬成 可能</font><br>
+                            </td>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4519.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- 冠<br>- 防御力 [<font color="#f8f800">26</font>~<font
+                                    color="#f8f800">29</font>] 増加<br>- すべての状態異常 抵抗 [<font color="#f8f800">40</font>~<font
+                                    color="#f8f800">50</font>]％ 増加<br>- 致命打が発動しない<br>- 魔法強打発動確率
+                                <font color="#f8f800">15</font>％ 増加<br>- ターゲットの全ての属性抵抗を <font color="#f8f800">48</font>％ 弱化させる。<br>-
+                                すべての属性ダメージ <font color="#f8f800">24</font>％ 増加<br><br>
+                                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>- このアイテムの着用レベル <font color="#f8f800">-200</font>
+                                <br>- 知識 <font color="#f8f800">200</font> 増加<br>- スキルレベル+<font color="#f8f800">2</font><br>- スキルレベル+
+                                <font color="#f8f800">3</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- カリスマ 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- カリスマ 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>1250/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>9999/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="12">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>- 最後のフィナーレは華やかに、確実に、そして強力に。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <table id="table1">
+                    <tbody>
+                        <tr>
+                            <th colspan="12"><a name="4"></a>イヤリング</th>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">封印された禁忌</font>
+                            </th>
+                            <th colspan="6">
+                                <font color="#cc6633">封印された禁忌[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4521.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- イヤリング<br>- 呪い系抵抗 [<font color="#f8f800">25</font>~<font
+                                    color="#f8f800">35</font>]％ 増加<br>- 能力値低下状態 抵抗 [<font color="#f8f800">25</font>~<font
+                                    color="#f8f800">35</font>]％ 増加<br>- 異常状態 抵抗 [<font color="#f8f800">25</font>~<font color="#f8f800">
+                                    35</font>]％ 増加<br>- 打撃範囲 <font color="#f8f800">2</font>M減少<br>-
+                                限界ダメージ増加 (物理ダメージ:<font color="#f8f800">3000</font>, 魔法ダメージ:<font color="#f8f800">8</font>％)<br>- 攻撃速度 +
+                                <font color="#f8f800">30</font>％<br>- 最大HP +<font color="#f8f800">20</font>％<br>
+                                <font color="#f8f800">錬成 可能</font><br>
+                            </td>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4521.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- イヤリング<br>- 呪い系抵抗 [<font color="#f8f800">35</font>~<font
+                                    color="#f8f800">45</font>]％ 増加<br>- 能力値低下状態 抵抗 [<font color="#f8f800">35</font>~<font
+                                    color="#f8f800">45</font>]％ 増加<br>- 異常状態 抵抗 [<font color="#f8f800">35</font>~<font color="#f8f800">
+                                    45</font>]％ 増加<br>- 打撃範囲 <font color="#f8f800">2</font>M減少<br>
+                                    -限界ダメージ増加 (物理ダメージ:<font color="#f8f800">3000</font>, 魔法ダメージ:<font color="#f8f800">8</font>％)<br>- 攻撃速度 +
+                                <font color="#f8f800">36</font>％<br>- 最大HP +<font color="#f8f800">24</font>％<br><br>
+                                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>- このアイテムの着用レベル <font color="#f8f800">-200</font>
+                                <br>- 最大CP +<font color="#f8f800">50</font>％<br>- CP獲得ボーナス <font color="#f8f800">10</font>％<br>-
+                                フィールドのステータス低下に対する抵抗 <font color="#f8f800">3</font>％ 増加<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>1250/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>9999/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="12">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>-
+                                このイヤリングには禁忌の力が封じられているという。封印を解除する瞬間、<br>強力な力を得られるかもしれないが、その代わりに何かを失うことになる。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <table id="table1">
+                    <tbody>
+                        <tr>
+                            <th colspan="12"><a name="5"></a>マント</th>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">オーバーフロー</font>
+                            </th>
+                            <th colspan="6">
+                                <font color="#cc6633">オーバーフロー[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4522.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- マント<br>- 火,水,風,大地 抵抗 [<font color="#f8f800">10</font>~
+                                <font color="#f8f800">13</font>]％ 増加<br>- 光属性抵抗 [<font color="#f8f800">10</font>~<font color="#f8f800">
+                                    13</font>]％ 増加<br>- 闇属性抵抗 [<font color="#f8f800">10</font>~<font color="#f8f800">13</font>]％ 増加<br>-
+                                打撃範囲 <font color="#f8f800">1</font>M増加<br>- 物理ダメージ <font
+                                    color="#f8f800">70</font>％ 増加<br>- 魔法ダメージを <font color="#f8f800">50</font>％ 強化させる。<br>- 移動速度 +<font
+                                    color="#f8f800">20</font>％<br>
+                                <font color="#f8f800">錬成 可能</font><br>
+                            </td>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4522.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- マント<br>- 火,水,風,大地 抵抗 [<font color="#f8f800">13</font>~
+                                <font color="#f8f800">16</font>]％ 増加<br>- 光属性抵抗 [<font color="#f8f800">13</font>~<font color="#f8f800">
+                                    16</font>]％ 増加<br>- 闇属性抵抗 [<font color="#f8f800">13</font>~<font color="#f8f800">16</font>]％ 増加<br>-
+                                打撃範囲 <font color="#f8f800">1</font>M 増加<br>- 物理ダメージ <font
+                                    color="#f8f800">84</font>％ 増加<br>- 魔法ダメージを <font color="#f8f800">60</font>％ 強化させる。<br>- 移動速度 +<font
+                                    color="#f8f800">24</font>％<br><br>
+                                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>- このアイテムの着用レベル <font color="#f8f800">-200</font>
+                                <br>- 最大CP +<font color="#f8f800">50</font>％<br>- CP獲得ボーナス <font color="#f8f800">10</font>％<br>-
+                                フィールドのステータス低下に対する抵抗 <font color="#f8f800">3</font>％ 増加<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>1250/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>9999/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="12">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>-
+                                限界を超える力を追い求め、ある冒険家が苦難の旅の末に手に入れたマント。<br>彼の願いに答えるように、マントの裾から溢れ出す強力な力が感じられる。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <table id="table1">
+                    <tbody>
+                        <tr>
+                            <th colspan="12"><a name="6"></a>ベルト</th>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">転換点</font>
+                            </th>
+                            <th colspan="6">
+                                <font color="#cc6633">転換点[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4525.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- ベルト<br>- 防御力 [<font color="#f8f800">28</font>~<font
+                                    color="#f8f800">31</font>] 増加<br>- スタックアイテム <font color="#f8f800">18</font>個<br>- 被ダメージ時、ダメージの <font
+                                    color="#f8f800">20</font>％ を 持続ダメージに変更<br>- 最大HP +<font
+                                    color="#f8f800">30</font>％<br>- 全ての属性抵抗 +<font color="#f8f800">20</font>％<br>- 防御力 +<font
+                                    color="#f8f800">20</font>％<br>
+                                <font color="#f8f800">錬成 可能</font><br>
+                            </td>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4525.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- ベルト<br>- 防御力 [<font color="#f8f800">31</font>~<font
+                                    color="#f8f800">34</font>] 増加<br>- スタックアイテム <font color="#f8f800">18</font>個<br>- 被ダメージ時、ダメージの <font
+                                    color="#f8f800">20</font>％ を 持続ダメージに変更<br>- 最大HP +<font
+                                    color="#f8f800">36</font>％<br>- 全ての属性抵抗 +<font color="#f8f800">24</font>％<br>- 防御力 +<font
+                                    color="#f8f800">24</font>％<br><br>
+                                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>- このアイテムの着用レベル <font color="#f8f800">-200</font>
+                                <br>- 健康 <font color="#f8f800">200</font> 増加<br>- 被ダメージ時、物理ダブル クリティカルダメージ <font color="#f8f800">30
+                                </font>％ 減少<br>- 最大HP +<font color="#f8f800">800</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- 健康 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- 健康 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>1250/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>9999/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="12">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>- 今こそピンチをチャンスにする転換点だ。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">フローラルダンス</font>
+                            </th>
+                            <th colspan="6">
+                                <font color="#cc6633">フローラルダンス[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4526.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- ベルト<br>- 防御力 [<font color="#f8f800">24</font>~<font
+                                    color="#f8f800">27</font>] 増加<br>- スタックアイテム <font color="#f8f800">20</font>個<br>- (召喚獣、ペット)
+                                敵の物理致命打抵抗 <font color="#f8f800">30</font>％ 減少<br>- <br>- スキルレベル+<font color="#f8f800">8</font><br>-
+                                (召喚獣、ペット) 全ステータス <font color="#f8f800">300</font> 増加<br>
+                                <font color="#f8f800">錬成 可能</font><br>
+                            </td>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4526.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- ベルト<br>- 防御力 [<font color="#f8f800">27</font>~<font
+                                    color="#f8f800">30</font>] 増加<br>- スタックアイテム <font color="#f8f800">20</font>個<br>- (召喚獣、ペット)
+                                敵の物理致命打抵抗 <font color="#f8f800">36</font>％ 減少<br>- <br>- スキルレベル+<font color="#f8f800">10</font><br>-
+                                (召喚獣、ペット) 全ステータス <font color="#f8f800">360</font> 増加<br><br>
+                                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>- このアイテムの着用レベル <font color="#f8f800">-200</font>
+                                <br>- 健康 <font color="#f8f800">200</font> 増加<br>- (召喚獣、ペット) 物理致命打発動確率 <font color="#f8f800">10</font>％
+                                増加<br>- (召喚獣、ペット) 異常状態抵抗 <font color="#f8f800">30</font>％ 増加<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- 健康 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- 健康 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>1250/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>9999/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="12">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>-
+                                美しい花を編んで作ったベルトで、花冠のようにも見える。一説によると、こ<br>のベルトを着用した少女が嬉しさのあまりにくるくると踊る姿を想像して作っ<br>たという。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <table id="table1">
+                    <tbody>
+                        <tr>
+                            <th colspan="12"><a name="7"></a>グローブ</th>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">ブレイブハンター</font>
+                            </th>
+                            <th colspan="6">
+                                <font color="#cc6633">ブレイブハンター[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4529.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- グローブ<br>- 攻撃力 <font color="#f8f800">10</font>~<font
+                                    color="#f8f800">15</font><br>- 防御力 [<font color="#f8f800">18</font>~<font color="#f8f800">21</font>]
+                                増加<br>- 攻撃速度 [<font color="#f8f800">27</font>~<font color="#f8f800">30</font>]％ 増加<br>- 物理致命打ダメージ増加
+                                <font color="#f8f800">6</font>％ 当たり ダブルクリティカルダメージ <font color="#f8f800">1</font>％ 増加 (最大<font
+                                    color="#f8f800">40</font>％)<br>- 命中率 +<font color="#f8f800">10</font>％<br>- CP獲得ボーナス <font
+                                    color="#f8f800">30</font>％<br>
+                                <font color="#f8f800">錬成 可能</font><br>
+                            </td>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4529.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- グローブ<br>- 攻撃力 <font color="#f8f800">10</font>~<font
+                                    color="#f8f800">15</font><br>- 防御力 [<font color="#f8f800">21</font>~<font color="#f8f800">24</font>]
+                                増加<br>- 攻撃速度 [<font color="#f8f800">30</font>~<font color="#f8f800">33</font>]％ 増加<br>- 物理致命打ダメージ増加
+                                <font color="#f8f800">6</font>％ 当たり ダブルクリティカルダメージ <font color="#f8f800">1</font>％ 増加 (最大<font
+                                    color="#f8f800">40</font>％)<br>- 命中率 +<font color="#f8f800">12</font>％<br>- CP獲得ボーナス <font
+                                    color="#f8f800">36</font>％<br><br>
+                                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>- このアイテムの着用レベル <font color="#f8f800">-200</font>
+                                <br>- 攻撃速度 +<font color="#f8f800">10</font>％<br>- 命中率 +<font color="#f8f800">8</font>％<br>-
+                                ダブルクリティカルダメージ <font color="#f8f800">10</font>％ 増加<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- 力 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- 力 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>1250/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>9999/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="12">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>- 強靭なハンターのみ着用できる手袋で、その勇敢な勢いが弱まることはない。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">血の渇き</font>
+                            </th>
+                            <th colspan="6">
+                                <font color="#cc6633">血の渇き[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4530.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- グローブ<br>- 攻撃力 <font color="#f8f800">10</font>~<font
+                                    color="#f8f800">15</font><br>- 防御力 [<font color="#f8f800">19</font>~<font color="#f8f800">22</font>]
+                                増加<br>- 攻撃速度 [<font color="#f8f800">25</font>~<font color="#f8f800">28</font>]％ 増加<br>- 物理強打発動時、物理限界ダメージ
+                                <font color="#f8f800">25000</font> 増加<br>- 物理ダメージ <font color="#f8f800">50</font>％ 増加<br>- CP獲得ボーナス
+                                <font color="#f8f800">30</font>％<br>
+                                <font color="#f8f800">錬成 可能</font><br>
+                            </td>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4530.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- グローブ<br>- 攻撃力 <font color="#f8f800">10</font>~<font
+                                    color="#f8f800">15</font><br>- 防御力 [<font color="#f8f800">22</font>~<font color="#f8f800">25</font>]
+                                増加<br>- 攻撃速度 [<font color="#f8f800">28</font>~<font color="#f8f800">31</font>]％ 増加<br>- 物理強打発動時、物理限界ダメージ
+                                <font color="#f8f800">25000</font> 増加<br>- 物理ダメージ <font color="#f8f800">60</font>％ 増加<br>- CP獲得ボーナス
+                                <font color="#f8f800">36</font>％<br><br>
+                                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>- このアイテムの着用レベル <font color="#f8f800">-200</font>
+                                <br>- 攻撃速度 +<font color="#f8f800">10</font>％<br>- 命中率 +<font color="#f8f800">8</font>％<br>- 強打+<font
+                                    color="#f8f800">5</font>％<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- 力 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- 力 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>1250/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>9999/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="12">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>-
+                                数多くの人々を狩った彼の手は、すでに血に染まっている。しかし、血を求め<br>る彼の渇きは今もなお止まらずにいる。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">ワイズチョイス</font>
+                            </th>
+                            <th colspan="6">
+                                <font color="#cc6633">ワイズチョイス[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4532.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- ブレスレット<br>- 防御力 [<font color="#f8f800">10</font>~<font
+                                    color="#f8f800">13</font>] 増加<br>- 攻撃速度 [<font color="#f8f800">30</font>~<font color="#f8f800">33
+                                </font>]％ 増加<br>- 魔法致命打発動確率 <font color="#f8f800">50</font>％減少<br>- 魔法致命打ダメージ <font color="#f8f800">15
+                                </font>％ 増加<br>- CP獲得ボーナス <font color="#f8f800">30</font>％<br>- 水属性抵抗 +<font color="#f8f800">30</font>
+                                ％<br>
+                                <font color="#f8f800">錬成 可能</font><br>
+                            </td>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4532.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- ブレスレット<br>- 防御力 [<font color="#f8f800">13</font>~<font
+                                    color="#f8f800">15</font>] 増加<br>- 攻撃速度 [<font color="#f8f800">33</font>~<font color="#f8f800">36
+                                </font>]％ 増加<br>- 魔法致命打発動確率 <font color="#f8f800">50</font>％減少<br>- 魔法致命打ダメージ <font color="#f8f800">15
+                                </font>％ 増加<br>- CP獲得ボーナス <font color="#f8f800">36</font>％<br>- 水属性抵抗 +<font color="#f8f800">36</font>
+                                ％<br><br>
+                                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>- このアイテムの着用レベル <font color="#f8f800">-200</font>
+                                <br>- 攻撃速度 +<font color="#f8f800">10</font>％<br>- スキルレベル+<font color="#f8f800">2</font><br>- 魔法致命打<font
+                                    color="#f8f800">10</font>％<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- 知恵 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- 知恵 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>1250/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>9999/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="12">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>-
+                                1つの選択を押し通すのは、時代にそぐわない生き方だ。厳しい世の中を生き<br>抜くためには賢明に計画を変更する必要がある。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">ラストチャプター</font>
+                            </th>
+                            <th colspan="6">
+                                <font color="#cc6633">ラストチャプター[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4531.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- ブレスレット<br>- 防御力 [<font color="#f8f800">11</font>~<font
+                                    color="#f8f800">14</font>] 増加<br>- 攻撃速度 [<font color="#f8f800">30</font>~<font color="#f8f800">33
+                                </font>]％ 増加<br>- 魔法致命打ダメージ増加 <font color="#f8f800">2</font>％ 当たり 魔法強打ダメージ <font color="#f8f800">1
+                                </font>％ 増加 (最大<font color="#f8f800">10</font>％)<br>- CP獲得ボーナス <font color="#f8f800">30</font>％<br>- 回避率
+                                +<font color="#f8f800">10</font>％<br>
+                                <font color="#f8f800">錬成 可能</font><br>
+                            </td>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4531.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- ブレスレット<br>- 防御力 [<font color="#f8f800">14</font>~<font
+                                    color="#f8f800">17</font>] 増加<br>- 攻撃速度 [<font color="#f8f800">33</font>~<font color="#f8f800">36
+                                </font>]％ 増加<br>- 魔法致命打ダメージ増加 <font color="#f8f800">2</font>％ 当たり 魔法強打ダメージ <font color="#f8f800">1
+                                </font>％ 増加 (最大<font color="#f8f800">10</font>％)<br>- CP獲得ボーナス <font color="#f8f800">36</font>％<br>- 回避率
+                                +<font color="#f8f800">12</font>％<br><br>
+                                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>- このアイテムの着用レベル <font color="#f8f800">-200</font>
+                                <br>- 攻撃速度 +<font color="#f8f800">10</font>％<br>- スキルレベル+<font color="#f8f800">2</font><br>- 魔法強打発動確率
+                                <font color="#f8f800">5</font>％ 増加<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- 知恵 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- 知恵 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>1250/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>9999/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="12">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>- 敵対者たちの生を最終章に送る時だ。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <table id="table1">
+                    <tbody>
+                        <tr>
+                            <th colspan="12"><a name="8"></a>共用鎧</th>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">戦場の重さ</font>
+                            </th>
+                            <th colspan="6">
+                                <font color="#cc6633">戦場の重さ[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4518.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- 共用鎧<br>- 防御力 [<font color="#f8f800">55</font>~<font
+                                    color="#f8f800">65</font>] 増加<br>- 被ダメージ時、物理致命打・ダブルクリティカル・物理強打ダメージを <font color="#f8f800">30</font>％
+                                減少<br>- 防御力 +<font color="#f8f800">100</font>％<br>- 最大HP +<font color="#f8f800">50</font>％<br>-
+                                魔法属性ダメージ吸収 <font color="#f8f800">10</font>％<br>
+                                <font color="#f8f800">錬成 可能</font><br>
+                            </td>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4518.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- 共用鎧<br>- 防御力 [<font color="#f8f800">65</font>~<font
+                                    color="#f8f800">75</font>] 増加<br>- 被ダメージ時、物理致命打・ダブルクリティカル・物理強打ダメージを <font color="#f8f800">30</font>％
+                                減少<br>- 防御力 +<font color="#f8f800">120</font>％<br>- 最大HP +<font color="#f8f800">60</font>％<br>-
+                                魔法属性ダメージ吸収 <font color="#f8f800">12</font>％<br><br>
+                                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>- このアイテムの着用レベル <font color="#f8f800">-200</font>
+                                <br>- 防御力 +<font color="#f8f800">80</font>％<br>- 防御力 +<font color="#f8f800">60</font><br>- 被ダメージ時、物理ダブル
+                                クリティカルダメージ <font color="#f8f800">10</font>％ 減少<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- 力 500<br>- カリスマ 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- 力 500<br>- カリスマ 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>1250/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>9999/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="12">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>-
+                                戦場に立つというのは、常に死の影がつきまとっていることを意味する。その<br>重さを忘れずに戦えるなら、そなたは生き残れるだろう。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">竜殺者の鎧</font>
+                            </th>
+                            <th colspan="6">
+                                <font color="#cc6633">竜殺者の鎧[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4517.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- 共用鎧<br>- 防御力 [<font color="#f8f800">55</font>~<font
+                                    color="#f8f800">65</font>] 増加<br>- 被ダメージ時、最も高い属性抵抗の属性でダメージを受ける。<br>- 防御力 +<font color="#f8f800">90
+                                </font>％<br>- 最大HP +<font color="#f8f800">50</font>％<br>- フィールドの属性最大値制限に対する抵抗 <font color="#f8f800">5
+                                </font>％ 増加<br>
+                                <font color="#f8f800">錬成 可能</font><br>
+                            </td>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4517.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- 共用鎧<br>- 防御力 [<font color="#f8f800">65</font>~<font
+                                    color="#f8f800">75</font>] 増加<br>- 被ダメージ時、最も高い属性抵抗の属性でダメージを受ける。<br>- 防御力 +<font color="#f8f800">108
+                                </font>％<br>- 最大HP +<font color="#f8f800">60</font>％<br>- フィールドの属性最大値制限に対する抵抗 <font color="#f8f800">6
+                                </font>％ 増加<br><br>
+                                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>- このアイテムの着用レベル <font color="#f8f800">-200</font>
+                                <br>- 防御力 +<font color="#f8f800">80</font>％<br>- 防御力 +<font color="#f8f800">60</font><br>- ダブルクリティカルダメージ
+                                <font color="#f8f800">10</font>％ 増加<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- 力 500<br>- 知恵 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- 力 500<br>- 知恵 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>1250/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>9999/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="12">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>-
+                                ある伝説の竜を殺戮し、勝利の手柄として得た竜の鱗で作られた鎧。いかなる<br>魔法も鎧の勢いに飲まれて力を失うようだ。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <table id="table1">
+                    <tbody>
+                        <tr>
+                            <th colspan="12"><a name="9"></a>足</th>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">ウインドジャンパー</font>
+                            </th>
+                            <th colspan="6">
+                                <font color="#cc6633">ウインドジャンパー[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4528.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- ブーツ<br>- 攻撃力 <font color="#f8f800">10</font>~<font
+                                    color="#f8f800">14</font><br>- 防御力 [<font color="#f8f800">21</font>~<font color="#f8f800">24</font>]
+                                増加<br>- ノックバック 抵抗 [<font color="#f8f800">60</font>~<font color="#f8f800">70</font>]％ 増加<br>- 空中浮遊時、移動速度
+                                <font color="#f8f800">350</font>％ 増加 (PVP時 <font color="#f8f800">100</font>％)<br>- 力 +<font
+                                    color="#f8f800">1</font>/レベル <font color="#f8f800">3</font><br>- 知識 +<font color="#f8f800">1</font>
+                                /レベル <font color="#f8f800">3</font><br>- 敏捷 +<font color="#f8f800">1</font>/レベル <font color="#f8f800">4
+                                </font><br>- 知恵 +<font color="#f8f800">1</font>/レベル <font color="#f8f800">4</font><br>
+                                <font color="#f8f800">錬成 可能</font><br>
+                            </td>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4528.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- ブーツ<br>- 攻撃力 <font color="#f8f800">10</font>~<font
+                                    color="#f8f800">14</font><br>- 防御力 [<font color="#f8f800">24</font>~<font color="#f8f800">27</font>]
+                                増加<br>- ノックバック 抵抗 [<font color="#f8f800">70</font>~<font color="#f8f800">80</font>]％ 増加<br>- 空中浮遊時、移動速度
+                                <font color="#f8f800">350</font>％ 増加 (PVP時 <font color="#f8f800">100</font>％)<br>- 力 +<font
+                                    color="#f8f800">1</font>/レベル <font color="#f8f800">2</font><br>- 知識 +<font color="#f8f800">1</font>
+                                /レベル <font color="#f8f800">2</font><br>- 敏捷 +<font color="#f8f800">1</font>/レベル <font color="#f8f800">3
+                                </font><br>- 知恵 +<font color="#f8f800">1</font>/レベル <font color="#f8f800">3</font><br><br>
+                                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>- このアイテムの着用レベル <font color="#f8f800">-200</font>
+                                <br>- 敏捷 <font color="#f8f800">200</font> 増加<br>- 歩く時 CP +<font color="#f8f800">20</font>ポイント<br>-
+                                スキルレベル+<font color="#f8f800">4</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- 敏捷 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- 敏捷 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>1250/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>9999/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="12">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>- 空でも軽やかに歩ける靴。空を掌握した者に恐怖は存在しないだろう。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="table1">
+                    <colgroup>
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                        <col span="1" width="40">
+                        <col span="1" width="135">
+                        <col span="1" width="135">
+                        <col span="2">
+                        <col span="1">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th colspan="6">
+                                <font color="#e8c898">ファーストステップ</font>
+                            </th>
+                            <th colspan="6">
+                                <font color="#cc6633">ファーストステップ[Nx]</font>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4527.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- ブーツ<br>- 攻撃力 <font color="#f8f800">10</font>~<font
+                                    color="#f8f800">14</font><br>- 防御力 [<font color="#f8f800">24</font>~<font color="#f8f800">27</font>]
+                                増加<br>- ノックバック 抵抗 [<font color="#f8f800">60</font>~<font color="#f8f800">70</font>]％ 増加<br>-
+                                一定距離移動後にスキル使用時、全てのCPを消費し消費したCP <font color="#f8f800">1000</font> 当たり 限界ダメージ <font color="#f8f800">1
+                                </font>％ 増加 (最大<font color="#f8f800">50</font>％)<br>- 移動速度 +<font color="#f8f800">30</font>％<br>-
+                                スキルレベル+<font color="#f8f800">3</font><br>
+                                <font color="#f8f800">錬成 可能</font><br>
+                            </td>
+                            <td rowspan="2"><img src="../item/design/image/item/iconItem_4527.png"></td>
+                            <td colspan="5" valign="top">
+                                <font color="#00f8f8">&lt;基本情報&gt;</font><br>- ブーツ<br>- 攻撃力 <font color="#f8f800">10</font>~<font
+                                    color="#f8f800">14</font><br>- 防御力 [<font color="#f8f800">27</font>~<font color="#f8f800">30</font>]
+                                増加<br>- ノックバック 抵抗 [<font color="#f8f800">70</font>~<font color="#f8f800">80</font>]％ 増加<br>-
+                                一定距離移動後にスキル使用時、全てのCPを消費し消費したCP <font color="#f8f800">1000</font> 当たり 限界ダメージ <font color="#f8f800">1
+                                </font>％ 増加 (最大<font color="#f8f800">50</font>％)<br>- 移動速度 +<font color="#f8f800">36</font>％<br>-
+                                スキルレベル+<font color="#f8f800">5</font><br><br>
+                                <font color="#00f8f8">&lt;錬成 オプション 情報&gt;</font><br>- このアイテムの着用レベル <font color="#f8f800">-200</font>
+                                <br>- 敏捷 <font color="#f8f800">200</font> 増加<br>- 歩く時 CP +<font color="#f8f800">20</font>ポイント<br>-
+                                スキルレベル+<font color="#f8f800">4</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- 敏捷 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                            <td valign="top">
+                                <font color="#00f8f8">&lt;要求能力値&gt;</font><br>- レベル 1250<br>- 敏捷 500<br>
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;着用可能な職業&gt;</font><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>1250/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                            <td colspan="2" valign="top">
+                                <font color="#00f8f8">&lt;DropLv/係数&gt;</font><br>9999/10
+                            </td>
+                            <td valign="top" colspan="4">
+                                <font color="#00f8f8">&lt;価格&gt;</font><br>
+                                <font color="#f8f800">990000000</font> Gold<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="12">
+                                <font color="#00f8f8">&lt;説明&gt;</font><br>-
+                                何事も、最初の一歩が大事だ。とにかく前に進もう。その道にあるのが幸であ<br>れ不幸であれ、何もかもすべてそなたの経験になるだろう。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
+            <!--main-->
+            <footer class="android-footer mdl-mega-footer">
+                <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                    許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                </font>
+                Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+            </footer>
+            <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+                Copyright (c) This site is created by Sokomin. All Rights Reserved.
+            -->
+        </div>
+        <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    </div>
+</body>
+</html>
