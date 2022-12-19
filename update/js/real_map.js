@@ -75,6 +75,7 @@ var map_data = {};
 var map_import = {};
 var a1 = 0; //map_id
 var is_canvas = false;
+var is_small = false;
 
 // 読み込んだCSVデータをオブジェクトに変換
 function convertCSVtoArray(mapid, str, map_img) {// 読み込んだCSVデータが文字列として渡される
@@ -241,6 +242,13 @@ function calc1() {
     getCSV(mapid);
 }
 
+function calc11() {
+    is_canvas = false;
+    is_small=true;
+    var mapid = $('input[name="a2"]').val() ? $('input[name="a2"]').val() : 0;
+    getCSV(mapid);
+}
+
 function calc2() {
     is_canvas = true;
     var mapid = $('input[name="a2"]').val() ? $('input[name="a2"]').val() : 0;
@@ -322,13 +330,20 @@ function createTile() {
                 break;
             }
             var num = ('0000' + data[j]).slice(-4);
+            var posx = j+1;
+            var posy = parseInt(i)+1;
             // html_append += '<img width="8px" height="4px" src="https://sokomin.github.io/sokomin_repository/db/mapset/Grassland/tile/tile_'+ num +'.png">'
-            html_append += ('<img src="https://sokomin.github.io/sokomin_repository/db/mapset/' + map_type_map[map_type] + '/tile/tile_' + num + '.png">')
+            if(is_small){
+                html_append += ('<img width="16px" height="8px" title=('+posx+','+posy+') src="https://sokomin.github.io/sokomin_repository/db/mapset/' + map_type_map[map_type] + '/tile/tile_' + num + '.png">')
+            } else {
+                html_append += ('<img title=('+posx+','+posy+') src="https://sokomin.github.io/sokomin_repository/db/mapset/' + map_type_map[map_type] + '/tile/tile_' + num + '.png">')
+            }
             if (i == 0) {
                 min_width += 5;
             }
         }
-        html_append += '<br>'
+        // FIXME 0幅改行どーやるんだっけ
+        html_append += '<br height="0px">'
     }
     $('.main-background-map').css({ 'min-height': "200%", 'min-width': ("" + min_width + "%") });
     $div_main.append(html_append);
