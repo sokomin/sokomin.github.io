@@ -17,6 +17,26 @@ function getMobCSV(skill_str) {
     }
 }
 
+function saveHTMLToFile() {
+    // 対象のHTML要素を取得する
+    const html = document.getElementById("preview_html").innerHTML;
+
+    // ダウンロード用のファイル名を生成する
+    const fileName = "preview.html";
+
+    // テキストファイルを生成するためのBlobオブジェクトを作成する
+    const blob = new Blob([html], { type: "text/plain" });
+
+    // aタグを作成してダウンロードリンクを生成する
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = fileName;
+    link.click();
+
+    // HTMLコードをクリップボードにコピーする
+    navigator.clipboard.writeText(html);
+}
+
 var obj_format = {};
 var skill_data = {};
 var mob_data = {};
@@ -173,7 +193,7 @@ function createSkillTable() {
         }
 
         if (data["awake_flag_0"] != 0 && data["awake_flag_0"] != 3) {
-        // if (data["unknown10_139"] != 0 && data["unknown10_139"] != 3) {
+            // if (data["unknown10_139"] != 0 && data["unknown10_139"] != 3) {
             //覚醒スキル
             if (data["awake_flag_4"] == 0) {
                 //覚醒パッシブ
@@ -681,9 +701,9 @@ function createGetDamage(data, mode) {
                 for (var i = 1; i <= 50; i++) {
                     var ccp = Number(data["unknown2_136"]) + Number(data["unknown2_138"]) * i / 10;
                     if (ccp >= 0) {
-                        res_html += '<td>+' + Math.round(ccp)/10 + '%</td>'
+                        res_html += '<td>+' + Math.round(ccp) / 10 + '%</td>'
                     } else {
-                        res_html += '<td>' + Math.round(ccp)/10 + '%</td>'
+                        res_html += '<td>' + Math.round(ccp) / 10 + '%</td>'
                     }
                     if (i >= 10) {
                         i += 9;
@@ -1268,7 +1288,7 @@ function createGetBuff(data, mode, DEBUG) {
                                 i += 44;
                             }
                             var ccp = Number(data["unknown2_" + tmp]) + Number(data["unknown2_" + (tmp + 1)] / 10) * i;
-                            res_html += '<td>' + Math.round(ccp)/10 + '秒</td>'
+                            res_html += '<td>' + Math.round(ccp) / 10 + '秒</td>'
                         }
                         res_html += "</tr>";
                     } else {
@@ -1372,7 +1392,7 @@ function createGetBuff(data, mode, DEBUG) {
                     if (Number(data["unknown2_" + (tmp + 1)]) != 0) {
                         for (var i = 1; i <= 50; i++) {
                             var ccp = Number(data["unknown2_" + tmp]) + Number(data["unknown2_" + (tmp + 1)] / 10) * i;
-                            res_html += '<td>' + Math.round(ccp)/10 + '秒</td>'
+                            res_html += '<td>' + Math.round(ccp) / 10 + '秒</td>'
                             if (i >= 10) {
                                 i += 9;
                             }
