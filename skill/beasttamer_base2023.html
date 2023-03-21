@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>ビーストテイマー 基本仕様 2023～ 赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <a href="../index.html">トップ</a> >> <a href="../skill/skill.html">スキル</a> >> <a
+                href="../skill/2023skill.html">スキル改変2023</a><br>
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+                <h3>2023/02～ ビーストテイマー 基本仕様</h3>
+                <br>
+
+                2023年2月にビーストテイマー、サマナーの通常スキル、覚醒スキルの大規模仕様変更が行われました。<br>
+                本ページではその内容についてまとめます。<br>
+                <br>
+                <br>
+                <br>
+                <a href="beasttamer_n_skill2023.html">[通常スキル]</a><br>
+                <a href="beasttamer_awake_skill2023.html">[覚醒スキル]</a><br>
+                <br>
+                <br>
+                <br>
+                <a href="#1">ペットの扱い方</a><br>
+                <a href="#2">ステータス等の仕様変更</a><br>
+                <a href="#3">ペットの仕様変更</a><br>
+                <a href="#4">PvP関連仕様</a><br>
+                <a href="#99">その他</a><br>
+                <br>
+                <br>
+                <br>
+                <a name="1"></a>
+                <h5>ペットの扱い方</h5>
+                <br>
+                　　<b>■「ビーストテイマー」の保管箱ペット獲得方法</b><br>
+
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/459eeeb6b734fed5b16e732fa16ecee8b6fb2123.10.9.9.3.jpeg"
+                    border="0" alt="" name="insertImg" /><br><br>
+                ①「入れる」ボタンを押すと、「MY MONSTER」に設定されているペットを保管箱に格納できます。
+                <br>
+                　格納数は最大100体までです。
+                <br>
+
+                <br>
+                ②保管箱内のペットアイコンを右クリックし
+                <br>
+                「召喚」を選択すると「MY　MONSTER」にペットを呼び出せます。
+                <br>
+
+                <br>
+                「別れる」を選択すると保管箱ウィンドウから指定したペットの削除を行えます。
+                <br>
+
+                <br>
+                ペットを獲得する際は「飼育記録書」スキルを使用します。
+                <br>
+                「MY MONSTER」にペットが2体存在する状態でペットを獲得した場合は
+                自動的に保管箱へ追加されます。
+                <br>
+                <br>
+                ＜仕様関連＞<br>
+                ペットを[飼育記録収納]で召喚/交換する場合、クールタイムは適用されません。<br>
+                戦闘中は交換ができず、戦闘終了後に交換/召喚が可能です。(2023/2時点では変更可能)<br>
+                <br>
+                保管箱がいっぱいになった場合、[飼育記録]スキルを使ってもテイムができません。<br>
+
+                ペットは、[noname]状態のときに名前を変更できます。<br>
+                名前を初期化するには、[ペットネームチェンジャー]アイテムを使用して[名前なし]状態に変更する必要があります。<br>
+                付与できる名前は全角5文字、英語10文字まで可能です。<br>
+                <br>
+                <a name="2"></a>
+                　　<h5>ステータス等の仕様変更</h5>
+                <br>
+                プレイヤーステータスがペット召喚獣に及ぼす効果が一部変更・追加されました。<br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/32faca40fd91d65dc8b55b6801d003db1be11d3f.10.9.9.3.jpeg"
+                    border="0" alt="" name="insertImg" /><br><br>
+                ビーストテイマーの力と知識数値に応じてペットステータス増加量（力）、ペットスキルレベル増加値（知識）で適用されます。<br>
+                ステ振りが分散されたものを（力＋知識）の合算値として適用し、どのステータスを上昇させても効果が見られるようになります。<br>
+                <br>
+                <b>■関連オプション仕様変更</b><br>
+                [ペット経験値獲得増加]オプションを持つアイテムは基本オプションの場合[闇抵抗弱化(%)]に変更され、NxOPの場合、[（召喚獣、ペット）すべてのステータス増加]に変更されます。<br>
+                調教されたペットのレベルと経験値が消えるようになり、[経験値オプション]を持つアイテムが[ステータス増加オプション]に変更されます。<br>
+                以下例をいくつか。<br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td><b>アイテム名</b></td>
+                            <td><b>アイテムオプション</b></td>
+                            <td><b>アイテムの説明</b></td>
+                        </tr>
+                        <tr>
+                            <td>8ランクEXオーボエ</td>
+                            <td><s><strike>（</strike><strike>削除）ペット経験値獲得33増加</strike></s><br>
+                                （追加）ペットすべてのステータス125増加召喚獣のすべてのステータスが125増加集中力を30％増加させる。<br>
+                            </td>
+                            <td>特殊な魔力が宿ったオーボエ。<br>
+                                魔力充電になっている間は相当な威力を発揮する。<br>
+                                ただし、充電量が低下するとますます魔力が半減して-50％になると通常オーボエと同じになる。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                ・Nx等級を含む「強固なる指導者」「無限の絆」「赤い泣き声」「協会の猛烈な笛」の
+                <br>
+                　　アイテムオプションが以下のように変更されます。
+                <br>
+                　「召喚獣の攻撃力+〇%」「ペットの攻撃力+〇%」⇒「物理ダメージ〇%増加」
+                <br>
+                ・Nx等級を含む「グリムジョーカーの帽子」のアイテムオプションが変更されました。
+                <br>
+                　「ペットの経験値獲得〇増加」⇒「ターゲットの闇抵抗を+〇%弱化させる」
+                <br>
+                　「ペットの経験値獲得25増加」⇒「（ペット、召喚獣）全ステータス25増加」
+                <br>
+                <br>
+                <a name="3"></a>
+                　　<h5>ペットの仕様変更</h5>
+                <br>
+                ・ビーストテイマーが恩寵の影響を受けると、ペットにも同じ影響を受けます。<br>
+
+                ・ビーストテイマーのフィールドステータスの低下に対する抵抗および低抗力の低下に対する抵抗オプションもペットに同じように適用されます。
+                <br>
+                ・ビーストテイマーの魔法攻撃力増加、属性攻撃力増加効果がペットにも同様に適用されます。
+                <br>
+                ・「Zin」「Ex」クラスのモンスターはテイム後、通常等級に統一されます。
+                <br>
+                ・スキルレベルに関係なく、ビーストテイマーのレベルと同じレベルでテイムされます。<br>
+                ※褒めるでレベル上昇可能。<br>
+                <br>
+                ・テイムできるモンスターの種類に変更はありません。
+                <br>
+                ・セットオプション「信義の」使用することで100%の確率でテイムできます。<br>
+                <br>
+                （使用しない場合、敵のHPを減らすことでテイム確率が上昇します。）<br>
+                <br>
+                ・ペットの忠誠度は最大の状態でテイムされます。
+                <br>
+                ・「MY　MONSTER」の詳細情報に表示されるステータス内容が追加されました
+                <br>
+                ・一部の「超越の書」の効果が、ペットや召喚獣に反映されるようになりました。
+                <br>
+                （[物理強打]、[魔法強打]、[強化魔力]、[覚醒]、[適応力]、[耐性]、[楔]、[魔力増幅]）<br>
+                基本発動確率は10％で、ビーストテイマーのステータスやスキルに応じて確率が調整されます。<br>
+                <br>
+                コラプ武器の物理、魔法限界ダメージ増加と首NxOP変換で登場する物理、魔法限界ダメージ増加は重複します。<br>
+                <br>
+                ペットの攻撃力・攻撃速度は(召喚獣・ペット)が付いたオプション、討伐バッジ、MB、クリーチャー等の攻撃速度が適用されます。<br>
+                <br>
+                <br>
+                <br>
+                <a name="4"></a>
+                　　<h5>PvP関連の仕様</h5>
+                <br>
+                攻城等でペットに適用されるオプションについて<br>
+                <b>効果あり</b><br>
+                ・（ペット・召喚獣）ダブルクリティカルダメージ増加<br>
+                <br>
+                <b>効果なし</b><br>
+                ・ダブルクリティカルダメージ増加<br>
+                ・最終ダメージ増加<br>
+                ・（ペット・召喚獣）最終ダメージ増加 （バグ？）<br>
+                <br>
+                <br>
+                <br>
+                <a name="99"></a>
+                　　<h5>■その他仕様</h5>
+                <b>■アップデート前に連れていたペットについて</b>
+                <br>
+                ・新規に実装された「F2」ボタンで開く保管箱ウィンドウ内に
+                <br>
+                　自動で保存されています。
+                <br>
+                　「MY MONSTER」画面下部の「保管箱管理」のボタンからも開くことができます。
+                <br>
+                ・サマナー状態の場合「F2」ボタンを押しても保管箱ウィンドウが開きません。
+                <br>
+                ・所持している「飼育記録書」を使用すると、自動的に保管箱に保存されます。
+                <br>
+                ・ビーストテイマーで連れていたペットは、サマナーに変身した際に自動で保管箱に保存されます。
+                <br>
+                ・サマナーで連れていた召喚獣は、ビーストテイマーに変身した際に召喚解除されます。
+                <br>
+
+                <b>■狩り経験値重複仕様について</b><br>
+                アプデ前まではソロでモンスター討伐時のみ<b>「基本経験値×ペット召喚獣本体の攻撃した数」</b>の補正がかかっていましたが修正されました。<br>
+                <br>
+                <b>■ネクロのペットについて</b><br>
+                ・ネクロマンサースキル「死霊術」でペットを取得した場合も
+                <br>
+                　ペットレベルがネクロマンサーのレベルと同じ状態でテイムされます。
+                <br>
+                こちらについては悪魔状態でもペットは出続けます。<br>
+
+                <br>
+                <br>
+                <br>
+                <br>
+                [参考]<a href="https://members.redsonline.jp/news/maintenance_body.asp?ntc_num=15104">公式ページ</a><br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社ゲームオンに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GameOn Co., Ltd.
+                </footer>
+                <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+        </div>
+
+        <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    </div>
+</body>
+
+</html>
