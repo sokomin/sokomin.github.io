@@ -194,7 +194,7 @@ function createSkillTable() {
         // 必須ログ、ここのビット列ズレ検知したい。
         console.log(data)
         // TODO ここの判定おかしいのでデータ比較して要調査
-        if (data["awake_flag_1"] != 0 && data["awake_flag_1"] != 3) {
+        if (data["awake_flag_0"] != 0 && data["awake_flag_0"] != 3) {
             // if (data["unknown10_139"] != 0 && data["unknown10_139"] != 3) {
             //覚醒スキル
             if (data["awake_flag_4"] == 0) {
