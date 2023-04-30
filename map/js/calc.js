@@ -127,7 +127,8 @@ function getMobDB() {
             Jump(mapid);
             //NameImgはcommon.jsで定義されてる
             if (NameImg) {
-                map_image.src = "../map/design/" + NameImg;
+                // map_image.src = "../map/design/" + NameImg;
+                map_image.src = "https://sokomin.github.io/sokomin_repository/db/map/" + NameImg;
             } else {
                 map_image.src = "https://sokomin.github.io/sokomin_repository/db/map_img/" + NameImgBlack;
             }
