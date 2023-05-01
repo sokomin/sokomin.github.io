@@ -3,13 +3,13 @@ mapid = mapid ? mapid : 0;
 // const file_url = "https://sokomin.github.io/map/database/mobdb" + mapid + ".js";
 const file_url = "https://sokomin.github.io/sokomin_repository/db/mobdb/mobdb" + mapid + ".js";
 //モンスターとのリンク作成用
-const mob_file_url = "https://sokomin.github.io/sokomin_repository/db/map2.csv";
+const mob_file_url = "https://sokomin.github.io/sokomin_repository/db/map2_2023.csv";
 var DROP_TEXT_CONST = "";
 
 // 入れ子じゃん・・・ジェネレータだから許して。
 function getMap2CSV() {
     var req = new XMLHttpRequest();
-    req.open("get", "https://sokomin.github.io/sokomin_repository/db/map2.csv", true);
+    req.open("get", "https://sokomin.github.io/sokomin_repository/db/map2_2023.csv", true);
     req.send(null);
     req.onload = function () {
         getMonsterCSV(req.responseText);

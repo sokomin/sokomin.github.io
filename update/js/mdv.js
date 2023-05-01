@@ -13,7 +13,7 @@ function getCSV(mode) {
 // 出現マップ一覧に使用する
 function getCSV2(mode, monster) {
     var req = new XMLHttpRequest();
-    req.open("get", "https://sokomin.github.io/sokomin_repository/db/map2.csv", true);
+    req.open("get", "https://sokomin.github.io/sokomin_repository/db/map2_2023.csv", true);
     req.send(null);
     req.onload = function () {
         getMapCSV(mode, monster, req.responseText);
