@@ -161,6 +161,7 @@ function createMobTable() {
     var MOBRANK = getParam('rank') ? parseInt(getParam('rank')) : 0;
     var MOBID = getParam('mi') ? parseInt(getParam('mi')) : -1; //mobid直リンク専用
     var DEF_LV = getParam('dlv') ? parseInt(getParam('dlv')) : "600"; //デフォルトレベル
+    var DEF_STD = getParam('std') ? parseInt(getParam('std')) : "0"; //ステ低下量
     var IMGID = getParam('imgid') ? parseInt(getParam('imgid')) : -1;
     var DEBUG = getParam('debug') ? parseInt(getParam('debug')) : 0;
     var $div_main = $('<div>');
@@ -347,6 +348,20 @@ function createMobTable() {
             "text-align": "left",
             "vertical-align": "top"
         }).text(status_header_txt)).append($statusTable).append("<br>").append($reg0Table).append("<br>").append($state0Table)
+            .append($('<div>').attr({
+                "id": (id + "std"),
+                "title": "ステ低下補正を入力してください"
+            }).attr({ "colspan": "2", }).text('ステ低下補正(%): ').append($('<input>').attr({
+                id: id + "sdp",
+                name: i,
+                type: "text",
+                value: DEF_STD,
+            }).addClass("inputstdform").css("width", "100px").bind("keyup", function () {
+                var has = $(this).attr("id");
+                has = has.substr(0, (has.length - 3));
+                statusUpdate(has, $(this).attr("name"));
+            })))
+
         ));
 
         // 画像
@@ -486,6 +501,10 @@ function statusUpdate(tableid, mobid) {
     var MobLv = $("#" + tableid + "flv").val();
     if (MobLv === "") { MobLv = 1; }
     else { MobLv = parseFloat(MobLv); }
+    var MobSTD = $("#" + tableid + "sdp").val();
+    if (MobSTD === "") { MobSTD = 1; }
+    else { MobSTD = parseFloat(MobSTD); }
+    MobSTD = 1.0 - MobSTD / 100.0;
 
     var Hp1 = parseFloat(md["DefaultHP"]) / 100.0; //基礎HP　	係数/100
     var Hp2 = parseFloat(md["LevelUpBonus"]) > 0 ? (parseFloat(md["LevelUpBonus"]) / 10.0) : (parseFloat(md["unknown_109"]) / 10.0);//上昇HP　	係数/10
@@ -505,13 +524,13 @@ function statusUpdate(tableid, mobid) {
     var AtcSpeed = parseFloat(md["AtcSpeed"]) / 100.0;//攻撃速度攻撃速度/100
     var MovSpeed = parseFloat(md["MovSpeed"]);//移動速度
 
-    var MobSTR = Math.floor(((STRup * (MobLv - 1)) + parseFloat(md["STR"])));//力最終値
-    var MobAGI = Math.floor(((AGIup * (MobLv - 1)) + parseFloat(md["AGI"])));//敏捷最終値
-    var MobCON = Math.floor(((CONup * (MobLv - 1)) + parseFloat(md["CON"])));//健康最終値
-    var MobINT = Math.floor(((INTup * (MobLv - 1)) + parseFloat(md["INT"])));//知識最終値
-    var MobWIS = Math.floor(((WISup * (MobLv - 1)) + parseFloat(md["WIS"])));//知恵最終値
-    var MobCHS = Math.floor(((CHSup * (MobLv - 1)) + parseFloat(md["CHS"])));//威厳最終値
-    var MobLUC = Math.floor(((LUCup * (MobLv - 1)) + parseFloat(md["LUC"])));//運最終値
+    var MobSTR = Math.floor(((STRup * (MobLv - 1)) + parseFloat(md["STR"])) * (MobSTD));//力最終値
+    var MobAGI = Math.floor(((AGIup * (MobLv - 1)) + parseFloat(md["AGI"])) * (MobSTD));//敏捷最終値
+    var MobCON = Math.floor(((CONup * (MobLv - 1)) + parseFloat(md["CON"])) * (MobSTD));//健康最終値
+    var MobINT = Math.floor(((INTup * (MobLv - 1)) + parseFloat(md["INT"])) * (MobSTD));//知識最終値
+    var MobWIS = Math.floor(((WISup * (MobLv - 1)) + parseFloat(md["WIS"])) * (MobSTD));//知恵最終値
+    var MobCHS = Math.floor(((CHSup * (MobLv - 1)) + parseFloat(md["CHS"])) * (MobSTD));//威厳最終値
+    var MobLUC = Math.floor(((LUCup * (MobLv - 1)) + parseFloat(md["LUC"])) * (MobSTD));//運最終値
 
     var MobHP = Math.floor((Hp2 * MobLv + Hp1) + (Hp3 * MobCON));//HP最終値
     var MobAtcMin = Math.floor((((AtcMinup * (MobLv - 1.0) + parseFloat(md["AtcMinValue"]))) * (1.0 + MobSTR / 200.0)));//最小攻撃力最終値	
