@@ -478,6 +478,10 @@ function validateData(data, spec, rank, debug, drop_txt, skill_txt) {
     if (Number(debug) == 9999) {
         return false;
     }
+    // ここが1だとモンスター、2だとNPC
+    if (Number(data["unknown_6"]) == 1) {
+        return false;
+    }
     if (drop_txt == DROP_TEXT_CONST && skill_txt == SKILL_TEXT_CONST) {
         return true;
     }
