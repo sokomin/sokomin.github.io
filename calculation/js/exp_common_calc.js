@@ -152,6 +152,44 @@ function findReturnerLv(exp, b, sokomin) {
                 cnt++;
             }
         }
+    } else if (b === 7) {
+        for (var i = 1; i <= 850; i++) {
+            if (exp < exp_sum_2023array[i - 1]) {
+                var rest = i >= 1 ? exp - exp_sum_2023array[i - 2] : 250;
+                ret.rest = rest;
+                ret.per = parseInt((rest * 100 / exp_2023array[i - 1]) * 10000) / 10000;
+                ret.lv = cnt;
+                return ret;
+            } else {
+                cnt++;
+            }
+        }
+        cnt--;
+        for (var i = 851; i <= 2000; i++) {
+            //FIXME こんな方法で上位レベルの壺PTどうにかする方法聞いたことないぞ。。。
+            var sup_exp = 1;
+            if (sokomin && i > 999) {
+                sup_exp = (i < 1075) ? Math.sqrt(Math.sqrt(75 / (1075 - i))) : 75;
+            }
+            if (exp < parseInt(exp_sum_2019array[i - 851] * sup_exp)) {
+                var rest = i >= 852 ? exp - parseInt(exp_sum_2019array[i - 852] * sup_exp) : exp - exp_sum_2023array[i - 1];
+                ret.rest = rest;
+                if (i > 1000) {
+                    ret.per = (parseInt((rest * 100 / exp_2023array[i - 2]) * 10000) / 10000) > 0 ?
+                        (parseInt((rest * 100 / exp_2023array[i - 2]) * 10000) / 10000) : 0;
+                } else {
+                    ret.per = parseInt((rest * 100 / exp_2019array[i - 851]) * 10000) / 10000;
+                }
+                ret.lv = cnt;
+                return ret;
+            } else {
+                if (i === 2000) {
+                    ret.lv = 2000;
+                    ret.per = 0;
+                }
+                cnt++;
+            }
+        }
     }
     return ret;
 }

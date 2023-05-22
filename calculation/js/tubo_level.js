@@ -3,7 +3,7 @@ function init1() {
 
     document.f.b1.value = 0;
 
-    document.f.b1.options[0] = new Option('2019～(暫定版)', 5, 1, 1);
+    document.f.b1.options[0] = new Option('2019～', 5, 1, 1);
     document.f.b1.options[1] = new Option('2005～2011', 1);
     document.f.b1.options[2] = new Option('2011～2015', 2);
     document.f.b1.options[3] = new Option('2015～2016', 3);
@@ -22,7 +22,7 @@ function init1() {
     document.f.a5.value = 100000000;
     document.f.b2.value = 0;
 
-    document.f.b2.options[0] = new Option('2019～(暫定版)', 5, 1, 1);
+    document.f.b2.options[0] = new Option('2019～', 5, 1, 1);
     document.f.b2.options[1] = new Option('2005～2011', 1);
     document.f.b2.options[2] = new Option('2011～2015', 2);
     document.f.b2.options[3] = new Option('2015～2016', 3);
@@ -37,7 +37,7 @@ function init1() {
 
     document.f.b3.value = 0;
 
-    document.f.b3.options[0] = new Option('2019～(暫定版)', 5, 1, 1);
+    document.f.b3.options[0] = new Option('2019～', 5, 1, 1);
     document.f.b3.options[1] = new Option('2005～2011', 1);
     document.f.b3.options[2] = new Option('2011～2015', 2);
     document.f.b3.options[3] = new Option('2015～2016', 3);

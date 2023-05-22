@@ -3,36 +3,40 @@ function init1() {
 
     document.f.b1.value = 0;
 
-    document.f.b1.options[0] = new Option('2022～', 6, 1, 1);
+    document.f.b1.options[0] = new Option('2023～', 7, 1, 1);
     document.f.b1.options[1] = new Option('2005～2011', 1);
     document.f.b1.options[2] = new Option('2011～2015', 2);
     document.f.b1.options[3] = new Option('2015～2016', 3);
     document.f.b1.options[4] = new Option('2017～2018', 4);
-    document.f.b1.options[5] = new Option('2019～2021', 5);
+    document.f.b1.options[5] = new Option('2019～2020', 5);
+    document.f.b1.options[6] = new Option('2021～2022', 6);
     //もっと賢い定義方法あるよね？わかる。
     document.f.a21.value = 1;
 
     document.f.b2.value = 0;
 
-    document.f.b2.options[0] = new Option('2022～', 6,1,1);
+    document.f.b2.options[0] = new Option('2023～', 7,1,1);
     document.f.b2.options[1] = new Option('2005～2011', 1);
     document.f.b2.options[2] = new Option('2011～2015', 2);
     document.f.b2.options[3] = new Option('2015～2016', 3);
     document.f.b2.options[4] = new Option('2017～2018', 4);
-    document.f.b2.options[5] = new Option('2019～2021', 5);
+    document.f.b2.options[5] = new Option('2019～2020', 5);
+    document.f.b2.options[6] = new Option('2021～2022', 6);
 
     document.f.a31.value = 1;
 
     document.f.b3.value = 0;
 
-    document.f.b3.options[0] = new Option('2022～', 6, 1, 1);
+    document.f.b3.options[0] = new Option('2023～', 7, 1, 1);
     document.f.b3.options[1] = new Option('2005～2011', 1);
     document.f.b3.options[2] = new Option('2011～2015', 2);
     document.f.b3.options[3] = new Option('2015～2016', 3);
     document.f.b3.options[4] = new Option('2017～2018', 4);
-    document.f.b3.options[5] = new Option('2019～2021', 5);
+    document.f.b3.options[5] = new Option('2019～2020', 5);
+    document.f.b3.options[6] = new Option('2021～2022', 6);
 }
 const limit2022 = 2000;
+const limit2023 = 2000;
 
 function init2() {
     //TODO localstorage辺りから引っ張ってきたい。
@@ -169,6 +173,34 @@ function findReturnerLv(exp, b) {
                 cnt++;
             }
         }
+    } else if (b === 7) {
+        for (var i = 1; i <= limit2023; i++) {
+            if (exp < exp_sum_2023array[i - 1]) {
+                var rest = i >= 1 ? exp - exp_sum_2023array[i - 2] : 250;
+                ret.rest = rest;
+                ret.per = parseInt((rest * 100 / exp_2023array[i - 2]) * 10000) / 10000;
+                ret.lv = cnt;
+                return ret;
+            } else {
+                cnt++;
+            }
+        }
+        // cnt--;
+        // for (var i = 851; i <= limit2022; i++) {
+        //     if (exp < exp_sum_2023array[i - 1]) {
+        //         var rest = i >= 852 ? exp - exp_sum_2019array[i - 852] : exp - exp_sum_2023array[i - 1];
+        //         ret.rest = rest;
+        //         if (i > 1000) {
+        //             ret.per = parseInt((rest * 100 / exp_2023array[i - 2]) * 10000) / 10000;
+        //         } else {
+        //             ret.per = parseInt((rest * 100 / exp_2019array[i - 851]) * 10000) / 10000;
+        //         }
+        //         ret.lv = cnt;
+        //         return ret;
+        //     } else {
+        //         cnt++;
+        //     }
+        // }
     }
     return ret;
 }
@@ -357,6 +389,40 @@ function calc1() {
             per = parseInt(exp_2019array[a1 - 850] * a2 / 100);
         }
         var exp1 = a1 <= 850 ? (exp_sum_2017array[a1 - 2] + per - exp_300_600_2017) : (exp_sum_2019array[a1 - 851] + per - exp_300_600_2017);
+        r1 = findReturnerLv(exp1, b1);
+        //ここから2転の計算
+        var exp2 = r1.lv >= 600 ? (exp1 - exp_300_600_2017) : 0;
+        if (exp2 <= 0) {
+            r2.lv = "Lv不足で転生できません。";
+            r2.per = "";
+        } else {
+            r2 = findReturnerLv(exp2, b1);
+        }
+        //ここから3転の計算
+        var exp3 = r2.lv >= 600 ? (exp2 - exp_300_600_2017) : 0;
+        if (exp3 <= 0) {
+            r3.lv = "Lv不足で転生できません。";
+            r3.per = "";
+        } else {
+            r3 = findReturnerLv(exp3, b1);
+        }
+        // 転生して引かれた後にどれだけ経験値残ってるか。
+        console.log(exp1);
+        console.log(exp2);
+        console.log(exp3);
+    } else if (b1 === 7) {
+        //2019～
+        if (a1 >= 2000) {
+            document.f.r21.value = "最高レベルは2000です。";
+            return;
+        }
+        var per = 0;
+        if (a1 < 850 || a1 > 1000) {
+            per = parseInt(exp_2023array[a1 - 1] * a2 / 100);
+        } else {
+            per = parseInt(exp_2019array[a1 - 850] * a2 / 100);
+        }
+        var exp1 = (exp_sum_2023array[a1 - 2] + per - exp_300_600_2017);
         r1 = findReturnerLv(exp1, b1);
         //ここから2転の計算
         var exp2 = r1.lv >= 600 ? (exp1 - exp_300_600_2017) : 0;
@@ -590,6 +656,44 @@ function calc2() {
         console.log(exp1);
         console.log(exp2);
         console.log(exp3);
+    } else if (b1 === 7) {
+        //2019～
+        if (a1 >= 2000) {
+            document.f.r21.value = "最高レベルは2000です。";
+            return;
+        }
+        if (a1 < 300) {
+            document.f.r21.value = "最小レベルは300です。";
+            return;
+        }
+        var per = 0;
+        if (a1 < 850 || a1 > 1000) {
+            per = parseInt(exp_2023array[a1 - 1] * a2 / 100);
+        } else {
+            per = parseInt(exp_2019array[a1 - 850] * a2 / 100);
+        }
+        // 2連続以降はexpベースで計算する
+        var exp1 = a1 <= 850 ? (exp_sum_2023array[a1 - 2] + per + exp_300_600_2017) : (exp_sum_2019array[a1 - 851] + per + exp_300_600_2017);
+        r1 = findReturnerLv(exp1, b1);
+        //ここから2転の計算
+        var exp2 = r1.lv <= 2000 ? (exp1 + exp_300_600_2017) : 0;
+        if (exp2 <= 0) {
+            r2.lv = "2000";
+            r2.per = "0";
+        } else {
+            r2 = findReturnerLv(exp2, b1);
+        }
+        //ここから3転の計算
+        var exp3 = r2.lv <= 2000 ? (exp2 + exp_300_600_2017) : 0;
+        if (exp3 <= 0) {
+            r3.lv = "2000";
+            r3.per = "0";
+        } else {
+            r3 = findReturnerLv(exp3, b1);
+        }
+        console.log(exp1);
+        console.log(exp2);
+        console.log(exp3);
     } else {
         //ここ通らないはずです。
         console.log("ｚｚｚ");
@@ -743,6 +847,32 @@ function calc3() {
             //1Lv引いて調べてみる
             lv = a1 - i;
             var exp1 = lv <= 850 ? (exp_sum_2017array[lv - 2] + per + exp_300_600_2017) : (exp_sum_2019array[lv - 851] + per + exp_300_600_2017);
+            best = findReturnerLv(exp1, b1);
+            var min = i;
+            var max = best.lv - a1;
+            if (min <= max) {
+                r1 = best;
+                r2 = {
+                    lv: lv,
+                    per: 0,
+                }
+            } else {
+                //もういいんだ、もういいんだ…
+                break;
+            }
+        }
+        console.log(exp1);
+    } else if (b1 === 7) {
+        //2019～
+        if (a1 >= 2000) {
+            document.f.r31.value = "最高レベルは2000です。";
+            return;
+        }
+        var per = 0;
+        for (var i = 0; i < 600; i++) {
+            //1Lv引いて調べてみる
+            lv = a1 - i;
+            var exp1 = lv <= 850 ? (exp_sum_2023array[lv - 2] + per + exp_300_600_2017) : (exp_sum_2019array[lv - 851] + per + exp_300_600_2017);
             best = findReturnerLv(exp1, b1);
             var min = i;
             var max = best.lv - a1;

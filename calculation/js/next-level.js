@@ -6,12 +6,13 @@ function init1() {
     document.f.r1.value = 0;
     document.f.r2.value = 0;
 
-    document.f.b1.options[0] = new Option('2022～', 6, 1, 1);
+    document.f.b1.options[0] = new Option('2023～', 7, 1, 1);
     document.f.b1.options[1] = new Option('2005～2011', 1);
     document.f.b1.options[2] = new Option('2011～2015', 2);
     document.f.b1.options[3] = new Option('2015～2016', 3);
     document.f.b1.options[4] = new Option('2017～2018', 4);
-    document.f.b1.options[5] = new Option('2019～2021', 5);
+    document.f.b1.options[5] = new Option('2019～2020', 5);
+    document.f.b1.options[6] = new Option('2021～2022', 6);
     //もっと賢い定義方法あるよね？わかる。
     document.f.a21.value = 1;
     document.f.a22.value = 1;
@@ -19,12 +20,13 @@ function init1() {
     document.f.b2.value = 0;
 
     document.f.r21.value = 0;
-    document.f.b2.options[0] = new Option('2022～', 6,1,1);
+    document.f.b2.options[0] = new Option('2023～', 7,1,1);
     document.f.b2.options[1] = new Option('2005～2011', 1);
     document.f.b2.options[2] = new Option('2011～2015', 2);
     document.f.b2.options[3] = new Option('2015～2016', 3);
     document.f.b2.options[4] = new Option('2017～2018', 4);
-    document.f.b2.options[5] = new Option('2019～2021', 5);
+    document.f.b2.options[5] = new Option('2019～2020', 5);
+    document.f.b2.options[6] = new Option('2021～2022', 6);
 
     //獲得経験値計算用
     document.f.a31.value = 1;
@@ -34,12 +36,14 @@ function init1() {
     document.f.b3.value = 0;
 
     document.f.r31.value = 0;
-    document.f.b3.options[0] = new Option('2022～', 6, 1, 1);
+    document.f.b3.options[0] = new Option('2023～', 7, 1, 1);
     document.f.b3.options[1] = new Option('2005～2011', 1);
     document.f.b3.options[2] = new Option('2011～2015', 2);
     document.f.b3.options[3] = new Option('2015～2016', 3);
     document.f.b3.options[4] = new Option('2017～2018', 4);
-    document.f.b3.options[5] = new Option('2019～2021', 5);
+    document.f.b3.options[5] = new Option('2019～2020', 5);
+    document.f.b3.options[6] = new Option('2021～2022', 6);
+
 }
 
 function init2() {
@@ -141,6 +145,21 @@ function calc1() {
         } else {
             r1 = exp_2017array[a1 - 1];
             r2 = exp_sum_2017array[a1 - 1];
+        }
+    } else if (b1 === 7) {
+        if (a1 >= 2000) {
+            document.f.r1.value = 200000000000;
+            document.f.r2.value = "最高レベルは2000です。";
+            return;
+        } else if (a1 >= 850 && a1 <= 1000) {
+            r1 = exp_2019array[a1 - 850];
+            r2 = exp_sum_2019array[a1 - 850];
+        } else if (a1 >= 1001) {
+            r1 = exp_2023array[a1 - 1];
+            r2 = exp_sum_2023array[a1 - 1];
+        } else {
+            r1 = exp_2023array[a1 - 1];
+            r2 = exp_sum_2023array[a1 - 1];
         }
     } else {
         //ここ通らないはずです。
@@ -281,6 +300,24 @@ function calc2() {
             a2_2 = exp_sum_2019array[a2 - 851];
         }
         r1 = a2_2 - a1_2;
+    } else if (b1 === 7) {
+        if (a1 >= 2000 || a2 >= 2000) {
+            document.f.r21.value = "最高レベルは2000です。";
+            return;
+        }
+        var a1_2 = 0;
+        var a2_2 = 0;
+        if (a1 <= 850) {
+            a1_2 = a1 >= 2 ? exp_sum_2023array[a1 - 2] : 0;
+        } else {
+            a1_2 = exp_sum_2023array[a1 - 2];
+        }
+        if (a2 <= 850) {
+            a2_2 = a2 >= 2 ? exp_sum_2023array[a2 - 2] : 0;
+        } else {
+            a2_2 = exp_sum_2023array[a2 - 2];
+        }
+        r1 = a2_2 - a1_2;
     } else {
         //ここ通らないはずです。
         console.log("ｚｚｚ");
@@ -394,6 +431,25 @@ function calc3() {
         }
         //簡易計算機だし、直接足し算でOK(1000以降なら直接EXP調整してね。)
         var exp1 = a1 <= 850 ? (exp_sum_2017array[a1 - 2] + per + a3) : (exp_sum_2019array[a1 - 851] + per + a3);
+        if(a1 == 1){
+            exp1 = per + a3;
+        }
+        r1 = findReturnerLv(exp1, b1);
+        console.log(exp1);
+    } else if (b1 === 7) {
+        //2019～
+        if (a1 >= 2000) {
+            document.f.r31.value = "最高レベルは2000です。";
+            return;
+        }
+        var per = 0;
+        if (a1 < 850 || a1 > 1000) {
+            per = parseInt(exp_2023array[a1 - 1] * a2 / 100);
+        } else {
+            per = parseInt(exp_2019array[a1 - 850] * a2 / 100);
+        }
+        //簡易計算機だし、直接足し算でOK(1000以降なら直接EXP調整してね。)
+        var exp1 = a1 <= 850 ? (exp_sum_2023array[a1 - 2] + per + a3) : (exp_sum_2019array[a1 - 851] + per + a3);
         if(a1 == 1){
             exp1 = per + a3;
         }
