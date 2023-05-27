@@ -9,8 +9,8 @@ if (location.href.indexOf("?") == -1) {
 }
 SkillRefresh(); //初期化
 AwakeSwitch = 0;
-var TransType = [0, 0, 0, 0];
-var TransPoint = [0, 0, 0, 0];
+var TransType = [0, 0, 0, 0, 0];
+var TransPoint = [0, 0, 0, 0, 0];
 
 function SkillReset() {
   AwakeSwitch = 0;
@@ -97,7 +97,8 @@ function SlvSum() {
   var tpt1 = TransPoint ? TransPoint[1] : 0; 
   var tpt2 = TransPoint ? TransPoint[2] : 0; 
   var tpt3 = TransPoint ? TransPoint[3] : 0; 
-  sum = sum + tpt0 + tpt1 + tpt2 + tpt3;
+  var tpt4 = TransPoint ? TransPoint[4] : 0; 
+  sum = sum + tpt0 + tpt1 + tpt2 + tpt3 + tpt4;
   SkillPointText.innerHTML = (sum);
   //スキルポイントからLvを算出する部分
   var CharaLevel, SkillPoint, Total, PointMuch, Lv;
@@ -121,10 +122,13 @@ function SlvSum() {
       Total = Total - 1500;
       break;
   }
-  //TODO 天上ボーナス差し引き
+  //天上ボーナス差し引き
   Total = CalcMQ1Skill(Total);
-  //TODO MQ2ボーナス差し引き
+  //MQ2ボーナス差し引き
   Total = CalcMQ2Skill(Total);
+  //クエストボーナス差し引き
+  // TODO まとめとく
+  Total = CalcQuestSkill(Total);
   if (Total >= 5049) { //100Lv超の時の計算式
     CharaLevel = 100;
     SkillPoint = 5149;
@@ -175,6 +179,13 @@ function CalcMQ2Skill(total) {
   return total;
 };
 
+
+function CalcQuestSkill(total) {
+  var num = parseInt(document.getElementsByName("a21")[0].value) ? parseInt(document.getElementsByName("a21")[0].value) : 0;
+  total = total - num;
+  return total;
+};
+
 function LvMax(num) {
   //アイコンをクリックされた時は50Lvにする
   if (num <= 50) {
@@ -214,6 +225,13 @@ function CalcTransType(num) {
     TransPoint[3] = 0;
     SlvSum();
   }
+  // 丁寧にゴリ押すのだ、バグるから共通化したいのだ
+  if (num === 1300) {
+    TransType[4] = document.getElementById("id" + num).selectedIndex;
+    document.getElementById("id1301").selectedIndex = 0;
+    TransPoint[4] = 0;
+    SlvSum();
+  }
 };
 
 function CalcTransPoint(num) {
@@ -234,13 +252,18 @@ function CalcTransPoint(num) {
     TransPoint[3] = CalcTransPt(TransType[3], document.getElementById("id" + num).selectedIndex);
     SlvSum();
   }
+  if (num === 1301) {
+    TransPoint[4] = CalcTransPt(TransType[4], document.getElementById("id" + num).selectedIndex);
+    SlvSum();
+  }
 };
 
 function CalcTransPt(type, level){
   if (type === 0) {
     return CalcNormalTransPt(level);
   } else if (type === 1) {
-    return level >= 1 ? 60000 : 0;
+    // 3万に減った
+    return level >= 1 ? 30000 : 0;
   } else if (type === 2) {
     return CalcUniqueTransPt(level);
   } else {
@@ -263,6 +286,23 @@ function CalcNormalTransPt(level) {
   }
   return rp;
 };
+
+// ユニークと同じはずだけど、Lv11~が不明
+function CalcRareTransPt(level) {
+  //不規則なので計算することをあきらめた。後、韓国版のDIのほうが可能性高いんで。
+  var ut = [2000, 2100, 2200, 2400, 2500, 3000, 3500, 4500, 5500, 6000,
+    7000, 8000, 9000, 10000, 11000, 12000, 13000, 14000, 15000, 16000];
+  var rp = 0;
+  for (var i = 0; i < level; i++) {
+    //2019.3現在、スキルレベル20までしかないからね
+    if (i >= 20) {
+      break;
+    }
+    rp += ut[i];
+  }
+  return rp;
+};
+
 
 function CalcUniqueTransPt(level) {
   //不規則なので計算することをあきらめた。後、韓国版のDIのほうが可能性高いんで。
