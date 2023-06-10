@@ -477,7 +477,7 @@ function calcImgPos(x, max, n, div) {
 /**
  * 任意の桁で四捨五入する関数
  * @param {number} value 四捨五入する数値
- * @param {number} base どの桁で四捨五入するか（10→10の位、0.1→小数第１位）
+ * @param {number} base どの桁で四捨五入するか(10→10の位、0.1→小数第１位)
  * @return {number} 四捨五入した値
  */
 function orgRound(value, base) {
