@@ -42,6 +42,7 @@ function calc2(is_sort) {
         for (var key in items) {
             var data = items[key];
             item_info[key] = {
+                uuid: "0xffff",
                 name: "",
                 image_id: "0000",
                 op: [],
@@ -107,6 +108,7 @@ function calc2(is_sort) {
                             }
                         }
                     }
+                    item_info[key].uuid = name[0];
                     item_info[key].image_id = ('0000' + name[1]).slice(-4);
                     item_info[key].name = item_name;
                     phase = 1;
@@ -334,6 +336,7 @@ function calc2(is_sort) {
             }
             var a13 = item_info[key].nxsystem;
             var a14 = item_info[key].nxprice;
+            res_text += '<a name="'+ item_info[key].uuid +'"></a>';
             if (item_info[key].is_nx) {
                 if (item_info[key].grade == 5 && is_dx_title) {
                     res_text += dxu_state_table;
