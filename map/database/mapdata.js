@@ -664,7 +664,7 @@ NameList = {
     505: { name: "乾いたオアシス", img: "[505]D18.rmd.png", black: "[000]T01.rmd.png", lvmin: 775, lvmax: 800 },
     506: { name: "漆黒の城", img: "[506]BF_U01.rmd.png", black: "[000]T01.rmd.png", lvmin: 800, lvmax: 830 },
     507: { name: "深淵の地底湖", img: "[507]BF_C01.rmd.png", black: "[000]T01.rmd.png", lvmin: 820, lvmax: 850 },
-    508: { name: "デフヒルズ古代遺跡 B2", img: "[508]D07_S01_B02.rmd.png", black: "[000]T01.rmd.png", lvmin: 635, lvmax: 665, plemiun: true },
+    508: { name: "次元のデフヒルズ古代遺跡 B2", img: "[508]D07_S01_B02.rmd.png", black: "[000]T01.rmd.png", lvmin: 635, lvmax: 665, plemiun: true },
     509: { name: "ダメルの地下迷宮入口", img: "[509]T07_D02_B01.rmd.png", black: "[000]T01.rmd.png", lvmin: 530, lvmax: 540, plemiun: true },
     510: { name: "ダメルの地下迷宮 B1", img: "[510]T07_D02_B02.rmd.png", black: "[000]T01.rmd.png", lvmin: 540, lvmax: 550, plemiun: true },
     511: { name: "ダメルの地下迷宮 B2", img: "[511]T07_D02_B03.rmd.png", black: "[000]T01.rmd.png", lvmin: 550, lvmax: 560, plemiun: true },
