@@ -336,7 +336,7 @@ function calc2(is_sort) {
             }
             var a13 = item_info[key].nxsystem;
             var a14 = item_info[key].nxprice;
-            res_text += '<a name="'+ item_info[key].uuid +'"></a>';
+            res_text += '<br><a name="'+ item_info[key].uuid +'"></a>';
             if (item_info[key].is_nx) {
                 if (item_info[key].grade == 5 && is_dx_title) {
                     res_text += dxu_state_table;
