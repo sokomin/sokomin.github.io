@@ -328,9 +328,10 @@ function calcStage5() {
     level_sum += 600;
     level_sum += 600;
     level_sum += 600;
-    // 秒数？
+    // ラストのみ秒数が加算される
     var additional = 31400 + Math.floor(Math.random() * 31) * 10;
     // level_sum += 180;
+    // 30000+10*秒数らしい。残り時間に合わせて切り上げ処理
 
     // ここで死ぬ定めではないと…
     return (level_sum * 80 + additional);
