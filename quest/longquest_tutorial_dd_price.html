@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>ダリン・デリン チュートリアルクエ　赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <a href="../index.html">トップ</a> >> <a href="../quest/quest.html">クエスト</a> >> <a
+                href="../quest/normalquest_list.html">一般クエスト</a><br>
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+                <h3>ダリン・デリン チュートリアルクエ 関連情報</h3>
+                <br>
+                <br>
+                <br>
+                ダリン・デリンクエ進行にあたって報酬周りの情報だけ抽出してまとめました。<br>
+                進行の参考にしてください。<br>
+                <br>
+                <br>
+                <br>
+                例えばクエ番号28であればLV300～受諾可能で、それまでに累計120枚の冒険団コインを獲得しています。<br>
+                ※84個全て進めた場合、合計395枚の冒険団コインを獲得可能。<br>
+                <br>
+                <table border="1" class="dataframe">
+                    <thead>
+                        <tr style="text-align: right;">
+                            <th>クエ番号</th>
+                            <th>累計冒険団コイン</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>8</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>11</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>14</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>24</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>27</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td>33</td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>38</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>41</td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td>44</td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td>47</td>
+                        </tr>
+                        <tr>
+                            <td>13</td>
+                            <td>57</td>
+                        </tr>
+                        <tr>
+                            <td>14</td>
+                            <td>60</td>
+                        </tr>
+                        <tr>
+                            <td>15</td>
+                            <td>63</td>
+                        </tr>
+                        <tr>
+                            <td>16</td>
+                            <td>66</td>
+                        </tr>
+                        <tr>
+                            <td>17</td>
+                            <td>71</td>
+                        </tr>
+                        <tr>
+                            <td>18</td>
+                            <td>74</td>
+                        </tr>
+                        <tr>
+                            <td>19</td>
+                            <td>77</td>
+                        </tr>
+                        <tr>
+                            <td>20</td>
+                            <td>87</td>
+                        </tr>
+                        <tr>
+                            <td>21</td>
+                            <td>90</td>
+                        </tr>
+                        <tr>
+                            <td>22</td>
+                            <td>93</td>
+                        </tr>
+                        <tr>
+                            <td>23</td>
+                            <td>98</td>
+                        </tr>
+                        <tr>
+                            <td>24</td>
+                            <td>101</td>
+                        </tr>
+                        <tr>
+                            <td>25</td>
+                            <td>104</td>
+                        </tr>
+                        <tr>
+                            <td>26</td>
+                            <td>107</td>
+                        </tr>
+                        <tr>
+                            <td>27</td>
+                            <td>117</td>
+                        </tr>
+                        <tr>
+                            <td>28</td>
+                            <td>120</td>
+                        </tr>
+                        <tr>
+                            <td>29</td>
+                            <td>123</td>
+                        </tr>
+                        <tr>
+                            <td>30</td>
+                            <td>128</td>
+                        </tr>
+                        <tr>
+                            <td>31</td>
+                            <td>131</td>
+                        </tr>
+                        <tr>
+                            <td>32</td>
+                            <td>134</td>
+                        </tr>
+                        <tr>
+                            <td>33</td>
+                            <td>144</td>
+                        </tr>
+                        <tr>
+                            <td>34</td>
+                            <td>147</td>
+                        </tr>
+                        <tr>
+                            <td>35</td>
+                            <td>150</td>
+                        </tr>
+                        <tr>
+                            <td>36</td>
+                            <td>153</td>
+                        </tr>
+                        <tr>
+                            <td>37</td>
+                            <td>158</td>
+                        </tr>
+                        <tr>
+                            <td>38</td>
+                            <td>161</td>
+                        </tr>
+                        <tr>
+                            <td>39</td>
+                            <td>164</td>
+                        </tr>
+                        <tr>
+                            <td>40</td>
+                            <td>174</td>
+                        </tr>
+                        <tr>
+                            <td>41</td>
+                            <td>177</td>
+                        </tr>
+                        <tr>
+                            <td>42</td>
+                            <td>180</td>
+                        </tr>
+                        <tr>
+                            <td>43</td>
+                            <td>185</td>
+                        </tr>
+                        <tr>
+                            <td>44</td>
+                            <td>188</td>
+                        </tr>
+                        <tr>
+                            <td>45</td>
+                            <td>191</td>
+                        </tr>
+                        <tr>
+                            <td>46</td>
+                            <td>201</td>
+                        </tr>
+                        <tr>
+                            <td>47</td>
+                            <td>204</td>
+                        </tr>
+                        <tr>
+                            <td>48</td>
+                            <td>207</td>
+                        </tr>
+                        <tr>
+                            <td>49</td>
+                            <td>212</td>
+                        </tr>
+                        <tr>
+                            <td>50</td>
+                            <td>215</td>
+                        </tr>
+                        <tr>
+                            <td>51</td>
+                            <td>218</td>
+                        </tr>
+                        <tr>
+                            <td>52</td>
+                            <td>228</td>
+                        </tr>
+                        <tr>
+                            <td>53</td>
+                            <td>231</td>
+                        </tr>
+                        <tr>
+                            <td>54</td>
+                            <td>234</td>
+                        </tr>
+                        <tr>
+                            <td>55</td>
+                            <td>239</td>
+                        </tr>
+                        <tr>
+                            <td>56</td>
+                            <td>242</td>
+                        </tr>
+                        <tr>
+                            <td>57</td>
+                            <td>245</td>
+                        </tr>
+                        <tr>
+                            <td>58</td>
+                            <td>255</td>
+                        </tr>
+                        <tr>
+                            <td>59</td>
+                            <td>258</td>
+                        </tr>
+                        <tr>
+                            <td>60</td>
+                            <td>261</td>
+                        </tr>
+                        <tr>
+                            <td>61</td>
+                            <td>266</td>
+                        </tr>
+                        <tr>
+                            <td>62</td>
+                            <td>269</td>
+                        </tr>
+                        <tr>
+                            <td>63</td>
+                            <td>272</td>
+                        </tr>
+                        <tr>
+                            <td>64</td>
+                            <td>282</td>
+                        </tr>
+                        <tr>
+                            <td>65</td>
+                            <td>285</td>
+                        </tr>
+                        <tr>
+                            <td>66</td>
+                            <td>288</td>
+                        </tr>
+                        <tr>
+                            <td>67</td>
+                            <td>293</td>
+                        </tr>
+                        <tr>
+                            <td>68</td>
+                            <td>296</td>
+                        </tr>
+                        <tr>
+                            <td>69</td>
+                            <td>299</td>
+                        </tr>
+                        <tr>
+                            <td>70</td>
+                            <td>309</td>
+                        </tr>
+                        <tr>
+                            <td>71</td>
+                            <td>312</td>
+                        </tr>
+                        <tr>
+                            <td>72</td>
+                            <td>315</td>
+                        </tr>
+                        <tr>
+                            <td>73</td>
+                            <td>320</td>
+                        </tr>
+                        <tr>
+                            <td>74</td>
+                            <td>323</td>
+                        </tr>
+                        <tr>
+                            <td>75</td>
+                            <td>326</td>
+                        </tr>
+                        <tr>
+                            <td>76</td>
+                            <td>336</td>
+                        </tr>
+                        <tr>
+                            <td>77</td>
+                            <td>339</td>
+                        </tr>
+                        <tr>
+                            <td>78</td>
+                            <td>342</td>
+                        </tr>
+                        <tr>
+                            <td>79</td>
+                            <td>345</td>
+                        </tr>
+                        <tr>
+                            <td>80</td>
+                            <td>355</td>
+                        </tr>
+                        <tr>
+                            <td>81</td>
+                            <td>365</td>
+                        </tr>
+                        <tr>
+                            <td>82</td>
+                            <td>375</td>
+                        </tr>
+                        <tr>
+                            <td>83</td>
+                            <td>385</td>
+                        </tr>
+                        <tr>
+                            <td>84</td>
+                            <td>395</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社G・O・Pに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GOP Co., Ltd.
+                </footer>
+                <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+        </div>
+</body>
+
+</html>
