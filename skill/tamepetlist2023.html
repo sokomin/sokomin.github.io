@@ -1,0 +1,1876 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+    <script>
+        function searchTable() {
+            var input, filter, table, tr, td, i, j, txtValue;
+            input = document.getElementById("searchInput");
+            filter = input.value;
+            table = document.getElementById("table");
+            tr = table.getElementsByTagName("tr");
+
+            // Split the filter text by comma for OR search
+            var orFilters = filter.split(',');
+
+            for (i = 1; i < tr.length; i++) {
+                tr[i].style.display = "none";
+                td = tr[i].getElementsByTagName("td");
+                for (var orFilter of orFilters) {
+                    var andFilters = orFilter.trim().split(' ');
+                    var andFilterMatch = true;
+                    for (var andFilter of andFilters) {
+                        var cellMatch = false;
+                        for (j = 0; j < td.length; j++) {
+                            if (td[j]) {
+                                txtValue = td[j].textContent || td[j].innerText;
+                                if (txtValue.indexOf(andFilter.trim()) > -1) {
+                                    cellMatch = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!cellMatch) {
+                            andFilterMatch = false;
+                            break;
+                        }
+                    }
+                    if (andFilterMatch) {
+                        tr[i].style.display = "";
+                        break;
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+    <style>
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #f9f9f9;
+        }
+
+        .table {
+            width: 100%;
+            margin-bottom: 1rem;
+            color: #212529;
+            border-collapse: collapse;
+        }
+
+        .table th,
+        .table td {
+            padding: 0.75rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .table thead th {
+            vertical-align: bottom;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .table tbody+tbody {
+            border-top: 2px solid #dee2e6;
+        }
+
+        #searchInput {
+            width: 561px;
+            height: 44px;
+            border-radius: 10px;
+            margin: 20px auto;
+            display: block;
+            padding: 3px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <title>テイム可能ペット一覧 2023 赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <a href="../index.html">トップ</a> >> <a href="../skill/skill.html">スキル</a><br>
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+                <h3>テイム可能ペット一覧</h3>
+                ビーストテイマーの「説得」やネクロマンサーの「死霊術」では全ての一般4以下モンスターがテイム可能とは限りません。<br>
+                一部のモンスターは「テイム対象外」として扱われいていることがあります。<br>
+                逆に、狩場にはテイム専用モンスター呼ばれるモンスターも存在します。(リポップ時間が長めで沸き数が少ないのが特徴)<br>
+                Zin系列のモンスターがほとんどで、通常のモンスターにはない様々な特殊攻撃をするモンスターもいます。<br>
+                ミラーダンジョンにも出現することがあります。<br>
+                <br>
+
+                <br>
+                <br>
+                <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="フリーワード検索">
+                <br>
+                <br>
+                <table id="table" class="table table-striped">
+                    <thead>
+                        <tr style="text-align: right;">
+                            <th>画像</th>
+                            <th>モンスター名</th>
+                            <th>分類</th>
+                            <th>主な生息地</th>
+                            <th>最短生息地<br>（モンスター名/種族）</th>
+                            <th>主な移動方法</th>
+                            <th>モンスターレベル</th>
+                            <th>毒舌あり<br>
+                                モンスターレベル</th>
+                            <th>属性</th>
+                            <th>特技段数/単体or範囲/効果</th>
+                            <th>ネクロテイム</th>
+                            <th>湧き時間</th>
+                            <th>オススメ度</th>
+                            <th>備考</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td>ファミリア<br />コボルト</td>
+                            <td>悪魔型</td>
+                            <td>多数</td>
+                            <td>古都西（病気のコボルト/コボルトN）</td>
+                            <td>自力orジョン・マルコでコボ秘密</td>
+                            <td>1～1</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>4/単体/次の3回の攻撃速度が200％増加</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td>元祖定番初期ペット。</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>骸骨剣士（二剣）</td>
+                            <td>アンデッド型</td>
+                            <td>多数</td>
+                            <td>コボルトの洞窟B1（小両刀骸骨/両刀骸骨戦士N）</td>
+                            <td>ジョン・マルコ、コボ秘密で直通</td>
+                            <td>1～1</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>4/単体/次の3回の攻撃速度が200％増加</td>
+                            <td>可能</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td>元祖定番初期ネクロ用ペット。</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>シーフ</td>
+                            <td>人間型</td>
+                            <td>多数</td>
+                            <td>冒険家協会　冒険家訓練所 右下<br />（コソ泥/シーフN）</td>
+                            <td>チュートリアル</td>
+                            <td>1～1</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>4/単体/次の3回の攻撃速度が200％増加</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td>冒険家訓練所のMobはほとんどテイム不可の中での例外</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>シーフ</td>
+                            <td>人間型</td>
+                            <td>多数</td>
+                            <td>古都西←（シーフ/シーフN）</td>
+                            <td>ガイドシステムで旧赤目B1<br />ミラーテレポーターで直通<br />(悪夢のサソリ）</td>
+                            <td>5～10</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>4/単体/次の3回の攻撃速度が200％増加</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>デビルスカラー</td>
+                            <td>人間型</td>
+                            <td>多数</td>
+                            <td>古都東（ダークサマナー/ダークサマナーN）</td>
+                            <td>自力orミラーテレポーターで直通<br />（悪夢のサソリ）</td>
+                            <td>5～5</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>4/単体/次の3回の攻撃速度が200％増加</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/01090000.png" width="50px" height="50px"></td>
+                            <td>さすらう傭兵</td>
+                            <td>人間型</td>
+                            <td>スウェブ17F</td>
+                            <td>スウェブ17F　16Fのポータル付近<br />（さすらう傭兵/さすらう傭兵Zin）<br />※1時間沸き 1体のみ</td>
+                            <td>レッドアイ移動士でスウェブ20F</td>
+                            <td>330～335</td>
+                            <td>130～135</td>
+                            <td>物理</td>
+                            <td>4/単体/次の3回の攻撃速度が200％増加</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>△</td>
+                            <td>1時間沸きでここだけ。<br />こだわりがなければファミやシフでいいかも。</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>エリート生霊</td>
+                            <td>神獣型</td>
+                            <td>近郊森/妖精たちの安息所</td>
+                            <td>近郊森/妖精たちの安息所<br />（エリート生霊/エリート生霊Zin）<br /></td>
+                            <td>ガイドシステムで直通</td>
+                            <td>710～750</td>
+                            <td>510～550</td>
+                            <td>物理</td>
+                            <td>4/単体/次の3回の攻撃速度が200％増加</td>
+                            <td>不可</td>
+                            <td>5分沸き、5体</td>
+                            <td>〇</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>エリプト兵</td>
+                            <td>人間型</td>
+                            <td>疑問の森<br />（エルン山迂回路はテイム不可）</td>
+                            <td>疑問の森北西部　通常Mob<br />（エリプト兵/エリプト兵Zin）</td>
+                            <td>ミラーテレポーターで直通<br />（エルフ守護者）</td>
+                            <td>650～700</td>
+                            <td>450～500</td>
+                            <td>物理</td>
+                            <td>4/単体/次の3回の攻撃速度が200％増加</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>ヴァンパイア</td>
+                            <td>アンデッド型</td>
+                            <td>多数</td>
+                            <td>狼巣窟（下級ヴァンパイア/ヴァンパイアN）</td>
+                            <td>ジョン・マルコ、狼秘密で直通</td>
+                            <td>17～19</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>5/単体/なし</td>
+                            <td>可能</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/010b0000.png" width="50px" height="50px"></td>
+                            <td>スコフィールダー<br />覚醒逃亡ハンター</td>
+                            <td>人間型</td>
+                            <td>フォリン地下</td>
+                            <td>フォリン地下（スコフィールダー/スコフィールダーZin）<br /></td>
+                            <td>ガイドシステムで直通</td>
+                            <td>365～370</td>
+                            <td>165～170</td>
+                            <td>物理</td>
+                            <td>5/単体/なし</td>
+                            <td>不可</td>
+                            <td>2分沸き</td>
+                            <td>〇</td>
+                            <td>2008/7/29実装</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/010b0000.png" width="50px" height="50px"></td>
+                            <td>スコフィールダー<br />覚醒逃亡ハンター</td>
+                            <td>人間型</td>
+                            <td>名無し塔B1</td>
+                            <td>名無し塔B1<br />（覚醒逃亡ハンター/覚醒逃亡ハンターZin）<br /></td>
+                            <td>ガイドシステムで名無し塔1Fより</td>
+                            <td>300～300</td>
+                            <td>100～100</td>
+                            <td>物理</td>
+                            <td>5/単体/なし</td>
+                            <td>不可</td>
+                            <td>5分沸き、5体</td>
+                            <td>〇</td>
+                            <td>2008/7/29実装</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/01080000.png" width="50px" height="50px"></td>
+                            <td>ハイエルフ<br />聖エルフ貴族</td>
+                            <td>人間型</td>
+                            <td>エルフ王宮3F</td>
+                            <td>エルフ王宮3F　一番奥<br />（ハイエルフ/ハイエルフZin）<br /></td>
+                            <td>ガイドシステムで直通</td>
+                            <td>470～480</td>
+                            <td>270～280</td>
+                            <td>物理</td>
+                            <td>5/単体/なし</td>
+                            <td>不可</td>
+                            <td>1時間沸き<br>1体のみ</td>
+                            <td>△</td>
+                            <td>1時間沸きでここだけな上、<br />4転クエなどの巻き添えでテイム困難。</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/01080000.png" width="50px" height="50px"></td>
+                            <td>ハイエルフ<br />聖エルフ貴族</td>
+                            <td>人間型</td>
+                            <td>試練の地（転生ペット）</td>
+                            <td>試練の地<br />（ディオレン/聖エルフ貴族Zin）</td>
+                            <td>転生ペットクエスト（シュトラ/ガリムト)</td>
+                            <td>1次転生</td>
+                            <td></td>
+                            <td>物理</td>
+                            <td>5/単体/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td>王宮3Fよりも混雑度の面でテイムしやすい。</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/010f0000.png" width="50px" height="50px"></td>
+                            <td>かまいたち<br>カマキリ</td>
+                            <td>悪魔型</td>
+                            <td>ビックマウスダンジョンB4</td>
+                            <td>ビックマウスダンジョンB4　マップ上＆左下<br />(かまいたち/かまいたちZin)<br /></td>
+                            <td>ガイドシステムで直通</td>
+                            <td>600～610</td>
+                            <td>400～410</td>
+                            <td>物理</td>
+                            <td>5/単体/5秒間の出血付与（50％～）</td>
+                            <td>不可</td>
+                            <td>※1時間30分沸き、2時間沸き<br>計2体</td>
+                            <td>△</td>
+                            <td>こだわりがなければ熊や狼でいいかも。</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>熊</td>
+                            <td>動物型</td>
+                            <td>多数</td>
+                            <td>グレートフォレスト/プラトン街道<br />(ブラックベアー/ブラックベアー)</td>
+                            <td>通常テレポーターで直通</td>
+                            <td>25～40</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>5/単体/5秒間の出血付与（50％～）</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>狼<br>ウルフ</td>
+                            <td>動物型</td>
+                            <td>多数</td>
+                            <td>古都西<br />（野良犬/野良犬N）</td>
+                            <td>自力orジョン・マルコでコボ秘密</td>
+                            <td>5～10</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>5/単体/5秒間の出血付与（50％～）</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>ゴートマン</td>
+                            <td>悪魔型</td>
+                            <td>モリネル/名無し塔/スウェブ等</td>
+                            <td>テレットトンネル北口<br />(ゴートマン/ゴートマンZin）</td>
+                            <td>ガイドシステムで直通（テレット秘密）</td>
+                            <td>25～25</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>5/単体/5秒間の出血付与（50％～）</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>ゾンビ</td>
+                            <td>アンデッド型</td>
+                            <td>多数</td>
+                            <td>古都西<br />（リビングデッド/リビングデッドN）</td>
+                            <td>自力orジョン・マルコでコボ秘密</td>
+                            <td>8～10</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>1/単体/与ダメ500％追加(実質6段)</td>
+                            <td>可能</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>廃人(アライブコープス）<br />ジャンキー</td>
+                            <td>アンデッド型</td>
+                            <td>多数</td>
+                            <td>地下水路B1<br />（モルモット/スリップワーカーN）</td>
+                            <td>自力orジョン・マルコ、古代王秘密で直通</td>
+                            <td>15～20</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>1/単体/与ダメ500％追加(実質6段)</td>
+                            <td>可能</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>ラットマン</td>
+                            <td>悪魔型</td>
+                            <td>多数</td>
+                            <td>古都東の右<br />（ラットマン/ラットマンN)</td>
+                            <td>自力orミラーテレポーターで直通<br />（サタン）</td>
+                            <td>15～18</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>1/単体/与ダメ500％追加(実質6段)</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>骸骨戦士（斧）</td>
+                            <td>アンデッド型</td>
+                            <td>多数</td>
+                            <td>地下墓地B1<br />（斧骸骨/斧骸骨戦士N）</td>
+                            <td>自力orジョン・マルコ、墓地秘密で直通</td>
+                            <td>5～8</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>1/単体/与ダメ500％追加(実質6段)</td>
+                            <td>可能</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>リザードマン</td>
+                            <td>悪魔型</td>
+                            <td>多数</td>
+                            <td>古都東（リザードマン/リザードマンN）</td>
+                            <td>自力orミラーテレポーターで直通<br />（悪夢のサソリ）</td>
+                            <td>3～8</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>1/単体/与ダメ500％追加(実質6段)</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>原始人</td>
+                            <td>人間型</td>
+                            <td>多数</td>
+                            <td>旧赤目B1<br />（レッドアイ信奉者/レッドアイ信奉者N）</td>
+                            <td>ガイドシステムで直通</td>
+                            <td>25～30</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>1/単体/与ダメ500％追加(実質6段)</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/01140000.png" width="50px" height="50px"></td>
+                            <td>ゴルゴン<br />覚醒バッファロー<br />聖ダークバッファロー</td>
+                            <td>神獣型</td>
+                            <td>ハイランド洞窟B2</td>
+                            <td>ハイランド洞窟B2<br />（ゴルゴン/ゴルゴンZin）<br />※中央のため、専用クエスト(洞窟の暗号）必要
+                            </td>
+                            <td>ジョン・マルコでハイランド秘密でB1</td>
+                            <td>295～300</td>
+                            <td>95～100</td>
+                            <td>物理</td>
+                            <td>1/単体/与ダメ500％追加(実質6段)</td>
+                            <td>不可</td>
+                            <td>※2時間沸き×2、1時間55分沸き×2<br>計4体<br /></td>
+                            <td>△</td>
+                            <td>2時間沸きな上に、移動が大変。<br />転生や覚醒をテイムした方が早い。</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/01140000.png" width="50px" height="50px"></td>
+                            <td>ゴルゴン<br />覚醒バッファロー<br />聖ダークバッファロー</td>
+                            <td>神獣型</td>
+                            <td>トラン森中部</td>
+                            <td>トラン森中部<br />（覚醒バッファロー/覚醒バッファローZin）<br />※5分沸き、5体</td>
+                            <td>ガイドシステムで直通</td>
+                            <td>600～600</td>
+                            <td>400～400</td>
+                            <td>物理</td>
+                            <td>1/単体/与ダメ500％追加(実質6段)</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/01140000.png" width="50px" height="50px"></td>
+                            <td>ゴルゴン<br />覚醒バッファロー<br />聖ダークバッファロー</td>
+                            <td>神獣型</td>
+                            <td>試練の地（転生ペット）</td>
+                            <td>試練の地<br />（クオトン/聖ダークバッファローZin）</td>
+                            <td>転生ペットクエスト（シュトラ/ガリムト)</td>
+                            <td>1次転生</td>
+                            <td></td>
+                            <td>物理</td>
+                            <td>1/単体/与ダメ500％追加(実質6段)</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>サティロス<br />聖ケンタウロス王</td>
+                            <td>神獣型</td>
+                            <td>モリネル/クェレスプリング湖/テレット南口等<br />（初期神獣のためＮは不可）</td>
+                            <td>テレットトンネル南口<br />(サティロス/サティロスZin）</td>
+                            <td>ミラーテレポーターでテレット↓より<br />（火炎の鬼）</td>
+                            <td>34～36</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>1/単体/与ダメ500％追加(実質6段)</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>サティロス<br />聖ケンタウロス王</td>
+                            <td>神獣型</td>
+                            <td>試練の地（転生ペット）</td>
+                            <td>試練の地<br />（ティルカン/聖ケンタウロス王Zin）</td>
+                            <td>転生ペットクエスト（シュトラ/ガリムト)</td>
+                            <td>3次転生</td>
+                            <td></td>
+                            <td>物理</td>
+                            <td>1/単体/与ダメ500％追加(実質6段)</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>△</td>
+                            <td>同性能のため通常サティテイムの方が早い。</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/010c0000.png" width="50px" height="50px"></td>
+                            <td>堕落オーガ<br />聖剣闘士</td>
+                            <td>悪魔型</td>
+                            <td>スウェブB13</td>
+                            <td>スウェブB13マップ中央<br />（堕落オーガ/堕落オーガZin）<br /></td>
+                            <td>ガイドシステムでスウェブB12より</td>
+                            <td>446～450</td>
+                            <td>246～250</td>
+                            <td>物理</td>
+                            <td>1/単体/与ダメ500％追加(実質6段)</td>
+                            <td>不可</td>
+                            <td>60分</td>
+                            <td>△</td>
+                            <td>こちらは逆に1時間沸きのため、<br />欲しいなら転生ペットクエでそろえたほうがいいかも。</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/010c0000.png" width="50px" height="50px"></td>
+                            <td>堕落オーガ<br />聖剣闘士</td>
+                            <td>悪魔型</td>
+                            <td>試練の地（転生ペット）</td>
+                            <td>試練の地<br />（バルベルド/聖剣闘士Zin）</td>
+                            <td>転生ペットクエスト（シュトラ/ガリムト)</td>
+                            <td>4次転生</td>
+                            <td></td>
+                            <td>物理</td>
+                            <td>1/単体/与ダメ500％追加(実質6段)</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>エルフ戦士</td>
+                            <td>人間型</td>
+                            <td>多数</td>
+                            <td>テレットトンネル　左下付近<br />（エルフ暗殺者/エルフ暗殺者Zin）<br />※1匹沸き、鍵扉あり</td>
+                            <td>ミラーテレポーターでテレット↓より<br />（火炎の鬼）<br />※メンテ直後等、扉が施錠されている場合は、<br />　鋼扉鍵が1本or2本必要<br />（南側から行けば1本で済む）
+                            </td>
+                            <td>5～7</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>6/単体(遠距離)/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>△</td>
+                            <td>元祖暗殺エルフ。わざわざテレットまで<br />潜るよりは他をとれるレベルまで上げたほうがいいかも。</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>エルフ戦士</td>
+                            <td>人間型</td>
+                            <td>多数</td>
+                            <td>古都西←（エルフ戦士/エルフ戦士N）</td>
+                            <td>ガイドシステムで旧赤目B1<br />ミラーテレポーターで直通<br />(悪夢のサソリ）</td>
+                            <td>12～14</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>6/単体/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>覚醒悪魔</td>
+                            <td>悪魔型</td>
+                            <td>ゴールド・スワンプ洞窟B1</td>
+                            <td>ゴールド・スワンプ洞窟B1<br />（エリート悪魔/覚醒悪魔Zin）<br />※5分沸き、5体</td>
+                            <td>ガイドシステムでヘソパル秘密（スワンプB2）<br />より</td>
+                            <td>600～600</td>
+                            <td>400～400</td>
+                            <td>物理</td>
+                            <td>6/単体/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>覚醒砂漠戦士</td>
+                            <td>人間型</td>
+                            <td>次元のデフヒルズ古代遺跡B2</td>
+                            <td>次元のデフヒルズ古代遺跡B2<br />（エリート砂漠戦士/覚醒砂漠戦士Zin）<br />※20分沸き、4体</td>
+                            <td>ガイドシステムで直通</td>
+                            <td>500～500</td>
+                            <td>300～300</td>
+                            <td>物理</td>
+                            <td>6/単体/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>精鋭コネクター</td>
+                            <td>アンデッド型</td>
+                            <td>墓地（ヘクトルクエ関連マップ）</td>
+                            <td>墓地<br />（精鋭コネクター/精鋭コネクターZin）<br />※5分沸き、5体<br />※ヘクトルクエクリア後のため要注意</td>
+                            <td>ガリムトNPC「ロードセル」より<br /><br />※クエクリア前のジェシーがいるマップは<br />　出現しない</td>
+                            <td>880～910</td>
+                            <td>680～710</td>
+                            <td>物理</td>
+                            <td>6/単体/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>コクーン闇商人</td>
+                            <td>人間型</td>
+                            <td>商店2F/ガルカスB1/モリネル6F</td>
+                            <td>商店2F<br />(コクーン闇商人/コクーン闇商人N）</td>
+                            <td>ガイドシステムで直通</td>
+                            <td>565～580</td>
+                            <td>365～380</td>
+                            <td>物理</td>
+                            <td>最大3.5/実質範囲<br />/複数だと反射し7回攻撃（メイドの皿投げ）</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>×</td>
+                            <td>範囲・単体どちらも劣化気味。</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>ミイラ</td>
+                            <td>アンデッド型</td>
+                            <td>多数</td>
+                            <td>地下墓地B2<br />（ミイラ/ミイラN）</td>
+                            <td>ジョン・マルコ、墓地秘密で地下墓地B1より</td>
+                            <td>14～14</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>5/範囲/なし</td>
+                            <td>可能</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td>鷲・蟹と比べて速度が遅い</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>鷲</td>
+                            <td>悪魔型</td>
+                            <td>多数</td>
+                            <td>枯れ井戸<br />(新米鷲戦士/鷲戦士N)</td>
+                            <td>ジョン・マルコ、枯れ井戸秘密で直通</td>
+                            <td>3～4</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>5/範囲/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>◎</td>
+                            <td>物理範囲では段数最大。<br />ダメージ自体は骸骨騎士に劣るが<br />ブロックに強い</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>蟹</td>
+                            <td>動物型</td>
+                            <td>多数</td>
+                            <td>ギルディル沼地洞窟B2<br />（クラブシェル/クラブシェルN）</td>
+                            <td>ジョン・マルコ、沼秘密で沼B1より</td>
+                            <td>25～28</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>5/範囲/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>◎</td>
+                            <td>物理範囲では段数最大。<br />ダメージ自体は骸骨騎士に劣るが<br />ブロックに強い</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>アーチャー</td>
+                            <td>人間型</td>
+                            <td>多数</td>
+                            <td>古都南<br />（新米狩人/ハンターN）</td>
+                            <td>自力or<br />ジョン・マルコ、沼秘密で沼B1より</td>
+                            <td>1～2</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>5/範囲（遠距離）/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td>スプレッドのため範囲が鷲・蟹に劣る</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>オーガ</td>
+                            <td>悪魔型</td>
+                            <td>多数</td>
+                            <td>古都西↑<br />（オーガ/オーガN）</td>
+                            <td>自力or<br />ジョン・マルコ、オガ秘密でオガB1より</td>
+                            <td>18～21</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>1/範囲/与ダメ400％追加(実質5段)</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>△</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>斧槍兵</td>
+                            <td>人間型</td>
+                            <td>多数</td>
+                            <td>オート地下監獄B1<br />（斧槍兵/コートナイトN）</td>
+                            <td>ガイドシステム、マーズ秘密で直通</td>
+                            <td>23～26</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>1/範囲/与ダメ400％追加(実質5段)</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>△</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>ハイランダー</td>
+                            <td>人間型</td>
+                            <td>多数</td>
+                            <td>ハノブ←<br />（メタルゴーレム/オークN）</td>
+                            <td>ミラーテレポーターで直通<br />（ブレイマ）</td>
+                            <td>40～50</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>1/範囲/与ダメ400％追加(実質5段)</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>△</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>マーマン</td>
+                            <td>神獣型</td>
+                            <td>ゴールドスワンプ/ノーススワンプ/河口ラ等<br />（初期神獣のためＮは不可）</td>
+                            <td>ノーススワンプ<br />（ニックス/ニックスZin）</td>
+                            <td>通常テレポーターで直通</td>
+                            <td>175～180</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>1/範囲/与ダメ400％追加(実質5段)</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>△</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>ゴーレム</td>
+                            <td>神獣型</td>
+                            <td>モリネル/バヘル大河/滝B1等<br />（初期神獣のためＮは不可）</td>
+                            <td>ビガプ↑↑<br />（ロックゴーレム/ロックゴーレムEx）</td>
+                            <td>自力or<br />ミラーテレポーターで前後マップ<br />（エルフ将校orイーグルヘッド）</td>
+                            <td>45～48</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>1/範囲/与ダメ400％追加(実質5段)</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>△</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>骸骨騎士</td>
+                            <td>アンデッド型</td>
+                            <td>多数</td>
+                            <td>テレットトンネル　マップ右側<br />（巨人骸骨/巨人骸骨Zin）<br /><br />※北からだと鍵扉あり、南から推奨</td>
+                            <td>ミラーテレポーターでテレット↓より<br />（火炎の鬼）</td>
+                            <td>30～32</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>1/範囲/与ダメ600％追加(実質7段)</td>
+                            <td>可能</td>
+                            <td></td>
+                            <td>◎</td>
+                            <td>物理系のダメージ最大だが、ブロックに弱い。</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>骸骨騎士</td>
+                            <td>アンデッド型</td>
+                            <td>多数</td>
+                            <td>ハノブ高台望楼B2<br />（大型骸骨/大型骸骨N）</td>
+                            <td>ジョン・マルコでハノブ高台秘密でB3</td>
+                            <td>40～45</td>
+                            <td>1～1</td>
+                            <td>物理</td>
+                            <td>1/範囲/与ダメ600％追加(実質7段)</td>
+                            <td>可能</td>
+                            <td></td>
+                            <td>◎</td>
+                            <td>物理系のダメージ最大だが、ブロックに弱い。<br />テレットに潜るのが面倒ならこちらを。</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>エリートバンシー</td>
+                            <td>アンデッド型</td>
+                            <td>荒野の要塞</td>
+                            <td>荒野の要塞<br />（エリートバンシー/エリートバンシーZin）<br />※5分沸き、5体</td>
+                            <td>ガイドシステムで直通</td>
+                            <td>900～925</td>
+                            <td>700～725</td>
+                            <td>物理</td>
+                            <td>1/範囲/与ダメ600％追加(実質7段)</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>◎</td>
+                            <td>物理系のダメージ最大だが、ブロックに弱い。<br />骸骨騎士と同性能のため、好みで。</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>ガーゴイル</td>
+                            <td>神獣型</td>
+                            <td>スウェブ/名無し塔/トラン森等<br />（初期神獣のためＮは不可）</td>
+                            <td>沈んだ遺跡<br />（ムーブスタチュー/マーブルガゴイルZin）<br />※MQ限定マップ</td>
+                            <td>ゴリマ沼地の該当オブジェクトより<br /><br />※MQ1-4-9-1「絵の片方を探せ」時のみ入場可</td>
+                            <td>225～230</td>
+                            <td>25～30</td>
+                            <td>風</td>
+                            <td>4/単体/次の3回の攻撃速度が200％増加</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td>ファミ系特技で魔法系持ち。<br />ＭＱ終盤でゲット可能。</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>ガーゴイル</td>
+                            <td>神獣型</td>
+                            <td>スウェブ/名無し塔/トラン森等<br />（初期神獣のためＮは不可）</td>
+                            <td>名無し塔5F<br />（マーブルガゴイル/マーブルガゴイルEx）</td>
+                            <td>ガイドシステムで直通</td>
+                            <td>240～250</td>
+                            <td>40～50</td>
+                            <td>風</td>
+                            <td>4/単体/次の3回の攻撃速度が200％増加</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td>ファミ系特技で魔法系持ち。<br />通常MAPではここが最短</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>フーフー</td>
+                            <td>神獣型</td>
+                            <td>モリネル/兵営B1/大傭兵B2等<br />（初期神獣のためＮは不可）</td>
+                            <td>テレットトンネル　マップ全域<br />（ブレイザー/ブレイジャーZin）</td>
+                            <td>ミラーテレポーターでテレット↓より<br />（火炎の鬼）</td>
+                            <td>28～30</td>
+                            <td>1～1</td>
+                            <td>火</td>
+                            <td>5/単体/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>△</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/01100000.png" width="50px" height="50px"></td>
+                            <td>ジャックランタン<br />覚醒パンプキン</td>
+                            <td>悪魔型</td>
+                            <td>納骨B1</td>
+                            <td>納骨B1<br />(覚醒パンプキン/覚醒パンプキンZin）</td>
+                            <td>ガイドシステムで直通</td>
+                            <td>400～400</td>
+                            <td>200～200</td>
+                            <td>火</td>
+                            <td>5/単体/なし</td>
+                            <td>不可</td>
+                            <td>5分湧き<br>
+                            5体</td>
+                            <td>△</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/01100000.png" width="50px" height="50px"></td>
+                            <td>ジャックランタン<br />覚醒パンプキン</td>
+                            <td>悪魔型</td>
+                            <td>納骨B3</td>
+                            <td>納骨B3　B4のポータル付近<br />(ジャックランタン/ジャックランタンZin）</td>
+                            <td>ガイドシステムで納骨B1より</td>
+                            <td>406～410</td>
+                            <td>206～210</td>
+                            <td>火</td>
+                            <td>5/単体/なし</td>
+                            <td>不可</td>
+                            <td>60分</td>
+                            <td>△</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/01120000.png" width="50px" height="50px"></td>
+                            <td>蛙</td>
+                            <td>動物型</td>
+                            <td>ミズナB2</td>
+                            <td>ミズナB2<br />(フロッグ/フロッグZin）<br /></td>
+                            <td>ガイドシステムでミズナB1より</td>
+                            <td>534～534</td>
+                            <td>334～334</td>
+                            <td>水</td>
+                            <td>5/単体/コールド効果</td>
+                            <td>不可</td>
+                            <td>100分沸き、105分沸き、110分沸き、120分沸き<br />計4体</td>
+                            <td>△</td>
+                            <td>mobが小さいので探すとき注意</td>
+                        </tr>
+                        <tr>
+                            <td><img height="50px" src="../monster/design/image/monster/01060000.png" width="50px" />
+                            </td>
+                            <td>骸骨魔法師<br />聖アンデッドロック</td>
+                            <td>アンデッド型</td>
+                            <td>呪いの墓B1</td>
+                            <td>呪いの墓B1　左下付近<br />（骸骨魔法師/骸骨魔法師Zin）</td>
+                            <td>ガイドシステムで直通</td>
+                            <td>200～210</td>
+                            <td>1～10</td>
+                            <td>水</td>
+                            <td>5/単体/コールド効果</td>
+                            <td>可能</td>
+                            <td>60分</td>
+                            <td>△</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><img height="50px" src="../monster/design/image/monster/01060000.png" width="50px" />
+                            </td>
+                            <td>骸骨魔法師<br />聖アンデッドロック</td>
+                            <td>アンデッド型</td>
+                            <td>商店2F</td>
+                            <td>商店2F 右下側　通常Mob<br />（骸骨魔法師/骸骨魔法師Zin）</td>
+                            <td>ガイドシステムで直通</td>
+                            <td>565～580</td>
+                            <td>365～380</td>
+                            <td>水</td>
+                            <td>5/単体/コールド効果</td>
+                            <td>可能</td>
+                            <td></td>
+                            <td>△</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><img height="50px" src="../monster/design/image/monster/01060000.png" width="50px" />
+                            </td>
+                            <td>骸骨魔法師<br />聖アンデッドロック</td>
+                            <td>アンデッド型</td>
+                            <td>試練の地（転生ペット）</td>
+                            <td>試練の地<br />（グローケン/聖アデッドロックZin）</td>
+                            <td>転生ペットクエスト（シュトラ/ガリムト)</td>
+                            <td>3次転生</td>
+                            <td></td>
+                            <td>水</td>
+                            <td>5/単体/コールド効果</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>△</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/010a0000.png" width="50px" height="50px"></td>
+                            <td>時の旅人<br />聖シーク守護者</td>
+                            <td>人間型</td>
+                            <td>時の森1層</td>
+                            <td>時の森1層　左上<br />（時の旅人/時の旅人Zin）<br />※1時間沸き　1体のみ</td>
+                            <td>ガイドシステムで直通</td>
+                            <td>650～660</td>
+                            <td>450～460</td>
+                            <td>風</td>
+                            <td>5/単体/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>△</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/010a0000.png" width="50px" height="50px"></td>
+                            <td>時の旅人<br />聖シーク守護者</td>
+                            <td>人間型</td>
+                            <td>試練の地（転生ペット）</td>
+                            <td>試練の地<br />（ラン/聖シーク守護者Zin）</td>
+                            <td>転生ペットクエスト（シュトラ/ガリムト)</td>
+                            <td>2次転生</td>
+                            <td></td>
+                            <td>風</td>
+                            <td>5/単体/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>△</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>蜘蛛</td>
+                            <td>動物型</td>
+                            <td>多数</td>
+                            <td>古都東<br />（土蜘蛛/スパイダーN）</td>
+                            <td>自力orミラーテレポーターで直通<br />（悪夢のサソリ）</td>
+                            <td>1～1</td>
+                            <td>1～1</td>
+                            <td>土</td>
+                            <td>5/単体/毒</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>△</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>芋虫<br>クローラー</td>
+                            <td>動物型</td>
+                            <td>多数</td>
+                            <td>古都東<br />（ラルヴァ/蟲N）</td>
+                            <td>自力orミラーテレポーターで直通<br />（悪夢のサソリ）</td>
+                            <td>3～5</td>
+                            <td>1～1</td>
+                            <td>土</td>
+                            <td>5/単体/毒</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>△</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>聖イーグルヘッド</td>
+                            <td>神獣型</td>
+                            <td>試練の地（転生ペット）</td>
+                            <td>試練の地<br />（バルカイン/聖イーグルヘッドZin）</td>
+                            <td>転生ペットクエスト（シュトラ/ガリムト)</td>
+                            <td>5次転生</td>
+                            <td></td>
+                            <td>光</td>
+                            <td>5/単体/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>△</td>
+                            <td>実質、属性及び特技性能が固有だが<br />5次転生な上に範囲系に見劣りする。</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>ディムジェスター</td>
+                            <td>神獣型</td>
+                            <td>モリネル/デフヒルズ/アルパス等<br />（初期神獣のためＮは不可）</td>
+                            <td>アルパスB3 マップ中央<br />（シャドウス/呪われた悪霊Ex）</td>
+                            <td>ジョン・マルコ、アルパス秘密で直通</td>
+                            <td>80～90</td>
+                            <td>1～1</td>
+                            <td>闇</td>
+                            <td>5/単体/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>△</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/010e0100.png" width="50px" height="50px"></td>
+                            <td>サキュバス<br />覚醒サキュバス</td>
+                            <td>悪魔型</td>
+                            <td>トラン森北部</td>
+                            <td>トラン森北部<br />（覚醒サキュバス/覚醒サキュバスZin）<br />※5分沸き、5体</td>
+                            <td>ガイドシステムで直通</td>
+                            <td>300～300</td>
+                            <td>100～100</td>
+                            <td>火</td>
+                            <td>4/範囲/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/010e0100.png" width="50px" height="50px"></td>
+                            <td>サキュバス<br />覚醒サキュバス</td>
+                            <td>悪魔型</td>
+                            <td>モリネル4F</td>
+                            <td>モリネル4F　5Fのポータル付近<br />（サキュバス/サキュバスZin）<br />※1時間沸き　1体のみ</td>
+                            <td>ガイドシステムで直通</td>
+                            <td>620～620</td>
+                            <td>420～420</td>
+                            <td>火</td>
+                            <td>4/範囲/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>覚醒魔術師</td>
+                            <td>悪魔型</td>
+                            <td>モリネル6F</td>
+                            <td>モリネル6F<br />（エリート魔術師/覚醒魔術師Zin）<br />※5分沸き、5体</td>
+                            <td>ガイドシステムで直通</td>
+                            <td>500～500</td>
+                            <td>300～300</td>
+                            <td>火</td>
+                            <td>4/範囲/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>△</td>
+                            <td>やや速度が遅い</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/01110000.png" width="50px" height="50px"></td>
+                            <td>ゴリラ<br />覚醒ウォリア<br />聖ウィングゴング</td>
+                            <td>動物型</td>
+                            <td>ハンヒ山脈</td>
+                            <td>ハンヒ山脈 マップ左側<br />（ホワイトゴルゴ/ホワイトゴルゴZin）<br />※20分沸き、2体</td>
+                            <td>通常テレポーターで直通</td>
+                            <td>270～275</td>
+                            <td>70～75</td>
+                            <td>土</td>
+                            <td>4/範囲/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/01110000.png" width="50px" height="50px"></td>
+                            <td>ゴリラ<br />覚醒ウォリア<br />聖ウィングゴング</td>
+                            <td>動物型</td>
+                            <td>ミズナB1</td>
+                            <td>ミズナB1<br />(覚醒ウォリア/覚醒ウォリアZin）<br />※5分沸き、5体</td>
+                            <td>ガイドシステムで直通</td>
+                            <td>500～500</td>
+                            <td>300～300</td>
+                            <td>土</td>
+                            <td>4/範囲/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/01110000.png" width="50px" height="50px"></td>
+                            <td>ゴリラ<br />覚醒ウォリア<br />聖ウィングゴング</td>
+                            <td>動物型</td>
+                            <td>試練の地（転生ペット）</td>
+                            <td>試練の地<br />（ゴンゴン/聖ウィングコングZin）</td>
+                            <td>転生ペットクエスト（シュトラ/ガリムト)</td>
+                            <td>2次転生</td>
+                            <td></td>
+                            <td>土</td>
+                            <td>4/範囲/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>△</td>
+                            <td>同性能のため、通常or覚醒ゴリラをテイムした方早い。</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/01150000.png" width="50px" height="50px"></td>
+                            <td>ユニコーン<br />聖ペガサス</td>
+                            <td>神獣型</td>
+                            <td>時の森3層</td>
+                            <td>時の森3層 左上<br />（ユニコーン/ユニコーンZin）<br />※2時間沸き　1体のみ</td>
+                            <td>ガイドシステムで直通</td>
+                            <td>700～710</td>
+                            <td>500～510</td>
+                            <td>光</td>
+                            <td>4/範囲/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>△</td>
+                            <td>こちらは逆に1時間沸きのため、<br />欲しいなら転生ペットクエでそろえたほうがいいかも。</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/01150000.png" width="50px" height="50px"></td>
+                            <td>ユニコーン<br />聖ペガサス</td>
+                            <td>神獣型</td>
+                            <td>試練の地（転生ペット）</td>
+                            <td>試練の地<br />（アルシウス/聖ペガサスZin）</td>
+                            <td>転生ペットクエスト（シュトラ/ガリムト)</td>
+                            <td>4次転生</td>
+                            <td></td>
+                            <td>光</td>
+                            <td>4/範囲/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/01050000.png" width="50px" height="50px"></td>
+                            <td>大骸骨</td>
+                            <td>アンデッド型</td>
+                            <td>納骨B5</td>
+                            <td>納骨B5 B4ポータル付近<br />（大骸骨/大骸骨Zin）<br />※1時間沸き　1体のみ</td>
+                            <td>ガイドシステムで納骨B1より</td>
+                            <td>416～420</td>
+                            <td>216～220</td>
+                            <td>闇</td>
+                            <td>4/範囲/なし</td>
+                            <td>可能</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td>1時間沸きだが、同性能が↓のクエ限定のため<br />地道に捕まえたければ。</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/01050000.png" width="50px" height="50px"></td>
+                            <td>大骸骨</td>
+                            <td>アンデッド型</td>
+                            <td>ウエストスワンプ洞窟</td>
+                            <td>ウエストスワンプ洞窟 左上<br />（アイドレースカル/大骸骨Zin）<br />※マップ称号クエLv10限定Mob<br />クエ対象者が倒すまで無限沸き可能</td>
+                            <td>ガイドシステムで<br />ウエストスワンプ大空洞B1より<br />(Lv1201～）</td>
+                            <td>210～220</td>
+                            <td>10～20</td>
+                            <td>闇</td>
+                            <td>4/範囲/なし</td>
+                            <td>可能</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td>クエMobだが、抵抗補正はないため<br />テイム自体は容易</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>覚醒ファルコンジュニア</td>
+                            <td>動物型</td>
+                            <td>デフヒルズ西部地域</td>
+                            <td>デフヒルズ西部地域<br />(ファルコンJr/覚醒ファルコンジュニアZin）<br />※5分沸き、5体</td>
+                            <td>ガイドシステムで直通</td>
+                            <td>600～600</td>
+                            <td>400～400</td>
+                            <td>火</td>
+                            <td>5/範囲(遠距離）/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>◎</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>亀</td>
+                            <td>動物型</td>
+                            <td>多数</td>
+                            <td>古都南<br />（青亀/淡水亀N）</td>
+                            <td>自力or<br />ジョン・マルコ、沼秘密で沼B1より</td>
+                            <td>1～1</td>
+                            <td>1～1</td>
+                            <td>水</td>
+                            <td>5/範囲/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>◎</td>
+                            <td>元祖初期ペットその2。</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/01070000.png" width="50px" height="50px"></td>
+                            <td>ボーンドラゴン<br />覚醒ボーンキメラ</td>
+                            <td>アンデッド型</td>
+                            <td>スウェブB1</td>
+                            <td>スウェブB1<br />(覚醒ボーンキメラ/覚醒ボーンキメラZin)<br />※5分沸き、5体</td>
+                            <td>通常テレポーターでスウェブ1Fより</td>
+                            <td>300～300</td>
+                            <td>100～100</td>
+                            <td>土</td>
+                            <td>5/範囲/毒</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>◎</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/01070000.png" width="50px" height="50px"></td>
+                            <td>ボーンドラゴン<br />覚醒ボーンキメラ</td>
+                            <td>アンデッド型</td>
+                            <td>モリネル1F</td>
+                            <td>モリネル1F 96.79付近 2Fポータル近く<br />（ボーンドラゴン/ボーンドラゴンZin）<br />※1時間沸き、1体のみ</td>
+                            <td>ガイドシステムでモリネル5F<br />5F→モリネル外</td>
+                            <td>370～375</td>
+                            <td>170～175</td>
+                            <td>土</td>
+                            <td>5/範囲/毒</td>
+                            <td>可能</td>
+                            <td></td>
+                            <td>◎</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/01070000.png" width="50px" height="50px"></td>
+                            <td>ボーンドラゴン<br />覚醒ボーンキメラ</td>
+                            <td>アンデッド型</td>
+                            <td>デフヒルズ↑</td>
+                            <td>デフヒルズ↑<br />（カラモスの骨/ボーンドラゴンZin）<br />※ポーター称号クエLv10限定Mob<br />クエ対象者が倒すまで無限沸き可能</td>
+                            <td>ガイドシステムでデフヒルズより</td>
+                            <td>345～350</td>
+                            <td>145～150</td>
+                            <td>土</td>
+                            <td>5/範囲/毒</td>
+                            <td>可能</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td>信義セット必須。<br />クエMobのため、抵抗に大幅な補正がかかっており、<br />死臭+ギリギリまで減らしてもほぼテイムできない。</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>覚醒魔サキュバス</td>
+                            <td>悪魔型</td>
+                            <td>ガルカスB1</td>
+                            <td>ガルカスB1<br />(精鋭サキュバス/覚醒魔サキュバスZin）<br />※5分沸き、5体</td>
+                            <td>ガイドシステムで直通</td>
+                            <td>600～600</td>
+                            <td>400～400</td>
+                            <td>水</td>
+                            <td>6/範囲（遠距離）/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>クラゲ</td>
+                            <td>動物型</td>
+                            <td>多数</td>
+                            <td>ギルディル沼地洞窟B1<br />（飛海月/ゼリーフィッシュN）</td>
+                            <td>ジョン・マルコ、沼秘密で直通</td>
+                            <td>15～15</td>
+                            <td>1～1</td>
+                            <td>水</td>
+                            <td>7/範囲/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>◎</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>エリート呪術師</td>
+                            <td>神獣型</td>
+                            <td>生命の森中心部</td>
+                            <td>生命の森中心部<br />（エリート呪術師/エリート呪術師Zin）<br />※5分沸き、5体</td>
+                            <td>ガイドシステムで直通</td>
+                            <td>1030～1070</td>
+                            <td>830～870</td>
+                            <td>風</td>
+                            <td>7/範囲/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>◎</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>覚醒森の司令</td>
+                            <td>神獣型</td>
+                            <td>時の森3層</td>
+                            <td>時の森3層<br />（エリート森の司令/覚醒森の司令Zin）<br />※5分沸き、5体</td>
+                            <td>ガイドシステムで直通</td>
+                            <td>600～600</td>
+                            <td>400～400</td>
+                            <td>土</td>
+                            <td>7/範囲/毒</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>◎</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/010d0000.png" width="50px" height="50px"></td>
+                            <td>引導者<br />聖邪臣</td>
+                            <td>悪魔型</td>
+                            <td>名無し塔B5</td>
+                            <td>名無し塔B5 B4ポータル付近<br />（引導者/引導者Zin）<br />※1時間沸き、1体のみ</td>
+                            <td>ガイドシステムで名無し塔B4より</td>
+                            <td>330～340</td>
+                            <td>130～140</td>
+                            <td>闇</td>
+                            <td>7/範囲/なし</td>
+                            <td>不可</td>
+                            <td>60分</td>
+                            <td>〇</td>
+                            <td>2008/7/29実装<br>転生ペットはが5転専用のため<br />早く使いたければ。<br />範囲・段数も優秀。</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/010d0000.png" width="50px" height="50px"></td>
+                            <td>引導者<br />聖邪臣</td>
+                            <td>悪魔型</td>
+                            <td>試練の地（転生ペット）</td>
+                            <td>試練の地<br />（シュム/聖邪臣Zin）</td>
+                            <td>転生ペットクエスト（シュトラ/ガリムト)</td>
+                            <td>5次転生</td>
+                            <td></td>
+                            <td>闇</td>
+                            <td>7/範囲/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>◎</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>エリートラク</td>
+                            <td>アンデッド型</td>
+                            <td>デフヒルズ峡谷</td>
+                            <td>デフヒルズ峡谷<br />（エリートラク/エリートラクZin）<br />※5分沸き、5体</td>
+                            <td>ガイドシステムで直通</td>
+                            <td>850～900</td>
+                            <td>650～700</td>
+                            <td>闇</td>
+                            <td>3?/範囲（遠距離）/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>〇</td>
+                            <td>アークデビルのダークボールに近い。<br />当て方によっては3回以上ヒット？</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>ボイドラスター(イカ)</td>
+                            <td>神獣型</td>
+                            <td>BFダンジョン/ノーススワンプ/テレット↓<br />（初期神獣のためＮは不可）</td>
+                            <td>テレット↓<br />（グリムジョーカー/グリムジョーカーZin）</td>
+                            <td>ミラーテレポーターで直通<br />（火炎の鬼）</td>
+                            <td>10～10</td>
+                            <td>1～1</td>
+                            <td>光</td>
+                            <td>5/単体/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>×</td>
+                            <td>設定ミスなのか、知恵が一番高い</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>サソリ</td>
+                            <td>動物型</td>
+                            <td>多数</td>
+                            <td>古都南<br />（変異スコーピオン/スコーピオンN）</td>
+                            <td>自力or<br />ジョン・マルコ、沼秘密で沼B1より</td>
+                            <td>7～9</td>
+                            <td>1～1</td>
+                            <td>土</td>
+                            <td>5/単体/毒</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>×</td>
+                            <td>設定ミスなのか、知恵が一番高い</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../monster/design/image/monster/01130000.png" width="50px" height="50px"></td>
+                            <td>カラフルトカゲ</td>
+                            <td>動物型</td>
+                            <td>スウェブB4</td>
+                            <td>スウェブB4<br />（カラフルトカゲ/カラフルトカゲZin）<br />※3分沸き、12体</td>
+                            <td>ジョン・マルコ、スウェブアジト秘密で<br />B5より</td>
+                            <td>340～340</td>
+                            <td>140～140</td>
+                            <td>土</td>
+                            <td>5/単体/なし</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>×</td>
+                            <td>設定ミスなのか、魔法タイプなのに力が一番高い</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>精鋭スミロドン</td>
+                            <td>動物型</td>
+                            <td>ヤティカヌ日の出</td>
+                            <td>ヤティカヌ日の出<br />（精鋭スミロドン/精鋭スミロドンZin）<br />※5分沸き、5体<br />ヤティカヌクエクリア前提</td>
+                            <td>ヤティカヌクエ進行後、ガイドシステムで野営地に飛んでそこから移動</td>
+                            <td>1300～1350</td>
+                            <td>1100～1150</td>
+                            <td>物理</td>
+                            <td>4/単体/次の3回の攻撃速度が200％増加</td>
+                            <td>不可</td>
+                            <td></td>
+                            <td>△</td>
+                            <td>2023/2実装</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+                <h4>備考</h4>
+                - 2023/2に仕様変更が入りました。<br>
+                - 旧情報：<a href="tamepetlist.html">テイム可能ペット一覧</a><br>
+                - マップ名が長いものについては通称で表記させていただいています。<br>
+                - ※毒舌低下は最大の200Lvで計算（SLv64）<br>
+                - クエ限定マップは表記していません。<br>
+                <br>
+                <br>
+                <br>
+                <h4>検索のコツ</h4>
+                - 「物理」と検索すると物理ペットでフィルタできます<br>
+                - ネクロペットの場合「可能」で検索するとフィルタできます<br>
+                - スペースで区切られた複数の単語を入力するとAND検索ができます。<br>
+                　例)「範囲 悪魔型」<br>
+                - カンマで区切られた複数の単語を入力するとOR検索ができます。<br>
+                　例）「動物型,神獣型」<br>
+                <!-- <tr>
+                    <td>オススメ度の説明</td>
+                    <td>NaN</td>
+                    <td>NaN</td>
+                    <td>NaN</td>
+                    <td>NaN</td>
+                    <td>NaN</td>
+                    <td>nannan - nan</td>
+                    <td>nannan - nan</td>
+                    <td>NaN</td>
+                    <td>NaN</td>
+                    <td>NaN</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>◎</td>
+                    <td>テイム難易度に対して十分な性能を持ち<br>終盤まで使える。</td>
+                    <td>NaN</td>
+                    <td>※毒舌低下は最大の200Lvで計算（SLv64）<br>　　クエ限定マップは表記なし</td>
+                    <td>NaN</td>
+                    <td>NaN</td>
+                    <td>nannan - nan</td>
+                    <td>nannan - nan</td>
+                    <td>NaN</td>
+                    <td>NaN</td>
+                    <td>NaN</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>〇</td>
+                    <td>テイム難易度が高いが、それなりの性能はある。<br>もしくは<br>性能が今一つ（他ペットの劣化）</td>
+                    <td>NaN</td>
+                    <td>NaN</td>
+                    <td>NaN</td>
+                    <td>NaN</td>
+                    <td>nannan - nan</td>
+                    <td>nannan - nan</td>
+                    <td>NaN</td>
+                    <td>NaN</td>
+                    <td>NaN</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>△</td>
+                    <td>テイム難易度に対し、性能がいまひとつ<br>（他ペットの劣化や沸きが長すぎる）</td>
+                    <td>NaN</td>
+                    <td>NaN</td>
+                    <td>NaN</td>
+                    <td>NaN</td>
+                    <td>nannan - nan</td>
+                    <td>nannan - nan</td>
+                    <td>NaN</td>
+                    <td>NaN</td>
+                    <td>NaN</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>×</td>
+                    <td>明らかにステや特技が見劣りし<br>オススメできない。</td>
+                    <td>NaN</td>
+                    <td>NaN</td>
+                    <td>NaN</td>
+                    <td>NaN</td>
+                    <td>nannan - nan</td>
+                    <td>nannan - nan</td>
+                    <td>NaN</td>
+                    <td>NaN</td>
+                    <td>NaN</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr> -->
+
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、株式会社G・O・Pに帰属します。<br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GOP Co., Ltd.
+                </footer>
+                <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく）
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    var getCellValue = function (tr, idx) {
+                        var cellValue = tr.children[idx].innerText || tr.children[idx].textContent;
+                        if (idx === 6) {
+                            // Special handling for the 'モンスターレベル' column
+                            var match = cellValue.match(/^(\d+)～/);
+                            if (match) {
+                                return parseInt(match[1]);
+                            } else {
+                                return 9999;
+                            }
+                        } else {
+                            return cellValue;
+                        }
+                    }
+                    var comparer = function (idx, asc) {
+                        return function (a, b) {
+                            var v1 = getCellValue(asc ? a : b, idx),
+                                v2 = getCellValue(asc ? b : a, idx);
+                            return v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2)
+                                ? v1 - v2
+                                : v1.toString().localeCompare(v2);
+                        }
+                    }
+                    document.querySelectorAll('th').forEach(function (th, idx) {
+                        th.addEventListener('click', function () {
+                            var table = th.closest('table');
+                            var tbody = table.querySelector('tbody');
+                            Array.from(tbody.querySelectorAll('tr'))
+                                .sort(comparer(idx, this.asc = !this.asc))
+                                .forEach(function (tr) {
+                                    tbody.appendChild(tr);
+                                });
+                        });
+                    });
+                    // Sort the table by the 'モンスターレベル' column (index 6) when the page is first loaded
+                    var th = document.querySelectorAll('th')[6];
+                    var table = th.closest('table');
+                    var tbody = table.querySelector('tbody');
+                    Array.from(tbody.querySelectorAll('tr'))
+                        .sort(comparer(6, true))
+                        .forEach(function (tr) {
+                            tbody.appendChild(tr);
+                        });
+                });
+            </script>
+
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        </div>
+</body>
+
+</html>
