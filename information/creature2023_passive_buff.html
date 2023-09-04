@@ -1,0 +1,2016 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=960">
+  <!-- Page styles -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+  <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-133658114-1');
+  </script>
+  <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+  <script>
+    function enter() {
+      if (window.event.keyCode == 13) {
+        var last_keyword = $('#search-field').val();
+        window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+      }
+    }
+  </script>
+  <script data-ad-client="ca-pub-2122309953813422" async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <style>
+    #view-source {
+      position: fixed;
+      display: block;
+      right: 0;
+      bottom: 0;
+      margin-right: 40px;
+      margin-bottom: 40px;
+      z-index: 900;
+    }
+  </style>
+  <script>
+    function searchTable() {
+      var input, filter, table, tr, td, i, j, txtValue;
+      input = document.getElementById("searchInput");
+      filter = input.value;
+      table = document.getElementById("table");
+      tr = table.getElementsByTagName("tr");
+
+      // Split the filter text by comma for OR search
+      var orFilters = filter.split(',');
+
+      for (i = 1; i < tr.length; i++) {
+        tr[i].style.display = "none";
+        td = tr[i].getElementsByTagName("td");
+        for (var orFilter of orFilters) {
+          var andFilters = orFilter.trim().split(' ');
+          var andFilterMatch = true;
+          for (var andFilter of andFilters) {
+            var cellMatch = false;
+            for (j = 0; j < td.length; j++) {
+              if (td[j]) {
+                txtValue = td[j].textContent || td[j].innerText;
+                if (txtValue.indexOf(andFilter.trim()) > -1) {
+                  cellMatch = true;
+                  break;
+                }
+              }
+            }
+            if (!cellMatch) {
+              andFilterMatch = false;
+              break;
+            }
+          }
+          if (andFilterMatch) {
+            tr[i].style.display = "";
+            break;
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .table-striped tbody tr:nth-of-type(odd) {
+      background-color: #f9f9f9;
+    }
+
+    .table {
+      width: 100%;
+      margin-bottom: 1rem;
+      color: #212529;
+      border-collapse: collapse;
+    }
+
+    .table th,
+    .table td {
+      padding: 0.75rem;
+      vertical-align: top;
+      border-top: 1px solid #dee2e6;
+    }
+
+    .table thead th {
+      vertical-align: bottom;
+      border-bottom: 2px solid #dee2e6;
+    }
+
+    .table tbody+tbody {
+      border-top: 2px solid #dee2e6;
+    }
+    #table td:nth-child(3) {
+    font-weight: bold;
+}
+
+    #searchInput {
+      width: 561px;
+      height: 44px;
+      border-radius: 10px;
+      margin: 20px;
+      display: block;
+      padding: 3px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+
+<body>
+  <title>クリーチャーパッシブ効果一覧 2023版　赤石の民衆</title>
+  <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <a name="container"></a>
+    <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+      <div class="mdl-layout__header-row">
+        <span class="android-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <!-- Add spacer, to align navigation to the right in desktop -->
+        <div class="android-header-spacer mdl-layout-spacer"></div>
+        <div
+          class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text" onkeypress="enter();"
+              id="search-field" />
+          </div>
+        </div>
+        <!-- Navigation -->
+        <div class="android-navigation-container">
+          <nav class="android-navigation mdl-navigation">
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/index.html">ホーム</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/calculator.html">計算機</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/history.html">赤石史</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/link.html">リンク</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+          </nav>
+        </div>
+        <span class="android-mobile-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+          id="more-button">
+          <i class="material-icons">more_vert</i>
+        </button>
+        <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/calculator.html">計算機</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/history.html">赤石史</a></li>
+          <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/link.html">リンク</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+        </ul>
+
+      </div>
+    </div>
+
+    <div class="android-drawer mdl-layout__drawer">
+      <span class="mdl-layout-title">
+        <h3>メニュー</h3>
+      </span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html"><strong>モンスター</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html"><strong>ダンジョン</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html"><strong>クエスト</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-friend"
+          href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-info"
+          href="../information/information.html"><strong>雑学</strong></a>
+      </nav>
+    </div>
+
+    <div class="android-large-table mdl-layout__content">
+
+      <!--main-->
+      <a href="../index.html">トップ</a> >> <a href="../item/item.html">アイテム</a> >> <a
+        href="../information/creature2023.html">クリーチャー2023</a><br>
+      <div class="main-background korea-content">
+        <br>
+        <h3>クリーチャーパッシブ効果一覧 2023</h3>
+        <div class="creature_index">
+          <table id="table10" style="max-width:640px">
+            <tbody>
+              <tr>
+                <th colspan="3">目次</th>
+              </tr>
+              <tr>
+                <td><a href="creature2023.html"><img src="creature_info/00_outline.png" width="45px"
+                      height="45px"><br>▼概要</a></td>
+                <td><a href="creature2023_passive.html"><img src="../information/creature2_files/creature_p_0163.png" width="45px" height="45px"><br>▼クリーチャー毎のパッシブ</a></td>
+                <td><a href="creature2023_passive_buff.html"><img src="creature_info/04_passive.png" width="45px" height="45px"><br>▼パッシブ効果一覧</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <br>
+        <br>
+        <br>
+        <a name="1"></a>
+        <span class="color-image1">※注意※<br>
+          以下に記載されているパッシブ効果の計算式は概略です。<br>
+          各レベルごとの詳細な数値を把握したい時は以下ページをご活用ください。<br>
+        </span>
+        <a href="creature-passive-detail.html">クリーチャーパッシブ　詳細テーブル</a><br>
+        <div class="creature-index">
+          <br>
+          <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="フリーワード検索">
+          <br>
+          <br>
+          <table id="table" class="table table-striped" style="max-width: 1280px;">
+            <colgroup>
+              <col span="1" width="150">
+              <col span="1" width="180">
+              <col span="1" width="120">
+              <col span="1" width="60">
+              <col span="1" width="60">
+              <!-- ここまで1段階 -->
+              <col span="1" width="120">
+              <col span="1" width="50">
+              <col span="1" width="50">
+              <col span="1" width="50">
+              <col span="1" width="50">
+              <col span="1" width="60">
+              <col span="1" width="120">
+              <col span="1" width="50">
+              <col span="1" width="50">
+              <col span="1" width="50">
+              <col span="1" width="120">
+              <col span="1" width="90">
+              <!-- 階級の所は色コードつけていく。あかスキルは上級スキル、あおスキルは一般スキルのこと。 -->
+            </colgroup>
+            <thead>
+              <tr>
+                <th>パッシブ名</th>
+                <th>1段階効果</th>
+                <th>上昇量</th>
+                <th>50Lv</th>
+                <th>2段階必要Lv</th>
+                <th>2段階効果</th>
+                <th>20Lv～</th>
+                <th>30Lv~</th>
+                <th>40Lv～</th>
+                <th>50Lv</th>
+                <th>3段階必要Lv</th>
+                <th>3段階効果</th>
+                <th>30Lv～</th>
+                <th>40Lv～</th>
+                <th>50Lv</th>
+                <th>備考</th>
+                <th>階級</th>
+                </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>PVP攻撃力</th>
+                <td>PVP時、攻撃力増加</td>
+                <td>Lv×0.6％</td>
+                <td>40%</td>
+                <td>20</td>
+                <td>攻撃速度</td>
+                <td>10%</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>50%</td>
+                <td>30</td>
+                <td>PVP防御</td>
+                <td>5%</td>
+                <td>10%</td>
+                <td>15%</td>
+                <td>-</td>
+                <td><span class="color-image1">上級スキル</span></td>
+              </tr>
+              <tr>
+                <th>PVP防御力</th>
+                <td>PVP時、防御力増加</td>
+                <td>Lv×0.6％</td>
+                <td>40%</td>
+                <td>20</td>
+                <td>最大HP</td>
+                <td>10%</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>50%</td>
+                <td>30</td>
+                <td>PVP攻撃</td>
+                <td>5%</td>
+                <td>10%</td>
+                <td>15%</td>
+                <td>-</td>
+                <td><span class="color-image1">上級スキル</span></td>
+              </tr>
+              <!-- これLv20で24%かもしれない -->
+              <tr>
+                <th>スキルクールタイム減少</th>
+                <td>スキルクールタイム[n]％減少</td>
+                <td>Lv*1%</td>
+                <td>30%</td>
+                <td>20</td>
+                <td>最大CP</td>
+                <td>450</td>
+                <td>550</td>
+                <td>650</td>
+                <td>800</td>
+                <td>30</td>
+                <td>スキルレベル</td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>Lv24時、CT減少25%</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>アンデッド型ダメージ</th>
+                <td>アンデッド型キャラクターに追加で[n]％のダメージを与える。</td>
+                <td>19+Lv*1.5%</td>
+                <td>100</td>
+                <td>20</td>
+                <td>ダメージ</td>
+                <td>10%</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>50%</td>
+                <td>50</td>
+                <td>クリティカル率</td>
+                <td>×</td>
+                <td>×</td>
+                <td>3</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>人間型ダメージ</th>
+                <td>人間型キャラクターに追加で[n]％のダメージを与える。</td>
+                <td>19+Lv*1.5%</td>
+                <td>100</td>
+                <td>20</td>
+                <td>ダメージ</td>
+                <td>40%</td>
+                <td>60%</td>
+                <td>80%</td>
+                <td>100%</td>
+                <td>50</td>
+                <td>最終ダメージ</td>
+                <td>×</td>
+                <td>×</td>
+                <td>5%</td>
+                <td>-</td>
+                <td><span class="color-image1">上級スキル</span></td>
+              </tr>
+              <tr>
+                <th>悪魔型ダメージ</th>
+                <td>悪魔型キャラクターに追加で[n]％のダメージを与える。</td>
+                <td>19+Lv*1.5%</td>
+                <td>100</td>
+                <td>20</td>
+                <td>ダメージ</td>
+                <td>10%</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>50%</td>
+                <td>50</td>
+                <td>クリティカル率</td>
+                <td>×</td>
+                <td>×</td>
+                <td>3</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>動物型ダメージ</th>
+                <td>動物型キャラクターに追加で[n]％のダメージを与える。</td>
+                <td>19+Lv*1.5%</td>
+                <td>100</td>
+                <td>20</td>
+                <td>ダメージ</td>
+                <td>10%</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>50%</td>
+                <td>50</td>
+                <td>クリティカル率</td>
+                <td>×</td>
+                <td>×</td>
+                <td>3</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>神獣型ダメージ</th>
+                <td>神獣型キャラクターに追加で[n]％のダメージを与える。</td>
+                <td>19+Lv*1.5%</td>
+                <td>100</td>
+                <td>20</td>
+                <td>ダメージ</td>
+                <td>10%</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>50%</td>
+                <td>50</td>
+                <td>クリティカル率</td>
+                <td>×</td>
+                <td>×</td>
+                <td>3</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>ドロップ率</th>
+                <td>アイテムドロップ率</td>
+                <td>10＋Lv×0.5％</td>
+                <td>40%</td>
+                <td>20</td>
+                <td>ユニークアイテムドロップ確率</td>
+                <td>10%</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>40%</td>
+                <td>30</td>
+                <td>着用時、モンスター討伐経験値 [n]％ 追加獲得</td>
+                <td>10%</td>
+                <td>20%</td>
+                <td>40%</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>経験値</th>
+                <td>着用時、モンスター討伐経験値 [n]％ 追加獲得</td>
+                <td>9＋Lv×1％</td>
+                <td>60%</td>
+                <td>20</td>
+                <td>ユニークアイテムドロップ確率</td>
+                <td>10%</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>40%</td>
+                <td>30</td>
+                <td>アイテムドロップ率</td>
+                <td>10%</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>移動速度</th>
+                <td>移動速度</td>
+                <td>Lv×2％</td>
+                <td>100</td>
+                <td>20</td>
+                <td>力</td>
+                <td>30</td>
+                <td>50</td>
+                <td>70</td>
+                <td>100</td>
+                <td>50</td>
+                <td>回避率</td>
+                <td>×</td>
+                <td>×</td>
+                <td>5%</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>攻撃速度</th>
+                <td>攻撃速度</td>
+                <td>11＋Lv×1％</td>
+                <td>70</td>
+                <td>30</td>
+                <td>敏捷</td>
+                <td>×</td>
+                <td>50</td>
+                <td>70</td>
+                <td>100</td>
+                <td>40</td>
+                <td>運</td>
+                <td>×</td>
+                <td>50</td>
+                <td>150</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>命中率</th>
+                <td>命中率</td>
+                <td>Lv×0.5％</td>
+                <td>30</td>
+                <td>20</td>
+                <td>敏捷</td>
+                <td>30</td>
+                <td>50</td>
+                <td>70</td>
+                <td>100</td>
+                <td>40</td>
+                <td>運</td>
+                <td>×</td>
+                <td>50</td>
+                <td>150</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>回避率</th>
+                <td>回避率</td>
+                <td>0.2+Lv*0.2％</td>
+                <td>15</td>
+                <td>20</td>
+                <td>敏捷</td>
+                <td>30</td>
+                <td>50</td>
+                <td>70</td>
+                <td>100</td>
+                <td>40</td>
+                <td>運</td>
+                <td>×</td>
+                <td>50</td>
+                <td>150</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>火抵抗力</th>
+                <td>火 抵抗</td>
+                <td>4+Lv*1%</td>
+                <td>55</td>
+                <td>20</td>
+                <td>知恵</td>
+                <td>30</td>
+                <td>50</td>
+                <td>70</td>
+                <td>100</td>
+                <td>40</td>
+                <td>健康</td>
+                <td>×</td>
+                <td>50</td>
+                <td>150</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>水抵抗力</th>
+                <td>水 抵抗</td>
+                <td>4+Lv*1%</td>
+                <td>55</td>
+                <td>20</td>
+                <td>知恵</td>
+                <td>30</td>
+                <td>50</td>
+                <td>70</td>
+                <td>100</td>
+                <td>40</td>
+                <td>健康</td>
+                <td>×</td>
+                <td>50</td>
+                <td>150</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>風抵抗力</th>
+                <td>風 抵抗</td>
+                <td>4+Lv*1%</td>
+                <td>55</td>
+                <td>20</td>
+                <td>知恵</td>
+                <td>30</td>
+                <td>50</td>
+                <td>70</td>
+                <td>100</td>
+                <td>40</td>
+                <td>健康</td>
+                <td>×</td>
+                <td>50</td>
+                <td>150</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>大地抵抗力</th>
+                <td>大地 抵抗</td>
+                <td>4+Lv*1%</td>
+                <td>55</td>
+                <td>20</td>
+                <td>知恵</td>
+                <td>30</td>
+                <td>50</td>
+                <td>70</td>
+                <td>100</td>
+                <td>40</td>
+                <td>健康</td>
+                <td>×</td>
+                <td>50</td>
+                <td>150</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>光抵抗力</th>
+                <td>光 抵抗</td>
+                <td>4+Lv*1%</td>
+                <td>55</td>
+                <td>20</td>
+                <td>知恵</td>
+                <td>30</td>
+                <td>50</td>
+                <td>70</td>
+                <td>100</td>
+                <td>40</td>
+                <td>健康</td>
+                <td>×</td>
+                <td>50</td>
+                <td>150</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>闇抵抗力</th>
+                <td>闇 抵抗</td>
+                <td>4+Lv*1%</td>
+                <td>55</td>
+                <td>20</td>
+                <td>知恵</td>
+                <td>30</td>
+                <td>50</td>
+                <td>70</td>
+                <td>100</td>
+                <td>40</td>
+                <td>健康</td>
+                <td>×</td>
+                <td>50</td>
+                <td>150</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>火強化</th>
+                <td>火属性攻撃力を[n]％強化させる。</td>
+                <td>2＋Lv×1％</td>
+                <td>55</td>
+                <td>20</td>
+                <td>ターゲットの火の抵抗を[n]％弱化させる。</td>
+                <td>5%</td>
+                <td>6%</td>
+                <td>7%</td>
+                <td>10%</td>
+                <td>40</td>
+                <td>魔法致命打</td>
+                <td>×</td>
+                <td>3%</td>
+                <td>5%</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>火低下</th>
+                <td>ターゲットの火の抵抗を[n]％弱化させる。</td>
+                <td>2.6＋Lv×0.6％</td>
+                <td>35</td>
+                <td>20</td>
+                <td>火属性攻撃力を[n]％強化させる。</td>
+                <td>5%</td>
+                <td>10%</td>
+                <td>15%</td>
+                <td>20%</td>
+                <td>40</td>
+                <td>魔法致命打</td>
+                <td>×</td>
+                <td>3%</td>
+                <td>5%</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>水強化</th>
+                <td>水属性攻撃力を[n]％強化させる。</td>
+                <td>2＋Lv×1％</td>
+                <td>55</td>
+                <td>20</td>
+                <td>ターゲットの水の抵抗を[n]％弱化させる。</td>
+                <td>5%</td>
+                <td>6%</td>
+                <td>7%</td>
+                <td>10%</td>
+                <td>40</td>
+                <td>魔法致命打</td>
+                <td>×</td>
+                <td>3%</td>
+                <td>5%</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>水低下</th>
+                <td>ターゲットの水の抵抗を[n]％弱化させる。</td>
+                <td>2.6＋Lv×0.6％</td>
+                <td>35</td>
+                <td>20</td>
+                <td>水属性攻撃力を[n]％強化させる。</td>
+                <td>5%</td>
+                <td>10%</td>
+                <td>15%</td>
+                <td>20%</td>
+                <td>40</td>
+                <td>魔法致命打</td>
+                <td>×</td>
+                <td>3%</td>
+                <td>5%</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>風強化</th>
+                <td>風属性攻撃力を[n]％強化させる。</td>
+                <td>2＋Lv×1％</td>
+                <td>55</td>
+                <td>20</td>
+                <td>ターゲットの風の抵抗を[n]％弱化させる。</td>
+                <td>5%</td>
+                <td>6%</td>
+                <td>7%</td>
+                <td>8%</td>
+                <td>40</td>
+                <td>魔法致命打</td>
+                <td>×</td>
+                <td>3%</td>
+                <td>5%</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>風低下</th>
+                <td>ターゲットの風の抵抗を[n]％弱化させる。</td>
+                <td>2.6＋Lv×0.6％</td>
+                <td>35</td>
+                <td>20</td>
+                <td>風属性攻撃力を[n]％強化させる。</td>
+                <td>5%</td>
+                <td>10%</td>
+                <td>15%</td>
+                <td>20%</td>
+                <td>40</td>
+                <td>魔法致命打</td>
+                <td>×</td>
+                <td>3%</td>
+                <td>5%</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <!-- sokomin -->
+              <tr>
+                <th>大地強化</th>
+                <td>大地属性攻撃力を[n]％強化させる。</td>
+                <td>2＋Lv×1％</td>
+                <td>55</td>
+                <td>20</td>
+                <td>ターゲットの大地の抵抗を[n]％弱化させる。</td>
+                <td>5%</td>
+                <td>6%</td>
+                <td>7%</td>
+                <td>10%</td>
+                <td>40</td>
+                <td>魔法致命打</td>
+                <td>×</td>
+                <td>3%</td>
+                <td>5%</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>大地低下</th>
+                <td>ターゲットの大地の抵抗を[n]％弱化させる。</td>
+                <td>2.8＋Lv×0.6％</td>
+                <td>35</td>
+                <td>20</td>
+                <td>大地属性攻撃力を[n]％強化させる。</td>
+                <td>5%</td>
+                <td>10%</td>
+                <td>15%</td>
+                <td>20%</td>
+                <td>40</td>
+                <td>魔法致命打</td>
+                <td>×</td>
+                <td>3%</td>
+                <td>5%</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>光強化</th>
+                <td>光属性攻撃力を[n]％強化させる。</td>
+                <td>2＋Lv×1％</td>
+                <td>55</td>
+                <td>20</td>
+                <td>ターゲットの光の抵抗を[n]％弱化させる。</td>
+                <td>5%</td>
+                <td>6%</td>
+                <td>7%</td>
+                <td>10%</td>
+                <td>40</td>
+                <td>魔法致命打</td>
+                <td>×</td>
+                <td>3%</td>
+                <td>5%</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>光低下</th>
+                <td>ターゲットの光の抵抗を[n]％弱化させる。</td>
+                <td>2.6＋Lv×0.6％</td>
+                <td>35</td>
+                <td>20</td>
+                <td>光属性攻撃力を[n]％強化させる。</td>
+                <td>5%</td>
+                <td>10%</td>
+                <td>15%</td>
+                <td>20%</td>
+                <td>40</td>
+                <td>魔法致命打</td>
+                <td>×</td>
+                <td>3%</td>
+                <td>5%</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>闇強化</th>
+                <td>闇属性攻撃力を[n]％強化させる。</td>
+                <td>2＋Lv×1％</td>
+                <td>55</td>
+                <td>20</td>
+                <td>ターゲットの闇の抵抗を[n]％弱化させる。</td>
+                <td>5%</td>
+                <td>6%</td>
+                <td>7%</td>
+                <td>10%</td>
+                <td>40</td>
+                <td>魔法致命打</td>
+                <td>×</td>
+                <td>3%</td>
+                <td>5%</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>闇低下</th>
+                <td>ターゲットの闇の抵抗を[n]％弱化させる。</td>
+                <td>2.6＋Lv×0.6％</td>
+                <td>35</td>
+                <td>20</td>
+                <td>闇属性攻撃力を[n]％強化させる。</td>
+                <td>5%</td>
+                <td>10%</td>
+                <td>15%</td>
+                <td>20%</td>
+                <td>40</td>
+                <td>魔法致命打</td>
+                <td>×</td>
+                <td>3%</td>
+                <td>5%</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>ペット&amp;召喚獣強化</th>
+                <td>ペット&amp;召喚獣の魔法攻撃力</td>
+                <td>Lv×1％</td>
+                <td>50</td>
+                <td>20</td>
+                <td>ペット&amp;召喚獣の攻撃速度</td>
+                <td>10%</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>40%</td>
+                <td>30</td>
+                <td>ペット/召喚獣の全てのステータス</td>
+                <td>50</td>
+                <td>100</td>
+                <td>200</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>ペット&amp;召喚獣攻撃力</th>
+                <td>ペット&amp;召喚獣の攻撃力</td>
+                <td>Lv×2％</td>
+                <td>100</td>
+                <td>20</td>
+                <td>ペット&amp;召喚獣の攻撃速度</td>
+                <td>10%</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>40%</td>
+                <td>30</td>
+                <td>ペット/召喚獣の全てのステータス</td>
+                <td>50</td>
+                <td>100</td>
+                <td>200</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>ペット&amp;召喚獣状態異常抵抗</th>
+                <td>ペット&amp;召喚獣の異常状態抵抗増加</td>
+                <td>Lv×1％</td>
+                <td>50</td>
+                <td>20</td>
+                <td>ペット&amp;召喚獣の最大体力</td>
+                <td>5%</td>
+                <td>8%</td>
+                <td>11%</td>
+                <td>15%</td>
+                <td>30</td>
+                <td>ペット/召喚獣の全てのステータス</td>
+                <td>50</td>
+                <td>100</td>
+                <td>200</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>ペット&amp;召喚獣全てのステータス</th>
+                <td>ペット/召喚獣の全てのステータス</td>
+                <td>Lv*10</td>
+                <td>500</td>
+                <td>20</td>
+                <td>ペット&amp;召喚獣の攻撃速度</td>
+                <td>10%</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>40%</td>
+                <td>30</td>
+                <td>ペット&amp;召喚獣の最大体力</td>
+                <td>5%</td>
+                <td>10%</td>
+                <td>20%</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>ペット&amp;召喚獣体力</th>
+                <td>ペット&amp;召喚獣の最大体力</td>
+                <td>Lv×1％</td>
+                <td>50</td>
+                <td>20</td>
+                <td>ペット&amp;召喚獣の攻撃力</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>40%</td>
+                <td>50%</td>
+                <td>30</td>
+                <td>ペット&amp;召喚獣の異常状態抵抗増加</td>
+                <td>5%</td>
+                <td>10%</td>
+                <td>20%</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>ペット&amp;召喚獣の魔法致命打増加</th>
+                <td>ペット&amp;召喚獣の魔法致命打増加</td>
+                <td>1+Lv*0.05%<br></td>
+                <td>5%</td>
+                <td>20</td>
+                <td>ターゲットの魔法抵抗弱化</td>
+                <td>5%</td>
+                <td>6%</td>
+                <td>7%</td>
+                <td>10%</td>
+                <td>30</td>
+                <td>スキルレベル</td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>変換限定。ゲーム内バグで数値が記載されていません。(2019.6.26)</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>ペット&amp;召喚獣の強打率増加</th>
+                <td>ペット&amp;召喚獣の強打率増加</td>
+                <td>1+Lv*0.05%<br></td>
+                <td>5%</td>
+                <td>20</td>
+                <td>ペット&amp;召喚獣の攻撃速度</td>
+                <td>10%</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>40%</td>
+                <td>30</td>
+                <td>スキルレベル</td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>変換限定。ゲーム内バグで数値が記載されていません。(2019.6.26)</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>ペット&amp;召喚獣敵致命打減少</th>
+                <td>敵の致命打抵抗減少</td>
+                <td>4.5+Lv*0.3%<br></td>
+                <td>20%</td>
+                <td>20</td>
+                <td>(召喚獣、ペット) 物理致命打ダメ増加</td>
+                <td>10</td>
+                <td>15</td>
+                <td>20</td>
+                <td>30</td>
+                <td>30</td>
+                <td>(召喚獣、ペット) 物理ダブクリダメ</td>
+                <td>7</td>
+                <td>10</td>
+                <td>20%</td>
+                <td>-</td>
+                <td><span class="color-image1">上級スキル</span></td>
+              </tr>
+              <tr>
+                <th>最大体力</th>
+                <td>最大HP</td>
+                <td>Lv×1％</td>
+                <td>50</td>
+                <td>20</td>
+                <td>防御力</td>
+                <td>5%</td>
+                <td>10%</td>
+                <td>15%</td>
+                <td>20%</td>
+                <td>30</td>
+                <td>健康</td>
+                <td>60</td>
+                <td>80</td>
+                <td>100</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>最大CP</th>
+                <td>最大CP</td>
+                <td>Lv*50</td>
+                <td>3000</td>
+                <td>20</td>
+                <td>カリスマ</td>
+                <td>30</td>
+                <td>50</td>
+                <td>70</td>
+                <td>100</td>
+                <td>30</td>
+                <td>最大CP</td>
+                <td>5%</td>
+                <td>10%</td>
+                <td>20%</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>攻撃力</th>
+                <td>攻撃力</td>
+                <td>6＋Lv×4％</td>
+                <td>210</td>
+                <td>20</td>
+                <td>クリティカル</td>
+                <td>5%</td>
+                <td>8%</td>
+                <td>11%</td>
+                <td>20%</td>
+                <td>30</td>
+                <td>攻撃速度</td>
+                <td>10%</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>防御力</th>
+                <td>防御力</td>
+                <td>Lv×2％</td>
+                <td>100%</td>
+                <td>20</td>
+                <td>最大HP</td>
+                <td>5%</td>
+                <td>10%</td>
+                <td>15%</td>
+                <td>20%</td>
+                <td>30</td>
+                <td>健康</td>
+                <td>60</td>
+                <td>80</td>
+                <td>100</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>クリティカルダメージ</th>
+                <td>クリティカルダメージ増加</td>
+                <td>4+Lv*0.8%</td>
+                <td>50</td>
+                <td>20</td>
+                <td>クリティカル</td>
+                <td>5%</td>
+                <td>10%</td>
+                <td>15%</td>
+                <td>20%</td>
+                <td>30</td>
+                <td>ダブルクリティカルダメージ増加</td>
+                <td>5%</td>
+                <td>7%</td>
+                <td>10%</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>ダブルクリティカルダメージ</th>
+                <td>ダブルクリティカルダメージ増加</td>
+                <td>9+Lv*0.8%</td>
+                <td>50%</td>
+                <td>20</td>
+                <td>クリティカル</td>
+                <td>10%</td>
+                <td>15%</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>30</td>
+                <td>敵致命打減少</td>
+                <td>5%</td>
+                <td>7%</td>
+                <td>10%</td>
+                <td>-</td>
+                <td><span class="color-image1">上級スキル</span></td>
+              </tr>
+              <tr>
+                <th>クリティカル確率</th>
+                <td>クリティカル</td>
+                <td>1+Lv*0.5%</td>
+                <td>30</td>
+                <td>20</td>
+                <td>物理攻撃力</td>
+                <td>10%</td>
+                <td>15%</td>
+                <td>20%</td>
+                <td>25%</td>
+                <td>30</td>
+                <td>クリティカルダメージ増加</td>
+                <td>5%</td>
+                <td>10%</td>
+                <td>20%</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>クリティカルダメージ減少</th>
+                <td>クリティカルダメージ減少</td>
+                <td>10+Lv*0.5%</td>
+                <td>40</td>
+                <td>20</td>
+                <td>最大HP</td>
+                <td>10%</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>40%</td>
+                <td>30</td>
+                <td>ダブルクリティカルダメージ減少</td>
+                <td>5%</td>
+                <td>10%</td>
+                <td>15%</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>敵致命打減少</th>
+                <td>敵の致命打抵抗率減少</td>
+                <td>4.5＋Lv×0.5％</td>
+                <td>30%</td>
+                <td>20</td>
+                <td>クリティカルダメージ増加</td>
+                <td>10%</td>
+                <td>15%</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>30</td>
+                <td>ダブルクリティカルダメージ増加</td>
+                <td>5%</td>
+                <td>10%</td>
+                <td>20%</td>
+                <td>-</td>
+                <td><span class="color-image1">上級スキル</span></td>
+              </tr>
+              <tr>
+                <th>抵抗力低下防止</th>
+                <td>抵抗値低下防止</td>
+                <td> Lv *0.2</td>
+                <td>10</td>
+                <td>20</td>
+                <td>能力値低下防止</td>
+                <td>1%</td>
+                <td>2%</td>
+                <td>3%</td>
+                <td>5%</td>
+                <td>30</td>
+                <td>すべての能力値</td>
+                <td>20上昇</td>
+                <td>40上昇</td>
+                <td>80上昇</td>
+                <td>Lv32で6%</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>能力値低下防止</th>
+                <td>能力値低下防止</td>
+                <td> Lv *0.2</td>
+                <td>10</td>
+                <td>20</td>
+                <td>抵抗値低下防止</td>
+                <td>1%</td>
+                <td>2%</td>
+                <td>3%</td>
+                <td>5%</td>
+                <td>30</td>
+                <td>すべての能力値</td>
+                <td>20上昇</td>
+                <td>40上昇</td>
+                <td>80上昇</td>
+                <td>Lv32で6%</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>人間型魔法ダメージ</th>
+                <td>人間型キャラクターに追加で[n]％の魔法ダメージを与える。</td>
+                <td>5＋Lv×1％</td>
+                <td>55%</td>
+                <td>20</td>
+                <td>魔法強化</td>
+                <td>5%</td>
+                <td>10%</td>
+                <td>15%</td>
+                <td>30%</td>
+                <td>50</td>
+                <td>最終ダメージ</td>
+                <td>×</td>
+                <td>×</td>
+                <td>5%</td>
+                <td>-</td>
+                <td><span class="color-image1">上級スキル</span></td>
+              </tr>
+              <tr>
+                <th>魔法強打</th>
+                <td>魔法強打X％増加</td>
+                <td>4.8+Lv*0.2%</td>
+                <td>16%</td>
+                <td>20</td>
+                <td>運比率上昇</td>
+                <td>運1/レベル6</td>
+                <td>運1/レベル5</td>
+                <td>運1/レベル4</td>
+                <td>運1/レベル3</td>
+                <td>50</td>
+                <td>最終ダメージ</td>
+                <td>×</td>
+                <td>×</td>
+                <td>5%</td>
+                <td>魔法強打：通常の４倍ダメ</td>
+                <td><span class="color-image1">上級スキル</span></td>
+              </tr>
+              <tr>
+                <th>[名称無し]</th>
+                <td>魔法ダメージをX%強化させる</td>
+                <td>2+Lv*0.6%<br></td>
+                <td>32%</td>
+                <td>20</td>
+                <td>ターゲットの魔法抵抗をX％弱化させる。</td>
+                <td>5%</td>
+                <td>10%</td>
+                <td>15%</td>
+                <td>20%</td>
+                <td>30</td>
+                <td>魔法致命打</td>
+                <td>20%</td>
+                <td>4%</td>
+                <td>6%</td>
+                <td>名称無しは不具合？変換限定。</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>魔法攻撃力強化</th>
+                <td>魔法の攻撃力を[n]％強化させる。</td>
+                <td>2＋Lv×1％</td>
+                <td>55%</td>
+                <td>20</td>
+                <td>ターゲットの魔法抵抗をX％弱化させる。</td>
+                <td>5%</td>
+                <td>10%</td>
+                <td>15%</td>
+                <td>20%</td>
+                <td>40</td>
+                <td>与魔法吸収</td>
+                <td>×</td>
+                <td>10%の確率で魔法ダメージの3%をHP吸収</td>
+                <td>20%の確率で魔法ダメージの3%をHP吸収</td>
+                <td>-</td>
+                <td><span class="color-image1">上級スキル</span></td>
+              </tr>
+              <tr>
+                <th>魔法抵抗力低下</th>
+                <td>ターゲットの魔法抵抗をX％弱化させる。</td>
+                <td>Lv×0.5％</td>
+                <td>30%</td>
+                <td>20</td>
+                <td>魔法強化</td>
+                <td>10%</td>
+                <td>15%</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>40</td>
+                <td>与魔法吸収</td>
+                <td>×</td>
+                <td>10%の確率で魔法ダメージの3%をHP吸収</td>
+                <td>20%の確率で魔法ダメージの3%をHP吸収</td>
+                <td>-</td>
+                <td><span class="color-image1">上級スキル</span></td>
+              </tr>
+              <tr>
+                <th>魔法致命打</th>
+                <td>魔法致命打</td>
+                <td>5+Lv*0.4%</td>
+                <td>25%</td>
+                <td>20</td>
+                <td>魔法攻撃力を[n]％強化させる。</td>
+                <td>10%</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>40%</td>
+                <td>50</td>
+                <td>魔法強打</td>
+                <td>×</td>
+                <td>3%</td>
+                <td>5%</td>
+                <td>魔法致命打：通常の２倍ダメ</td>
+                <td><span class="color-image1">上級スキル</span></td>
+              </tr>
+              <tr>
+                <th>強打</th>
+                <td>強打率</td>
+                <td>5+Lv*0.3％</td>
+                <td>20%</td>
+                <td>20</td>
+                <td>運比率上昇</td>
+                <td>運1/レベル6</td>
+                <td>運1/レベル5</td>
+                <td>運1/レベル4</td>
+                <td>運1/レベル3</td>
+                <td>50</td>
+                <td>最終ダメージ</td>
+                <td>×</td>
+                <td>×</td>
+                <td>5%</td>
+                <td>-</td>
+                <td><span class="color-image1">上級スキル</span></td>
+              </tr>
+              <tr>
+                <th>被ダメージCPに変換</th>
+                <td>ダメージをCPに変換</td>
+                <td>1+Lv*0.5%</td>
+                <td>30</td>
+                <td>20</td>
+                <td>最大CP</td>
+                <td>15%</td>
+                <td>20%</td>
+                <td>25%</td>
+                <td>30%</td>
+                <td>40</td>
+                <td>CP獲得ボーナス</td>
+                <td>×</td>
+                <td>3%</td>
+                <td>5%</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>被ダメージ反射</th>
+                <td>ダメージ反射</td>
+                <td>Lv×2％</td>
+                <td>100</td>
+                <td>20</td>
+                <td>健康</td>
+                <td>20</td>
+                <td>40</td>
+                <td>60</td>
+                <td>80</td>
+                <td>30</td>
+                <td>最大HP</td>
+                <td>10%</td>
+                <td>15%</td>
+                <td>20%</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>被魔法ダメージ吸収</th>
+                <td>魔法の攻撃力を[n]％強化させる。</td>
+                <td>Lv*0.5</td>
+                <td>30%</td>
+                <td>20</td>
+                <td>魔法属性ダメージ吸収</td>
+                <td>6%</td>
+                <td>8%</td>
+                <td>10%</td>
+                <td>12%</td>
+                <td>40</td>
+                <td>ターゲットの魔法抵抗弱化</td>
+                <td>×</td>
+                <td>5%</td>
+                <td>10%</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>体力吸収</th>
+                <td>物理攻撃力増加</td>
+                <td>40+Lv*1%</td>
+                <td>100%</td>
+                <td>20</td>
+                <td>敵に与えたダメージの[n]％をHP吸収</td>
+                <td>2%</td>
+                <td>3%</td>
+                <td>4%</td>
+                <td>5%</td>
+                <td>30</td>
+                <td>クリティカルダメージ</td>
+                <td>10%</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>与魔法ダメージ吸収</th>
+                <td>X％の確率で魔法ダメージの2％をHP吸収</td>
+                <td>Lv×1％</td>
+                <td>50%の確率で魔法ダメージの5%をHP吸収</td>
+                <td>20</td>
+                <td>魔法強化</td>
+                <td>10%</td>
+                <td>15%</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>50</td>
+                <td>知識比率上昇</td>
+                <td>×</td>
+                <td>×</td>
+                <td>1/レベル2</td>
+                <td>-</td>
+                <td><span class="color-image1">上級スキル</span></td>
+              </tr>
+              <tr>
+                <th>獲得CP増加</th>
+                <td>CP獲得ボーナス</td>
+                <td>5+Lv*0.5%</td>
+                <td>35%</td>
+                <td>20</td>
+                <td>最大HP</td>
+                <td>10%</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>50%</td>
+                <td>30</td>
+                <td>最大CP</td>
+                <td>10％</td>
+                <td>20％</td>
+                <td>40％</td>
+                <td>変換限定</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>魔法ダメージ吸収<br>
+                  (※)変換限定で稀に出現</th>
+                <td>魔法属性ダメージ[n]％吸収</td>
+                <td>1 + Lv*0.04％</td>
+                <td>3%</td>
+                <td>30</td>
+                <td>魔法強打</td>
+                <td>×</td>
+                <td>5%</td>
+                <td>10%</td>
+                <td>15%</td>
+                <td>50</td>
+                <td>知識比率上昇</td>
+                <td>×</td>
+                <td>×</td>
+                <td>1/レベル2</td>
+                <td>変換限定</td>
+                <td><span class="color-image1">上級スキル</span></td>
+              </tr>
+              <tr>
+                <th>状態異常抵抗力</th>
+                <td>状態異常抵抗</td>
+                <td>Lv*1%</td>
+                <td>55%</td>
+                <td>20</td>
+                <td>ノックバック抵抗</td>
+                <td>10%</td>
+                <td>15%</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>30</td>
+                <td>運</td>
+                <td>50</td>
+                <td>100</td>
+                <td>150</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>全ての属性抵抗</th>
+                <td>魔法 抵抗</td>
+                <td>Lv*1%</td>
+                <td>55%</td>
+                <td>30</td>
+                <td>全ての状態異常抵抗</td>
+                <td>10%</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>40%</td>
+                <td>40</td>
+                <td>抵抗値低下防止</td>
+                <td>×</td>
+                <td>3%</td>
+                <td>5%</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>人間型ダメージ抵抗</th>
+                <td>人間型追加ダメージ抵抗</td>
+                <td>19+Lv*1.5％</td>
+                <td>100%</td>
+                <td>20</td>
+                <td>防御力</td>
+                <td>40%</td>
+                <td>60%</td>
+                <td>80%</td>
+                <td>100%</td>
+                <td>50</td>
+                <td>最終ダメージ</td>
+                <td>×</td>
+                <td>×</td>
+                <td>5%</td>
+                <td>-</td>
+                <td><span class="color-image1">上級スキル</span></td>
+              </tr>
+              <tr>
+                <th>すべての能力値</th>
+                <td>全ての能力値</td>
+                <td>17+3*Lv</td>
+                <td>200</td>
+                <td>20</td>
+                <td>アイテム着用レベル</td>
+                <td>20</td>
+                <td>40</td>
+                <td>60</td>
+                <td>80</td>
+                <td>40</td>
+                <td>能力値低下防止</td>
+                <td>×</td>
+                <td>3%</td>
+                <td>5%</td>
+                <td>変換限定</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>スキル</th>
+                <td>スキルレベル</td>
+                <td>0.1*SLv</td>
+                <td>5</td>
+                <td>20</td>
+                <td>全ての能力値</td>
+                <td>20</td>
+                <td>40</td>
+                <td>60</td>
+                <td>80</td>
+                <td>50</td>
+                <td>スキルレベル</td>
+                <td>×</td>
+                <td>×</td>
+                <td>2</td>
+                <td>-</td>
+                <td><span class="color-image2">一般スキル</span></td>
+              </tr>
+              <tr>
+                <th>上級スキル</th>
+                <td>スキルレベル</td>
+                <td>2+Lv*0.15</td>
+                <td>10</td>
+                <td>20</td>
+                <td>全ての能力値</td>
+                <td>100</td>
+                <td>150</td>
+                <td>200</td>
+                <td>250</td>
+                <td>50</td>
+                <td>スキルレベル</td>
+                <td>×</td>
+                <td>×</td>
+                <td>5</td>
+                <td>-</td>
+                <td><span class="color-image1">上級スキル</span></td>
+              </tr>
+              <tr>
+                <th>上級攻撃力</th>
+                <td>攻撃力</td>
+                <td>94＋Lv×6％</td>
+                <td>400%</td>
+                <td>20</td>
+                <td>クリティカルダメージ増加</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>40%</td>
+                <td>60%</td>
+                <td>30</td>
+                <td>強打</td>
+                <td>3%</td>
+                <td>5%</td>
+                <td>8%</td>
+                <td>-</td>
+                <td><span class="color-image1">上級スキル</span></td>
+              </tr>
+              <tr>
+                <th>上級防御力</th>
+                <td>防御力</td>
+                <td>50+Lv*4%</td>
+                <td>250%</td>
+                <td>20</td>
+                <td>最大HP</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>40%</td>
+                <td>60%</td>
+                <td>50</td>
+                <td>健康比率上昇</td>
+                <td>×</td>
+                <td>×</td>
+                <td>1/レベル2</td>
+                <td>-</td>
+                <td><span class="color-image1">上級スキル</span></td>
+              </tr>
+              <tr>
+                <th>上級体力</th>
+                <td>最大HP</td>
+                <td>50+Lv*2%</td>
+                <td>150%</td>
+                <td>20</td>
+                <td>防御力</td>
+                <td>40%</td>
+                <td>60%</td>
+                <td>80%</td>
+                <td>100%</td>
+                <td>50</td>
+                <td>健康比率上昇</td>
+                <td>×</td>
+                <td>×</td>
+                <td>1/レベル2</td>
+                <td>-</td>
+                <td><span class="color-image1">上級スキル</span></td>
+              </tr>
+              <tr>
+                <th>上級最大CP</th>
+                <td>最大CP</td>
+                <td>12*Lv*3%</td>
+                <td>200%</td>
+                <td>20</td>
+                <td>CP獲得ボーナス</td>
+                <td>10%</td>
+                <td>15%</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>50</td>
+                <td>威厳比率上昇</td>
+                <td>×</td>
+                <td>×</td>
+                <td>1/レベル2</td>
+                <td>-</td>
+                <td><span class="color-image1">上級スキル</span></td>
+              </tr>
+              <tr>
+                <th>上級状態異常抵抗力</th>
+                <td>状態異常抵抗</td>
+                <td>70+Lv*1%</td>
+                <td>120%</td>
+                <td>20</td>
+                <td>ノックバック抵抗</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>40%</td>
+                <td>60%</td>
+                <td>30</td>
+                <td>全ての能力値</td>
+                <td>100</td>
+                <td>200</td>
+                <td>300</td>
+                <td>-</td>
+                <td><span class="color-image1">上級スキル</span></td>
+              </tr>
+              <tr>
+                <th>上級攻撃速度</th>
+                <td>攻撃速度</td>
+                <td>50＋Lv×3％</td>
+                <td>200</td>
+                <td>20</td>
+                <td>クリティカルダメージ増加</td>
+                <td>10%</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>40%</td>
+                <td>50</td>
+                <td>運比率上昇</td>
+                <td>×</td>
+                <td>×</td>
+                <td>1/レベル2</td>
+                <td>-</td>
+                <td><span class="color-image1">上級スキル</span></td>
+              </tr>
+              <tr>
+                <th>最終ダメージ</th>
+                <td>最終ダメージ</td>
+                <td>0.5+0.1*lv</td>
+                <td>7%</td>
+                <td>20</td>
+                <td>スキルレベル</td>
+                <td>4</td>
+                <td>6</td>
+                <td>8</td>
+                <td>10</td>
+                <td>30</td>
+                <td>敵致命打減少</td>
+                <td>3%</td>
+                <td>5%</td>
+                <td>8%</td>
+                <td>変換限定</td>
+                <td><span class="color-image1">上級スキル</span></td>
+              </tr>
+              <tr>
+                <th>上級経験値</th>
+                <td>経験値</td>
+                <td>54+1*lv</td>
+                <td>120%</td>
+                <td>20</td>
+                <td>スキルレベル</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>6</td>
+                <td>30</td>
+                <td>最終ダメージ</td>
+                <td>1%</td>
+                <td>2%</td>
+                <td>3%</td>
+                <td>変換限定</td>
+                <td><span class="color-image1">上級スキル</span></td>
+              </tr>
+              <tr>
+                <th>上級ドロップ</th>
+                <td>アイテムドロップ率</td>
+                <td>50+1*lv</td>
+                <td>100%</td>
+                <td>20</td>
+                <td>ユニークドロップ率</td>
+                <td>20%</td>
+                <td>30%</td>
+                <td>40%</td>
+                <td>60%</td>
+                <td>30</td>
+                <td>最終ダメージ</td>
+                <td>1%</td>
+                <td>2%</td>
+                <td>3%</td>
+                <td>変換限定</td>
+                <td><span class="color-image1">上級スキル</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <br clear="left">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <h4>検索のコツ</h4>
+        - スペースで区切られた複数の単語を入力するとAND検索ができます。<br>
+        　例）「ドロップ率 経験値」<br>
+        - カンマで区切られた複数の単語を入力するとOR検索ができます。<br>
+        　例）「ペット,召喚獣」<br>
+        - ヘッダ部分(太字部分)を押すとソートできます。デフォルトはレア度順です。<br>
+        <br>
+        <br>
+        <br>
+        <h4>パッシブ関連情報補足</h4>
+        クリーチャー毎のパッシブスキルのレベルについて、法則性は以下。<br>
+        * ノーマル(N)、レア(R)には一般等級のパッシブスキルしか付与できません。<br>
+        * ハイレア(HR)、スーパーレア(SR)には一般・上級の両方のパッシブスキルが付与できます。<br>
+        * レジェンドレア(LR)はパッシブ変換を使っても上級のみしか付与されないかもしれない。要確認。<br>
+        <br>
+        * 基礎レベルは各クリーチャーの等級とパッシブの等級によって概ね決定されます。<br>
+        * 法則に従っていないクリーチャーは予告なく補正値が修正される可能性あり。<br>
+        <br>
+        <table id="table10" class="sokomin-shadow" style="max-width:660px">
+          <colgroup>
+            <col width="120" span="1">
+            <col span="5">
+            <!-- <col span="1" width="120"> -->
+          </colgroup>
+          <tbody>
+            <tr>
+              <th>等級</th>
+              <th>N<br>
+                ノーマル</th>
+              <th>
+                <font color="#00F800">R<br>
+                  レア</font>
+              </th>
+              <th>
+                <font color="#50A0F8">HR<br>
+                  ハイレア</font>
+              </th>
+              <th>
+                <font color="#D080F8">SR<br>
+                  スーパーレア<br>
+                </font>
+              </th>
+              <th>
+                <font color="#E8C898">LR<br>
+                  レジェンドレア</font>
+              </th>
+            </tr>
+            <tr>
+              <th><span class="color-image2">一般メイン</span></th>
+              <td align="center">8+(0～4)</td>
+              <td align="center">16+(0~8)</td>
+              <td align="center">24+(0~12)</td>
+              <td align="center">32+(0~16)</td>
+              <td align="center"> - </td>
+            </tr>
+            <tr>
+              <th><span class="color-image2">一般サブ</span></th>
+              <td align="center">4+(0~2)</td>
+              <td align="center">8+(0~4)</td>
+              <td align="center">12+(0~6)</td>
+              <td align="center">16+(0~8)</td>
+              <td align="center">20+(0~10)</td>
+            </tr>
+            <tr>
+              <th><span class="color-image11">上級メイン</span></th>
+              <td align="center"> - </td>
+              <td align="center"> - </td>
+              <td align="center">？</td>
+              <td align="center">10+(0~16)</td>
+              <td align="center">20+(0~20)</td>
+            </tr>
+            <tr>
+              <th><span class="color-image11">上級サブ</span></th>
+              <td align="center">不可</td>
+              <td align="center">不可</td>
+              <td align="center">3+(0~6)</td>
+              <td align="center">5+(0~8)</td>
+              <td align="center">10+(0~10)</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        * メインパッシブは変換不可。サブパッシブのみ変換可能。<br>
+        * サブパッシブの基礎値（黄色側）はクリーチャーの等級に合わせて成長します。<br>
+        * 一方で、覚醒値（緑側）はクリーチャーの元の等級に合わせて最大値が決まります。<br>
+        <br>
+        例）<a href="creature2023.html#4">クリーチャー強化</a>を使い、LRまで強化したサキュバスヴェラ<br>
+        <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/01db4f71d8b49ba9d65275d48f81aa7da28c0262.10.2.9.2.png" border="0" alt="" name="insertImg" /><br><br>        
+        HRからLR等級まで強化したため、サブパッシブの基礎値が<span class="color-image11">3</span>から<span class="color-image11">10</span>に上昇<br>
+        メインパッシブはそのまま。覚醒値はクリーチャー強化時にも引き継がれます。<br>
+        覚醒値は元の等級がHRなので、一般、上級パッシブ共に<span class="color-image4">+6</span>が限界です。<br>
+        ※パッシブ変換で付与されたパッシブスキルは、覚醒スキルレベルがランダムに[<span class="color-image4">+1～+最大値</span>]の間で選出されます。<br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <a name="99"></a>
+        <h4>関連情報まとめ</h4>
+
+        * <a href="creature-exptable.html">クリーチャー等級ごとの必要経験値一覧</a><br>
+        <br>
+        * <a href="../information/item_property.html#1">クリーチャーの合成確率</a><br>
+        <br>
+        * <a href="creature3.html#2">パッシブスキル一覧(～2022)</a><br>
+        <br>
+        * <a href="../calculation/creature-passive-simulator.html">パッシブシミュレータ</a><br>
+        <br>
+        * <a href="../information/creature.html">～2022のクリーチャー情報</a><br>
+        <br>
+        * <a href="creature2.html">旧クリーチャー性能詳細一覧(~2019.3)</a><br>
+        <br>
+        [参考]<a href="http://service.redsonline.jp/library/1982">ネフォンクリーチャー(公式サイト)</a><br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <footer class="android-footer mdl-mega-footer">
+          <font color="red">当サイトで利用している画像及びデータは、株式会社G・O・Pに帰属します。<br />
+            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+          </font>
+          Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GOP Co., Ltd.
+        </footer>
+        <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+      </div>
+      <script src="js/sort_creature_passive.js"></script>
+
+      <!-- <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          var getCellValue = function (tr, idx) {
+            var cellValue = tr.children[idx].innerText || tr.children[idx].textContent;
+            return cellValue;
+          }
+          var comparer = function (idx, asc) {
+            return function (a, b) {
+              var v1 = getCellValue(asc ? a : b, idx),
+                v2 = getCellValue(asc ? b : a, idx);
+              return v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2)
+                ? v1 - v2
+                : v1.toString().localeCompare(v2);
+            }
+          }
+          document.querySelectorAll('th').forEach(function (th, idx) {
+            th.addEventListener('click', function () {
+              var table = th.closest('table');
+              var tbody = table.querySelector('tbody');
+              Array.from(tbody.querySelectorAll('tr'))
+                .sort(comparer(idx, this.asc = !this.asc))
+                .forEach(function (tr) {
+                  tbody.appendChild(tr);
+                });
+            });
+          });
+        });
+      </script> -->
+    </div>
+</body>
+
+</html>
