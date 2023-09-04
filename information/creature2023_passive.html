@@ -1,0 +1,2924 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=960">
+  <!-- Page styles -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+  <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-133658114-1');
+  </script>
+  <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+  <script>
+    function enter() {
+      if (window.event.keyCode == 13) {
+        var last_keyword = $('#search-field').val();
+        window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+      }
+    }
+  </script>
+  <script data-ad-client="ca-pub-2122309953813422" async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <style>
+    #view-source {
+      position: fixed;
+      display: block;
+      right: 0;
+      bottom: 0;
+      margin-right: 40px;
+      margin-bottom: 40px;
+      z-index: 900;
+    }
+  </style>
+  <script>
+    function searchTable() {
+      var input, filter, table, tr, td, i, j, txtValue;
+      input = document.getElementById("searchInput");
+      filter = input.value;
+      table = document.getElementById("table");
+      tr = table.getElementsByTagName("tr");
+
+      // Split the filter text by comma for OR search
+      var orFilters = filter.split(',');
+
+      for (i = 1; i < tr.length; i++) {
+        tr[i].style.display = "none";
+        td = tr[i].getElementsByTagName("td");
+        for (var orFilter of orFilters) {
+          var andFilters = orFilter.trim().split(' ');
+          var andFilterMatch = true;
+          for (var andFilter of andFilters) {
+            var cellMatch = false;
+            for (j = 0; j < td.length; j++) {
+              if (td[j]) {
+                txtValue = td[j].textContent || td[j].innerText;
+                if (txtValue.indexOf(andFilter.trim()) > -1) {
+                  cellMatch = true;
+                  break;
+                }
+              }
+            }
+            if (!cellMatch) {
+              andFilterMatch = false;
+              break;
+            }
+          }
+          if (andFilterMatch) {
+            tr[i].style.display = "";
+            break;
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .table-striped tbody tr:nth-of-type(odd) {
+      background-color: #f9f9f9;
+    }
+
+    .table {
+      width: 100%;
+      margin-bottom: 1rem;
+      color: #212529;
+      border-collapse: collapse;
+    }
+
+    .table th,
+    .table td {
+      padding: 0.75rem;
+      vertical-align: top;
+      border-top: 1px solid #dee2e6;
+    }
+
+    .table thead th {
+      vertical-align: bottom;
+      border-bottom: 2px solid #dee2e6;
+    }
+
+    .table tbody+tbody {
+      border-top: 2px solid #dee2e6;
+    }
+    #table td:nth-child(3) {
+    font-weight: bold;
+}
+
+    #searchInput {
+      width: 561px;
+      height: 44px;
+      border-radius: 10px;
+      margin: 20px;
+      display: block;
+      padding: 3px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+
+<body>
+  <title>クリーチャーパッシブ一覧 2023版　赤石の民衆</title>
+  <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <a name="container"></a>
+    <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+      <div class="mdl-layout__header-row">
+        <span class="android-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <!-- Add spacer, to align navigation to the right in desktop -->
+        <div class="android-header-spacer mdl-layout-spacer"></div>
+        <div
+          class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text" onkeypress="enter();"
+              id="search-field" />
+          </div>
+        </div>
+        <!-- Navigation -->
+        <div class="android-navigation-container">
+          <nav class="android-navigation mdl-navigation">
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/index.html">ホーム</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/calculator.html">計算機</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/history.html">赤石史</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/link.html">リンク</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+          </nav>
+        </div>
+        <span class="android-mobile-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+          id="more-button">
+          <i class="material-icons">more_vert</i>
+        </button>
+        <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/calculator.html">計算機</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/history.html">赤石史</a></li>
+          <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/link.html">リンク</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+        </ul>
+
+      </div>
+    </div>
+
+    <div class="android-drawer mdl-layout__drawer">
+      <span class="mdl-layout-title">
+        <h3>メニュー</h3>
+      </span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html"><strong>モンスター</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html"><strong>ダンジョン</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html"><strong>クエスト</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-friend"
+          href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-info"
+          href="../information/information.html"><strong>雑学</strong></a>
+      </nav>
+    </div>
+
+    <div class="android-large-table mdl-layout__content">
+
+      <!--main-->
+      <a href="../index.html">トップ</a> >> <a href="../item/item.html">アイテム</a> >> <a
+        href="../information/creature2023.html">クリーチャー2023</a><br>
+      <div class="main-background korea-content">
+        <br>
+        <h3>クリーチャーパッシブ一覧 2023</h3>
+        <div class="creature_index">
+          <table id="table10" style="max-width:640px">
+            <tbody>
+              <tr>
+                <th colspan="3">目次</th>
+              </tr>
+              <tr>
+                <td><a href="creature2023.html"><img src="creature_info/00_outline.png" width="45px"
+                      height="45px"><br>▼概要</a></td>
+                <td><a href="#1"><img src="creature_info/00_party.png" width="45px" height="45px"><br>▼パッシブ</a></td>
+                <td><a href="#1"><img src="creature_info/01_enhance.png" width="45px" height="45px"><br>▼効果一覧</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <br>
+        <a name="1"></a>
+        <div class="creature-index">
+          <br>
+          <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="フリーワード検索">
+          <br>
+          <br>
+          <table id="table" class="table table-striped" style="max-width: 1280px;">
+            <colgroup>
+              <col span="1" width="40">
+              <col span="1" width="40">
+              <col span="1" width="120">
+              <col span="1" width="100">
+              <col span="1" width="40">
+              <col span="1" width="100">
+              <col span="1" width="40">
+              <col span="1" width="100">
+              <col span="1" width="40">
+            </colgroup>
+            <thead>
+              <tr>
+                <th>アイコン</th>
+                <th>ランク</th>
+                <th>クリーチャー名</th>
+                <th>メイン</th>
+                <th>Lv</th>
+                <th>サブ１</th>
+                <th>Lv</th>
+                <th>サブ２</th>
+                <th>Lv</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0000.png"></td>
+                <td>N</td>
+                <td>ブリザード火炎犬</td>
+                <td>攻撃力</td>
+                <td>8</td>
+                <td>経験値</td>
+                <td>4</td>
+                <td>体力吸収</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0001.png"></td>
+                <td>N</td>
+                <td>青の火炎犬</td>
+                <td>ドロップ率</td>
+                <td>8</td>
+                <td>回避率</td>
+                <td>4</td>
+                <td>ドロップ率</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0002.png"></td>
+                <td>N</td>
+                <td>緑の火炎犬</td>
+                <td>火低下</td>
+                <td>8</td>
+                <td>被ダメージ反射</td>
+                <td>4</td>
+                <td>火強化</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0003.png"></td>
+                <td>N</td>
+                <td>紫の火炎犬</td>
+                <td>火抵抗力</td>
+                <td>8</td>
+                <td>火強化</td>
+                <td>4</td>
+                <td>抵抗力低下防止</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0004.png"></td>
+                <td>N</td>
+                <td>灰色の火炎犬</td>
+                <td>最大CP</td>
+                <td>8</td>
+                <td>能力値低下防止</td>
+                <td>4</td>
+                <td>最大体力</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0005.png"></td>
+                <td>N</td>
+                <td>赤の火炎犬</td>
+                <td>攻撃力</td>
+                <td>8</td>
+                <td>攻撃力</td>
+                <td>4</td>
+                <td>動物型ダメージ</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0006.png"></td>
+                <td>N</td>
+                <td>紫の閃光犬</td>
+                <td>クリティカル確率</td>
+                <td>8</td>
+                <td>クリティカルダメージ</td>
+                <td>4</td>
+                <td>スキル</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0007.png"></td>
+                <td>N</td>
+                <td>水色の閃光犬</td>
+                <td>最大体力</td>
+                <td>8</td>
+                <td>防御力</td>
+                <td>4</td>
+                <td>体力吸収</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0008.png"></td>
+                <td>N</td>
+                <td>赤の閃光犬</td>
+                <td>火強化</td>
+                <td>8</td>
+                <td>神獣型ダメージ</td>
+                <td>4</td>
+                <td>火低下</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0009.png"></td>
+                <td>N</td>
+                <td>青の閃光犬</td>
+                <td>大地抵抗力</td>
+                <td>8</td>
+                <td>クリティカルダメージ減少</td>
+                <td>4</td>
+                <td>火抵抗力</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0010.png"></td>
+                <td>N</td>
+                <td>変異火炎犬</td>
+                <td>ペット&amp;召喚獣強化</td>
+                <td>8</td>
+                <td>ペット&amp;召喚獣体力</td>
+                <td>4</td>
+                <td>ペット&amp;召喚獣全てのステータス</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0011.png"></td>
+                <td>N</td>
+                <td>乙女ミニゴースト</td>
+                <td>状態異常抵抗力</td>
+                <td>8</td>
+                <td>ドロップ率</td>
+                <td>4</td>
+                <td>最大CP</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0012.png"></td>
+                <td>N</td>
+                <td>海ミニゴースト</td>
+                <td>闇低下</td>
+                <td>8</td>
+                <td>全ての属性抵抗</td>
+                <td>4</td>
+                <td>闇強化</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0013.png"></td>
+                <td>N</td>
+                <td>森ミニゴースト</td>
+                <td>闇抵抗力</td>
+                <td>8</td>
+                <td>闇強化</td>
+                <td>4</td>
+                <td>闇低下</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0014.png"></td>
+                <td>N</td>
+                <td>崖ミニゴースト</td>
+                <td>攻撃力</td>
+                <td>8</td>
+                <td>被魔法ダメージ吸収</td>
+                <td>4</td>
+                <td>命中率</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0015.png"></td>
+                <td>N</td>
+                <td>岩ミニゴースト</td>
+                <td>スキル</td>
+                <td>8</td>
+                <td>スキル</td>
+                <td>4</td>
+                <td>最大CP</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0016.png"></td>
+                <td>N</td>
+                <td>砂漠ミニゴースト</td>
+                <td>回避率</td>
+                <td>8</td>
+                <td>火抵抗力</td>
+                <td>4</td>
+                <td>移動速度</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0017.png"></td>
+                <td>N</td>
+                <td>滝ミニゴースト</td>
+                <td>闇強化</td>
+                <td>8</td>
+                <td>攻撃速度</td>
+                <td>4</td>
+                <td>闇低下</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0018.png"></td>
+                <td>N</td>
+                <td>平原ミニゴースト</td>
+                <td>最大体力</td>
+                <td>8</td>
+                <td>クリティカルダメージ減少</td>
+                <td>4</td>
+                <td>悪魔型ダメージ</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0019.png"></td>
+                <td>N</td>
+                <td>紳士ミニゴースト</td>
+                <td>移動速度</td>
+                <td>8</td>
+                <td>被魔法ダメージ吸収</td>
+                <td>4</td>
+                <td>攻撃力</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0020.png"></td>
+                <td>N</td>
+                <td>墓地ミニゴースト</td>
+                <td>クリティカル確率</td>
+                <td>8</td>
+                <td>水抵抗力</td>
+                <td>4</td>
+                <td>クリティカルダメージ</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0021.png"></td>
+                <td>N</td>
+                <td>地下ミニゴースト</td>
+                <td>防御力</td>
+                <td>8</td>
+                <td>闇抵抗力</td>
+                <td>4</td>
+                <td>被ダメージ反射</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0022.png"></td>
+                <td>N</td>
+                <td>強欲のゴーレム</td>
+                <td>光抵抗力</td>
+                <td>8</td>
+                <td>クリティカル確率</td>
+                <td>4</td>
+                <td>光低下</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0023.png"></td>
+                <td>N</td>
+                <td>忘却のゴーレム</td>
+                <td>光強化</td>
+                <td>8</td>
+                <td>光強化</td>
+                <td>4</td>
+                <td>動物型ダメージ</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0024.png"></td>
+                <td>N</td>
+                <td>貪欲のゴーレム</td>
+                <td>回避率</td>
+                <td>8</td>
+                <td>能力値低下防止</td>
+                <td>4</td>
+                <td>光抵抗力</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0025.png"></td>
+                <td>N</td>
+                <td>祝福のゴーレム</td>
+                <td>攻撃速度</td>
+                <td>8</td>
+                <td>クリティカルダメージ</td>
+                <td>4</td>
+                <td>防御力</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0026.png"></td>
+                <td>N</td>
+                <td>勇気のゴーレム</td>
+                <td>最大体力</td>
+                <td>8</td>
+                <td>最大体力</td>
+                <td>4</td>
+                <td>ドロップ率</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0027.png"></td>
+                <td>N</td>
+                <td>正義のゴーレム</td>
+                <td>経験値</td>
+                <td>8</td>
+                <td>大地抵抗力</td>
+                <td>4</td>
+                <td>被ダメージ反射</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0028.png"></td>
+                <td>N</td>
+                <td>不屈のゴーレム</td>
+                <td>大地抵抗力</td>
+                <td>8</td>
+                <td>攻撃力</td>
+                <td>4</td>
+                <td>経験値</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0029.png"></td>
+                <td>N</td>
+                <td>幸福のゴーレム</td>
+                <td>ペット&amp;召喚獣強化</td>
+                <td>8</td>
+                <td>ペット&amp;召喚獣全てのステータス</td>
+                <td>4</td>
+                <td>ペット&amp;召喚獣攻撃力</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0030.png"></td>
+                <td>N</td>
+                <td>希望のゴーレム</td>
+                <td>移動速度</td>
+                <td>8</td>
+                <td>アンデッド型ダメージ</td>
+                <td>4</td>
+                <td>体力吸収</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0031.png"></td>
+                <td>N</td>
+                <td>憤怒のゴーレム</td>
+                <td>光低下</td>
+                <td>8</td>
+                <td>移動速度</td>
+                <td>4</td>
+                <td>光強化</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0032.png"></td>
+                <td>N</td>
+                <td>復讐のゴーレム</td>
+                <td>ドロップ率</td>
+                <td>8</td>
+                <td>光抵抗力</td>
+                <td>4</td>
+                <td>状態異常抵抗力</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0033.png"></td>
+                <td>N</td>
+                <td>レビット</td>
+                <td>水強化</td>
+                <td>8</td>
+                <td>水低下</td>
+                <td>4</td>
+                <td>アンデッド型ダメージ</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0034.png"></td>
+                <td>N</td>
+                <td>リビット</td>
+                <td>水低下</td>
+                <td>8</td>
+                <td>抵抗力低下防止</td>
+                <td>4</td>
+                <td>水強化</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0035.png"></td>
+                <td>N</td>
+                <td>ルビット</td>
+                <td>水抵抗力</td>
+                <td>8</td>
+                <td>回避率</td>
+                <td>4</td>
+                <td>被魔法ダメージ吸収</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0036.png"></td>
+                <td>N</td>
+                <td>ロビット</td>
+                <td>最大体力</td>
+                <td>8</td>
+                <td>防御力</td>
+                <td>4</td>
+                <td>状態異常抵抗力</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0037.png"></td>
+                <td>N</td>
+                <td>ブビット</td>
+                <td>最大CP</td>
+                <td>8</td>
+                <td>ペット&amp;召喚獣強化</td>
+                <td>4</td>
+                <td>水抵抗力</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0038.png"></td>
+                <td>N</td>
+                <td>レイット</td>
+                <td>水強化</td>
+                <td>8</td>
+                <td>水低下</td>
+                <td>4</td>
+                <td>スキルクールタイム減少</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0039.png"></td>
+                <td>N</td>
+                <td>ルイット</td>
+                <td>ペット&amp;召喚獣全てのステータス</td>
+                <td>8</td>
+                <td>ペット&amp;召喚獣体力</td>
+                <td>4</td>
+                <td>風抵抗力</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0040.png"></td>
+                <td>N</td>
+                <td>ロイット</td>
+                <td>防御力</td>
+                <td>8</td>
+                <td>攻撃速度</td>
+                <td>4</td>
+                <td>神獣型ダメージ</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0041.png"></td>
+                <td>N</td>
+                <td>ライット</td>
+                <td>スキル</td>
+                <td>8</td>
+                <td>攻撃力</td>
+                <td>4</td>
+                <td>防御力</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0042.png"></td>
+                <td>N</td>
+                <td>レビント</td>
+                <td>水低下</td>
+                <td>8</td>
+                <td>水強化</td>
+                <td>4</td>
+                <td>被ダメージCPに変換</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0043.png"></td>
+                <td>N</td>
+                <td>ルビント</td>
+                <td>命中率</td>
+                <td>8</td>
+                <td>クリティカル確率</td>
+                <td>4</td>
+                <td>闇抵抗力</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0044.png"></td>
+                <td>N</td>
+                <td>花霊アサガオ</td>
+                <td>大地強化</td>
+                <td>8</td>
+                <td>被ダメージCPに変換</td>
+                <td>4</td>
+                <td>最大CP</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0045.png"></td>
+                <td>N</td>
+                <td>花霊ローズ</td>
+                <td>攻撃力</td>
+                <td>8</td>
+                <td>状態異常抵抗力</td>
+                <td>4</td>
+                <td>クリティカルダメージ</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0046.png"></td>
+                <td>N</td>
+                <td>花霊スミレ</td>
+                <td>状態異常抵抗力</td>
+                <td>8</td>
+                <td>最大体力</td>
+                <td>4</td>
+                <td>悪魔型ダメージ</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0047.png"></td>
+                <td>N</td>
+                <td>花霊ベル</td>
+                <td>大地低下</td>
+                <td>8</td>
+                <td>大地強化</td>
+                <td>4</td>
+                <td>大地抵抗力</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0048.png"></td>
+                <td>N</td>
+                <td>花霊ナノハ</td>
+                <td>風抵抗力</td>
+                <td>8</td>
+                <td>命中率</td>
+                <td>4</td>
+                <td>全ての属性抵抗</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0049.png"></td>
+                <td>N</td>
+                <td>花霊カスミ</td>
+                <td>被ダメージ反射</td>
+                <td>8</td>
+                <td>ペット&amp;召喚獣全てのステータス</td>
+                <td>4</td>
+                <td>ペット&amp;召喚獣状態異常抵抗</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0050.png"></td>
+                <td>N</td>
+                <td>花霊ノウゼン</td>
+                <td>風強化</td>
+                <td>8</td>
+                <td>最大CP</td>
+                <td>4</td>
+                <td>風低下</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0051.png"></td>
+                <td>N</td>
+                <td>花霊ワスレナ</td>
+                <td>攻撃速度</td>
+                <td>8</td>
+                <td>最大体力</td>
+                <td>4</td>
+                <td>大地低下</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0052.png"></td>
+                <td>N</td>
+                <td>花霊アマドコロ</td>
+                <td>風低下</td>
+                <td>8</td>
+                <td>風抵抗力</td>
+                <td>4</td>
+                <td>風強化</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0053.png"></td>
+                <td>N</td>
+                <td>花霊ウィロウ</td>
+                <td>経験値</td>
+                <td>8</td>
+                <td>攻撃力</td>
+                <td>4</td>
+                <td>火抵抗力</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0054.png"></td>
+                <td>N</td>
+                <td>花霊アイリス</td>
+                <td>被魔法ダメージ吸収</td>
+                <td>8</td>
+                <td>風強化</td>
+                <td>4</td>
+                <td>移動速度</td>
+                <td>4</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0055.png"></td>
+                <td>R</td>
+                <td>黄昏のフレア</td>
+                <td>火低下</td>
+                <td>16</td>
+                <td>回避率</td>
+                <td>8</td>
+                <td>火強化</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0056.png"></td>
+                <td>R</td>
+                <td>堕落のフレア</td>
+                <td>水低下</td>
+                <td>16</td>
+                <td>水強化</td>
+                <td>8</td>
+                <td>最大CP</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0057.png"></td>
+                <td>R</td>
+                <td>呪いのフレア</td>
+                <td>風低下</td>
+                <td>16</td>
+                <td>全ての属性抵抗</td>
+                <td>8</td>
+                <td>風強化</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0058.png"></td>
+                <td>R</td>
+                <td>暗闇のフレア</td>
+                <td>水強化</td>
+                <td>16</td>
+                <td>水抵抗力</td>
+                <td>8</td>
+                <td>水低下</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0059.png"></td>
+                <td>R</td>
+                <td>地獄のフレア</td>
+                <td>状態異常抵抗力</td>
+                <td>16</td>
+                <td>攻撃速度</td>
+                <td>8</td>
+                <td>悪魔型ダメージ</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0060.png"></td>
+                <td>R</td>
+                <td>ボーンナイト</td>
+                <td>闇抵抗力</td>
+                <td>16</td>
+                <td>最大体力</td>
+                <td>8</td>
+                <td>防御力</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0061.png"></td>
+                <td>R</td>
+                <td>ボーンウォリアー</td>
+                <td>大地強化</td>
+                <td>16</td>
+                <td>防御力</td>
+                <td>8</td>
+                <td>大地強化</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0062.png"></td>
+                <td>R</td>
+                <td>ボーンヒーロー</td>
+                <td>闇低下</td>
+                <td>16</td>
+                <td>闇強化</td>
+                <td>8</td>
+                <td>経験値</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0063.png"></td>
+                <td>R</td>
+                <td>ボーンソルジャー</td>
+                <td>防御力</td>
+                <td>16</td>
+                <td>攻撃力</td>
+                <td>8</td>
+                <td>被ダメージ反射</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0064.png"></td>
+                <td>R</td>
+                <td>ボーンシーフ</td>
+                <td>闇強化</td>
+                <td>16</td>
+                <td>スキルクールタイム減少</td>
+                <td>8</td>
+                <td>闇低下</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0065.png"></td>
+                <td>R</td>
+                <td>空色のルジュエ</td>
+                <td>被ダメージ反射</td>
+                <td>16</td>
+                <td>最大体力</td>
+                <td>8</td>
+                <td>ドロップ率</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0066.png"></td>
+                <td>R</td>
+                <td>血色のルジュエ</td>
+                <td>火強化</td>
+                <td>16</td>
+                <td>火低下</td>
+                <td>8</td>
+                <td>スキル</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0067.png"></td>
+                <td>R</td>
+                <td>リボンのルジュエ</td>
+                <td>移動速度</td>
+                <td>16</td>
+                <td>クリティカルダメージ</td>
+                <td>8</td>
+                <td>命中率</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0068.png"></td>
+                <td>R</td>
+                <td>太糸のルジュエ</td>
+                <td>回避率</td>
+                <td>16</td>
+                <td>移動速度</td>
+                <td>8</td>
+                <td>神獣型ダメージ</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0069.png"></td>
+                <td>R</td>
+                <td>ルジュエ</td>
+                <td>最大CP</td>
+                <td>16</td>
+                <td>ドロップ率</td>
+                <td>8</td>
+                <td>攻撃速度</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0070.png"></td>
+                <td>R</td>
+                <td>ヴィド</td>
+                <td>大地抵抗力</td>
+                <td>16</td>
+                <td>被ダメージCPに変換</td>
+                <td>8</td>
+                <td>攻撃力</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0071.png"></td>
+                <td>R</td>
+                <td>モヒカンキャロ</td>
+                <td>ドロップ率</td>
+                <td>16</td>
+                <td>経験値</td>
+                <td>8</td>
+                <td>クリティカルダメージ減少</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0072.png"></td>
+                <td>R</td>
+                <td>リーゼントキャロ</td>
+                <td>クリティカルダメージ</td>
+                <td>16</td>
+                <td>クリティカル確率</td>
+                <td>8</td>
+                <td>動物型ダメージ</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0073.png"></td>
+                <td>R</td>
+                <td>アフロキャロ</td>
+                <td>風強化</td>
+                <td>16</td>
+                <td>風低下</td>
+                <td>8</td>
+                <td>状態異常抵抗力</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0074.png"></td>
+                <td>R</td>
+                <td>ファフ</td>
+                <td>全ての属性抵抗</td>
+                <td>16</td>
+                <td>光強化</td>
+                <td>8</td>
+                <td>能力値低下防止</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0075.png"></td>
+                <td>R</td>
+                <td>ポフ</td>
+                <td>光低下</td>
+                <td>16</td>
+                <td>アンデッド型ダメージ</td>
+                <td>8</td>
+                <td>光強化</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0076.png"></td>
+                <td>R</td>
+                <td>パフ</td>
+                <td>火強化</td>
+                <td>16</td>
+                <td>火低下</td>
+                <td>8</td>
+                <td>火抵抗力</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0077.png"></td>
+                <td>R</td>
+                <td>プフ</td>
+                <td>大地低下</td>
+                <td>16</td>
+                <td>大地抵抗力</td>
+                <td>8</td>
+                <td>大地強化</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0078.png"></td>
+                <td>R</td>
+                <td>レッドアブソル</td>
+                <td>クリティカル確率</td>
+                <td>16</td>
+                <td>クリティカルダメージ</td>
+                <td>8</td>
+                <td>全ての属性抵抗</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0079.png"></td>
+                <td>R</td>
+                <td>ブルーアブソル</td>
+                <td>攻撃力</td>
+                <td>16</td>
+                <td>体力吸収</td>
+                <td>8</td>
+                <td>水抵抗力</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0080.png"></td>
+                <td>R</td>
+                <td>グリーンアブソル</td>
+                <td>大地強化</td>
+                <td>16</td>
+                <td>大地抵抗力</td>
+                <td>8</td>
+                <td>大地低下</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0081.png"></td>
+                <td>R</td>
+                <td>パープルアブソル</td>
+                <td>防御力</td>
+                <td>16</td>
+                <td>被魔法ダメージ吸収</td>
+                <td>8</td>
+                <td>被ダメージ反射</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0082.png"></td>
+                <td>R</td>
+                <td>ロードアブソル</td>
+                <td>クリティカル確率</td>
+                <td>16</td>
+                <td>スキル</td>
+                <td>8</td>
+                <td>火抵抗力</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0083.png"></td>
+                <td>R</td>
+                <td>強靭なヒヨコ戦士</td>
+                <td>攻撃速度</td>
+                <td>16</td>
+                <td>体力吸収</td>
+                <td>8</td>
+                <td>風抵抗力</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0084.png"></td>
+                <td>R</td>
+                <td>強運のヒヨコ戦士</td>
+                <td>クリティカル確率</td>
+                <td>16</td>
+                <td>最大CP</td>
+                <td>8</td>
+                <td>攻撃速度</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0085.png"></td>
+                <td>R</td>
+                <td>賢明なヒヨコ戦士</td>
+                <td>光強化</td>
+                <td>16</td>
+                <td>光低下</td>
+                <td>8</td>
+                <td>アンデッド型ダメージ</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0086.png"></td>
+                <td>R</td>
+                <td>疾風のヒヨコ戦士</td>
+                <td>大地強化</td>
+                <td>16</td>
+                <td>最大体力</td>
+                <td>8</td>
+                <td>大地低下</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0087.png"></td>
+                <td>R</td>
+                <td>壮健なヒヨコ戦士</td>
+                <td>クリティカルダメージ減少</td>
+                <td>16</td>
+                <td>クリティカル確率</td>
+                <td>8</td>
+                <td>光抵抗力</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0117.png"></td>
+                <td>R</td>
+                <td>ワイアットピグ</td>
+                <td>最大体力</td>
+                <td>16</td>
+                <td>風抵抗力</td>
+                <td>8</td>
+                <td>全ての属性抵抗</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0118.png"></td>
+                <td>R</td>
+                <td>コリントピグ</td>
+                <td>火強化</td>
+                <td>16</td>
+                <td>火低下</td>
+                <td>8</td>
+                <td>スキル</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0119.png"></td>
+                <td>R</td>
+                <td>フィルバートピグ</td>
+                <td>風強化</td>
+                <td>16</td>
+                <td>風低下</td>
+                <td>8</td>
+                <td>クリティカルダメージ減少</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0120.png"></td>
+                <td>R</td>
+                <td>メイソンピグ</td>
+                <td>ペット&amp;召喚獣体力</td>
+                <td>16</td>
+                <td>ペット&amp;召喚獣状態異常抵抗</td>
+                <td>8</td>
+                <td>ペット&amp;召喚獣強化</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0123.png"></td>
+                <td>R</td>
+                <td>骸骨仮面バット</td>
+                <td>被ダメージCPに変換</td>
+                <td>16</td>
+                <td>防御力</td>
+                <td>8</td>
+                <td>抵抗力低下防止</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0124.png"></td>
+                <td>R</td>
+                <td>ピエロ仮面バット</td>
+                <td>命中率</td>
+                <td>16</td>
+                <td>闇強化</td>
+                <td>8</td>
+                <td>闇低下</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0125.png"></td>
+                <td>R</td>
+                <td>舞台仮面バット</td>
+                <td>状態異常抵抗力</td>
+                <td>16</td>
+                <td>攻撃力</td>
+                <td>8</td>
+                <td>クリティカルダメージ</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0126.png"></td>
+                <td>R</td>
+                <td>トガリ仮面バット</td>
+                <td>ペット&amp;召喚獣攻撃力</td>
+                <td>16</td>
+                <td>ペット&amp;召喚獣攻撃力</td>
+                <td>8</td>
+                <td>ペット&amp;召喚獣全てのステータス</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0135.png"></td>
+                <td>R</td>
+                <td>ピンクチビット</td>
+                <td>スキル</td>
+                <td>16</td>
+                <td>火強化</td>
+                <td>8</td>
+                <td>クリティカル確率</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0136.png"></td>
+                <td>R</td>
+                <td>ブルーチビット</td>
+                <td>最大体力</td>
+                <td>16</td>
+                <td>状態異常抵抗力</td>
+                <td>8</td>
+                <td>経験値</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0137.png"></td>
+                <td>R</td>
+                <td>グリーンチビット</td>
+                <td>ペット&amp;召喚獣状態異常抵抗</td>
+                <td>16</td>
+                <td>ペット&amp;召喚獣強化</td>
+                <td>8</td>
+                <td>ペット&amp;召喚獣体力</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0138.png"></td>
+                <td>R</td>
+                <td>オレンジチビット</td>
+                <td>クリティカルダメージ</td>
+                <td>16</td>
+                <td>防御力</td>
+                <td>8</td>
+                <td>命中率</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0141.png"></td>
+                <td>R</td>
+                <td>花精マリアカラス</td>
+                <td>攻撃力</td>
+                <td>16</td>
+                <td>体力吸収</td>
+                <td>8</td>
+                <td>状態異常抵抗力</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0142.png"></td>
+                <td>R</td>
+                <td>花精シャルル</td>
+                <td>ペット&amp;召喚獣強化</td>
+                <td>16</td>
+                <td>ペット&amp;召喚獣全てのステータス</td>
+                <td>8</td>
+                <td>攻撃速度</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0143.png"></td>
+                <td>R</td>
+                <td>花精サンブライト</td>
+                <td>経験値</td>
+                <td>16</td>
+                <td>移動速度</td>
+                <td>8</td>
+                <td>水低下</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0144.png"></td>
+                <td>R</td>
+                <td>花精ブルームーン</td>
+                <td>スキル</td>
+                <td>16</td>
+                <td>神獣型ダメージ</td>
+                <td>8</td>
+                <td>体力吸収</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0145.png"></td>
+                <td>R</td>
+                <td>ブラウンモス</td>
+                <td>火抵抗力</td>
+                <td>16</td>
+                <td>攻撃力</td>
+                <td>8</td>
+                <td>被魔法ダメージ吸収</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0146.png"></td>
+                <td>R</td>
+                <td>バイオレットモス</td>
+                <td>水抵抗力</td>
+                <td>16</td>
+                <td>水強化</td>
+                <td>8</td>
+                <td>能力値低下防止</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0147.png"></td>
+                <td>R</td>
+                <td>オリーブモス</td>
+                <td>風抵抗力</td>
+                <td>16</td>
+                <td>最大体力</td>
+                <td>8</td>
+                <td>抵抗力低下防止</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0148.png"></td>
+                <td>R</td>
+                <td>ミュータントモス</td>
+                <td>大地抵抗力</td>
+                <td>16</td>
+                <td>悪魔型ダメージ</td>
+                <td>8</td>
+                <td>闇抵抗力</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0153.png"></td>
+                <td>R</td>
+                <td>パープルエリーズ</td>
+                <td>クリティカル確率</td>
+                <td>16</td>
+                <td>経験値</td>
+                <td>8</td>
+                <td>水抵抗力</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0154.png"></td>
+                <td>R</td>
+                <td>ブルーエリーズ</td>
+                <td>光抵抗力</td>
+                <td>16</td>
+                <td>攻撃力</td>
+                <td>8</td>
+                <td>神獣型ダメージ</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0155.png"></td>
+                <td>R</td>
+                <td>レッドエリーズ</td>
+                <td>ペット&amp;召喚獣攻撃力</td>
+                <td>16</td>
+                <td>ペット&amp;召喚獣状態異常抵抗</td>
+                <td>8</td>
+                <td>ペット&amp;召喚獣体力</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0156.png"></td>
+                <td>R</td>
+                <td>グリーンエリーズ</td>
+                <td>移動速度</td>
+                <td>16</td>
+                <td>被ダメージ反射</td>
+                <td>8</td>
+                <td>火抵抗力</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0157.png"></td>
+                <td>R</td>
+                <td>チャンピオンマモ</td>
+                <td>攻撃力</td>
+                <td>16</td>
+                <td>アンデッド型ダメージ</td>
+                <td>8</td>
+                <td>光強化</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0158.png"></td>
+                <td>R</td>
+                <td>チャンピオンシマ</td>
+                <td>ペット&amp;召喚獣全てのステータス</td>
+                <td>16</td>
+                <td>ペット&amp;召喚獣攻撃力</td>
+                <td>8</td>
+                <td>ペット&amp;召喚獣体力</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0159.png"></td>
+                <td>R</td>
+                <td>チャンピオンモモ</td>
+                <td>最大体力</td>
+                <td>16</td>
+                <td>闇抵抗力</td>
+                <td>8</td>
+                <td>体力吸収</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0160.png"></td>
+                <td>R</td>
+                <td>チャンピオンジリ</td>
+                <td>最大CP</td>
+                <td>16</td>
+                <td>クリティカル確率</td>
+                <td>8</td>
+                <td>ドロップ率</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0165.png"></td>
+                <td>R</td>
+                <td>プリンスリオン</td>
+                <td>スキル</td>
+                <td>16</td>
+                <td>ドロップ率</td>
+                <td>8</td>
+                <td>回避率</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0166.png"></td>
+                <td>R</td>
+                <td>プリンスラオン</td>
+                <td>被魔法ダメージ吸収</td>
+                <td>16</td>
+                <td>悪魔型ダメージ</td>
+                <td>8</td>
+                <td>命中率</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0167.png"></td>
+                <td>R</td>
+                <td>プリンスロウン</td>
+                <td>攻撃速度</td>
+                <td>16</td>
+                <td>クリティカルダメージ</td>
+                <td>8</td>
+                <td>光抵抗力</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0168.png"></td>
+                <td>R</td>
+                <td>プリンスルウン</td>
+                <td>スキル</td>
+                <td>16</td>
+                <td>動物型ダメージ</td>
+                <td>8</td>
+                <td>経験値</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0169.png"></td>
+                <td>R</td>
+                <td>アスター</td>
+                <td>被魔法ダメージ吸収</td>
+                <td>16</td>
+                <td>大地低下</td>
+                <td>8</td>
+                <td>攻撃力</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0170.png"></td>
+                <td>R</td>
+                <td>エスター</td>
+                <td>防御力</td>
+                <td>16</td>
+                <td>風強化</td>
+                <td>8</td>
+                <td>被ダメージCPに変換</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0171.png"></td>
+                <td>R</td>
+                <td>ウスター</td>
+                <td>光強化</td>
+                <td>16</td>
+                <td>動物型ダメージ</td>
+                <td>8</td>
+                <td>移動速度</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0172.png"></td>
+                <td>R</td>
+                <td>イスター</td>
+                <td>ペット&召喚獣の全てのステータス</td>
+                <td>16</td>
+                <td>回避率</td>
+                <td>8</td>
+                <td>クリティカルダメージ減少</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0193.png"></td>
+                <td>R</td>
+                <td>オローニ</td>
+                <td>火抵抗力</td>
+                <td>16</td>
+                <td>火低下</td>
+                <td>8</td>
+                <td>ペット&召喚獣の攻撃力</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0194.png"></td>
+                <td>R</td>
+                <td>オローナ</td>
+                <td>水抵抗力</td>
+                <td>16</td>
+                <td>水低下</td>
+                <td>8</td>
+                <td>ペット&召喚獣強化</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0195.png"></td>
+                <td>R</td>
+                <td>オローネ</td>
+                <td>風抵抗力</td>
+                <td>16</td>
+                <td>風低下</td>
+                <td>8</td>
+                <td>ペット&召喚獣の状態異常抵抗</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0196.png"></td>
+                <td>R</td>
+                <td>オローヌ</td>
+                <td>大地抵抗力</td>
+                <td>16</td>
+                <td>大地低下</td>
+                <td>8</td>
+                <td>ペット&召喚獣体力</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0197.png"></td>
+                <td>R</td>
+                <td>ソードガーディアン</td>
+                <td>防御力</td>
+                <td>16</td>
+                <td>神獣型ダメージ</td>
+                <td>8</td>
+                <td>被ダメージ反射</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0198.png"></td>
+                <td>R</td>
+                <td>アックスガーディアン</td>
+                <td>最大体力</td>
+                <td>16</td>
+                <td>動物型ダメージ</td>
+                <td>8</td>
+                <td>最大CP</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0199.png"></td>
+                <td>R</td>
+                <td>ハンマーガーディアン</td>
+                <td>クリティカルダメージ減少</td>
+                <td>16</td>
+                <td>アンデット型ダメージ</td>
+                <td>8</td>
+                <td>獲得CP増加</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0200.png"></td>
+                <td>R</td>
+                <td>スピアガーディアン</td>
+                <td>状態異常抵抗力</td>
+                <td>16</td>
+                <td>悪魔型ダメージ</td>
+                <td>8</td>
+                <td>被ダメージCPに変換</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0211.png"></td>
+                <td>R</td>
+                <td>アウルナイト</td>
+                <td>被ダメージ反射</td>
+                <td>16</td>
+                <td>最大体力</td>
+                <td>8</td>
+                <td>命中率</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0212.png"></td>
+                <td>R</td>
+                <td>アウルスカウト</td>
+                <td>クリティカル確率</td>
+                <td>16</td>
+                <td>回避率</td>
+                <td>8</td>
+                <td>攻撃速度</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0213.png"></td>
+                <td>R</td>
+                <td>アウルスコラ</td>
+                <td>経験値</td>
+                <td>16</td>
+                <td>スキル</td>
+                <td>8</td>
+                <td>回避率</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0214.png"></td>
+                <td>R</td>
+                <td>アウルバンディット</td>
+                <td>ドロップ率</td>
+                <td>16</td>
+                <td>移動速度</td>
+                <td>8</td>
+                <td>体力吸収</td>
+                <td>8</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0088.png"></td>
+                <td>HR</td>
+                <td>コボルト大魔導師</td>
+                <td>火低下</td>
+                <td>24</td>
+                <td>火強化</td>
+                <td>12</td>
+                <td>魔法攻撃力強化</td>
+                <td>3</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0089.png"></td>
+                <td>HR</td>
+                <td>ウィッチマゴ</td>
+                <td>光低下</td>
+                <td>24</td>
+                <td>光強化</td>
+                <td>12</td>
+                <td>魔法強打</td>
+                <td>3</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0090.png"></td>
+                <td>HR</td>
+                <td>ドレアス</td>
+                <td>水低下</td>
+                <td>24</td>
+                <td>水強化</td>
+                <td>12</td>
+                <td>水抵抗力</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0091.png"></td>
+                <td>HR</td>
+                <td>ナイトスピア</td>
+                <td>アンデッド型ダメージ</td>
+                <td>24</td>
+                <td>上級状態異常抵抗力</td>
+                <td>3</td>
+                <td>闇抵抗力</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0092.png"></td>
+                <td>HR</td>
+                <td>ドベルト</td>
+                <td>動物型ダメージ</td>
+                <td>24</td>
+                <td>クリティカル確率</td>
+                <td>12</td>
+                <td>PVP防御力</td>
+                <td>3</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0093.png"></td>
+                <td>HR</td>
+                <td>タイムシュラット</td>
+                <td>スキルクールタイム減少</td>
+                <td>24</td>
+                <td>被ダメージ反射</td>
+                <td>12</td>
+                <td>風抵抗力</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0094.png"></td>
+                <td>HR</td>
+                <td>エマティース</td>
+                <td>大地低下</td>
+                <td>24</td>
+                <td>大地強化</td>
+                <td>12</td>
+                <td>最大CP</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0095.png"></td>
+                <td>HR</td>
+                <td>トゥルイク</td>
+                <td>悪魔型ダメージ</td>
+                <td>24</td>
+                <td>PVP防御力</td>
+                <td>3</td>
+                <td>上級攻撃力</td>
+                <td>3</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0096.png"></td>
+                <td>HR</td>
+                <td>グリフォン</td>
+                <td>風低下</td>
+                <td>24</td>
+                <td>風強化</td>
+                <td>12</td>
+                <td>上級最大CP</td>
+                <td>3</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0097.png"></td>
+                <td>HR</td>
+                <td>マスクグール</td>
+                <td>闇低下</td>
+                <td>24</td>
+                <td>闇強化</td>
+                <td>12</td>
+                <td>与魔法ダメージ吸収</td>
+                <td>3</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0105.png"></td>
+                <td>HR</td>
+                <td>泣き虫ルドルフ</td>
+                <td>ドロップ率</td>
+                <td>24</td>
+                <td>PVP攻撃力</td>
+                <td>3</td>
+                <td>命中率</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0106.png"></td>
+                <td>HR</td>
+                <td>クリスマスフェアリー</td>
+                <td>ペット&amp;召喚獣体力</td>
+                <td>24</td>
+                <td>経験値</td>
+                <td>12</td>
+                <td>ペット&amp;召喚獣強化</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0108.png"></td>
+                <td>HR</td>
+                <td>フォクシーテール</td>
+                <td>経験値</td>
+                <td>24</td>
+                <td>人間型魔法ダメージ</td>
+                <td>3</td>
+                <td>魔法攻撃力強化</td>
+                <td>3</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0109.png"></td>
+                <td>HR</td>
+                <td>ハウンデブル</td>
+                <td>被ダメージ反射</td>
+                <td>24</td>
+                <td>被ダメージCPに変換</td>
+                <td>12</td>
+                <td>火抵抗力</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0113.png"></td>
+                <td>HR</td>
+                <td>ペンギン大佐</td>
+                <td>回避率</td>
+                <td>24</td>
+                <td>上級防御力</td>
+                <td>3</td>
+                <td>風抵抗力</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0114.png"></td>
+                <td>HR</td>
+                <td>プリンセスルーナ</td>
+                <td>被魔法ダメージ吸収</td>
+                <td>24</td>
+                <td>人間型ダメージ</td>
+                <td>3</td>
+                <td>抵抗力低下防止</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0121.png"></td>
+                <td>HR</td>
+                <td>クマーン</td>
+                <td>防御力</td>
+                <td>24</td>
+                <td>強打</td>
+                <td>3</td>
+                <td>全ての属性抵抗</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0127.png"></td>
+                <td>HR</td>
+                <td>見習い魔女リトル</td>
+                <td>クリティカルダメージ減少</td>
+                <td>24</td>
+                <td>上級体力</td>
+                <td>3</td>
+                <td>能力値低下防止</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0139.png"></td>
+                <td>HR</td>
+                <td>ライカンスロープ</td>
+                <td>神獣型ダメージ</td>
+                <td>24</td>
+                <td>敵致命打減少</td>
+                <td>3</td>
+                <td>被ダメージ反射</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0149.png"></td>
+                <td>HR</td>
+                <td>キングクレバネット</td>
+                <td>経験値</td>
+                <td>24</td>
+                <td>体力吸収</td>
+                <td>12</td>
+                <td>上級攻撃速度</td>
+                <td>3</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0150.png"></td>
+                <td>HR</td>
+                <td>ガイア</td>
+                <td>闇低下</td>
+                <td>24</td>
+                <td>魔法強打</td>
+                <td>3</td>
+                <td>光抵抗力</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0161.png"></td>
+                <td>HR</td>
+                <td>トリックスター</td>
+                <td>状態異常抵抗力</td>
+                <td>24</td>
+                <td>防御力</td>
+                <td>12</td>
+                <td>人間型ダメージ抵抗</td>
+                <td>3</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0173.png"></td>
+                <td>HR</td>
+                <td>ドリーマー</td>
+                <td>命中率</td>
+                <td>24</td>
+                <td>上級攻撃力</td>
+                <td>3</td>
+                <td>攻撃速度</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0174.png"></td>
+                <td>HR</td>
+                <td>ノーマド</td>
+                <td>回避率</td>
+                <td>24</td>
+                <td>大地抵抗力</td>
+                <td>12</td>
+                <td>魔法抵抗力低下</td>
+                <td>3</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0175.png"></td>
+                <td>HR</td>
+                <td>シッティングダイル</td>
+                <td>攻撃速度</td>
+                <td>24</td>
+                <td>クリティカルダメージ</td>
+                <td>12</td>
+                <td>回避率</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0176.png"></td>
+                <td>HR</td>
+                <td>メラニー</td>
+                <td>ペット&召喚獣強化</td>
+                <td>24</td>
+                <td>ペット&召喚獣全てのステータス</td>
+                <td>12</td>
+                <td>最大CP</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0177.png"></td>
+                <td>HR</td>
+                <td>シーウォーカー</td>
+                <td>最大体力</td>
+                <td>24</td>
+                <td>ダブルクリティカルダメージ</td>
+                <td>3</td>
+                <td>最大体力</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0178.png"></td>
+                <td>HR</td>
+                <td>カイザー</td>
+                <td>スキル</td>
+                <td>24</td>
+                <td>上級状態異常抵抗力</td>
+                <td>3</td>
+                <td>魔法致命打</td>
+                <td>3</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0179.png"></td>
+                <td>HR</td>
+                <td>クレア</td>
+                <td>攻撃力</td>
+                <td>24</td>
+                <td>クリティカルダメージ減少</td>
+                <td>12</td>
+                <td>ドロップ率</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0183.png"></td>
+                <td>HR</td>
+                <td>サキュバスヴェラ</td>
+                <td>スキル</td>
+                <td>24</td>
+                <td>経験値</td>
+                <td>12</td>
+                <td>上級スキル</td>
+                <td>3</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0185.png"></td>
+                <td>HR</td>
+                <td>ヴィーナス</td>
+                <td>ペット&召喚獣攻撃力</td>
+                <td>24</td>
+                <td>最大体力</td>
+                <td>12</td>
+                <td>人間型ダメージ</td>
+                <td>3</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0186.png"></td>
+                <td>HR</td>
+                <td>イフリート</td>
+                <td>火強化</td>
+                <td>24</td>
+                <td>火抵抗力</td>
+                <td>12</td>
+                <td>被ダメージCPに変換</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0187.png"></td>
+                <td>HR</td>
+                <td>かんがえるさかな</td>
+                <td>経験値</td>
+                <td>24</td>
+                <td>水抵抗力</td>
+                <td>12</td>
+                <td>体力吸収</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0201.png"></td>
+                <td>HR</td>
+                <td>ブラックウィドー</td>
+                <td>能力値低下防止</td>
+                <td>24</td>
+                <td>魔法攻撃力強化</td>
+                <td>3</td>
+                <td>ペット&召喚獣の魔法致命打確率</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0202.png"></td>
+                <td>HR</td>
+                <td>ホワイトレディー</td>
+                <td>抵抗力低下防止</td>
+                <td>24</td>
+                <td>上級攻撃力</td>
+                <td>3</td>
+                <td>ペット&召喚獣の強打確率</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0205.png"></td>
+                <td>HR</td>
+                <td>プチデリン</td>
+                <td>攻撃力</td>
+                <td>24</td>
+                <td>火抵抗力</td>
+                <td>12</td>
+                <td>命中率</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0206.png"></td>
+                <td>HR</td>
+                <td>プチダリン</td>
+                <td>ドロップ率</td>
+                <td>24</td>
+                <td>魔法攻撃力強化</td>
+                <td>3</td>
+                <td>ペット&召喚獣全てのステータス</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0215.png"></td>
+                <td>HR</td>
+                <td>エルダーハーミット</td>
+                <td>全ての属性抵抗</td>
+                <td>24</td>
+                <td>動物型ダメージ</td>
+                <td>12</td>
+                <td>ペット&召喚獣体力</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0227.png"></td>
+                <td>HR</td>
+                <td>タイニーフォックス</td>
+                <td>クリティカル確率</td>
+                <td>24</td>
+                <td>攻撃力</td>
+                <td>12</td>
+                <td>悪魔型ダメージ</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0228.png"></td>
+                <td>HR</td>
+                <td>リトルロトル</td>
+                <td>水強化</td>
+                <td>24</td>
+                <td>水低下</td>
+                <td>12</td>
+                <td>状態異常抵抗力</td>
+                <td>12</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0229.png"></td>
+                <td>HR</td>
+                <td>ホエーリ</td>
+                <td>抵抗力低下防止</td>
+                <td>24</td>
+                <td>移動速度</td>
+                <td>12</td>
+                <td>上級最大CP</td>
+                <td>3</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0098.png"></td>
+                <td>SR</td>
+                <td>インキュバス</td>
+                <td>上級スキル</td>
+                <td>10</td>
+                <td>魔法抵抗力低下</td>
+                <td>5</td>
+                <td>闇強化</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0099.png"></td>
+                <td>SR</td>
+                <td>吸血姫</td>
+                <td>体力吸収</td>
+                <td>32</td>
+                <td>スキル</td>
+                <td>16</td>
+                <td>上級攻撃力</td>
+                <td>5</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0100.png"></td>
+                <td>SR</td>
+                <td>アイスクイーン</td>
+                <td>ペット&amp;召喚獣強化</td>
+                <td>32</td>
+                <td>PVP防御力</td>
+                <td>5</td>
+                <td>人間型魔法ダメージ</td>
+                <td>5</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0101.png"></td>
+                <td>SR</td>
+                <td>ラストウィッチ</td>
+                <td>魔法致命打</td>
+                <td>10</td>
+                <td>与魔法ダメージ吸収</td>
+                <td>5</td>
+                <td>火強化</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0102.png"></td>
+                <td>SR</td>
+                <td>ラミア</td>
+                <td>クリティカルダメージ</td>
+                <td>32</td>
+                <td>PVP攻撃力</td>
+                <td>5</td>
+                <td>回避率</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0107.png"></td>
+                <td>SR</td>
+                <td>サンタレビット</td>
+                <td>ドロップ率</td>
+                <td>32</td>
+                <td>強打</td>
+                <td>5</td>
+                <td>最大体力</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0110.png"></td>
+                <td>SR</td>
+                <td>レオフォールド</td>
+                <td>ペット&amp;召喚獣全てのステータス</td>
+                <td>32</td>
+                <td>PVP防御力</td>
+                <td>5</td>
+                <td>ペット&amp;召喚獣状態異常抵抗</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0111.png"></td>
+                <td>SR</td>
+                <td>メリアス</td>
+                <td>強打</td>
+                <td>10</td>
+                <td>上級体力</td>
+                <td>5</td>
+                <td>大地強化</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0115.png"></td>
+                <td>SR</td>
+                <td>コモルコクーン</td>
+                <td>能力値低下防止</td>
+                <td>32</td>
+                <td>人間型ダメージ抵抗</td>
+                <td>5</td>
+                <td>移動速度</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0116.png"></td>
+                <td>SR</td>
+                <td>マートン所長</td>
+                <td>クリティカル確率</td>
+                <td>32</td>
+                <td>敵致命打減少</td>
+                <td>5</td>
+                <td>上級攻撃速度</td>
+                <td>5</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0122.png"></td>
+                <td>SR</td>
+                <td>スペクター</td>
+                <td>能力値低下防止</td>
+                <td>32</td>
+                <td>上級防御力</td>
+                <td>5</td>
+                <td>命中率</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0128.png"></td>
+                <td>SR</td>
+                <td>パンプキンナイト</td>
+                <td>上級攻撃速度</td>
+                <td>10</td>
+                <td>上級最大CP</td>
+                <td>5</td>
+                <td>被ダメージ反射</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0129.png"></td>
+                <td>SR</td>
+                <td>アサシン</td>
+                <td>攻撃速度</td>
+                <td>16</td>
+                <td>強打</td>
+                <td>5</td>
+                <td>PVP防御</td>
+                <td>10</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0130.png"></td>
+                <td>SR</td>
+                <td>アーチャー</td>
+                <td>上級最大CP</td>
+                <td>10</td>
+                <td>全ての属性抵抗</td>
+                <td>16</td>
+                <td>経験値</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0131.png"></td>
+                <td>SR</td>
+                <td>バーサーカー</td>
+                <td>被ダメージCPに変換</td>
+                <td>32</td>
+                <td>上級体力</td>
+                <td>5</td>
+                <td>クリティカルダメージ減少</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0132.png"></td>
+                <td>SR</td>
+                <td>ランサー</td>
+                <td>全属性抵抗</td>
+                <td>32</td>
+                <td>ドロップ率</td>
+                <td>16</td>
+                <td>スキル</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0140.png"></td>
+                <td>SR</td>
+                <td>ケンタウロスナイト</td>
+                <td>上級状態異常抵抗力</td>
+                <td>10</td>
+                <td>上級攻撃力</td>
+                <td>5</td>
+                <td>上級状態異常抵抗力</td>
+                <td>5</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0151.png"></td>
+                <td>SR</td>
+                <td>クレセンティ</td>
+                <td>光低下</td>
+                <td>32</td>
+                <td>上級スキル</td>
+                <td>5</td>
+                <td>上級最大CP</td>
+                <td>5</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0162.png"></td>
+                <td>SR</td>
+                <td>オーロラ</td>
+                <td>闇低下</td>
+                <td>32</td>
+                <td>魔法攻撃力強化</td>
+                <td>5</td>
+                <td>人間型魔法ダメージ</td>
+                <td>5</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0163.png"></td>
+                <td>SR</td>
+                <td>アレクサンダ</td>
+                <td>敵致命打減少</td>
+                <td>10</td>
+                <td>攻撃力</td>
+                <td>16</td>
+                <td>クリティカルダメージ</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0180.png"></td>
+                <td>SR</td>
+                <td>マキュリア</td>
+                <td>水低下</td>
+                <td>32</td>
+                <td>魔法致命打</td>
+                <td>5</td>
+                <td>水強化</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0181.png"></td>
+                <td>SR</td>
+                <td>トワイライト</td>
+                <td>魔法強打</td>
+                <td>10</td>
+                <td>PVP防御力</td>
+                <td>5</td>
+                <td>上級最大CP</td>
+                <td>5</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0184.png"></td>
+                <td>SR</td>
+                <td>ラクネーラ</td>
+                <td>人間型魔法ダメージ</td>
+                <td>10</td>
+                <td>魔法致命打</td>
+                <td>5</td>
+                <td>水強化</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0189.png"></td>
+                <td>SR</td>
+                <td>橘 清音</td>
+                <td>クリティカル確率</td>
+                <td>32</td>
+                <td>上級攻撃速度</td>
+                <td>5</td>
+                <td>命中率</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0190.png"></td>
+                <td>SR</td>
+                <td>枇々木 丈</td>
+                <td>クリティカルダメージ</td>
+                <td>32</td>
+                <td>上級攻撃力</td>
+                <td>5</td>
+                <td>最大体力</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0191.png"></td>
+                <td>SR</td>
+                <td>宮 うつつ</td>
+                <td>上級最大CP</td>
+                <td>10</td>
+                <td>状態異常抵抗力</td>
+                <td>16</td>
+                <td>経験値</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0192.png"></td>
+                <td>SR</td>
+                <td>爾乃美家 累</td>
+                <td>人間型魔法ダメージ</td>
+                <td>5</td>
+                <td>スキル</td>
+                <td>16</td>
+                <td>被ダメージをCPに変換</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0203.png"></td>
+                <td>SR</td>
+                <td>シーカー</td>
+                <td>PVP防御力</td>
+                <td>10</td>
+                <td>人間型ダメージ抵抗</td>
+                <td>5</td>
+                <td>被魔法ダメージ吸収</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0216.png"></td>
+                <td>SR</td>
+                <td>アマニタマジシャン</td>
+                <td>ペット&召喚獣魔法致命打確率</td>
+                <td>32</td>
+                <td>状態異常抵抗力</td>
+                <td>16</td>
+                <td>被ダメージをCPに変換</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0230.png"></td>
+                <td>SR</td>
+                <td>セイクリッドフォックス</td>
+                <td>魔法攻撃力強化</td>
+                <td>10</td>
+                <td>闇低下</td>
+                <td>16</td>
+                <td>魔法強打</td>
+                <td>5</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0231.png"></td>
+                <td>SR</td>
+                <td>ドレカニア</td>
+                <td>クリティカルダメージ</td>
+                <td>32</td>
+                <td>上級攻撃力</td>
+                <td>5</td>
+                <td>敵致命打減少</td>
+                <td>5</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0232.png"></td>
+                <td>SR</td>
+                <td>ホエーザランド</td>
+                <td>ペット&召喚獣敵致命打減少</td>
+                <td>10</td>
+                <td>ペット&召喚獣攻撃力</td>
+                <td>16</td>
+                <td>ペット&召喚獣体力</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0235.png"></td>
+                <td>SR</td>
+                <td>アルティナ・オライオン</td>
+                <td>ペット&召喚獣全てのステータス</td>
+                <td>32</td>
+                <td>ペット&召喚獣体力</td>
+                <td>16</td>
+                <td>防御力</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0236.png"></td>
+                <td>SR</td>
+                <td>アリサ・ラインフォルト</td>
+                <td>魔法攻撃力強化</td>
+                <td>10</td>
+                <td>状態異常抵抗力</td>
+                <td>16</td>
+                <td>最大CP</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0237.png"></td>
+                <td>SR</td>
+                <td>ラウラ・S・アルゼイド</td>
+                <td>ダブルクリティカルダメージ</td>
+                <td>10</td>
+                <td>上級攻撃速度</td>
+                <td>5</td>
+                <td>命中率</td>
+                <td>16</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0103.png"></td>
+                <td>LR</td>
+                <td>ヴァルキリー</td>
+                <td>上級攻撃力</td>
+                <td>20</td>
+                <td>敵致命打減少</td>
+                <td>10</td>
+                <td>上級攻撃速度</td>
+                <td>10</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0104.png"></td>
+                <td>LR</td>
+                <td>アグレアス</td>
+                <td>人間型ダメージ</td>
+                <td>20</td>
+                <td>上級体力</td>
+                <td>10</td>
+                <td>上級防御力</td>
+                <td>10</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0112.png"></td>
+                <td>LR</td>
+                <td>アビス</td>
+                <td>人間型ダメージ抵抗</td>
+                <td>20</td>
+                <td>上級状態異常抵抗力</td>
+                <td>10</td>
+                <td>魔法強打</td>
+                <td>10</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0133.png"></td>
+                <td>LR</td>
+                <td>セイバー</td>
+                <td>強打</td>
+                <td>20</td>
+                <td>上級最大CP</td>
+                <td>10</td>
+                <td>上級攻撃力</td>
+                <td>10</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0134.png"></td>
+                <td>LR</td>
+                <td>ライダー</td>
+                <td>魔法強打</td>
+                <td>20</td>
+                <td>与魔法ダメージ吸収</td>
+                <td>10</td>
+                <td>上級スキル</td>
+                <td>10</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0152.png"></td>
+                <td>LR</td>
+                <td>グラビティアナ</td>
+                <td>PVP攻撃力</td>
+                <td>20</td>
+                <td>強打</td>
+                <td>10</td>
+                <td>ダブルクリティカルダメージ</td>
+                <td>10</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0164.png"></td>
+                <td>LR</td>
+                <td>タナトス</td>
+                <td>魔法攻撃力強化</td>
+                <td>20</td>
+                <td>魔法致命打</td>
+                <td>10</td>
+                <td>魔法抵抗力低下</td>
+                <td>10</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0182.png"></td>
+                <td>LR</td>
+                <td>ハーモニー</td>
+                <td>与魔法ダメージ吸収</td>
+                <td>20</td>
+                <td>魔法抵抗力低下</td>
+                <td>10</td>
+                <td>上級スキル</td>
+                <td>10</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0188.png"></td>
+                <td>LR</td>
+                <td>一ノ瀬はじめ</td>
+                <td>上級防御力</td>
+                <td>20</td>
+                <td>強打</td>
+                <td>10</td>
+                <td>魔法強打</td>
+                <td>10</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0204.png"></td>
+                <td>LR</td>
+                <td>ゴールド・エンペラー</td>
+                <td>最終ダメージ</td>
+                <td>20</td>
+                <td>強打</td>
+                <td>10</td>
+                <td>上級状態異常抵抗力</td>
+                <td>10</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0217.png"></td>
+                <td>LR</td>
+                <td>ダークネスネビュラ</td>
+                <td>人間型魔法ダメージ</td>
+                <td>20</td>
+                <td>上級スキル</td>
+                <td>10</td>
+                <td>上級状態異常抵抗力</td>
+                <td>10</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0218.png"></td>
+                <td>LR</td>
+                <td>ワンインオール</td>
+                <td>魔法致命打</td>
+                <td>20</td>
+                <td>魔法強打</td>
+                <td>10</td>
+                <td>与魔法ダメージ吸収</td>
+                <td>10</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0233.png"></td>
+                <td>LR</td>
+                <td>プチランサー</td>
+                <td>ダブルクリティカルダメージ</td>
+                <td>20</td>
+                <td>人間型ダメージ</td>
+                <td>10</td>
+                <td>上級攻撃速度</td>
+                <td>10</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0234.png"></td>
+                <td>LR</td>
+                <td>プチウィザード</td>
+                <td>魔法抵抗力低下</td>
+                <td>20</td>
+                <td>人間型魔法ダメージ</td>
+                <td>10</td>
+                <td>魔法致命打</td>
+                <td>10</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0238.png"></td>
+                <td>LR</td>
+                <td>リィン・シュバルツァー</td>
+                <td>ダブルクリティカルダメージ</td>
+                <td>20</td>
+                <td>上級攻撃力</td>
+                <td>10</td>
+                <td>上級防御力</td>
+                <td>10</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0239.png"></td>
+                <td>LR</td>
+                <td>クロウ・アームブラスト</td>
+                <td>魔法攻撃力強化</td>
+                <td>20</td>
+                <td>魔法抵抗力低下</td>
+                <td>10</td>
+                <td>魔法強打</td>
+                <td>10</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0269.png"></td>
+                <td>GR</td>
+                <td>ルミエール</td>
+                <td>ダブルクリティカルダメージ</td>
+                <td>30</td>
+                <td>敵の致命打抵抗減少<br>上級防御力</td>
+                <td>15</td>
+                <td>人間型ダメージ</td>
+                <td>15</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0270.png"></td>
+                <td>GR</td>
+                <td>ダイン</td>
+                <td>魔法強打</td>
+                <td>30</td>
+                <td>最終ダメージ<br>上級スキル</td>
+                <td>15</td>
+                <td>人間型魔法ダメージ</td>
+                <td>15</td>
+              </tr>
+              <tr>
+                <td><img src="../information/creature2_files/creature_0271.png"></td>
+                <td>GR</td>
+                <td>プロパゴス</td>
+                <td>(ペット＆召喚獣) 最終ダメージ</td>
+                <td>30</td>
+                <td>上級体力, 上級スキル</td>
+                <td>15</td>
+                <td>PVP防御力</td>
+                <td>15</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <br clear="left">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <h4>検索のコツ</h4>
+        - スペースで区切られた複数の単語を入力するとAND検索ができます。<br>
+        　例）「HR 経験値」<br>
+        - カンマで区切られた複数の単語を入力するとOR検索ができます。<br>
+        　例）「HR,SR」<br>
+        - ヘッダ部分(太字部分)を押すとソートできます。デフォルトはレア度順です。<br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <a name="99"></a>
+        <h4>関連情報まとめ</h4>
+
+        * <a href="creature-exptable.html">クリーチャー等級ごとの必要経験値一覧</a><br>
+        <br>
+        * <a href="../information/item_property.html#1">クリーチャーの合成確率</a><br>
+        <br>
+        * <a href="creature3.html#2">パッシブスキル一覧</a><br>
+        <br>
+        * <a href="../calculation/creature-passive-simulator.html">パッシブシミュレータ</a><br>
+        <br>
+        * <a href="../information/creature.html">～2022のクリーチャー情報</a><br>
+        <br>
+        * <a href="creature2.html">旧クリーチャー性能詳細一覧(~2019.3)</a><br>
+        <br>
+        [参考]<a href="http://service.redsonline.jp/library/1982">ネフォンクリーチャー(公式サイト)</a><br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <footer class="android-footer mdl-mega-footer">
+          <font color="red">当サイトで利用している画像及びデータは、株式会社G・O・Pに帰属します。<br />
+            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+          </font>
+          Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GOP Co., Ltd.
+        </footer>
+        <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+      </div>
+      <script src="js/sort_creature_passive.js"></script>
+
+      <!-- <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          var getCellValue = function (tr, idx) {
+            var cellValue = tr.children[idx].innerText || tr.children[idx].textContent;
+            return cellValue;
+          }
+          var comparer = function (idx, asc) {
+            return function (a, b) {
+              var v1 = getCellValue(asc ? a : b, idx),
+                v2 = getCellValue(asc ? b : a, idx);
+              return v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2)
+                ? v1 - v2
+                : v1.toString().localeCompare(v2);
+            }
+          }
+          document.querySelectorAll('th').forEach(function (th, idx) {
+            th.addEventListener('click', function () {
+              var table = th.closest('table');
+              var tbody = table.querySelector('tbody');
+              Array.from(tbody.querySelectorAll('tr'))
+                .sort(comparer(idx, this.asc = !this.asc))
+                .forEach(function (tr) {
+                  tbody.appendChild(tr);
+                });
+            });
+          });
+        });
+      </script> -->
+    </div>
+</body>
+
+</html>
