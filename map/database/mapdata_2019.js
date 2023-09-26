@@ -86,6 +86,9 @@ NameList = {
     1017: { name: "捨てられた地下墓地B2のメリス・リング", img: "", black: "[1017]Hidden_layers_D01_02.img.png", lvmin: 925, lvmax: 930 },
     1018: { name: "捨てられた地下墓地B3のメリス・リング", img: "", black: "[1018]Hidden_layers_D01_03.img.png", lvmin: 970, lvmax: 975 },
     1019: { name: "冒険家協会ブルンネンシュティグ本部？", img: "", black: "[1019]T01_I01.img.png", lvmin: 1100, lvmax: 1100 },
+    1025: { name: "ヤティカヌ微風の森林", img: "[1025]YatikanuForest_4.rmd.png", black: "[1025]YatikanuForest_4.rmd.png", lvmin: 1400, lvmax: 1450 },
+    1026: { name: "ヤティカヌ夜影の森林", img: "[1026]YatikanuForest_5.rmd.png", black: "[1026]YatikanuForest_5.rmd.png", lvmin: 1450, lvmax: 1500 },
+    1027: { name: "ヤティカヌ暁の森林", img: "[1027]YatikanuForest_6.rmd.png", black: "[1027]YatikanuForest_6.rmd.png", lvmin: 1500, lvmax: 1550 },
 
     //以下、機械的に作ったデータ
     1: { name: "中央プラトン街道 / グレートフォレスト入口付近", img: "[001]G07.rmd.png", black: "[000]T01.rmd.png", lvmin: 5, lvmax: 30 },

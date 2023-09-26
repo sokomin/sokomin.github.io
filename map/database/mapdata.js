@@ -153,6 +153,7 @@ NameList = {
     1084: { name: "次元のウポスマイヤー北部", img: "[1084]UposmiresN_2.rmd.png", black: "[1084]UposmiresN_2.rmd.png", lvmin: 1550, lvmax: 1625 },
     1085: { name: "ウポスマイヤー南西部", img: "[1085]UposmiresS_1.rmd.png", black: "[1085]UposmiresS_1.rmd.png", lvmin: 1600, lvmax: 1675 },
     1086: { name: "次元のウポスマイヤー南西部", img: "[1086]UposmiresS_2.rmd.png", black: "[1086]UposmiresS_2.rmd.png", lvmin: 1600, lvmax: 1675 },
+//1087-1091は追加しないよ
 
     1: { name: "中央プラトン街道 / グレートフォレスト入口付近", img: "[001]G07.rmd.png", black: "[000]T01.rmd.png", lvmin: 5, lvmax: 30 },
     2: { name: "狼の巣窟", img: "[002]G07_C01_B01.rmd.png", black: "[000]T01.rmd.png", lvmin: 17, lvmax: 25 },
