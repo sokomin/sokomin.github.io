@@ -790,6 +790,9 @@ function createMapMob(map_mob, mobid) {
     var exist_mapid = {};
     for(var key in map_mob){
         var mb = map_mob[key];
+        if(Number(mb["mobid"])  == 9999){
+            continue;
+        }
         if(Number(mb["mobid"]) == mobid){
             if(maplist_data[mb["mapid"]]){
                 if(!exist_mapid[mb["mapid"]]){
