@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+      https://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32">
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192">
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>2023年11月 韓国アプデ 赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,赤石,攻略情報">
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml">
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png">
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field">
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png">
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                    </li>
+                    <li class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                    </li>
+                    <li disabled class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                    </li>
+                    <li class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h3>メニュー</h3>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html">
+                    <strong>アイテム</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html">
+                    <strong>スキル</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html">
+                    <strong>モンスター</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html">
+                    <strong>ダンジョン</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html">
+                    <strong>クエスト</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html">
+                    <strong>ギルド</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html">
+                    <strong>韓国情報</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html">
+                    <strong>雑学</strong>
+                </a>
+            </nav>
+        </div>
+        <div class="android-large-table mdl-layout__content">
+            <!--main-->
+            <a class="korea-content main-background">
+                <br>
+                <h3>韓国 2023/11/01 韓国アップデート</h3>
+                <h5>
+                    <font color="#ff0000">
+                        <strong>
+                            [重要！] 韓国公式の情報を基にしています。
+                            <br>
+                            誤訳や韓国独自仕様の可能性もありますので、予めご了承下さい。
+                        </strong>
+                    </font>
+                    <br>
+                </h5>
+                <br>
+                <img width="640px"
+                    src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/a74fcb503bc6406c67c1546a76de089b8a5c8a64.10.9.9.3.png"
+                    border=0 name="insertImg" /><br><br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <a href="#1">ウモスグェグマイヤー追加</a><br>
+                <a href="#2">原始要塞セルテ追加</a><br>
+                <a href="#3">新規精鋭討伐「スザールアンキル」</a><br>
+                <br>
+                <br>
+                <br>
+                <a name="1"></a>
+                <font color="#e95388">
+                    <h4>ウモスグェグマイヤー追加</h4>
+                </font>
+                <br>
+                <br>
+                -ガイド1201～の狩り場部分に新規フィールド（PvPフィールド2種含む）が追加されます。<br>
+                <br>
+                -ガイド1201～のクエスト部分に入場クエストが追加されます。<br>
+                <br>
+                -ガイド1201～の秘密ダンジョン部分に新規秘密ダンジョンが追加されます。<br>
+                <br>
+                <br>
+                <a name="2"></a>
+                <font color="#e95388">
+                    <h4>原始要塞セルテ</h4>
+                </font>
+                <br>
+                <br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td style="background:#BFBFBF"> <b>原始要塞セルテ</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/73c82cd2e9ca7ab0f998f9089b2eaee45585ebd6.10.9.9.3.png"
+                                    border=0 name="insertImg" /><br></td>
+                        </tr>
+                        <tr>
+                            <td><br>
+                                -原始要塞セルテはウポスマイヤー南西部(10,180) ポータルを通じて移動できます。<br>
+                                <br>
+                                - <span
+                                    class="color-image1">ウモスグェグマイヤーへの道</span>クエストを完了した場合、ガイドUIと古都ブルンネンシュティグ探検隊テレポーターを通じてウモスグェグマイヤーに入場できます。<br>
+                                <br>
+                                -村は3段階地域に区分され、進化段階に応じて次の地域移動や新機能のNPCが登場します。<br>
+                                <br>
+                                -村の中央に位置する要塞司令塔は進化段階によって見た目が変更されます。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><br>
+                <b>[進化段階別機能]</b><br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td style="background:#BFBFBF"> <b>機能</b><br>
+                            </td>
+                            <td style="background:#BFBFBF"> <b>機能説明</b><br>
+                            </td>
+                            <td style="background:#BFBFBF"> <b>ステップ</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 鍛冶屋 </td>
+                            <td> アイテム修理 </td>
+                            <td> 1 </td>
+                        </tr>
+                        <tr>
+                            <td> 治療師 </td>
+                            <td> デスペナルティ回復 </td>
+                            <td> 1 </td>
+                        </tr>
+                        <tr>
+                            <td> 恩寵商人 </td>
+                            <td> 恩寵の魔石販売 </td>
+                            <td> 1 </td>
+                        </tr>
+                        <tr>
+                            <td> 精鋭討伐 </td>
+                            <td> 精鋭討伐入場UIオープン </td>
+                            <td> 1 </td>
+                        </tr>
+                        <tr>
+                            <td> テレポーター 古都ブルンネンシュティグ </td>
+                            <td> 古都ブルンネンシュティグ移動 </td>
+                            <td> 1 </td>
+                        </tr>
+                        <tr>
+                            <td> テレポーター ウモスグェグマイヤー北東部 </td>
+                            <td> ウモスグェグマイヤー北東部移動 </td>
+                            <td> 1 </td>
+                        </tr>
+                        <tr>
+                            <td> テレポーター ウポスマイヤー ベースキャンプ </td>
+                            <td> ウポスマイヤーアドベンチャーベースキャンプに行く </td>
+                            <td> 2 </td>
+                        </tr>
+                        <tr>
+                            <td> テレポーター～ ウモスグェグマイヤー南西部 </td>
+                            <td> ウモスグェグマイヤー南西部移動 </td>
+                            <td> 2 </td>
+                        </tr>
+                        <tr>
+                            <td> テレポーター～ 冒険家協会バー </td>
+                            <td> 冒険家協会バー移動 </td>
+                            <td> 3 </td>
+                        </tr>
+                        <tr>
+                            <td> 薬草学者 </td>
+                            <td> 消耗品の販売（3段階で販売物品増加） </td>
+                            <td> 2 </td>
+                        </tr>
+                        <tr>
+                            <td> ユニーク分解 </td>
+                            <td> ユニークアイテムを分解して素材に変更 </td>
+                            <td> 2 </td>
+                        </tr>
+                        <tr>
+                            <td> かかしゾーン </td>
+                            <td> ダメージ測定訓練所 </td>
+                            <td> 2 </td>
+                        </tr>
+                        <tr>
+                            <td> 銀行 </td>
+                            <td> 銀行倉庫閲覧可能 </td>
+                            <td> 3 </td>
+                        </tr>
+                    </tbody>
+                </table><br>
+                <b>[村の段階]</b><br>
+                <br>
+                -村は貢献度によって段階が進化し、機能が拡張されます。<br>
+                <br>
+                -村の貢献度は財貨を捧げたり、デイリークエストクリアで積むことができます。<br>
+                <b></b><br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td style="background:#BFBFBF"> <b>クエスト名</b><br>
+                            </td>
+                            <td style="background:#BFBFBF"> <b>クエスト内容</b><br>
+                            </td>
+                            <td style="background:#BFBFBF"> <b>貢献度上昇値</b><br>
+                            </td>
+                            <td style="background:#BFBFBF"> <b>関連NPC</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 生の回復＜狩り＞ </td>
+                            <td> （毎日）<br>
+                                モンスター捕獲 </td>
+                            <td> 2 </td>
+                            <td> 生のフエカナハ </td>
+                        </tr>
+                        <tr>
+                            <td> 生の回復＜財＞ </td>
+                            <td> 資源貢献 </td>
+                            <td> 1 </td>
+                            <td> 生の末裔パルホ </td>
+                        </tr>
+                    </tbody>
+                </table><br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td style="background:#BFBFBF"> <b>貢献資源名</b><br>
+                            </td>
+                            <td style="background:#BFBFBF"> <b>要求数</b><br>
+                            </td>
+                            <td style="background:#BFBFBF"> <b>貢献度上昇値</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 炎の石 </td>
+                            <td> 1 </td>
+                            <td> 1 </td>
+                        </tr>
+                        <tr>
+                            <td> 神秘の石 </td>
+                            <td> 140 </td>
+                            <td> 1 </td>
+                        </tr>
+                        <tr>
+                            <td> 修復済みタティリス遺跡の出土品 </td>
+                            <td> 250 </td>
+                            <td> 1 </td>
+                        </tr>
+                    </tbody>
+                </table><br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td style="background:#BFBFBF"> <b>村進化段階</b><br>
+                            </td>
+                            <td style="background:#BFBFBF"> <b>必要な貢献の数値</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 2段階 </td>
+                            <td> 30000 </td>
+                        </tr>
+                        <tr>
+                            <td> 3段階 </td>
+                            <td> 50000 </td>
+                        </tr>
+                    </tbody>
+                </table><br>
+                -原始要塞セルテフィールドの上部右側のUIアイコンで進化度を確認できます。<br>
+                <br>
+                -貢献度のためのデイリークエストは毎日1回可能で、村進化が3段階にも達すれば、これ以上貢献度は上げられません。<br>
+                <br>
+                -村が3段階に進化する瞬間貢献も1、2、3位の冒険者の像が村の中央に建てられます。<br>
+                <br>
+                -貢献度スコアが同じ場合、まず貢献度を上げ始めた人員が優先されます。<br>
+                <br>
+                -貢献度1,2,3位冒険家の方には<span class="color-image1">要塞の所有者</span>体力バーを贈呈いたします。<br>
+                <b>[戦闘フィールド、秘密ダンジョン]</b><br>
+                <br>
+                -ウモスグェグマイヤーは計4つのフィールドが導入され、秘密ダンジョンが1つのコショウになります。<br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td style="background:#BFBFBF"> <b>フィールド名</b><br>
+                            </td>
+                            <td style="background:#BFBFBF"> <b>登場モンスターレベル</b><br>
+                            </td>
+                            <td style="background:#BFBFBF"> <b>区分</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> ウモスグェグマイヤー北東部 </td>
+                            <td> 1650~1725 </td>
+                            <td> 戦闘フィールド </td>
+                        </tr>
+                        <tr>
+                            <td> 次元のウモスグェグマイヤー北東部 </td>
+                            <td> 1650~1725 </td>
+                            <td> PVPバトルフィールド </td>
+                        </tr>
+                        <tr>
+                            <td> ウモスグェグマイヤー南西部 </td>
+                            <td> 1700~1775 </td>
+                            <td> 戦闘フィールド（秘密ダンジョンあり） </td>
+                        </tr>
+                        <tr>
+                            <td> 次元のウモスグェグマイヤー南西部 </td>
+                            <td> 1700~1775 </td>
+                            <td> PVPバトルフィールド </td>
+                        </tr>
+                        <tr>
+                            <td> 原始の輪 </td>
+                            <td> 1680~1690 </td>
+                            <td> 秘密ダンジョン </td>
+                        </tr>
+                    </tbody>
+                </table><br>
+                -戦闘フィールドとPvPフィールドでは、コーリング、露店上、場所記憶、フィールド移動アイテムの使用が制限されます。<br>
+                <br>
+                -秘密ダンジョンの<span class="color-image1">原始の輪</span>では、カーペット搭乗とREDSTONEオーラが追加に制限されます。<br>
+                <br>
+                - PvPバトルフィールド移動時にすべてのバフが削除され、ランダムな場所に移動されます。<br>
+                <br>
+                -次元のPvP戦闘フィールドは通常の戦闘フィールドに比べてモンスターリポップ速度が速いです。<br>
+                <a name="3"></a>
+                <font color="#e95388">
+                    <h4>新規精鋭討伐「スザールアンキル」</h4>
+                </font>
+                <br>
+                <br>
+                <b>[利用方法]</b><br>
+                <br>
+                -入場条件：5転生以上/1500レベル以上-先行クエストである<span class="color-image1">ウモスグェグマイヤー深いところ</span>は<span
+                    class="color-image1">ガレリオン-ウモスグェグマイヤー</span>編クリア条件が満たされれば確認できます。<br>
+                <br>
+                - <span class="color-image1">ウモスグェグマイヤー深いところ</span>は[原始要塞セルテ]のNPC リヤンとバンダラカを通じて行えます。<br>
+                <br>
+                -入場券を所持して<span class="color-image1">原始要塞セルテ</span>に位置するNPC<span
+                    class="color-image1">バンダラカ</span>および<span class="color-image1">ガレリオンキャンプ場</span>フィールドに位置するNPC<span
+                    class="color-image1">妖精石交換師</span>と会話を通じて精鋭討伐を進行できます。<br>
+                ※先行クエストは一般クエストであり、キャンセルが可能なクエストです。<br>
+                ※先行クエストをクリアしなくても精鋭討伐入場は可能です。<br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td style="background:#BFBFBF"> <b>スザール・アンキル</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> <img
+                                    src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/b9dd2d254fe368c840d7dc87dd359d092ebf623c.10.9.9.3.jpeg"
+                                    border=0 name="insertImg" /><br> </td>
+                        </tr>
+                        <tr>
+                            <td> 1.精鋭討伐のモンスターボタンを選択できるボタンです。<br>
+                                2.左、右ボタンで難易度を設定できる。<br>
+                                難易度はPT会場またはソロの場合にのみ可能です。<br>
+                                3.マウスオーバー時の精鋭討伐をクリアした後、獲得可能なアイテムを確認できます。<br>
+                                4.必要な入場券を確認できます。<br>
+                                すべてのPTメンバーが入場券を保有しなければ入場が可能です。<br>
+                                5.精鋭討伐に適用される制限事項が表示されます。<br>
+                                6.オープンしたキャラクターのウィークリー討伐クリアした回数を表示します。<br>
+                                7.PT場のみ使用できるボタンでPTメンバーをPT場が位置するフィールド座標に呼び出すことができます。<br>
+                                8.精鋭討伐に入場できます。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><br>
+                ※入場券は精鋭討伐入場時にチェックされ、クリアした時に消耗します。<br>
+                <b>[入場券改編]</b><br>
+                <br>
+                -精鋭討伐入場券は、ヤティカヌ、ウポスマイヤー、ウモスグェグマイヤーフィールドのREDSTONEのオーラから獲得できます。<br>
+                <br>
+                -精鋭討伐入場券である妖精の翼類アイテムが下記のように変更されます。<br>
+                <br>
+                -既存に所持していた妖精の翼類アイテム（破片、翼、絆の妖精の翼）は一括変更されます。<br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td style="background:#BFBFBF"> <b>変更前のアイテム名</b><br>
+                            </td>
+                            <td style="background:#BFBFBF"> <b>変更後のアイテム名</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 妖精の翼のカケラ </td>
+                            <td> 精鋭討伐チケット作品 </td>
+                        </tr>
+                        <tr>
+                            <td> 妖精の翼 </td>
+                            <td> 復元された精鋭討伐チケット </td>
+                        </tr>
+                        <tr>
+                            <td> きらびやかな妖精の翼 </td>
+                            <td> フル精鋭討伐チケット </td>
+                        </tr>
+                    </tbody>
+                </table><br>
+                -低い難易度の入場券を合わせて、次の難易度に必要な入場券を作成できます。<br>
+                <br>
+                -入場券の合致は精鋭討伐入場NPCとインベントリの右ボタンで合成を試みることができます。<br>
+                ※低段階の入場券に戻すことはできません<b>[入場条件]</b><br>
+                <br>
+                -PTやソロでプレイ可能で、PTプレイ中にすべてのPTメンバーが同じフィールド内に存在する必要があります。<br>
+                <br>
+                -精鋭討伐は既存のレイドと同じように週に一度入場可能です。<br>
+                <br>
+                -タビアクート精鋭討伐と入場回数を共有しません。<br>
+                <br>
+                - 1週間1回入場が可能で、毎週月曜日00時に入場回数が初期化されます。<br>
+                <br>
+                -設定した難易度に合った入場券がないと入場できません。<br>
+                <br>
+                -すべてのPTメンバーが難易度に合った入場券を保有していなければなりません。<br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td style="background:#BFBFBF"> <b>入場難易度</b><br>
+                            </td>
+                            <td style="background:#BFBFBF"> <b>必要入場券</b><br>
+                            </td>
+                            <td style="background:#BFBFBF"> <b>組み合わせ材料</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 荒れ地（ステージ1 ） </td>
+                            <td> 精鋭討伐チケットピース×1 </td>
+                            <td><br>
+                                - </td>
+                        </tr>
+                        <tr>
+                            <td> 漆黒（2段階） </td>
+                            <td> 復元された精鋭討伐チケット×1 </td>
+                            <td> 精鋭討伐チケットピース×60 </td>
+                        </tr>
+                        <tr>
+                            <td> 深淵（3段階） </td>
+                            <td rowspan="2"> 完成した精鋭討伐チケット×1 </td>
+                            <td rowspan="2"> 復元された精鋭討伐チケット×6 </td>
+                        </tr>
+                        <tr>
+                            <td> 悪夢（4段階） </td>
+                        </tr>
+                    </tbody>
+                </table><br>
+                ※深淵、悪夢難易度は今後実装予定です。<br>
+                <b>[報酬]</b><br>
+                <br>
+                -討伐クリア時、報酬で<span class="color-image1">スザールアンキル精鋭討伐戦利品箱</span>と<span
+                    class="color-image1">コア報酬</span>を獲得できます。<br>
+                <br>
+                - [スザールアンキル精鋭討伐戦利品ボックス]では、決められたアイテムのうち1個を一定確率で獲得できます。<br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td colspan="2" style="background:#BFBFBF"> <b>スザールアンキル精鋭討伐戦利品ボックス</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="background:#BFBFBF"> <b>アイテム名</b><br>
+                            </td>
+                            <td style="background:#BFBFBF"> <b>アイテム名</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 封印解放オプション変換器 </td>
+                            <td> [魔力の暴走]の超越の書 </td>
+                        </tr>
+                        <tr>
+                            <td> ワンタッチ3スロット/1オープンツールボックス </td>
+                            <td> [覚醒]の超越の書 </td>
+                        </tr>
+                        <tr>
+                            <td> 改良された封印解放オプション変換器 </td>
+                            <td> [適応力]の超越の書 </td>
+                        </tr>
+                        <tr>
+                            <td> 製錬ガードII </td>
+                            <td> [耐性]の超越の書 </td>
+                        </tr>
+                        <tr>
+                            <td> スペシャルグレード白紙図案書 </td>
+                            <td> 【魔力吸収】の超越の書 </td>
+                        </tr>
+                        <tr>
+                            <td> 封印解放スロット集中加工ツールボックス </td>
+                            <td> [時空の歪み]の超越の書 </td>
+                        </tr>
+                        <tr>
+                            <td> 封印解放スロット集中加工ツールボックス[S] </td>
+                            <td> [楔]の超越の書 </td>
+                        </tr>
+                        <tr>
+                            <td> 運命のオプション選択チケット </td>
+                            <td> 【魔力増幅】の超越の書 </td>
+                        </tr>
+                        <tr>
+                            <td> レプリカ封印解放道具箱 </td>
+                            <td> 【筋力集中鍛錬】の超越の書 </td>
+                        </tr>
+                        <tr>
+                            <td> 絢爛なセットオプションお守り箱 </td>
+                            <td> 【知識集中鍛錬】の超越の書 </td>
+                        </tr>
+                        <tr>
+                            <td> 宿命のオプションお守り箱 </td>
+                            <td> 【敏捷集中鍛錬】の超越の書 </td>
+                        </tr>
+                        <tr>
+                            <td> 特製封印解放道具箱 </td>
+                            <td> [知恵集中鍛錬]の超越の書 </td>
+                        </tr>
+                        <tr>
+                            <td> 改良された封印解放道具箱 </td>
+                            <td> 【健康集中鍛錬】の超越の書 </td>
+                        </tr>
+                        <tr>
+                            <td> 【物理強打】の超越の書 </td>
+                            <td> 【カリスマ集中鍛錬】の超越の書 </td>
+                        </tr>
+                        <tr>
+                            <td> [魔法強打]の超越の書 </td>
+                            <td> 【運集中鍛錬】の超越の書 </td>
+                        </tr>
+                    </tbody>
+                </table><br>
+                -コア報酬は[1250ULT防具選択ボックス、1250ULT、1000ULT、775ULT、1100DX]等級のアイテムの1つであり、一定確率で獲得できます。<br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td style="background:#BFBFBF"> <b>アイテム名</b><br>
+                            </td>
+                            <td style="background:#BFBFBF"> <b>アイテム説明</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> <b>（新規）</b><br>
+                                1250 ULT防具選択ボックス </td>
+                            <td> スザール_アンキルのオーラが封印された箱。<br>
+                                箱を開けると1250ULT防具の中からお好みのアイテム1種を選択して得ることができる </td>
+                        </tr>
+                    </tbody>
+                </table><br>
+                ※<a href="https://sokomin.github.io/item2020/item-1250-umu-protector.html">選択できる1250防具一覧</a>
+                -精鋭討伐の難易度によってコア報酬の種類と個数が増加します。<br>
+                <br>
+                -討伐クリア時、報酬で経験値を獲得でき、難易度によって獲得経験値が増加します。<br>
+                <br>
+                -限界突破5クエストの材料である<span class="color-image1">ひび割れた邪念</span>を獲得できます。<br>
+                <b>[その他の事項]</b><br>
+                <br>
+                -精鋭討伐スザールアンキル入場後キャラクターの復活回数は8回までに制限されます。<br>
+                <br>
+                -弾き、強制終了、ログイン画面移動、キャラクター選択ウィンドウ移動などを含むゲームから除外される状況が一定時間経過すると、ダンジョンは初期化されます。<br>
+                <br>
+                - <span class="color-image1">不死鳥</span>オプション（復活）効果は適用されません。<br>
+                <br>
+                -ガイドシステムにエリートエリアボス表示がタビアクート精鋭討伐とスザールアンキル精鋭討伐に区分されます。<br>
+                <b>3.新規エピソードクエスト-ガレリオン[ウモスグェグマイヤー編]</b><br>
+                <br>
+                -ガイドシステムのクエスト（1675～1750）レベル帯の推奨クエストとして追加されます。<br>
+                <br>
+                -新規エピソードクエストは5種の先行クエストが完了しなければ進行が可能です。<br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td style="background:#BFBFBF"> <b>クエスト条件</b><br>
+                            </td>
+                            <td style="background:#BFBFBF"> <b>構成クエスト</b><br>
+                            </td>
+                            <td style="background:#BFBFBF"> <b>関連npc</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td rowspan="9"> 1675レベル以上 先行クエスト5種完了<br>
+                                1.探検隊ガレリオン<br>
+                                2.ある異邦人<br>
+                                3.ガレリオン探検隊-ヤティカヌの茂み編<br>
+                                4.ガレリオン探検隊-第二旅程<br>
+                                5.ガレリオン探検隊～ウポスマイヤー </td>
+                            <td> 衝突 </td>
+                            <td> NPC<span class="color-image1">ハイドネル</span> </td>
+                        </tr>
+                        <tr>
+                            <td> 誘引された光 </td>
+                            <td> NPC<span class="color-image1">ハイドネル</span> </td>
+                        </tr>
+                        <tr>
+                            <td> 隠された聖域 </td>
+                            <td> NPC<span class="color-image1">リヤン</span> </td>
+                        </tr>
+                        <tr>
+                            <td> 行方不明のビショップ </td>
+                            <td> NPC<span class="color-image1">ハイドネル</span> </td>
+                        </tr>
+                        <tr>
+                            <td> 壊滅 </td>
+                            <td> NPC<span class="color-image1">ザイル</span> </td>
+                        </tr>
+                        <tr>
+                            <td> 盗まれた城 </td>
+                            <td> NPC<span class="color-image1">ザイル</span> </td>
+                        </tr>
+                        <tr>
+                            <td> 苦悩と激動 </td>
+                            <td> NPC<span class="color-image1">リヤン</span> </td>
+                        </tr>
+                        <tr>
+                            <td> 生の輪 </td>
+                            <td> NPC<span class="color-image1">リヤン</span> </td>
+                        </tr>
+                        <tr>
+                            <td> 闇の革命 </td>
+                            <td> NPC<span class="color-image1">リヤン</span> </td>
+                        </tr>
+                    </tbody>
+                </table><br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <a name="99"></a>
+                <font color="#e95388">
+                    <h4>変更・修正</h4>
+                </font>
+                -獣人「イルジャーナリーアサルター」の[トレースアクロス]スキルが[ビジョン-トレースクロス]影響を受けない問題<br>
+                -混沌の大地の破片アイテム説明エラー<br>
+                <br>
+                <br>
+                <br>
+                <a name="99"></a>
+                <font color="#e95388">
+                    <h4>変更・修正(2023/10/26)</h4>
+                </font>
+                -マスケッティア[キングメイト]スキルディレイ時間減少<br>
+                -マスケッティア[レピッドデスペラド覚醒時]'クロスレンジ'と'ヒットアンドムーブ'発動時左下に登録した状態で遅延なく連写される問題<br>
+                -マスケッティア[クロスレンジ]スキル使用時CPが二度充電される問題<br>
+                -マスケッティア[クロスレンジ]のCP獲得および回避率バフ数値変更
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td style="background:#BFBFBF"> <b>アイテム</b><br>
+                            </td>
+                            <td style="background:#BFBFBF"> <b>現在</b><br>
+                            </td>
+                            <td style="background:#BFBFBF"> <b>変更</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 消費CP </td>
+                            <td> <s><strike>250</strike></s> </td>
+                            <td> 250[維持] </td>
+                        </tr>
+                        <tr>
+                            <td> 獲得CP </td>
+                            <td> <s><strike>100</strike></s> </td>
+                            <td> 50 </td>
+                        </tr>
+                        <tr>
+                            <td> 回避率数値 </td>
+                            <td> <s><strike>5%</strike></s> </td>
+                            <td> 10％ </td>
+                        </tr>
+                    </tbody>
+                </table><br>
+                <br>
+                <br>
+                -ネクロマンサー[デビルファントム]歓迎グラフィックが壊れる問題<br>
+                -ネクロマンサーの[睡眠]をはじめとするスキルたちが攻城戦安全地帯でも打撃が可能な問題<br>
+                -ネクロマンサーの[闇よりの使徒]スキルがPvP時に異常に適用される問題<br>
+                -霊術師[ビジョン-乱斬り]打撃音が表示されない問題<br>
+                -霊術士[胴斬り]スキルPvP効果にリアクションOFF効果が表示されない問題<br>
+                -アルケミスト[クリーピートリートメント]スキルで無敵関連バフ効果が削除される問題<br>
+                -アルケミスト[合併症]スキルで迅速オプションバフ表記が点滅する問題（修正）<br>
+                -武道が[回避]スキルがCPがマイナス状態のときにも発動する問題<br>
+                -ランサー[クレセントライトニング]ダメージ表示が重なる問題<br>
+                -ペット[アルセウス]の特技攻撃ダメージ表示が重なる問題<br>
+                -狼人間の[バウンシングリニア]スキルにウポスマイヤー補助武器PvP関連オプションが未適用になる問題<br>
+                -戦士の[過敏反応]スキルダメージ上限の説明追加<br>
+                -黒魔術師[急速充電]と[ホットエンチャンティング]エフェクトが重なる問題<br>
+                -闘士[ブルスハート]スキルが異常に適用される問題<br>
+                -一部スキルのダメージが正確に表示されない問題
+                ＞アルケミスト：アウトバースト、アウトブレイク ＞マスケッティア：クロスレンジ、アトラクションドロー
+                ＞シーフ：ダーティングフィーバー、ダーティングフューリー<br>
+                -リトルウィッチの[平和の伝書鳩]スキル使用時キャラクター足元にエフェクトが表示される問題<br>
+                -露店が開いているPTメンバーにリトルウィッチの[和合の全西区]スキルが使用される問題<br>
+                -
+                PvP攻撃/防御オプション適用方法の問題（修正） ＞ウルフマン[ラバウンディングリニア] ＞マスケッティア[オーバーブレット] ＞獣人[高貴な野性] ＞戦士[過敏反応]。<br>
+                [ストレイドスパイク] ＞悪魔[インフェルノヴァ]、[ブラッディクロス]<br>
+                <br>
+                <br>
+                <b>[イベント]</b><br>
+                <br>
+                -成長<span class="color-image1">イベント開放1回進行する</span>ミッションを[万能ポータブル開放ツールボックス]を利用時に完了しない問題<br>
+                -成長イベント報酬が特定の状況で受け取られない問題<br>
+                -チュソクイベントUIで在庫を閉じるボタンでUIを閉じると、制作UIのみが残る問題<br>
+                -組み合わせUIで結果アイテム一覧を表示するボタンに閉じるテキストを削除<br>
+                -チュソクイベント制作UI上のアイテム一覧を左側に表現されるように修正<br>
+                <br>
+                <br>
+                <b>[クエスト]</b><br>
+                <br>
+                -タティリス遺跡B7探査隊長グウェンと会話せず進行時に秘密ダンジョンに閉じ込められる問題<br>
+                -運命の錦糸制作2完了した状態で転生クエストが完了しない問題<br>
+                -不滅の対価[選択の時間]
+                1段階進行時にセルビアと会話が中断される問題<br>
+                -不死の対価[選択の時間]クエスト進行が制限される問題<br>
+                -選択の時間クエスト進行度を確認できる代謝および説明変更<br>
+                -メインクエスト1<span class="color-image1">アイナーの報告書</span>進行が詰まる問題<br>
+                <br>
+                <br>
+                <b>[コンテンツ]</b><br>
+                <br>
+                -ワンインオールクリーチャーの影が表示されない問題<br>
+                -ギルドポイント前のスコア計算エラーを修正<br>
+                -攻城戦時、城門が優先的にターゲティングされる問題<br>
+                -混沌の大地進行中に露店看板が表示される問題<br>
+                -PT中に宝箱が作成された状態でPT脱退時に宝箱消え警告文を追加<br>
+                -コスチューム分解UIで歯車ボタンをクリックするとチェックボックス選択ウィンドウがUIの後ろに表示される問題<b>[アイテム]</b><br>
+                <br>
+                <br>
+                -一部のコスチュームアイテムの説明に同じ不要な属性が表示される問題や銀行の保管や取引ができない問題<br>
+                -宝石類アイテムもベルトからリロードされるように修正<br>
+                -特製魔力インク溶解剤アイテムで10個以上分解されない問題<br>
+                -一時的不滅アイテム装備時スキル効果無視が常時発動される問題<br>
+                -転換点アイテムの変換される持続ダメージ誤動作問題<br>
+                -カップリングアイテムにオプションがエンチャントされる問題<br>
+                -ウポスマイヤー補助武器PvP攻撃防御関連オプションに魔法ダメージが適用されない問題<br>
+                -深緑の補助武器ランダム刻印完了ポップアップに実適用数値と異なって表示される問題<br>
+                -PvP攻撃/防御クレストのダメージ未適用問題<br>
+                <br>
+                <br>
+                <b>[システム]</b><br>
+                <br>
+                -高速オプション適用中の移動速度減少デバフ表記が点滅する問題<br>
+                -深緑の忍耐20レベル以上アイテム着用時、無属性型ミニペットのスキルレベルが増加する問題<br>
+                -恩寵バフ効果にツールチップにPvP未適用内容を追加<br>
+                -装備交換時にスキルダメージ表記が変わらない問題<br>
+                -チャットウィンドウが上部に固定される問題<br>
+                -スキルエフェクトが異常な位置に表示する問題<br>
+                -ペット名が強制的に変更される問題<br>
+                -PvPゾーン入場時PKゾーンマークがキャラクター別に位置に差が出る問題<br>
+                -友達リストを開くとクライアントがシャットダウンする問題<br>
+                -秘密ダンジョン内のドアオブジェクトを通過できない問題<br>
+                -追加打撃スキルと連射スキルのツールチップが分離して表示されるように修正
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                [引用元]
+                <a
+                    href="http://redstone.logickorea.co.kr/notice/updateboard/view.aspx?sqn=8011">【11月アップデート案内】(韓国公式ページ)</a>
+                <br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/279c952660b8a02448faf98f5be9740e8cf5b849.10.9.9.3.png"
+                    border=0 name="insertImg" /><br><br>
+                <br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">
+                        当サイトで利用している画像及びデータは、株式会社G・O・Pに帰属します。
+                        <br>
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。
+                        <br>
+                    </font>
+                    Copyright (c) L&K Co., Ltd. All Rights Reserved. License to GOP Co., Ltd.
+                </footer>
+                <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+                    Copyright (c) This site is created by Sokomin. All Rights Reserved.
+                -->
+        </div>
+        <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    </div>
+</body>
+
+</html>
