@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>REDSTONE システム設定 赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONEにおけるDirectXにおけるDirectDrawとDIB（Device Independent Bitmap）の違いについて説明します。byそこみん" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h2>メニュー</h2>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <a href="../index.html">トップ</a> >> <a href="../information/information.html">雑学</a>
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+                <h1>ゲームシステム設定機能</h1>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/b1904d6e9ef13f7a360ceb0d5ebb85ac533ddda6.10.9.9.3.png"
+                    border="0" name="insertImg" />
+                <br><br>
+                REDSTONEのゲーム設定画面関連の用語について解説。<br>
+                <br>
+                <br>
+                <br>
+                <font color="#e95388">
+                    <a name="1"></a>
+                    <h4>DirectXにおけるDirectDrawとDIBの違い</h4>
+                </font>
+                <b>結論としては、現代PCのほとんどではDirectDraw使用が推奨されます。</b><br>
+                <br>
+                <!-- DirectXにおけるDirectDrawとDIB（Device Independent Bitmap）の違いについて説明します。<br> -->
+                <h5>DirectDraw</h5>
+                <p>DirectDrawは、MicrosoftのDirectX APIの一部であり、主に2Dグラフィックス操作を高速化するためのライブラリです。以下に主な特徴を挙げます</p>
+                <ul>
+                    <li><strong>ハードウェアアクセラレーション</strong>
+                        <ul>
+                            <li>DirectDrawは、グラフィックスカードのハードウェア機能を利用して、高速な描画処理を行います。</li>
+                            <li>ハードウェアの機能を直接制御できるため、ピクセル単位の操作やビットブロック転送（BitBLT）などのグラフィックス操作が効率的に実行されます。</li>
+                        </ul>
+                    </li>
+                    <li><strong>フルスクリーンモードとウィンドウモード</strong>
+                        <ul>
+                            <li>DirectDrawは、フルスクリーンモードとウィンドウモードの両方で動作することができます。</li>
+                            <li>フルスクリーンモードでは、アプリケーションがディスプレイ全体を占有し、他のウィンドウとの干渉を避けることができます。</li>
+                        </ul>
+                    </li>
+                    <li><strong>バックバッファリング</strong>
+                        <ul>
+                            <li>DirectDrawは、ダブルバッファリングをサポートしており、バックバッファに描画してから前面バッファに切り替えることで、スクリーンのちらつきを防ぎます。</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p>DirectDrawは、2Dグラフィックスを高速かつ効率的に処理するために設計されています。以下の理由から、DirectDrawを使用する方が容易な場合が多いです</p>
+                <ul>
+                    <li><strong>ハードウェアアクセラレーション</strong>
+                        <ul>
+                            <li>DirectDrawはグラフィックスカードのハードウェアアクセラレーションを活用できるため、高速な描画が可能です。これにより、特にリアルタイムでの描画処理が必要なゲームにおいて、大幅なパフォーマンス向上が期待できます。
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>描画の最適化</strong>
+                        <ul>
+                            <li>DirectDrawは、スクリーン上に直接描画するための機能が豊富に揃っており、ビットブロック転送（BitBLT）やサーフェイス管理など、ゲーム描画に必要な機能が充実しています。
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>フルスクリーンモードのサポート</strong>
+                        <ul>
+                            <li>ゲームは多くの場合、フルスクリーンモードで動作させることが一般的です。DirectDrawはこのモードでの描画をサポートしており、パフォーマンスを最大限に引き出すことができます。
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h5>DIB（Device Independent Bitmap）</h5>
+                <p>DIBは、デバイスに依存しないビットマップ形式で、主にアプリケーション内での画像データの操作や保存に使用されます。以下に主な特徴を挙げます</p>
+                <ul>
+                    <li><strong>デバイス非依存</strong>
+                        <ul>
+                            <li>DIBはデバイス非依存であり、異なるデバイス間でも同じように表示されます。</li>
+                            <li>これは、異なる画面解像度やカラーフォーマットの違いを吸収するために設計されています。</li>
+                        </ul>
+                    </li>
+                    <li><strong>メモリ内のビットマップデータ</strong>
+                        <ul>
+                            <li>DIBは、メモリ内にビットマップデータを格納します。このデータは、アプリケーションで直接操作することができます。</li>
+                            <li>通常、ヘッダ情報（ビットマップファイルヘッダとビットマップ情報ヘッダ）とピクセルデータから構成されます。</li>
+                        </ul>
+                    </li>
+                    <li><strong>互換性</strong>
+                        <ul>
+                            <li>DIBは、WindowsのGDI（Graphics Device Interface）を通じて操作されることが多く、プリンタやディスプレイなど様々なデバイスと互換性があります。
+                            </li>
+                            <li>GDI関数を使用してDIBを描画したり操作したりすることができます。</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p>DIBは以下の理由から、ゲーム描画にはあまり向いていない場合が多いです</p>
+                <ul>
+                    <li><strong>ソフトウェアベースの描画</strong>
+                        <ul>
+                            <li>DIBは基本的にソフトウェアベースでの描画処理を行うため、ハードウェアアクセラレーションを活用できず、描画速度が遅くなることがあります。</li>
+                        </ul>
+                    </li>
+                    <li><strong>GDIの使用</strong>
+                        <ul>
+                            <li>DIBの操作はWindowsのGDI（Graphics Device
+                                Interface）を通じて行われることが多いですが、GDIはリアルタイムでの高速描画には向いていません。そのため、ゲームのような高フレームレートを要求されるアプリケーションには不向きです。
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>描画のオーバーヘッド</strong>
+                        <ul>
+                            <li>DIBを使用すると、メモリ内のビットマップデータを操作してからそれを画面に描画するため、描画処理にオーバーヘッドが生じやすくなります。</li>
+                        </ul>
+                    </li>
+                </ul>
+
+
+                <h5>主な違い</h5>
+                <ul>
+                    <li><strong>目的と使用方法</strong>
+                        <ul>
+                            <li>DirectDrawは、リアルタイムでの2Dグラフィックス操作と描画の高速化を目的としています。一方、DIBは画像データの保存や操作に焦点を当てており、異なるデバイス間での一貫した表示を目指しています。
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>ハードウェアアクセラレーション</strong>
+                        <ul>
+                            <li>DirectDrawは、グラフィックスカードのハードウェアアクセラレーションを活用するのに対し、DIBはソフトウェアベースでの操作が主です。</li>
+                        </ul>
+                    </li>
+                    <li><strong>描画対象</strong>
+                        <ul>
+                            <li>DirectDrawは、スクリーン上に直接描画するのに対して、DIBはメモリ内のビットマップデータを操作します。</li>
+                        </ul>
+                    </li>
+                </ul>
+                <br>
+                <h5>結論</h5>
+                <p>ゲーム描画において、特にリアルタイムでの高速描画が求められる場合は、DirectDrawの方が容易に処理を行うことができます。<br>
+                    DirectDrawは、ハードウェアアクセラレーションの利用や描画機能の最適化が可能なため、よりスムーズで高性能な描画が実現できます。
+                </p>
+                <p>ただし、DirectDrawはDirectXの初期の技術であり、現在はDirect3D（DirectX
+                    9以降）など、より高度なグラフィックスAPIに置き換えられています。<br>
+                    最新のゲーム開発では、Direct3DやOpenGL、Vulkanなどの3DグラフィックスAPIを使用することが一般的です。</p>
+                <br>
+                <br>
+                <br>
+                <font color="#e95388">
+                    <a name="2"></a>
+                    <h4>スリープモード</h4>
+                </font>
+                導入の経緯はRSのLauncherを高速化するためのもの。<br>
+                XP時代には何もせずにRSを起動するとログイン画面が開くまでに5分かかることもよくありました。<br>
+                昔はこれをONにしているとRSの起動が数分早くなりました。<br>
+                Windows７が普及した頃からほぼ一瞬で起動するように改善。<br>
+                今ではONにしてもしなくても大差ないです。<br>
+                <br>
+                <br>
+                <font color="#e95388">
+                    <a name="3"></a>
+                    <h4>独占モード</h4>
+                </font>
+                リソースを優先的に割り当てる機能…ですが明確な変化は見られず。<br>
+                リソース割り当てが十分に行われないときに有効ですが、ブルースクリーンを誘発する可能性があるため非推奨。<br>
+                ゲームが重い場合はネットワークの方に原因があることが多いです。<br>
+                <br>
+                <br>
+                <font color="#e95388">
+                    <a name="4"></a>
+                    <h4>解像度を固定</h4>
+                </font>
+                ウィンドウモードが実装されて解像度を変更できるようになってから登場。<br>
+                ※最初期はウィンドウモードすらなく、フルスクリーンのみでした。<br>
+                起動時の解像度を固定できます。起動後は変更できません。<br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">
+                        当サイトで利用している画像及びデータは、L&K Co., Ltd.に帰属します。<br>
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    © L&K Co., Ltd. All Rights Reserved.<br>
+                </footer>
+                <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+        </div>
+</body>
+
+</html>
