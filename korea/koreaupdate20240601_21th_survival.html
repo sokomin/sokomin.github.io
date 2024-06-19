@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+      https://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32">
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192">
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>2024年6月 韓国 21周年イベント 赤石の民衆</title>
+    <meta name="description"
+        content="2024年4月の韓国アップデートプレビューをご紹介。初期段階のプレイヤーの成長支援を拡張し、1,250レベルまでのアップハードルを緩和。さらに、最大レベル2,000までの新フィールド、カイグラン峡谷を追加し、多様なクリーチャー外形変更システムや新たなデイリーミッションイベントも実施予定です。">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,そこらの民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,そこみん,赤石,攻略情報">
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml">
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png">
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field">
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png">
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                    </li>
+                    <li class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                    </li>
+                    <li disabled class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                    </li>
+                    <li class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h2>メニュー</h2>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html">
+                    <strong>アイテム</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html">
+                    <strong>スキル</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html">
+                    <strong>モンスター</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html">
+                    <strong>ダンジョン</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html">
+                    <strong>クエスト</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html">
+                    <strong>ギルド</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html">
+                    <strong>韓国情報</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html">
+                    <strong>雑学</strong>
+                </a>
+            </nav>
+        </div>
+        <div class="android-large-table mdl-layout__content">
+            <!--main-->
+            <div class="korea-content main-background">
+                <br>
+                <h1>韓国 2024/06 韓国21周年イベント</h1>
+                <h5>
+                    <font color="#ff0000">
+                        <strong>
+                            [重要！] 韓国公式の情報を基にしています。
+                            <br>
+                            誤訳や韓国独自仕様の可能性もありますので、予めご了承下さい。
+                        </strong>
+                    </font>
+                    <br>
+                </h5>
+                <br>
+                <img width="600px"
+                    src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/4e316a0b3311e7a7c490d35db28011a6745ea24d.10.9.9.3.jpeg"
+                    border=0 name="insertImg" /><br><br>
+                <br>
+                <br>
+                5月29日（水）から始まる21周年記念[サバイバルモードミニゲーム]イベントをご案内いたします。<br>
+                REDSTONEの誕生日を迎えて準備したイベントに多くの関心と参加をお願いします。<br>
+                <b>[REDSTONE21周年記念サバイバルモードミニゲームイベント]■ [サバイバルモードミニゲーム]イベントガイド</b><br>
+                -参加期間：2024年5月29日(水)メンテ後～2023年7月3日(水)メンテ前-参加方法：ミニマップの左側にある[ミニゲーム]アイコンからサバイバルモードのミニゲームを利用できます。<br>
+                <!-- <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td style="background:#CCCCCC"> <b>サバイバルモード</b><br>
+                                <b>ミニゲームのアイコン</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><br> -->
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td style="background:#CCCCCC"> <b>サバイバルモードミニゲームイベント参加UI</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/feff8818b1a81c5be363da7ddf1ccd31e22d30b9.10.9.9.3.png" border=0 name="insertImg" /><br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> [21年記念サバイバルモードミニゲーム] UIを通じて1日4回サバイバルモードミニゲームに参加できます。<br>
+                                1.サバイバルモードミニゲームの参加時間と簡単な参加方法のヒントを確認できます。<br>
+                                ：[サバイバルモードミニゲーム]イベントは<b>毎日午前11時、午後3時、午後 7時、午後11時に 1時間 </b><br>
+                                参加できます。<br>
+                                ：[サバイバルモードミニゲーム]イベント開始10分前には、サーバー通知に案内されます。<br>
+                                ：［疑問符］マークを押すと、詳細な参加方法を確認できます。<br>
+                                2.サバイバルモードミニゲームのランキングと獲得ポイント、順位に応じた報酬アイテムを確認できます。<br>
+                                3. 30回の累積参加報酬と1日の参加報酬（1日最大3回）を受け取ることができます。<br>
+                                4.累積ランキングポイントと参加回数を [サバイバルモードミニゲームステータスウィンドウ]で確認できます。<br>
+                                5.ミニゲームの進行時間に[参加]ボタンがアクティブになり、クリックして [サバイバルモードミニゲーム]の待合室に移動します。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td style="background:#CCCCCC"> <b>サバイバルモードミニゲームマッチング待合室UI</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/364b68338de08009d0b26fca8e1e1d141a4aab47.10.9.9.3.png" border=0 name="insertImg" /><br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> -待合室に入った後、[サバイバルモードミニゲーム]イベントアイコンをクリックして、サバイバルに参加する準備ができます。<br>
+                                1.戦略に応じて、[サバイバルモードミニゲーム]で使用するサバイバルキャラクターを選択できます。<br>
+                                2.キャラクター選択後[READY]ボタンで準備が完了するとマッチングが始まり、ミニゲームに参加できます。<br>
+                                ：少なくとも10～20人のサーバーイベントイベント参加者が1回のゲームに一致します。<br>
+                                ：1日の制限回数なしでマッチングを進めて<span class="color-image1">サバイバルモードミニゲーム</span>を楽しむことができます。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td colspan="2" style="background:#CCCCCC"> <b>サバイバルモードミニゲームプレイ方法</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/9e7aaea1855f1c692fcce25497d15582fc839f48.10.9.9.3.png" border=0 name="insertImg" /><br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"> <b>【ゲーム進行方法】</b><br>
+                                <br>
+                                -待合室でマッチングが完了すると、選択したサバイバルキャラクターに変更され、[サバイバルモードミニゲーム]マップに移動されます。<br>
+                                1.マップ移動時に[サバイバルモードミニゲーム]アイコン以外のアイコンはすべて消えて利用できません。<br>
+                                2.キャラクターはサバイバルフィールドに移動し、30秒待機後ランダムな場所に配置され、30秒間の待機状態では他のキャラクターを攻撃できません。<br>
+                                他のキャラクターを攻撃できる[競合]モードに変更/表示されます。<br>
+                                3. [サバイバルモードミニゲーム]が始まると7分のゲームカウントが始まり、勝利のために生き残る必要があります。<br>
+                                4.マップに配置された2種の[宝箱]と倒したモンスターが確率でドロップするアイテムを獲得してミニゲームに活用できます。<br>
+                                <b>[ゲーム勝利、ポイント獲得条件]</b><br>
+                                <br>
+                                -制限時間7分間一人で生き残る場合[最後の生存者]と認められ、100ポイント（ 1日最大200ポイント）を獲得できます。<br>
+                                ：他のキャラクターが死亡時にドロップした[プレイヤーの装飾品]を獲得すると、1個あたり10ポイント（ 1日制限なし）を追加獲得します。<br>
+                                <b>[ゲーム敗北、体力差引条件]</b><br>
+                                <br>
+                                -キャラクターの体力は剣士(30)/ランサー(30)/ビショップ(30)/ウィザード(22)であり、体力が0になると死亡して敗北します。<br>
+                                ：キャラクターの体力はフィールド内のモンスターと他のキャラクターの襲撃と磁場の影響で差し引かれます。<br>
+                                ：キャラクター死亡時サバイバルフィールドで獲得したアイテムと <span class="color-image1">プレイヤーの装飾品</span>をドロップします。<br>
+                                -磁場の影響範囲にキャラクターが位置する場合、体力が3単位に減少し、0になると死亡して敗北します。<br>
+                                ：死亡すると[サバイバルモードミニゲーム]が終了し、フィールドに移動します。<br>
+                                -タイムアウト7分間、生存者が2人以上の場合は敗北します。<br>
+                                <br>
+                                -最後の勝者に選ばれた後、待機時間中にゲームが終了する場合、[プレイヤーの装飾品]収集で獲得したポイントは集計されません。<br>
+                                <b>[磁場システム案内]</b><br>
+                                <br>
+                                -磁場が生成されたら、ミニマップで磁場の位置と大きさを確認できます。<br>
+                                <br>
+                                -キャラクターが磁場の範囲に位置すると、体力が3単位に減少します。<br>
+                                <br>
+                                -磁場の活動情報は画面上部の通知メッセージで確認できます。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="background:#CCCCCC"> <b>残り時間カウント</b><br>
+                            </td>
+                            <td style="background:#CCCCCC"> <b>磁場活動</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 7:00 </td>
+                            <td> キャラクターフィールド配置、1分後に円形磁場がランダムな位置に生成されます。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 6:00 </td>
+                            <td> 磁場の生成、円形磁場が20秒間中心に向かって減少し、40秒間保持されます。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 5:00 </td>
+                            <td> 円形磁場が20秒間中心に向かって減少し、40秒間待機します。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 4:00 </td>
+                            <td> 円形磁場が30秒間中心に向かって減少し、30秒間待機します。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 3:00 </td>
+                            <td> 円形磁場が30秒間中心に向かって減少し、30秒間待機します。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 2:00 </td>
+                            <td> 円形磁場が35秒間中心に向かって減少し、25秒間待機します。<br>
+                                減ります。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 1:00 </td>
+                            <td> 円形磁場が60秒間中心に向かって減少し続ける、ゲーム終了 </td>
+                        </tr>
+                    </tbody>
+                </table><br>
+                <b>-モンスタードロップアイテム案内</b><br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td colspan="2" style="background:#CCCCCC"> <b>モンスタードロップアイテム</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> スモールヒールポーション[Sv] </td>
+                            <td> 体力を5ポイント回復させてくれる。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> チャンドル[Sv] </td>
+                            <td> 3秒間敵にスタン </td>
+                        </tr>
+                        <tr>
+                            <td> 古い棍棒[Sv] </td>
+                            <td> 物理クリティカル発生確率が5増加する。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> レザーアーマー[Sv] </td>
+                            <td> 物理回避率が20増加する。<br>
+                                最大HPが5 増加する。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> レザーグローブ[Sv] </td>
+                            <td> 攻撃速度が20％増加する。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> レザーシューズ[Sv] </td>
+                            <td> 移動速度が25％増加する。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 加速の霊薬[Sv] </td>
+                            <td> ヘイストスキルを7レベル、関連ステータス1でキャスティングする。<br>
+                                （持続時間60秒） *攻撃速度13.5%、移動速度30.5%増加 </td>
+                        </tr>
+                        <tr>
+                            <td> ラージヒーリングポーション[Sv] </td>
+                            <td> 体力を10ポイント回復させてくれる。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 鉄槌[Sv] </td>
+                            <td> 物理クリティカル発生確率が15増加する。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> チェーンアーマー[Sv] </td>
+                            <td> 物理回避率が30増加する。<br>
+                                最大HPが 10増加する。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> チェーングローブ[Sv] </td>
+                            <td> 攻撃速度が30％増加する。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 強化靴[Sv] </td>
+                            <td> 移動速度が50％増加する。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> ラージヒーリングポーション[Sv]（2個） </td>
+                            <td> 体力を10ポイント回復させてくれる。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 迅速な霊薬[Sv] </td>
+                            <td> ヘイストスキルを20レベル、関連ステータス1にキャストする。<br>
+                                （持続時間60秒） *攻撃速度20%、移動速度50%増加 </td>
+                        </tr>
+                        <tr>
+                            <td> モーニングスター[Sv] </td>
+                            <td> 物理クリティカル発生確率が20増加する。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> プレートアーマー[Sv] </td>
+                            <td> 物理回避率が40増加する。<br>
+                                最大HPが15 増加する。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> ガントレット[Sv] </td>
+                            <td> 攻撃速度が50％増加する。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 鉄板シューズ[Sv] </td>
+                            <td> 移動速度が75％増加する。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><br>
+                <b>-宝箱獲得アイテム案内</b><br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td colspan="2" style="background:#CCCCCC"> <b>古い宝箱</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> スモールヒールポーション[Sv] </td>
+                            <td> 体力を5ポイント回復させてくれる。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> チャンドル[Sv] </td>
+                            <td> 3秒間敵にスタン </td>
+                        </tr>
+                        <tr>
+                            <td> 古い棍棒[Sv] </td>
+                            <td> 物理クリティカル発生確率が5増加する。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> レザーアーマー[Sv] </td>
+                            <td> 物理回避率が20増加する。<br>
+                                最大HPが5 増加する。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> レザーグローブ[Sv] </td>
+                            <td> 攻撃速度が20％増加する。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> レザーシューズ[Sv] </td>
+                            <td> 移動速度が25％増加する。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="background:#CCCCCC"> <b>華麗な宝箱</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> スモールヒールポーション[Sv] </td>
+                            <td> 体力を5ポイント回復させてくれる。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 古い棍棒[Sv] </td>
+                            <td> 物理クリティカル発生確率が5増加する。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> レザーアーマー[Sv] </td>
+                            <td> 物理回避率が20増加する。<br>
+                                最大HPが5 増加する。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> レザーシューズ[Sv] </td>
+                            <td> 移動速度が25％増加する。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> レザーグローブ[Sv] </td>
+                            <td> 攻撃速度が20％増加する。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 加速の霊薬[Sv] </td>
+                            <td> ヘイストスキルを7レベル、関連ステータス1にキャストする。<br>
+                                （持続時間60秒） *攻撃速度13.5%、移動速度30.5%増加 </td>
+                        </tr>
+                        <tr>
+                            <td> ラージヒーリングポーション[Sv] </td>
+                            <td> 体力を10ポイント回復させてくれる。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 撤退[Sv] </td>
+                            <td> 物理クリティカル発生確率が15増加する。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> チェーンアーマー[Sv] </td>
+                            <td> 物理回避率が30増加する。<br>
+                                最大HP10 増加 </td>
+                        </tr>
+                        <tr>
+                            <td> 強化靴[Sv] </td>
+                            <td> 移動速度が50％増加する。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> チェーングローブ[Sv] </td>
+                            <td> 攻撃速度が30％増加する。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><br>
+                <b>■ [サバイバルモードミニゲーム]イベント報酬案内</b><br>
+                - [サバイバルモードミニゲーム]を通じて3種類の参加報酬を獲得できます。<br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td style="background:#CCCCCC"> <b>報酬の区分</b><br>
+                            </td>
+                            <td style="background:#CCCCCC"> <b>報酬獲得条件</b><br>
+                            </td>
+                            <td style="background:#CCCCCC"> <b>報酬内容</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3"> 毎日の参加報酬 </td>
+                            <td> サバイバルモードミニゲーム1回参加 </td>
+                            <td> 21周年 サンベリー </td>
+                        </tr>
+                        <tr>
+                            <td> サバイバルモードミニゲーム[最後の生存者]選定 </td>
+                            <td> 100ポイント </td>
+                        </tr>
+                        <tr>
+                            <td> サバイバルモードミニゲーム[プレイヤーの装飾品]獲得 </td>
+                            <td> 1個あたり10ポイント </td>
+                        </tr>
+                        <tr>
+                            <td> 累積参加報酬 </td>
+                            <td> サバイバルモードミニゲーム30回参加 </td>
+                            <td> 成生の21周年記念プレステージコクーン </td>
+                        </tr>
+                        <tr>
+                            <td> ポイントランキング報酬 </td>
+                            <td> サバイバルモードミニゲーム1～10位ランク </td>
+                            <td> 風水の21周年プレステージコクーン </td>
+                        </tr>
+                    </tbody>
+                </table><br>
+                ※ [プレイヤーの装飾品]を獲得して獲得できるポイントは、1日獲得制限がありません。<br>
+                ※ [最後の生存者]に選ばれ、獲得できるポイントは1日最大200ポイントに制限されます。<br>
+                ※1日参加報酬[21周年サンベリー]は1日最大3個まで獲得でき、受け取りしていない個数は00時を基準に初期化されます。<br>
+                ※ポイントランキング報酬は7月3日（水）定期メンテナンス時に支給されます。<br>
+                ※サバイバルモードミニゲームポイントランキング報酬は、共同ランキングも認めてすべて支給されます。<br>
+                ※すべての報酬はサーバーごとに共有されず、獲得したキャラクターに帰属します。<br>
+                <b>■ 21周年プレステージコクーン報酬案内</b><br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td style="background:#CCCCCC"> <b>成生の21周年記念プレステージコクーン</b><br>
+                            </td>
+                            <td style="background:#CCCCCC"> <b>風水の21周年プレステージコクーン</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/4c177aca1dc5c9e217ace0f113cba4278a06f900.10.9.9.3.jpeg" border=0 name="insertImg" />
+                            </td>
+                            <td> 
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/723507dc4a085ad44d0f743fcd6d7b6782b363a2.10.9.9.3.gif" border=0 name="insertImg" /><br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="background:#BFBFBF"> <b>クリーチャー<span class="color-image1">ユジュ</span></b><br>
+                            </td>
+                            <td style="background:#BFBFBF"> <a><b>クリーチャー<span
+                                            class="color-image1">チャンチョン</span></b><br>
+                                </a> </td>
+                        </tr>
+                    </tbody>
+                </table><br>
+                ※ 21周年プレステージ報酬はサーバーごとに共有されず、獲得したキャラクターに帰属します。<br>
+                ※ 21周年プレステージ報酬は、取引、破壊、銀行保管、店舗販売ができません。<br>
+                ※ 21周年プレステージ報酬で獲得するクリーチャー2種は一般グレードであり、図鑑登録はできません。<br>
+                ※ 21周年プレステージ報酬で獲得するクリーチャー2種は以外コクーンで登場しません。<br>
+                ありがとうございます。<br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                [引用元]
+                <a
+                    href="http://redstone.logickorea.co.kr/notice/updateboard/view.aspx?sqn=8145">【21周年サバイバルモードミニゲームイベント案内】(韓国公式ページ)</a>
+                <br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/b430a59aa24436fdbc4a283e2c1d329186b1558b.10.9.9.3.png"
+                    border=0 name="insertImg" /><br><br>
+                <br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">
+                        当サイトで利用している画像及びデータは、L&K Co., Ltd.に帰属します。
+                        <br>
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。
+                        <br>
+                    </font>
+                    © L&K Co., Ltd. All Rights Reserved.<br>
+                </footer>
+                <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+                    Copyright (c) This site is created by Sokomin. All Rights Reserved.
+                -->
+            </div>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        </div>
+</body>
+
+</html>
