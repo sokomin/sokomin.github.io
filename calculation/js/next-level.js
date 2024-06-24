@@ -301,7 +301,7 @@ function calc2() {
         }
         r1 = a2_2 - a1_2;
     } else if (b1 === 7) {
-        if (a1 >= 2000 || a2 >= 2000) {
+        if (a1 >= 2000 || a2 > 2000) {
             document.f.r21.value = "最高レベルは2000です。";
             return;
         }
