@@ -166,8 +166,8 @@ function calc1() {
         console.log("ｚｚｚ");
     }
 
-    document.f.r1.value = Math.floor(r1);
-    document.f.r2.value = Math.floor(r2);
+    document.f.r1.value = formatLargeNumber(Math.floor(r1));
+    document.f.r2.value = formatLargeNumber(Math.floor(r2));
 
 }
 
@@ -265,7 +265,7 @@ function calc2() {
         }
         r1 = a2_2 - a1_2;
     } else if (b1 === 5) {
-        if (a1 > 1500 || a2 > 1500) {
+        if (a1 >= 1500 || a2 > 1500) {
             document.f.r21.value = "最高レベルは1500です。";
             return;
         }
@@ -283,7 +283,7 @@ function calc2() {
         }
         r1 = a2_2 - a1_2;
     } else if (b1 === 6) {
-        if (a1 >= 2000 || a2 >= 2000) {
+        if (a1 >= 2000 || a2 > 2000) {
             document.f.r21.value = "最高レベルは2000です。";
             return;
         }
@@ -323,7 +323,7 @@ function calc2() {
         console.log("ｚｚｚ");
     }
 
-    document.f.r21.value = Math.floor(r1);
+    document.f.r21.value = formatLargeNumber(Math.floor(r1));
 }
 
 function calc3() {
@@ -463,4 +463,28 @@ function calc3() {
     document.f.r31.value = r1.lv;
     document.f.r32.value = r1.per;
 
+}
+
+
+//指定された形式で数値をフォーマットするために、桁ごとに分割して表示する関数
+// 使用例
+// console.log(formatLargeNumber(5000000000000000));  // "5000兆"
+// console.log(formatLargeNumber(1234567890000));     // "1兆2345億6789万"
+// console.log(formatLargeNumber(123456789));         // "1億2345万6789"
+// console.log(formatLargeNumber(56789));             // "5万6789"
+// console.log(formatLargeNumber(123));               // "123"
+function formatLargeNumber(num) {
+    const units = ['京', '兆', '億', '万'];
+    const thresholds = [1e16, 1e12, 1e8, 1e4];
+
+    for (let i = 0; i < thresholds.length; i++) {
+        if (num >= thresholds[i]) {
+            const mainPart = Math.floor(num / thresholds[i]);
+            const remainder = num % thresholds[i];
+            const remainderFormatted = formatLargeNumber(remainder);
+            return mainPart.toString() + units[i] + (remainderFormatted !== "0" ? remainderFormatted : '');
+        }
+    }
+
+    return num.toString();
 }
