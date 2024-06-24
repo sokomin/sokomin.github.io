@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+      https://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32">
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192">
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>2024年4月 韓国アプデ 赤石の民衆</title>
+    <meta name="description"
+        content="2024年4月の韓国アップデートプレビューをご紹介。初期段階のプレイヤーの成長支援を拡張し、1,250レベルまでのアップハードルを緩和。さらに、最大レベル2,000までの新フィールド、カイグラン峡谷を追加し、多様なクリーチャー外形変更システムや新たなデイリーミッションイベントも実施予定です。">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,そこらの民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,そこみん,赤石,攻略情報">
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml">
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png">
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field">
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png">
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                    </li>
+                    <li class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                    </li>
+                    <li disabled class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                    </li>
+                    <li class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h2>メニュー</h2>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html">
+                    <strong>アイテム</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html">
+                    <strong>スキル</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html">
+                    <strong>モンスター</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html">
+                    <strong>ダンジョン</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html">
+                    <strong>クエスト</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html">
+                    <strong>ギルド</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html">
+                    <strong>韓国情報</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html">
+                    <strong>雑学</strong>
+                </a>
+            </nav>
+        </div>
+        <div class="android-large-table mdl-layout__content">
+            <!--main-->
+            <div class="korea-content main-background">
+                <br>
+                <h1>韓国 2024/04/25 韓国アップデート</h1>
+                <h5>
+                    <font color="#ff0000">
+                        <strong>
+                            [重要！] 韓国公式の情報を基にしています。
+                            <br>
+                            誤訳や韓国独自仕様の可能性もありますので、予めご了承下さい。
+                        </strong>
+                    </font>
+                    <br>
+                </h5>
+                <br>
+                <img width="600px"
+                    src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/7f812b1b08f5c4e1f42777d6534b079b68a0c942.10.9.9.3.png"
+                    border=0 name="insertImg" /><br><br>
+                <br>
+                <br>
+                <a href="#1">新規上位フィールド カイグラン峡谷</a><br>
+                <a href="#2">レベリングの緩和とレポートの改善</a><br>
+                <a href="#3">1400ディメンションハブの追加</a><br>
+                <a href="#4">クリーチャー外形変更システム</a><br>
+                <a href="#5">ガイドの追加と内容の分離</a><br>
+                <br>
+                <br>
+                <br>
+                <a name="1"></a>
+                <font color="#e95388">
+                    <h4>新規上位フィールド カイグラン峡谷</h4>
+                </font>
+                -ガイド1775～の狩り場部分に新規フィールド（一般戦闘3種/ミラーフィールド9種）が追加されます。<br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td style="background:#BFBFBF"> <b>フィールド名</b><br>
+                            </td>
+                            <td style="background:#BFBFBF"> <b>レベル区間</b><br>
+                            </td>
+                            <td style="background:#BFBFBF"> <b>区分</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> カイグラン峡谷の入口 </td>
+                            <td> 1775~1850 </td>
+                            <td> 戦闘フィールド </td>
+                        </tr>
+                        <tr>
+                            <td> ウトパウロ湖 </td>
+                            <td> 1850~1925 </td>
+                            <td> 戦闘フィールド </td>
+                        </tr>
+                        <tr>
+                            <td> カイグラン峡谷深層 </td>
+                            <td> 1925~2000 </td>
+                            <td> 戦闘フィールド </td>
+                        </tr>
+                        <tr>
+                            <td> <b>ミラーフィールド-1～3</b><br>
+                                カイグラン峡谷の入口 </td>
+                            <td> 1775~1850 </td>
+                            <td> 戦闘フィールド </td>
+                        </tr>
+                        <tr>
+                            <td> <b>ミラーフィールド-1～3</b><br>
+                                ウトパウロ湖 </td>
+                            <td> 1850~1925 </td>
+                            <td> 戦闘フィールド </td>
+                        </tr>
+                        <tr>
+                            <td> <b>ミラーフィールド-1～3</b><br>
+                                カイグラン峡谷深層 </td>
+                            <td> 1925~2000 </td>
+                            <td> 戦闘フィールド </td>
+                        </tr>
+                    </tbody>
+                </table><br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/281b69bc2516f195d0bac81690e637f1bbc8de94.10.9.9.3.png"
+                    border=0 name="insertImg" /><br><br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/a483d4af3ba54958a02200347dee5ac7a0b3fd4c.10.9.9.3.png"
+                    border=0 name="insertImg" /><br><br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/423bfd65d71606e76ff4e30eae374439946df5bb.10.9.9.3.png"
+                    border=0 name="insertImg" /><br><br>
+                - 戦闘フィールドではコーリング、露店の利用が制限されます。<br>
+                <br>
+                - カイグラン峡谷の入口はファウンテンズハイランド（57,18）で移動が可能です。<br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/ed1c52bdce03a745bf18d395fdcf2a95d09c45f5.10.9.9.3.png"
+                    border=0 name="insertImg" /><br><br>
+                <br>
+                -ミラーフィールドを含むすべてのフィールドで精鋭討伐入場に必要な<span class="color-image1">精鋭討伐チケットの欠片</span>を一定確率で獲得できます。<br>
+                <br>
+                <br>
+
+                <a name="2"></a>
+                <font color="#e95388">
+                    <h4>レベリングの緩和とレポートの改善</h4>
+                </font>
+                -チュートリアル＆レポートクエストシーズン1,2が付いた＆デリーンチュートリアルクエストに統合されます。<br>
+                ※既存進行中だった<span class="color-image1">チュートリアル＆レポートクエスト</span>は削除されます。<br>
+                <br>
+                -新しいダリン＆デリンチュートリアルクエストで1250レベル5次転生まで育成が容易になります。<br>
+                ※新しいダリン＆デリンチュートリアルクエストで獲得される経験値はスフィア・パワキ効果が適用されません。<br>
+                <a href="koreaupdate20240425_tutorial.html">詳細はこちら</a><br>
+                <br>
+                <br>
+                <b>[モンスター能力値下降および経験値改善]</b><br>
+                <br>
+                - 900～1700レベル帯フィールドモンスター能力値（防御力、各種抵抗力、体力）が下方及び平準化調整されます。<br>
+                - 900～1700レベル帯のmob経験値が一定の上昇率で増加するように調整されます。<br>
+                <br>
+                -ターゲットフィールドは以下のとおりです。<br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td style="background:white"> <b>レベル帯</b><br>
+                            </td>
+                            <td style="background:white"> <b>対象狩り場</b><br>
+                            </td>
+                            <td style="background:white"> <b>レベル帯</b><br>
+                            </td>
+                            <td style="background:white"> <b>対象狩り場</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="background:white"> 900～925 </td>
+                            <td style="background:white"> 放棄された地下墓地B1 </td>
+                            <td style="background:white"> 1100～1125 </td>
+                            <td style="background:white"> 静かな砂丘-月の谷 </td>
+                        </tr>
+                        <tr>
+                            <td style="background:white"> 920～935 </td>
+                            <td style="background:white"> 希望と絶望の境目 </td>
+                            <td style="background:white"> 1125～1150 </td>
+                            <td style="background:white"> 静かな砂丘-星の谷 </td>
+                        </tr>
+                        <tr>
+                            <td style="background:white"> 925～950 </td>
+                            <td style="background:white"> 放棄された地下墓地B2 </td>
+                            <td style="background:white"> 1150～1200 </td>
+                            <td style="background:white"> 枯渇した生命の森 </td>
+                        </tr>
+                        <tr>
+                            <td style="background:white"> 925～950 </td>
+                            <td style="background:white"> 古代悪魔研究所 </td>
+                            <td style="background:white"> 1200～1250 </td>
+                            <td style="background:white"> 死の荒れ地 </td>
+                        </tr>
+                        <tr>
+                            <td style="background:white"> 925～950 </td>
+                            <td style="background:white"> 放棄された地下墓地B2のメリスリング </td>
+                            <td style="background:white"> 1200～1250 </td>
+                            <td style="background:white"> 孤独な群島 </td>
+                        </tr>
+                        <tr>
+                            <td style="background:white"> 935～965 </td>
+                            <td style="background:white"> 神獣の野原 </td>
+                            <td style="background:white"> 1250～1300 </td>
+                            <td style="background:white"> ヤティカヌ 月の出森林 </td>
+                        </tr>
+                        <tr>
+                            <td style="background:white"> 950～975 </td>
+                            <td style="background:white"> 放棄された地下墓地B3 </td>
+                            <td style="background:white"> 1250～1300 </td>
+                            <td style="background:white"> ウェストスワンプ大空洞 </td>
+                        </tr>
+                        <tr>
+                            <td style="background:white"> 950～975 </td>
+                            <td style="background:white"> 深淵の地底湖隧道 </td>
+                            <td style="background:white"> 1300～1350 </td>
+                            <td style="background:white"> ヤティカヌ日の出森林 </td>
+                        </tr>
+                        <tr>
+                            <td style="background:white"> 975～1000 </td>
+                            <td style="background:white"> 没落した悪魔の地 </td>
+                            <td style="background:white"> 1350～1400 </td>
+                            <td style="background:white"> ヤティカヌ星降る森林 </td>
+                        </tr>
+                        <tr>
+                            <td style="background:white"> 975～1000 </td>
+                            <td style="background:white"> 忘れられた地下収容所B1 </td>
+                            <td style="background:white"> 1400～1450 </td>
+                            <td style="background:white"> ヤティカヌ微風 </td>
+                        </tr>
+                        <tr>
+                            <td style="background:white"> 1000～1025 </td>
+                            <td style="background:white"> アメンアイランド </td>
+                            <td style="background:white"> 1450～1500 </td>
+                            <td style="background:white"> ヤティカヌの夜影 </td>
+                        </tr>
+                        <tr>
+                            <td style="background:white"> 1000～1025 </td>
+                            <td style="background:white"> 忘れられた地下収容所B2 </td>
+                            <td style="background:white"> 1500～1550 </td>
+                            <td style="background:white"> ヤティカヌ暁 </td>
+                        </tr>
+                        <tr>
+                            <td style="background:white"> 1025～1050 </td>
+                            <td style="background:white"> 海底神殿B1 </td>
+                            <td style="background:white"> 1550～1625 </td>
+                            <td style="background:white"> ウポスマイヤー北部 </td>
+                        </tr>
+                        <tr>
+                            <td style="background:white"> 1025～1050 </td>
+                            <td style="background:white"> 忘れられた地下収容所B3 </td>
+                            <td style="background:white"> 1600～1675 </td>
+                            <td style="background:white"> ウポスマイヤー南西部 </td>
+                        </tr>
+                        <tr>
+                            <td style="background:white"> 1030～1065 </td>
+                            <td style="background:white"> 生命の森の中心部 </td>
+                            <td style="background:white"> 1675～1725 </td>
+                            <td style="background:white"> ウモスクェグマイヤー北東部 </td>
+                        </tr>
+                        <tr>
+                            <td style="background:white"> 1050～1075 </td>
+                            <td style="background:white"> 海底神殿B2 </td>
+                            <td style="background:white"> 1725～1775 </td>
+                            <td style="background:white"> ウモスクェグマイヤー南西部 </td>
+                        </tr>
+                        <tr>
+                            <td style="background:white"> 1075～1100 </td>
+                            <td style="background:white"> 生命の森の郊外 </td>
+                            <td style="background:white"><br>
+                                - </td>
+                            <td style="background:white"><br>
+                                - </td>
+                        </tr>
+                    </tbody>
+                </table><br>
+                ※対象フィールドのうち移動に干渉する不要な一部のオブジェクトは補正および削除されます。<br>
+                ※対象フィールドの秘密ダンジョンは既存の仕様情報が保持されます。<br>
+                ※対象フィールドのモンスター攻撃力は維持されます。<br>
+                <br>
+                <b>[新規ミラーフィールド追加]</b><br>
+                <br>
+                -孤独な群島、ウェストスワンプ大空洞、ヤティカヌ（月の出、日の出、星降る）のミラーフィールドが2種ずつ追加されます。<br>
+                <br>
+                <br>
+
+                <a name="3"></a>
+                <font color="#e95388">
+                    <h4>1400ディメンションハブの追加</h4>
+                </font>
+                - 1400～1499レベルで利用可能な[ディメンションハブ第6ゾーン-捕食の輪廻]が追加されます。<br>
+                <br>
+                - [ディメンションハブ第6区域-捕食の輪廻]クリア時には[164億の経験値]および[100%のエーテルマキナ]、[16個の多次元の結晶]を 報酬を受けることができます。<br>
+                <br>
+                -多次元の結晶を通じて経験値報酬強化時に1.25倍上昇した報酬を受けることができます。<br>
+                <br>
+                -ディメンションハブは[冒険家協会バー]のNPCエルウッドを通じて入場できます。<br>
+                <br>
+                - 0.5％の確率で特殊モンスターが登場し、狩りに成功した場合、追加報酬を獲得できます。<br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td style="background:#BFBFBF"> <b>区分</b><br>
+                            </td>
+                            <td style="background:#BFBFBF"> <b>次元虐殺者</b><br>
+                            </td>
+                            <td style="background:#BFBFBF"> <b>次元略奪者</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> <b>見た目</b><br>
+                            </td>
+                            <td>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/7ee5756f4b1d0c9762a820e80dc2affd42a3e219.10.9.9.3.png"
+                                    border=0 name="insertImg" />
+                            </td>
+                            <td>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/3add2ac96870e1bb9d55f730cf3ccd028b385765.10.9.9.3.png"
+                                    border=0 name="insertImg" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> <b>報酬</b><br>
+                            </td>
+                            <td> <b>[経験値]</b><br>
+                                32,800,000,000 EXP </td>
+                            <td> <b>[多次元の結晶]</b><br>
+                                48個 </td>
+                        </tr>
+                    </tbody>
+                </table><br>
+                <br>
+                <br>
+
+                <a name="4"></a>
+                <font color="#e95388">
+                    <h4>クリーチャー外形変更システム</h4>
+                </font>
+                -見た目専用クリーチャー登録欄が追加されます。<br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td style="background:#BFBFBF"> <b>クリーチャー外観変更システム</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/fb9ab75a57163c5621152db0d57844cc1699e6dd.10.9.9.3.png"
+                                    border=0 name="insertImg" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 見た目専用に登録されたクリーチャーは、クリーチャーバッグに[L]と表記されます。<br>
+                                見た目専用に登録されたクリーチャーのステータス、パッシブ、アクションスキルは適用されません。<br>
+                                外観専用に登録されたクリーチャーは、クリーチャー関連機能の使用が制限されます。<br>
+                                <br>
+                                -強化、超越、合成、転送、冒険など [解散]ボタンをクリックすると、外形専用クリーチャーもすべて登録解除されます。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><br>
+
+                <br>
+                <br>
+
+                <a name="5"></a>
+                <font color="#e95388">
+                    <h4>ガイドの追加と内容の分離</h4>
+                </font>
+                -既存の1201～から1951～にガイドUIが拡張されます。<br>
+                <table id="table10" style="min-width: 960px; max-width: 960px;">
+                    <tbody>
+                        <tr>
+                            <td style="background:#BFBFBF"> <b>ガイドの追加と分離</b><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/387756c9bf1668cb986c2d869674a9181152dcb5.10.9.9.3.png"
+                                    border=0 name="insertImg" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 1201～に内容が蓄積されていた内容が拡張されたレベル区間別に細分化されて適用されます。<br>
+                                狩り場に新規フィールドカイグランが追加されます。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table><br>
+                <br>
+                <br>
+                <br>
+                <br>
+
+                <a name="99"></a>
+                <font color="#e95388">
+                    <h4>変更・修正</h4>
+                </font>
+                <b>[キャラクター]</b><br>
+                <br>
+                - [戦士]チャンリョンの魔性スキルツールチップのうち[最小ダメ]が重複して確認される問題の修正<br>
+                ＞ 2回[最小ダメ]を[最大ダメ]に変更<br>
+                - [闘士]ワイルドガイストクリティカル確率増加数値が欠落する現象<br>
+                -[闘士]トリニティフォーススキルのオプション数値が誤って適用された問題の修正<br>
+                - [武道家]分身スキルがPvP中特定スキルに無視される問題の修正<br>
+                -[メイド]ブルームマスタリースキルの魔法強打確率増加数値が正常に動作しない問題の修正<br>
+                ＞ブルームマスタリーの最大値を8＞ 12に調整<br>
+                [アーチャー]デッドリーチェイサーダメージが一定数値以上適用ダメージが適用されない問題の修正<br>
+                <br>
+                <b>[システム]</b><br>
+                <br>
+                -神獣波動クエスト遂行条件に[混沌の大地]クエスト完了条件追加<br>
+                -主攻撃スキルをoff、サブ攻撃スキルのみonに変更時自動攻撃にならなかった問題の修正<br>
+                -ぶつかる双星エピソードクエスト進行できなかった問題の修正<br>
+                -チェック前のギルド羊皮紙の追加/削除時にロールバックされる問題の修正<br>
+                -ギルド内のサブギルドマスター権限中、新入ギルドメンバーの正式メンバー昇級機能追加<br>
+                -封印解放スロット再加工アイテム使用時の確率とメッセージツールチップを追加<br>
+                -勇敢な異次元ボックスを使用するときの確率情報ツールチップを追加<br>
+                -異次元ボックスを使用するときの確率情報ツールチップを追加<br>
+                -レベリング緩和パッチが適用されることで5前生移転育成に役立った転生回数別のパワーキットアイテム8種は販売が終了します。<br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                [引用元]
+                <a
+                    href="http://redstone.logickorea.co.kr/notice/updateboard/view.aspx?sqn=8119">【4月25日アップデート案内】(韓国公式ページ)</a>
+                <br>
+                <br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/2dd711ae9e548338ca6d50c23d68d427445c5b0f.10.9.9.3.png"
+                    border=0 name="insertImg" /><br><br>
+                <br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">
+                        当サイトで利用している画像及びデータは、L&K Co., Ltd.に帰属します。
+                        <br>
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。
+                        <br>
+                    </font>
+                    © L&K Co., Ltd. All Rights Reserved.<br>
+                </footer>
+                <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+                    Copyright (c) This site is created by Sokomin. All Rights Reserved.
+                -->
+            </div>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        </div>
+</body>
+
+</html>
