@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>一般クエスト Lv900～1000 赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,そこらの民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,そこみん,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h2>メニュー</h2>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <a href="../index.html">トップ</a> >> <a href="../quest/quest.html">クエスト</a> >> <a
+                href="../quest/normalquest_list.html">一般クエスト</a><br>
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+                <h1>一般クエスト　Lv950～</h1>
+                <br>
+                <br>
+                <br>
+                <br>
+
+
+                <!-- 神獣騒ぎ -->
+                <div>
+                    <a name="sinzyusawagi"></a>
+                    <h4>神獣騒ぎクエ</h4>
+                    ※神獣騒ぎを進行するにはダリン・デリンチュートリアルを一定ラインまで進める必要があります。<br>
+                    新ダリン・デリンチュートリアルのChapter51(950Lv付近、ディメンション・ハブクリア)辺りまでクリアしておけば進められそうですが、正確な開始トリガは未確認。<br>
+                    1250Lvチュートリアルを進行するに当たって不足したレベルを補うクエストとして活用できます。<br>
+                    こちらは新ダリン・デリンチュートリアルと違い報酬時にスフィア・パワキの効果が乗るためクエスト進行時は出すことを推奨します。<br>
+                    <br>
+                    <br>
+                    <table id="table14" style="text-align: left;">
+                        <colgroup>
+                            <col span="1" width="240">
+                            <col span="1" width="640">
+                        </colgroup>
+                        <tr>
+                            <th colspan="2"><a name="1786">
+                                    <font style="color:#00ff00;">神獣騒ぎ</font>
+                                </a></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="color-image17">関連NPC</span><br>
+                                <hr class="quest-hr"><span class="color-image2"><a
+                                        href="https://sokomin.github.io/map/map_viewer.html?map_id=502">冒険家協会ブルンネンシュティグ本部</a></span>
+                                <span class="color-image4">ダリン</span><br><br><span
+                                    class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">ダリンの所に行けば、冒険家協会に寄せられた神獣関連の依頼について説明を聞くことができるという。<br><br>
+                                <hr><br><span class="color-image17">関連アイテム</span><br>
+                                <hr class="quest-hr"><span class="color-image2">中央プラトン街道 / ブルンネンシュティグ入口付近</span> (182,
+                                84) <span class="color-image1">餌入れ</span><br><br><span
+                                    class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">
+                                誰かが頑なに古都周辺に神獣型モンスターを引き寄せるための餌入れを置いているという。少しでも神獣が引き寄せられないように置かれている餌入れを片付けに行こう。<br><br>
+                                <hr><br><br><span class="color-image17">進行状況</span><br>
+                                <hr class="quest-hr">スチールガゴイル (n)/5<br><br><span class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">
+                                餌入れを片付けようとしたら匂いを嗅ぎつけて神獣型モンスターが集まってきてしまった。通るときに攻撃を受ける人でも出てきたら大変な事になるため、早く退治しよう。<br><br>
+                                <hr><br><span class="color-image17">関連NPC</span><br>
+                                <hr class="quest-hr"><span class="color-image2"><a
+                                        href="https://sokomin.github.io/map/map_viewer.html?map_id=10">中央プラトン街道 /
+                                        ブルンネンシュティグ入口付近</a></span> <span class="color-image4">アリエル</span><br><br><span
+                                    class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">
+                                現れた神獣と戦ってみたが思っていたよりも手強かった。都市近郊に家を建て住んでいる人もいるが、被害を受けた人は居ないか確認してみよう。<br><br>
+                                <hr><br><span class="color-image17">関連NPC</span><br>
+                                <hr class="quest-hr"><span class="color-image2"><a
+                                        href="https://sokomin.github.io/map/map_viewer.html?map_id=502">冒険家協会ブルンネンシュティグ本部</a></span>
+                                <span class="color-image4">ダリン</span><br><br><span
+                                    class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">
+                                アリエルとその家族たちから「神獣を愛する緑の結社」という人たちについて大体の話を聞いた。餌入れも片付けたので、まずはダリンのところに戻ろう。<br><br>
+                                <hr><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image2"> </span> <span class="color-image4">協会事務官</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td>Lv 950～9999</td>
+                        </tr>
+                    </table><br><br>
+                    <table id="table14" style="text-align: left;">
+                        <colgroup>
+                            <col span="1" width="240">
+                            <col span="1" width="640">
+                        </colgroup>
+                        <tr>
+                            <th colspan="2"><a name="1787">
+                                    <font style="color:#00ff00;">盗人猛々しい人</font>
+                                </a></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="color-image17">関連NPC</span><br>
+                                <hr class="quest-hr"><span class="color-image2"><a
+                                        href="https://sokomin.github.io/map/map_viewer.html?map_id=502">冒険家協会ブルンネンシュティグ本部</a></span>
+                                <span class="color-image4">ホルディー</span><br><br><span
+                                    class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">初めて会う人が私を探しているようだ。どうしたのか聞いてみよう。<br><br>
+                                <hr><br><span class="color-image17">関連NPC</span><br>
+                                <hr class="quest-hr"><span class="color-image2"><a
+                                        href="https://sokomin.github.io/map/map_viewer.html?map_id=502">冒険家協会ブルンネンシュティグ本部</a></span>
+                                <span class="color-image4">ダリン</span><br><br><span
+                                    class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">
+                                予想はしていたが、神獣を愛する緑の結社のホルディーという人は予想を超える根性曲がりだった。ダリンとデリンが私を巻き込まないように30分以上もホルディーの相手をしていたけど…大丈夫なのだろうか？<br><br>
+                                <hr><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image2"> </span> <span class="color-image4">ダリン</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td>Lv 950～9999</td>
+                        </tr>
+                    </table><br><br>
+                    <table id="table14" style="text-align: left;">
+                        <colgroup>
+                            <col span="1" width="240">
+                            <col span="1" width="640">
+                        </colgroup>
+                        <tr>
+                            <th colspan="2"><a name="1788">
+                                    <font style="color:#00ff00;">とんでもない迷惑</font>
+                                </a></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="color-image17">関連アイテム</span><br>
+                                <hr class="quest-hr"><span class="color-image2">ギルディル川 / ナス橋付近</span> (116, 113) <span
+                                    class="color-image1">餌入れ</span><br><br><span class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">ホルディーがまた危険なことに道端に神獣を引き寄せるための餌入れを広げていた。何か起きる前に今すぐ行って片付けよう。<br><br>
+                                <hr><br><span class="color-image17">関連モンスター</span><br>
+                                <hr class="quest-hr"><span class="color-image2"><a
+                                        href="https://sokomin.github.io/map/map_viewer.html?map_id=24">ギルディル川 /
+                                        ナス橋付近</a></span>
+                                <span class="color-image1">草原ユニコーン</span><br><span class="color-image2"><a
+                                        href="https://sokomin.github.io/map/map_viewer.html?map_id=24">ギルディル川 /
+                                        ナス橋付近</a></span>
+                                <span class="color-image1">キンバイソン</span><br><br><span
+                                    class="color-image17">進行状況</span><br>
+                                <hr class="quest-hr">神獣型モンスター (n)/6<br><br><span class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">近くの場所から悲鳴が聞こえた！誰かが襲撃されたみたいだから早く行ってみよう。<br><br>
+                                <hr><br><span class="color-image17">関連NPC</span><br>
+                                <hr class="quest-hr"><span class="color-image2"><a
+                                        href="https://sokomin.github.io/map/map_viewer.html?map_id=24">ギルディル川 /
+                                        ナス橋付近</a></span>
+                                <span class="color-image4">通行人</span><br><br><span
+                                    class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">一歩間違えたら、大事になるところだった。通行人に何があったのか聞いてみよう。<br><br>
+                                <hr><br><span class="color-image17">関連NPC</span><br>
+                                <hr class="quest-hr"><span class="color-image2"><a
+                                        href="https://sokomin.github.io/map/map_viewer.html?map_id=24">ギルディル川 /
+                                        ナス橋付近</a></span>
+                                <span class="color-image4">ホルディー</span><br><br><span
+                                    class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">
+                                ホルディーの迷惑は度が過ぎている。しっかり警告しておく必要がありそうなので、彼が餌入れを確認しに現れたらしっかりと言い聞かせなければならない。<br><br>
+                                <hr><br><span class="color-image17">関連NPC</span><br>
+                                <hr class="quest-hr"><span class="color-image2"><a
+                                        href="https://sokomin.github.io/map/map_viewer.html?map_id=502">冒険家協会ブルンネンシュティグ本部</a></span>
+                                <span class="color-image4">デリン</span><br><br><span
+                                    class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">このくらいなら分かるように警告したと思うので、デリンのところに戻って報告しよう。<br><br>
+                                <hr><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image2"> </span> <span class="color-image4">デリン</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td>Lv 950～9999</td>
+                        </tr>
+                    </table><br><br>
+                    <table id="table14" style="text-align: left;">
+                        <colgroup>
+                            <col span="1" width="240">
+                            <col span="1" width="640">
+                        </colgroup>
+                        <tr>
+                            <th colspan="2"><a name="1789">
+                                    <font style="color:#00ff00;">ねじれた決起</font>
+                                </a></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="color-image17">関連NPC</span><br>
+                                <hr class="quest-hr"><span class="color-image2"><a
+                                        href="https://sokomin.github.io/map/map_viewer.html?map_id=10">中央プラトン街道 /
+                                        ブルンネンシュティグ入口付近</a></span> <span class="color-image4">ホルディー</span><br><br><span
+                                    class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">ホルディーが神獣の中でも特に強力なものたちを連れて来て乱闘を起こしているという。早く行って鎮圧させよう。<br><br>
+                                <hr><br><span class="color-image17">関連アイテム</span><br>
+                                <hr class="quest-hr"><span class="color-image2">中央プラトン街道 / ブルンネンシュティグ入口付近</span> (
+                                106,80) <span class="color-image1">モンスター出没地点</span><br><span class="color-image2"><a
+                                        href="https://sokomin.github.io/map/map_viewer.html?map_id=10">中央プラトン街道 /
+                                        ブルンネンシュティグ入口付近</a></span> <span class="color-image1">復讐のビースト</span><br><br><span
+                                    class="color-image17">進行状況</span><br>
+                                <hr class="quest-hr">復讐のビースト (n)/5<br><br><span class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">
+                                ホルディーが連れてきた復讐のビーストを見れば彼が自信満々な理由が分かるようだ。これほどの神獣を連れてどんな騒ぎを起こすのか分からないから必ず退治しなければならない。<br><br>
+                                <hr><br><span class="color-image17">関連NPC</span><br>
+                                <hr class="quest-hr"><span class="color-image2"><a
+                                        href="https://sokomin.github.io/map/map_viewer.html?map_id=10">中央プラトン街道 /
+                                        ブルンネンシュティグ入口付近</a></span> <span class="color-image4">ホルディー</span><br><br><span
+                                    class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">あいつが連れてきた神獣たちは全て退治した。次は…<br><br>
+                                <hr><br><span class="color-image17">関連NPC</span><br>
+                                <hr class="quest-hr"><span class="color-image2"><a
+                                        href="https://sokomin.github.io/map/map_viewer.html?map_id=10">中央プラトン街道 /
+                                        ブルンネンシュティグ入口付近</a></span> <span class="color-image4">ホルディー</span><br><br><span
+                                    class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">……もうこれ以上は我慢できない。<br><br>
+                                <hr><br><span class="color-image17">関連NPC</span><br>
+                                <hr class="quest-hr"><span class="color-image2"><a
+                                        href="https://sokomin.github.io/map/map_viewer.html?map_id=10">中央プラトン街道 /
+                                        ブルンネンシュティグ入口付近</a></span> <span class="color-image4">ホルディー</span><br><br><span
+                                    class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">これ以上殴ると本当に危ないだろう。このくらいなら、心を入れ替えたのではないだろうか？<br><br>
+                                <hr><br><span class="color-image17">関連NPC</span><br>
+                                <hr class="quest-hr"><span class="color-image2"><a
+                                        href="https://sokomin.github.io/map/map_viewer.html?map_id=502">冒険家協会ブルンネンシュティグ本部</a></span>
+                                <span class="color-image4">ダリン</span><br><br><span
+                                    class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">
+                                ホルディーをぶん殴って制圧したが、反省もしないし反省しそうな様子でもない。もう二度とこんな事が出来ないようにダリンを通して警備隊に引き渡そう。.<br><br>
+                                <hr><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image2"> </span> <span class="color-image4">デリン</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td>Lv 950～9999</td>
+                        </tr>
+                    </table><br><br>
+                    <table id="table14" style="text-align: left;">
+                        <colgroup>
+                            <col span="1" width="240">
+                            <col span="1" width="640">
+                        </colgroup>
+                        <tr>
+                            <th colspan="2"><a name="1790">
+                                    <font style="color:#00ff00;">最高の死</font>
+                                </a></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="color-image17">関連アイテム</span><br>
+                                <hr class="quest-hr"><span class="color-image2">バヘル大河 / 北、東バヘル大河の交差地点</span> (50, 7)
+                                <span class="color-image1">追跡地点</span><br><br><span
+                                    class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">ホルディーが釈放されたすぐに神獣を探しにどこかへと消えていった。呆れてものも言えない…<br><br>
+                                <hr><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image2"> </span> <span class="color-image4">ダリン</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td>Lv 950～9999</td>
+                        </tr>
+                    </table><br><br>
+                </div>
+
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">
+                        当サイトで利用している画像及びデータは、L&K Co., Ltd.に帰属します。<br>
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    © L&K Co., Ltd. All Rights Reserved.<br>
+                </footer>
+                <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+        </div>
+</body>
+
+</html>
