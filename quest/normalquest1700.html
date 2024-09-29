@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>一般クエスト Lv1700～9999 赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,そこらの民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,そこみん,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h2>メニュー</h2>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <a href="../index.html">トップ</a> >> <a href="../quest/quest.html">クエスト</a> >> <a
+                href="../quest/normalquest_list.html">一般クエスト</a><br>
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+                <h1>一般クエスト　Lv1700～9999</h1>
+                <br>
+                <br>
+                <br>
+                <br>
+                <div>
+                    <a name="umos_zentei"></a>
+                    ウモスクェグマイヤーを中心に回るクエスト。<br>
+                    2000Lv以降のクエストを進行するには下記クエストを全て完了する必要があります。<br>
+                    進行中は指定されたタイミング以外でウモス秘密に入場できないため注意。<br>
+                    ウポスクエストを完了している必要があります。<br>
+                    <br>
+                    <br>
+                    <h4>ウモス前提クエ</h4>
+                    <table id="table14" style="text-align: left;">
+                        <colgroup>
+                            <col span="1" width="240">
+                            <col span="1" width="640">
+                        </colgroup>
+                        <tr>
+                            <th colspan="2"><a name="1772">
+                                    <font style="color:#00ff00;">ウモスクェグマイヤーの深い所</font>
+                                </a></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="color-image17">関連NPC</span><br>
+                                <hr class="quest-hr"><span class="color-image2"><a
+                                        href="https://sokomin.github.io/map/map_viewer.html?map_id=1092">原始要塞
+                                        セルーテ</a></span> <span class="color-image4">リヤン</span><br><br><span
+                                    class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr"><span class="color-image4">バンダラーカ</span>が北西側に行こうとする。詳しい話をするために<span
+                                    class="color-image4">リヤン</span>を訪ねてみよう。<br><br>
+                                <hr><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image2"> </span> <span class="color-image4">バンダラーカ</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td>Lv 0～9999</td>
+                        </tr>
+                    </table><br><br>
+                    <table id="table14" style="text-align: left;">
+                        <colgroup>
+                            <col span="1" width="240">
+                            <col span="1" width="640">
+                        </colgroup>
+                        <tr>
+                            <th colspan="2"><a name="1773">
+                                    <font style="color:#00ff00;">衝突</font>
+                                </a></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="color-image17">関連NPC</span><br>
+                                <hr class="quest-hr"><span class="color-image2">ウモスクェグマイヤー南西部</span> <span
+                                    class="color-image4">ハイドネル
+                                    </span><br><br><span class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">先に来たグリーク教司祭たちは<span
+                                    class="color-image15">ウモスクェグマイヤー南西部</span>に行ったという。
+                                <c:ltgreen>リヤン<n>が話した遺跡も探すついでに<span
+                                            class="color-image15">ウモスクェグマイヤー南西部</span>に行ってみよう。<br><br>
+                                        <hr><br><span class="color-image17">関連NPC</span><br>
+                                        <hr class="quest-hr"><span class="color-image2">ウモスクェグマイヤー南西部</span> <span
+                                            class="color-image4">聖騎士
+                                            </span><br><br><span class="color-image17">クエスト情報</span><br>
+                                        <hr class="quest-hr">グリーク教司祭たちが道を塞いでいる。どうしたのか<c:ltgreen>聖騎士<n>に聞いてみよう。<br><br>
+                                                <hr><br><span class="color-image17">関連NPC</span><br>
+                                                <hr class="quest-hr"><span class="color-image2">ウモスクェグマイヤー南西部</span> <span
+                                                    class="color-image4">ザイル </span><br><br><span
+                                                    class="color-image17">クエスト情報</span><br>
+                                                <hr class="quest-hr">
+                                                状況が険悪になりそうだったところを教団の追放天使が仲裁してくれた。この人なら、話が通じそうだが…<br><br>
+                                                <hr><br>
+                                            </n>
+                                        </c:ltgreen>
+                                    </n>
+                                </c:ltgreen>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image2"> </span> <span class="color-image4">ハイドネル</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td>Lv 1675～9999</td>
+                        </tr>
+                    </table><br><br>
+                    <table id="table14" style="text-align: left;">
+                        <colgroup>
+                            <col span="1" width="240">
+                            <col span="1" width="640">
+                        </colgroup>
+                        <tr>
+                            <th colspan="2"><a name="1774">
+                                    <font style="color:#00ff00;">誘き寄せられた光</font>
+                                </a></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="color-image17">関連NPC</span><br>
+                                <hr class="quest-hr"><span class="color-image2">ウモスクェグマイヤー南西部</span> <span
+                                    class="color-image4">ハイドネル
+                                    </span><br><br><span class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">
+                                <c:ltgreen>ザイル<n>と話し合って南西部を探検するのは後回しにした。これからどうするか<c:ltgreen>ハイドネル<n>と話してみよう。<br><br>
+                                                <hr><br><span class="color-image17">関連アイテム</span><br>
+                                                <hr class="quest-hr"><span class="color-image2">ウモスクェグマイヤー北東部</span>
+                                                (157,155) <span class="color-image1">痕跡 1</span><br><span
+                                                    class="color-image2">ウモスクェグマイヤー北東部</span> (121,125) <span
+                                                    class="color-image1">痕跡 2</span><br><span
+                                                    class="color-image2">ウモスクェグマイヤー北東部</span> (139,116) <span
+                                                    class="color-image1">痕跡 3</span><br><br><span
+                                                    class="color-image17">進行状況</span><br>
+                                                <hr class="quest-hr">モンスター多発地域での戦闘 (n)/12<br><br><span
+                                                    class="color-image17">クエスト情報</span><br>
+                                                <hr class="quest-hr">
+                                                <c:ltgreen>リヤン<n>は<span
+                                                            class="color-image15">ウモスクェグマイヤー北東部</span>こそよく調べる必要があるという。
+                                                        <c:ltgreen>リヤン<n>
+                                                                の言う通りモンスターが多い所を探してみよう。南東側、西側、北側の順で気配が強くなっているようだから、その順番通り追ってみよう。<br><br>
+                                                                <hr><br><span class="color-image17">関連アイテム</span><br>
+                                                                <hr class="quest-hr"><span
+                                                                    class="color-image2">ウモスクェグマイヤー北東部</span>
+                                                                (131,108) <span
+                                                                    class="color-image1">見慣れない石碑</span><br><br><span
+                                                                    class="color-image17">クエスト情報</span><br>
+                                                                <hr class="quest-hr">最後の場所で目立つ石碑を見つけた。どんな石碑だろうか？<br><br>
+                                                                <hr><br><span class="color-image17">関連NPC</span><br>
+                                                                <hr class="quest-hr"><span
+                                                                    class="color-image2">ウモスクェグマイヤー南西部</span> <span
+                                                                    class="color-image4">リヤン </span><br><br><span
+                                                                    class="color-image17">クエスト情報</span><br>
+                                                                <hr class="quest-hr">探索の途中で見つけた石碑について<c:ltgreen>リヤン<n>
+                                                                        に知らせよう。<br><br>
+                                                                        <hr><br><span
+                                                                            class="color-image17">関連NPC</span><br>
+                                                                        <hr class="quest-hr"><span
+                                                                            class="color-image2">ウモスクェグマイヤー北東部</span>
+                                                                        <span class="color-image4">バンダラーカ
+                                                                            </span><br><br><span
+                                                                            class="color-image17">クエスト情報</span><br>
+                                                                        <hr class="quest-hr">
+                                                                        <c:ltgreen>リヤン<n>は石碑を解読してくれる原住民と一緒に行こうという。<span
+                                                                                    class="color-image15">原始要塞セルーテ</span>に行って手伝ってくれる人に会おう。<br><br>
+                                                                                <hr><br><span
+                                                                                    class="color-image17">関連NPC</span><br>
+                                                                                <hr class="quest-hr"><span
+                                                                                    class="color-image2">ウモスクェグマイヤー南西部</span>
+                                                                                <span class="color-image4">リヤン
+                                                                                    </span><br><br><span
+                                                                                    class="color-image17">クエスト情報</span><br>
+                                                                                <hr class="quest-hr">
+                                                                                <c:ltgreen>バンダラーカ<n>
+                                                                                        が快く石碑の解読を手伝ってくれるそうだ。石碑の所に戻って
+                                                                                        <c:ltgreen>リヤン<n>と話そう。<br><br>
+                                                                                                <hr><br>
+                                                                                            </n>
+                                                                                        </c:ltgreen>
+                                                                                    </n>
+                                                                                </c:ltgreen>
+                                                                            </n>
+                                                                        </c:ltgreen>
+                                                                    </n>
+                                                                </c:ltgreen>
+                                                            </n>
+                                                        </c:ltgreen>
+                                                    </n>
+                                                </c:ltgreen>
+                                            </n>
+                                        </c:ltgreen>
+                                    </n>
+                                </c:ltgreen>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image2"> </span> <span class="color-image4">ハイドネル</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td>Lv制限無し</td>
+                        </tr>
+                    </table><br><br>
+                    <table id="table14" style="text-align: left;">
+                        <colgroup>
+                            <col span="1" width="240">
+                            <col span="1" width="640">
+                        </colgroup>
+                        <tr>
+                            <th colspan="2"><a name="1775">
+                                    <font style="color:#00ff00;">隠された聖なる地</font>
+                                </a></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="color-image17">関連モンスター</span><br>
+                                <hr class="quest-hr"><span class="color-image2"><a
+                                        href="https://sokomin.github.io/map/map_viewer.html?map_id=1093">ウモスクェグマイヤー北東部</a></span>
+                                <span class="color-image1">ダークライダー</span><br><span class="color-image2"><a
+                                        href="https://sokomin.github.io/map/map_viewer.html?map_id=1093">ウモスクェグマイヤー北東部</a></span>
+                                <span class="color-image1">サンセットライダ</span><br><br><span
+                                    class="color-image17">進行状況</span><br>
+                                <hr class="quest-hr">闇のオーラ (n)/100<br><br><span class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">闇の神獣を狩って<c:ltgreen>リヤン<n>
+                                        からもらった魔石を闇のオーラでいっぱいにすると、石碑の後ろに隠された遺跡を見つけることができるという。<br><br>
+                                        <hr><br><span class="color-image17">関連NPC</span><br>
+                                        <hr class="quest-hr"><span class="color-image2">ウモスクェグマイヤー南西部</span> <span
+                                            class="color-image4">リヤン
+                                            </span><br><br><span class="color-image17">クエスト情報</span><br>
+                                        <hr class="quest-hr">魔石を闇のオーラでいっぱいにした。<c:ltgreen>リヤン<n>の所に戻ろう。<br><br>
+                                                <hr><br><span class="color-image17">関連NPC</span><br>
+                                                <hr class="quest-hr"><span class="color-image2">ウモスクェグマイヤー南西部</span> <span
+                                                    class="color-image4">リヤン </span><br><br><span
+                                                    class="color-image17">クエスト情報</span><br>
+                                                <hr class="quest-hr">苦悩の盃への道が開かれた。入って確認してみよう。<br><br>
+                                                <hr><br>
+                                            </n>
+                                        </c:ltgreen>
+                                    </n>
+                                </c:ltgreen>
+                            </td>
+                        </tr>
+                        <tr></tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td>Lv 1675～9999</td>
+                        </tr>
+                    </table><br><br>
+                    <table id="table14" style="text-align: left;">
+                        <colgroup>
+                            <col span="1" width="240">
+                            <col span="1" width="640">
+                        </colgroup>
+                        <tr>
+                            <th colspan="2"><a name="1776">
+                                    <font style="color:#00ff00;">失踪した司祭達</font>
+                                </a></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="color-image17">関連NPC</span><br>
+                                <hr class="quest-hr"><span class="color-image2">ウモスクェグマイヤー南西部</span> <span
+                                    class="color-image4">ハイドネル
+                                    </span><br><br><span class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">
+                                <c:ltgreen>リヤン<n>の考えが正しいか確認するためには<span
+                                            class="color-image15">ウモスクェグマイヤー南西部</span>を調べる必要がある。
+                                        <c:ltgreen>ザイル<n>と会った所に行って状況を確認してみよう。<br><br>
+                                                <hr><br><span class="color-image17">関連アイテム</span><br>
+                                                <hr class="quest-hr"><span class="color-image2">ウモスクェグマイヤー南西部</span> (
+                                                230,14) <span class="color-image1">追跡地点</span><br><br><span
+                                                    class="color-image17">クエスト情報</span><br>
+                                                <hr class="quest-hr">
+                                                <c:ltgreen>ザイル<n>と聖騎士団は連れて行かれた痕跡だけ残して消えてしまった。<span
+                                                            class="color-image15">ウモスクェグマイヤー南西部</span>に行って彼らが無事なのか確認してみよう。<br><br>
+                                                        <hr><br><span class="color-image17">関連NPC</span><br>
+                                                        <hr class="quest-hr"><span class="color-image2">1095</span>
+                                                        <span class="color-image4">リヤン </span><br><br><span
+                                                            class="color-image17">クエスト情報</span><br>
+                                                        <hr class="quest-hr">並み外れて強力な狂信徒を倒した。後から来た<c:ltgreen>リヤン<n>と
+                                                                <c:ltgreen>ハイドネル
+                                                                    <n>に経緯を話そう。<br><br>
+                                                                        <hr><br>
+                                                                    </n>
+                                                                </c:ltgreen>
+                                                            </n>
+                                                        </c:ltgreen>
+                                                    </n>
+                                                </c:ltgreen>
+                                            </n>
+                                        </c:ltgreen>
+                                    </n>
+                                </c:ltgreen>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image2"> </span> <span class="color-image4">ハイドネル</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td>Lv 1675～9999</td>
+                        </tr>
+                    </table><br><br>
+                    <table id="table14" style="text-align: left;">
+                        <colgroup>
+                            <col span="1" width="240">
+                            <col span="1" width="640">
+                        </colgroup>
+                        <tr>
+                            <th colspan="2"><a name="1777">
+                                    <font style="color:#00ff00;">壊滅</font>
+                                </a></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="color-image17">関連アイテム</span><br>
+                                <hr class="quest-hr"><span class="color-image20">1</span> 痕跡 1<br><span
+                                    class="color-image20">2</span> 痕跡 2<br><span class="color-image20">3</span> 痕跡
+                                3<br><br><span class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">
+                                大司祭付近は死体の数が少なすぎる。まだ間に合うかもしれないから、急いで消えてしまった残りの司祭と聖騎士達を探してみよう。<br><br>
+                                <hr><br><span class="color-image17">関連NPC</span><br>
+                                <hr class="quest-hr"><span class="color-image2">1095</span> <span
+                                    class="color-image4">ザイル
+                                    </span><br><br><span class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">大量の血痕が南西側に続いているのを見つけた。消えてしまった司祭達が無事なのか急いで確認してみよう。<br><br>
+                                <hr><br><span class="color-image17">関連NPC</span><br>
+                                <hr class="quest-hr"><span class="color-image2">1095</span> <span
+                                    class="color-image4">ザイル
+                                    </span><br><br><span class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">司祭達は全滅して、<c:ltgreen>ザイル<n>も瀕死状態だ。彼女を助けなければならない。<br><br>
+                                        <hr><br><span class="color-image17">関連NPC</span><br>
+                                        <hr class="quest-hr"><span class="color-image2">1095</span> <span
+                                            class="color-image4">異邦人
+                                            </span><br><br><span class="color-image17">クエスト情報</span><br>
+                                        <hr class="quest-hr">異邦人が呼び寄せたモンスターを倒した。急いで<c:ltgreen>ザイル<n>を連れてここから出よう。<br><br>
+                                                <hr><br>
+                                            </n>
+                                        </c:ltgreen>
+                                    </n>
+                                </c:ltgreen>
+                            </td>
+                        </tr>
+                        <tr></tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td>Lv 1675～9999</td>
+                        </tr>
+                    </table><br><br>
+                    <table id="table14" style="text-align: left;">
+                        <colgroup>
+                            <col span="1" width="240">
+                            <col span="1" width="640">
+                        </colgroup>
+                        <tr>
+                            <th colspan="2"><a name="1778">
+                                    <font style="color:#00ff00;">盗まれた聖物</font>
+                                </a></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="color-image17">関連NPC</span><br>
+                                <hr class="quest-hr"><span class="color-image2">ウモスクェグマイヤー北東部</span> <span
+                                    class="color-image4">ザイル
+                                    </span><br><br><span class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">気が付くとセルーテに来ている。一体どうなったのか<c:ltgreen>ザイル<n>に聞いてみよう。<br><br>
+                                        <hr><br><span class="color-image17">関連NPC</span><br>
+                                        <hr class="quest-hr"><span class="color-image2">ウモスクェグマイヤー北東部</span> <span
+                                            class="color-image4">リヤン
+                                            </span><br><br><span class="color-image17">クエスト情報</span><br>
+                                        <hr class="quest-hr">
+                                        <c:ltgreen>リヤン<n>の所に行って今までの事を整理してみよう。<br><br>
+                                                <hr><br>
+                                            </n>
+                                        </c:ltgreen>
+                                    </n>
+                                </c:ltgreen>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image2"> </span> <span class="color-image4">ザイル</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td>Lv 1675～9999</td>
+                        </tr>
+                    </table><br><br>
+                    <table id="table14" style="text-align: left;">
+                        <colgroup>
+                            <col span="1" width="240">
+                            <col span="1" width="640">
+                        </colgroup>
+                        <tr>
+                            <th colspan="2"><a name="1779">
+                                    <font style="color:#00ff00;">苦悩と激動</font>
+                                </a></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="color-image17">関連NPC</span><br>
+                                <hr class="quest-hr"><span class="color-image2">ウモスクェグマイヤー北東部</span> <span
+                                    class="color-image4">リヤン
+                                    </span><br><br><span class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">やるべきことは決まった。では、具体的に何をするか話し合ってみよう。<br><br>
+                                <hr><br><span class="color-image17">関連アイテム</span><br>
+                                <hr class="quest-hr"><span class="color-image20">1</span> 壊滅の痕跡 1<br><span
+                                    class="color-image20">2</span> 壊滅の痕跡 2<br><span class="color-image20">3</span> 壊滅の痕跡
+                                3<br><br><span class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">まずは、何かが残っているかもしれないから、現場をもう一度訪ねることにした。<span
+                                    class="color-image15">ウモスクェグマイヤー南西部</span>から異邦人と戦った場所に行こう。<br><br>
+                                <hr><br><span class="color-image17">関連NPC</span><br>
+                                <hr class="quest-hr"><span class="color-image2">1095</span> <span
+                                    class="color-image4">リヤン
+                                    </span><br><br><span class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">手がかりを探したが、特に見つからなかった。<c:ltgreen>リヤン<n>に何か方法を見つけたか聞いてみよう。<br><br>
+                                        <hr><br><span class="color-image17">関連NPC</span><br>
+                                        <hr class="quest-hr"><span class="color-image2">1095</span> <span
+                                            class="color-image4">ザイル
+                                            </span><br><br><span class="color-image17">クエスト情報</span><br>
+                                        <hr class="quest-hr">
+                                        <c:ltgreen>ザイル<n>と司祭達が見つけたという石碑の前に行ってみよう。<br><br>
+                                                <hr><br>
+                                            </n>
+                                        </c:ltgreen>
+                                    </n>
+                                </c:ltgreen>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image2"> </span> <span class="color-image4">リヤン</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td>Lv 1675～9999</td>
+                        </tr>
+                    </table><br><br>
+                    <table id="table14" style="text-align: left;">
+                        <colgroup>
+                            <col span="1" width="240">
+                            <col span="1" width="640">
+                        </colgroup>
+                        <tr>
+                            <th colspan="2"><a name="1780">
+                                    <font style="color:#00ff00;">原始の輪</font>
+                                </a></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="color-image17">関連NPC</span><br>
+                                <hr class="quest-hr"><span class="color-image2">1095</span> <span
+                                    class="color-image4">リヤン
+                                    </span><br><br><span class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">
+                                <c:ltgreen>リヤン<n>がウモスクェグマイヤーの構造を把握したみたいだ。もう一度話しかけて次にやる事を聞いてみよう。<br><br>
+                                        <hr><br><span class="color-image17">関連モンスター</span><br>
+                                        <hr class="quest-hr"><span class="color-image2"><a
+                                                href="https://sokomin.github.io/map/map_viewer.html?map_id=1093">ウモスクェグマイヤー北東部</a></span>
+                                        <span class="color-image1">ダークライダー</span><br><span class="color-image2"><a
+                                                href="https://sokomin.github.io/map/map_viewer.html?map_id=1093">ウモスクェグマイヤー北東部</a></span>
+                                        <span class="color-image1">サンセットライダ</span><br><span class="color-image2"><a
+                                                href="https://sokomin.github.io/map/map_viewer.html?map_id=1093">ウモスクェグマイヤー北東部</a></span>
+                                        <span class="color-image1">ダークレイ</span><br><span class="color-image2"><a
+                                                href="https://sokomin.github.io/map/map_viewer.html?map_id=1093">ウモスクェグマイヤー北東部</a></span>
+                                        <span class="color-image1">バイパー</span><br><span class="color-image2"><a
+                                                href="https://sokomin.github.io/map/map_viewer.html?map_id=1093">ウモスクェグマイヤー北東部</a></span>
+                                        <span class="color-image1">精鋭狂信徒</span><br><span class="color-image2"><a
+                                                href="https://sokomin.github.io/map/map_viewer.html?map_id=1093">ウモスクェグマイヤー北東部</a></span>
+                                        <span class="color-image1">狂信徒司祭</span><br><br><span
+                                            class="color-image17">進行状況</span><br>
+                                        <hr class="quest-hr">闇のオーラ (n)/500<br><br><span
+                                            class="color-image17">クエスト情報</span><br>
+                                        <hr class="quest-hr">苦悩の盃を見つけた時みたいに闇のオーラを持っているモンスターを狩ると、<span
+                                            class="color-image13">空の大容量水晶</span>に集めたオーラで苦悩の盃をいっぱいにできるという。<br><br>
+                                        <hr><br><span class="color-image17">関連アイテム</span><br>
+                                        <hr class="quest-hr"><span class="color-image2">ウモスクェグマイヤー北東部</span> (290,9)
+                                        <span class="color-image1">苦悩の盃</span><br><br><span
+                                            class="color-image17">クエスト情報</span><br>
+                                        <hr class="quest-hr">必要なオーラを全部集めた。苦悩の盃をオーラでいっぱいにしよう。<br><br>
+                                        <hr><br><span class="color-image17">関連NPC</span><br>
+                                        <hr class="quest-hr"><span class="color-image2">1095</span> <span
+                                            class="color-image4">ザイル
+                                            </span><br><br><span class="color-image17">クエスト情報</span><br>
+                                        <hr class="quest-hr">苦悩の盃をいっぱいにできたから、戻って<c:ltgreen>ザイル<n>
+                                                が激動の盃もいっぱいにできたか確認してみよう。<br><br>
+                                                <hr><br><span class="color-image17">関連アイテム</span><br>
+                                                <hr class="quest-hr"><span class="color-image2">ウモスクェグマイヤー南西部</span>
+                                                (104,132) <span class="color-image1">原始の輪入口</span><br><br><span
+                                                    class="color-image17">クエスト情報</span><br>
+                                                <hr class="quest-hr">
+                                                <c:ltgreen>リヤン<n>が教えてくれた所に行って原始の輪に入ってみよう。<br><br>
+                                                        <hr><br>
+                                                    </n>
+                                                </c:ltgreen>
+                                            </n>
+                                        </c:ltgreen>
+                                    </n>
+                                </c:ltgreen>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image2"> </span> <span class="color-image4">リヤン</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td>Lv 1675～9999</td>
+                        </tr>
+                    </table><br><br>
+                    <table id="table14" style="text-align: left;">
+                        <colgroup>
+                            <col span="1" width="240">
+                            <col span="1" width="640">
+                        </colgroup>
+                        <tr>
+                            <th colspan="2"><a name="1781">
+                                    <font style="color:#00ff00;">闇の革命</font>
+                                </a></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><br><span class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">隠された遺跡に入った。周辺を調べてみよう。<br><br>
+                                <hr><br><br><span class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">遺跡の名前は<span
+                                    class="color-image15">原始の輪</span>という。遺跡を突破できる方法を見つけ出して異邦人を追跡しよう。<br><br>
+                                <hr><br><br><span class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr"><span
+                                    class="color-image15">原始の輪</span>の中心部に入った。前のピラミッドに登ってみよう。<br><br>
+                                <hr><br><br><span class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">ピラミッドの一部だと思っていた部分が攻撃してくる！やられる前に破壊しよう。<br><br>
+                                <hr><br><br><span class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr"><span class="color-image11">ダンテー</span>が残して行った古代の砲塔を破壊した。ひとまず
+                                <c:ltgreen>ザイル<n>
+                                        に頼んで街に戻ろう。<br><br>
+                                        <hr><br><span class="color-image17">関連NPC</span><br>
+                                        <hr class="quest-hr"><span class="color-image2">ウモスクェグマイヤー北東部</span> <span
+                                            class="color-image4">ハイドネル
+                                            </span><br><br><span class="color-image17">クエスト情報</span><br>
+                                        <hr class="quest-hr">とりあえず何とかなったが、今回は本当に危なかった。これからどうするか仲間と話し合ってみよう。<br><br>
+                                        <hr><br>
+                                    </n>
+                                </c:ltgreen>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image2"> </span> <span class="color-image4">リヤン</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td>Lv 1675～9999</td>
+                        </tr>
+                    </table><br><br>
+                </div>
+                <br>
+                <br>
+                <div>
+                    <h4>ウモス石像用クエ</h4>
+                    <table id="table14" style="text-align: left;">
+                        <colgroup>
+                            <col span="1" width="240">
+                            <col span="1" width="640">
+                        </colgroup>
+                        <tr>
+                            <th colspan="2"><a name="1782">
+                                    <font style="color:#00ff00;">原始の回復&lt;狩り&gt</font>
+                                </a></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span class="color-image17">関連NPC</span><br>
+                                <hr class="quest-hr"><span class="color-image2"><a
+                                        href="https://sokomin.github.io/map/map_viewer.html?map_id=1092">原始要塞
+                                        セルーテ</a></span> <span class="color-image4">原始の末裔カナハ</span><br><span
+                                    class="color-image2">ウモスクェグマイヤー北東部</span> <span class="color-image1">汚染スライム</span><br><span
+                                    class="color-image2">ウモスクェグマイヤー北東部</span> <span class="color-image1">感染スライム</span><br><span
+                                    class="color-image2">ウモスクェグマイヤー北東部</span> <span class="color-image1">精鋭狂信徒</span><br><span
+                                    class="color-image2">ウモスクェグマイヤー北東部</span> <span class="color-image1">狂信徒教主</span><br><span
+                                    class="color-image2">ウモスクェグマイヤー北東部</span> <span class="color-image1">沼地コブラ</span><br><span
+                                    class="color-image2">ウモスクェグマイヤー北東部</span> <span class="color-image1">バイパー</span><br><span
+                                    class="color-image2">ウモスクェグマイヤー北東部</span> <span class="color-image1">汚染エイ</span><br><span
+                                    class="color-image2">ウモスクェグマイヤー北東部</span> <span class="color-image1">ダークレイ</span><br><span
+                                    class="color-image2">ウモスクェグマイヤー北東部</span> <span class="color-image1">沼地クロコダイル</span><br><span
+                                    class="color-image2">ウモスクェグマイヤー北東部</span> <span class="color-image1">エリゲイター</span><br><span
+                                    class="color-image2">ウモスクェグマイヤー北東部</span> <span class="color-image1">ダークライダー</span><br><span
+                                    class="color-image2">ウモスクェグマイヤー北東部</span> <span
+                                    class="color-image1">サンセットライダ</span><br><br><span
+                                    class="color-image17">進行状況</span><br>
+                                <hr class="quest-hr">モンスター (n) / 200体退治<br><br><span
+                                    class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">ウモスクェグマイヤーのモンスター200体を退治して戻ろう。<br><br>
+                                <hr><br><span class="color-image17">関連NPC</span><br>
+                                <hr class="quest-hr"><span class="color-image2"><a
+                                        href="https://sokomin.github.io/map/map_viewer.html?map_id=1092">原始要塞
+                                        セルーテ</a></span> <span class="color-image4">原始の末裔カナハ</span><br><br><span
+                                    class="color-image17">クエスト情報</span><br>
+                                <hr class="quest-hr">ウモスクェグマイヤーのモンスターを片付けた。カナハの所に戻ろう。<br><br>
+                                <hr><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image2"> </span> <span class="color-image4">原始の末裔カナハ</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td>Lv 0～9999</td>
+                        </tr>
+                    </table>
+                    <table id="table14" style="text-align:left">
+                        <colgroup>
+                            <col span="1" width="240">
+                            <col span="1" width="640">
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th>報酬</th>
+                                <td><span class="color-image20"><b>石像ポイント+2</b></span>(経験値等の報酬無し)<br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center"><span class="color-image2">ウモスクェグマイヤー</span></td>
+                                <td>対象のモンスター200匹を狩る。<br>
+                                    PVPエリアのモンスターは対象外。<br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center"><span class="color-image2">原始要塞セルーテ</span></td>
+                                <td><span class="color-image4">原始の末裔カナハ</span>と話す。<br>
+                                    <span class="color-image1">※1日1回進行可能</span><br>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br><br>
+                    <table id="table14" style="text-align: left;">
+                        <colgroup>
+                            <col span="1" width="240">
+                            <col span="1" width="640">
+                        </colgroup>
+                        <tr>
+                            <th colspan="2"><a name="1783">
+                                    <font style="color:#00ff00;">原始の回復&lt;財貨&gt</font>
+                                </a></th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                        </tr>
+                        <tr>
+                            <th>受諾場所</th>
+                            <td><span class="color-image2"> </span> <span class="color-image4">原始の末裔パルホ</span></td>
+                        </tr>
+                        <tr>
+                            <th>受諾条件</th>
+                            <td>Lv制限無し</td>
+                        </tr>
+                    </table>
+                    <table id="table14" style="text-align:left">
+                        <colgroup>
+                            <col span="1" width="240">
+                            <col span="1" width="640">
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th>報酬</th>
+                                <td><span class="color-image20"><b>石像ポイント増加</b></span>(経験値等の報酬無し)<br>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center"><span class="color-image2">原始要塞セルーテ</span></td>
+                                <td><span class="color-image4">原始の末裔パルボ</span>と話す。<br>
+                                    選択肢の中から貢献できるアイテムを渡すことで完了。<br>
+                                    鯖全体で5万ポイント集まるとそれ以上貢献することはできません。<br>
+                                    上位3名はセルーテ前の石像広場にて名前・キャラ名付きで登壇されます。<br>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br><br>
+                    <br><br>
+
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+
+            </div>
+            <footer class="android-footer mdl-mega-footer">
+                <font color="red">
+                    当サイトで利用している画像及びデータは、L&K Co., Ltd.に帰属します。<br>
+                    許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                </font>
+                © L&K Co., Ltd. All Rights Reserved.<br>
+            </footer>
+            <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+        </div>
+        <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+    </div>
+</body>
+
+</html>
