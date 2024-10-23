@@ -24,6 +24,7 @@ const chara_code = {
     22: { name: "マスケッティア", },
     23: { name: "アルケミスト", },
     24: { name: "キャプテン", },
+    25: { name: "キャノニア", },
 };
 
 const item_type_text = {
