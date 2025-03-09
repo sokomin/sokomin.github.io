@@ -51,7 +51,7 @@ function createAreaSpot(area) {
         }</a></p>`;
       });
     } else {
-      html += `<p>ダンジョンはありません。</p>`;
+      html += `<p>隣接しているダンジョンはありません。</p>`;
     }
 
     infoPanel.innerHTML = html;
