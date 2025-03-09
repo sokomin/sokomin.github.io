@@ -37,11 +37,13 @@ function createAreaSpot(area) {
   // クリック時に infoPanel を表示
   spot.addEventListener("click", (e) => {
     // エリア情報を組み立て
-    let html = `<h6>${area.name}</h6>`;
-    // エリア本体へのリンク
-    html += `<p><a href="${
+    let html = `<h6><a href="${
       BASE_URL + area.mapId
-    }" target="_blank">エリアの詳細へ</a></p>`;
+    }" target="_blank">${area.name}</a></h6>`;
+    // エリア本体へのリンク
+    // html += `<p><a href="${
+    //   BASE_URL + area.mapId
+    // }" target="_blank">エリアの詳細へ</a></p>`;
 
     // ダンジョンリスト
     if (area.dungeons && area.dungeons.length > 0) {
