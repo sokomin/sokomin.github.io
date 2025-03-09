@@ -104,7 +104,7 @@ function createTooltipSpot(item) {
   // などと記述すると可視化できます。透明にしたい場合は不要。
   spot.style.width = "24px";
   spot.style.height = "24px";
-  //   spot.style.background = "rgba(0, 255, 0, 0.5)";
+    // spot.style.background = "rgba(0, 255, 0, 0.5)";
   spot.style.background = "rgba(0, 255, 0, 0.01)";
   spot.style.cursor = "default";
 
