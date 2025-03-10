@@ -181,6 +181,9 @@ NameList = {
     1106: { name: "ミラーダンジョンカイグラン峡谷深部 1-1", img: "[1099]S27.rmd.png", black: "[1099]S27.rmd.png", lvmin: 1925, lvmax: 2000 },
     1107: { name: "ミラーダンジョンカイグラン峡谷深部 1-2", img: "[1099]S27.rmd.png", black: "[1099]S27.rmd.png", lvmin: 1925, lvmax: 2000 },
     1108: { name: "ミラーダンジョンカイグラン峡谷深部 1-3", img: "[1099]S27.rmd.png", black: "[1099]S27.rmd.png", lvmin: 1925, lvmax: 2000 },
+    1119: { name: "未確認探検地南部", img: "[1119]UnchartedRegionS.rmd.png", black: "[1119]UnchartedRegionS.rmd.png", lvmin: 2000, lvmax: 2010 },
+    1120: { name: "未確認探検地北部", img: "[1120]UnchartedRegionN.rmd.png", black: "[1120]UnchartedRegionN.rmd.png", lvmin: 2010, lvmax: 2020 },
+    1121: { name: "未確認探検地飼育場", img: "[1121]UnchartedRegionE.rmd.png", black: "[1121]UnchartedRegionE.rmd.png", lvmin: 2020, lvmax: 2030 },
 
     1: { name: "中央プラトン街道 / グレートフォレスト入口付近", img: "[001]G07.rmd.png", black: "[000]T01.rmd.png", lvmin: 5, lvmax: 30 },
     2: { name: "狼の巣窟", img: "[002]G07_C01_B01.rmd.png", black: "[000]T01.rmd.png", lvmin: 17, lvmax: 25 },

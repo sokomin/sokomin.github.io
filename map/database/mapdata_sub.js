@@ -895,12 +895,15 @@ var MapSubInfoList = {
     1110: {"name": "ミラーダンジョン寂しい群島 1-2",mc2: 4,mc: '-',req_map_lv: 7,dfi: 50,dwa: 50,dwi: 50,dea: 50,dli: 50,dda: 50,st_down: 25,lbd: 70,non_resume: false },
     1111: {"name": "ミラーダンジョンウエストスワンプ大空洞 B1  1-1",mc2: 9,mc: '-',req_map_lv: 7,dfi: 50,dwa: 50,dwi: 50,dea: 50,dli: 50,dda: 50,st_down: 20,lbd: 70,non_resume: false },
     1112: {"name": "ミラーダンジョンウエストスワンプ大空洞 B1  1-2",mc2: 9,mc: '-',req_map_lv: 7,dfi: 50,dwa: 50,dwi: 50,dea: 50,dli: 50,dda: 50,st_down: 20,lbd: 70,non_resume: false },
-    1113: { name: "ミラーダンジョンヤティカヌ月の出森林 1-4",mc2: 7,mc: 'A',req_map_lv: 8,dfi: 70,dwa: 70,dwi: 70,dea: 70,dli: 70,dda: 70,st_down: 30,lbd: 70,non_resume: true },
-    1114: { name: "ミラーダンジョンヤティカヌ月の出森林 1-5",mc2: 7,mc: 'A',req_map_lv: 8,dfi: 70,dwa: 70,dwi: 70,dea: 70,dli: 70,dda: 70,st_down: 30,lbd: 70,non_resume: true },
-    1115: { name: "ミラーダンジョンヤティカヌ日の出森林 1-4",mc2: 7,mc: 'A',req_map_lv: 8,dfi: 80,dwa: 80,dwi: 80,dea: 80,dli: 80,dda: 80,st_down: 30,lbd: 50,non_resume: true },
-    1116: { name: "ミラーダンジョンヤティカヌ日の出森林 1-5",mc2: 7,mc: 'A',req_map_lv: 8,dfi: 80,dwa: 80,dwi: 80,dea: 80,dli: 80,dda: 80,st_down: 30,lbd: 50,non_resume: true },
-    1117: { name: "ミラーダンジョンヤティカヌ星降る森林 1-4",mc2: 7,mc: 'A',req_map_lv: 8,dfi: 85,dwa: 85,dwi: 85,dea: 85,dli: 85,dda: 85,st_down: 30,lbd: 50,non_resume: true },
-    1118: { name: "ミラーダンジョンヤティカヌ星降る森林 1-5",mc2: 7,mc: 'A',req_map_lv: 8,dfi: 85,dwa: 85,dwi: 85,dea: 85,dli: 85,dda: 85,st_down: 30,lbd: 50,non_resume: true },
+    1113: { name: "ミラーダンジョンヤティカヌ月の出森林 1-4",mc2: 7,mc: '-',req_map_lv: 8,dfi: 70,dwa: 70,dwi: 70,dea: 70,dli: 70,dda: 70,st_down: 30,lbd: 70,non_resume: true },
+    1114: { name: "ミラーダンジョンヤティカヌ月の出森林 1-5",mc2: 7,mc: '-',req_map_lv: 8,dfi: 70,dwa: 70,dwi: 70,dea: 70,dli: 70,dda: 70,st_down: 30,lbd: 70,non_resume: true },
+    1115: { name: "ミラーダンジョンヤティカヌ日の出森林 1-4",mc2: 7,mc: '-',req_map_lv: 8,dfi: 80,dwa: 80,dwi: 80,dea: 80,dli: 80,dda: 80,st_down: 30,lbd: 50,non_resume: true },
+    1116: { name: "ミラーダンジョンヤティカヌ日の出森林 1-5",mc2: 7,mc: '-',req_map_lv: 8,dfi: 80,dwa: 80,dwi: 80,dea: 80,dli: 80,dda: 80,st_down: 30,lbd: 50,non_resume: true },
+    1117: { name: "ミラーダンジョンヤティカヌ星降る森林 1-4",mc2: 7,mc: '-',req_map_lv: 8,dfi: 85,dwa: 85,dwi: 85,dea: 85,dli: 85,dda: 85,st_down: 30,lbd: 50,non_resume: true },
+    1118: { name: "ミラーダンジョンヤティカヌ星降る森林 1-5",mc2: 7,mc: '-',req_map_lv: 8,dfi: 85,dwa: 85,dwi: 85,dea: 85,dli: 85,dda: 85,st_down: 30,lbd: 50,non_resume: true },
+    1119: {"name": "未確認探検地南部", "mc2": 3, "mc": "-", "req_map_lv": 10, "dfi": 100, "dwa": 100, "dwi": 100, "dea": 100, "dli": 100, "dda": 100, "st_down": 40, "lbd": 50, "non_resume": true},
+    1120: {"name": "未確認探検地北部", "mc2": 3, "mc": "-", "req_map_lv": 10, "dfi": 100, "dwa": 100, "dwi": 100, "dea": 100, "dli": 100, "dda": 100, "st_down": 40, "lbd": 50, "non_resume": true},
+    1121: {"name": "未確認探検地飼育場", "mc2": 3, "mc": "-", "req_map_lv": 10, "dfi": 100, "dwa": 100, "dwi": 100, "dea": 100, "dli": 100, "dda": 100, "st_down": 40, "lbd": 50, "non_resume": true},
     9999: { name: 'そこみん王国',mc2: 40, mc: 'S', req_map_lv: 4, dfi: 40, dwa: 40, dwi: 40, dea: 40, dli: 40, dda: 40, st_down: 40, lbd: 40, non_resume: true, mc2: 1 }
 }
 
