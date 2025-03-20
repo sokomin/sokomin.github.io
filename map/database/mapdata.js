@@ -1232,6 +1232,8 @@ function datalist(num) {
         // FIXME  リアル座標出力への対応を、いつか
         ObjX = [];
         ObjY = [];
+        ObjrealX = [];
+        ObjrealY = [];
         ObjT = [];
         ObjN = [];
         MobMapName = [];
@@ -1239,6 +1241,8 @@ function datalist(num) {
             var data = MobData[num][i];
             ObjX.push(data.posx);
             ObjY.push(data.posy);
+            ObjrealX.push(data.real_posx);
+            ObjrealY.push(data.real_posy);
             ObjT.push(data.repop);
             ObjN.push(data.inid);
             if (data.name && data.name != "none") {

@@ -148,7 +148,7 @@ function getMobDB() {
                         dot_txt += "\t<div class=\"Obj Pb a" + (ObjN[i]) + "\" style=\"top:" + (ObjY[i] - 1) + "px; left:" + (ObjX[i] + map_padding -1) + "px;\" title=\"" + MobMapName[i] + ">" + mticon + "</div>\n";
                     } else {
                         dot_txt += "\t<div class=\"Obj Pa a" + (ObjN[i]) + "\" style=\"top:" + (ObjY[i]) + "px; left:" + (ObjX[i] + map_padding) + "px;\" title=\"" + (ObjT[i]) + "\">" + (ObjN[i]) + "</div>\n";
-                        dot_txt += "\t<div class=\"Obj Pb a" + (ObjN[i]) + "\" style=\"top:" + (ObjY[i] - 1) + "px; left:" + (ObjX[i] + map_padding -1) + "px;\" title=\"" + MobMapName[i] + "\nリポップ時間：" + (ObjT[i]) + "秒\">" + (ObjN[i]) + "</div>\n";
+                        dot_txt += "\t<div class=\"Obj Pb a" + (ObjN[i]) + "\" style=\"top:" + (ObjY[i] - 1) + "px; left:" + (ObjX[i] + map_padding -1) + "px;\" title=\"" + MobMapName[i] + "\nリポップ時間：" + (ObjT[i]) + "秒\n(" + (parseInt(ObjrealX[i], 10)) + "," + (parseInt(ObjrealY[i], 10)) + ")\">" + (ObjN[i]) + "</div>\n";
                     }
                 }
                 map_dot.innerHTML = dot_txt;
