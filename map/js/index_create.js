@@ -10,9 +10,26 @@ map_c = getParam('map_c') ? getParam('map_c') : "";
 map_c2 = getParam('map_c2') ? getParam('map_c2') : "";
 map_c3 = getParam('map_c3') ? getParam('map_c3') : "";
 
+// 既存の map_c, map_c2, map_c3 を取得するあたりの直後に追加
+var levelMin = getParam('level_min') ? Number(getParam('level_min')) : 0;
+var levelMax = getParam('level_max') ? Number(getParam('level_max')) : 9999;
+
 for (key in NameList) {
     var Obj = NameList[key];
     var SubInfoObj = MapSubInfoList[key];
+
+    // —— ここでレベル帯フィルタ —— 
+    var LvMin = Obj.lvmin || 0;
+    var LvMax = Obj.lvmax || 0;
+    // 「入力範囲と重複しない」場合はスキップ（重複があるマップのみ表示）
+    if (LvMax < levelMin || LvMin > levelMax) {
+        continue;
+    }
+    // 最小レベルが0のマップはレベル帯が表示されないのでレベルフィルタ発動時には確定で非表示
+    if (LvMin == 0 && levelMin > 0) {
+        continue;
+    }
+
     if (map_c) {
         if (SubInfoObj && SubInfoObj.mc &&SubInfoObj.mc === map_c) {
             //マップでフィルタかけたい時
