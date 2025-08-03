@@ -308,7 +308,7 @@ NameList = {
     114: { name: "次元のオート地下監獄 B4", img: "[114]G16_D02_B04.rmd.png", black: "[114]G16_D02_B04.rmd.png", lvmin: 135, lvmax: 165, plemiun: true },
     // 114: { name: "オート地下監獄　Ｂ４", img: "[114]G16_D02_B04.rmd.png", black: "[000]T01.rmd.png", lvmin: 60, lvmax: 90 },
     // 115: { name: "時間の寺院", img: "[115]G26_D01.rmd.png", black: "[000]T01.rmd.png", lvmin: 95, lvmax: 140, plemiun: true },
-    115: { name: "次元の時間の寺院", img: "[115]G26_D01.rmd.png", black: "[115]G26_D01.png", lvmin: 185, lvmax: 215 },
+    115: { name: "次元の時間の寺院", img: "[115]G26_D01.rmd.png", black: "[115]G26_D01.png", lvmin: 185, lvmax: 215, plemiun: true },
     116: { name: "ハノブ銀行", img: "[116]T06_Bank01.rmd.png", black: "[000]T01.rmd.png", lvmin: 0, lvmax: 0 },
     117: { name: "アウグスタ銀行", img: "[117]T03_Bank01.rmd.png", black: "[000]T01.rmd.png", lvmin: 0, lvmax: 0 },
     118: { name: "ブリッジヘッド銀行", img: "[118]T04_Bank01.rmd.png", black: "[000]T01.rmd.png", lvmin: 0, lvmax: 0},
