@@ -154,6 +154,7 @@
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
             overflow: clip;
+            padding: 3px;
         }
 
         .card header {
@@ -403,7 +404,11 @@
                 <h1>フェーズストーン シミュレータ</h1>
                 <br>
                 <br>
-
+                <a href="#5">シミュレータ</a><br>
+                <a href="#10">各段階に到達するまでの素材期待値（累計）</a><br>
+                <a href="#15">費用シミュレーター</a><br>
+                <br>
+                <br>
                 <div class="container">
                     <section class="grid grid-3" id="cards"><!-- cards inject --></section>
 
@@ -438,7 +443,7 @@
                     <br>
                     <br>
                     <br>
-                    <a name="99"></a>
+                    <a name="5"></a>
                     <h4>各段階の成功確率早見表</h4>
                     <br>
                     <div id="success-table"></div>
@@ -454,7 +459,7 @@
                                 <th>修復したタティリスの出土品</th>
                                 <th>神秘石</th>
                                 <th>結晶石</th>
-                                <th>不滅石</th>
+                                <th>炎の石</th>
                                 <th>位相錬成一般触媒</th>
                             </tr>
                         </thead>
@@ -474,12 +479,79 @@
                     <br>
                     <br>
                     <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+
+                    <a name="10"></a>
+                    <h2>各段階に到達するまでの素材期待値（累計）</h2>
+                    <h3 style="margin:8px 0;">(1) 一般のみ</h3>
+                    <div id="ev-table-1"></div>
+
+                    <h3 style="margin:16px 0 8px;">(2) 高級のみ</h3>
+                    <div id="ev-table-2"></div>
+
+                    <h3 style="margin:16px 0 8px;">(3) 高級＋スクロール</h3>
+                    <div id="ev-table-3"></div>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <h2>複数パターンの組み合わせ</h2>
+                    実際の立ち回りで期待値を計算するために混合戦略での期待値を比較（累計・段階1～15）
+                    <h3 style="margin:8px 0;">パターン１</h3>
+                    1–6(一般のみ) / 7–10(高級のみ) / 11–15(高級＋スクロール)<br>
+                    <div id="ev-mix-table-1"></div>
+                    <br>
+
+                    <h3 style="margin:16px 0 8px;">パターン２</h3>
+                    1–6(一般のみ) / 7–15(高級＋スクロール)<br>
+                    <div id="ev-mix-table-2"></div>
+                    <br>
+                    <br>
+                    <a name="15"></a>
+                    <div class="card" id="evsim-card">
+                        <h2>費用シミュレーター（パック購入＆一般触媒の相場）</h2>
+
+                        <div
+                            style="display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-bottom:12px;">
+                            <label>パック価格（円）
+                                <input id="evsim-pack-price" type="number" value="30000" style="width:100%;">
+                            </label>
+                            <label>パック内 高級触媒 数
+                                <input id="evsim-pack-k" type="number" value="120" style="width:100%;">
+                            </label>
+                            <label>パック内 スクロール 数
+                                <input id="evsim-pack-s" type="number" value="360" style="width:100%;">
+                            </label>
+                            <label>一般触媒 1個あたり価格（本）
+                                <input id="evsim-general-gold" type="number" value="4" style="width:100%;">
+                            </label>
+                            <!-- <label>ゴールド換算（任意）：1億G あたりの円
+                                <input id="evsim-gold-per-1oku" type="number" value="0" style="width:100%;"
+                                    placeholder="未入力なら円換算なし">
+                            </label> -->
+                        </div>
+
+                        <div class="actions">
+                            <button id="evsim-run">期待値を再計算</button>
+                        </div>
+
+                        <h5 style="margin:16px 0 8px;">パターン1（＝戦略A）</h5>
+                        <div id="evsim-out-a"></div>
+
+                        <h5 style="margin:16px 0 8px;">パターン2（＝戦略B）</h5>
+                        <div id="evsim-out-b"></div>
+                    </div>
+                    <br>
+                    <br>
                     <a name="99"></a>
                     <h4>備考</h4>
                     * スキル1～5のコストは <strong>[1,2,4,5,8]</strong> ／ 各フェーズストーンの段階は0～20（1～10: +1、11～20: +5）<br>
                     * ゲーム内での再振りはフロッジストーン(490GEM)を使って行えます。<br>
                     　フロッジストーンは1種類のフェーズストーンのみを再振り。全て再振りするには3つのフロッジストーンが必要です。<br>
-                    * 取引の際に
+                    * 各ストーンが10段階に到達すると次のフェーズストーンに進めます。<br>
                     * ナギ・タニアからブリッジと同じエンチャ水晶を購入可能。<br>
                     * 【位相練成 高級触媒】使用時、追加で使用する補助材料【紅焔のスクロール】を適用でき、錬成成功確率が上昇します。<br>
                     - 段階錬成失敗時、【紅焔のスクロール】を消費した場合に赤いオーラの精粋をチャージして、次回以降の成功確率が増加します。<br>
