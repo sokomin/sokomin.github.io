@@ -102,11 +102,11 @@ function render(){
     const card = document.createElement("div"); card.className = "card";
 
     if (cat.name=="フェーズストーン") {
-      card.innerHTML = `<h2 style="border-left:6px solid rgb(245,158,11);padding-left:10px;">フェーズストーン</h2>`;
+      card.innerHTML = `<h2 style="border-left:6px solid rgb(245,158,11);padding-left:10px;">フェーズストーン　<img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/4d88009434afcb2aa3c27fc9be038ecc00e8b187.10.9.9.3.png" border="0" alt="" name="insertImg" /></h2>`;
     } else if (cat.name=="プレーンストーン") {
-      card.innerHTML = `<h2 style="border-left:6px solid rgb(52,211,153);padding-left:10px;">プレーンストーン</h2>`;
+      card.innerHTML = `<h2 style="border-left:6px solid rgb(52,211,153);padding-left:10px;">プレーンストーン　<img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/70f50a4f1d895b59e2e2494acfe932af9fc713d6.10.9.9.3.png" border="0" alt="" name="insertImg" /></h2>`;
     } else if (cat.name=="ニューラルストーン") {
-      card.innerHTML = `<h2 style="border-left:6px solid rgb(96,165,250);padding-left:10px;">ニューラルストーン</h2>`;
+      card.innerHTML = `<h2 style="border-left:6px solid rgb(96,165,250);padding-left:10px;">ニューラルストーン　<img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/41878f7935af3342a84ad70a41e08d30e3b5e7e9.10.9.9.3.png" border="0" alt="" name="insertImg" /></h2>`;
     } else {
       card.innerHTML = `<h2>${cat.name}</h2>`;
     }
