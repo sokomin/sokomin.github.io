@@ -881,7 +881,7 @@ var MapSubInfoList = {
     "1103": {"name": "ミラーダンジョンウトバウル湖 1-1", "req_map_lv": 10, "dfi": 100, "dwa": 100, "dwi": 100, "dea": 100, "dli": 100, "dda": 100, "st_down": 35, "lbd": 50, "non_resume": true, "mc": "-", "mc2": 3, "mc3": 1},
     "1104": {"name": "ミラーダンジョンウトバウル湖 1-2", "req_map_lv": 10, "dfi": 100, "dwa": 100, "dwi": 100, "dea": 100, "dli": 100, "dda": 100, "st_down": 35, "lbd": 50, "non_resume": true, "mc": "-", "mc2": 3, "mc3": 6},
     "1105": {"name": "ミラーダンジョンウトバウル湖 1-3", "req_map_lv": 10, "dfi": 100, "dwa": 100, "dwi": 100, "dea": 100, "dli": 100, "dda": 100, "st_down": 35, "lbd": 50, "non_resume": true, "mc": "-", "mc2": 3, "mc3": 1},
-    "1106": {"name": "ミラーダンジョンカイグラン峡谷深部 1-1", "req_map_lv": 10, "dfi": 100, "dwa": 100, "dwi": 100, "dea": 100, "dli": 100, "dda": 100, "st_down": 35, "lbd": 50, "non_resume": true, "mc": "-", "mc2": 3, "mc3": 2},
+    "1106": {"name": "ミラーダンジョンカイグラン峡谷深部 1-1", "req_map_lv": 10, "dfi": 100, "dwa": 100, "dwi": 100, "dea": 100, "dli": 100, "dda": 100, "st_down": 35, "lbd": 50, "non_resume": true, "mc": "-", "mc2": 3, "mc3": 5},
     "1107": {"name": "ミラーダンジョンカイグラン峡谷深部 1-2", "req_map_lv": 10, "dfi": 100, "dwa": 100, "dwi": 100, "dea": 100, "dli": 100, "dda": 100, "st_down": 35, "lbd": 50, "non_resume": true, "mc": "-", "mc2": 3, "mc3": 2},
     "1108": {"name": "ミラーダンジョンカイグラン峡谷深部 1-3", "req_map_lv": 10, "dfi": 100, "dwa": 100, "dwi": 100, "dea": 100, "dli": 100, "dda": 100, "st_down": 35, "lbd": 50, "non_resume": true, "mc": "-", "mc2": 3, "mc3": 2},
     "1109": {"name": "ミラーダンジョン寂しい群島 1-1", "req_map_lv": 7, "dfi": 50, "dwa": 50, "dwi": 50, "dea": 50, "dli": 50, "dda": 50, "st_down": 25, "lbd": 70, "non_resume": false, "mc": "-", "mc2": 4, "mc3": 4},
