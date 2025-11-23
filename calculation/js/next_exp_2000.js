@@ -15,11 +15,38 @@
    * @param {number|string} value
    * @returns {string}
    */
-  function formatNumber(value) {
+  function formatEnglishNumber(value) {
     if (value === null || value === undefined || value === "") return "-";
     const num = Number(value);
     if (Number.isNaN(num)) return String(value);
     return num.toLocaleString("ja-JP");
+  }
+
+// 日本式4桁区切り（万・億・兆）＋ 小数切り捨て
+function formatNumber(num) {
+    if (num === null || num === undefined || num === "") return "-";
+    num = Number(num);
+  
+    if (isNaN(num)) return String(num);
+  
+    // 🔻 小数点以下を切り捨て
+    num = Math.floor(num);
+  
+    const units = ["", "万", "億", "兆", "京", "垓"]; // 必要なら追加可
+  
+    let result = "";
+    let unitIndex = 0;
+  
+    while (num > 0) {
+      const part = num % 10000; // 4桁ブロック
+      if (part > 0) {
+        result = part + units[unitIndex] + result;
+      }
+      num = Math.floor(num / 10000);
+      unitIndex++;
+    }
+  
+    return result || "0";
   }
 
   /**
@@ -189,7 +216,7 @@
     setStatus("loading", "CSVデータを読み込み中です…");
 
     // HTMLと同じディレクトリに配置されている想定
-    fetch("./next_exp_2000.csv", { cache: "no-store" })
+    fetch("https://sokomin.github.io/calculation/js/next_exp_2000.csv", { cache: "no-store" })
       .then((response) => {
         if (!response.ok) {
           throw new Error("HTTPエラー: " + response.status);
