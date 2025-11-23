@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=960">
+
+    <title>2000〜2199レベル必要経験値計算機 赤石の民衆</title>
+    <meta name="description" content="RED STONE 2000〜2199レベル帯の必要経験値を確認できる簡易計算機ページです。">
+    <meta name="keywords" content="RED STONE,レッドストーン,経験値,レベル,赤石の民衆">
+
+    <!-- 共通レイアウトと同じ読み込み -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css">
+    <!-- 既存のstyles.cssを利用 -->
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32">
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192">
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png">
+
+    <!-- jQuery（検索ボックス用。計算機本体では使っていません） -->
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href =
+                    "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q="
+                    + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        /* 計算機用のちょっとした見た目調整 */
+        .exp-calc-wrapper {
+            text-align: left;
+            padding-left: 8%;
+            padding-top: 24px;
+            padding-bottom: 48px;
+        }
+
+        .exp-calc-title {
+            margin-bottom: 8px;
+        }
+
+        .exp-calc-note {
+            font-size: 13px;
+            color: #444;
+            margin-bottom: 12px;
+        }
+
+        .exp-calc-status {
+            font-size: 13px;
+            margin-top: 8px;
+            min-height: 1.5em;
+        }
+
+        .exp-calc-status.ok {
+            color: #2e7d32;
+        }
+
+        .exp-calc-status.error {
+            color: #c62828;
+        }
+
+        .exp-calc-status.loading {
+            color: #1565c0;
+        }
+
+        #exp-level-input {
+            width: 120px;
+            padding: 4px;
+            font-size: 16px;
+        }
+
+        #exp-search-btn {
+            padding: 4px 12px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 900px) {
+            .exp-calc-wrapper {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <!-- ヘッダー：トップページと同じ構成 -->
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png">
+                    </a>
+                </span>
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field">
+                    </div>
+                </div>
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png">
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                    </li>
+                    <li class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                    </li>
+                    <li disabled class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                    </li>
+                    <li class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ドロワー -->
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h2>メニュー</h2>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+        <!-- コンテンツ -->
+        <div class="android-content mdl-layout__content">
+            <div class="main-background">
+                <div class="exp-calc-wrapper">
+
+                    <h1 class="exp-calc-title">2000〜2199Lv 必要経験値計算機</h1>
+                    <div class="exp-calc-note">
+                        2000〜2199レベル帯について、レベルを入力すると以下の情報を表示します。<br>
+                        ・次のレベルまでの必要経験値<br>
+                        ・2000レベルから入力レベルまでの累積必要経験値<br>
+                        ・悪魔狩り換算の目安金額（1レベル・累積）<br>
+                    </div>
+
+                    <!-- 入力エリア（table9は計算機用スタイル） -->
+                    <table id="table9">
+                        <tbody>
+                            <tr>
+                                <td>現在のレベル</td>
+                                <td>
+                                    <input id="exp-level-input" type="number" min="2000" max="2199" step="1">
+                                    <button id="exp-search-btn">検索</button>
+                                    <span id="exp-range-label">※対応範囲：2000〜2199</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div id="exp-status" class="exp-calc-status loading">
+                        CSVデータ読込中です…
+                    </div>
+
+                    <!-- 結果表示テーブル（table8は計算機結果っぽく） -->
+                    <br>
+                    <table id="table8">
+                        <tbody>
+                            <tr>
+                                <th>今のレベル</th>
+                                <td id="result-current">-</td>
+                            </tr>
+                            <tr>
+                                <th>次のレベル</th>
+                                <td id="result-next">-</td>
+                            </tr>
+                            <tr>
+                                <th>必要経験値</th>
+                                <td id="result-need-exp">-</td>
+                            </tr>
+                            <tr>
+                                <th>累積必要経験値<br>(2000Lv→指定Lv)</th>
+                                <td id="result-total-exp">-</td>
+                            </tr>
+                            <tr>
+                                <th>1レベルの悪魔狩り（円）</th>
+                                <td id="result-devil-one">-</td>
+                            </tr>
+                            <tr>
+                                <th>累積の悪魔狩り（円）</th>
+                                <td id="result-devil-total">-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <br>
+                    <div class="exp-calc-note">
+                        ※数値はあくまで目安です。ゲーム内仕様の変更や検証誤差により実際と異なる場合があります。<br>
+                        特に小数点以下の誤差により必要経験値にわずかなズレが発生する点についてご承知おきください。<br>
+                    </div>
+
+                    <br><br>
+                    <footer class="android-footer mdl-mega-footer">
+                        <font color="red">
+                            当サイトで利用している画像及びデータは、L&amp;K Co., Ltd.に帰属します。<br>
+                            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                        </font>
+                        © L&amp;K Co., Ltd. All Rights Reserved.<br>
+                    </footer>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MDL -->
+    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <!-- 計算機用JS（htmlとは別ファイル） -->
+    <script src="js/next_exp_2000.js"></script>
+</body>
+
+</html>
