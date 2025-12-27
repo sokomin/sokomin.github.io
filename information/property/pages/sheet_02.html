@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=960">
+
+    <title>確率情報（日本語版） - タブ1 | 赤石の民衆</title>
+    <meta name="description" content="RED STONE（レッドストーン）の確率情報（日本語版）を見やすくまとめたページです。">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <meta name="keywords" content="RED STONE,レッドストーン,赤石の民衆,確率,公開確率,翻訳">
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css">
+    <link rel="stylesheet" href="../../../styles.css">
+
+    <link rel="icon" href="../../../design/RedStoneLogo.png" sizes="32x32">
+    <link rel="icon" href="../../../design/RedStoneLogo.png" sizes="192x192">
+    <link rel="apple-touch-icon-precomposed" href="../../../design/RedStoneLogo.png">
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-133658114-1');
+    </script>
+
+    <script type="text/javascript" src="../../../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href =
+                    "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        /* ===== このページ専用：確率タブ ===== */
+        .prob-tabs-wrap {
+            position: sticky;
+            top: 64px;
+            /* fixed header 分（必要なら微調整） */
+            z-index: 30;
+            background: white;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .prob-tabs {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding: 10px 12px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .prob-tab {
+            display: inline-block;
+            white-space: nowrap;
+            border: 1px solid #ddd;
+            border-radius: 999px;
+            padding: 7px 12px;
+            background: #fafafa;
+            text-decoration: none;
+            color: #111;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .prob-tab:hover {
+            border-bottom: 1px solid #8bc34a;
+        }
+
+        .prob-tab.is-active {
+            background: #e8f0fe;
+            border-color: #8ab4f8;
+        }
+
+        /* ===== このページ専用：本文カード ===== */
+        .prob-card {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            background: #fff;
+        }
+
+        .prob-note {
+            font-size: 13px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .table-wrap {
+            overflow: auto;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            background: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../../../design/logo3.png" alt="赤石の民衆">
+                    </a>
+                </span>
+
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field">
+                    </div>
+                </div>
+
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../../../design/logo3.png" alt="赤石の民衆">
+                    </a>
+                </span>
+
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h2>メニュー</h2>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item"
+                    href="../../../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill"
+                    href="../../../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../../../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../../../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../../../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild"
+                    href="../../../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../../../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../../../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+        <!-- 方式B：別ページ遷移の“タブ”（pages配下なので href は同一階層） -->
+        <div class="prob-tabs-wrap">
+            <nav id="probTabs" class="prob-tabs" aria-label="確率情報タブ">
+                <a class="prob-tab" href="sheet_01.html">タブ1</a>
+                <a class="prob-tab is-active" aria-current="page" href="sheet_02.html">タブ2</a>
+                <a class="prob-tab" href="sheet_03.html">タブ3</a>
+                <a class="prob-tab" href="sheet_04.html">タブ4</a>
+                <a class="prob-tab" href="sheet_05.html">タブ5</a>
+                <a class="prob-tab" href="sheet_06.html">タブ6</a>
+                <a class="prob-tab" href="sheet_07.html">タブ7</a>
+                <a class="prob-tab" href="sheet_08.html">タブ8</a>
+                <a class="prob-tab" href="sheet_09.html">タブ9</a>
+                <a class="prob-tab" href="sheet_10.html">タブ10</a>
+                <a class="prob-tab" href="sheet_11.html">タブ11</a>
+                <a class="prob-tab" href="sheet_12.html">混沌の魔法書</a>
+            </nav>
+        </div>
+
+        <div class="android-large-table mdl-layout__content">
+
+
+            <!-- main -->
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+
+                <div class="prob-card">
+                    <h1>確率情報（日本語版）- タブ1</h1>
+
+                    <p class="prob-note">
+                        このページは「確率情報（日本語版）」のタブ1です。<br>
+                        公式公開の確率情報（韓国語）を、見やすさ優先で日本語ページに整形したものです。<br>
+                        ※ 表記ゆれ・誤訳があり得るため、最終確認は元データも併せて参照してください。
+                    </p>
+
+                    <p class="prob-note">
+                        <strong>元データ（韓国語・公開スプレッドシート）:</strong>
+                        <a target="_blank" rel="noopener"
+                            href="https://docs.google.com/spreadsheets/d/e/2PACX-1vRg71t9qLRRzchWUW_v114dX9CJ-IeuWMTgLEwmeCgSYYiJJah7uqeYFtm8lnkvE73PCgTGy_Vl60HP/pubhtml#gid=0">
+                            公開ページを開く
+                        </a>
+                        ／
+                        <a href="../index.html"><strong>確率情報トップへ戻る</strong></a>
+                    </p>
+
+                    <hr style="margin:12px 0;">
+
+                    <!-- ここにテーブルを貼り付けてください（あなたが差し替える場所） -->
+                    <div class="table-wrap">
+                        <!--
+              ▼▼▼ ここに「日本語化済み table」をそのまま貼り付け ▼▼▼
+
+              例）
+              <table id="table1">
+                <thead>...</thead>
+                <tbody>...</tbody>
+              </table>
+
+              ▲▲▲ ここまで ▲▲▲
+            -->
+                        <div style="padding:14px; opacity:0.8;">
+                            （ここにテーブルを挿入してください）
+                        </div>
+                    </div>
+
+                    <br>
+                </div>
+
+                <br><br><br>
+                <br><br><br>
+                <br><br><br>
+                <br><br><br>
+                <br><br><br>
+                <br><br><br>
+                <br><br><br>
+                <br><br><br>
+                <br><br><br>
+                <br><br><br>
+                <br><br><br>
+                <br><br><br>
+                <br><br><br>
+                <br><br><br>
+
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">
+                        当サイトで利用している画像及びデータは、L&amp;K Co., Ltd.に帰属します。<br>
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    © L&amp;K Co., Ltd. All Rights Reserved.<br>
+                    <!--
+            Copyright (c) This site is created by Sokomin. All Rights Reserved.
+          -->
+                </footer>
+            </div>
+
+            <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        </div>
+    </div>
+</body>
+
+</html>
