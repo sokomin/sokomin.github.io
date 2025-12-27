@@ -1,6 +1,6 @@
 // probability_jp/assets/prob_simulator.js
 // データ：probability_jp/data/sheet12_long_ja.csv を読み込む前提
-const DATA_CSV_PATH = "./data/sheet12_long_ja.csv";
+const DATA_CSV_PATH = "https://sokomin.github.io/information/property/data/sheet12_long_ja.csv";
 
 const STAGES = ["1次", "2次", "3次"];
 const LS_KEY_HISTORY = "prob_sim_history_v1";
