@@ -7,7 +7,7 @@ const CATEGORIES = [
   { key:"phase",  name:"フェーズストーン", unlockBy:"plane" }
 ];
 const PER_LEVEL_COST = [0,1,2,4,5,8]; // 累積消費用
-const MAX_STAGE = 20, MAX_SKILL_LV = 5; // SKILLS_PER_CATEGORY は廃止（可変長対応）
+const MAX_STAGE = 30, MAX_SKILL_LV = 5; // SKILLS_PER_CATEGORY は廃止（可変長対応）
 
 // スキル数は配列長に依存させる
 function getSkillCount(catKey){
@@ -39,7 +39,7 @@ const SKILL_EFFECTS = {
     {name:"ダブルクリティカルダメージ増加",maxLv:5,perLv:4,unit:"%"},
     {name:"魔法致命打ダメージ増加",maxLv:5,perLv:3,unit:"%"},
     {name:"物理強打ダメージ増加",maxLv:5,perLv:50,unit:"%"},
-    {name:"魔法強打ダメージ増加",maxLv:5,perLv:20,unit:"%"},
+    {name:"魔法強打ダメージ増加",maxLv:5,perLv:2,unit:"%"},
     {name:"限界突破称号の物理効果増加",maxLv:5,perLv:1000,unit:""},
     {name:"限界突破称号の魔法効果増加",maxLv:5,perLv:1000,unit:""},
     {name:"限界突破称号の効果増加",maxLv:5,perLv:1000,unit:""}
