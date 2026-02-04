@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=960">
+        <!-- Page styles -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://sokomin.github.io/material.indigo-pink.min.css" />
+        <link rel="stylesheet" href="../styles.css">
+        <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32">
+        <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192">
+        <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png">
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+        </script>
+        <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+        <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+        </script>
+        <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+        </style>
+    </head>
+    <body>
+        <title>アドベントカレンダー2026報酬一覧 赤石の民衆</title>
+        <meta name="description" content="レッドストーン総合攻略情報ポータルページ">
+        <meta http-equiv="Content-Style-Type" content="text/css">
+        <meta http-equiv="Content-Script-Type" content="text/javascript">
+        <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,そこらの民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,そこみん,赤石,攻略情報">
+        <link
+            rel="alternate"
+            type="application/rss+xml"
+            title="RSS"
+            href="/rss.xml"
+        >
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <a name="container"></a>
+            <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+                <div class="mdl-layout__header-row">
+                    <span class="android-title mdl-layout-title">
+                        <a href="https://sokomin.github.io/index.html">
+                            <img class="android-logo-image" src="../design/logo3.png">
+                        </a>
+                    </span>
+                    <!-- Add spacer, to align navigation to the right in desktop -->
+                    <div class="android-header-spacer mdl-layout-spacer"></div>
+                    <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                        <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                            <i class="material-icons">search</i>
+                        </label>
+                        <div class="mdl-textfield__expandable-holder">
+                            <input
+                                placeholder="サイト内検索(Enterで実行)"
+                                class="mdl-textfield__input"
+                                type="text"
+                                onkeypress="enter();"
+                                id="search-field"
+                            >
+                        </div>
+                    </div>
+                    <!-- Navigation -->
+                    <div class="android-navigation-container">
+                        <nav class="android-navigation mdl-navigation">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/index.html">ホーム</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                        </nav>
+                    </div>
+                    <span class="android-mobile-title mdl-layout-title">
+                        <a href="https://sokomin.github.io/index.html">
+                            <img class="android-logo-image" src="../design/logo3.png">
+                        </a>
+                    </span>
+                    <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
+                        <i class="material-icons">more_vert</i>
+                    </button>
+                    <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                        <li class="mdl-menu__item">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+                        </li>
+                        <li class="mdl-menu__item">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+                        </li>
+                        <li disabled class="mdl-menu__item">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+                        </li>
+                        <li class="mdl-menu__item">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="android-drawer mdl-layout__drawer">
+                <span class="mdl-layout-title">
+                    <h2>メニュー</h2>
+                </span>
+                <nav class="mdl-navigation">
+                    <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html">
+                        <strong>アイテム</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html">
+                        <strong>スキル</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html">
+                        <strong>モンスター</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html">
+                        <strong>ダンジョン</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html">
+                        <strong>クエスト</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html">
+                        <strong>ギルド</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html">
+                        <strong>韓国情報</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html">
+                        <strong>雑学</strong>
+                    </a>
+                </nav>
+            </div>
+            <div class="android-large-table mdl-layout__content">
+                <!--main-->
+                <a href="../index.html">トップ</a> >> <a href="../information/information.html">雑学</a>
+                <div class="main-background mdl-typography--text-center korea-content">
+                    <br>
+                    <h1>アドベントカレンダー2026報酬一覧</h1>
+                    <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/20f38caa0874e5f6db6ac3266c0a33f127edc537.10.9.9.3.png" border=0 name="insertImg" width="640px" /><br><br>
+                    <a href="https://www.redstoneonline.jp/event/q7e02t96ztaxshgt9n">2026/1/22</a>より開催。
+                    <br>
+                    毎日ログインすることでアイテムを獲得できます。<br>
+                    <h3>「カレンダー報酬」から出現するアイテム一覧</h3>
+ <!-- カレンダー報酬から出現するアイテム一覧（自動抽出） -->
+<div class="scrollTable">
+    <table id="table12" class="calendar-reward-items">
+      <thead>
+        <tr>
+          <th style="text-align:center;">カレンダー報酬</th>
+          <th style="text-align:center;">アイテム名</th>
+          <th style="text-align:center;">アイテム詳細</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align:center; white-space:nowrap;">1日目</td>
+          <td style="text-align:center;">
+            <img src="./1916_files/15656754-a63f-4fc9-bcd2-5e53bb718b54.png" alt="ファーストフルヒール ポーション x15" loading="lazy" style="max-width:40px; max-height:40px; vertical-align:middle;">
+            <div class="calendar-reward-item-name" style="margin-top:6px; line-height:1.4;">ファーストフルヒール<br>ポーション x15</div>
+          </td>
+          <td style="text-align:center;">
+            <img src="./1916_files/68bd32bb-70eb-4c2f-bb70-424e2596de39.png" alt="ファーストフルヒール ポーション x15 詳細" loading="lazy" style="max-width:320px; height:auto;">
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center; white-space:nowrap;">2日目</td>
+          <td style="text-align:center;">
+            <img src="./1916_files/08e6a009-9666-4bd9-a49c-74bbd0ecf83b.png" alt="風の羽[E] x10" loading="lazy" style="max-width:40px; max-height:40px; vertical-align:middle;">
+            <div class="calendar-reward-item-name" style="margin-top:6px; line-height:1.4;">風の羽[E] x10</div>
+          </td>
+          <td style="text-align:center;">
+            <img src="./1916_files/6a4c71c5-41a6-4ce5-97d7-5e344f045c00.png" alt="風の羽[E] x10 詳細" loading="lazy" style="max-width:320px; height:auto;">
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center; white-space:nowrap;">3日目</td>
+          <td style="text-align:center;">
+            <img src="./1916_files/45e4a3a5-50d9-4cb9-90db-9278a768bbd2.png" alt="無限のステータス再配分巻物 [1日間] x1" loading="lazy" style="max-width:40px; max-height:40px; vertical-align:middle;">
+            <div class="calendar-reward-item-name" style="margin-top:6px; line-height:1.4;">無限のステータス再配分巻物<br>[1日間] x1</div>
+          </td>
+          <td style="text-align:center;">
+            <img src="./1916_files/2d1da309-884a-4f45-ac50-6bd884f50113.png" alt="無限のステータス再配分巻物 [1日間] x1 詳細" loading="lazy" style="max-width:320px; height:auto;">
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center; white-space:nowrap;">4日目</td>
+          <td style="text-align:center;">
+            <img src="./1916_files/1b05896b-739e-4db8-880f-c6af9f5be699.png" alt="リフレクティング・シャード [E] x1" loading="lazy" style="max-width:40px; max-height:40px; vertical-align:middle;">
+            <div class="calendar-reward-item-name" style="margin-top:6px; line-height:1.4;">リフレクティング・シャード<br>[E] x1</div>
+          </td>
+          <td style="text-align:center;">
+            <img src="./1916_files/c402566f-db45-477b-bd04-78e171e38a33.png" alt="リフレクティング・シャード [E] x1 詳細" loading="lazy" style="max-width:320px; height:auto;">
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center; white-space:nowrap;">5日目</td>
+          <td style="text-align:center;">
+            <img src="./1916_files/faf22505-1afa-43ea-8852-a080931f956c.png" alt="ペブルコクーンパッケージ [10個] x1" loading="lazy" style="max-width:40px; max-height:40px; vertical-align:middle;">
+            <div class="calendar-reward-item-name" style="margin-top:6px; line-height:1.4;">ペブルコクーンパッケージ<br>[10個] x1</div>
+          </td>
+          <td style="text-align:center;">
+            <img src="./1916_files/b2bca460-b62d-4f8a-a7bd-c86f69de5c57.png" alt="ペブルコクーンパッケージ [10個] x1 詳細" loading="lazy" style="max-width:320px; height:auto;">
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center; white-space:nowrap;">6日目</td>
+          <td style="text-align:center;">
+            <img src="./1916_files/1e0edd45-a6bc-41d6-becf-8dd0606fbf35.png" alt="新鮮なパインベリー x3" loading="lazy" style="max-width:40px; max-height:40px; vertical-align:middle;">
+            <div class="calendar-reward-item-name" style="margin-top:6px; line-height:1.4;">新鮮なパインベリー x3</div>
+          </td>
+          <td style="text-align:center;">
+            <img src="./1916_files/037c824a-fa25-4677-a836-3e96279c8598.png" alt="新鮮なパインベリー x3 詳細" loading="lazy" style="max-width:320px; height:auto;">
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center; white-space:nowrap;">7日目</td>
+          <td style="text-align:center;">
+            <img src="./1916_files/78866860-8e0b-4bf9-ad15-0ef8443d31c3.png" alt="多次元の結晶 x50" loading="lazy" style="max-width:40px; max-height:40px; vertical-align:middle;">
+            <div class="calendar-reward-item-name" style="margin-top:6px; line-height:1.4;">多次元の結晶 x50</div>
+          </td>
+          <td style="text-align:center;">
+            <img src="./1916_files/35e8c102-310f-4c69-9c9c-abd77f87c2af.png" alt="多次元の結晶 x50 詳細" loading="lazy" style="max-width:320px; height:auto;">
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center; white-space:nowrap;">8日目</td>
+          <td style="text-align:center;">
+            <img src="./1916_files/b5319c02-c5eb-40ef-9fd2-8c5c5f5ede75.png" alt="覚醒石 x10" loading="lazy" style="max-width:40px; max-height:40px; vertical-align:middle;">
+            <div class="calendar-reward-item-name" style="margin-top:6px; line-height:1.4;">覚醒石 x10</div>
+          </td>
+          <td style="text-align:center;">
+            <img src="./1916_files/01a29fd7-fab5-4e86-bb9a-386060fa0372.png" alt="覚醒石 x10 詳細" loading="lazy" style="max-width:320px; height:auto;">
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center; white-space:nowrap;">9日目</td>
+          <td style="text-align:center;">
+            <img src="./1916_files/f67335b3-a5ed-4254-94e3-1ba2fb402262.png" alt="爆竜の心臓 x1" loading="lazy" style="max-width:40px; max-height:40px; vertical-align:middle;">
+            <div class="calendar-reward-item-name" style="margin-top:6px; line-height:1.4;">爆竜の心臓 x1</div>
+          </td>
+          <td style="text-align:center;">
+            <img src="./1916_files/1f26e52b-fb9b-44a0-a72b-484fd57fbeb7.png" alt="爆竜の心臓 x1 詳細" loading="lazy" style="max-width:320px; height:auto;">
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center; white-space:nowrap;">10日目</td>
+          <td style="text-align:center;">
+            <img src="./1916_files/0ef93f04-c50e-4405-b53a-327ffa44a0b8.png" alt="黒い異界の強化石 x1" loading="lazy" style="max-width:40px; max-height:40px; vertical-align:middle;">
+            <div class="calendar-reward-item-name" style="margin-top:6px; line-height:1.4;">黒い異界の強化石 x1</div>
+          </td>
+          <td style="text-align:center;">
+            <img src="./1916_files/ade4050f-d1b2-4e8b-bc82-1492d8bb3860.png" alt="黒い異界の強化石 x1 詳細" loading="lazy" style="max-width:320px; height:auto;">
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center; white-space:nowrap;">11日目</td>
+          <td style="text-align:center;">
+            <img src="./1916_files/8c2458af-4884-4f63-ac15-8bb085414198.png" alt="5色のかせ糸[E] x1" loading="lazy" style="max-width:40px; max-height:40px; vertical-align:middle;">
+            <div class="calendar-reward-item-name" style="margin-top:6px; line-height:1.4;">5色のかせ糸[E] x1</div>
+          </td>
+          <td style="text-align:center;">
+            <img src="./1916_files/4dee7429-be58-4965-8331-d113a3f83ffa.png" alt="5色のかせ糸[E] x1 詳細" loading="lazy" style="max-width:320px; height:auto;">
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center; white-space:nowrap;">12日目</td>
+          <td style="text-align:center;">
+            <img src="./1916_files/f33ba059-5795-441a-bbd2-c4885620cc1a.png" alt="無限のスキル再配分巻物 [1日間] x1" loading="lazy" style="max-width:40px; max-height:40px; vertical-align:middle;">
+            <div class="calendar-reward-item-name" style="margin-top:6px; line-height:1.4;">無限のスキル再配分巻物<br>[1日間] x1</div>
+          </td>
+          <td style="text-align:center;">
+            <img src="./1916_files/1bb9e4a8-934e-4d0f-b893-e2a7400dac92.png" alt="無限のスキル再配分巻物 [1日間] x1 詳細" loading="lazy" style="max-width:320px; height:auto;">
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center; white-space:nowrap;">13日目</td>
+          <td style="text-align:center;">
+            <img src="./1916_files/25147513-ae3f-4455-802d-81613e920a04.png" alt="古代森のコイン x10" loading="lazy" style="max-width:40px; max-height:40px; vertical-align:middle;">
+            <div class="calendar-reward-item-name" style="margin-top:6px; line-height:1.4;">古代森のコイン x10</div>
+          </td>
+          <td style="text-align:center;">
+            <img src="./1916_files/8e1e8592-215e-431d-a957-1bd8dace0866.png" alt="古代森のコイン x10 詳細" loading="lazy" style="max-width:320px; height:auto;">
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center; white-space:nowrap;">14日目</td>
+          <td style="text-align:center;">
+            <img src="./1916_files/d5c03aed-1213-4b8e-a770-a0807cdb7abe.png" alt="赤い覚醒石 x3" loading="lazy" style="max-width:40px; max-height:40px; vertical-align:middle;">
+            <div class="calendar-reward-item-name" style="margin-top:6px; line-height:1.4;">赤い覚醒石 x3</div>
+          </td>
+          <td style="text-align:center;">
+            <img src="./1916_files/660c8d5c-12b7-488e-b7c1-80b2229288b8.png" alt="赤い覚醒石 x3 詳細" loading="lazy" style="max-width:320px; height:auto;">
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center; white-space:nowrap;">15日目</td>
+          <td style="text-align:center;">
+            <img src="./1916_files/f1409927-ad59-4430-8db2-4d3b7172a480.png" alt="ネフォンクリーチャーの マナ(大) x3" loading="lazy" style="max-width:40px; max-height:40px; vertical-align:middle;">
+            <div class="calendar-reward-item-name" style="margin-top:6px; line-height:1.4;">ネフォンクリーチャーの<br>マナ(大) x3</div>
+          </td>
+          <td style="text-align:center;">
+            <img src="./1916_files/c2fcb498-24d0-4c53-bbaa-6aef0c537b2d.png" alt="ネフォンクリーチャーの マナ(大) x3 詳細" loading="lazy" style="max-width:320px; height:auto;">
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center; white-space:nowrap;">16日目</td>
+          <td style="text-align:center;">
+            <img src="./1916_files/74f7004a-0543-48ad-bb3f-14b347a6b5ad.png" alt="古代竜の心臓 x3" loading="lazy" style="max-width:40px; max-height:40px; vertical-align:middle;">
+            <div class="calendar-reward-item-name" style="margin-top:6px; line-height:1.4;">古代竜の心臓 x3</div>
+          </td>
+          <td style="text-align:center;">
+            <img src="./1916_files/95e9f0c0-5792-4d13-af89-0d3889697d5e.png" alt="古代竜の心臓 x3 詳細" loading="lazy" style="max-width:320px; height:auto;">
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center; white-space:nowrap;">17日目</td>
+          <td style="text-align:center;">
+            <img src="./1916_files/a0af6543-cb35-42d3-be81-ca48cdf90034.png" alt="解放オプション変換器[E] x1" loading="lazy" style="max-width:40px; max-height:40px; vertical-align:middle;">
+            <div class="calendar-reward-item-name" style="margin-top:6px; line-height:1.4;">解放オプション変換器[E] x1</div>
+          </td>
+          <td style="text-align:center;">
+            <img src="./1916_files/d4c08ad3-9cb2-4d76-85e8-4554d54f26e0.png" alt="解放オプション変換器[E] x1 詳細" loading="lazy" style="max-width:320px; height:auto;">
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center; white-space:nowrap;">18日目</td>
+          <td style="text-align:center;">
+            <img src="./1916_files/dd69c7fd-6428-4237-88da-4555e032005a.png" alt="位相錬成高級触媒 x1" loading="lazy" style="max-width:40px; max-height:40px; vertical-align:middle;">
+            <div class="calendar-reward-item-name" style="margin-top:6px; line-height:1.4;">位相錬成高級触媒 x1</div>
+          </td>
+          <td style="text-align:center;">
+            <img src="./1916_files/57589f29-69c2-43bc-8cd7-406c778a0841.png" alt="位相錬成高級触媒 x1 詳細" loading="lazy" style="max-width:320px; height:auto;">
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center; white-space:nowrap;">19日目</td>
+          <td style="text-align:center;">
+            <img src="./1916_files/e9977260-c473-404a-80d8-f7a9e8ac263e.png" alt="ソーラーコクーン[E] x1" loading="lazy" style="max-width:40px; max-height:40px; vertical-align:middle;">
+            <div class="calendar-reward-item-name" style="margin-top:6px; line-height:1.4;">ソーラーコクーン[E] x1</div>
+          </td>
+          <td style="text-align:center;">
+            <img src="./1916_files/032586e2-d075-4371-96ae-f0d6d99a4b0b.png" alt="ソーラーコクーン[E] x1 詳細" loading="lazy" style="max-width:320px; height:auto;">
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center; white-space:nowrap;">20日目</td>
+          <td style="text-align:center;">
+            <img src="./1916_files/421577ab-4f86-4e1e-b679-234a8f81ab7b.png" alt="願いの箱 [比率OP魔法お守り] x1" loading="lazy" style="max-width:40px; max-height:40px; vertical-align:middle;">
+            <div class="calendar-reward-item-name" style="margin-top:6px; line-height:1.4;">願いの箱<br>[比率OP魔法お守り] x1</div>
+          </td>
+          <td style="text-align:center;">
+            <img src="./1916_files/8820f77a-8658-453c-a753-3e52bb8e523d.png" alt="願いの箱 [比率OP魔法お守り] x1 詳細" loading="lazy" style="max-width:320px; height:auto;">
+            <div style="margin-top:4px;"><a href="https://www.redstoneonline.jp/bbs/17/view?ano=383#OCEyDmGmb7O7LfYnRaxSy1SshwykhqCqT3mvLxAmhrs=" target="_blank" rel="noopener noreferrer">公式告知（詳細）</a></div>
+          </td>
+        </tr>
+        <tr>
+          <td style="text-align:center; white-space:nowrap;">21日目</td>
+          <td style="text-align:center;">
+            <img src="./1916_files/c4338c9a-ba49-4487-bf11-2173b381e559.png" alt="天上の鉄床[E] x1" loading="lazy" style="max-width:40px; max-height:40px; vertical-align:middle;">
+            <div class="calendar-reward-item-name" style="margin-top:6px; line-height:1.4;">天上の鉄床[E] x1</div>
+          </td>
+          <td style="text-align:center;">
+            <img src="./1916_files/8ede16a6-043e-4c76-8bae-67093c09755c.png" alt="天上の鉄床[E] x1 詳細" loading="lazy" style="max-width:320px; height:auto;">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+                    <br>
+                    <br>
+    <h2>願いの箱[比率OP魔法お守り]から出現するアイテム一覧</h2>
+    <p>「願いの箱[比率OP魔法お守り]」を開封すると、以下の<strong>オプション魔法のお守り</strong>が出現します（いずれか1つ）。</p>
+  
+    <!-- <ul>
+      <li>オプション魔法のお守り（力比率上昇Lv1）</li>
+      <li>オプション魔法のお守り（力比率上昇Lv2）</li>
+      <li>オプション魔法のお守り（知識比率上昇Lv1）</li>
+      <li>オプション魔法のお守り（知識比率上昇Lv2）</li>
+      <li>オプション魔法のお守り（敏捷比率上昇Lv1）</li>
+      <li>オプション魔法のお守り（敏捷比率上昇Lv2）</li>
+      <li>オプション魔法のお守り（知恵比率上昇Lv1）</li>
+      <li>オプション魔法のお守り（知恵比率上昇Lv2）</li>
+      <li>オプション魔法のお守り（健康比率上昇Lv1）</li>
+      <li>オプション魔法のお守り（健康比率上昇Lv2）</li>
+      <li>オプション魔法のお守り（運比率上昇Lv1）</li>
+      <li>オプション魔法のお守り（運比率上昇Lv2）</li>
+      <li>オプション魔法のお守り（威厳比率上昇Lv1）</li>
+      <li>オプション魔法のお守り（威厳比率上昇Lv2）</li>
+    </ul>
+   -->
+    <table id="table10">
+      <thead>
+        <tr>
+          <th style="width: 80px;">アイコン</th>
+          <th style="width: 200px;">アイテム名</th>
+          <th style="width: 220px;">オプション</th>
+          <th>オプション説明（画像）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><img src="./1916_files/72c38eb7-d163-4666-bbd1-cd6571994978.png" width="38" height="37" loading="lazy" alt="オプション魔法のお守り"></td>
+          <td>オプション魔法のお守り</td>
+          <td>[力比率上昇Lv1]</td>
+          <td style="text-align:left;">
+            <details>
+              <summary>説明画像を表示</summary>
+              <img src="./1916_files/316efd1a-c75d-4f21-9bd9-74c0545ca84d.png" loading="lazy" alt="[力比率上昇Lv1] のオプション説明画像" style="max-width: 360px; width: 100%; height: auto;">
+            </details>
+          </td>
+        </tr>
+        <tr>
+          <td><img src="./1916_files/72c38eb7-d163-4666-bbd1-cd6571994978.png" width="38" height="37" loading="lazy" alt="オプション魔法のお守り"></td>
+          <td>オプション魔法のお守り</td>
+          <td>[力比率上昇Lv2]</td>
+          <td style="text-align:left;">
+            <details>
+              <summary>説明画像を表示</summary>
+              <img src="./1916_files/294380fb-d8e0-45c8-a79e-f1e91f1d3ff0.png" loading="lazy" alt="[力比率上昇Lv2] のオプション説明画像" style="max-width: 360px; width: 100%; height: auto;">
+            </details>
+          </td>
+        </tr>
+        <tr>
+          <td><img src="./1916_files/72c38eb7-d163-4666-bbd1-cd6571994978.png" width="38" height="37" loading="lazy" alt="オプション魔法のお守り"></td>
+          <td>オプション魔法のお守り</td>
+          <td>[知識比率上昇Lv1]</td>
+          <td style="text-align:left;">
+            <details>
+              <summary>説明画像を表示</summary>
+              <img src="./1916_files/25d06a11-7ae3-42c4-9f58-62611f1b5fcc.png" loading="lazy" alt="[知識比率上昇Lv1] のオプション説明画像" style="max-width: 360px; width: 100%; height: auto;">
+            </details>
+          </td>
+        </tr>
+        <tr>
+          <td><img src="./1916_files/72c38eb7-d163-4666-bbd1-cd6571994978.png" width="38" height="37" loading="lazy" alt="オプション魔法のお守り"></td>
+          <td>オプション魔法のお守り</td>
+          <td>[知識比率上昇Lv2]</td>
+          <td style="text-align:left;">
+            <details>
+              <summary>説明画像を表示</summary>
+              <img src="./1916_files/e344ccab-3f1b-4b06-9acb-b3b7f241636c.png" loading="lazy" alt="[知識比率上昇Lv2] のオプション説明画像" style="max-width: 360px; width: 100%; height: auto;">
+            </details>
+          </td>
+        </tr>
+        <tr>
+          <td><img src="./1916_files/72c38eb7-d163-4666-bbd1-cd6571994978.png" width="38" height="37" loading="lazy" alt="オプション魔法のお守り"></td>
+          <td>オプション魔法のお守り</td>
+          <td>[敏捷比率上昇Lv1]</td>
+          <td style="text-align:left;">
+            <details>
+              <summary>説明画像を表示</summary>
+              <img src="./1916_files/1f354c75-b5b5-4f9f-987c-4127b16154bc.png" loading="lazy" alt="[敏捷比率上昇Lv1] のオプション説明画像" style="max-width: 360px; width: 100%; height: auto;">
+            </details>
+          </td>
+        </tr>
+        <tr>
+          <td><img src="./1916_files/72c38eb7-d163-4666-bbd1-cd6571994978.png" width="38" height="37" loading="lazy" alt="オプション魔法のお守り"></td>
+          <td>オプション魔法のお守り</td>
+          <td>[敏捷比率上昇Lv2]</td>
+          <td style="text-align:left;">
+            <details>
+              <summary>説明画像を表示</summary>
+              <img src="./1916_files/2b847129-7e03-4ad9-8593-13169badb25e.png" loading="lazy" alt="[敏捷比率上昇Lv2] のオプション説明画像" style="max-width: 360px; width: 100%; height: auto;">
+            </details>
+          </td>
+        </tr>
+        <tr>
+          <td><img src="./1916_files/72c38eb7-d163-4666-bbd1-cd6571994978.png" width="38" height="37" loading="lazy" alt="オプション魔法のお守り"></td>
+          <td>オプション魔法のお守り</td>
+          <td>[知恵比率上昇Lv1]</td>
+          <td style="text-align:left;">
+            <details>
+              <summary>説明画像を表示</summary>
+              <img src="./1916_files/464f3baa-7b18-46b6-8d3b-8bec0b12a0cf.png" loading="lazy" alt="[知恵比率上昇Lv1] のオプション説明画像" style="max-width: 360px; width: 100%; height: auto;">
+            </details>
+          </td>
+        </tr>
+        <tr>
+          <td><img src="./1916_files/72c38eb7-d163-4666-bbd1-cd6571994978.png" width="38" height="37" loading="lazy" alt="オプション魔法のお守り"></td>
+          <td>オプション魔法のお守り</td>
+          <td>[知恵比率上昇Lv2]</td>
+          <td style="text-align:left;">
+            <details>
+              <summary>説明画像を表示</summary>
+              <img src="./1916_files/5f197ac2-f4a6-4a84-82cc-9dfcbc6243b4.png" loading="lazy" alt="[知恵比率上昇Lv2] のオプション説明画像" style="max-width: 360px; width: 100%; height: auto;">
+            </details>
+          </td>
+        </tr>
+        <tr>
+          <td><img src="./1916_files/72c38eb7-d163-4666-bbd1-cd6571994978.png" width="38" height="37" loading="lazy" alt="オプション魔法のお守り"></td>
+          <td>オプション魔法のお守り</td>
+          <td>[健康比率上昇Lv1]</td>
+          <td style="text-align:left;">
+            <details>
+              <summary>説明画像を表示</summary>
+              <img src="./1916_files/d66d8b62-4e02-42c9-9d90-975d39c60734.png" loading="lazy" alt="[健康比率上昇Lv1] のオプション説明画像" style="max-width: 360px; width: 100%; height: auto;">
+            </details>
+          </td>
+        </tr>
+        <tr>
+          <td><img src="./1916_files/72c38eb7-d163-4666-bbd1-cd6571994978.png" width="38" height="37" loading="lazy" alt="オプション魔法のお守り"></td>
+          <td>オプション魔法のお守り</td>
+          <td>[健康比率上昇Lv2]</td>
+          <td style="text-align:left;">
+            <details>
+              <summary>説明画像を表示</summary>
+              <img src="./1916_files/7f47f6ac-317e-4b4e-b473-b1a242225fcb.png" loading="lazy" alt="[健康比率上昇Lv2] のオプション説明画像" style="max-width: 360px; width: 100%; height: auto;">
+            </details>
+          </td>
+        </tr>
+        <tr>
+          <td><img src="./1916_files/72c38eb7-d163-4666-bbd1-cd6571994978.png" width="38" height="37" loading="lazy" alt="オプション魔法のお守り"></td>
+          <td>オプション魔法のお守り</td>
+          <td>[運比率上昇Lv1]</td>
+          <td style="text-align:left;">
+            <details>
+              <summary>説明画像を表示</summary>
+              <img src="./1916_files/f1f9952e-3b6b-4086-bb72-f6126d91d89c.png" loading="lazy" alt="[運比率上昇Lv1] のオプション説明画像" style="max-width: 360px; width: 100%; height: auto;">
+            </details>
+          </td>
+        </tr>
+        <tr>
+          <td><img src="./1916_files/72c38eb7-d163-4666-bbd1-cd6571994978.png" width="38" height="37" loading="lazy" alt="オプション魔法のお守り"></td>
+          <td>オプション魔法のお守り</td>
+          <td>[運比率上昇Lv2]</td>
+          <td style="text-align:left;">
+            <details>
+              <summary>説明画像を表示</summary>
+              <img src="./1916_files/ebb5af3a-fb09-457d-a40a-a393cd6d90d2.png" loading="lazy" alt="[運比率上昇Lv2] のオプション説明画像" style="max-width: 360px; width: 100%; height: auto;">
+            </details>
+          </td>
+        </tr>
+        <tr>
+          <td><img src="./1916_files/72c38eb7-d163-4666-bbd1-cd6571994978.png" width="38" height="37" loading="lazy" alt="オプション魔法のお守り"></td>
+          <td>オプション魔法のお守り</td>
+          <td>[威厳比率上昇Lv1]</td>
+          <td style="text-align:left;">
+            <details>
+              <summary>説明画像を表示</summary>
+              <img src="./1916_files/a47d35cf-0c23-451a-a6c2-7840cc6e1560.png" loading="lazy" alt="[威厳比率上昇Lv1] のオプション説明画像" style="max-width: 360px; width: 100%; height: auto;">
+            </details>
+          </td>
+        </tr>
+        <tr>
+          <td><img src="./1916_files/72c38eb7-d163-4666-bbd1-cd6571994978.png" width="38" height="37" loading="lazy" alt="オプション魔法のお守り"></td>
+          <td>オプション魔法のお守り</td>
+          <td>[威厳比率上昇Lv2]</td>
+          <td style="text-align:left;">
+            <details>
+              <summary>説明画像を表示</summary>
+              <img src="./1916_files/918f8aec-42ea-4ae7-9e3d-c88b438f45ec.png" loading="lazy" alt="[威厳比率上昇Lv2] のオプション説明画像" style="max-width: 360px; width: 100%; height: auto;">
+            </details>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <p><span style="color:#ff0000;font-size:14px;">※上記情報は、2024年3月14日（木）メンテナンス時点のものです。※今後変更される場合がございます。</span></p>
+  
+                      
+                    <br>
+                    <h2>備考</h2>
+                    - <a href="https://www.redstoneonline.jp/bbs/19/view?ano=1916">公式サイト</a>より。<br>
+                    - アドベントカレンダーの一番左のキャラはメイドとのことです。(公式Xのポストより。)<br>
+                    <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/131913392b00795463ae48e06a798f3727ca9ff1.10.9.9.3.png" border=0 name="insertImg" /><br><br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <footer class="android-footer mdl-mega-footer">
+                        <font color="red">
+                            当サイトで利用している画像及びデータは、L&K Co., Ltd.に帰属します。
+                            <br>
+                            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。
+                            <br>
+                        </font>
+                        © L&K Co., Ltd. All Rights Reserved.<br>
+                    </footer>
+                    <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+                </div>
+                <script src="https://sokomin.github.io/material.min.js"></script>
+            </div>
+        </body>
+    </html>
