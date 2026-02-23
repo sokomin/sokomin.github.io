@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://sokomin.github.io/material.indigo-pink.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>イベントボス　ガリオン　赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,そこらの民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,そこみん,赤石,攻略情報" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h2>メニュー</h2>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <a href="../index.html">トップ</a> >> <a href="../monster/monster.html">モンスター</a><br>
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+                <h1>イベントボス [ガリオン]</h1>
+                <img width="600px" src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/0e5bfed0bae73b8e1a39a391bd321c26a9648073.10.9.9.3.png" border="0" alt="" name="insertImg" /><br><br>
+                21周年記念イベントボス。2025金サバのタヌマキと同様に討伐形式で報酬を獲得可能。<br>
+                <br>
+                <table id="table10" style="min-width: 640px; text-align: left;">
+                    <colgroup>
+                        <col span="1" width="200">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th>開催期間</th>
+                            <td style="text-align: left;">2026年2月19日（木）メンテナンス後<br>
+                                ～ 2026年4月23日（木）メンテナンス前まで<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>入場条件</th>
+                            <td style="text-align: left;">
+                                <span class="color-image1">入場レベル及び回数：制限なし</span><br>
+                                <span class="color-image1">入場人数：1人</span><br>
+                                ゲーム画面右側のアイコンから進行<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>討伐制限時間</th>
+                            <td style="text-align: left;">10分</td>
+                        </tr>
+                        <tr>
+                            <th>モード</th>
+                            <td style="text-align: left;">
+                                ・<strong>ノーマルモード</strong>：ボスモンスターを討伐するとクリア。累計デイリー討伐回数によって報酬を獲得できる。<br>
+                                ・<strong>チャレンジモード</strong>：ノーマルモードより難易度が高く、ボスのHPを減少させた量に応じて特別な報酬を獲得できる。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>特殊ルール</th>
+                            <td style="text-align: left;">
+                                ソロでのみ挑戦可能<br>
+                                消耗品使用可能（キャラクター復活アイテムは使用不可）<br>
+                                戦闘不能の際には復活することができません。<br>
+                                サーバー毎にイベント進行状況が共有されます。<br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td style="text-align: left;">
+                                ■ノーマルモード<br>
+                                支給条件達成で毎日1回受け取り可能（毎日00時に初期化）<br>
+                                支給条件：入場後「ボスモンスター討伐」又は「制限時間の終了」<br>
+                                討伐回数の累計によって報酬が変化（毎日1回累計・毎日00時に初期化）<br>
+                                <br>
+                                ■チャレンジモード<br>
+                                赤い馬のHPバー<br>
+                                赤い疾走称号エフェクト<br>
+                                プチ赤馬カーペット(待機)<br>
+                                プチ赤馬カーペット(移動)<br>
+                                ※条件達成後に報酬をクリックすることで受け取り（1回のみ受領可能）<br>
+                                ※イベント終了後には報酬を受け取ることはできません。<br>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+                <br>
+
+                <span class="color-image2">＜構成の概要＞</span><br>
+                <table id="table10" style="min-width: 640px; text-align: left;">
+                    <colgroup>
+                        <col span="1" width="200">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th>開催期間</th>
+                            <td style="text-align: left;">2026年2月19日（木）メンテナンス後～4月23日（木）メンテナンス前まで</td>
+                        </tr>
+                        <tr>
+                            <th>入場条件</th>
+                            <td style="text-align: left;">レベル・回数制限なし、1人、右側アイコンから入場</td>
+                        </tr>
+                        <tr>
+                            <th>制限時間</th>
+                            <td style="text-align: left;">10分</td>
+                        </tr>
+                        <tr>
+                            <th>モード</th>
+                            <td style="text-align: left;">ノーマル / チャレンジ</td>
+                        </tr>
+                        <tr>
+                            <th>特殊ルール</th>
+                            <td style="text-align: left;">復活アイテム不可、戦闘不能時復活不可、サーバー共有</td>
+                        </tr>
+                        <tr>
+                            <th>報酬</th>
+                            <td style="text-align: left;">ノーマル：累計討伐回数で変化 / チャレンジ：赤い馬HPバー・称号エフェクト・カーペット等</td>
+                        </tr>
+                    </tbody>
+                </table>
+                開催期間62日のうち、ノーマルは35日、チャレンジは1回クリアすれば報酬を全て獲得完了となる。<br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+
+                <span class="color-image2">＜モード選択＞</span><br>
+                「ノーマルモード」と「チャレンジモード」の2種類から選択して入場可能。<br>
+                ノーマルモードはデイリー討伐回数の累計で報酬を受け取る周回向けモード。<br>
+                チャレンジモードはボスのHPをどれだけ削れるかを競い、特別報酬を狙うモード。<br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/50248e4549f06c7ed7960580b95f9f64a95fc352.10.9.9.3.png" border="0" alt="" name="insertImg" /><br><br>
+                <br>
+                <br>
+                <br>
+                <br>
+
+                <span class="color-image2">＜手順＞</span><br>
+                ゲーム画面右側のアイコンからガリオンのイベントを開き、モードを選択して入場。<br>
+                死亡するとデスペナルティが入る点に注意。<br>
+                入場直後、ガリオンを討伐する。やることは基本的に相撲。<br>
+                水に押し出されたら負け。<br>
+                敵の攻撃パターンは大きく分けて3種類<br>
+                （１）単発押し出し攻撃<br>
+                （２）円形の範囲攻撃<br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/4fcd67ee5e8c59442ffc10d7863d1e532bd8c3a8.10.9.9.3.png" border="0" alt="" name="insertImg" /><br><br>
+                （３）扇形の範囲攻撃<br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/bd14d2fcaea9d9ba51813f0be20bbdb5809197ce.10.9.9.3.png" border="0" alt="" name="insertImg" /><br><br>
+                初手の攻撃はランダムなので、運が悪いと強制的に押し出されて敗北、そのままデスペナということもあり得る。<br>
+                <img width="600px" src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/530e2e5085349b1ffe71b76849fa8fb3fb1e0161.10.9.9.3.png" border="0" alt="" name="insertImg" /><br><br>
+                <br>
+                <!-- ここに攻略情報を追記してください -->
+                <br>
+                <br>
+                <br>
+                <br>
+
+                <h5>[ノーマルモード]</h5>
+                基本的にはデイリー討伐ボスと同じ程度の難易度。制限時間10分。<br>
+                いろいろ攻撃してくるが、先攻してこないのですぐに倒してしまえば問題ない<br>
+                デイリーのついでにそのまま周回できる程度の難易度なので、デイリーのお供に最適。<br>
+                35日クリアすると最後の報酬まで獲得可能。62日期限があるので、1日1回コツコツ進めること。<br>
+                <!-- ここに攻略情報を追記してください -->
+                <br>
+                <br>
+                <br>
+                <br>
+
+                <h5>[チャレンジモード]</h5>
+                1250Lvのキャラで周回に挑む知識職の場合、以下のような装備構成が良い。<br>
+                基本的に火力全振りで、トラップ指が必須。知識の場合、敵の攻撃が必中HP割合ダメのため運は不要。<br>
+                魔法攻撃もないので全吸収も不要。<br>
+                <br>
+                ここまで組めればほぼすべての職業でクリア可能だった。<br>
+                武器：コラプ<br>
+                補助武器：アルカナ<br>
+                首：W最終ダメシルバーネックレス<br>
+                頭：T知識GF<br>
+                背：ムーンシャイン / T忍耐ヒーローなど<br>
+                腰：ソウルリンク<br>
+                手：超新星<br>
+                鎧：ホバー or 各種職鎧<br>
+                足：ウィンドジャンパー or マナウォーカー<br>
+                指：トラップ指1枠必須、他は全部火力アップ指<br>
+                ※ソウルガードは無効<br>
+                クリーチャー：火力に全振り<br>
+                超越：魔力の暴走、知識集中など火力メインでかまわない<br>
+                <br>
+                 フルヒ1セットは持っていきたい。武装の2部位でHP3000にすると安定しやすい。（恩寵と併用可能）<br>
+                 魔法強打型のほうが火力面で優位だが、魔法致命打でも攻略可能。<br>
+                 心臓は利用可能なので魔力吸収超越は不要。<br>
+                 ノックバック抵抗は貫通されるので不要。致命打・決定打抵抗も不要。<br>
+                 復活OPは利用可能ですが死亡直後にダンジョン崩壊するため復活直後60秒以内の討伐必須<br>
+                <br>
+                 ノーマルモードで1ゲージだったのが50ゲージになる。制限時間は10分。<br>
+                （１）最初に先攻して左右どちらかに釣り、トラップ指にいれる<br>
+                （２）トラップ指にいれたら周囲の水エリアとは反対方向に立つ<br>
+                （３）敵の攻撃は受けて問題ないが、<b>必ず陸側から攻撃する</b><br>
+                <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/d049e7ffbb42ccac15ba0f45b3c64277cfc268c7.10.9.9.3.png" border="0" alt="" name="insertImg" /><br><br>
+                敵の赤い攻撃エリアとは別方向に攻撃をする状態になるため、赤いエリア判定はアテにしないこと。<br>
+                あとはノックバックされながらもひたすら陸側から攻撃するのも。<br>
+                火力が心配な場合、60秒に一度檻にいれるのを忘れずに。<br>
+                テイマやネクロ、キャノニアでも攻略法は同じだがペットに攻撃が行く分飛ばされる方向が若干ランダムになる点だけ注意。<br>
+                火力的には、ノーマルをワンパンできる程度ならチャレンジに挑んでも余裕をもってクリア可能。<br>
+                攻略が厳しいのはシルフラBISをはじめとする攻撃トリガが特殊な職。<br>
+                <br>
+                <br>
+                <br>
+                <br>
+
+                <!-- <h5>[参考動画]</h5> -->
+                <!-- 動画は追って追加予定 -->
+                <!-- <br>
+                <br>
+                <br>
+                <br> -->
+
+                <h5>[クリア時]</h5>
+                ノーマルモードは「ボスモンスター討伐」または「制限時間終了」後に報酬画面から受け取り。<br>
+                チャレンジモードは条件達成後に報酬をクリックして受け取り（1回のみ）。<br>
+                イベント終了後は報酬を受け取ることができないため、終了前に必ず受領すること。<br>
+                <br>
+                報酬のカーペットは座って乗るタイプ。レベル制限なしで何度でも利用可能。RSPASSプレミア報酬と同等の移動速度増加付き。銀行取引可能。<br>
+                ＜注意！＞すでにカーペット持ってる状態で使用するとカーペットが結合してしまい、2度と分離できなくなる。<br>
+                必ずカーペットを所持していないキャラで受領・開封すること。<br>
+                その他のチャレンジ報酬のグラフィックはコスチュームの「飾る」欄から確認できます。<br>
+                <br>
+                ベリーについてはサンベリーと同系列で扱われるため、パインベリーなどと併用可能。<br>
+                2000LVからも5%の追加経験値ボーナスがあるので、基本的に全レベル帯のプレイヤーで利用可能。<br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <a name="99"></a>
+                <font color="#e95388">
+                    <h4>備考</h4>
+                </font>
+                公式情報：<a href="https://www.redstoneonline.jp/bbs/2/view?ano=1962" target="_blank">新規イベントボス「ガリオン」のご案内</a>（2026/02/19）<br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">
+                            当サイトで利用している画像及びデータは、L&K Co., Ltd.に帰属します。<br>
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    © L&K Co., Ltd. All Rights Reserved.<br>
+                </footer>
+                <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+            <script src="https://sokomin.github.io/material.min.js"></script>
+
+        </div>
+</body>
+
+</html>
