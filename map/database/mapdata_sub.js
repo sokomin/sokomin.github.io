@@ -765,7 +765,7 @@ var MapSubInfoList = {
     "870": {"name": "ミラーダンジョン 忘れられた地下収容所 B3 1-3", "req_map_lv": 6, "dfi": 40, "dwa": 40, "dwi": 40, "dea": 40, "dli": 40, "dda": 40, "st_down": 20, "lbd": 70, "non_resume": false, "mc": "C", "mc2": 12, "mc3": 2},
     "871": {"name": "ミラーダンジョン 忘れられた地下収容所 B3 1-4", "req_map_lv": 6, "dfi": 40, "dwa": 40, "dwi": 40, "dea": 40, "dli": 40, "dda": 40, "st_down": 20, "lbd": 70, "non_resume": false, "mc": "C", "mc2": 12, "mc3": 2},
     "872": {"name": "ミラーダンジョン 忘れられた地下収容所 B3 1-5", "req_map_lv": 6, "dfi": 40, "dwa": 40, "dwi": 40, "dea": 40, "dli": 40, "dda": 40, "st_down": 20, "lbd": 70, "non_resume": false, "mc": "C", "mc2": 12, "mc3": 2},
-    "873": {"name": "協会ガイド事務所", "req_map_lv": 99, "dfi": 0, "dwa": 0, "dwi": 0, "dea": 0, "dli": 0, "dda": 0, "st_down": 0, "lbd": 0, "non_resume": true, "mc": "-", "mc2": 1, "mc3": -1},
+    "873": {"name": "協会ガイド事務所", "req_map_lv": 99, "dfi": 0, "dwa": 0, "dwi": 0, "dea": 0, "dli": 0, "dda": 0, "st_down": 0, "lbd": 0, "non_resume": true, "mc": "-", "mc2": 1, "mc3": 1},
     "874": {"name": "静寂の砂丘 / 月の谷", "req_map_lv": 7, "dfi": 40, "dwa": 40, "dwi": 40, "dea": 40, "dli": 40, "dda": 40, "st_down": 30, "lbd": 70, "non_resume": false, "mc": "C", "mc2": 12, "mc3": 5},
     "875": {"name": "静寂の砂丘 / 星の谷", "req_map_lv": 7, "dfi": 40, "dwa": 40, "dwi": 40, "dea": 40, "dli": 40, "dda": 40, "st_down": 30, "lbd": 70, "non_resume": false, "mc": "C", "mc2": 12, "mc3": 5},
     "876": {"name": "黄金色の小麦畑亭客室", "req_map_lv": 99, "dfi": 0, "dwa": 0, "dwi": 0, "dea": 0, "dli": 0, "dda": 0, "st_down": 0, "lbd": 0, "non_resume": true, "mc": "-", "mc2": 4, "mc3": 4},
