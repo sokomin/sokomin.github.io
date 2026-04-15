@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=960">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://sokomin.github.io/material.indigo-pink.min.css" />
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32">
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192">
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+        #search-input {
+            width: 80%;
+            max-width: 600px;
+            padding: 8px;
+            font-size: 1em;
+        }
+        #search-status {
+            margin-left: 1em;
+            color: #666;
+        }
+        table#item-search-results {
+            margin: 1em auto;
+            border-collapse: collapse;
+            width: 95%;
+            max-width: 1400px;
+            background: #fff;
+            text-align: left;
+        }
+        table#item-search-results th,
+        table#item-search-results td {
+            border: 1px solid #bbb;
+            padding: 4px 8px;
+            font-size: 0.9em;
+            vertical-align: top;
+        }
+        table#item-search-results th {
+            background: #eee;
+            text-align: center;
+        }
+        table#item-search-results tr:nth-child(even) td {
+            background: #f8f8f8;
+        }
+        table#item-search-results img {
+            width: 32px;
+            height: 32px;
+        }
+        table#item-search-results .name a {
+            color: #1a4f8b;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        table#item-search-results .name a:hover {
+            text-decoration: underline;
+        }
+        table#item-search-results .blob {
+            color: #555;
+            font-size: 0.8em;
+            max-width: 600px;
+            word-break: break-all;
+        }
+        .search-hits {
+            color: #1a4f8b;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <title>アイテム検索（テキスト） 赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <meta name="keywords" content="RED STONE,レッドストーン,赤石の民衆,そこらの民衆,ＲＥＤ ＳＴＯＮＥ,そこみん,赤石,攻略情報,アイテム検索">
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml">
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png">
+                    </a>
+                </span>
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field">
+                    </div>
+                </div>
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png">
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title"><h2>メニュー</h2></span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item"   href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill"  href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"     href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"     href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"  href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild"  href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"   href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+        <div class="android-large-table mdl-layout__content">
+            <div class="main-background mdl-typography--text-center">
+                <br>
+                <h1>アイテム検索（テキスト）</h1>
+                <p>アイテム名・効果・説明文・職業などで検索できます。スペース区切りで AND 検索。</p>
+                <div>
+                    <input type="text" id="search-input" placeholder="例: 防御力 ヘルメット" autofocus>
+                    <span id="search-status">データ未読み込み</span>
+                </div>
+                <div id="search-message"></div>
+                <table id="item-search-results" style="display:none">
+                    <thead>
+                        <tr>
+                            <th>画像</th>
+                            <th>名前</th>
+                            <th>タイプ</th>
+                            <th>Grade</th>
+                            <th>必要Lv</th>
+                            <th>検索対象テキスト</th>
+                        </tr>
+                    </thead>
+                    <tbody id="search-tbody"></tbody>
+                </table>
+                <br>
+                <p>
+                    ・検索結果は最大100件まで表示します。<br>
+                    ・名前のリンクから個別アイテム表示ページへ移動できます。<br>
+                </p>
+                <br>
+                <br>
+
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、L&K Co., Ltd.に帰属します。<br>
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    © L&K Co., Ltd. All Rights Reserved.<br>
+                </footer>
+            </div>
+            <script src="https://sokomin.github.io/material.min.js"></script>
+        </div>
+    </div>
+
+<script>
+(function () {
+    const DATA_URL = "data/items_search.json";
+    const VIEWER_URL = "item_viewer.html";
+    const IMG_BASE = "../item/design/image/item/iconItem_";
+    const PAGE_LIMIT = 100;
+
+    let DATA = null;
+    let loading = false;
+    let debounceTimer = null;
+
+    const inputEl = document.getElementById('search-input');
+    const statusEl = document.getElementById('search-status');
+    const tableEl = document.getElementById('item-search-results');
+    const tbodyEl = document.getElementById('search-tbody');
+    const messageEl = document.getElementById('search-message');
+
+    async function ensureDataLoaded() {
+        if (DATA || loading) return;
+        loading = true;
+        statusEl.textContent = "データ取得中...";
+        const t0 = performance.now();
+        try {
+            const res = await fetch(DATA_URL);
+            if (!res.ok) throw new Error("HTTP " + res.status);
+            DATA = await res.json();
+            const t1 = performance.now();
+            statusEl.textContent = "読み込み完了: " + DATA.rows.length + "件 (" + (t1 - t0).toFixed(0) + "ms)";
+        } catch (e) {
+            statusEl.textContent = "読み込み失敗: " + e.message;
+            messageEl.innerHTML = '<p style="color:#c00">データ取得エラー: ' + e.message + '</p>';
+        } finally {
+            loading = false;
+        }
+    }
+
+    function escapeHtml(s) {
+        return String(s)
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    function render(kw) {
+        tbodyEl.innerHTML = "";
+        if (!DATA) {
+            tableEl.style.display = "none";
+            return;
+        }
+        if (!kw) {
+            tableEl.style.display = "none";
+            statusEl.textContent = "読み込み済: " + DATA.rows.length + "件";
+            return;
+        }
+        const t0 = performance.now();
+        const kws = kw.toLowerCase().split(/\s+/).filter(Boolean);
+        const hits = [];
+        for (const r of DATA.rows) {
+            const blob = r[8].toLowerCase();
+            let ok = true;
+            for (const k of kws) {
+                if (blob.indexOf(k) === -1) { ok = false; break; }
+            }
+            if (ok) hits.push(r);
+            if (hits.length >= PAGE_LIMIT * 10) break;
+        }
+        const total = hits.length;
+        const shown = Math.min(total, PAGE_LIMIT);
+
+        const frag = document.createDocumentFragment();
+        for (let i = 0; i < shown; i++) {
+            const r = hits[i];
+            const id = r[0], img = r[1], nm = r[2], tp = r[3], gr = r[4], rq = r[5];
+            const blob = r[8];
+            const tpName = DATA.types[String(tp)] || "-";
+            const grName = DATA.grades[String(gr)] || "";
+            const hex = "0x" + id.toString(16).padStart(4, "0");
+            const viewerHref = VIEWER_URL + "?id=" + encodeURIComponent(hex) + "&t=" + tp;
+
+            const tr = document.createElement("tr");
+            tr.innerHTML =
+                '<td><img src="' + IMG_BASE + img + '.png" loading="lazy" onerror="this.style.opacity=0.3"></td>' +
+                '<td class="name"><a href="' + viewerHref + '">' + escapeHtml(nm) + '</a></td>' +
+                '<td>' + escapeHtml(tpName) + '</td>' +
+                '<td>' + escapeHtml(grName) + '</td>' +
+                '<td>' + (rq || "") + '</td>' +
+                '<td class="blob">' + escapeHtml(blob.slice(0, 200)) + (blob.length > 200 ? "…" : "") + '</td>';
+            frag.appendChild(tr);
+        }
+        tbodyEl.appendChild(frag);
+        tableEl.style.display = "";
+
+        const t1 = performance.now();
+        const capped = total >= PAGE_LIMIT ? " (先頭" + PAGE_LIMIT + "件を表示)" : "";
+        statusEl.innerHTML = '<span class="search-hits">' + total + '件ヒット</span>' + capped + ' / 検索' + (t1 - t0).toFixed(0) + 'ms';
+    }
+
+    async function runSearch() {
+        await ensureDataLoaded();
+        render(inputEl.value.trim());
+    }
+
+    inputEl.addEventListener('input', () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(runSearch, 120);
+    });
+
+    // 初期表示・ブラウザ戻る（bfcache 復元含む）・フォーム自動復元で
+    // 入力内容が残っている場合に再検索する。
+    // これがないと「詳細⇒戻る」往復で input に値があるのに結果が空のまま固定される。
+    window.addEventListener('pageshow', () => {
+        if (inputEl.value.trim()) runSearch();
+    });
+    // スクリプト初回実行時にも値があれば即検索（ブラウザの autofill / restore 対策）
+    if (inputEl.value.trim()) runSearch();
+})();
+</script>
+</body>
+</html>
