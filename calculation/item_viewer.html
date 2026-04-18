@@ -170,6 +170,32 @@
         return '0x' + n.toString(16).padStart(4, '0');
     }
 
+    // Nx オーバーレイ JSON（items_full_nx_<t>.json）は存在しない type も多いので、
+    // 404 は正常ケースとして扱い、例外化しない。ネット起因の失敗は握りつぶし、
+    // フォールバックで通常 HTML を表示する。
+    async function fetchNxOverlay(tNum, noCache) {
+        const url = 'data/items_full_nx_' + tNum + '.json'
+                  + (noCache ? ('?_=' + Date.now()) : '');
+        try {
+            const res = await fetch(url, noCache ? { cache: 'no-cache' } : {});
+            if (!res.ok) return null;  // 404 含む: そのtypeにNxペアが無い
+            return await res.json();
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function applyTitleFrom(html) {
+        // タイトル更新（先頭 th の font 文字列 or 生 th テキスト）
+        const m = /<th[^>]*>\s*<font[^>]*>\s*(?:<font[^>]*>)?([^<]+)/.exec(html)
+               || /<th[^>]*>\s*([^<]+)<\/th>/.exec(html);
+        if (m && m[1]) {
+            const name = m[1].trim();
+            titleEl.textContent = name;
+            document.title = name + ' - 赤石の民衆';
+        }
+    }
+
     async function load() {
         const idHex = normalizeId(getParam('id'));
         const t = getParam('t');
@@ -183,27 +209,26 @@
             return;
         }
 
+        // 通常 JSON と Nx オーバーレイを並行 fetch
         const url = 'data/items_full_' + tNum + '.json';
         try {
-            const res = await fetch(url);
+            const [res, nxBucket] = await Promise.all([
+                fetch(url),
+                fetchNxOverlay(tNum, false),
+            ]);
             if (!res.ok) throw new Error('HTTP ' + res.status);
             const bucket = await res.json();
-            const html = bucket[idHex];
+
+            // Nx オーバーレイ優先: 通常 ID / Nx ID どちらで到達しても 12 カラム版に切替
+            const nxHtml = nxBucket && nxBucket[idHex];
+            const html = nxHtml || bucket[idHex];
             if (!html) {
                 statusEl.textContent = 'アイテムが見つかりません: id=' + idHex + ' / type=' + tNum;
                 return;
             }
             hostEl.innerHTML = html;
             statusEl.style.display = 'none';
-
-            // タイトル更新（先頭テーブルの thead 文字列を抽出）
-            const m = /<th[^>]*>\s*<font[^>]*>([^<]+)<\/font>/.exec(html)
-                   || /<th[^>]*>\s*([^<]+)<\/th>/.exec(html);
-            if (m && m[1]) {
-                const name = m[1].trim();
-                titleEl.textContent = name;
-                document.title = name + ' - 赤石の民衆';
-            }
+            applyTitleFrom(html);
         } catch (e) {
             statusEl.textContent = '読み込み失敗: ' + e.message;
         }
@@ -222,13 +247,18 @@
 
         const url = 'data/items_full_' + tNum + '.json?_=' + Date.now();
         try {
-            const res = await fetch(url, { cache: 'no-cache' });
+            const [res, nxBucket] = await Promise.all([
+                fetch(url, { cache: 'no-cache' }),
+                fetchNxOverlay(tNum, true),
+            ]);
             if (!res.ok) throw new Error('HTTP ' + res.status);
             const bucket = await res.json();
-            const html = bucket[idHex];
+            const nxHtml = nxBucket && nxBucket[idHex];
+            const html = nxHtml || bucket[idHex];
             if (html) {
                 hostEl.innerHTML = html;
                 statusEl.style.display = 'none';
+                applyTitleFrom(html);
             }
             btn.textContent = '更新完了';
             setTimeout(function() { btn.textContent = 'キャッシュ更新'; btn.disabled = false; }, 1500);
