@@ -93,6 +93,17 @@
             color: #1a4f8b;
             font-weight: bold;
         }
+        .cache-reload-btn {
+            background: #607D8B;
+            color: #fff;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            cursor: pointer;
+            margin-left: 8px;
+        }
+        .cache-reload-btn:hover { background: #455A64; }
     </style>
 </head>
 
@@ -169,6 +180,7 @@
                 <div>
                     <input type="text" id="search-input" placeholder="例: 防御力 ヘルメット" autofocus>
                     <span id="search-status">データ未読み込み</span>
+                    <button class="cache-reload-btn" id="btn-cache-reload" onclick="reloadSearchNoCache()">キャッシュ更新</button>
                 </div>
                 <div id="search-message"></div>
                 <table id="item-search-results" style="display:none">
@@ -315,8 +327,26 @@
     window.addEventListener('pageshow', () => {
         if (inputEl.value.trim()) runSearch();
     });
-    // スクリプト初回実行時にも値があれば即検索（ブラウザの autofill / restore 対策）
     if (inputEl.value.trim()) runSearch();
+
+    window.reloadSearchNoCache = async function() {
+        var btn = document.getElementById('btn-cache-reload');
+        btn.textContent = '更新中...';
+        btn.disabled = true;
+        try {
+            var url = DATA_URL + '?_=' + Date.now();
+            var res = await fetch(url, { cache: 'no-cache' });
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            DATA = await res.json();
+            statusEl.textContent = '再読み込み完了: ' + DATA.rows.length + '件';
+            render(inputEl.value.trim());
+            btn.textContent = '更新完了';
+            setTimeout(function() { btn.textContent = 'キャッシュ更新'; btn.disabled = false; }, 1500);
+        } catch (e) {
+            btn.textContent = '更新失敗';
+            setTimeout(function() { btn.textContent = 'キャッシュ更新'; btn.disabled = false; }, 2000);
+        }
+    };
 })();
 </script>
 </body>

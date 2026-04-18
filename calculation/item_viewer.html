@@ -47,6 +47,17 @@
             color: #666;
             margin: 1em;
         }
+        .cache-reload-btn {
+            background: #607D8B;
+            color: #fff;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            cursor: pointer;
+            margin-left: 8px;
+        }
+        .cache-reload-btn:hover { background: #455A64; }
     </style>
 </head>
 
@@ -119,7 +130,7 @@
             <div class="main-background mdl-typography--text-center">
                 <br>
                 <h1 id="item-viewer-title">アイテム表示</h1>
-                <div id="item-viewer-status">読み込み中...</div>
+                <div id="item-viewer-status">読み込み中...<button class="cache-reload-btn" id="btn-cache-reload" style="display:none" onclick="reloadNoCache()">キャッシュ更新</button></div>
                 <div id="item-viewer-host"></div>
                 <br>
                 <p>
@@ -198,7 +209,39 @@
         }
     }
 
-    load();
+    async function loadNoCache() {
+        const idHex = normalizeId(getParam('id'));
+        const t = getParam('t');
+        if (!idHex || t === null) return;
+        const tNum = parseInt(t, 10);
+        if (isNaN(tNum)) return;
+
+        const btn = document.getElementById('btn-cache-reload');
+        btn.textContent = '更新中...';
+        btn.disabled = true;
+
+        const url = 'data/items_full_' + tNum + '.json?_=' + Date.now();
+        try {
+            const res = await fetch(url, { cache: 'no-cache' });
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            const bucket = await res.json();
+            const html = bucket[idHex];
+            if (html) {
+                hostEl.innerHTML = html;
+                statusEl.style.display = 'none';
+            }
+            btn.textContent = '更新完了';
+            setTimeout(function() { btn.textContent = 'キャッシュ更新'; btn.disabled = false; }, 1500);
+        } catch (e) {
+            btn.textContent = '更新失敗';
+            setTimeout(function() { btn.textContent = 'キャッシュ更新'; btn.disabled = false; }, 2000);
+        }
+    }
+    window.reloadNoCache = loadNoCache;
+
+    load().then(function() {
+        document.getElementById('btn-cache-reload').style.display = '';
+    });
 })();
 </script>
 </body>
