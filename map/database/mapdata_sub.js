@@ -906,6 +906,18 @@ var MapSubInfoList = {
     "1128": {"name": "未確認探検地飼育場", "req_map_lv": 10, "dfi": 100, "dwa": 100, "dwi": 100, "dea": 100, "dli": 100, "dda": 100, "st_down": 40, "lbd": 50, "non_resume": true, "mc": "-", "mc2": 3, "mc3": 6},
     "1129": {"name": "未確認探検地飼育場", "req_map_lv": 10, "dfi": 100, "dwa": 100, "dwi": 100, "dea": 100, "dli": 100, "dda": 100, "st_down": 40, "lbd": 50, "non_resume": true, "mc": "-", "mc2": 3, "mc3": 1},
     "1130": {"name": "未確認探検地飼育場", "req_map_lv": 10, "dfi": 100, "dwa": 100, "dwi": 100, "dea": 100, "dli": 100, "dda": 100, "st_down": 40, "lbd": 50, "non_resume": true, "mc": "-", "mc2": 3, "mc3": 5},
+    "1131": {"name": "孤立した飼育地", "req_map_lv": 10, "dfi": 100, "dwa": 100, "dwi": 100, "dea": 100, "dli": 100, "dda": 100, "st_down": 40, "lbd": 50, "non_resume": true, "mc": "-", "mc2": 3, "mc3": 1},
+    "1132": {"name": "捨てられた研究所", "req_map_lv": 10, "dfi": 100, "dwa": 100, "dwi": 100, "dea": 100, "dli": 100, "dda": 100, "st_down": 40, "lbd": 50, "non_resume": true, "mc": "-", "mc2": 3, "mc3": 1},
+    "1133": {"name": "捨てられた研究所下層", "req_map_lv": 10, "dfi": 100, "dwa": 100, "dwi": 100, "dea": 100, "dli": 100, "dda": 100, "st_down": 40, "lbd": 50, "non_resume": true, "mc": "-", "mc2": 3, "mc3": 1},
+    "1134": {"name": "孤立した飼育地", "req_map_lv": 10, "dfi": 100, "dwa": 100, "dwi": 100, "dea": 100, "dli": 100, "dda": 100, "st_down": 40, "lbd": 50, "non_resume": true, "mc": "-", "mc2": 3, "mc3": 1},
+    "1135": {"name": "孤立した飼育地", "req_map_lv": 10, "dfi": 100, "dwa": 100, "dwi": 100, "dea": 100, "dli": 100, "dda": 100, "st_down": 40, "lbd": 50, "non_resume": true, "mc": "-", "mc2": 3, "mc3": 1},
+    "1136": {"name": "孤立した飼育地", "req_map_lv": 10, "dfi": 100, "dwa": 100, "dwi": 100, "dea": 100, "dli": 100, "dda": 100, "st_down": 40, "lbd": 50, "non_resume": true, "mc": "-", "mc2": 3, "mc3": 1},
+    "1137": {"name": "捨てられた研究所", "req_map_lv": 10, "dfi": 100, "dwa": 100, "dwi": 100, "dea": 100, "dli": 100, "dda": 100, "st_down": 40, "lbd": 50, "non_resume": true, "mc": "-", "mc2": 3, "mc3": 1},
+    "1138": {"name": "捨てられた研究所", "req_map_lv": 10, "dfi": 100, "dwa": 100, "dwi": 100, "dea": 100, "dli": 100, "dda": 100, "st_down": 40, "lbd": 50, "non_resume": true, "mc": "-", "mc2": 3, "mc3": 1},
+    "1139": {"name": "捨てられた研究所", "req_map_lv": 10, "dfi": 100, "dwa": 100, "dwi": 100, "dea": 100, "dli": 100, "dda": 100, "st_down": 40, "lbd": 50, "non_resume": true, "mc": "-", "mc2": 3, "mc3": 1},
+    "1140": {"name": "捨てられた研究所下層", "req_map_lv": 10, "dfi": 100, "dwa": 100, "dwi": 100, "dea": 100, "dli": 100, "dda": 100, "st_down": 40, "lbd": 50, "non_resume": true, "mc": "-", "mc2": 3, "mc3": 1},
+    "1141": {"name": "捨てられた研究所下層", "req_map_lv": 10, "dfi": 100, "dwa": 100, "dwi": 100, "dea": 100, "dli": 100, "dda": 100, "st_down": 40, "lbd": 50, "non_resume": true, "mc": "-", "mc2": 3, "mc3": 1},
+    "1142": {"name": "捨てられた研究所下層", "req_map_lv": 10, "dfi": 100, "dwa": 100, "dwi": 100, "dea": 100, "dli": 100, "dda": 100, "st_down": 40, "lbd": 50, "non_resume": true, "mc": "-", "mc2": 3, "mc3": 1},
     "9999": {"name": "そこみん王国", "req_map_lv": 4, "dfi": 40, "dwa": 40, "dwi": 40, "dea": 40, "dli": 40, "dda": 40, "st_down": 40, "lbd": 40, "non_resume": true, "mc": "S", "mc2": 1, "mc3": -1},
   };
 

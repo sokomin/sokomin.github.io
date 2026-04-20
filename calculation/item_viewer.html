@@ -150,6 +150,7 @@
         </div>
     </div>
 
+<script src="data/items_extra.js"></script>
 <script>
 (function () {
     const statusEl = document.getElementById('item-viewer-status');
@@ -183,6 +184,54 @@
         } catch (e) {
             return null;
         }
+    }
+
+    // items_extra.js の ItemExtraInfoList から補足情報を引く。
+    // キーは 10進 int / 16進リテラル / "0xNNNN" 文字列いずれも可。
+    // 値は ["行1", "行2", ...] または { heading, lines: [...] } の2形式。
+    function lookupExtra(idHex) {
+        if (typeof ItemExtraInfoList === 'undefined') return null;
+        const idNum = parseInt(idHex, 16);
+        const raw = ItemExtraInfoList[idNum] != null
+                  ? ItemExtraInfoList[idNum]
+                  : ItemExtraInfoList[idHex];
+        if (!raw) return null;
+        if (Array.isArray(raw)) {
+            return raw.length ? { heading: '入手方法', lines: raw } : null;
+        }
+        if (typeof raw === 'object' && Array.isArray(raw.lines) && raw.lines.length) {
+            return { heading: raw.heading || '入手方法', lines: raw.lines };
+        }
+        return null;
+    }
+
+    // 補足テキストが定義されているときだけ、末尾に追加行を差し込む。
+    // 補足が無いときは何もしない（既存表示を変更しない）。
+    function injectExtra(idHex) {
+        const extra = lookupExtra(idHex);
+        if (!extra) return;
+        const table = hostEl.querySelector('table#table1');
+        if (!table) return;
+        const tbody = table.querySelector('tbody') || table;
+
+        // 既存の colspan 最大値を拾って行幅を決める（5col/12col 両対応）
+        let maxCs = 0;
+        table.querySelectorAll('td[colspan], th[colspan]').forEach(function (el) {
+            const cs = parseInt(el.getAttribute('colspan'), 10);
+            if (!isNaN(cs) && cs > maxCs) maxCs = cs;
+        });
+        if (maxCs < 1) maxCs = 5;
+
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.setAttribute('colspan', String(maxCs));
+        td.setAttribute('valign', 'top');
+        td.style.backgroundColor = '#888888';
+        const headingHtml = '<font color="#00f8f8">&lt;' + extra.heading + '&gt;</font><br>';
+        const bodyHtml = extra.lines.map(function (line) { return line + '<br>'; }).join('');
+        td.innerHTML = headingHtml + bodyHtml;
+        tr.appendChild(td);
+        tbody.appendChild(tr);
     }
 
     function applyTitleFrom(html) {
@@ -229,6 +278,7 @@
             hostEl.innerHTML = html;
             statusEl.style.display = 'none';
             applyTitleFrom(html);
+            injectExtra(idHex);
         } catch (e) {
             statusEl.textContent = '読み込み失敗: ' + e.message;
         }
@@ -259,6 +309,7 @@
                 hostEl.innerHTML = html;
                 statusEl.style.display = 'none';
                 applyTitleFrom(html);
+                injectExtra(idHex);
             }
             btn.textContent = '更新完了';
             setTimeout(function() { btn.textContent = 'キャッシュ更新'; btn.disabled = false; }, 1500);
