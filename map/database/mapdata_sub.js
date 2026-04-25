@@ -1,4 +1,4 @@
-﻿//こっちのnameは参照されないが、調べやすいように書いてある。
+//こっちのnameは参照されないが、調べやすいように書いてある。
 // こちらにもデータが入ってないとエラー出るので注意。
 var MapSubInfoList = {
     "0": {"name": "古都ブルンネンシュティグ", "req_map_lv": 0, "dfi": 0, "dwa": 0, "dwi": 0, "dea": 0, "dli": 0, "dda": 0, "st_down": 0, "lbd": 0, "non_resume": false, "mc": "C", "mc2": 1, "mc3": 2},
@@ -918,6 +918,7 @@ var MapSubInfoList = {
     "1140": {"name": "捨てられた研究所下層", "req_map_lv": 10, "dfi": 100, "dwa": 100, "dwi": 100, "dea": 100, "dli": 100, "dda": 100, "st_down": 40, "lbd": 50, "non_resume": true, "mc": "-", "mc2": 3, "mc3": 1},
     "1141": {"name": "捨てられた研究所下層", "req_map_lv": 10, "dfi": 100, "dwa": 100, "dwi": 100, "dea": 100, "dli": 100, "dda": 100, "st_down": 40, "lbd": 50, "non_resume": true, "mc": "-", "mc2": 3, "mc3": 1},
     "1142": {"name": "捨てられた研究所下層", "req_map_lv": 10, "dfi": 100, "dwa": 100, "dwi": 100, "dea": 100, "dli": 100, "dda": 100, "st_down": 40, "lbd": 50, "non_resume": true, "mc": "-", "mc2": 3, "mc3": 1},
+    "1143": {"name": "栄誉の祭典", "req_map_lv": 0, "dfi": 0, "dwa": 0, "dwi": 0, "dea": 0, "dli": 0, "dda": 0, "st_down": 0, "lbd": 0, "non_resume": false, "mc": "C", "mc2": 1, "mc3": 2},
     "9999": {"name": "そこみん王国", "req_map_lv": 4, "dfi": 40, "dwa": 40, "dwi": 40, "dea": 40, "dli": 40, "dda": 40, "st_down": 40, "lbd": 40, "non_resume": true, "mc": "S", "mc2": 1, "mc3": -1},
   };
 
