@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1120" />
+    <title>Map Viewer Debug</title>
+    <link rel="stylesheet" href="../map/js/style.css" />
+    <style>
+        :root {
+            color-scheme: light;
+        }
+
+        body {
+            margin: 0;
+            color: #1f2933;
+            background: #f4f7fb;
+            font-family: "Segoe UI", Meiryo, sans-serif;
+            font-size: 14px;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 10px 16px;
+            background: #1f2933;
+            color: #ffffff;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        main {
+            display: grid;
+            grid-template-columns: 280px minmax(780px, 1fr);
+            min-height: calc(100vh - 48px);
+        }
+
+        aside {
+            padding: 14px;
+            border-right: 1px solid #d9e2ec;
+            background: #ffffff;
+        }
+
+        label {
+            display: block;
+            margin: 12px 0 5px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #52606d;
+        }
+
+        input,
+        select,
+        button {
+            box-sizing: border-box;
+            width: 100%;
+            min-height: 32px;
+            border: 1px solid #bcccdc;
+            border-radius: 4px;
+            background: #ffffff;
+            color: #1f2933;
+            font: inherit;
+        }
+
+        input {
+            padding: 5px 8px;
+        }
+
+        button {
+            margin-top: 8px;
+            cursor: pointer;
+            background: #2f80ed;
+            color: #ffffff;
+            border-color: #2f80ed;
+            font-weight: 700;
+        }
+
+        button.secondary {
+            background: #ffffff;
+            color: #1f2933;
+            border-color: #9fb3c8;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .check-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .check-row input {
+            width: auto;
+            min-height: auto;
+        }
+
+        .status {
+            margin-top: 14px;
+            padding: 10px;
+            border: 1px solid #d9e2ec;
+            border-radius: 4px;
+            background: #f8fafc;
+            line-height: 1.7;
+            white-space: pre-line;
+        }
+
+        .viewer-shell {
+            overflow: auto;
+            padding: 14px;
+        }
+
+        .map-title {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .map-title strong {
+            font-size: 18px;
+        }
+
+        .map-stage {
+            position: relative;
+            display: inline-block;
+            min-width: 240px;
+            min-height: 200px;
+            background: #dde6ef;
+            border: 1px solid #9fb3c8;
+        }
+
+        #map-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            image-rendering: auto;
+        }
+
+        #mob-layer,
+        #area-layer {
+            position: absolute;
+            inset: 0;
+        }
+
+        .debug-dot {
+            position: absolute;
+            min-width: 10px;
+            height: 14px;
+            color: #ff0000;
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 14px;
+            text-shadow: 1px 1px 0 #ffffff, -1px -1px 0 #ffffff;
+            pointer-events: auto;
+        }
+
+        .debug-dot.outside {
+            color: #8a1c1c;
+            background: #fff1f1;
+        }
+
+        .debug-area {
+            position: absolute;
+            box-sizing: border-box;
+            border: 1px solid rgba(0, 92, 230, 0.7);
+            background: rgba(0, 92, 230, 0.16);
+            pointer-events: auto;
+        }
+
+        .debug-area.outside {
+            border-color: rgba(219, 39, 119, 0.9);
+            background: rgba(219, 39, 119, 0.16);
+        }
+
+        .muted {
+            color: #627d98;
+            font-size: 12px;
+        }
+    </style>
+    <script src="../design/jquery-3.4.1.min.js"></script>
+    <script src="../map/database/mapdata.js"></script>
+    <script src="../map/database/mapdata_sub.js"></script>
+    <script src="../map/database/mapdata_extra.js"></script>
+</head>
+
+<body>
+    <header>
+        <h1>Map Viewer Debug</h1>
+        <span class="muted">imgsize.js live preview</span>
+    </header>
+    <main>
+        <aside>
+            <label for="map-id">map_id</label>
+            <input id="map-id" type="number" min="0" step="1" value="0" />
+            <button id="load-map">表示</button>
+            <button id="open-viewer" class="secondary">map_viewer.html</button>
+
+            <div class="row">
+                <div>
+                    <label for="override-w">w</label>
+                    <input id="override-w" type="number" min="1" step="1" />
+                </div>
+                <div>
+                    <label for="override-h">h</label>
+                    <input id="override-h" type="number" min="1" step="1" />
+                </div>
+            </div>
+            <button id="apply-override" class="secondary">仮反映</button>
+            <button id="clear-override" class="secondary">解除</button>
+
+            <label for="zoom">zoom</label>
+            <input id="zoom" type="range" min="0.5" max="4" step="0.1" value="1" />
+
+            <div class="check-row">
+                <input id="show-mobs" type="checkbox" checked />
+                <span>Mob</span>
+            </div>
+            <div class="check-row">
+                <input id="show-areas" type="checkbox" checked />
+                <span>Area</span>
+            </div>
+            <div class="check-row">
+                <input id="auto-refresh" type="checkbox" checked />
+                <span>auto</span>
+            </div>
+            <div class="check-row">
+                <input id="lock-image-natural" type="checkbox" />
+                <span>画像は実寸比で固定</span>
+            </div>
+
+            <div id="status" class="status">Loading...</div>
+        </aside>
+        <section class="viewer-shell">
+            <div class="map-title">
+                <strong id="map-name">-</strong>
+                <span id="map-meta" class="muted"></span>
+            </div>
+            <div id="map-stage" class="map-stage">
+                <img id="map-image" alt="" />
+                <div id="area-layer"></div>
+                <div id="mob-layer"></div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../map/js/map_viewer_debug.js"></script>
+</body>
+
+</html>
