@@ -1233,7 +1233,6 @@ function datalist(num) {
         console.log("未実装だよ");
         return;
     }
-    //TODO これオブジェクトのまま渡したほうがよくない？
     LvMin = NameList[num].lvmin;
     LvMax = NameList[num].lvmax;
     Name = NameList[num].name;
@@ -1250,7 +1249,6 @@ function datalist(num) {
         /**
          * ここでmobdb＊＊.jsの中身を解析して変数に落とし込もうとする
          */
-        // FIXME  リアル座標出力への対応を、いつか
         ObjX = [];
         ObjY = [];
         ObjrealX = [];
