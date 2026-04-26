@@ -5,11 +5,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=960">
 
-  <title>確率情報（日本語版） 赤石の民衆</title>
+  <title>確率情報（日本語版） | 赤石の民衆</title>
   <meta name="description" content="RED STONE（レッドストーン）の確率情報（日本語版）を見やすくまとめたページです。">
   <meta http-equiv="Content-Style-Type" content="text/css">
   <meta http-equiv="Content-Script-Type" content="text/javascript">
-  <meta name="keywords" content="RED STONE,レッドストーン,赤石の民衆,確率,混沌の魔法書,公開確率,翻訳">
+  <meta name="keywords" content="RED STONE,レッドストーン,赤石の民衆,確率,公開確率,解放変換,コスチューム,クレスト,コクーン,混沌の魔法書">
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -42,22 +42,24 @@
   </script>
 
   <style>
-    /* このページだけの“タブ風リンク” */
-    .prob-tabs-wrap{
+    /* ===== このページ専用：確率タブ ===== */
+    .prob-tabs-wrap {
       position: sticky;
-      top: 64px; /* MDL fixed header 高さ相当（必要なら微調整） */
-      z-index: 2; /* MDL drawer(5)/obfuscator(4)/header(3) より下に置き、ドロワー展開時の重なりを回避 */
+      top: 64px;
+      z-index: 2; /* MDL drawer(5)/obfuscator(4)/header(3) より下 */
       background: white;
       border-bottom: 1px solid #ddd;
     }
-    .prob-tabs{
+
+    .prob-tabs {
       display: flex;
       gap: 6px;
       overflow-x: auto;
       padding: 10px 12px;
       -webkit-overflow-scrolling: touch;
     }
-    .prob-tab{
+
+    .prob-tab {
       display: inline-block;
       white-space: nowrap;
       border: 1px solid #ddd;
@@ -69,35 +71,62 @@
       font-size: 14px;
       font-weight: 700;
     }
-    .prob-tab:hover{
+
+    .prob-tab:hover {
       border-bottom: 1px solid #8bc34a;
     }
-    .prob-note{
+
+    .prob-tab.is-active {
+      background: #e8f0fe;
+      border-color: #8ab4f8;
+    }
+
+    .prob-note {
       font-size: 13px;
       opacity: 0.9;
-    }
-    .prob-card{
+      line-height: 1.6;
       max-width: 960px;
-      margin: 0 auto;
-      padding: 12px 16px;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      background: #fff;
+      margin: 0 0 12px;
     }
-    .prob-card h2{
-      font-size: 22px;
-      margin: 8px 0 6px;
-    }
-    .prob-links{
-      margin-top: 10px;
+
+    .prob-links {
       line-height: 1.8;
-    }
-    .prob-list{
       max-width: 960px;
-      margin: 14px auto 0;
+      margin: 0 0 12px;
     }
-    .prob-list a{
-      font-weight: 700;
+
+    table.prob-table {
+      width: 90%;
+      max-width: 960px;
+      margin: 0;
+      table-layout: auto;
+      border: 1px #555 solid;
+      border-collapse: collapse;
+      border-spacing: 0;
+      text-align: left;
+    }
+
+    table.prob-table th {
+      padding: 4px 6px;
+      border: #555 solid;
+      border-width: 0 0 1px 1px;
+      background: #9d896c;
+      color: #fff;
+      font-weight: bold;
+      line-height: 120%;
+      text-align: center;
+    }
+
+    table.prob-table td {
+      padding: 4px 6px;
+      border: 1px #555 solid;
+      border-width: 0 0 1px 1px;
+      color: #030303;
+      text-align: left;
+    }
+
+    table.prob-table tbody tr:nth-child(odd) td {
+      background: #f7f5f0;
     }
   </style>
 </head>
@@ -166,73 +195,80 @@
         <a class="mdl-navigation__link sokomin-layout-info" href="../../information/information.html"><strong>雑学</strong></a>
       </nav>
     </div>
-      <!-- 方式B：別ページ遷移の“タブ” -->
-      <div class="prob-tabs-wrap">
-        <nav id="probTabs" class="prob-tabs" aria-label="確率情報タブ">
-          <!-- JSで差し替え予定でも、ここが静的フォールバックとして機能します -->
-          <a class="prob-tab" href="./pages/sheet_01.html">解放変換OP</a>
-          <a class="prob-tab" href="./pages/sheet_02.html">コスチューム</a>
-          <a class="prob-tab" href="./pages/sheet_03.html">クレスト</a>
-          <a class="prob-tab" href="./pages/sheet_04.html">コクーン</a>
-          <a class="prob-tab" href="./pages/sheet_05.html">タニアのお守り</a>
-          <a class="prob-tab" href="./pages/sheet_06.html">レプリカ解放OP変換</a>
-          <a class="prob-tab" href="./pages/sheet_07.html">限定販売1</a>
-          <a class="prob-tab" href="./pages/sheet_08.html">ランダムBOX</a>
-          <a class="prob-tab" href="./pages/sheet_09.html">販売中商品</a>
-          <a class="prob-tab" href="./pages/sheet_10.html">灼熱解放OP変換</a>
-          <a class="prob-tab" href="./pages/sheet_12.html">混沌の魔法書</a>
-        </nav>
-      </div>
+
+    <div class="prob-tabs-wrap">
+      <nav id="probTabs" class="prob-tabs" aria-label="確率情報タブ">
+        <a class="prob-tab is-active" aria-current="page" href="./index.html">確率情報トップ</a>
+        <a class="prob-tab" href="./pages/sheet_01.html">解放変換OP</a>
+        <a class="prob-tab" href="./pages/sheet_02.html">コスチューム</a>
+        <a class="prob-tab" href="./pages/sheet_03.html">クレスト</a>
+        <a class="prob-tab" href="./pages/sheet_04.html">コクーン</a>
+        <a class="prob-tab" href="./pages/sheet_05.html">タニアのお守り</a>
+        <a class="prob-tab" href="./pages/sheet_06.html">レプリカ解放OP変換</a>
+        <a class="prob-tab" href="./pages/sheet_07.html">限定販売1</a>
+        <a class="prob-tab" href="./pages/sheet_08.html">ランダムBOX</a>
+        <a class="prob-tab" href="./pages/sheet_09.html">販売中商品</a>
+        <a class="prob-tab" href="./pages/sheet_10.html">灼熱解放OP変換</a>
+        <a class="prob-tab" href="./pages/sheet_12.html">混沌の魔法書</a>
+      </nav>
+    </div>
 
     <div class="android-large-table mdl-layout__content">
 
-
-      <!--main-->
+      <!-- main -->
       <div class="main-background mdl-typography--text-center korea-content">
         <br>
-        <div class="prob-card">
-          <h1>確率情報（日本語版）</h1>
+        <h1>確率情報（日本語版）</h1>
+        <h5>
+          <font color="#ff0000">
+            <strong>
+              [重要！] 韓国と日本では確率仕様が異なる可能性があります。<br>
+              参考値としてご活用ください。
+            </strong>
+          </font>
+          <br>
+        </h5>
+        <br>
 
-          <p class="prob-note">
-            公式公開の確率情報（韓国語）を、見やすさ優先で日本語ページに整形したものです。<br>
-            ※ 画像・データは L&K Co., Ltd. に帰属します。表記ゆれや誤訳があり得るため、最終的な確認は元データも併せて参照してください。
-          </p>
+        <h2>一覧</h2>
+        <table class="prob-table" id="table10" style="max-width:960px">
+          <tbody>
+            <tr><th>対象コンテンツ</th><th>概要</th></tr>
+            <tr><td><a href="./pages/sheet_01.html">解放変換OP</a></td><td>解放変換オプションの確率（10部位 × 1〜4解放目）</td></tr>
+            <tr><td><a href="./pages/sheet_02.html">コスチューム</a></td><td>強化 / 合成 / 分解 / 染色 / 色スロット変換</td></tr>
+            <tr><td><a href="./pages/sheet_03.html">クレスト</a></td><td>クレスト箱の出現確率</td></tr>
+            <tr><td><a href="./pages/sheet_04.html">コクーン</a></td><td>各種コクーンから出現するクリーチャーの確率</td></tr>
+            <tr><td><a href="./pages/sheet_05.html">タニアのお守り</a></td><td>占い道具のオプション確率（万能 / 改良 / レプリカ）</td></tr>
+            <tr><td><a href="./pages/sheet_06.html">レプリカ解放OP変換</a></td><td>レプリカ解放OP変換機の出現確率（10部位 × 3等級）</td></tr>
+            <tr><td><a href="./pages/sheet_07.html">限定販売1</a></td><td>期間限定販売商品の確率情報</td></tr>
+            <tr><td><a href="./pages/sheet_08.html">ランダムBOX</a></td><td>ランダムBOX系商品の確率情報</td></tr>
+            <tr><td><a href="./pages/sheet_09.html">販売中商品</a></td><td>販売中の確率型商品の確率情報</td></tr>
+            <tr><td><a href="./pages/sheet_10.html">灼熱解放OP変換</a></td><td>灼熱の解放OP変換機 出現確率（10部位）</td></tr>
+            <tr><td><a href="./pages/sheet_12.html">混沌の魔法書</a></td><td>混沌 / 色褪せた / 増幅された 3表</td></tr>
+          </tbody>
+        </table>
+        <br><br>
+        <p class="prob-note">
+          韓国公式で公開されている確率情報を、日本語で確認しやすいように整理したページです。<br>
+          表記ゆれや翻訳差分があり得るため、最終確認は元データも併せて参照してください。
+        </p>
 
-          <div class="prob-links">
-            <strong>元データ（韓国語・公開スプレッドシート）:</strong><br>
-            <a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/e/2PACX-1vRg71t9qLRRzchWUW_v114dX9CJ-IeuWMTgLEwmeCgSYYiJJah7uqeYFtm8lnkvE73PCgTGy_Vl60HP/pubhtml#gid=0">
-              Googleスプレッドシート（公開ページ）を開く
-            </a>
-          </div>
-
-          <hr style="margin:12px 0;">
-
-          <div class="prob-links">
-            <strong>関連ツール:</strong>
-            <a href="./chaos_op_simulator.html">混沌の魔法書シミュレーター</a>
-          </div>
+        <br>
+        <div class="prob-links">
+          <strong>元データ（韓国語・公開スプレッドシート）:</strong><br>
+          <a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/e/2PACX-1vRg71t9qLRRzchWUW_v114dX9CJ-IeuWMTgLEwmeCgSYYiJJah7uqeYFtm8lnkvE73PCgTGy_Vl60HP/pubhtml#gid=0">
+            Googleスプレッドシート（公開ページ）を開く
+          </a>
         </div>
 
-        <div class="prob-list">
-          <h2>一覧</h2>
-          <table id="table10" style="max-width:960px;">
-            <tbody>
-              <tr><th>対象コンテンツ</th><th>概要</th></tr>
-              <tr><td><a href="./pages/sheet_05.html">タニアのお守り</a></td><td>占術道具 接頭辞確率（万能 / 改良 / 模造）</td></tr>
-              <tr><td><a href="./pages/sheet_12.html">混沌の魔法書</a></td><td>混沌 / 色褪せた / 増幅された 3表</td></tr>
-              <tr><td><a href="./pages/sheet_06.html">レプリカ解放OP変換</a></td><td>模造解放OP変換機の出現確率（10部位 × 3等級）</td></tr>
-              <tr><td><a href="./pages/sheet_01.html">解放変換OP</a></td><td>解放変換オプションの確率（10部位 × 1〜4解放目）</td></tr>
-              <tr><td><a href="./pages/sheet_10.html">灼熱解放OP変換</a></td><td>灼熱の解放OP変換機 出現確率（10部位）</td></tr>
-              <tr><td><a href="./pages/sheet_02.html">コスチューム</a></td><td>強化 / 合成 / 分解 / 染色 / 色スロット変換</td></tr>
-              <tr><td><a href="./pages/sheet_03.html">クレスト</a></td><td>魔法石（クレスト）箱の出現確率</td></tr>
-              <tr><td><a href="./pages/sheet_04.html">コクーン</a></td><td>各種コクーンから出現するクリーチャーの確率</td></tr>
-              <tr><td><a href="./pages/sheet_07.html">限定販売1</a></td><td>期間限定販売（接頭辞強化箱など）</td></tr>
-              <tr><td><a href="./pages/sheet_08.html">ランダムBOX</a></td><td>ランダムボックス系（販売2）</td></tr>
-              <tr><td><a href="./pages/sheet_09.html">販売中商品</a></td><td>販売中の確率型商品（販売3）</td></tr>
-            </tbody>
-          </table>
+        <div class="prob-links">
+          <strong>関連ツール:</strong>
+          <a href="./chaos_op_simulator.html">混沌の魔法書シミュレーター</a>
         </div>
 
+
+        <br><br><br>
+        <br><br><br>
         <br><br><br>
 
         <footer class="android-footer mdl-mega-footer">
@@ -247,9 +283,6 @@
         </footer>
 
       </div>
-
-      <!-- 任意：共通タブJS化する場合に使う（無くてもOK） -->
-      <script src="./assets/tabs.js"></script>
 
       <script src="https://sokomin.github.io/material.min.js"></script>
     </div>
