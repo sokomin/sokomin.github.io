@@ -420,6 +420,9 @@ function createMobTable() {
         $div_main.append("<br><br>");
         cnt++;
     }
+    if (cnt == 0) {
+        $div_main.append($('<p>').text("該当するモンスターが存在しませんでした。"));
+    }
     $("#preview_html").empty().append($div_main);
 
     // 各パラメタの文字出力
