@@ -160,7 +160,7 @@ function createMobTable() {
     var MOBSPEC = getParam('spec') ? parseInt(getParam('spec')) : 0;
     var MOBRANK = getParam('rank') ? parseInt(getParam('rank')) : 0;
     var MOBID = getParam('mi') ? parseInt(getParam('mi')) : -1; //mobid直リンク専用
-    var DEF_LV = getParam('dlv') ? parseInt(getParam('dlv')) : "600"; //デフォルトレベル
+    var DEF_LV = getParam('dlv') ? parseInt(getParam('dlv')) : "1250"; //デフォルトレベル
     var DEF_STD = getParam('std') ? parseInt(getParam('std')) : "0"; //ステ低下量
     var IMGID = getParam('imgid') ? parseInt(getParam('imgid')) : -1;
     var DEBUG = getParam('debug') ? parseInt(getParam('debug')) : 0;
