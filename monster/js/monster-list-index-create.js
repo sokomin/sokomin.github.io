@@ -19,6 +19,8 @@ for (key in mobSpec) {
         npc_doc += ' <img src="https://sokomin.github.io/sokomin_repository/db/monsterDiscerner/monsterDiscerner_0014.png">';
     } else if (key == "4") {
         npc_doc += ' <img src="https://sokomin.github.io/sokomin_repository/db/monsterDiscerner/monsterDiscerner_0015.png">';
+    } else if (key == "5") {
+        npc_doc += ' <img width="30" height="30" src="https://sokomin.github.io/sokomin_repository/db/interface2/interface2_2474.png">';
     }
     npc_doc += '</th>';
 }
