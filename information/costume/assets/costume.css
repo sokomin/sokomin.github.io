@@ -1,0 +1,266 @@
+:root {
+  --bg: #f6f6f8;
+  --card-bg: #fff;
+  --text: #222;
+  --muted: #888;
+  --accent: #d22;
+  --border: #ddd;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Hiragino Kaku Gothic ProN", "Meiryo", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+}
+a { color: #06c; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.page-header {
+  padding: 16px 24px;
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+}
+.page-header h1 { margin: 0 0 4px; font-size: 20px; }
+.page-subtitle { margin: 0; color: var(--muted); font-size: 13px; }
+.breadcrumb { margin: 0 0 8px; color: var(--muted); font-size: 12px; }
+.staging-banner {
+  display: inline-block;
+  margin: 8px 0 0;
+  padding: 4px 10px;
+  background: #fff7d6;
+  border: 1px solid #e2c95a;
+  color: #7a5b00;
+  font-size: 12px;
+  border-radius: 3px;
+}
+.page-footer {
+  padding: 16px 24px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ---- index (job grid) ---- */
+.job-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+  padding: 16px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+@media (max-width: 720px) {
+  .job-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+.job-tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 80px;
+  padding: 12px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: var(--shadow);
+  text-align: center;
+  color: var(--text);
+  transition: transform 0.1s ease;
+}
+.job-tile:hover {
+  text-decoration: none;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+}
+.job-tile__label { font-size: 16px; font-weight: bold; }
+.job-tile__count { font-size: 11px; color: var(--muted); margin-top: 4px; }
+.job-tile.is-empty {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* ---- per-job costume list ---- */
+.costume-list { padding: 16px 24px; }
+.costume-section {
+  margin: 0 0 24px;
+  padding: 12px 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: var(--shadow);
+}
+.costume-section__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 0 0 12px;
+}
+.costume-section__icon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  background: #f7f7f7;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 2px;
+  image-rendering: pixelated;
+}
+.costume-section__head-text { flex: 1; min-width: 0; }
+.costume-section__title {
+  margin: 0;
+  font-size: 16px;
+  border-left: 4px solid var(--accent);
+  padding-left: 8px;
+}
+.costume-section__category {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 2px 6px;
+  background: #eee;
+  border-radius: 3px;
+  font-size: 11px;
+  color: #555;
+  vertical-align: middle;
+  font-weight: normal;
+}
+.costume-section__description {
+  margin: 4px 0 0;
+  padding-left: 12px;
+  font-size: 12px;
+  color: #555;
+  line-height: 1.4;
+}
+.costume-section__warning {
+  margin: 4px 0 8px;
+  font-size: 11px;
+  color: #b27000;
+}
+.stage-block { margin: 8px 0 0; }
+.stage-block__label {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 0 0 4px;
+}
+.color-row {
+  display: grid;
+  grid-auto-rows: auto;
+  gap: 6px;
+  justify-content: start;
+}
+.color-row.cols-1  { grid-template-columns: repeat(1,  max-content); }
+.color-row.cols-2  { grid-template-columns: repeat(2,  max-content); }
+.color-row.cols-3  { grid-template-columns: repeat(3,  max-content); }
+.color-row.cols-4  { grid-template-columns: repeat(4,  max-content); }
+.color-row.cols-5  { grid-template-columns: repeat(5,  max-content); }
+.color-row.cols-6  { grid-template-columns: repeat(6,  max-content); }
+.color-row.cols-7  { grid-template-columns: repeat(7,  max-content); }
+.cos-cell {
+  padding: 6px;
+  background: #f7f7f7;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  cursor: pointer;
+  text-align: center;
+  font: inherit;
+  color: inherit;
+}
+.cos-cell:hover { border-color: var(--accent); }
+.cos-cell__img-wrap {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.cos-cell__img {
+  display: block;
+  /* 原寸表示。Cosbody PNG は概ね 100〜180px 幅で、トリミング済みなのでそのまま並べる */
+}
+/* 裏面PNGがある cell では hover 時に裏面に差し替え。
+   `.cos-cell__img--back` は通常非表示、hover で出す。CSS だけで切替 (preload 不要)。 */
+.cos-cell__img--back { display: none; }
+.cos-cell.has-back:hover .cos-cell__img--front { display: none; }
+.cos-cell.has-back:hover .cos-cell__img--back { display: block; }
+.cos-cell__color-label {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.cos-cell.is-default .cos-cell__color-label {
+  color: var(--accent);
+  font-weight: bold;
+}
+
+/* ---- legacy-page-note (備考形式の旧ページ案内、控えめ) ---- */
+.legacy-page-note {
+  max-width: 1200px;
+  margin: 16px auto;
+  padding: 0 24px;
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+}
+.legacy-page-note a { color: var(--muted); }
+
+/* ---- legacy-only fallback (旧ページ画像のみ) ---- */
+.legacy-only {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 8px 0;
+}
+.legacy-only__img {
+  display: block;
+  background: #f7f7f7;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 4px;
+  max-width: 200px;
+}
+.legacy-only__img-wrap--has-back {
+  display: inline-block;
+  position: relative;
+}
+.legacy-only__img-wrap--has-back .legacy-only__img--back { display: none; }
+.legacy-only__img-wrap--has-back:hover .legacy-only__img--front { display: none; }
+.legacy-only__img-wrap--has-back:hover .legacy-only__img--back { display: block; }
+.legacy-only__note {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ---- gif dialog ---- */
+.gif-dialog {
+  border: none;
+  border-radius: 6px;
+  padding: 16px 16px 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  background: #fff;
+}
+.gif-dialog::backdrop { background: rgba(0,0,0,0.5); }
+.gif-dialog__close {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--muted);
+}
+.gif-dialog__close:hover { color: var(--text); }
+.gif-dialog__caption {
+  margin: 0 0 8px;
+  padding-right: 24px;
+  font-size: 14px;
+  font-weight: bold;
+}
+.gif-dialog__img {
+  display: block;
+  margin: 0 auto;
+  background: #f7f7f7;
+}
