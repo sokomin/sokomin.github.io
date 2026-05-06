@@ -637,6 +637,13 @@ function statusUpdate(tableid, mobid) {
 
 }
 
+// スキル名をモンスタースキル詳細ページへリンク化
+function skillNameLink(sid) {
+    var n = skillName[sid];
+    if (n === undefined) return "";
+    return '<a href="https://sokomin.github.io/monster/monster-skill-detail.html?si=' + sid + '">' + n + '</a>';
+}
+
 // スキル表入れる
 function createSkillName(mobid) {
     var txt = SKILL_TEXT_CONST;
@@ -645,51 +652,51 @@ function createSkillName(mobid) {
     // これ以上スキル使うmobはいないと信じてる
     if (Number(md["unknown_69"]) > 0) {
         txt += "- "
-        txt += skillName[md["unknown_69"]];
+        txt += skillNameLink(md["unknown_69"]);
         txt += "<br>"
     }
     if (Number(md["unknown_71"]) > 0) {
         txt += "- "
-        txt += skillName[md["unknown_71"]];
+        txt += skillNameLink(md["unknown_71"]);
         txt += "<br>"
     }
     if (Number(md["unknown_73"]) > 0) {
         txt += "- "
-        txt += skillName[md["unknown_73"]];
+        txt += skillNameLink(md["unknown_73"]);
         txt += "<br>"
     }
     if (Number(md["unknown_75"]) > 0) {
         txt += "- "
-        txt += skillName[md["unknown_75"]];
+        txt += skillNameLink(md["unknown_75"]);
         txt += "<br>"
     }
     if (Number(md["unknown_77"]) > 0) {
         txt += "- "
-        txt += skillName[md["unknown_77"]];
+        txt += skillNameLink(md["unknown_77"]);
         txt += "<br>"
     }
     if (Number(md["unknown_79"]) > 0) {
         txt += "- "
-        txt += skillName[md["unknown_79"]];
+        txt += skillNameLink(md["unknown_79"]);
         txt += "<br>"
     }
     if (Number(md["unknown_81"]) > 0) {
         txt += "- "
-        txt += skillName[md["unknown_81"]];
+        txt += skillNameLink(md["unknown_81"]);
         txt += "<br>"
     }
     if (Number(md["unknown_83"]) > 0) {
         txt += "- "
-        txt += skillName[md["unknown_83"]];
+        txt += skillNameLink(md["unknown_83"]);
         txt += "<br>"
     }
     if (Number(md["unknown_85"]) > 0) {
         txt += "- "
-        txt += skillName[md["unknown_85"]];
+        txt += skillNameLink(md["unknown_85"]);
         txt += "<br>"
     }
     if (Number(md["unknown_87"]) > 0) {
-        txt += skillName[md["unknown_87"]];
+        txt += skillNameLink(md["unknown_87"]);
         txt += "<br>"
     }
     return txt;
