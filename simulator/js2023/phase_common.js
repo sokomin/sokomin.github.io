@@ -29,7 +29,12 @@ const SKILL_EFFECTS = {
     {name:"物理攻撃力増加",maxLv:5,perLv:100,unit:"%"},
     {name:"魔法攻撃力増加",maxLv:5,perLv:20,unit:"%"},
     {name:"全ての属性攻撃力増加",maxLv:5,perLv:20,unit:"%"},
-    {name:"ターゲットの全属性抵抗減少",maxLv:5,perLv:10,unit:"%"}
+    {name:"ターゲットの全属性抵抗減少",maxLv:5,perLv:10,unit:"%"},
+    // 2026/02/19 (ver 0.0870) 追加 ----
+    {name:"攻撃速度増加",maxLv:5,perLv:15,unit:"%"},
+    {name:"移動速度増加",maxLv:5,perLv:8,unit:"%"},
+    {name:"最大HP増加",maxLv:5,perLv:75,unit:"%"},
+    {name:"最大CP増加",maxLv:5,perLv:75,unit:"%"}
   ],
   plane:[
     {name:"カステータス増加",maxLv:5,perLv:1000,unit:""},
@@ -42,7 +47,12 @@ const SKILL_EFFECTS = {
     {name:"魔法強打ダメージ増加",maxLv:5,perLv:2,unit:"%"},
     {name:"限界突破称号の物理効果増加",maxLv:5,perLv:1000,unit:""},
     {name:"限界突破称号の魔法効果増加",maxLv:5,perLv:1000,unit:""},
-    {name:"限界突破称号の効果増加",maxLv:5,perLv:1000,unit:""}
+    {name:"限界突破称号の効果増加",maxLv:5,perLv:1000,unit:""},
+    // 2026/02/19 (ver 0.0870) 追加 ----
+    {name:"全純粋ステータス%増加",maxLv:5,perLv:1,unit:"%"},
+    {name:"被ダメージ%減少",maxLv:5,perLv:1,unit:"%"},
+    {name:"全スキルレベル増加",maxLv:5,perLv:2,unit:""},
+    {name:"シールド制限数値増加",maxLv:5,perLv:100,unit:""}
   ],
   phase:[
     {name:"純粋ステータス％増加（力）",maxLv:5,perLv:4,unit:"%"},
@@ -55,7 +65,12 @@ const SKILL_EFFECTS = {
     {name:"最終ダメージ増加",maxLv:5,perLv:3,unit:"%"},
     {name:"ターゲットの最終ダメージ補正無視",maxLv:5,perLv:2,unit:"%"},
     {name:"ボス討伐時のダメージ増加",maxLv:5,perLv:3,unit:"%"},
-    {name:"位相系の敵討伐時ダメージ増加",maxLv:5,perLv:5,unit:"%"}
+    {name:"位相系の敵討伐時ダメージ増加",maxLv:5,perLv:5,unit:"%"},
+    // 2026/02/19 (ver 0.0870) 追加 ---- ※デュアル効果はprimary値のみperLvに反映、補足は名前に併記
+    {name:"ブラッドレコード増加",maxLv:5,perLv:10,unit:""},
+    {name:"限界突破称号の物理ダメージ+物理効果%増加 (500/Lv + 0.3%/Lv)",maxLv:5,perLv:500,unit:""},
+    {name:"限界突破称号の魔法ダメージ+魔法効果%増加 (500/Lv + 0.3%/Lv)",maxLv:5,perLv:500,unit:""},
+    {name:"PVP状態時のダメージ増加+防御力%増加 (10%/Lv + 10%/Lv)",maxLv:5,perLv:10,unit:"%"}
   ]
 };
 
