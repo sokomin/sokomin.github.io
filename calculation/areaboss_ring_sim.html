@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://sokomin.github.io/material.indigo-pink.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        .ars-section {
+            text-align: left;
+            max-width: 980px;
+            margin: 0 auto 20px;
+            padding: 12px 16px;
+            background: #fafafa;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .ars-section h3 {
+            margin: 0 0 8px 0;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            border-bottom: 2px solid #9d896c;
+            padding-bottom: 4px;
+        }
+        .ars-ring-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            margin: 8px 0;
+        }
+        .ars-ring-row label {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            background: #fff;
+            font-size: 14px;
+        }
+        .ars-ring-row label.active {
+            border-color: #9d896c;
+            background: #efe9d9;
+            font-weight: bold;
+        }
+        .ars-ring-row input[type="radio"] {
+            margin: 0;
+        }
+
+        table.ars-slots {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+        }
+        table.ars-slots th, table.ars-slots td {
+            border: 1px solid #555;
+            padding: 6px 10px;
+            text-align: left;
+        }
+        table.ars-slots th {
+            background: #9d896c;
+            color: #fff;
+            font-weight: bold;
+            text-align: center;
+            font-size: 13px;
+        }
+        table.ars-slots td.ars-slot-label {
+            text-align: center;
+            font-weight: bold;
+            width: 90px;
+            background: #efe9d9;
+        }
+        table.ars-slots td.ars-slot-label.bg-slot1 { background: #ffd9b3; }
+        table.ars-slots td.ars-tier {
+            width: 110px;
+            font-family: monospace;
+            text-align: center;
+        }
+        table.ars-slots td.ars-tier-high { background: #ffe5e5; }
+        table.ars-slots td.ars-tier-mid { background: #fff7d6; }
+        table.ars-slots td.ars-tier-low { background: #f0f0f0; }
+        table.ars-slots td.ars-empty { color: #aaa; font-style: italic; }
+
+        .ars-actions {
+            text-align: center;
+            margin: 16px 0;
+        }
+        .ars-button {
+            display: inline-block;
+            padding: 10px 22px;
+            background: #9d896c;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 0 4px 6px 4px;
+        }
+        .ars-button:hover { background: #b6a07f; }
+        .ars-button:disabled { background: #ccc; cursor: not-allowed; }
+        .ars-button.secondary { background: #777; }
+        .ars-button.secondary:hover { background: #999; }
+        .ars-button.danger { background: #aa5050; }
+        .ars-button.danger:hover { background: #c46c6c; }
+
+        .ars-targets table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        .ars-targets th, .ars-targets td {
+            border: 1px solid #ccc;
+            padding: 4px 8px;
+        }
+        .ars-targets th {
+            background: #efe9d9;
+            text-align: center;
+        }
+        .ars-targets td:first-child {
+            width: 80px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .ars-targets select { font-size: 13px; padding: 2px 4px; }
+        .ars-targets .ars-target-row.active { background: #fff7c2; }
+
+        .ars-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .ars-stat-box {
+            border: 1px solid #ccc;
+            background: #fff;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+        .ars-stat-label {
+            font-size: 12px;
+            color: #666;
+        }
+        .ars-stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            font-family: monospace;
+            color: #333;
+        }
+        .ars-progress {
+            font-size: 13px;
+            color: #444;
+            margin-top: 6px;
+        }
+        .ars-progress.success { color: #2a8a2a; font-weight: bold; }
+        .ars-progress.fail { color: #aa3333; }
+
+        .ars-loop-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            margin: 8px 0;
+        }
+        .ars-loop-row input[type="number"] {
+            width: 100px;
+            padding: 4px;
+            font-family: monospace;
+        }
+
+        .ars-options-ref {
+            margin-top: 12px;
+        }
+        .ars-options-ref summary {
+            cursor: pointer;
+            padding: 6px 0;
+            font-weight: bold;
+            color: #555;
+        }
+        .ars-options-ref table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+        .ars-options-ref th, .ars-options-ref td {
+            border: 1px solid #ccc;
+            padding: 4px 8px;
+        }
+        .ars-options-ref th {
+            background: #efe9d9;
+            text-align: center;
+        }
+        .ars-options-ref td.ars-tier-h { text-align: center; background: #ffe5e5; font-family: monospace; }
+        .ars-options-ref td.ars-tier-m { text-align: center; background: #fff7d6; font-family: monospace; }
+        .ars-options-ref td.ars-tier-l { text-align: center; background: #f0f0f0; font-family: monospace; }
+        .ars-options-ref tr.ars-slot1-row td:first-child { background: #ffd9b3; font-weight: bold; }
+
+        .ars-status {
+            font-size: 13px;
+            color: #888;
+            margin-left: auto;
+        }
+        .ars-note {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <title>エリアボスリング オプション変換シミュレーター　赤石の民衆</title>
+    <meta name="description" content="ウィークリー討伐4ボスのエリアボスリング (電鱗/炎魔/堕天/熱風) のオプション抽選/変換をシミュレーションするツール" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE,レッドストーン,赤石の民衆,エリアボスリング,オプション変換,シミュレーター,電鱗のリング,炎魔のリング,堕天のリング,熱風のリング" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="../index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text" onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="../index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="../calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="../history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="../link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="../index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="../calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="../history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="../link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h2>メニュー</h2>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+        <div class="android-large-table mdl-layout__content">
+            <a href="../index.html">トップ</a> &gt;&gt;
+            <a href="../calculator.html">計算機</a> &gt;&gt;
+            エリアボスリング オプション変換シミュレーター<br>
+
+            <div class="main-background mdl-typography--text-center">
+                <br>
+                <h1>エリアボスリング オプション変換シミュレーター</h1>
+                <p style="max-width: 880px; margin: 0 auto 16px; text-align: left; font-size: 13px;">
+                    アスタロト/シュラグ/ゲリオ/ファルコンの専用リング (電鱗/炎魔/堕天/熱風) についてのOP変換を試せるシミュレーターです。<br>
+                </p>
+
+                <div class="ars-section">
+                    <h3>1. リング選択</h3>
+                    <div class="ars-ring-row" id="ars-ring-row"></div>
+                    <div id="ars-ring-info" style="font-size: 13px; color: #555;"></div>
+                    <span class="ars-status" id="ars-status"></span>
+                </div>
+
+                <div class="ars-section">
+                    <h3>2. 現在のリング状態</h3>
+                    <table class="ars-slots">
+                        <thead>
+                            <tr>
+                                <th>スロット</th>
+                                <th>オプション名</th>
+                                <th>段階</th>
+                                <th>数値</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ars-slots-body"></tbody>
+                    </table>
+                    <div class="ars-actions">
+                        <button class="ars-button" id="ars-btn-fresh">新しいリング取得（3OPロール）</button>
+                        <button class="ars-button" id="ars-btn-once" disabled>変換 1回</button>
+                        <button class="ars-button danger" id="ars-btn-reset">統計リセット</button>
+                    </div>
+                    <div class="ars-note">
+                        ・「新しいリング取得」は次のリングを討伐ドロップで入手した想定。ロール状態と試行回数がリセットされます。<br>
+                        ・「変換」は <b>3オプションを全て変換</b> します。<br>
+                    </div>
+                </div>
+
+                <div class="ars-section">
+                    <h3>3. 目標OP指定（自動変換ループ）</h3>
+                    <div class="ars-targets">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>条件</th>
+                                    <th>オプション名</th>
+                                    <th>段階以上</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ars-targets-body"></tbody>
+                        </table>
+                    </div>
+                    <div class="ars-note">
+                        条件は <b>3スロットの中に1個でも含まれていればOK</b> として AND 評価します（チェックを入れた条件すべてを満たす）。<br>
+                        段階「中以上」を指定した場合、高または中段階の値で出ればクリア扱い。
+                    </div>
+                    <div class="ars-loop-row">
+                        <label>最大試行回数: <input type="number" id="ars-max-iter" value="10000" min="1" max="1000000" step="100"></label>
+                        <button class="ars-button" id="ars-btn-loop">目標まで自動変換</button>
+                        <button class="ars-button secondary" id="ars-btn-stop" disabled>停止</button>
+                    </div>
+                    <div class="ars-progress" id="ars-progress"></div>
+                </div>
+
+                <div class="ars-section">
+                    <h3>4. 統計</h3>
+                    <div class="ars-stats-grid">
+                        <div class="ars-stat-box">
+                            <div class="ars-stat-label">試行回数（変換）</div>
+                            <div class="ars-stat-value" id="ars-stat-attempts">0</div>
+                        </div>
+                        <div class="ars-stat-box">
+                            <div class="ars-stat-label">取得した新規リング数</div>
+                            <div class="ars-stat-value" id="ars-stat-rings">0</div>
+                        </div>
+                        <div class="ars-stat-box">
+                            <div class="ars-stat-label">累計 専用財貨</div>
+                            <div class="ars-stat-value" id="ars-stat-currency">0</div>
+                        </div>
+                        <div class="ars-stat-box">
+                            <div class="ars-stat-label">累計 Gold</div>
+                            <div class="ars-stat-value" id="ars-stat-gold">0</div>
+                        </div>
+                    </div>
+                    <div class="ars-note">
+                        本シミュレータでは累積モデルとして3回目コストで延長します。<br>
+                    </div>
+                </div>
+
+                <div class="ars-section">
+                    <h3>5. リング全オプション一覧（参考）</h3>
+                    <details class="ars-options-ref" open>
+                        <summary>クリックで開閉</summary>
+                        <div id="ars-options-ref"></div>
+                    </details>
+                </div>
+
+                <p style="font-size: 12px; color: #888; max-width: 880px; margin: 16px auto;">
+                    関連:
+                    <a href="../monster/areaboss_astaroth.html">ウィークリー討伐 [アスタロト]</a> /
+                    <a href="../monster/areaboss_syuragu.html">エリアボス [シュラグ]</a> /
+                    <a href="../monster/areaboss_gerio.html">エリアボス [ゲリオ]</a> /
+                    <a href="../monster/areaboss_falcon.html">ウィークリー討伐 [ファルコン]</a>
+                </p>
+            </div>
+            <br>
+
+            <br>
+            <br>
+            <br>
+            <br>
+            <footer class="android-footer mdl-mega-footer">
+                <font color="red">
+                    当サイトで利用している画像及びデータは、L&K Co., Ltd.に帰属します。<br>
+                    許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                </font>
+                © L&K Co., Ltd. All Rights Reserved.<br>
+            </footer>
+        </div>
+
+        <script src="https://sokomin.github.io/material.min.js"></script>
+    </div>
+
+    <script>
+    (function () {
+        'use strict';
+
+        const DATA_URL = 'https://sokomin.github.io/sokomin_repository2023/option/areaboss_ring.json';
+
+        const TIER_LABELS = ['高', '中', '低'];
+        const TIER_KEY = ['high', 'mid', 'low'];
+
+        // 累積モデル: 3回目以降は3回目コストを使用
+        function costAt(attemptIdx, costs) {
+            const i = Math.min(attemptIdx, costs.length - 1);
+            return costs[i];
+        }
+
+        const state = {
+            data: null,
+            ring: null,             // 現在選択されたリング
+            slots: [null, null, null],   // [{poolName, optName, optValues, tierIdx, value}]
+            attempts: 0,            // 累計変換回数 (リング単位ではない)
+            ringsAcquired: 0,
+            costCurrency: 0,
+            costGold: 0,
+            currentRingAttempts: 0, // 現在のリングでの変換回数
+            looping: false,
+            stopFlag: false,
+        };
+
+        const $ = (id) => document.getElementById(id);
+
+        // ----- データロード -----
+        async function loadData() {
+            $('ars-status').textContent = 'データ取得中…';
+            try {
+                const res = await fetch(DATA_URL, { cache: 'force-cache' });
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                state.data = await res.json();
+                $('ars-status').textContent = '';
+                renderRingPicker();
+                if (state.data.rings.length > 0) {
+                    selectRing(state.data.rings[0].id);
+                }
+            } catch (e) {
+                $('ars-status').textContent = '読込失敗: ' + e.message;
+            }
+        }
+
+        // ----- リング選択 UI -----
+        function renderRingPicker() {
+            const row = $('ars-ring-row');
+            row.innerHTML = '';
+            state.data.rings.forEach((r) => {
+                const lbl = document.createElement('label');
+                lbl.dataset.ringId = r.id;
+                lbl.innerHTML =
+                    `<input type="radio" name="ars-ring" value="${r.id}">` +
+                    `${r.boss}：${r.ring_name}`;
+                row.appendChild(lbl);
+            });
+            row.addEventListener('change', (ev) => {
+                if (ev.target.name === 'ars-ring') {
+                    selectRing(ev.target.value);
+                }
+            });
+        }
+
+        function selectRing(ringId) {
+            const r = state.data.rings.find(x => x.id === ringId);
+            if (!r) return;
+            state.ring = r;
+            // active ハイライト
+            document.querySelectorAll('#ars-ring-row label').forEach((l) => {
+                l.classList.toggle('active', l.dataset.ringId === ringId);
+                const radio = l.querySelector('input');
+                if (radio) radio.checked = (l.dataset.ringId === ringId);
+            });
+            $('ars-ring-info').textContent =
+                `Lv${r.boss_level}〜 / 経験値${(r.boss_exp/100000000).toFixed(1)}億 / 専用財貨「${r.currency_name}」 / 1回コスト ${r.currency_name}×${state.data.common.conversion_costs[0].currency} + ${(state.data.common.conversion_costs[0].gold/100000000).toFixed(0)}億G`;
+            // リセット
+            state.slots = [null, null, null];
+            state.attempts = 0;
+            state.ringsAcquired = 0;
+            state.costCurrency = 0;
+            state.costGold = 0;
+            state.currentRingAttempts = 0;
+            renderSlots();
+            renderTargets();
+            renderStats();
+            renderOptionsRef();
+            updateButtons();
+            $('ars-progress').textContent = '';
+            $('ars-progress').className = 'ars-progress';
+        }
+
+        // ----- 抽選ロジック -----
+        function rollOption(pool) {
+            const opt = pool[Math.floor(Math.random() * pool.length)];
+            const tierIdx = Math.floor(Math.random() * opt.values.length);
+            return {
+                optName: opt.name,
+                optValues: opt.values,
+                tierIdx,
+                value: opt.values[tierIdx],
+            };
+        }
+
+        function freshRing() {
+            const r = state.ring;
+            // slot 1 = slot1_options pool, slot 2/3 = common_options pool
+            state.slots[0] = rollOption(r.slot1_options);
+            state.slots[1] = rollOption(r.common_options);
+            state.slots[2] = rollOption(r.common_options);
+            state.ringsAcquired++;
+            state.currentRingAttempts = 0;
+            renderSlots();
+        }
+
+        function rollAllSlots() {
+            const r = state.ring;
+            state.slots[0] = rollOption(r.slot1_options);
+            state.slots[1] = rollOption(r.common_options);
+            state.slots[2] = rollOption(r.common_options);
+        }
+
+        function chargeConversion() {
+            const cost = costAt(state.currentRingAttempts, state.data.common.conversion_costs);
+            state.costCurrency += cost.currency;
+            state.costGold += cost.gold;
+            state.currentRingAttempts++;
+            state.attempts++;
+        }
+
+        // ----- 描画 -----
+        function renderSlots() {
+            const tbody = $('ars-slots-body');
+            tbody.innerHTML = '';
+            state.slots.forEach((s, i) => {
+                const tr = document.createElement('tr');
+                const tierClass = s ?
+                    (s.tierIdx === 0 ? 'ars-tier-high' : s.tierIdx === 1 ? 'ars-tier-mid' : 'ars-tier-low')
+                    : '';
+                const slotLabelClass = (i === 0) ? 'ars-slot-label bg-slot1' : 'ars-slot-label';
+                tr.innerHTML =
+                    `<td class="${slotLabelClass}">${i+1}次${i===0 ? '<br><small>(1次専用OP)</small>' : ''}</td>` +
+                    `<td class="${s ? '' : 'ars-empty'}">${s ? s.optName : '(未取得)'}</td>` +
+                    `<td class="ars-tier ${tierClass}">${s ? TIER_LABELS[s.tierIdx] : '—'}</td>` +
+                    `<td class="ars-tier ${tierClass}">${s ? s.value : '—'}</td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderStats() {
+            $('ars-stat-attempts').textContent = state.attempts.toLocaleString();
+            $('ars-stat-rings').textContent = state.ringsAcquired.toLocaleString();
+            $('ars-stat-currency').textContent = state.costCurrency.toLocaleString();
+            $('ars-stat-gold').textContent = state.costGold.toLocaleString();
+        }
+
+        function updateButtons() {
+            const has = state.slots.every(s => s !== null);
+            $('ars-btn-once').disabled = !has || state.looping;
+            $('ars-btn-fresh').disabled = state.looping;
+            $('ars-btn-loop').disabled = !has || state.looping;
+            $('ars-btn-stop').disabled = !state.looping;
+        }
+
+        // ----- 目標OP UI -----
+        function renderTargets() {
+            const tbody = $('ars-targets-body');
+            tbody.innerHTML = '';
+            const r = state.ring;
+            const all = [...r.slot1_options.map(o => ({...o, _pool:'slot1'})),
+                         ...r.common_options.map(o => ({...o, _pool:'common'}))];
+            for (let i = 0; i < 3; i++) {
+                const tr = document.createElement('tr');
+                tr.className = 'ars-target-row';
+                tr.dataset.idx = String(i);
+                const optSelect = `<select class="ars-target-opt"><option value="">— 任意 —</option>${
+                    all.map(o => `<option value="${o.name}|${o._pool}">${o.name}${o._pool==='slot1' ? ' [1次]' : ''}</option>`).join('')
+                }</select>`;
+                const tierSelect = `<select class="ars-target-tier"><option value="2">低以上</option><option value="1">中以上</option><option value="0">高のみ</option></select>`;
+                tr.innerHTML =
+                    `<td><label><input type="checkbox" class="ars-target-enable"> 条件${i+1}</label></td>` +
+                    `<td>${optSelect}</td>` +
+                    `<td>${tierSelect}</td>`;
+                tbody.appendChild(tr);
+            }
+            tbody.onchange = (ev) => {
+                if (ev.target.classList.contains('ars-target-enable')) {
+                    ev.target.closest('tr').classList.toggle('active', ev.target.checked);
+                }
+            };
+        }
+
+        function getTargetConditions() {
+            const conds = [];
+            document.querySelectorAll('#ars-targets-body tr').forEach((tr) => {
+                const enabled = tr.querySelector('.ars-target-enable').checked;
+                if (!enabled) return;
+                const optVal = tr.querySelector('.ars-target-opt').value;
+                if (!optVal) return;
+                const [name, pool] = optVal.split('|');
+                const tierMaxIdx = parseInt(tr.querySelector('.ars-target-tier').value, 10);
+                conds.push({ name, pool, tierMaxIdx });
+            });
+            return conds;
+        }
+
+        function checkConditions(conds) {
+            // 各条件: state.slots の中に「指定OP」が存在し、tierIdx <= tierMaxIdx
+            return conds.every(c => state.slots.some(s =>
+                s && s.optName === c.name && s.tierIdx <= c.tierMaxIdx
+            ));
+        }
+
+        // ----- 全OP参考表 -----
+        function renderOptionsRef() {
+            const r = state.ring;
+            const div = $('ars-options-ref');
+            const buildTable = (title, pool, isSlot1) => {
+                const rows = pool.map(o =>
+                    `<tr${isSlot1 ? ' class="ars-slot1-row"' : ''}><td>${o.name}</td>` +
+                    `<td class="ars-tier-h">${o.values[0] || ''}</td>` +
+                    `<td class="ars-tier-m">${o.values[1] || ''}</td>` +
+                    `<td class="ars-tier-l">${o.values[2] || ''}</td></tr>`
+                ).join('');
+                return `<h4 style="font-size:14px; margin:12px 0 4px;">${title}（${pool.length}種）</h4>` +
+                    `<table><thead><tr><th>オプション名</th><th>高</th><th>中</th><th>低</th></tr></thead><tbody>${rows}</tbody></table>`;
+            };
+            div.innerHTML = buildTable(`1次スロット専用OP`, r.slot1_options, true) +
+                buildTable(`2次・3次共通OP`, r.common_options, false);
+        }
+
+        // ----- 自動ループ -----
+        async function autoLoop() {
+            if (state.looping) return;
+            const conds = getTargetConditions();
+            if (conds.length === 0) {
+                $('ars-progress').textContent = '条件が1つも有効化されていません。';
+                $('ars-progress').className = 'ars-progress fail';
+                return;
+            }
+            if (!state.slots.every(s => s !== null)) {
+                $('ars-progress').textContent = '先に「新しいリング取得」を実行してください。';
+                $('ars-progress').className = 'ars-progress fail';
+                return;
+            }
+            // すでに目標達成?
+            if (checkConditions(conds)) {
+                $('ars-progress').textContent = '既に目標条件を満たしています。';
+                $('ars-progress').className = 'ars-progress success';
+                return;
+            }
+            const maxIter = parseInt($('ars-max-iter').value, 10) || 10000;
+            state.looping = true;
+            state.stopFlag = false;
+            updateButtons();
+            $('ars-progress').textContent = '実行中…';
+            $('ars-progress').className = 'ars-progress';
+
+            const startAttempts = state.attempts;
+            let i = 0;
+            const BATCH = 500;
+            while (i < maxIter && !state.stopFlag) {
+                const limit = Math.min(BATCH, maxIter - i);
+                for (let k = 0; k < limit; k++) {
+                    chargeConversion();
+                    rollAllSlots();
+                    if (checkConditions(conds)) {
+                        i += k + 1;
+                        renderSlots();
+                        renderStats();
+                        const used = state.attempts - startAttempts;
+                        $('ars-progress').textContent = `達成！ 試行 ${used.toLocaleString()} 回`;
+                        $('ars-progress').className = 'ars-progress success';
+                        state.looping = false;
+                        updateButtons();
+                        return;
+                    }
+                }
+                i += limit;
+                renderSlots();
+                renderStats();
+                $('ars-progress').textContent = `実行中… ${i.toLocaleString()} / ${maxIter.toLocaleString()}`;
+                await new Promise(r => setTimeout(r, 0));
+            }
+            state.looping = false;
+            updateButtons();
+            const used = state.attempts - startAttempts;
+            if (state.stopFlag) {
+                $('ars-progress').textContent = `停止 (${used.toLocaleString()} 試行)`;
+                $('ars-progress').className = 'ars-progress fail';
+            } else {
+                $('ars-progress').textContent = `${maxIter.toLocaleString()} 試行に達したが条件未達成`;
+                $('ars-progress').className = 'ars-progress fail';
+            }
+        }
+
+        // ----- イベント -----
+        $('ars-btn-fresh').addEventListener('click', () => {
+            freshRing();
+            renderStats();
+            updateButtons();
+            $('ars-progress').textContent = '';
+            $('ars-progress').className = 'ars-progress';
+        });
+        $('ars-btn-once').addEventListener('click', () => {
+            chargeConversion();
+            rollAllSlots();
+            renderSlots();
+            renderStats();
+        });
+        $('ars-btn-reset').addEventListener('click', () => {
+            state.attempts = 0;
+            state.ringsAcquired = 0;
+            state.costCurrency = 0;
+            state.costGold = 0;
+            state.currentRingAttempts = 0;
+            renderStats();
+            $('ars-progress').textContent = '';
+            $('ars-progress').className = 'ars-progress';
+        });
+        $('ars-btn-loop').addEventListener('click', autoLoop);
+        $('ars-btn-stop').addEventListener('click', () => { state.stopFlag = true; });
+
+        // 初期化
+        loadData();
+    })();
+    </script>
+</body>
+
+</html>
