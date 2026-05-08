@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="../material.indigo-pink.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        .sim-section {
+            text-align: left;
+            max-width: 980px;
+            margin: 0 auto 20px;
+            padding: 12px 16px;
+            background: #fafafa;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .sim-section h3 {
+            margin: 0 0 8px 0;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            border-bottom: 2px solid #9d896c;
+            padding-bottom: 4px;
+        }
+        .sim-tabs {
+            display: flex;
+            max-width: 980px;
+            margin: 0 auto;
+            border-bottom: 2px solid #9d896c;
+        }
+        .sim-tab {
+            padding: 8px 18px;
+            background: #efe9d9;
+            border: 1px solid #ccc;
+            border-bottom: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            color: #555;
+            margin-right: 4px;
+            border-radius: 4px 4px 0 0;
+        }
+        .sim-tab.active {
+            background: #9d896c;
+            color: #fff;
+            border-color: #9d896c;
+        }
+        .sim-pane { display: none; }
+        .sim-pane.active { display: block; }
+
+        table.sim-equip {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 6px;
+        }
+        table.sim-equip th, table.sim-equip td {
+            border: 1px solid #555;
+            padding: 5px 8px;
+            text-align: left;
+            vertical-align: middle;
+        }
+        table.sim-equip th {
+            background: #9d896c;
+            color: #fff;
+            text-align: center;
+            font-size: 13px;
+            width: 90px;
+        }
+        table.sim-equip input[type="text"] {
+            width: 96%;
+            padding: 4px;
+            font-size: 13px;
+            border: 1px solid #aaa;
+            box-sizing: border-box;
+        }
+        .sim-equip-name input { font-weight: bold; background: #fffae8; }
+
+        .sim-actions { text-align: center; margin: 14px 0; }
+        .sim-button {
+            display: inline-block; padding: 10px 22px; background: #9d896c; color: #fff;
+            border: none; border-radius: 4px; font-size: 14px; font-weight: bold;
+            cursor: pointer; margin: 0 4px 6px 4px;
+        }
+        .sim-button:hover { background: #b6a07f; }
+        .sim-button:disabled { background: #ccc; cursor: not-allowed; }
+        .sim-button.secondary { background: #777; }
+        .sim-button.secondary:hover { background: #999; }
+        .sim-button.danger { background: #aa5050; }
+        .sim-button.danger:hover { background: #c46c6c; }
+
+        .sim-result-card {
+            background: #fff;
+            border: 2px solid #9d896c;
+            border-radius: 4px;
+            padding: 12px 16px;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        .sim-result-card.destroyed {
+            background: #ffe5e5;
+            border-color: #aa5050;
+            color: #aa3333;
+            font-weight: bold;
+        }
+        .sim-result-base {
+            font-size: 15px;
+            font-weight: bold;
+        }
+        .sim-result-ops {
+            margin-top: 4px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .sim-op-empty { color: #aaa; font-style: italic; }
+        .sim-op-from-a { color: #c2410c; }
+        .sim-op-from-b { color: #1d4ed8; }
+
+        .sim-loop-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0; }
+        .sim-loop-row input[type="number"] { width: 110px; padding: 4px; font-family: monospace; }
+
+        table.sim-stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+            font-size: 13px;
+        }
+        table.sim-stats-table th, table.sim-stats-table td {
+            border: 1px solid #555;
+            padding: 4px 8px;
+        }
+        table.sim-stats-table th {
+            background: #9d896c;
+            color: #fff;
+            text-align: center;
+        }
+        table.sim-stats-table td.num {
+            text-align: right;
+            font-family: monospace;
+        }
+        table.sim-stats-table tr:nth-child(even) { background: #f7f3e8; }
+
+        .sim-log {
+            max-height: 320px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            background: #fff;
+            padding: 6px 10px;
+            font-size: 12px;
+            font-family: monospace;
+        }
+        .sim-log-entry { padding: 2px 0; border-bottom: 1px dotted #eee; }
+        .sim-log-entry:last-child { border-bottom: none; }
+        .sim-log-entry.destroyed { color: #aa3333; }
+
+        .sim-note { font-size: 12px; color: #666; margin-top: 4px; }
+        .sim-pick-row { display: flex; gap: 12px; align-items: center; margin: 8px 0; flex-wrap: wrap; }
+        .sim-pick-row label { font-size: 13px; }
+    </style>
+</head>
+
+<body>
+    <title>異次元ボックスシミュレーター　赤石の民衆</title>
+    <meta name="description" content="2つの装備を混ぜて1つの装備を作る『異次元ボックス』および『玲瓏な異次元ボックス』の合成結果をシミュレーション。" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE,レッドストーン,赤石の民衆,シミュレーター,異次元ボックス,玲瓏な異次元ボックス,合成" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="../index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text" onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="../index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="../calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="../history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="../link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="../index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="../calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="../history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="../link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h2>メニュー</h2>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+        <div class="android-large-table mdl-layout__content">
+            <a href="../index.html">トップ</a> &gt;&gt;
+            <a href="../item/item.html">アイテム</a> &gt;&gt;
+            <a href="interdimensional box.html">異次元ボックス</a> &gt;&gt;
+            異次元ボックスシミュレーター<br>
+
+            <div class="main-background mdl-typography--text-center">
+                <br>
+                <h1>異次元ボックスシミュレーター</h1>
+                <p style="max-width: 880px; margin: 0 auto 16px; text-align: left; font-size: 13px;">
+                    2つの装備を混ぜて1つの装備を作る「異次元ボックス」と、1つのオプション位置だけを合成する「玲瓏な異次元ボックス」の結果をシミュレートします。<br>
+                    <span class="sim-note">※ 各要素の抽選確率は均等（50/50）として計算しています。実ゲームの法則1（1OP同士で2OP生成不可）を反映するため、結果のOP数は2つの装備のうち多い方を上限とし、超過分はランダムに「無」へ置換します。同系列OPの順序入替・W化制限（法則2）はシミュレートしません。</span><br>
+                    <span class="sim-note">※ 玲瓏モードの装備破壊率は仮値です（既定33%）。実数値が判明したら数値を入れ替えてください。</span>
+                </p>
+
+                <div class="sim-tabs">
+                    <div class="sim-tab active" data-tab="normal">異次元ボックス</div>
+                    <div class="sim-tab" data-tab="reigrou">玲瓏な異次元ボックス</div>
+                </div>
+
+                <!-- ===================== 異次元ボックス（通常） ===================== -->
+                <div class="sim-pane active" id="pane-normal">
+
+                    <div class="sim-section">
+                        <h3>1. 装備の入力</h3>
+                        <p class="sim-note">2つの装備の名称とOP1〜OP3を入力してください（OP空欄＝[無称号]）。</p>
+                        <table class="sim-equip">
+                            <tr>
+                                <th>装備A</th>
+                                <td class="sim-equip-name"><input type="text" id="n-a-name" placeholder="例: 精霊王の冠" value="精霊王の冠"></td>
+                            </tr>
+                            <tr>
+                                <th>OP1</th>
+                                <td><input type="text" id="n-a-op1" placeholder="例: 全吸収ULT" value="全吸収ULT"></td>
+                            </tr>
+                            <tr>
+                                <th>OP2</th>
+                                <td><input type="text" id="n-a-op2" placeholder="(空欄=無)" value=""></td>
+                            </tr>
+                            <tr>
+                                <th>OP3</th>
+                                <td><input type="text" id="n-a-op3" placeholder="(空欄=無)" value=""></td>
+                            </tr>
+                        </table>
+                        <table class="sim-equip" style="margin-top:12px;">
+                            <tr>
+                                <th>装備B</th>
+                                <td class="sim-equip-name"><input type="text" id="n-b-name" placeholder="例: 予知の棺" value="予知の棺"></td>
+                            </tr>
+                            <tr>
+                                <th>OP1</th>
+                                <td><input type="text" id="n-b-op1" placeholder="(空欄=無)" value=""></td>
+                            </tr>
+                            <tr>
+                                <th>OP2</th>
+                                <td><input type="text" id="n-b-op2" placeholder="(空欄=無)" value=""></td>
+                            </tr>
+                            <tr>
+                                <th>OP3</th>
+                                <td><input type="text" id="n-b-op3" placeholder="(空欄=無)" value=""></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="sim-section">
+                        <h3>2. 単発合成</h3>
+                        <div class="sim-actions">
+                            <button class="sim-button" id="n-btn-once">合成1回</button>
+                            <button class="sim-button secondary" id="n-btn-clear">入力リセット</button>
+                        </div>
+                        <div id="n-result-area"></div>
+                    </div>
+
+                    <div class="sim-section">
+                        <h3>3. N回統計</h3>
+                        <div class="sim-loop-row">
+                            <label>試行回数: <input type="number" id="n-iter" value="10000" min="1" max="1000000" step="100"></label>
+                            <button class="sim-button" id="n-btn-stats">N回まわす</button>
+                            <button class="sim-button danger" id="n-btn-stats-reset">統計クリア</button>
+                        </div>
+                        <div id="n-stats-summary" class="sim-note"></div>
+                        <div id="n-stats-table-wrap"></div>
+                    </div>
+
+                    <div class="sim-section">
+                        <h3>4. 結果ログ（直近50件）</h3>
+                        <div class="sim-log" id="n-log"></div>
+                        <div class="sim-actions">
+                            <button class="sim-button secondary" id="n-btn-log-clear">ログクリア</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- ===================== 玲瓏な異次元ボックス ===================== -->
+                <div class="sim-pane" id="pane-reigrou">
+
+                    <div class="sim-section">
+                        <h3>1. 装備の入力</h3>
+                        <p class="sim-note">装備A（ベース）の指定したOP位置を、装備B（素材）の同OP位置と入れ替えるシミュレートです。失敗すると装備Aが破壊されます。</p>
+                        <table class="sim-equip">
+                            <tr>
+                                <th>装備A<br>（ベース）</th>
+                                <td class="sim-equip-name"><input type="text" id="r-a-name" placeholder="例: 精霊王の冠" value="精霊王の冠"></td>
+                            </tr>
+                            <tr>
+                                <th>OP1</th>
+                                <td><input type="text" id="r-a-op1" value="全吸収ULT"></td>
+                            </tr>
+                            <tr>
+                                <th>OP2</th>
+                                <td><input type="text" id="r-a-op2" value="全吸収ULT"></td>
+                            </tr>
+                            <tr>
+                                <th>OP3</th>
+                                <td><input type="text" id="r-a-op3" value="全吸収ULT"></td>
+                            </tr>
+                        </table>
+                        <table class="sim-equip" style="margin-top:12px;">
+                            <tr>
+                                <th>装備B<br>（素材）</th>
+                                <td class="sim-equip-name"><input type="text" id="r-b-name" placeholder="例: サークレット" value="サークレット"></td>
+                            </tr>
+                            <tr>
+                                <th>OP1</th>
+                                <td><input type="text" id="r-b-op1" value="辛苦の"></td>
+                            </tr>
+                            <tr>
+                                <th>OP2</th>
+                                <td><input type="text" id="r-b-op2" value="知識比率Lv1"></td>
+                            </tr>
+                            <tr>
+                                <th>OP3</th>
+                                <td><input type="text" id="r-b-op3" value=""></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="sim-section">
+                        <h3>2. 合成設定</h3>
+                        <div class="sim-pick-row">
+                            <strong>合成位置:</strong>
+                            <label><input type="radio" name="r-slot" value="1" checked> OP1</label>
+                            <label><input type="radio" name="r-slot" value="2"> OP2</label>
+                            <label><input type="radio" name="r-slot" value="3"> OP3</label>
+                        </div>
+                        <div class="sim-pick-row">
+                            <label>装備破壊率(%): <input type="number" id="r-destroy-rate" value="33" min="0" max="100" step="1" style="width:70px;"></label>
+                            <span class="sim-note">※ 仮値。判明したら書き換えてください。</span>
+                        </div>
+                        <div class="sim-actions">
+                            <button class="sim-button" id="r-btn-once">合成1回</button>
+                        </div>
+                        <div id="r-result-area"></div>
+                    </div>
+
+                    <div class="sim-section">
+                        <h3>3. N回統計</h3>
+                        <div class="sim-loop-row">
+                            <label>試行回数: <input type="number" id="r-iter" value="10000" min="1" max="1000000" step="100"></label>
+                            <button class="sim-button" id="r-btn-stats">N回まわす</button>
+                            <button class="sim-button danger" id="r-btn-stats-reset">統計クリア</button>
+                        </div>
+                        <div id="r-stats-summary" class="sim-note"></div>
+                        <div id="r-stats-table-wrap"></div>
+                    </div>
+
+                    <div class="sim-section">
+                        <h3>4. 結果ログ（直近50件）</h3>
+                        <div class="sim-log" id="r-log"></div>
+                        <div class="sim-actions">
+                            <button class="sim-button secondary" id="r-btn-log-clear">ログクリア</button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <footer class="android-footer mdl-mega-footer">
+                <font color="red">
+                    当サイトで利用している画像及びデータは、L&K Co., Ltd.に帰属します。<br>
+                    許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                </font>
+                © L&K Co., Ltd. All Rights Reserved.<br>
+            </footer>
+        </div>
+
+        <script src="../material.min.js"></script>
+    </div>
+
+    <script>
+    (function () {
+        'use strict';
+
+        const $ = (id) => document.getElementById(id);
+        const EMPTY_LABEL = '[無]';
+        const LOG_MAX = 50;
+
+        // ----- タブ切替 -----
+        document.querySelectorAll('.sim-tab').forEach((tab) => {
+            tab.addEventListener('click', () => {
+                const target = tab.dataset.tab;
+                document.querySelectorAll('.sim-tab').forEach(t => t.classList.toggle('active', t === tab));
+                document.querySelectorAll('.sim-pane').forEach(p => p.classList.toggle('active', p.id === 'pane-' + target));
+            });
+        });
+
+        // ===========================================================
+        // 異次元ボックス（通常）
+        // ===========================================================
+
+        function readEquipN(prefix) {
+            return {
+                name: $(prefix + '-name').value.trim() || '(無名)',
+                ops: [
+                    $(prefix + '-op1').value.trim(),
+                    $(prefix + '-op2').value.trim(),
+                    $(prefix + '-op3').value.trim(),
+                ],
+            };
+        }
+
+        // 1回の異次元合成。返り値: { baseFrom: 'A'|'B', baseName, ops:[{value, from:'A'|'B'|null}] }
+        function rollNormalOnce() {
+            const A = readEquipN('n-a');
+            const B = readEquipN('n-b');
+
+            // ベース選択 50/50
+            const baseFrom = Math.random() < 0.5 ? 'A' : 'B';
+            const baseName = baseFrom === 'A' ? A.name : B.name;
+
+            // 各位置 50/50
+            const ops = [];
+            for (let i = 0; i < 3; i++) {
+                const from = Math.random() < 0.5 ? 'A' : 'B';
+                const val = from === 'A' ? A.ops[i] : B.ops[i];
+                ops.push({ value: val, from: val ? from : null });
+            }
+
+            // 法則1反映: 結果OP数を max(A_count, B_count) に制限
+            const aCount = A.ops.filter(o => o).length;
+            const bCount = B.ops.filter(o => o).length;
+            const maxOps = Math.max(aCount, bCount);
+            const filledIdx = ops.map((o, i) => o.value ? i : -1).filter(i => i >= 0);
+            while (filledIdx.length > maxOps) {
+                const k = Math.floor(Math.random() * filledIdx.length);
+                const idx = filledIdx.splice(k, 1)[0];
+                ops[idx] = { value: '', from: null };
+            }
+
+            return { baseFrom, baseName, ops };
+        }
+
+        function resultKeyN(r) {
+            return r.baseName + '|' + r.ops.map(o => o.value || EMPTY_LABEL).join(' / ');
+        }
+
+        function renderResultCardN(r, container) {
+            const html = '<div class="sim-result-card">' +
+                '<div class="sim-result-base">→ ' + escapeHtml(r.baseName) +
+                ' <span class="sim-note">（ベース: 装備' + r.baseFrom + ')</span></div>' +
+                '<div class="sim-result-ops">' +
+                r.ops.map((o, i) => {
+                    if (!o.value) return 'OP' + (i + 1) + ': <span class="sim-op-empty">' + EMPTY_LABEL + '</span>';
+                    const cls = o.from === 'A' ? 'sim-op-from-a' : 'sim-op-from-b';
+                    return 'OP' + (i + 1) + ': <span class="' + cls + '">[' + escapeHtml(o.value) + ']</span> <span class="sim-note">(装備' + o.from + ')</span>';
+                }).join('<br>') +
+                '</div></div>';
+            container.innerHTML = html;
+        }
+
+        function pushLogN(r) {
+            const entry = document.createElement('div');
+            entry.className = 'sim-log-entry';
+            const ops = r.ops.map(o => o.value ? '[' + o.value + ']' : EMPTY_LABEL).join('');
+            entry.textContent = '[' + new Date().toLocaleTimeString() + '] ' + ops + r.baseName;
+            const log = $('n-log');
+            log.insertBefore(entry, log.firstChild);
+            while (log.childNodes.length > LOG_MAX) log.removeChild(log.lastChild);
+        }
+
+        const statsN = { count: 0, map: new Map() };
+
+        function recordStatsN(r) {
+            statsN.count++;
+            const key = resultKeyN(r);
+            statsN.map.set(key, (statsN.map.get(key) || 0) + 1);
+        }
+
+        function renderStatsN() {
+            $('n-stats-summary').textContent = '累計 ' + statsN.count.toLocaleString() + ' 回';
+            const wrap = $('n-stats-table-wrap');
+            if (statsN.count === 0) { wrap.innerHTML = ''; return; }
+            const sorted = [...statsN.map.entries()].sort((a, b) => b[1] - a[1]);
+            const rows = sorted.map(([key, cnt]) => {
+                const [name, ops] = key.split('|');
+                const pct = (cnt / statsN.count * 100).toFixed(2);
+                return '<tr><td>' + escapeHtml(ops) + '</td><td>' + escapeHtml(name) + '</td>' +
+                    '<td class="num">' + cnt.toLocaleString() + '</td>' +
+                    '<td class="num">' + pct + '%</td></tr>';
+            }).join('');
+            wrap.innerHTML = '<table class="sim-stats-table">' +
+                '<thead><tr><th>OP1 / OP2 / OP3</th><th>ベース装備</th><th>回数</th><th>割合</th></tr></thead>' +
+                '<tbody>' + rows + '</tbody></table>';
+        }
+
+        $('n-btn-once').addEventListener('click', () => {
+            const r = rollNormalOnce();
+            renderResultCardN(r, $('n-result-area'));
+            pushLogN(r);
+            recordStatsN(r);
+            renderStatsN();
+        });
+
+        $('n-btn-stats').addEventListener('click', () => {
+            const n = parseInt($('n-iter').value, 10) || 0;
+            if (n <= 0) return;
+            for (let i = 0; i < n; i++) recordStatsN(rollNormalOnce());
+            renderStatsN();
+        });
+
+        $('n-btn-stats-reset').addEventListener('click', () => {
+            statsN.count = 0;
+            statsN.map.clear();
+            renderStatsN();
+        });
+
+        $('n-btn-log-clear').addEventListener('click', () => { $('n-log').innerHTML = ''; });
+
+        $('n-btn-clear').addEventListener('click', () => {
+            ['n-a-name', 'n-a-op1', 'n-a-op2', 'n-a-op3', 'n-b-name', 'n-b-op1', 'n-b-op2', 'n-b-op3']
+                .forEach(id => { $(id).value = ''; });
+            $('n-result-area').innerHTML = '';
+        });
+
+        // ===========================================================
+        // 玲瓏な異次元ボックス
+        // ===========================================================
+
+        function readEquipR(prefix) {
+            return {
+                name: $(prefix + '-name').value.trim() || '(無名)',
+                ops: [
+                    $(prefix + '-op1').value.trim(),
+                    $(prefix + '-op2').value.trim(),
+                    $(prefix + '-op3').value.trim(),
+                ],
+            };
+        }
+
+        function rollReigrouOnce() {
+            const A = readEquipR('r-a');
+            const B = readEquipR('r-b');
+            const slotIdx = parseInt(document.querySelector('input[name="r-slot"]:checked').value, 10) - 1;
+            const destroyRate = (parseFloat($('r-destroy-rate').value) || 0) / 100;
+
+            // 装備破壊判定
+            if (Math.random() < destroyRate) {
+                return { destroyed: true, slotIdx, baseName: A.name };
+            }
+
+            // 成功時: 指定位置のOPを 50/50 で A or B から選ぶ
+            const fromA = Math.random() < 0.5;
+            const newOp = fromA ? A.ops[slotIdx] : B.ops[slotIdx];
+
+            const ops = A.ops.map((v, i) => ({
+                value: i === slotIdx ? newOp : v,
+                from: i === slotIdx ? (newOp ? (fromA ? 'A' : 'B') : null) : (v ? 'A' : null),
+            }));
+            return { destroyed: false, slotIdx, baseName: A.name, ops, swappedFrom: fromA ? 'A' : 'B' };
+        }
+
+        function resultKeyR(r) {
+            if (r.destroyed) return '__DESTROYED__';
+            return r.baseName + '|' + r.ops.map(o => o.value || EMPTY_LABEL).join(' / ');
+        }
+
+        function renderResultCardR(r, container) {
+            if (r.destroyed) {
+                container.innerHTML = '<div class="sim-result-card destroyed">✗ 装備破壊（OP' + (r.slotIdx + 1) + ' 合成失敗）<br>' +
+                    '<span class="sim-note">' + escapeHtml(r.baseName) + ' は失われました</span></div>';
+                return;
+            }
+            const html = '<div class="sim-result-card">' +
+                '<div class="sim-result-base">→ ' + escapeHtml(r.baseName) +
+                ' <span class="sim-note">（OP' + (r.slotIdx + 1) + ' を装備' + r.swappedFrom + 'から）</span></div>' +
+                '<div class="sim-result-ops">' +
+                r.ops.map((o, i) => {
+                    if (!o.value) return 'OP' + (i + 1) + ': <span class="sim-op-empty">' + EMPTY_LABEL + '</span>';
+                    const cls = o.from === 'A' ? 'sim-op-from-a' : 'sim-op-from-b';
+                    const tag = (i === r.slotIdx) ? ' <span class="sim-note">(装備' + o.from + ' / 対象位置)</span>' : ' <span class="sim-note">(維持)</span>';
+                    return 'OP' + (i + 1) + ': <span class="' + cls + '">[' + escapeHtml(o.value) + ']</span>' + tag;
+                }).join('<br>') +
+                '</div></div>';
+            container.innerHTML = html;
+        }
+
+        function pushLogR(r) {
+            const entry = document.createElement('div');
+            entry.className = 'sim-log-entry' + (r.destroyed ? ' destroyed' : '');
+            const time = '[' + new Date().toLocaleTimeString() + '] ';
+            if (r.destroyed) {
+                entry.textContent = time + '✗ 装備破壊 (' + r.baseName + ', OP' + (r.slotIdx + 1) + ')';
+            } else {
+                const ops = r.ops.map(o => o.value ? '[' + o.value + ']' : EMPTY_LABEL).join('');
+                entry.textContent = time + ops + r.baseName + ' (OP' + (r.slotIdx + 1) + ' ← ' + r.swappedFrom + ')';
+            }
+            const log = $('r-log');
+            log.insertBefore(entry, log.firstChild);
+            while (log.childNodes.length > LOG_MAX) log.removeChild(log.lastChild);
+        }
+
+        const statsR = { count: 0, destroyed: 0, map: new Map() };
+
+        function recordStatsR(r) {
+            statsR.count++;
+            if (r.destroyed) statsR.destroyed++;
+            const key = resultKeyR(r);
+            statsR.map.set(key, (statsR.map.get(key) || 0) + 1);
+        }
+
+        function renderStatsR() {
+            const summary = '累計 ' + statsR.count.toLocaleString() + ' 回 / 破壊 ' + statsR.destroyed.toLocaleString() +
+                ' 回 (' + (statsR.count ? (statsR.destroyed / statsR.count * 100).toFixed(2) : '0.00') + '%)';
+            $('r-stats-summary').textContent = summary;
+            const wrap = $('r-stats-table-wrap');
+            if (statsR.count === 0) { wrap.innerHTML = ''; return; }
+            const sorted = [...statsR.map.entries()].sort((a, b) => b[1] - a[1]);
+            const rows = sorted.map(([key, cnt]) => {
+                const pct = (cnt / statsR.count * 100).toFixed(2);
+                if (key === '__DESTROYED__') {
+                    return '<tr style="background:#ffe5e5"><td colspan="2"><b>装備破壊</b></td>' +
+                        '<td class="num">' + cnt.toLocaleString() + '</td><td class="num">' + pct + '%</td></tr>';
+                }
+                const [name, ops] = key.split('|');
+                return '<tr><td>' + escapeHtml(ops) + '</td><td>' + escapeHtml(name) + '</td>' +
+                    '<td class="num">' + cnt.toLocaleString() + '</td>' +
+                    '<td class="num">' + pct + '%</td></tr>';
+            }).join('');
+            wrap.innerHTML = '<table class="sim-stats-table">' +
+                '<thead><tr><th>OP1 / OP2 / OP3</th><th>ベース装備</th><th>回数</th><th>割合</th></tr></thead>' +
+                '<tbody>' + rows + '</tbody></table>';
+        }
+
+        $('r-btn-once').addEventListener('click', () => {
+            const r = rollReigrouOnce();
+            renderResultCardR(r, $('r-result-area'));
+            pushLogR(r);
+            recordStatsR(r);
+            renderStatsR();
+        });
+
+        $('r-btn-stats').addEventListener('click', () => {
+            const n = parseInt($('r-iter').value, 10) || 0;
+            if (n <= 0) return;
+            for (let i = 0; i < n; i++) recordStatsR(rollReigrouOnce());
+            renderStatsR();
+        });
+
+        $('r-btn-stats-reset').addEventListener('click', () => {
+            statsR.count = 0;
+            statsR.destroyed = 0;
+            statsR.map.clear();
+            renderStatsR();
+        });
+
+        $('r-btn-log-clear').addEventListener('click', () => { $('r-log').innerHTML = ''; });
+
+        // ----- ユーティリティ -----
+        function escapeHtml(s) {
+            return String(s).replace(/[&<>"']/g, (c) => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[c]));
+        }
+    })();
+    </script>
+</body>
+
+</html>
