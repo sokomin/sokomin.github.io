@@ -15,7 +15,7 @@
     <link rel="apple-touch-icon-precomposed" href="https://sokomin.github.io/design/RedStoneLogo.png">
     <script type="text/javascript" src="https://sokomin.github.io/design/jquery-3.4.1.min.js"></script>
 
-    <title>露店商試験支援 クイズシミュレーター</title>
+    <title>妖精の試練 [難しい] クイズシミュレーター</title>
 
     <style>
         .tq-wrap {
@@ -39,6 +39,29 @@
             padding-bottom: 4px;
             color: #333;
         }
+        .tq-mode-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+        }
+        .tq-tab {
+            flex: 1;
+            padding: 10px 12px;
+            background: #ddd;
+            border: 1px solid #aaa;
+            border-bottom: none;
+            border-radius: 4px 4px 0 0;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            color: #555;
+        }
+        .tq-tab.active {
+            background: #9d896c;
+            color: #fff;
+            border-color: #9d896c;
+        }
+        .tq-tab:hover:not(.active) { background: #eee; }
         .tq-stats {
             display: flex;
             gap: 18px;
@@ -47,6 +70,32 @@
             flex-wrap: wrap;
         }
         .tq-stats span b { color: #333; }
+
+        .tq-ta-stats {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+            font-size: 14px;
+            flex-wrap: wrap;
+        }
+        .tq-ta-timer {
+            font-family: monospace;
+            font-size: 28px;
+            font-weight: bold;
+            color: #c62828;
+            min-width: 80px;
+            text-align: center;
+            padding: 4px 12px;
+            background: #fff;
+            border: 2px solid #c62828;
+            border-radius: 4px;
+        }
+        .tq-ta-timer.warn { color: #fff; background: #c62828; }
+        .tq-ta-score {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2e7d32;
+        }
 
         .tq-question-box {
             background: #2b2113;
@@ -123,6 +172,8 @@
         .tq-button:hover { background: #b6a07f; }
         .tq-button.secondary { background: #777; }
         .tq-button.secondary:hover { background: #999; }
+        .tq-button.start { background: #2e7d32; padding: 12px 36px; font-size: 16px; }
+        .tq-button.start:hover { background: #43a047; }
 
         .tq-history {
             font-size: 13px;
@@ -151,15 +202,36 @@
             color: #888;
             margin-top: 8px;
         }
+        .tq-ta-result {
+            background: #fff7e0;
+            border: 2px solid #f9a825;
+            border-radius: 6px;
+            padding: 16px;
+            text-align: center;
+            margin-top: 16px;
+        }
+        .tq-ta-result h4 {
+            margin: 0 0 8px 0;
+            color: #e65100;
+            font-size: 18px;
+        }
+        .tq-ta-result .big {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2e7d32;
+            margin: 6px 0;
+        }
+        .tq-ta-result .best-new { color: #c62828; font-weight: bold; }
+        .hidden { display: none !important; }
     </style>
 </head>
 
 <body>
-    <title>露店商試験支援 クイズシミュレーター 赤石の民衆</title>
-    <meta name="description" content="称号「取引人」露店商試験支援クエストのクイズをランダム出題で練習できるシミュレーターです。" />
+    <title>妖精の試練 [難しい] クイズシミュレーター 赤石の民衆</title>
+    <meta name="description" content="妖精の試練 [難しい] のクイズをランダム出題で練習できるシミュレーター。1分間タイムアタックモード搭載。" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <meta http-equiv="Content-Script-Type" content="text/javascript" />
-    <meta name="keywords" content="RED STONE,レッドストーン,赤石の民衆,そこみん,取引人,露店商試験,クイズ,シミュレーター" />
+    <meta name="keywords" content="RED STONE,レッドストーン,赤石の民衆,そこみん,妖精の試練,秘密ダンジョン,クイズ,シミュレーター,タイムアタック" />
 
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
         <a name="container"></a>
@@ -209,17 +281,23 @@
         <div class="android-large-table mdl-layout__content">
             <a href="https://sokomin.github.io/index.html">トップ</a> &gt;&gt;
             <a href="https://sokomin.github.io/calculator.html">計算機</a> &gt;&gt;
-            露店商試験支援 クイズ<br>
+            妖精の試練 [難しい] クイズ<br>
 
             <div class="main-background mdl-typography--text-center">
                 <br>
-                <h1>露店商試験支援 クイズシミュレーター</h1>
-                <a href="https://sokomin.github.io/quest/dealing.html#2">称号「取引人」 露店商試験支援</a>
+                <h1>妖精の試練 [難しい] クイズシミュレーター</h1>
+                <a href="https://sokomin.github.io/secret/secretdgn1250-1500.html">妖精の試練</a>のクイズ練習にご活用ください。<br>
                 <br><br>
 
                 <div class="tq-wrap">
 
-                    <div class="tq-section">
+                    <div class="tq-mode-tabs">
+                        <button class="tq-tab active" data-mode="practice" id="tq-tab-practice">練習モード</button>
+                        <button class="tq-tab" data-mode="ta" id="tq-tab-ta">タイムアタック (1分)</button>
+                    </div>
+
+                    <!-- 練習モード用ステータス -->
+                    <div class="tq-section" id="tq-section-practice-stats">
                         <h3>成績</h3>
                         <div class="tq-stats">
                             <span>出題: <b id="tq-total">0</b></span>
@@ -227,14 +305,38 @@
                             <span>不正解: <b id="tq-wrong">0</b></span>
                             <span>正答率: <b id="tq-rate">-</b></span>
                             <span>連続正解: <b id="tq-streak">0</b></span>
-                            <span>4〜6問換算: <b id="tq-passmark">-</b></span>
                         </div>
                         <div class="tq-actions" style="text-align:left; margin-top:10px;">
                             <button class="tq-button secondary" id="tq-reset-stats">成績リセット</button>
                         </div>
                     </div>
 
-                    <div class="tq-section">
+                    <!-- タイムアタック用ステータス -->
+                    <div class="tq-section hidden" id="tq-section-ta-stats">
+                        <h3>タイムアタック</h3>
+                        <div class="tq-ta-stats">
+                            <span>残り: <span class="tq-ta-timer" id="tq-ta-timer">60</span> 秒</span>
+                            <span class="tq-ta-score">正解: <b id="tq-ta-correct">0</b> 問</span>
+                            <span>不正解: <b id="tq-ta-wrong">0</b></span>
+                            <span>ベスト: <b id="tq-ta-best">-</b> 問</span>
+                        </div>
+                        <div class="tq-actions" style="text-align:left; margin-top:10px;">
+                            <button class="tq-button start" id="tq-ta-start">スタート</button>
+                            <button class="tq-button secondary hidden" id="tq-ta-stop">中断</button>
+                            <button class="tq-button secondary" id="tq-ta-reset-best">ベスト記録リセット</button>
+                        </div>
+                        <div class="tq-ta-result hidden" id="tq-ta-result">
+                            <h4>タイムアップ！</h4>
+                            <div class="big" id="tq-ta-result-score">- 問正解</div>
+                            <div id="tq-ta-result-detail"></div>
+                            <div style="margin-top:10px;">
+                                <button class="tq-button" id="tq-ta-restart">もう一度</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 問題エリア (両モード共通) -->
+                    <div class="tq-section" id="tq-section-question">
                         <h3>問題</h3>
                         <div class="tq-question-box">
                             <div class="tq-qid" id="tq-qid"></div>
@@ -242,16 +344,18 @@
                         </div>
                         <div class="tq-choices" id="tq-choices"></div>
                         <div class="tq-feedback" id="tq-feedback"></div>
-                        <div class="tq-actions">
+                        <div class="tq-actions" id="tq-actions-practice">
                             <button class="tq-button" id="tq-next" disabled>次の問題</button>
                             <button class="tq-button secondary" id="tq-skip">スキップ</button>
                         </div>
                         <div class="tq-note">
-                            ※ 全ての問題と4つの選択肢の並びはランダムです。
+                            ※ 問題はランダム出題、選択肢の並び順は固定です。<br>
+                            ※ タイムアタックは正解0.3秒・不正解1.0秒で自動的に次の問題に進みます。
                         </div>
                     </div>
 
-                    <div class="tq-section">
+                    <!-- 履歴 (練習モードのみ) -->
+                    <div class="tq-section" id="tq-section-history">
                         <h3>履歴</h3>
                         <div class="tq-history">
                             <table>
@@ -292,7 +396,7 @@
             }
         }
     </script>
-    <script src="trade_quiz.js"></script>
+    <script src="dg_hard_quiz.js"></script>
 </body>
 
 </html>

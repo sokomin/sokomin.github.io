@@ -26,6 +26,7 @@
         });
         if (!pool.length) return null;
         // 直前と同じ問題はなるべく避ける
+        // TODO　実際には同じ問題が普通に2連続して出題されることはある。しかし3連続は見たことない…
         var last = STATE.current ? STATE.current.id : null;
         var candidates = pool.filter(function (q) { return q.id !== last; });
         if (!candidates.length) candidates = pool;
