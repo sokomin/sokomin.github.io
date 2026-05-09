@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://sokomin.github.io/material.indigo-pink.min.css" />
+    <link rel="stylesheet" href="https://sokomin.github.io/styles.css" />
+    <link rel="icon" href="https://sokomin.github.io/design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="https://sokomin.github.io/design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="https://sokomin.github.io/design/RedStoneLogo.png">
+    <script type="text/javascript" src="https://sokomin.github.io/design/jquery-3.4.1.min.js"></script>
+
+    <title>露店商試験支援 クイズシミュレーター</title>
+
+    <style>
+        .tq-wrap {
+            max-width: 760px;
+            margin: 20px auto;
+            text-align: left;
+            font-size: 15px;
+        }
+        .tq-section {
+            background: #fafafa;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 14px 18px;
+            margin-bottom: 16px;
+        }
+        .tq-section h3 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            font-weight: bold;
+            border-bottom: 2px solid #9d896c;
+            padding-bottom: 4px;
+            color: #333;
+        }
+        .tq-stats {
+            display: flex;
+            gap: 18px;
+            font-size: 14px;
+            color: #555;
+            flex-wrap: wrap;
+        }
+        .tq-stats span b { color: #333; }
+
+        .tq-question-box {
+            background: #2b2113;
+            color: #f1e7d3;
+            border: 2px solid #9d896c;
+            border-radius: 6px;
+            padding: 16px 18px;
+            font-size: 15px;
+            line-height: 1.7;
+            min-height: 80px;
+        }
+        .tq-qid {
+            font-size: 12px;
+            color: #c8b48b;
+            margin-bottom: 6px;
+        }
+
+        .tq-choices {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 14px;
+        }
+        .tq-choice {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: #fff;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 15px;
+            text-align: left;
+            transition: background 0.15s, border-color 0.15s;
+        }
+        .tq-choice:hover { background: #f4ecdb; border-color: #9d896c; }
+        .tq-choice .tq-num {
+            font-weight: bold;
+            width: 24px;
+            color: #9d896c;
+        }
+        .tq-choice.correct { background: #d4edda; border-color: #2e7d32; }
+        .tq-choice.wrong   { background: #f8d7da; border-color: #c62828; }
+        .tq-choice.fade    { opacity: 0.6; }
+        .tq-choice:disabled { cursor: default; }
+
+        .tq-feedback {
+            margin-top: 14px;
+            padding: 10px 14px;
+            border-radius: 4px;
+            font-size: 15px;
+            display: none;
+        }
+        .tq-feedback.ok  { background: #e8f5e9; border-left: 5px solid #2e7d32; color: #1b5e20; display: block; }
+        .tq-feedback.ng  { background: #ffebee; border-left: 5px solid #c62828; color: #b71c1c; display: block; }
+
+        .tq-actions {
+            text-align: center;
+            margin-top: 14px;
+        }
+        .tq-button {
+            display: inline-block;
+            padding: 9px 26px;
+            background: #9d896c;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 0 6px;
+        }
+        .tq-button:hover { background: #b6a07f; }
+        .tq-button.secondary { background: #777; }
+        .tq-button.secondary:hover { background: #999; }
+
+        .tq-history {
+            font-size: 13px;
+            max-height: 220px;
+            overflow-y: auto;
+        }
+        .tq-history table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .tq-history th, .tq-history td {
+            border-bottom: 1px solid #eee;
+            padding: 4px 6px;
+            text-align: left;
+            vertical-align: top;
+        }
+        .tq-history th {
+            background: #efe9d9;
+            font-size: 12px;
+        }
+        .tq-history .res-ok  { color: #2e7d32; font-weight: bold; }
+        .tq-history .res-ng  { color: #c62828; font-weight: bold; }
+
+        .tq-note {
+            font-size: 12px;
+            color: #888;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mdl-layout mdl-js-layout">
+        <div class="android-large-table mdl-layout__content">
+            <div class="main-background mdl-typography--text-center">
+                <br>
+                <h1>露店商試験支援 クイズシミュレーター</h1>
+                <a href="https://sokomin.github.io/quest/dealing.html#2">称号「取引人」 露店商試験支援</a>
+                <br><br>
+
+                <div class="tq-wrap">
+
+                    <div class="tq-section">
+                        <h3>成績</h3>
+                        <div class="tq-stats">
+                            <span>出題: <b id="tq-total">0</b></span>
+                            <span>正解: <b id="tq-correct">0</b></span>
+                            <span>不正解: <b id="tq-wrong">0</b></span>
+                            <span>正答率: <b id="tq-rate">-</b></span>
+                            <span>連続正解: <b id="tq-streak">0</b></span>
+                            <span>4〜6問換算: <b id="tq-passmark">-</b></span>
+                        </div>
+                        <div class="tq-actions" style="text-align:left; margin-top:10px;">
+                            <button class="tq-button secondary" id="tq-reset-stats">成績リセット</button>
+                        </div>
+                    </div>
+
+                    <div class="tq-section">
+                        <h3>問題</h3>
+                        <div class="tq-question-box">
+                            <div class="tq-qid" id="tq-qid"></div>
+                            <div id="tq-question">読み込み中...</div>
+                        </div>
+                        <div class="tq-choices" id="tq-choices"></div>
+                        <div class="tq-feedback" id="tq-feedback"></div>
+                        <div class="tq-actions">
+                            <button class="tq-button" id="tq-next" disabled>次の問題</button>
+                            <button class="tq-button secondary" id="tq-skip">スキップ</button>
+                        </div>
+                        <div class="tq-note">
+                            ※ 全ての問題と4つの選択肢の並びはランダムです。
+                        </div>
+                    </div>
+
+                    <div class="tq-section">
+                        <h3>履歴</h3>
+                        <div class="tq-history">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th style="width:30px;">#</th>
+                                        <th style="width:50px;">問</th>
+                                        <th>問題</th>
+                                        <th style="width:140px;">あなたの解答</th>
+                                        <th style="width:60px;">結果</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tq-history-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="trade_quiz.js"></script>
+</body>
+
+</html>
