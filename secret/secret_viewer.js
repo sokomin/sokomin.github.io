@@ -21,6 +21,7 @@
     var URL_MAPLIST = BASE_REPO_2023 + "/db/map_secret/maplist_secret.csv";
     var URL_MOBDB_DIR = BASE_REPO_2023 + "/db/map_secret/";
     var URL_PNG_DIR = BASE_REPO_2023 + "/db/map_secret_png/";
+    var URL_PNG_ORIGINAL_DIR = BASE_REPO_2023 + "/db/map_secret_original/";
     var URL_MONSTER_CSV = BASE_REPO_LEGACY + "/db/monster.csv";
     var URL_INTERFACE2_DIR = BASE_REPO_LEGACY + "/db/interface2/";
     var URL_ETC_ANM_DIR = BASE_REPO_LEGACY + "/db/etc_anm/";
@@ -138,6 +139,7 @@
                 m.width = Number(m.width || 0);
                 m.height = Number(m.height || 0);
                 m.has_image = Number(m.has_image || 0);
+                m.has_image_original = Number(m.has_image_original || 0);
                 m.has_mob = Number(m.has_mob || 0);
                 m.has_area = Number(m.has_area || 0);
             });
@@ -207,9 +209,12 @@
         var dispH = BASE_HEIGHT * state.scale;
         var dispW = dispH * w / h;
 
-        if (entry.has_image && entry.image) {
+        if ((entry.has_image_original || entry.has_image) && entry.image) {
             img.style.display = "";
-            img.src = URL_PNG_DIR + encodeURIComponent(entry.image);
+            // map_secret_original (人手 curate のカラー版) があればそちらを優先、無ければ
+            // 自動生成の白黒 map_secret_png にフォールバック
+            var dir = entry.has_image_original ? URL_PNG_ORIGINAL_DIR : URL_PNG_DIR;
+            img.src = dir + encodeURIComponent(entry.image);
             img.style.width = dispW + "px";
             img.style.height = dispH + "px";
         } else {

@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <title>物理ダメージシミュレーター　赤石の民衆</title>
+    <meta name="description" content="RED STONEの物理ダメージ計算式を構成要素ごとに分解し、最終攻撃力、種族型別物理ダメージ、限界突破、クリティカル、物理強打、最終物理ダメージなどの影響を確認できる概算シミュレーターです。" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE,レッドストーン,赤石の民衆,そこみん,物理ダメージ,計算式,シミュレーター,最終物理ダメージ,ダブルクリティカル,物理強打,限界突破" />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://sokomin.github.io/material.indigo-pink.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="css/sokomin_physical_damage_simulator.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+    <script data-ad-client="ca-pub-2122309953813422" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text" onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title"><h2>メニュー</h2></span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+        <div class="android-large-table mdl-layout__content">
+            <a href="../index.html">トップ</a> &gt;&gt;
+            <a href="../calculator.html">計算機</a> &gt;&gt;
+            物理ダメージシミュレーター<br>
+
+            <div class="main-background mdl-typography--text-center">
+                <br>
+                <h1>物理ダメージシミュレーター</h1>
+
+                <div id="spd-root" class="sokomin-pdamage-root">
+
+                    <!-- ===== 使い方 ===== -->
+                    <div class="sokomin-pdamage-howto">
+                        <strong>使い方</strong><br>
+                        ① 簡易モードで武器攻撃力・力・スキル表記ダメージなどの主要項目を入力すると、ダメージが表示されます。<br>
+                        ② 詳細モードに切り替えると、最終攻撃力%、種族型別物理ダメージ%、限界突破、図案書、ダメージ種別ごとの倍率まで指定できます。<br>
+                        ③ 入力値はブラウザに自動保存されます。一度閉じて再度開いた場合も、直近の入力が復元されます。<br>
+                        ④ <strong>初期値に戻す</strong>ボタンで全項目をリセットできます。<br>
+                        ⑤ <strong>中間計算ログ</strong>で、どの倍率がどれだけ効いているかを段階別に確認できます。
+                    </div>
+
+                    <!-- ===== 結果（最上部） ===== -->
+                    <div class="sokomin-pdamage-result-box">
+                        <div class="sokomin-pdamage-result-label">最終概算ダメージ</div>
+                        <div class="sokomin-pdamage-result-value" id="spd-result-value">-</div>
+                        <div class="sokomin-pdamage-result-sub" id="spd-result-sub">ダメージ種別: 通常</div>
+                    </div>
+
+                    <!-- ===== モード切替 ===== -->
+                    <div class="sokomin-pdamage-mode-toggle">
+                        <button id="spd-mode-simple-btn" type="button">簡易モード</button>
+                        <button id="spd-mode-detail-btn" type="button" class="active">詳細モード</button>
+                    </div>
+
+                    <!-- ===== 基礎ダメージ ===== -->
+                    <div class="sokomin-pdamage-section">
+                        <h3>基礎ダメージ</h3>
+
+                        <div class="sokomin-pdamage-form-grid">
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-weaponAttackMin">武器最小攻撃力</label>
+                                <input type="number" id="spd-weaponAttackMin" min="0" step="1" value="0">
+                            </div>
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-weaponAttackMax">武器最大攻撃力</label>
+                                <input type="number" id="spd-weaponAttackMax" min="0" step="1" value="0">
+                            </div>
+
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-weaponAttackMode">攻撃力使用モード</label>
+                                <select id="spd-weaponAttackMode">
+                                    <option value="min">最小攻撃力で計算</option>
+                                    <option value="max" selected>最大攻撃力で計算</option>
+                                    <option value="avg">平均攻撃力で計算</option>
+                                    <option value="custom">任意入力で計算</option>
+                                </select>
+                            </div>
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-weaponAttackCustom">任意武器攻撃力</label>
+                                <input type="number" id="spd-weaponAttackCustom" min="0" step="1" value="0">
+                            </div>
+
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-strength">力</label>
+                                <input type="number" id="spd-strength" min="0" step="1" value="0">
+                            </div>
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-nonWeaponAttack">武器以外の攻撃力（盾・バッジ・矢等）</label>
+                                <input type="number" id="spd-nonWeaponAttack" min="0" step="1" value="0">
+                            </div>
+
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-skillDamagePercent">スキル表記ダメージ%</label>
+                                <input type="number" id="spd-skillDamagePercent" step="1" value="0">
+                            </div>
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-damageOpPercent">ダメージOP%</label>
+                                <input type="number" id="spd-damageOpPercent" step="1" value="0">
+                            </div>
+
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-skillCorrectionPercent">スキル補正%</label>
+                                <input type="number" id="spd-skillCorrectionPercent" step="1" value="0">
+                            </div>
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-guildItemCorrectionPercent">ギルド石像/アイテム補正%</label>
+                                <input type="number" id="spd-guildItemCorrectionPercent" step="1" value="0">
+                            </div>
+                        </div>
+
+                        <details class="sokomin-pdamage-details">
+                            <summary>解説：基礎ダメージとは？</summary>
+                            <p>
+                                基礎ダメージは、武器攻撃力・力・スキル表記ダメージから組み立てられる「掛け算前の素のダメージ」です。<br>
+                                スキル表記ダメージ%（例: スキル説明文に書かれている「ダメージ + 1500%」など）と、ダメージOP%・スキル補正%・ギルド石像補正・アイテム補正の合計が、ここで一度に乗ります。<br>
+                                武器以外の攻撃力（盾・バッジ・矢など）は、力補正のみが乗る形で加算されます。
+                            </p>
+                        </details>
+                    </div>
+
+                    <!-- ===== 防御補正 ===== -->
+                    <div class="sokomin-pdamage-section sokomin-pdamage-detail-only">
+                        <h3>防御補正</h3>
+
+                        <div class="sokomin-pdamage-form-grid">
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-mobDefense">Mob防御力</label>
+                                <input type="number" id="spd-mobDefense" min="0" step="1" value="0">
+                            </div>
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-physicalDefenseReductionPercent">物理防御力減少%</label>
+                                <input type="number" id="spd-physicalDefenseReductionPercent" min="0" max="100" step="1" value="0">
+                            </div>
+
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-targetFinalDefenseIgnorePercent">ターゲット最終防御力無視%</label>
+                                <input type="number" id="spd-targetFinalDefenseIgnorePercent" min="0" max="100" step="1" value="0">
+                            </div>
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-defenseMode">防御補正方式</label>
+                                <select id="spd-defenseMode">
+                                    <option value="subtract" selected>減算（baseDamage − defenseValue）</option>
+                                    <option value="coefficient">係数化（baseDamage × 係数）</option>
+                                    <option value="ignore">無視（防御を考慮しない）</option>
+                                </select>
+                            </div>
+
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-defenseCoefficient">防御係数（係数化モード時）</label>
+                                <input type="number" id="spd-defenseCoefficient" min="0" step="0.01" value="1">
+                            </div>
+                        </div>
+
+                        <details class="sokomin-pdamage-details">
+                            <summary>解説：位相Mob と通常Mob の違い</summary>
+                            <p>
+                                通常Mob では Mob防御力による減算は予測不可能な小さな補正になる場合があります。<br>
+                                位相Mob では、スキル表記ダメージ等に近い数値で防御補正が効く可能性があり、Mob防御力が数百万規模になることもあります。<br>
+                                本シミュレーターでは「減算」「係数化」「無視」の 3 通りを切り替えて確認できるようにしています。
+                            </p>
+                        </details>
+                    </div>
+
+                    <!-- ===== 主要倍率 ===== -->
+                    <div class="sokomin-pdamage-section">
+                        <h3>主要倍率</h3>
+
+                        <div class="sokomin-pdamage-form-grid">
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-finalAttackPowerPercent">最終攻撃力%</label>
+                                <input type="number" id="spd-finalAttackPowerPercent" step="1" value="0">
+                            </div>
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-vsTypePhysicalDamagePercent">種族型別物理ダメージ%</label>
+                                <input type="number" id="spd-vsTypePhysicalDamagePercent" min="0" step="1" value="0">
+                            </div>
+
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-vsTypeCapPercent">種族型別 上限%</label>
+                                <input type="number" id="spd-vsTypeCapPercent" min="0" step="1" value="300">
+                            </div>
+                            <div class="sokomin-pdamage-field sokomin-pdamage-detail-only">
+                                <label for="spd-enemyFinalDamageReductionPercent">敵の最終ダメージ補正減少%</label>
+                                <input type="number" id="spd-enemyFinalDamageReductionPercent" step="1" value="0">
+                            </div>
+
+                            <div class="sokomin-pdamage-field sokomin-pdamage-detail-only">
+                                <label for="spd-mobDamageCutPercent">Mobダメージカット%</label>
+                                <input type="number" id="spd-mobDamageCutPercent" min="0" max="100" step="1" value="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== 限界突破 ===== -->
+                    <div class="sokomin-pdamage-section sokomin-pdamage-detail-only">
+                        <h3>限界突破</h3>
+
+                        <div class="sokomin-pdamage-form-grid">
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-limitBreakPhysicalEffectPercent">限界突破称号 物理効果%</label>
+                                <input type="number" id="spd-limitBreakPhysicalEffectPercent" step="0.1" value="5">
+                            </div>
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-physicalLimitDamageFlat">物理限界ダメージ加算値</label>
+                                <input type="number" id="spd-physicalLimitDamageFlat" step="1" value="15000">
+                            </div>
+
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-physicalLimitDamageFlatExtra">その他物理限界ダメージ加算値</label>
+                                <input type="number" id="spd-physicalLimitDamageFlatExtra" step="1" value="0">
+                            </div>
+                        </div>
+
+                        <details class="sokomin-pdamage-details">
+                            <summary>解説：限界突破称号の効果</summary>
+                            <p>
+                                限界突破称号Lv5 では、物理効果として既定で +5%、物理限界ダメージとして +15,000 が乗る読み取り値です。<br>
+                                支援ミニペット（最上級1.5% / 究極3%）、フェーストーン、潜在能力発現、BFOP、アルカナ補助OP（Lv15-28 = 0.6〜2.1%）、装備解放変換などで上乗せされる場合があります。<br>
+                                物理限界ダメージは「倍率」ではなく「加算値」として効くため、本シミュレーターでは加算位置を主要倍率の後ろに置いています。
+                            </p>
+                        </details>
+                    </div>
+
+                    <!-- ===== 図案書 ===== -->
+                    <div class="sokomin-pdamage-section sokomin-pdamage-detail-only">
+                        <h3>図案書</h3>
+
+                        <div class="sokomin-pdamage-form-grid">
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-diagramEffectPercent">図案書効果%</label>
+                                <input type="number" id="spd-diagramEffectPercent" step="1" value="0">
+                            </div>
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-diagramActivationRatePercent">発動率%</label>
+                                <input type="number" id="spd-diagramActivationRatePercent" min="0" max="100" step="1" value="0">
+                            </div>
+
+                            <div class="sokomin-pdamage-field-checkbox">
+                                <input type="checkbox" id="spd-diagramExpectedValueMode">
+                                <label for="spd-diagramExpectedValueMode">発動率を期待値として計算する</label>
+                            </div>
+                            <div class="sokomin-pdamage-field-checkbox">
+                                <input type="checkbox" id="spd-diagramAlwaysActivatedMode">
+                                <label for="spd-diagramAlwaysActivatedMode">発動済みとして計算する</label>
+                            </div>
+                        </div>
+
+                        <details class="sokomin-pdamage-details">
+                            <summary>解説：図案書の効果と発動率</summary>
+                            <p>
+                                純粋5セット は +150%、勇気1段階5セット + セットOP「限界の」4箇所 は +110% といった大きな増加幅を持ちますが、<strong>常時発動するわけではありません</strong>。<br>
+                                発動率を加味した期待値を見たい場合は「発動率を期待値として計算する」、確定発動シーンの最大値を見たい場合は「発動済みとして計算する」を選んでください。<br>
+                                両方ONの場合は「発動済み」が優先されます。
+                            </p>
+                        </details>
+                    </div>
+
+                    <!-- ===== クリティカル・ダメージ種別 ===== -->
+                    <div class="sokomin-pdamage-section">
+                        <h3>ダメージ種別とクリティカル系倍率</h3>
+
+                        <div class="sokomin-pdamage-radio-group" id="spd-hitType-group">
+                            <label><input type="radio" name="spd-hitType" value="normal" checked> 通常（×1）</label>
+                            <label><input type="radio" name="spd-hitType" value="critical"> クリティカル（×2）</label>
+                            <label><input type="radio" name="spd-hitType" value="doubleCritical"> ダブルクリティカル（×4）</label>
+                            <label><input type="radio" name="spd-hitType" value="heavyHit"> 物理強打（×3）</label>
+                        </div>
+
+                        <div class="sokomin-pdamage-form-grid sokomin-pdamage-detail-only" style="margin-top:8px;">
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-doubleCriticalDamageIncreasePercent">ダブクリダメ増加%</label>
+                                <input type="number" id="spd-doubleCriticalDamageIncreasePercent" step="1" value="150">
+                            </div>
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-physicalHeavyHitDamageIncreasePercent">強打ダメ増加%</label>
+                                <input type="number" id="spd-physicalHeavyHitDamageIncreasePercent" step="1" value="0">
+                            </div>
+
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-finalPhysicalDamagePercent">最終物理ダメージ%</label>
+                                <input type="number" id="spd-finalPhysicalDamagePercent" step="1" value="0">
+                            </div>
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-heavyHitOnlyPercent">物理強打時専用補正%</label>
+                                <input type="number" id="spd-heavyHitOnlyPercent" step="1" value="0">
+                            </div>
+                        </div>
+
+                        <details class="sokomin-pdamage-details">
+                            <summary>解説：クリティカル種別とダブクリダメ・強打ダメ増加</summary>
+                            <p>
+                                通常ヒットを 1 倍として、クリティカルは 2 倍、ダブルクリティカルは 4 倍、物理強打は 3 倍が乗ります。<br>
+                                さらにダブルクリティカル時のみ ダブクリダメ増加%（初期値150%）、物理強打時のみ 強打ダメ増加% が追加で乗ります。<br>
+                                最終物理ダメージ% は、クリティカル種別を問わず最後に乗る全体倍率として扱っています。<br>
+                                物理強打時専用補正% は、物理強打時にだけ適用される追加倍率です（例: 手装備「血の渇き」固有 150%）。
+                            </p>
+                        </details>
+                    </div>
+
+                    <!-- ===== 操作 ===== -->
+                    <div class="sokomin-pdamage-actions">
+                        <button class="sokomin-pdamage-button" id="spd-calc-btn" type="button">計算する</button>
+                        <button class="sokomin-pdamage-button secondary" id="spd-reset-btn" type="button">初期値に戻す</button>
+                        <button class="sokomin-pdamage-button secondary" id="spd-copy-json-btn" type="button">入力値をJSONとしてコピー</button>
+                        <button class="sokomin-pdamage-button secondary" id="spd-share-url-btn" type="button">共有URLをコピー</button>
+                        <div id="spd-flash" style="font-size:12px;color:#0a7;height:1.4em;margin-top:6px;opacity:0;transition:opacity 0.3s;"></div>
+                    </div>
+
+                    <!-- ===== 中間計算ログ ===== -->
+                    <div class="sokomin-pdamage-section">
+                        <h3>中間計算ログ</h3>
+                        <p style="font-size:12px;color:#666;">
+                            各段階の値を上から順に表示します。倍率系は「N.NNNN 倍」、加算系は数値で表示します。
+                        </p>
+                        <table class="sokomin-pdamage-breakdown">
+                            <thead>
+                                <tr>
+                                    <th style="width:40px;">#</th>
+                                    <th>段階</th>
+                                    <th style="width:30%;">値</th>
+                                    <th>備考</th>
+                                </tr>
+                            </thead>
+                            <tbody id="spd-breakdown-tbody"></tbody>
+                        </table>
+                    </div>
+
+                    <!-- ===== プリセット読み込み ===== -->
+                    <div class="sokomin-pdamage-section sokomin-pdamage-detail-only">
+                        <h3>プリセット読み込み</h3>
+                        <p style="font-size:12px;color:#666;">
+                            他環境で書き出した入力値や、代表的な検証パターンの仮値を呼び出せます。<br>
+                            通常の入力は自動で保存され、ブラウザを閉じて再度開いても直近の値が復元されます。
+                        </p>
+                        <div class="sokomin-pdamage-preset-row">
+                            <label for="spd-preset-select">プリセット</label>
+                            <select id="spd-preset-select"></select>
+                            <button class="sokomin-pdamage-button" id="spd-load-preset-btn" type="button">読み込み</button>
+                        </div>
+                    </div>
+
+                    <!-- ===== 入力JSON ===== -->
+                    <div class="sokomin-pdamage-section sokomin-pdamage-detail-only">
+                        <h3>入力値（JSON）</h3>
+                        <p style="font-size:12px;color:#666;">
+                            現在の入力値です。「入力値をJSONとしてコピー」または「共有URLをコピー」で他環境に渡せます。
+                        </p>
+                        <textarea class="sokomin-pdamage-json-area" id="spd-json-area" readonly></textarea>
+                    </div>
+
+                    <!-- ===== 仕様説明（SEO 用に直書き） ===== -->
+                    <div class="sokomin-pdamage-section sokomin-pdamage-spec">
+                        <h3>各項目の仕様説明</h3>
+
+                        <p>
+                            物理ダメージは単純な攻撃力だけでは決まりません。
+                            力補正、スキル表記ダメージ、最終攻撃力、種族型別物理ダメージ、クリティカル種別、最終物理ダメージなど複数の倍率が関与します。
+                            位相Mob など一部の敵では防御力補正が通常Mob と異なる可能性があります。
+                            ダブルクリティカル、物理強打、図案書、最終物理ダメージは適用条件を区別する必要があります。
+                            このシミュレーターは仕様理解と比較用であり、ゲーム内完全一致を保証しません。
+                        </p>
+
+                        <h4>1. 基礎物理ダメージ</h4>
+                        <pre>基礎物理ダメージ
+  = (1 + 武器攻撃力) × (1 + 力 / 200) × スキル表記ダメージ倍率
+  + 武器以外の攻撃力 × (1 + 力 / 200)</pre>
+                        <dl>
+                            <dt>武器攻撃力</dt>
+                            <dd>基本攻撃力 + 転生補正 + 解放変換による武器最大/最小攻撃力OP の合計。最小・最大・平均・任意のいずれで計算するかを選択できます。</dd>
+                            <dt>力補正</dt>
+                            <dd><code>1 + 力 / 200</code>。力 200 で +1.0 倍、力 30,000 で +151 倍に相当します。</dd>
+                            <dt>スキル表記ダメージ倍率</dt>
+                            <dd><code>(100 + スキル表記% + ダメージOP% + スキル補正% + ギルド石像/アイテム%) / 100</code>。すべて加算して 100% に乗せた合算倍率です。</dd>
+                            <dt>武器以外の攻撃力</dt>
+                            <dd>盾・バッジ・矢などの装備攻撃力。本実装では力補正のみが乗る形にしています。</dd>
+                        </dl>
+
+                        <h4>2. Mob防御力補正</h4>
+                        <pre>defenseValue
+  = Mob防御力 × (1 - 物理防御力減少% / 100) × (1 - ターゲット最終防御力無視% / 100)</pre>
+                        <p>
+                            通常Mob と位相Mob で計算挙動が異なる可能性があるため、減算 / 係数化 / 無視 を切り替えられるようにしています。
+                        </p>
+
+                        <h4>3. 最終攻撃力%</h4>
+                        <p>
+                            BFOP、装備の解放変換、ロト品指、神獣バッジ、ミッションブックなどから加算で稼げる増加%。
+                            <code>1 + 最終攻撃力% / 100</code> として乗ります。
+                        </p>
+
+                        <h4>4. 種族型別物理ダメージ%</h4>
+                        <p>
+                            人間型 / アンデッド型 / 悪魔型 / 神獣型 / 動物型 / ボス型など、相手の型に対する物理ダメージ増加。
+                            <strong>合計の上限は 300%</strong>（初期値）です。錬成抽出、解放変換、クリーチャーパッシブ Lv50（100%）、図案書系、恩寵強化系、魔法石系から獲得します。
+                        </p>
+
+                        <h4>5. 敵の最終ダメージ補正減少%</h4>
+                        <p>
+                            フェーストーン由来の獲得が代表例。<code>1 + 敵最終ダメージ補正減少% / 100</code> として攻撃側の倍率に変換しています。
+                        </p>
+
+                        <h4>6. Mobダメージカット%</h4>
+                        <p>
+                            敵側のダメージカット率。<code>1 - Mobダメージカット% / 100</code> として、最大 100% でクランプします。
+                            90% 以上 / 75% 以上 / 50% 以上 / 50% 未満 など、Mob ごとに段階があります。
+                        </p>
+
+                        <h4>7. 限界突破称号 物理効果%</h4>
+                        <p>
+                            基本値は限界突破称号Lv5 = 5%。支援ミニペット、フェーストーン、潜在能力発現、BFOP、アルカナ補助OP、装備解放変換などで上乗せされます。
+                        </p>
+
+                        <h4>8. 物理限界ダメージ数値（加算）</h4>
+                        <p>
+                            倍率ではなく加算値として効きます。基本（限界突破称号Lv5）= +15,000 ／ 魔力ストーン = +20,000 ／ フェーストーン関連 ／ 変異ミニペット組み合わせなどが代表例。
+                        </p>
+
+                        <h4>9. 図案書効果</h4>
+                        <p>
+                            純粋5セット = +150%（クリティカル/ダブルクリティカル専用、1段階発動率40%・5段階発動率70%）、勇気1段階5セット + セットOP「限界の」4箇所 = +110%（ダブルクリティカル/物理強打 両方に適用）など。
+                            発動率を期待値として乗じるか、発動扱いで乗じるかを選べます。
+                        </p>
+
+                        <h4>10. クリティカル倍率</h4>
+                        <p>
+                            通常 = 1 ／ クリティカル = 2 ／ ダブルクリティカル = 4 ／ 物理強打 = 3。
+                        </p>
+
+                        <h4>11. ダブクリダメ増加%</h4>
+                        <p>
+                            ダブルクリティカル時のみ <code>1 + ダブクリダメ増加% / 100</code> として乗ります。
+                            支援ミニペット、手装備固有（ブレイブハンター系 +40% 最大）、フェーストーン（4〜20%）、コスチューム影クレスト（デュアル10% / 最上級8% / 上級6%）、ユニーク超越（1〜5%）、クリーチャーパッシブ「ダブルクリティカルダメージLv50」（Lv50 で 50% + 20%）、装備解放（4解放目 5〜12%）、BFOP（5%×2箇所）などで稼げます。
+                        </p>
+
+                        <h4>12. 強打ダメ増加%</h4>
+                        <p>
+                            物理強打時のみ <code>1 + 強打ダメ増加% / 100</code> として乗ります。
+                            アルカナ補助OP（Lv15-28 = 11〜32%）、クリーチャーパッシブ「物理限界打ダメージLv50」= 100%、フェーストーン 50〜250% などが代表例。
+                        </p>
+
+                        <h4>13. 最終物理ダメージ%</h4>
+                        <p>
+                            ダメージ種別を問わず、最後に乗る全体倍率。
+                            一部覚醒スキル、支援ミニペット組み合わせ効果（30% / 50%）、コスチューム影クレスト（上級15% / 究極20%）、フェーストーン 3〜15% などで獲得します。
+                        </p>
+
+                        <h4>14. 物理強打時専用補正%</h4>
+                        <p>
+                            物理強打時のみ別枠で乗る固有倍率。例: 手装備「血の渇き」固有 150%。
+                        </p>
+                    </div>
+
+                    <!-- ===== 更新履歴 ===== -->
+                    <div class="sokomin-pdamage-section">
+                        <h3>更新履歴</h3>
+                        <table class="sokomin-pdamage-history-tbl">
+                            <tbody>
+                                <tr>
+                                    <th>2026-05-09</th>
+                                    <td>初版公開。物理ダメージ計算式の構成要素を分解し、中間計算ログ・プリセット・JSON共有を実装。</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- ===== 注意書き（一番下） ===== -->
+                    <div class="sokomin-pdamage-notice">
+                        <strong>【概算・検証中】このシミュレーターについて</strong><br>
+                        本シミュレーターは、RED STONE の物理ダメージ計算式を理解しやすくするための<strong>概算ツール</strong>です。<br>
+                        ゲーム内の実ダメージと完全一致することを保証するものではありません。<br>
+                        位相Mob、防御補正、カンスト差し引き位置、図案書発動率、物理限界ダメージの加算位置などは現在<strong>検証中</strong>です。<br>
+                        ゲーム側の<strong>仕様変更により式が変わる可能性</strong>もあります。
+                    </div>
+
+                </div>
+                <!-- /#spd-root -->
+
+                <br><br>
+                [関連] <a href="../calculation/calculation-magic-damage.html">魔法ダメージ計算機</a> ／
+                <a href="../quest/limitbreak.html">限界突破</a><br>
+                <br>
+
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">
+                        当サイトで利用している画像及びデータは、L&amp;K Co., Ltd.に帰属します。<br>
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    © L&amp;K Co., Ltd. All Rights Reserved.<br>
+                </footer>
+            </div>
+            <script src="https://sokomin.github.io/material.min.js"></script>
+        </div>
+    </div>
+
+    <script src="js/sokomin_physical_damage_simulator.js"></script>
+</body>
+
+</html>
