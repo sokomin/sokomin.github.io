@@ -61,6 +61,7 @@
         secretId: null,         // 表示対象の secret_id (number)
         entry: null,            // maplist_secret.csv の該当行
         maplist: [],
+        dungeonGroup: [],       // 同一 str_map に属するマップ群 (rmd_index 昇順)
         monsterByName: null,    // name -> monster.csv row (first match)
         monsterById: null,      // id  -> monster.csv row
         scale: 1.0,
@@ -177,6 +178,94 @@
             };
             return data;
         }).catch(function () { return { MobData: [], AreaData: [], MobList: [] }; });
+    }
+
+    // ---- マップ切替タブ (同一 str_map で複数マップがあるダンジョン用) ----
+    function buildDungeonGroup(entry) {
+        // str_map をキーに同一ダンジョン内の全マップを抽出 (rmd_index 昇順)。
+        // dungeon_id=-1 (未分類) で別ダンジョンを誤グルーピングしないよう str_map で揃える。
+        if (!entry.str_map) return [entry];
+        return state.maplist
+            .filter(function (m) { return m.str_map === entry.str_map; })
+            .sort(function (a, b) {
+                var ai = Number(a.rmd_index), bi = Number(b.rmd_index);
+                if (Number.isFinite(ai) && Number.isFinite(bi) && ai !== bi) return ai - bi;
+                return a.id - b.id;
+            });
+    }
+
+    function ensureMapTabsContainer() {
+        var c = $("map_tabs");
+        if (c) return c;
+        c = document.createElement("div");
+        c.id = "map_tabs";
+        var titleNode = $("map_title_name");
+        if (titleNode && titleNode.parentNode) {
+            titleNode.parentNode.insertBefore(c, titleNode);
+        }
+        return c;
+    }
+
+    function renderMapTabs(currentEntry) {
+        var c = ensureMapTabsContainer();
+        var group = state.dungeonGroup || [];
+        if (group.length <= 1) {
+            c.innerHTML = "";
+            c.style.display = "none";
+            return;
+        }
+        c.style.display = "";
+        var html = '<div class="map-tab-bar">';
+        group.forEach(function (m, i) {
+            var label = "マップ" + (i + 1);
+            var isActive = (m.id === currentEntry.id);
+            var canShow = m.has_image || m.has_image_original || m.has_mob;
+            var cls = "map-tab" + (isActive ? " active" : "") + (canShow ? "" : " disabled");
+            var attrs = 'data-id="' + m.id + '"';
+            if (!canShow) attrs += ' disabled';
+            html += '<button type="button" class="' + cls + '" ' + attrs + '>' + escapeHtml(label) + '</button>';
+        });
+        html += '</div>';
+        c.innerHTML = html;
+
+        c.querySelectorAll('.map-tab').forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                if (btn.classList.contains("disabled")) return;
+                var id = Number(btn.getAttribute("data-id"));
+                if (Number.isFinite(id)) selectMap(id);
+            });
+        });
+    }
+
+    function selectMap(newId) {
+        if (state.entry && state.entry.id === newId) return;
+        var newEntry = (state.dungeonGroup || []).find(function (m) { return m.id === newId; });
+        if (!newEntry) return;
+
+        state.entry = newEntry;
+        state.secretId = newId;
+        state.highlightedInid = null;
+        state.lastData = null;
+
+        if (window.history && window.history.replaceState) {
+            try {
+                window.history.replaceState({}, "", location.pathname + "?id=" + newId);
+            } catch (e) { /* noop */ }
+        }
+
+        renderTitle(newEntry);
+        renderMapTabs(newEntry);
+
+        if (!newEntry.mobdb) {
+            applyImageSize(newEntry);
+            $("npc_info").innerHTML = '<p class="viewer-loading">このダンジョンの mob/area データはまだ生成されていません。</p>';
+            return;
+        }
+        loadMobdb(newEntry).then(function (data) {
+            state.lastData = data;
+            renderOverlay(newEntry, data);
+            renderInfoPanel(newEntry, data);
+        });
     }
 
     // ---- レンダリング ----
@@ -520,7 +609,9 @@
                 return;
             }
             state.entry = entry;
+            state.dungeonGroup = buildDungeonGroup(entry);
             renderTitle(entry);
+            renderMapTabs(entry);
 
             if (!entry.mobdb) {
                 // rmd 無しダンジョン
