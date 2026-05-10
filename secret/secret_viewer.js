@@ -199,6 +199,36 @@
                 "w": 300,
                 "h": 180
             }
+        },
+        "Abandoned_dungeon": {
+            "000": {
+                "w": 350,
+                "h": 180
+            }
+        },
+        "secret_fortress": {
+            "000": {
+                "w": 230,
+                "h": 180
+            }
+        },
+        "Ring_of_the_Primitiveness": {
+            "000": {
+                "w": 500,
+                "h": 250
+            }
+        },
+        "destory_ruins": {
+            "000": {
+                "w": 300,
+                "h": 155
+            }
+        },
+        "fugitive_mountain": {
+            "000": {
+                "w": 1350,
+                "h": 120
+            }
         }
     }
     ;
