@@ -31,6 +31,90 @@
     var BASE_HEIGHT = 200;
     var MAP_PADDING = 20; // map_image の left:20px と整合
 
+    // ---- 画像座標空間オーバーライド (デバッグ / 個別補正用) ----
+    // maplist の width/height や読み込んだ画像の naturalWidth/Height では
+    // mob プロットがずれる場合に手動で座標空間 (= mob の posx/posy が収まるべき
+    // 矩形) を上書きする。優先順位: IMG_SIZE_OVERRIDES > 画像の naturalWidth/Height > maplist。
+    // キーは str_map (例 "vampirekingdom"), 値は { rmd_index: { w, h } } もしくは
+    // 全 rmd 共通なら { "*": { w, h } }。rmd_index は文字列 "000"/"001"/... をそのまま使う。
+    // {
+        // 例: "vampirekingdom": { "001": { w: 400, h: 200 } },
+        // secretViewer.debugSize()      // 現在採用されている座標空間 (override / natural / maplist)
+        // secretViewer.setSize(400, 200)        // 現マップの座標空間を 400x200 に固定
+        // secretViewer.setSize(400, 200, true)  // 同 str_map の全 rmd に適用
+        // secretViewer.getOverrides()   // 現在の override 一覧
+    // };
+    var IMG_SIZE_OVERRIDES = 
+    {
+        "spacetime": {
+            "000": {
+                "w": 400,
+                "h": 210
+            }
+        },
+        "kobolt_cave": {
+            "000": {
+                "w": 400,
+                "h": 200
+            }
+        },
+        "hanov_pillow_hide": {
+            "000": {
+                "w": 305,
+                "h": 155
+            }
+        },
+        "robber_hideway": {
+            "000": {
+                "w": 205,
+                "h": 105
+            }
+        },
+        "mythrimine_hide": {
+            "000": {
+                "w": 430,
+                "h": 220
+            }
+        },
+        "cave_of_bloodogre": {
+            "000": {
+                "w": 250,
+                "h": 125
+            }
+        },
+        "alphas_hide_jail": {
+            "000": {
+                "w": 200,
+                "h": 100
+            }
+        },
+        "drug_laboratory": {
+            "000": {
+                "w": 200,
+                "h": 270
+            }
+        },
+        "mercenary_big": {
+            "000": {
+                "w": 200,
+                "h": 90
+            }
+        },
+        "mine_of_tatba": {
+            "000": {
+                "w": 200,
+                "h": 100
+            }
+        },
+        "patrol_tomb": {
+            "000": {
+                "w": 190,
+                "h": 110
+            }
+        }
+    }
+    ;
+
     // ---- アイテム種別 (decomin/batch/rs_decoder/common/text.py の item_type_text を verbatim 移植) ----
     // sokomin.github.io/update/js/itemtype_list.js の同名 const は window に attach されない
     // (`const` は global object に乗らない仕様) ため、本ビューア内で自前定義する。
@@ -288,13 +372,33 @@
         $("map_extra_info").innerHTML = extra.join("<br>");
     }
 
+    // ---- 座標空間の解決 ----
+    // 優先順位: IMG_SIZE_OVERRIDES (str_map + rmd_index, "*" は全 rmd 共通)
+    //         > 読み込んだ画像の naturalWidth/Height (画像が実画素を持っている場合)
+    //         > maplist の width/height (フォールバック)
+    function resolveCoordSpace(entry) {
+        var ov = IMG_SIZE_OVERRIDES[entry.str_map];
+        if (ov) {
+            var v = ov[entry.rmd_index] || ov["*"];
+            if (v && v.w > 0 && v.h > 0) {
+                return { w: v.w, h: v.h, source: "override" };
+            }
+        }
+        var img = $("map_image");
+        if (img && img.naturalWidth > 0 && img.naturalHeight > 0) {
+            return { w: img.naturalWidth, h: img.naturalHeight, source: "natural" };
+        }
+        return { w: entry.width || 100, h: entry.height || 100, source: "maplist" };
+    }
+
     function applyImageSize(entry) {
         var img = $("map_image");
         var placeholder = $("map_placeholder_node");
         if (placeholder) placeholder.remove();
 
-        var w = entry.width || 100;
-        var h = entry.height || 100;
+        var space = resolveCoordSpace(entry);
+        var w = space.w;
+        var h = space.h;
         var dispH = BASE_HEIGHT * state.scale;
         var dispW = dispH * w / h;
 
@@ -303,7 +407,16 @@
             // map_secret_original (人手 curate のカラー版) があればそちらを優先、無ければ
             // 自動生成の白黒 map_secret_png にフォールバック
             var dir = entry.has_image_original ? URL_PNG_ORIGINAL_DIR : URL_PNG_DIR;
-            img.src = dir + encodeURIComponent(entry.image);
+            var newSrc = dir + encodeURIComponent(entry.image);
+            if (img.src !== newSrc) {
+                // 画像を新規ロード → naturalWidth/Height が確定したら座標再計算のため再描画
+                img.onload = function () {
+                    if (state.entry === entry && state.lastData) {
+                        renderOverlay(entry, state.lastData);
+                    }
+                };
+                img.src = newSrc;
+            }
             img.style.width = dispW + "px";
             img.style.height = dispH + "px";
         } else {
@@ -319,18 +432,21 @@
         }
         // 後続要素 (NPC info) のレイアウト維持
         $("map_blank").style.height = dispH + "px";
-        return { dispW: dispW, dispH: dispH, w: w, h: h };
+        return { dispW: dispW, dispH: dispH, w: w, h: h, source: space.source };
     }
 
     function renderOverlay(entry, data) {
         var sz = applyImageSize(entry);
-        var heightFactor = BASE_HEIGHT * state.scale / sz.h;
+        // 表示画像 (dispW × dispH) と座標空間 (w × h) の比 = プロット倍率。
+        // 横と縦を独立に取り、画像の実描画サイズと mob posx/posy を必ず一致させる。
+        var fx = sz.dispW / sz.w;
+        var fy = sz.dispH / sz.h;
 
         // モンスターのドット
         var dotHtml = "";
         (data.MobData || []).forEach(function (row, idx) {
-            var x = Number(row.posx || 0) * heightFactor;
-            var y = Number(row.posy || 0) * heightFactor;
+            var x = Number(row.posx || 0) * fx;
+            var y = Number(row.posy || 0) * fy;
             var inid = row.inid !== undefined ? row.inid : idx;
             var name = row.name || "(name?)";
             var repop = row.repop || 0;
@@ -350,8 +466,8 @@
         var lnkHtml = "";
         (data.AreaData || []).forEach(function (row) {
             var t = Number(row.type);
-            var x = Number(row.posx || 0) * heightFactor;
-            var y = Number(row.posy || 0) * heightFactor;
+            var x = Number(row.posx || 0) * fx;
+            var y = Number(row.posy || 0) * fy;
             var col = "", nam = "", nam2 = "", alt = "";
 
             if (t === 2) {
@@ -518,10 +634,28 @@
         return txt;
     }
 
-    // ---- 公開 API (HTML から呼ばれる zoomIn / zoomOut) ----
+    // ---- 公開 API (HTML から呼ばれる zoomIn / zoomOut + デバッグ用) ----
     var publicApi = {
         zoomIn: function () { state.scale = Math.min(state.scale + 0.2, 6); rerender(); },
         zoomOut: function () { state.scale = Math.max(state.scale - 0.2, 0.4); rerender(); },
+
+        // デバッグ用: 現在表示中のマップの座標空間を手動指定して即時再描画する。
+        // (例) secretViewer.setSize(400, 200) または secretViewer.setSize(400, 200, true)
+        // 第3引数 true で同 str_map の全 rmd_index に適用、false (省略) で現在の rmd のみ。
+        setSize: function (w, h, applyToAll) {
+            if (!state.entry || !(w > 0) || !(h > 0)) return;
+            var key = state.entry.str_map;
+            if (!IMG_SIZE_OVERRIDES[key]) IMG_SIZE_OVERRIDES[key] = {};
+            IMG_SIZE_OVERRIDES[key][applyToAll ? "*" : state.entry.rmd_index] = { w: w, h: h };
+            rerender();
+            return IMG_SIZE_OVERRIDES;
+        },
+        // 現在採用されている座標空間 (override / natural / maplist) を確認する
+        debugSize: function () {
+            if (!state.entry) return null;
+            return resolveCoordSpace(state.entry);
+        },
+        getOverrides: function () { return IMG_SIZE_OVERRIDES; },
     };
     window.secretViewer = publicApi;
 
