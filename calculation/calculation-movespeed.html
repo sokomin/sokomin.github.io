@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=960">
+  <!-- Page styles -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://sokomin.github.io/material.indigo-pink.min.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+  <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+  <script language="JavaScript" src="js/common_function.js"></script>
+  <script language="JavaScript" src="js/movespeed.js"></script>
+  <script language="JavaScript" src="js/memorize.js"></script>
+  <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-133658114-1');
+  </script>
+  <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+  <script>
+      function enter() {
+          if (window.event.keyCode == 13) {
+              var last_keyword = $('#search-field').val();
+              window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+          }
+      }
+  </script>
+
+  <style>
+    #view-source {
+      position: fixed;
+      display: block;
+      right: 0;
+      bottom: 0;
+      margin-right: 40px;
+      margin-bottom: 40px;
+      z-index: 900;
+    }
+  </style>
+</head>
+
+<body onload="init1(); init2()" leftmargin="0" topmargin="0" marginheight="0" marginwidth="0">
+  <title>移動速度計算機 赤石の民衆</title>
+  <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,そこらの民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,そこみん,赤石,攻略情報,移動速度,カーペット,GV" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <a name="container"></a>
+    <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+      <div class="mdl-layout__header-row">
+        <span class="android-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <!-- Add spacer, to align navigation to the right in desktop -->
+        <div class="android-header-spacer mdl-layout-spacer"></div>
+        <div
+          class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text" onkeypress="enter();" id="search-field" />
+          </div>
+        </div>
+        <!-- Navigation -->
+        <div class="android-navigation-container">
+          <nav class="android-navigation mdl-navigation">
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/index.html">ホーム</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/calculator.html">計算機</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/history.html">赤石史</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/link.html">リンク</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+          </nav>
+        </div>
+        <span class="android-mobile-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+          id="more-button">
+          <i class="material-icons">more_vert</i>
+        </button>
+        <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/calculator.html">計算機</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/history.html">赤石史</a></li>
+          <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/link.html">リンク</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+        </ul>
+
+      </div>
+    </div>
+
+    <div class="android-drawer mdl-layout__drawer">
+      <span class="mdl-layout-title">
+        <h2>メニュー</h2>
+      </span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html"><strong>モンスター</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html"><strong>ダンジョン</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html"><strong>クエスト</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-friend"
+          href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-info"
+          href="../information/information.html"><strong>雑学</strong></a>
+      </nav>
+    </div>
+
+    <div class="android-large-table mdl-layout__content">
+
+      <!--main-->
+      <div class="main-background mdl-typography--text-center">
+        <br>
+        <br>
+        <h1>移動速度計算機</h1>
+        <a href="#1">移動速度計算機</a><br>
+        <a href="#2">移動速度早見表</a><br>
+        <a href="#3">計算式</a><br>
+        <br>
+        <br>
+        移動速度(%)を入力すると、走り・絨毯・ギルド戦での 1frame あたりの進行距離と、1 座標進むのに必要な frame 数を計算します。<br>
+        <br>
+        <a name="1"></a><br>
+        <form name="f">
+          <table id="table8">
+            <tbody>
+              <tr>
+                <th>移動速度計算機</th>
+              </tr>
+              <tr>
+                <td>
+                  <table id="table9">
+                    <colgroup>
+                      <col span="1" width="20%">
+                      <col span="1" width="30%">
+                      <col span="1" width="50%">
+                    </colgroup>
+                    <tbody>
+                      <tr>
+                        <td>移動速度</td>
+                        <td><input type="text" class="memorize" name="a1" size="8" onchange="onSpeedInputChange()" oninput="onSpeedInputChange()">％</td>
+                        <td>キャラの移動速度オプション合計値</td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td colspan="2">
+                          <input type="range" id="speedSlider" min="0" max="2000" step="1" value="0"
+                                 oninput="onSpeedSliderChange()"
+                                 style="width:90%; max-width:520px; vertical-align:middle;">
+                          <br>
+                          <span style="font-size:11px; color:#666;">0 ～ 2000 % (端を超える値は数値欄に直接入力)</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="3"><br>
+                          <input type="button" value="計算" onclick="calc1()"><br>
+                          <br>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table id="table9">
+                    <colgroup>
+                      <col span="1" width="20%">
+                      <col span="1" width="25%">
+                      <col span="1" width="25%">
+                      <col span="1" width="15%">
+                      <col span="1" width="15%">
+                    </colgroup>
+                    <tbody>
+                      <tr>
+                        <td></td>
+                        <td>1frameの座標距離</td>
+                        <td>1座標進むframe数</td>
+                        <td>上限</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td>走り</td>
+                        <td><input type="text" class="memorize" name="r1" size="8"></td>
+                        <td><input type="text" class="memorize" name="r2" size="8"> frame</td>
+                        <td><input type="text" class="memorize" name="r3" size="6"></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td>絨毯</td>
+                        <td><input type="text" class="memorize" name="r4" size="8"></td>
+                        <td><input type="text" class="memorize" name="r5" size="8"> frame</td>
+                        <td><input type="text" class="memorize" name="r6" size="6"></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td>ギルド戦</td>
+                        <td><input type="text" class="memorize" name="r7" size="8"></td>
+                        <td><input type="text" class="memorize" name="r8" size="8"> frame</td>
+                        <td><input type="text" class="memorize" name="r9" size="6"></td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+
+        <a name="2"></a><br>
+        <h4>移動速度早見表</h4><br>
+        <table id="table8" style="max-width: 720px">
+          <colgroup>
+            <col span="1" width="20%">
+            <col span="1" width="20%">
+            <col span="1" width="20%">
+            <col span="1" width="20%">
+            <col span="1" width="20%">
+          </colgroup>
+          <tbody>
+            <tr>
+              <th>移動速度(%)</th>
+              <th>走り</th>
+              <th>絨毯</th>
+              <th>ギルド戦</th>
+              <th>備考</th>
+            </tr>
+            <tr>
+              <td align="center">0</td>
+              <td align="center">0.2500</td>
+              <td align="center">0.7500</td>
+              <td align="center">0.2000</td>
+              <td align="center">-</td>
+            </tr>
+            <tr>
+              <td align="center">25</td>
+              <td align="center">0.3125</td>
+              <td align="center">0.9375</td>
+              <td align="center">0.2125</td>
+              <td align="center">-</td>
+            </tr>
+            <tr>
+              <td align="center">33</td>
+              <td align="center">0.3325</td>
+              <td align="center">0.9975</td>
+              <td align="center">0.2165</td>
+              <td align="center">絨毯ほぼキャップ</td>
+            </tr>
+            <tr>
+              <td align="center">50</td>
+              <td align="center">0.3750</td>
+              <td align="center"><span class="color-image1">1.0000</span></td>
+              <td align="center">0.2250</td>
+              <td align="center">絨毯キャップ到達済</td>
+            </tr>
+            <tr>
+              <td align="center">100</td>
+              <td align="center">0.5000</td>
+              <td align="center"><span class="color-image1">1.0000</span></td>
+              <td align="center">0.2500</td>
+              <td align="center">-</td>
+            </tr>
+            <tr>
+              <td align="center">150</td>
+              <td align="center">0.6250</td>
+              <td align="center"><span class="color-image1">1.0000</span></td>
+              <td align="center">0.2750</td>
+              <td align="center">-</td>
+            </tr>
+            <tr>
+              <td align="center">200</td>
+              <td align="center">0.7500</td>
+              <td align="center"><span class="color-image1">1.0000</span></td>
+              <td align="center">0.3000</td>
+              <td align="center">-</td>
+            </tr>
+            <tr>
+              <td align="center">300</td>
+              <td align="center"><span class="color-image1">1.0000</span></td>
+              <td align="center"><span class="color-image1">1.0000</span></td>
+              <td align="center">0.3500</td>
+              <td align="center">走りキャップ到達</td>
+            </tr>
+            <tr>
+              <td align="center">500</td>
+              <td align="center"><span class="color-image1">1.0000</span></td>
+              <td align="center"><span class="color-image1">1.0000</span></td>
+              <td align="center">0.4500</td>
+              <td align="center">-</td>
+            </tr>
+            <tr>
+              <td align="center">800</td>
+              <td align="center"><span class="color-image1">1.0000</span></td>
+              <td align="center"><span class="color-image1">1.0000</span></td>
+              <td align="center">0.6000</td>
+              <td align="center">-</td>
+            </tr>
+            <tr>
+              <td align="center">1000</td>
+              <td align="center"><span class="color-image1">1.0000</span></td>
+              <td align="center"><span class="color-image1">1.0000</span></td>
+              <td align="center">0.7000</td>
+              <td align="center">-</td>
+            </tr>
+            <tr>
+              <td align="center">1600</td>
+              <td align="center"><span class="color-image1">1.0000</span></td>
+              <td align="center"><span class="color-image1">1.0000</span></td>
+              <td align="center"><span class="color-image1">1.0000</span></td>
+              <td align="center">ギルド戦キャップ到達</td>
+            </tr>
+            <tr>
+              <td align="center">2000</td>
+              <td align="center"><span class="color-image1">1.0000</span></td>
+              <td align="center"><span class="color-image1">1.0000</span></td>
+              <td align="center"><span class="color-image1">1.0000</span></td>
+              <td align="center">-</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        色付きセルはキャップ (1frame に 1 座標 = 上限) 到達状態。<br>
+        <br>
+        <br>
+
+        <a name="3"></a>
+        <h4>計算式</h4>
+        ● 1frame に進む座標距離は移動速度(%)から以下で算出。<br>
+        　<i>走 り の 場 合 ： { 0.0025 × [ 移動速度(%) ] + 0.25 }</i><br>
+        　<i>絨 毯 の 場 合 ： { 0.0075 × [ 移動速度(%) ] + 0.75 }</i><br>
+        　<i>Ｇ Ｖ の 場 合 ： { 0.0005 × [ 移動速度(%) ] + 0.2  }</i><br>
+        ● ただし 1frame に 1 座標距離が最速 (上限)。<br>
+        ● 絨毯は「移動速度オプションや補正の恩恵が通常の3倍」が係数3倍として既に式に内包されているため、ここではキャラ素の移動速度(%)をそのまま入力する。<br>
+        ● キャップ到達移動速度: 走り 300%、絨毯 約33.33%、ギルド戦 1600%。<br>
+        ● ウィンドジャンパーは移動速度増加無しのカーペットと考えるとわかりやすいです。<br>
+        ● 秘密ダンジョン内での移動速度はギルド戦での計算式に準じます。<br>
+        <br>
+        ● 参考: <a href="../information/magiccarpet.html">魔法のカーペット</a> 
+        <br>
+        <br>
+        <br>
+        <br>
+        <footer class="android-footer mdl-mega-footer">
+          <font color="red">
+            当サイトで利用している画像及びデータは、L&K Co., Ltd.に帰属します。<br>
+            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+          </font>
+          © L&K Co., Ltd. All Rights Reserved.<br>
+        </footer>
+        <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+      </div>
+
+      <script src="https://sokomin.github.io/material.min.js"></script>
+    </div>
+</body>
+
+</html>
