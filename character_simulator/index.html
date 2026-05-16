@@ -1,0 +1,2942 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>キャラクターシミュレーター 赤石の民衆</title>
+  <meta name="description" content="レッドストーン総合攻略情報ポータルページ - キャラクターシミュレーター" />
+  <meta name="keywords"
+    content="RED STONE ,レッドストーン,赤石の民衆,そこらの民衆,ＲＥＤ ＳＴＯＮＥ,そこみん,赤石,攻略情報,キャラクターシミュレーター,装備,ステータス" />
+  <link rel="icon" href="https://sokomin.github.io/design/RedStoneLogo.png" sizes="32x32" />
+  <link rel="icon" href="https://sokomin.github.io/design/RedStoneLogo.png" sizes="192x192" />
+  <link rel="apple-touch-icon-precomposed" href="https://sokomin.github.io/design/RedStoneLogo.png" />
+
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://sokomin.github.io/material.indigo-pink.min.css">
+  <link rel="stylesheet" href="https://sokomin.github.io/styles.css">
+  <script defer src="https://sokomin.github.io/material.min.js"></script>
+
+  <style>
+    html, body { min-height: 100%; }
+    body {
+      background-color: #f7f3ea;
+      background-image: url("https://sokomin.github.io/design/bg-base-01.png");
+      background-repeat: repeat; background-attachment: fixed;
+    }
+    .main-background {
+      background-color: #f7f3ea !important;
+      background: url("https://sokomin.github.io/design/bg-base-01.png") repeat top left !important;
+      background-size: auto !important;
+      min-height: 100vh;
+    }
+    .sim-stage {
+      min-height: calc(100vh - 64px);
+      padding: 0; overflow: visible;
+      background: transparent; text-align: left;
+    }
+    .sim-frame-shell {
+      position: relative;
+      width: 100%; max-width: 100%;
+      min-height: 1100px;
+    }
+    .sim-character-proxy {
+      position: absolute; top: 0; bottom: 0; left: 0; z-index: 6;
+      box-sizing: border-box;
+      width: 333px; min-height: 664px;
+      background: #070502; border-right: 1px solid #7b5a23;
+      color: #f4e7a2;
+      font-family: "MS PGothic", "Meiryo", sans-serif;
+      font-size: 12px; line-height: 1.2;
+    }
+    .sim-character-row {
+      display: grid; grid-template-columns: 24px 1fr;
+      border-bottom: 1px solid #805516;
+    }
+    .sim-character-rail {
+      display: flex; align-items: center; justify-content: center;
+      writing-mode: vertical-rl; letter-spacing: 1px;
+      background: linear-gradient(#a66a19, #5e310b); color: #fff5d0;
+      font-weight: bold; border-right: 1px solid #d28d2c;
+      text-align: center;
+      text-shadow: 0 0 2px #000, 1px 1px 0 #2a1a05, 0 0 4px rgba(0,0,0,0.7);
+    }
+    .sim-character-section { padding: 5px 7px; background: #080808; }
+    /* 左パネル上部のバナー画像 */
+    .sim-character-banner {
+      width: 100%; padding: 0;
+      background: #070502; border-bottom: 1px solid #805516;
+      line-height: 0;
+    }
+    .sim-character-banner img {
+      display: block; width: 100%; height: auto;
+      image-rendering: pixelated; object-fit: contain;
+    }
+    .sim-character-line {
+      display: grid; grid-template-columns: 54px 1fr;
+      gap: 6px; align-items: center; min-height: 20px;
+      border-bottom: 1px dotted #775524;
+    }
+    .sim-character-line:last-child { border-bottom: 0; }
+    .sim-character-label {
+      color: #ffd070; text-align: right; font-weight: bold;
+      text-shadow: 0 0 2px #000, 1px 1px 0 #1a0e02;
+    }
+    .sim-character-value { color: #00ff66; font-weight: bold; word-break: keep-all; }
+    .sim-character-input, .sim-character-select, .sim-stat-input {
+      box-sizing: border-box; width: 100%; min-width: 0; height: 18px;
+      border: 1px solid #8b6a28; background: #080808;
+      color: #00ff66; font: inherit; font-weight: bold;
+    }
+    .sim-character-select { color: #f8f000; }
+    .sim-character-input, .sim-stat-input { padding: 0 4px; text-align: right; }
+    .sim-character-sub { color: #f8f000; }
+    .sim-kv-grid, .sim-stat-grid, .sim-detail-grid {
+      display: grid; gap: 1px; background: #8b6a28; border: 1px solid #8b6a28;
+    }
+    .sim-kv-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .sim-stat-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .sim-detail-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .sim-kv, .sim-stat, .sim-detail {
+      min-width: 0; padding: 3px 5px; background: #120c04;
+    }
+    .sim-kv-name, .sim-stat-name, .sim-detail-name {
+      display: block; color: #ffd070; font-size: 11px; font-weight: bold;
+      text-shadow: 0 0 2px #000, 1px 1px 0 #1a0e02;
+    }
+    .sim-kv-value, .sim-stat-value, .sim-detail-value {
+      display: block; color: #00ff66; font-weight: bold; text-align: right;
+    }
+    .sim-stat-equipped {
+      display: block; color: #f8f000; font-size: 10px;
+      text-align: right; min-height: 12px;
+    }
+
+    /* === ステ値の hover popup (項目別ポイント) === */
+    .sim-stat { position: relative; }
+    .sim-stat-popup {
+      position: fixed;   /* viewport 基準で JS が位置を計算 */
+      z-index: 1000; display: none;
+      min-width: 180px; padding: 6px 8px;
+      background: #1a1610; border: 1px solid #d4a300;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+      color: #f4e7a2; font-size: 11.5px; line-height: 1.4;
+      text-align: left; white-space: nowrap;
+      pointer-events: none;
+    }
+    .sim-stat:hover .sim-stat-popup { display: block; }
+    .sim-stat-popup .pop-title {
+      font-weight: bold; color: #f8f000; border-bottom: 1px solid #8b6a28;
+      padding-bottom: 2px; margin-bottom: 3px;
+    }
+    .sim-stat-popup .pop-row {
+      display: grid; grid-template-columns: 70px 1fr;
+      gap: 4px; padding: 1px 0;
+    }
+    .sim-stat-popup .pop-key { color: #d8a743; }
+    .sim-stat-popup .pop-val { color: #00ff66; text-align: right; }
+    .sim-stat-popup .pop-val.is-zero { color: #888; }
+    .sim-stat-popup .pop-val.is-plus { color: #f8f000; }
+    .sim-stat-popup .pop-val.is-minus { color: #ff6666; }
+    .sim-stat-popup .pop-desc {
+      color: #d8a743; font-size: 11px;
+      margin-bottom: 3px; padding: 0 0 2px 0;
+      border-bottom: 1px dotted #775524;
+    }
+    .sim-element-table {
+      width: 100%; border-collapse: collapse; table-layout: fixed;
+      margin-bottom: 5px; background: #120c04; border: 1px solid #8b6a28;
+    }
+    .sim-element-table caption {
+      padding: 2px 0 3px; color: #ffe080; text-align: left; font-weight: bold;
+      text-shadow: 0 0 2px #000, 1px 1px 0 #1a0e02;
+    }
+    .sim-element-table th, .sim-element-table td {
+      border: 1px solid #8b6a28; padding: 2px 1px; text-align: center; line-height: 1.05;
+    }
+    .sim-element-table th {
+      background: #241704; color: #ffd070; font-size: 10px; font-weight: bold;
+      text-shadow: 0 0 2px #000;
+    }
+    .sim-element-table th.sim-element-bar-cell { padding: 0; }
+    .sim-element-table td { color: #f8f000; font-weight: bold; }
+    .sim-element-bar { width: 100%; margin: 0; overflow: hidden; }
+    .sim-element-bar img {
+      display: block; width: 100%; height: 30px;
+      object-fit: fill; image-rendering: pixelated;
+    }
+    /* 種族テーブル (アンデッド/悪魔/人間/動物/神獣 5 列) */
+    .sim-race-table th { padding: 2px 0; height: 30px; }
+    .sim-race-icon {
+      display: block; margin: 0 auto;
+      width: 22px; height: 22px;
+      image-rendering: pixelated; object-fit: contain;
+    }
+
+    /* ===== 中央エリア配色 (#070502 / #f4e7a2 / #d8a743 / #00ff66 / #8b6a28) ===== */
+    .sim-main-content {
+      margin-left: 333px;
+      padding: 8px 8px 8px 8px;
+      min-height: 1100px;
+      color: #f4e7a2; font-size: 13px;
+      font-family: "MS PGothic", "Meiryo", sans-serif;
+    }
+    .sim-main-content .tab-pane { display: none; }
+    .sim-main-content .tab-pane.is-active { display: block; }
+    .sim-not-impl {
+      padding: 30px; background: #070502; border: 1px dashed #8b6a28;
+      border-radius: 4px; color: #d8a743; text-align: center;
+    }
+
+    /* === item tab layout (2 cols: search / inventory) === */
+    .item-tab-layout {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+    }
+    /* 全パネル共通 (ダークテーマ) */
+    .item-panel, .light-panel {
+      background: #070502; color: #f4e7a2;
+      border: 1px solid #8b6a28; border-radius: 0;
+      padding: 6px 8px; font-size: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+      font-family: "MS PGothic", "Meiryo", sans-serif;
+    }
+    .light-panel { margin-top: 6px; }
+    .item-panel h4, .light-panel h4 {
+      margin: -6px -8px 4px -8px; padding: 3px 8px;
+      background: linear-gradient(#a66a19, #5e310b);
+      color: #fff5d0; font-size: 12px; font-weight: bold;
+      letter-spacing: 1px;
+      border-bottom: 1px solid #d28d2c;
+      text-shadow: 0 0 2px #000, 1px 1px 0 #2a1a05, 0 0 4px rgba(0,0,0,0.7);
+    }
+    .item-panel table.form-table {
+      border-collapse: separate; border-spacing: 0; width: 100%;
+    }
+    .item-panel td { padding: 1px 2px; vertical-align: middle; }
+    .item-panel .tdtext {
+      color: #ffd070; font-size: 11.5px; font-weight: bold;
+      text-shadow: 0 0 2px #000, 1px 1px 0 #1a0e02;
+    }
+    .item-panel .row-sep td { height: 3px; }
+    .item-panel select, .item-panel input[type="text"] {
+      background: #120c04; color: #f4e7a2; border: 1px solid #8b6a28;
+      font-size: 12px; padding: 1px 3px; width: 100%; box-sizing: border-box;
+      font-family: inherit;
+    }
+    .item-panel select option { background: #120c04; color: #f4e7a2; }
+    .item-panel input.textblue { background: #1a1610; color: #00ff66; }
+    .item-panel button, .item-panel input[type="button"] {
+      background: linear-gradient(#a66a19, #5e310b); color: #fff;
+      border: 1px solid #170c02; font-weight: bold;
+      font-size: 11.5px; padding: 2px 6px; cursor: pointer; font-family: inherit;
+    }
+    .item-panel button:hover, .item-panel input[type="button"]:hover {
+      background: linear-gradient(#c98223, #6e3c0d);
+    }
+
+    /* === 装備スロット グリッド === */
+    /* 配置:
+        [weapon] [neck] [head] [back_ear] [gem]    [job_armor]   ← 上段 (4 中央セル + 左右ウィング)
+                 [waist][hand][body  ] [foot]                    ← 中段
+        [ring0..ring4]  [ring5..ring9]                            ← 下段 (5+gap+5)
+    */
+    .equip-grid-frame {
+      display: inline-block; padding: 4px 6px;
+      background: linear-gradient(180deg, #1a1208 0%, #0a0604 100%);
+      border: 1px solid #8b6a28;
+    }
+    .equip-grid-top {
+      display: grid;
+      grid-template-columns: 42px 1fr 42px;
+      gap: 0;
+      align-items: center;
+    }
+    .equip-grid-side {
+      display: flex; align-items: center; justify-content: center;
+      width: 42px;
+    }
+    .equip-grid-center {
+      display: grid;
+      grid-template-columns: repeat(4, 38px);
+      grid-template-rows: 38px 38px;
+      gap: 1px;
+      justify-content: center;
+    }
+    .equip-grid-rings {
+      display: grid;
+      grid-template-columns: repeat(8, 28px);
+      grid-template-rows: 28px 28px;
+      gap: 1px;
+      margin-top: 4px;
+      justify-content: center;
+    }
+    .equip-slot[data-slot="ring_8"] { grid-row: 1; grid-column: 1; }
+    .equip-slot[data-slot="ring_9"] { grid-row: 1; grid-column: 8; }
+    .equip-slot[data-slot="ring_0"] { grid-row: 2; grid-column: 1; }
+    .equip-slot[data-slot="ring_1"] { grid-row: 2; grid-column: 2; }
+    .equip-slot[data-slot="ring_2"] { grid-row: 2; grid-column: 3; }
+    .equip-slot[data-slot="ring_3"] { grid-row: 2; grid-column: 4; }
+    .equip-slot[data-slot="ring_4"] { grid-row: 2; grid-column: 5; }
+    .equip-slot[data-slot="ring_5"] { grid-row: 2; grid-column: 6; }
+    .equip-slot[data-slot="ring_6"] { grid-row: 2; grid-column: 7; }
+    .equip-slot[data-slot="ring_7"] { grid-row: 2; grid-column: 8; }
+
+    .equip-slot {
+      position: relative;
+      width: 38px; height: 38px;
+      background-color: transparent;
+      background-repeat: no-repeat; background-position: center center;
+      border: 0; padding: 0;
+      cursor: pointer; box-sizing: border-box;
+      transition: filter 0.1s;
+    }
+    .equip-slot:hover { filter: brightness(1.4); }
+    .equip-slot.is-partial { box-shadow: inset 0 0 0 1px #f8f000; }
+    .equip-slot.is-partial::after { content: '⚠'; position: absolute; top: 0; right: 1px; color: #f8f000; font-size: 10px; }
+
+    /* 部位別 background-image (slot 空状態のグラフィック) */
+    .equip-slot[data-slot="weapon"]    { background-image: url('img/soubiback-none1.PNG'); }
+    .equip-slot[data-slot="job_armor"] { background-image: url('img/soubiback-none1.PNG'); }
+    .equip-slot[data-slot="sub_weapon"]{ background-image: url('img/soubiback-none1.PNG'); }
+    .equip-slot[data-slot="neck"]      { background-image: url('img/soubiback3.PNG'); }
+    .equip-slot[data-slot="head"]      { background-image: url('img/soubiback4.PNG'); }
+    .equip-slot[data-slot="back_ear"]  { background-image: url('img/soubiback5.PNG'); }
+    .equip-slot[data-slot="waist"]     { background-image: url('img/soubiback6.PNG'); }
+    .equip-slot[data-slot="hand"]      { background-image: url('img/soubiback7.PNG'); }
+    .equip-slot[data-slot="body"]      { background-image: url('img/soubiback8.PNG'); }
+    .equip-slot[data-slot="foot"]      { background-image: url('img/soubiback9.PNG'); }
+    .equip-slot[data-slot^="ring_"]    {
+      background-image: url('img/soubiback-ring.PNG');
+      width: 28px; height: 28px;
+    }
+
+    /* アイテムアイコン (装着中) */
+    .equip-slot .slot-icon {
+      position: absolute; top: 2px; left: 2px;
+      width: 34px; height: 34px;
+      pointer-events: none;
+    }
+    .equip-slot[data-slot^="ring_"] .slot-icon {
+      width: 24px; height: 24px;
+    }
+    .equip-slot.is-empty .slot-icon { display: none; }
+    .equip-slot.is-ng::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 34px;
+      height: 34px;
+      background: url('img/sub-red.GIF') center / 34px 34px no-repeat;
+      opacity: 0.4;
+      pointer-events: none;
+    }
+    .equip-slot[data-slot^="ring_"].is-ng::after {
+      width: 24px;
+      height: 24px;
+      background-size: 24px 24px;
+    }
+
+    /* ホバー時のツールチップ (アイテム名表示) */
+    .equip-slot .slot-tooltip {
+      position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+      z-index: 50; display: none;
+      background: #1a1610; color: #f4e7a2;
+      border: 1px solid #d4a300;
+      padding: 2px 6px; font-size: 11px;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .slot-tooltip { display: none !important; }
+
+    /* === インベントリグリッド (12×7=84) === */
+    .inventory-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 38px);
+      grid-template-rows: repeat(7, 38px);
+      gap: 1px;
+      background: #8b6a28;
+      border: 1px solid #8b6a28;
+      justify-content: center;
+    }
+    .inv-cell {
+      position: relative;
+      width: 38px; height: 38px;
+      background-color: #120c04;
+      background-image: url('img/soubiback-inv.PNG');
+      background-repeat: no-repeat; background-position: center;
+      cursor: pointer; box-sizing: border-box;
+      transition: filter 0.1s;
+    }
+    .inv-cell:hover { filter: brightness(1.5); }
+    .inv-cell .inv-icon {
+      position: absolute; top: 2px; left: 2px;
+      width: 34px; height: 34px;
+      pointer-events: none;
+    }
+    .inv-cell.is-empty .inv-icon { display: none; }
+    .inv-cell.is-ng::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 34px;
+      height: 34px;
+      background: url('img/sub-red.GIF') center / 34px 34px no-repeat;
+      opacity: 0.4;
+      pointer-events: none;
+    }
+    /* 装備中アイテム (= ゲーム仕様で「インベの元位置に予約」 されている状態) */
+    .inv-cell.is-equipped .inv-icon { opacity: 0.30; filter: grayscale(0.6); }
+    .inv-cell.is-equipped::after {
+      content: 'E';
+      position: absolute;
+      top: 1px; right: 2px;
+      color: #00ff66; font-size: 9px; font-weight: bold;
+      text-shadow: 0 0 2px #000, 1px 1px 0 #000;
+      pointer-events: none;
+    }
+    .inv-cell.is-equipped:hover { filter: brightness(1.3); }
+    .inv-cell .inv-tooltip {
+      position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+      z-index: 50; display: none;
+      background: #1a1610; color: #f4e7a2;
+      border: 1px solid #d4a300;
+      padding: 2px 6px; font-size: 11px;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .inv-tooltip { display: none !important; }
+
+    /* === アイテム詳細 popup
+       配色規約:
+         - 背景: 黒 (#000)
+         - 通常文字: 白 (#fff)
+         - 補正値 / 数値: 黄 (#ffff00) ← formatOpText の .text-color-LTYELLOW
+         - section 見出し (<基本情報> 等): 黄
+         - NG (要求未充足): 赤 (#ff5050)
+         - 特殊タグ (神霊型 等): 水色 (#00ffff) ← .text-color-LTBLUE 等
+       === */
+    .item-detail-popup {
+      position: fixed; z-index: 2000; display: none;
+      min-width: 280px; max-width: 380px;
+      padding: 6px 10px;
+      background: #000;
+      border: 1px solid #888;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.7);
+      color: #fff;
+      font-family: "MS PGothic", "Meiryo", sans-serif;
+      font-size: 12px; line-height: 1.4;
+      pointer-events: none;
+    }
+    .item-detail-popup .idp-header {
+      display: flex; align-items: center; gap: 6px;
+      padding-bottom: 3px; margin-bottom: 4px;
+      border-bottom: 1px solid #555;
+    }
+    .item-detail-popup .idp-header img {
+      width: 32px; height: 32px;
+      background: #000; border: 1px solid #555;
+    }
+    .item-detail-popup .idp-title {
+      color: #fff; font-weight: bold; font-size: 13px;
+      flex: 1; white-space: normal; line-height: 1.25;
+    }
+    .item-detail-popup .idp-title .idp-title-main { display: block; }
+    .item-detail-popup .idp-title .idp-title-meta {
+      display: block; color: #a08858; font-size: 11px; font-weight: normal;
+      margin-top: 1px;
+    }
+    .item-detail-popup .idp-section-title {
+      color: #ffff00; font-weight: normal; font-size: 12px;
+      margin: 4px 0 1px 0;
+    }
+    .item-detail-popup .idp-row {
+      display: block; padding: 0 0 0 4px;
+      color: #fff;
+    }
+    .item-detail-popup .idp-row .idp-key { color: #fff; }
+    .item-detail-popup .idp-row .idp-val { color: #fff; font-weight: normal; }
+    /* 補正値専用 (適用後の +N% 等): 黄色 */
+    .item-detail-popup .idp-row .idp-val.is-bonus { color: #ffff00; }
+    /* NG (要求値が char ステ未満): 赤 */
+    .item-detail-popup .idp-row .idp-val.is-ng,
+    .item-detail-popup .idp-row.is-ng-row .idp-key,
+    .item-detail-popup .idp-row.is-ng-row .idp-val { color: #ff5050; }
+    .item-detail-popup .idp-op {
+      display: block; padding: 0 0 0 4px;
+      color: #fff; font-size: 12px;
+    }
+    .item-detail-popup .idp-op.is-base { color: #fff; }
+    .item-detail-popup .idp-op.is-nx   { color: #fff; }
+    .item-detail-popup .idp-op.is-ui   { color: #fff; }
+    /* family 103: 装着キャラの職業と op の対象職業が不一致 (= スキルレベル反映されない) */
+    .item-detail-popup .idp-op.is-job-mismatch { color: #888; text-decoration: line-through; }
+    /* Nx ラベルだけ紫色 */
+    .item-detail-popup .idp-op .idp-nx-label { color: #c080ff; font-size: 10px; }
+    .item-detail-popup .idp-op .idp-ui-label { color: #00ffff; font-size: 10px; }
+    .item-detail-popup .idp-desc {
+      color: #fff; font-style: normal; font-size: 12px;
+      padding: 0 0 0 4px; white-space: pre-wrap;
+    }
+    .item-detail-popup .idp-status {
+      color: #aaa; font-size: 11px; margin-top: 4px;
+      padding-top: 3px; border-top: 1px dotted #555;
+    }
+    .op-card {
+      background: #120c04; border: 1px solid #8b6a28;
+      padding: 4px 8px; margin: 3px 0; border-radius: 0; font-size: 12px;
+      color: #f4e7a2;
+    }
+    .op-card .meta { color: #d8a743; font-size: 11px; }
+    .text-color-LTYELLOW { color: #f8f000; font-weight: bold; }
+    .text-color-LTGREEN  { color: #00ff66; }
+    .text-color-LTRED    { color: #ff6666; }
+    .text-color-LTBLUE   { color: #66c8ff; }
+    .text-color-CTPURPLE { color: #c080ff; }
+    .text-color-GOLDYELLOW { color: #f8b000; }
+    .text-color-WHITE { color: #fff; }
+    .inv-row {
+      display: flex; gap: 6px; align-items: center;
+      padding: 2px 6px; margin: 1px 0; background: #120c04;
+      border: 1px solid #8b6a28; border-radius: 0; font-size: 12px;
+      color: #f4e7a2;
+    }
+    .inv-row .remove-btn {
+      background: linear-gradient(#a02020, #5e0808); color: #fff;
+      padding: 1px 6px; font-size: 11px; font-weight: bold;
+      border: 1px solid #170c02; border-radius: 0; cursor: pointer;
+    }
+    .inv-row .pick-btn {
+      background: linear-gradient(#a66a19, #5e310b); color: #fff;
+      padding: 1px 6px; font-size: 11px; font-weight: bold;
+      border: 1px solid #170c02; border-radius: 0; cursor: pointer;
+    }
+    pre {
+      font-family: "Consolas", "Menlo", monospace; font-size: 11px;
+      background: #120c04; color: #d8a743;
+      border: 1px solid #8b6a28; padding: 4px 6px;
+      white-space: pre-wrap; word-break: break-word;
+      max-height: 220px; overflow-y: auto;
+    }
+    .sttemp-debug {
+      background: #120c04; border: 1px solid #8b6a28;
+      padding: 4px 6px; max-height: 320px; overflow-y: auto;
+      font-size: 11px; color: #d8a743;
+    }
+    .stat-breakdown { width: 100%; border-collapse: collapse; font-size: 11px; }
+    .stat-breakdown th, .stat-breakdown td {
+      border: 1px solid #4c2b0a; padding: 1px 4px; text-align: right;
+    }
+    .stat-breakdown th { background: #2a1a08; color: #e7c56d; font-weight: normal; }
+    .stat-breakdown td.sb-name { text-align: left; color: #f4e7a2; white-space: nowrap; }
+    .stat-breakdown td.is-zero  { color: #555; }
+    .stat-breakdown td.is-plus  { color: #00ff66; }
+    .stat-breakdown td.is-minus { color: #ff6666; }
+    .sttemp-debug .sb-warn {
+      margin-top: 4px; padding: 3px 6px;
+      background: #4a2a08; border: 1px solid #8b6a28;
+      color: #ffcc88; font-size: 11px; word-break: break-all;
+    }
+    /* 上限張り付き (走り 1.000 f/座標 / 属性抵抗 90% など) は赤+強調 */
+    .sim-detail-value.is-capped,
+    #resist-row td.is-capped {
+      color: #ff5050;
+      background: #401010;
+      padding: 0 3px;
+      border: 1px solid #ff5050;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <a name="container"></a>
+  <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+    <div class="mdl-layout__header-row">
+      <span class="android-title mdl-layout-title">
+        <a href="https://sokomin.github.io/index.html">
+          <img class="android-logo-image" src="https://sokomin.github.io/design/logo3.png" alt="赤石の民衆" />
+        </a>
+      </span>
+      <div class="android-header-spacer mdl-layout-spacer"></div>
+      <div
+        class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+        <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+            onkeypress="sokominSearchEnter(event);" id="search-field" />
+        </div>
+      </div>
+      <div class="android-navigation-container">
+        <nav class="android-navigation mdl-navigation">
+          <a class="mdl-navigation__link mdl-typography--text-uppercase"
+            href="https://sokomin.github.io/index.html">ホーム</a>
+          <a class="mdl-navigation__link mdl-typography--text-uppercase"
+            href="https://sokomin.github.io/calculator.html">計算機</a>
+          <a class="mdl-navigation__link mdl-typography--text-uppercase"
+            href="https://sokomin.github.io/history.html">赤石史</a>
+          <a class="mdl-navigation__link mdl-typography--text-uppercase"
+            href="https://sokomin.github.io/link.html">リンク</a>
+          <a class="mdl-navigation__link mdl-typography--text-uppercase"
+            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+        </nav>
+      </div>
+      <span class="android-mobile-title mdl-layout-title">
+        <a href="https://sokomin.github.io/index.html">
+          <img class="android-logo-image" src="https://sokomin.github.io/design/logo3.png" alt="赤石の民衆" />
+        </a>
+      </span>
+      <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+        id="more-button">
+        <i class="material-icons">more_vert</i>
+      </button>
+      <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+        <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+        <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+            href="https://sokomin.github.io/history.html">赤石史</a></li>
+        <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+            href="https://sokomin.github.io/link.html">リンク</a></li>
+        <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== 側面 drawer (sokomin 標準メニュー) ===== -->
+  <div class="android-drawer mdl-layout__drawer">
+    <span class="mdl-layout-title">
+      <h2>メニュー</h2>
+    </span>
+    <nav class="mdl-navigation">
+      <a class="mdl-navigation__link sokomin-layout-item"
+        href="https://sokomin.github.io/item/item.html"><strong>アイテム</strong></a>
+      <a class="mdl-navigation__link sokomin-layout-skill"
+        href="https://sokomin.github.io/skill/skill.html"><strong>スキル</strong></a>
+      <a class="mdl-navigation__link sokomin-layout-pt"
+        href="https://sokomin.github.io/monster/monster.html"><strong>モンスター</strong></a>
+      <a class="mdl-navigation__link sokomin-layout-pt"
+        href="https://sokomin.github.io/secret/secret.html"><strong>ダンジョン</strong></a>
+      <a class="mdl-navigation__link sokomin-layout-quest"
+        href="https://sokomin.github.io/quest/quest.html"><strong>クエスト</strong></a>
+      <a class="mdl-navigation__link sokomin-layout-guild"
+        href="https://sokomin.github.io/guild/guild.html"><strong>ギルド</strong></a>
+      <a class="mdl-navigation__link sokomin-layout-friend"
+        href="https://sokomin.github.io/korea/korea-update.html"><strong>韓国情報</strong></a>
+      <a class="mdl-navigation__link sokomin-layout-info"
+        href="https://sokomin.github.io/information/information.html"><strong>雑学</strong></a>
+    </nav>
+  </div>
+
+  <div class="android-large-table mdl-layout__content">
+    <div class="main-background korea-content sim-stage">
+      <h1 style="margin: 12px 0 16px; text-align: center;">キャラクターシミュレーター</h1>
+      <div class="sim-frame-shell">
+
+        <!-- ===== 左 333px キャラクターパネル ===== -->
+        <aside class="sim-character-proxy" aria-label="character status">
+          <div class="sim-character-banner">
+            <img src="https://sokomin.github.io/sokomin_repository/db/interface/interface_0012.png" alt="キャラクターステータス">
+          </div>
+          <section class="sim-character-row">
+            <div class="sim-character-rail">個人</div>
+            <div class="sim-character-section">
+              <div class="sim-character-line">
+                <span class="sim-character-label">職業</span>
+                <select class="sim-character-select" id="ch-job" aria-label="職業">
+                  <!-- options populated from JS so ID と name を確実に紐付ける -->
+                </select>
+              </div>
+              <div class="sim-character-line">
+                <span class="sim-character-label">転生</span>
+                <select class="sim-character-select" id="ch-rebirth" aria-label="転生">
+                  <option value="0">なし</option><option value="1">1回</option>
+                  <option value="2">2回</option><option value="3">3回</option>
+                  <option value="4">4回</option><option value="5">5回</option>
+                </select>
+              </div>
+              <div class="sim-character-line">
+                <span class="sim-character-label">Lv</span>
+                <input class="sim-character-input" id="ch-lv" type="number" min="1" max="1500" value="1250" aria-label="レベル">
+              </div>
+              <div class="sim-character-line">
+                <span class="sim-character-label">恩寵</span>
+                <select class="sim-character-select" id="ch-grace" aria-label="恩寵">
+                  <option value="-1">なし</option><option value="0">燃え上がる火の恩寵</option>
+                  <option value="1">揺れる水の恩寵</option><option value="2">吹き抜ける風の恩寵</option>
+                  <option value="3">鼓動する大地の恩寵</option><option value="4">輝かしい光の恩寵</option>
+                  <option value="5">静かなる闇の恩寵</option>
+                </select>
+              </div>
+            </div>
+          </section>
+
+          <section class="sim-character-row">
+            <div class="sim-character-rail">能力値</div>
+            <div class="sim-character-section">
+              <div class="sim-kv-grid">
+                <div class="sim-kv"><span class="sim-kv-name">HP</span><span class="sim-kv-value" id="ab-hp">-</span></div>
+                <div class="sim-kv"><span class="sim-kv-name">攻撃力</span><span class="sim-kv-value" id="ab-atk">-</span></div>
+                <div class="sim-kv"><span class="sim-kv-name">CP</span><span class="sim-kv-value" id="ab-cp">-</span></div>
+                <div class="sim-kv"><span class="sim-kv-name">防御力</span><span class="sim-kv-value" id="ab-def">-</span></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="sim-character-row">
+            <div class="sim-character-rail">ステ</div>
+            <div class="sim-character-section">
+              <div class="sim-stat-grid">
+                <div class="sim-stat" data-stat="str"><span class="sim-stat-name">力</span>
+                  <input class="sim-stat-input" id="st-str" type="number" value="25" aria-label="力">
+                  <span class="sim-stat-equipped" id="st-str-eq"></span>
+                  <div class="sim-stat-popup" id="st-str-pop"></div></div>
+                <div class="sim-stat" data-stat="agi"><span class="sim-stat-name">敏捷</span>
+                  <input class="sim-stat-input" id="st-agi" type="number" value="15" aria-label="敏捷">
+                  <span class="sim-stat-equipped" id="st-agi-eq"></span>
+                  <div class="sim-stat-popup" id="st-agi-pop"></div></div>
+                <div class="sim-stat" data-stat="con"><span class="sim-stat-name">健康</span>
+                  <input class="sim-stat-input" id="st-con" type="number" value="20" aria-label="健康">
+                  <span class="sim-stat-equipped" id="st-con-eq"></span>
+                  <div class="sim-stat-popup" id="st-con-pop"></div></div>
+                <div class="sim-stat" data-stat="luc"><span class="sim-stat-name">運</span>
+                  <input class="sim-stat-input" id="st-luc" type="number" value="1" aria-label="運">
+                  <span class="sim-stat-equipped" id="st-luc-eq"></span>
+                  <div class="sim-stat-popup" id="st-luc-pop"></div></div>
+                <div class="sim-stat" data-stat="int"><span class="sim-stat-name">知識</span>
+                  <input class="sim-stat-input" id="st-int" type="number" value="5" aria-label="知識">
+                  <span class="sim-stat-equipped" id="st-int-eq"></span>
+                  <div class="sim-stat-popup" id="st-int-pop"></div></div>
+                <div class="sim-stat" data-stat="wiz"><span class="sim-stat-name">知恵</span>
+                  <input class="sim-stat-input" id="st-wiz" type="number" value="10" aria-label="知恵">
+                  <span class="sim-stat-equipped" id="st-wiz-eq"></span>
+                  <div class="sim-stat-popup" id="st-wiz-pop"></div></div>
+                <div class="sim-stat" data-stat="chs"><span class="sim-stat-name">カリスマ</span>
+                  <input class="sim-stat-input" id="st-chs" type="number" value="15" aria-label="カリスマ">
+                  <span class="sim-stat-equipped" id="st-chs-eq"></span>
+                  <div class="sim-stat-popup" id="st-chs-pop"></div></div>
+                <div class="sim-stat"><span class="sim-stat-name">ポイント</span>
+                  <span class="sim-stat-value" id="st-points">-</span></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="sim-character-row">
+            <div class="sim-character-rail">抵抗</div>
+            <div class="sim-character-section">
+              <table class="sim-element-table" data-element-table="resist">
+                <caption>属性抵抗</caption>
+                <thead>
+                  <tr><th class="sim-element-bar-cell" colspan="6"><div class="sim-element-bar"><img src="img/魔法抵抗_バー.png" alt=""></div></th></tr>
+                </thead>
+                <tbody><tr id="resist-row">
+                  <td data-base-value="0">0%</td><td data-base-value="0">0%</td><td data-base-value="0">0%</td><td data-base-value="0">0%</td><td data-base-value="0">0%</td><td data-base-value="0">0%</td>
+                </tr></tbody>
+              </table>
+              <table class="sim-element-table" data-element-table="absorb">
+                <caption>属性吸収</caption>
+                <thead>
+                  <tr><th class="sim-element-bar-cell" colspan="6"><div class="sim-element-bar"><img src="img/魔法抵抗_バー.png" alt=""></div></th></tr>
+                </thead>
+                <tbody><tr id="absorb-row">
+                  <td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td>
+                </tr></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="sim-character-row">
+            <div class="sim-character-rail">詳細</div>
+            <div class="sim-character-section">
+              <div class="sim-detail-grid">
+                <div class="sim-detail"><span class="sim-detail-name">攻撃速度</span><span class="sim-detail-value" id="dt-atkspd">+0%</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">移動速度</span><span class="sim-detail-value" id="dt-mvspd">+0%</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">命中率</span><span class="sim-detail-value" id="dt-hit">+0%</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">回避率</span><span class="sim-detail-value" id="dt-eva">+0%</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">致命抵抗</span><span class="sim-detail-value" id="dt-phys-crit-resist">0%</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">決定抵抗</span><span class="sim-detail-value" id="dt-crit-resist">0%</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">異常抵抗</span><span class="sim-detail-value" id="dt-status-resist">0%</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">低下抵抗</span><span class="sim-detail-value" id="dt-stat-down-resist">0%</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">呪い抵抗</span><span class="sim-detail-value" id="dt-curse-resist">0%</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">後退抵抗</span><span class="sim-detail-value" id="dt-knockback-resist">0%</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">薬回復</span><span class="sim-detail-value" id="dt-potion-heal">+0%</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">スキル</span><span class="sim-detail-value" id="dt-skill">+0</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">物理ダメージ</span><span class="sim-detail-value" id="dt-phys-damage">+0%</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">物理致命打</span><span class="sim-detail-value" id="dt-phys-crit">+0%</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">物理強打</span><span class="sim-detail-value" id="dt-phys-strong">+0%</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">物理致命抵抗低下</span><span class="sim-detail-value" id="dt-phys-crit-resist-down">+0%</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">魔法ダメージ</span><span class="sim-detail-value" id="dt-magic-damage">+0%</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">魔法致命打</span><span class="sim-detail-value" id="dt-magic-crit">+0%</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">魔法強打</span><span class="sim-detail-value" id="dt-magic-strong">+0%</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">最終ダメージ</span><span class="sim-detail-value" id="dt-final-damage">+0%</span></div>
+              </div>
+              <table class="sim-element-table">
+                <caption>属性強化</caption>
+                <thead>
+                  <tr><th class="sim-element-bar-cell" colspan="6"><div class="sim-element-bar"><img src="img/魔法抵抗_バー.png" alt=""></div></th></tr>
+                </thead>
+                <tbody><tr id="enhance-row"><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td></tr></tbody>
+              </table>
+              <table class="sim-element-table">
+                <caption>属性弱化</caption>
+                <thead>
+                  <tr><th class="sim-element-bar-cell" colspan="6"><div class="sim-element-bar"><img src="img/魔法抵抗_バー.png" alt=""></div></th></tr>
+                </thead>
+                <tbody><tr id="weaken-row"><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td></tr></tbody>
+              </table>
+              <table class="sim-element-table sim-race-table" data-element-table="vs-phys">
+                <caption>対種族 物理ダメージ</caption>
+                <thead>
+                  <tr>
+                    <th><img class="sim-race-icon" src="https://sokomin.github.io/sokomin_repository/db/monsterDiscerner/monsterDiscerner_0011.png" alt="アンデッド" title="アンデッド型"></th>
+                    <th><img class="sim-race-icon" src="https://sokomin.github.io/sokomin_repository/db/monsterDiscerner/monsterDiscerner_0013.png" alt="悪魔"     title="悪魔型"></th>
+                    <th><img class="sim-race-icon" src="https://sokomin.github.io/sokomin_repository/db/monsterDiscerner/monsterDiscerner_0012.png" alt="人間"     title="人間型"></th>
+                    <th><img class="sim-race-icon" src="https://sokomin.github.io/sokomin_repository/db/monsterDiscerner/monsterDiscerner_0014.png" alt="動物"     title="動物型"></th>
+                    <th><img class="sim-race-icon" src="https://sokomin.github.io/sokomin_repository/db/monsterDiscerner/monsterDiscerner_0015.png" alt="神獣"     title="神獣型"></th>
+                  </tr>
+                </thead>
+                <tbody><tr id="vs-phys-row"><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td></tr></tbody>
+              </table>
+              <table class="sim-element-table sim-race-table" data-element-table="vs-magic">
+                <caption>対種族 魔法ダメージ</caption>
+                <thead>
+                  <tr>
+                    <th><img class="sim-race-icon" src="https://sokomin.github.io/sokomin_repository/db/monsterDiscerner/monsterDiscerner_0011.png" alt="アンデッド" title="アンデッド型"></th>
+                    <th><img class="sim-race-icon" src="https://sokomin.github.io/sokomin_repository/db/monsterDiscerner/monsterDiscerner_0013.png" alt="悪魔"     title="悪魔型"></th>
+                    <th><img class="sim-race-icon" src="https://sokomin.github.io/sokomin_repository/db/monsterDiscerner/monsterDiscerner_0012.png" alt="人間"     title="人間型"></th>
+                    <th><img class="sim-race-icon" src="https://sokomin.github.io/sokomin_repository/db/monsterDiscerner/monsterDiscerner_0014.png" alt="動物"     title="動物型"></th>
+                    <th><img class="sim-race-icon" src="https://sokomin.github.io/sokomin_repository/db/monsterDiscerner/monsterDiscerner_0015.png" alt="神獣"     title="神獣型"></th>
+                  </tr>
+                </thead>
+                <tbody><tr id="vs-magic-row"><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td></tr></tbody>
+              </table>
+              <table class="sim-element-table sim-race-table" data-element-table="from-race">
+                <caption>種族被ダメ軽減</caption>
+                <thead>
+                  <tr>
+                    <th><img class="sim-race-icon" src="https://sokomin.github.io/sokomin_repository/db/monsterDiscerner/monsterDiscerner_0011.png" alt="アンデッド" title="アンデッド型"></th>
+                    <th><img class="sim-race-icon" src="https://sokomin.github.io/sokomin_repository/db/monsterDiscerner/monsterDiscerner_0013.png" alt="悪魔"     title="悪魔型"></th>
+                    <th><img class="sim-race-icon" src="https://sokomin.github.io/sokomin_repository/db/monsterDiscerner/monsterDiscerner_0012.png" alt="人間"     title="人間型"></th>
+                    <th><img class="sim-race-icon" src="https://sokomin.github.io/sokomin_repository/db/monsterDiscerner/monsterDiscerner_0014.png" alt="動物"     title="動物型"></th>
+                    <th><img class="sim-race-icon" src="https://sokomin.github.io/sokomin_repository/db/monsterDiscerner/monsterDiscerner_0015.png" alt="神獣"     title="神獣型"></th>
+                  </tr>
+                </thead>
+                <tbody><tr id="from-race-row"><td>0%</td><td>0%</td><td>0%</td><td>0%</td><td>0%</td></tr></tbody>
+              </table>
+              <div class="sim-detail-grid">
+                <div class="sim-detail"><span class="sim-detail-name">物理限界突破＋</span><span class="sim-detail-value" id="dt-phys-limit-flat">+0</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">物理限界突破％</span><span class="sim-detail-value" id="dt-phys-limit-percent">+0%</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">魔法限界突破＋</span><span class="sim-detail-value" id="dt-magic-limit-flat">+0</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">魔法限界突破％</span><span class="sim-detail-value" id="dt-magic-limit-percent">+0%</span></div>
+              </div>
+            </div>
+          </section>
+        </aside>
+
+        <!-- v4 デプロイ版ではタブナビを封印 (アイテムのみ実装済)。
+             v5 でタブ UI を再設計する想定。 -->
+
+        <!-- ===== 中央コンテンツエリア (アイテムのみ) ===== -->
+        <div class="sim-main-content">
+
+          <!-- =========== アイテム タブ =========== -->
+          <div class="tab-pane is-active" data-tab="item">
+            <div class="item-tab-layout">
+
+              <!-- 左カラム: 検索 / OP / 作成 -->
+              <div class="item-panel">
+                <h4>アイテム検索</h4>
+                <table class="form-table"><tbody>
+                  <tr>
+                    <td colspan="5">
+                      <input type="text" id="filter-name" class="textblue"
+                        placeholder="アイテム名で検索 (部分一致)"
+                        style="width:100%; box-sizing:border-box;">
+                    </td>
+                    <td style="width:4px"></td>
+                    <td style="white-space:nowrap; text-align:right">
+                      <label class="tdtext" style="cursor:pointer">
+                        <input type="checkbox" id="chk-feasible-only" checked>
+                        装備可能のみ
+                      </label>
+                    </td>
+                  </tr>
+                  <tr class="row-sep"><td colspan="7"></td></tr>
+                  <tr><td colspan="7">
+                    <select id="sel-item" class="select" size="14"
+                      style="width:100%; height:auto; min-height:240px;"></select>
+                  </td></tr>
+                  <tr><td colspan="7" style="text-align:right; padding:2px 4px;">
+                    <span id="search-status" class="tdtext" style="font-size:11px; color:#e7c56d">準備中...</span>
+                  </td></tr>
+                  <tr class="row-sep"><td colspan="7"></td></tr>
+
+                  <!-- 仕様: OP×3 フリーワード検索 (text.py displayTemplate + OPA name どちらでも部分一致) -->
+                  <tr><td colspan="7" class="tdtext" style="padding-top:6px">
+                    オプション選択
+                  </td></tr>
+                  <tr class="row-sep"><td colspan="7"></td></tr>
+
+                  <!-- OP1 -->
+                  <tr>
+                    <td colspan="2"><input type="button" data-act="clear" data-op="0" value="OP1クリア" style="width:100%"></td>
+                    <td style="width:4px"></td>
+                    <td colspan="4">
+                      <input type="text" class="textblue op-search-input" data-op="0"
+                        placeholder="OP1: 検索ワード (例: 力 / 力固定 / 14)">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="7">
+                      <select size="6" class="op-search-results" data-op="0"
+                        style="width:100%; display:none; font-size:11.5px"></select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="7">
+                      <span class="tdtext op-selected-label" data-op="0" style="color:#FFE0B0; font-size:11.5px">OP1: (未選択)</span>
+                    </td>
+                  </tr>
+                  <tr class="row-sep"><td colspan="7"></td></tr>
+
+                  <!-- OP2 -->
+                  <tr>
+                    <td colspan="2"><input type="button" data-act="clear" data-op="1" value="OP2クリア" style="width:100%"></td>
+                    <td style="width:4px"></td>
+                    <td colspan="4">
+                      <input type="text" class="textblue op-search-input" data-op="1"
+                        placeholder="OP2: 検索ワード">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="7">
+                      <select size="6" class="op-search-results" data-op="1"
+                        style="width:100%; display:none; font-size:11.5px"></select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="7">
+                      <span class="tdtext op-selected-label" data-op="1" style="color:#FFE0B0; font-size:11.5px">OP2: (未選択)</span>
+                    </td>
+                  </tr>
+                  <tr class="row-sep"><td colspan="7"></td></tr>
+
+                  <!-- OP3 -->
+                  <tr>
+                    <td colspan="2"><input type="button" data-act="clear" data-op="2" value="OP3クリア" style="width:100%"></td>
+                    <td style="width:4px"></td>
+                    <td colspan="4">
+                      <input type="text" class="textblue op-search-input" data-op="2"
+                        placeholder="OP3: 検索ワード">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="7">
+                      <select size="6" class="op-search-results" data-op="2"
+                        style="width:100%; display:none; font-size:11.5px"></select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="7">
+                      <span class="tdtext op-selected-label" data-op="2" style="color:#FFE0B0; font-size:11.5px">OP3: (未選択)</span>
+                    </td>
+                  </tr>
+                  <tr class="row-sep"><td colspan="7"></td></tr>
+
+                  <tr>
+                    <td colspan="2">
+                      <label class="tdtext" style="cursor:pointer; padding-left:4px">
+                        <input type="checkbox" id="chk-daybreak"> 暁の封印玉
+                      </label>
+                    </td>
+                    <td></td>
+                    <td colspan="2" style="text-align:right">
+                      <input type="button" id="btn-clear-all" value="全クリア" style="width:80px">
+                    </td>
+                    <td></td>
+                    <td><input type="button" id="btn-make" value="作成"
+                      style="width:100%; background:linear-gradient(180deg,#5a8f3a 0%,#3a6f2a 100%)"></td>
+                  </tr>
+                </tbody></table>
+              </div>
+
+              <!-- 右カラム: セッション保存 + 装備スロット + インベントリ + op テキスト -->
+              <div>
+                <div class="light-panel">
+                  <h4>セッション (保存/読込)</h4>
+                  <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
+                    <button id="btn-save-file" title="現在のキャラ + インベントリを .json として保存">📥 ファイル保存</button>
+                    <button id="btn-load-file" title=".json を読み込んで現状に置き換え">📤 ファイル読込</button>
+                    <span style="border-left:1px solid #8b6a28; height:14px; margin:0 2px;"></span>
+                    <button id="btn-save-local" title="ブラウザ localStorage に保存 (このサイト内のみ)">💾 ブラウザに保存</button>
+                    <button id="btn-load-local" title="ブラウザ localStorage から読込">💿 ブラウザから読込</button>
+                    <button id="btn-clear-session" style="background:linear-gradient(#a02020,#5e0808)" title="現状の全データを破棄">🗑 全消去</button>
+                    <span id="session-status" style="margin-left:auto; font-size:11px; color:#a08858"></span>
+                  </div>
+                  <!-- 仕様: ステ変更/アイテム作成/削除時に自動で localStorage に保存。ページ再読込で自動復元 -->
+                </div>
+                <div class="light-panel">
+                  <h4>装備スロット</h4>
+                  <div class="equip-grid-frame">
+                    <div class="equip-grid-top">
+                      <!-- 左サイド: 武器 -->
+                      <div class="equip-grid-side">
+                        <div class="equip-slot is-empty" data-slot="weapon" title="武器">
+                          <img class="slot-icon" alt=""><span class="slot-tooltip"></span></div>
+                      </div>
+                      <!-- 中央: 4×2 防具グリッド
+                           上行: 補助武器 / 首 / 頭 / 背(男)・耳(女) -->
+                      <div class="equip-grid-center">
+                        <div class="equip-slot is-empty" data-slot="sub_weapon" title="補助武器">
+                          <img class="slot-icon" alt=""><span class="slot-tooltip"></span></div>
+                        <div class="equip-slot is-empty" data-slot="neck" title="首">
+                          <img class="slot-icon" alt=""><span class="slot-tooltip"></span></div>
+                        <div class="equip-slot is-empty" data-slot="head" title="頭">
+                          <img class="slot-icon" alt=""><span class="slot-tooltip"></span></div>
+                        <div class="equip-slot is-empty" data-slot="back_ear" title="背・耳" data-slot-title-male="背" data-slot-title-female="耳">
+                          <img class="slot-icon" alt=""><span class="slot-tooltip"></span></div>
+                        <!-- 下行: 腰 / 手 / 体 / 足 -->
+                        <div class="equip-slot is-empty" data-slot="waist" title="腰">
+                          <img class="slot-icon" alt=""><span class="slot-tooltip"></span></div>
+                        <div class="equip-slot is-empty" data-slot="hand" title="手">
+                          <img class="slot-icon" alt=""><span class="slot-tooltip"></span></div>
+                        <div class="equip-slot is-empty" data-slot="body" title="体">
+                          <img class="slot-icon" alt=""><span class="slot-tooltip"></span></div>
+                        <div class="equip-slot is-empty" data-slot="foot" title="足">
+                          <img class="slot-icon" alt=""><span class="slot-tooltip"></span></div>
+                      </div>
+                      <!-- 右サイド: 職専 -->
+                      <div class="equip-grid-side">
+                        <div class="equip-slot is-empty" data-slot="job_armor" title="職専">
+                          <img class="slot-icon" alt=""><span class="slot-tooltip"></span></div>
+                      </div>
+                    </div>
+                    <div class="equip-grid-rings">
+                      <div class="equip-slot is-empty" data-slot="ring_8" title="指9 (上左)">
+                        <img class="slot-icon" alt=""><span class="slot-tooltip"></span></div>
+                      <div class="equip-slot is-empty" data-slot="ring_9" title="指10 (上右)">
+                        <img class="slot-icon" alt=""><span class="slot-tooltip"></span></div>
+                      <div class="equip-slot is-empty" data-slot="ring_0" title="指1">
+                        <img class="slot-icon" alt=""><span class="slot-tooltip"></span></div>
+                      <div class="equip-slot is-empty" data-slot="ring_1" title="指2">
+                        <img class="slot-icon" alt=""><span class="slot-tooltip"></span></div>
+                      <div class="equip-slot is-empty" data-slot="ring_2" title="指3">
+                        <img class="slot-icon" alt=""><span class="slot-tooltip"></span></div>
+                      <div class="equip-slot is-empty" data-slot="ring_3" title="指4">
+                        <img class="slot-icon" alt=""><span class="slot-tooltip"></span></div>
+                      <div class="equip-slot is-empty" data-slot="ring_4" title="指5">
+                        <img class="slot-icon" alt=""><span class="slot-tooltip"></span></div>
+                      <div class="equip-slot is-empty" data-slot="ring_5" title="指6">
+                        <img class="slot-icon" alt=""><span class="slot-tooltip"></span></div>
+                      <div class="equip-slot is-empty" data-slot="ring_6" title="指7">
+                        <img class="slot-icon" alt=""><span class="slot-tooltip"></span></div>
+                      <div class="equip-slot is-empty" data-slot="ring_7" title="指8">
+                        <img class="slot-icon" alt=""><span class="slot-tooltip"></span></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="light-panel">
+                  <h4>インベントリ</h4>
+                  <div id="inv-grid" class="inventory-grid"></div>
+                </div>
+              </div>
+
+            </div><!-- /item-tab-layout -->
+          </div><!-- /tab-pane[item] -->
+
+        </div><!-- /sim-main-content -->
+      </div><!-- /sim-frame-shell -->
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <!-- ===== 赤石の民衆 標準フッター ===== -->
+      <footer class="android-footer mdl-mega-footer" style="margin-top: 32px; text-align: center;">
+        <font color="red">
+          当サイトで利用している画像及びデータは、L&amp;K Co., Ltd.に帰属します。<br>
+          許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+        </font>
+        © L&amp;K Co., Ltd. All Rights Reserved.<br>
+      </footer>
+    </div><!-- /main-background -->
+  </div><!-- /mdl-layout__content -->
+</div><!-- /mdl-layout -->
+
+<script>
+  function sokominSearchEnter(ev) {
+    if ((ev.keyCode || ev.which) !== 13) return;
+    var q = document.getElementById('search-field');
+    if (!q || !q.value) return;
+    window.location.href =
+      'https://www.google.com/search?hl=ja&ie=UTF-8&oe=UTF-8&filter=0&q=' +
+      encodeURIComponent('inurl:sokomin.github.io ' + q.value);
+  }
+</script>
+
+<div id="item-detail-popup" class="item-detail-popup"></div>
+
+<script type="module">
+import { DataLoader } from './lib/data_loader.js';
+import { setLoader, Item, Op, OpPrefix, iterateAllOps } from './lib/item_api.js';
+import { Inventory, newInventoryItem } from './lib/inventory.js';
+import { makeItem } from './lib/make_item.js';
+import { newCharacter } from './lib/character.js';
+import { newSTTemp, debugSnapshot } from './lib/sttemp.js';
+import { aggregateForCharacter } from './lib/stat_aggregator.js';
+import { finalizeStats } from './lib/stat_finalizer.js';
+import { formatOpText, stripOpTags } from './lib/op_text_formatter.js';
+import { updateEquipmentMetadata } from './lib/equipment_meta.js';
+import { calcOpValue } from './lib/op_calc.js';
+import { getEffectiveLv } from './lib/character.js';
+import { computeAbilities } from './lib/abilities.js';
+import {
+  serializeSession, deserializeSession,
+  saveToLocalStorage, loadFromLocalStorage, removeFromLocalStorage,
+  downloadJsonFile, uploadJsonFile,
+} from './lib/persistence.js';
+
+const loader = new DataLoader({ baseUrl: './lib/data' });
+setLoader(loader);
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+// 24 ジョブ定義 (id, name)
+// 職業 id は master.jobs 由来で固定。
+const JOB_OPTIONS = [
+  { id: 0,  name: '剣士' },         { id: 1,  name: '戦士' },
+  { id: 2,  name: 'アーチャー' },    { id: 3,  name: 'ランサー' },
+  { id: 4,  name: 'ウィザード' },    { id: 5,  name: 'ウルフマン' },
+  { id: 6,  name: 'ビショップ' },    { id: 7,  name: '追放天使' },
+  { id: 8,  name: 'ビーストテイマー' },{ id: 9,  name: 'サマナー' },
+  { id: 10, name: 'シーフ' },       { id: 11, name: '武道家' },
+  { id: 12, name: 'プリンセス' },    { id: 13, name: 'リトルウィッチ' },
+  { id: 14, name: 'ネクロマンサー' }, { id: 15, name: '悪魔' },
+  { id: 16, name: '霊術師' },       { id: 17, name: '闘士' },
+  { id: 18, name: '光奏師' },       { id: 24, name: '獣人' },
+  { id: 19, name: 'メイド' },       { id: 20, name: '黒魔術師' },
+  { id: 21, name: 'マスケッティア' }, { id: 22, name: 'アルケミスト' },
+  { id: 23, name: 'キャプテン' },    { id: 25, name: 'キャノニア' },
+];
+// 性別: 名前ベースで判定 (jobtype_text 由来)
+const MALE_JOB_NAMES = new Set([
+  '剣士', '戦士', 'ウィザード', 'ウルフマン', 'ビショップ', '追放天使',
+  'シーフ', '武道家', '光奏師', '獣人', 'マスケッティア', 'アルケミスト',
+]);
+function genderForJobName(name) { return MALE_JOB_NAMES.has(name) ? 1 : 2; }
+function jobNameById(id) {
+  const j = JOB_OPTIONS.find((x) => x.id === Number(id));
+  return j ? j.name : `job_${id}`;
+}
+
+const STAT_KEYS = ['str', 'agi', 'con', 'int', 'wiz', 'chs', 'luc'];
+const STAT_LABEL = { str:'力', agi:'敏捷', con:'健康', int:'知識', wiz:'知恵', chs:'カリスマ', luc:'運' };
+
+const formState = {
+  itemId: -1,
+  // ops[k] = { familyId, value, name, effect, rowId, sortid } (prefix.csv 由来)
+  // familyId === -1 のとき未選択 (= 出力時は null)。
+  ops: [{ familyId:-1, value:0 },{ familyId:-1, value:0 },{ familyId:-1, value:0 }],
+  daybreak: false,
+  filterName: '',
+  feasibleOnly: true,
+};
+const INVENTORY_MAX = 84;  // 12 × 7
+const inventory = new Inventory(INVENTORY_MAX);
+let selectedInv = null;
+
+let feasibleCache = new Map();
+let feasibleCacheKey = '';
+function invalidateFeasibleCache() { feasibleCache = new Map(); feasibleCacheKey = ''; }
+
+// ================================================================
+// キャラ proxy panel ↔ Character オブジェクト
+// ================================================================
+function readCharacter() {
+  const jobId = Number($('ch-job').value) || 0;
+  const gender = genderForJobName(jobNameById(jobId));
+  return newCharacter({
+    realLv: Number($('ch-lv').value) || 1,
+    job: jobId,
+    gender,
+    stats: { base: {
+      str: Number($('st-str').value) || 0,
+      agi: Number($('st-agi').value) || 0,
+      con: Number($('st-con').value) || 0,
+      int: Number($('st-int').value) || 0,
+      wiz: Number($('st-wiz').value) || 0,
+      chs: Number($('st-chs').value) || 0,
+      luc: Number($('st-luc').value) || 0,
+    } },
+  });
+}
+
+function fillJobSelect() {
+  const sel = $('ch-job');
+  sel.innerHTML = '';
+  for (const j of JOB_OPTIONS) {
+    const o = document.createElement('option');
+    o.value = j.id;
+    const mf = genderForJobName(j.name) === 1 ? '男' : '女';
+    o.textContent = `${j.name} (${mf})`;
+    sel.appendChild(o);
+  }
+  sel.value = '0';
+  updateGenderLabel();
+}
+function updateGenderLabel() {
+  // 性別 row は表示しないため no-op。
+  // 性別は readCharacter() 内で job 名から自動判定する。
+}
+
+// ================================================================
+// アイテム検索
+// ================================================================
+const MAX_LIST = 300;
+const MAX_FEASIBLE_CHECK = 600;
+
+function characterSignature(c) {
+  return [c.realLv, c.job, c.gender,
+          JSON.stringify(c.stats.base), JSON.stringify(c.stats.equipped)].join('|');
+}
+async function checkFeasible(itemId, character) {
+  if (feasibleCache.has(itemId)) return feasibleCache.get(itemId);
+  let ok = false;
+  try {
+    const rec = await Item.get(itemId);
+    if (rec) {
+      const inv = makeItem({ itemId }, rec);
+      if (inv) {
+        updateEquipmentMetadata(inv, rec, character);
+        // canEquip を直接見る (equippedSlot は ring=null になるため指系を弾く誤判定が起きる)
+        ok = inv.canEquip === true;
+      }
+    }
+  } catch (err) { ok = false; }
+  feasibleCache.set(itemId, ok);
+  return ok;
+}
+
+let refreshSeq = 0;
+async function refreshItemList() {
+  const mySeq = ++refreshSeq;
+  // DOM 同期 (formState.feasibleOnly が初期化以外でズレないよう保険)
+  const chkFeasible = $('chk-feasible-only');
+  if (chkFeasible) formState.feasibleOnly = chkFeasible.checked;
+
+  const rows = loader.itemsSearch.rows;
+  const q = (formState.filterName || '').trim();
+  // ファーストビュー (q 空) では結果を出さず、 (アイテム選択) のみ表示 (描画速度優先)
+  if (!q) {
+    renderItemList([], 0, null);
+    const status = $('search-status');
+    if (status) status.textContent = '名前を入力すると候補表示';
+    return;
+  }
+  // === 検索カタログから恒久的に除外する条件 ===
+  // [NT] suffix: 取引/合成不可の特殊変種
+  // EXCLUDED_KINDS: 消費系 / 鍵 / イベント / 課金 / クエスト / BOX / コスチューム 等 (装備対象外)
+  // NAME_EXCLUDE_RE: ダミー/テスト/未使用/削除/サンプル を名前に含むデバッグ用アイテム
+  const EXCLUDED_KINDS = new Set([
+    34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 59, 62, 65, 66, 67,
+  ]);
+  const NAME_EXCLUDE_RE = /ダミー|未使用|削除可能|サンプル|テスト用|（テスト）|\(テスト\)|^test\d|test$|^Test|TEST/;
+  const filtered = rows.filter((r) => {
+    const name = String(r[2]);
+    if (name.includes('[NT]')) return false;
+    if (EXCLUDED_KINDS.has(r[3])) return false;
+    if (NAME_EXCLUDE_RE.test(name)) return false;
+    return true;
+  });
+  const byName = filtered.filter((r) => String(r[2]).indexOf(q) >= 0);
+  const status = $('search-status');
+
+  if (!formState.feasibleOnly) {
+    renderItemList(byName.slice(0, MAX_LIST), byName.length, null);
+    return;
+  }
+  const character = readCharacter();
+  const sig = characterSignature(character);
+  if (sig !== feasibleCacheKey) { feasibleCacheKey = sig; feasibleCache = new Map(); }
+  const effLv = (character.realLv || 0) + (character.lvRevision || 0) + (character.miniPetLvRevision || 0);
+  const candidates = byName.filter((r) => (r[5] || 0) <= effLv).slice(0, MAX_FEASIBLE_CHECK);
+  status.textContent = `判定中 ${candidates.length} 件 (名前一致 ${byName.length})...`;
+  const results = await Promise.all(candidates.map(async (r) => (await checkFeasible(r[0], character)) ? r : null));
+  if (mySeq !== refreshSeq) return;
+  const passed = results.filter(Boolean);
+  renderItemList(passed.slice(0, MAX_LIST), passed.length, byName.length);
+}
+// ゲーム由来の色タグ <c:LTORANGE> ... <n> や末尾の [(切れた装飾) を除去して
+// 表示用に綺麗な名前へ整形する。
+function stripGameTags(name) {
+  if (!name) return '';
+  return String(name)
+    .replace(/<c:[A-Za-z0-9_]+>/g, '')   // 開始タグ
+    .replace(/<n>/g, '')                  // リセットタグ
+    .replace(/\s*\[\s*$/, '')             // 末尾の '[' 残骸
+    .trim();
+}
+
+function renderItemList(filtered, totalShown, totalBeforeFeasibility) {
+  const sel = $('sel-item');
+  const status = $('search-status');
+  sel.innerHTML = '';
+  const blank = document.createElement('option');
+  blank.value = -1; blank.textContent = `(アイテム選択)`;
+  sel.appendChild(blank);
+  for (const r of filtered) {
+    const o = document.createElement('option');
+    o.value = r[0]; o.textContent = stripGameTags(r[2]);
+    sel.appendChild(o);
+  }
+  if (totalBeforeFeasibility != null) {
+    status.textContent = `装備可能 ${totalShown} 件 (名前一致 ${totalBeforeFeasibility} 件中、表示 ${Math.min(totalShown, MAX_LIST)})`;
+  } else {
+    status.textContent = `名前一致 ${totalShown} 件 (表示 ${Math.min(totalShown, MAX_LIST)})`;
+  }
+}
+
+// ================================================================
+// OP フリーワード検索 (= 付与可能 op カタログ)
+// SoT: option_prefix.json (= sokomin.github.io/sokomin_repository/db/prefix.csv 由来)
+// 表示形式: [familyId:sortid] tier.name — tier.effect (gradeClass)
+// 検索対象: tier.id / familyId / sortid / tier.name / tier.effect
+// ================================================================
+let opSearchIndex = [];
+function buildOpSearchIndex() {
+  opSearchIndex = [];
+  const opPrefix = loader.optionPrefix;
+  if (!opPrefix || !opPrefix.families) {
+    console.warn('[buildOpSearchIndex] option_prefix.json not loaded');
+    return;
+  }
+  for (const fk of Object.keys(opPrefix.families)) {
+    const family = opPrefix.families[fk];
+    const familyId = Number(fk);
+    for (const tier of (family.tiers || [])) {
+      const search = (
+        tier.id + ' ' + familyId + ' ' + tier.sortid + ' ' +
+        (tier.name || '') + ' ' + (tier.effect || '')
+      ).toLowerCase();
+      opSearchIndex.push({
+        rowId:     tier.id,
+        familyId,
+        sortid:    tier.sortid,
+        name:      tier.name || '',
+        effect:    tier.effect || '',
+        gradeClass: tier.gradeClass || 'normal',
+        equipKinds: tier.equipKinds || [],
+        search,
+      });
+    }
+  }
+  opSearchIndex.sort((a, b) => a.familyId - b.familyId || a.sortid - b.sortid);
+}
+
+function searchOps(query) {
+  const q = (query || '').trim().toLowerCase();
+  if (!q) return [];
+  // 1) tier.id (= prefix.csv の id 列) 完全一致
+  let exact = [];
+  if (/^\d+$/.test(q)) {
+    exact = opSearchIndex.filter((e) => String(e.rowId) === q);
+  }
+  // 2) 部分一致
+  const contains = opSearchIndex.filter((e) => e.search.includes(q) && !exact.includes(e));
+  return [...exact, ...contains].slice(0, 80);
+}
+
+function opDisplayLabel(entry) {
+  // name — effect [グレード]
+  const gradeTag =
+    entry.gradeClass === 'dx'     ? ' [DX]'  :
+    entry.gradeClass === 'ult'    ? ' [ULT]' :
+    entry.gradeClass === 'college'? ' [協会]' :
+    entry.gradeClass === 'set'    ? ' [セット]' :
+    entry.gradeClass === 'npc'    ? ' [NPC]' : '';
+  const name = entry.name || '(無名)';
+  const effect = entry.effect || '';
+  let label = name;
+  if (effect) label += ` — ${effect}`;
+  if (gradeTag) label += gradeTag;
+  return label;
+}
+
+function renderOpResults(idx, query) {
+  const sel = document.querySelector(`.op-search-results[data-op="${idx}"]`);
+  if (!sel) return;
+  sel.innerHTML = '';
+  if (!query.trim()) {
+    sel.style.display = 'none';
+    return;
+  }
+  const results = searchOps(query);
+  if (results.length === 0) {
+    const o = document.createElement('option');
+    o.value = -1; o.textContent = '(該当なし)';
+    o.disabled = true;
+    sel.appendChild(o);
+    sel.style.display = 'block';
+    return;
+  }
+  for (const r of results) {
+    const o = document.createElement('option');
+    o.value = r.rowId;
+    o.textContent = opDisplayLabel(r);
+    o.title = opDisplayLabel(r);
+    sel.appendChild(o);
+  }
+  sel.style.display = 'block';
+}
+
+// effect 文字列から [min, max] を抽出 (item_api.js の _extractEffectRange と同じ仕様)
+function extractEffectRange(effect) {
+  if (!effect) return null;
+  let m = effect.match(/\[(-?\d+)~(-?\d+)\]/);
+  if (m) return { min: Number(m[1]), max: Number(m[2]) };
+  m = effect.match(/[+]?(-?\d+)/);
+  if (m) { const v = Number(m[1]); return { min: v, max: v }; }
+  return null;
+}
+
+// 比率上昇系 effect の 2 範囲 (addRange / divisorRange) を抽出。
+// パターン: "<ステ> +[a~b]/レベル [c~d]" or "<ステ> +N/レベル M"
+function extractRatioRanges(effect) {
+  if (!effect) return null;
+  // 「+ <数値 or [a~b]>」と「レベル <数値 or [a~b]>」両方
+  const addM = effect.match(/\+(?:\[(-?\d+)~(-?\d+)\]|(-?\d+))/);
+  const divM = effect.match(/レベル\s*(?:\[(-?\d+)~(-?\d+)\]|(-?\d+))/);
+  if (!addM || !divM) return null;
+  const addMin = Number(addM[1] != null ? addM[1] : addM[3]);
+  const addMax = Number(addM[2] != null ? addM[2] : (addM[3] != null ? addM[3] : addMin));
+  const divMin = Number(divM[1] != null ? divM[1] : divM[3]);
+  const divMax = Number(divM[2] != null ? divM[2] : (divM[3] != null ? divM[3] : divMin));
+  return { addMin, addMax, divMin, divMax };
+}
+
+// effect "X [a~b] 増加" の [a~b] を実値 value で置換して表示文字列を作る。
+// 単一値 "X +N" のように 1 数値しかない場合は そのまま value で置換。
+// 比率上昇系 (addValue / divisor 2 値) は別途 formatPrefixRatioEffect で扱う。
+function formatPrefixEffect(effect, value) {
+  if (!effect) return String(value);
+  const v = String(value ?? 0);
+  let out = effect
+    .replace(/\[(-?\d+)~(-?\d+)\]/, `<span style="color:#ffff00">${v}</span>`)
+    .replace(/\[\+?(-?\d+)\]/, `<span style="color:#ffff00">${v}</span>`)
+    .replace(/\[0\]/, `<span style="color:#ffff00">${v}</span>`)
+    .replace(/\[0％\]/, `<span style="color:#ffff00">${v}％</span>`);
+  return out;
+}
+
+// 比率上昇系の表示: "<ステ> +<addValue>/レベル <divisor>"
+function formatPrefixRatioEffect(effect, addValue, divisor) {
+  if (!effect) return `+${addValue}/レベル ${divisor}`;
+  const a = `<span style="color:#ffff00">${addValue}</span>`;
+  const d = `<span style="color:#ffff00">${divisor}</span>`;
+  return effect
+    .replace(/\+(?:\[(-?\d+)~(-?\d+)\]|(-?\d+))/, `+${a}`)
+    .replace(/レベル\s*(?:\[(-?\d+)~(-?\d+)\]|(-?\d+))/, `レベル ${d}`);
+}
+
+function selectOp(idx, rowId) {
+  // rowId = prefix.csv の id 列 (= opSearchIndex[].rowId)
+  const id = Number(rowId);
+  if (!Number.isFinite(id) || id < 0) return;
+  const entry = opSearchIndex.find((e) => e.rowId === id);
+  if (!entry) return;
+
+  const family = loader.optionPrefix?.families?.[String(entry.familyId)];
+  const isRatio = family?.stat?.layer === 'lvLinked';
+  const isJobSkill = (entry.familyId === 103);  // 職業別スキルレベル
+
+  // formState.ops[idx] スキーマ:
+  //   通常: { familyId, value, ... }
+  //   比率: { familyId, addValue, divisor, ... }
+  //   family 103: { familyId, value, jobIdx, ... }
+  const slotPayload = {
+    rowId:    entry.rowId,
+    familyId: entry.familyId,
+    sortid:   entry.sortid,
+    name:     entry.name,
+    effect:   entry.effect,
+  };
+  if (isJobSkill) {
+    // 対象 job を effect 先頭の職業名から抽出 (例: "剣士 スキルレベル +1" → 剣士=0)
+    //   master.jobs[idx][1] が職業名と一致する idx を探す
+    const m = entry.effect.match(/^([^\s]+)\s+スキルレベル/);
+    let jobIdx = -1;
+    if (m && loader.master?.jobs) {
+      const target = m[1];
+      for (const k of Object.keys(loader.master.jobs)) {
+        const row = loader.master.jobs[k];
+        if (Array.isArray(row) && row[1] === target) { jobIdx = Number(k); break; }
+      }
+    }
+    const range = extractEffectRange(entry.effect.replace(/^[^\s]+\s+スキルレベル/, ''));
+    slotPayload.value  = range ? range.max : 1;
+    slotPayload.jobIdx = jobIdx;
+  } else if (isRatio) {
+    const r = extractRatioRanges(entry.effect);
+    slotPayload.addValue = r ? r.addMax : 0;
+    slotPayload.divisor  = r ? r.divMin : 1;
+  } else {
+    const range = extractEffectRange(entry.effect);
+    slotPayload.value = range ? range.max : 0;
+  }
+  formState.ops[idx] = slotPayload;
+  const label = document.querySelector(`.op-selected-label[data-op="${idx}"]`);
+  if (label) {
+    const text = `OP${idx+1}: ${opDisplayLabel(entry)}`;
+    label.textContent = text.length > 110 ? text.slice(0, 110) + '...' : text;
+    label.style.color = '#FFE0B0';
+  }
+}
+
+function clearOp(idx) {
+  formState.ops[idx] = { rowId: -1, familyId: -1, value: 0 };
+  const input = document.querySelector(`.op-search-input[data-op="${idx}"]`);
+  if (input) input.value = '';
+  const sel = document.querySelector(`.op-search-results[data-op="${idx}"]`);
+  if (sel) { sel.innerHTML = ''; sel.style.display = 'none'; }
+  const label = document.querySelector(`.op-selected-label[data-op="${idx}"]`);
+  if (label) {
+    label.textContent = `OP${idx+1}: (未選択)`;
+    label.style.color = '#FFE0B0';
+  }
+}
+
+// ================================================================
+// アイテム作成
+// ================================================================
+async function onMake() {
+  if (formState.itemId === -1) { alert('アイテムを選択してください'); return; }
+  const rec = await Item.get(formState.itemId);
+  if (!rec) { alert('選択したアイテムを取得できませんでした'); return; }
+  // ui.op を makeItem に渡す。
+  //   flat 系: { familyId, value }
+  //   比率上昇系 (lvLinked): { familyId, addValue, divisor }
+  //   family 103 (職業別スキル): { familyId, value, jobIdx }
+  const uiOps = formState.ops.map((o) => {
+    if (!o || o.familyId == null || o.familyId < 0) return null;
+    const out = { familyId: Number(o.familyId) };
+    if (o.addValue != null || o.divisor != null) {
+      out.addValue = Number(o.addValue ?? 0);
+      out.divisor  = Number(o.divisor  ?? 1);
+    } else {
+      out.value = Number(o.value ?? 0);
+    }
+    if (o.jobIdx != null) out.jobIdx = Number(o.jobIdx);
+    return out;
+  });
+  const inv = makeItem({
+    itemId: formState.itemId,
+    revisions: [0, 0, 0],
+    ops: uiOps,
+    daybreak: formState.daybreak,
+  }, rec);
+  if (!inv) { alert('makeItem に失敗'); return; }
+  inventory.add(inv);
+  selectedInv = { inv, item: rec };
+  await recalcAll();
+}
+
+// ================================================================
+// 装備一覧 (Inventory) 表示
+// ================================================================
+function mismatchLabel(reason) {
+  if (!reason) return '';
+  if (reason === 'job') return '職業不適合';
+  if (reason === 'kurone') return '朱洛星変身時間不足';
+  if (reason === 'partial') return '循環依存 (装備込みで満たす)';
+  if (reason.startsWith('lv:')) {
+    const [eff, req] = reason.slice(3).split('/');
+    return `Lv不足 (${eff}/${req})`;
+  }
+  if (reason.startsWith('stat:')) {
+    const m = reason.match(/^stat:(\w+)\((\-?\d+)\/(\d+)\)$/);
+    if (m) return `${STAT_LABEL[m[1]] || m[1]}不足 (${m[2]}/${m[3]})`;
+  }
+  return reason;
+}
+// sokomin の item icon URL を構築 (4 桁ゼロパディングで先頭 0 を除去する仕様)
+function getItemIconUrl(imgId) {
+  if (imgId == null) return null;
+  const normalized = String(imgId).replace(/^0(?=\d{4}$)/, '');
+  return `https://sokomin.github.io/item/design/image/item/iconItem_${normalized}.png`;
+}
+
+// 装備関連: ユーザー操作で equip / unequip を行う
+// click: インベントリ → 装備、装備 → インベントリ の切替
+function findFreeRingSlot() {
+  const used = new Set();
+  for (const inv of inventory.items()) {
+    if (typeof inv.equippedSlot === 'string' && inv.equippedSlot.startsWith('ring_')) {
+      used.add(inv.equippedSlot);
+    }
+  }
+  for (let i = 0; i < 10; i++) {
+    const key = 'ring_' + i;
+    if (!used.has(key)) return key;
+  }
+  return null;
+}
+
+async function equipInvItem(inv) {
+  if (!inv) return;
+  if (!inv.canEquip) {
+    setSessionStatus('装着不可: ' + (inv.mismatchReason || '不明'));
+    return;
+  }
+  // 既に装着中ならスキップ
+  if (inv.equippedSlot) return;
+  let slot = inv.candidateSlot;
+  if (slot == null) {
+    // 指系: free ring_N を探す
+    slot = findFreeRingSlot();
+    if (!slot) {
+      setSessionStatus('指スロット 10 個全て埋まっています');
+      return;
+    }
+  } else {
+    // 既存の同 slot 装着者を unequip (= インベントリに残る)
+    for (const other of inventory.items()) {
+      if (other !== inv && other.equippedSlot === slot) {
+        other.equippedSlot = null;
+      }
+    }
+  }
+  inv.equippedSlot = slot;
+  await recalcAll();
+}
+
+function unequipInvItem(inv) {
+  if (!inv) return;
+  if (!inv.equippedSlot) return;
+  inv.equippedSlot = null;
+  recalcAll();
+}
+
+async function renderEquipSlots() {
+  // autoAssignRings は user-managed モードでは不要 (equipInvItem が個別 ring 割当)
+  // back_ear の表示ラベルを性別で 背/耳 に切替
+  const ch = readCharacter();
+  const backEarEl = document.querySelector('.equip-slot[data-slot="back_ear"]');
+  if (backEarEl) {
+    backEarEl.title = (ch.gender === 1) ? '背' : '耳';
+  }
+  const slots = document.querySelectorAll('.equip-slot[data-slot]');
+  // 全クリア
+  for (const el of slots) {
+    el.classList.add('is-empty');
+    el.classList.remove('is-partial');
+    el.classList.remove('is-ng');
+    el.removeAttribute('data-inv-slot');
+    const icon = el.querySelector('.slot-icon');
+    if (icon) { icon.src = ''; icon.style.display = 'none'; icon.onerror = null; }
+  }
+  // 装着中 inv を slot に反映
+  for (const inv of inventory.items()) {
+    if (!inv.equippedSlot) continue;
+    const slotEl = document.querySelector(`.equip-slot[data-slot="${inv.equippedSlot}"]`);
+    if (!slotEl) {
+      console.warn(`[renderEquipSlots] slot element not found for "${inv.equippedSlot}" (inv slot=${inv.slotIndex}, itemId=${inv.itemId})`);
+      continue;
+    }
+    // 衝突した場合は後者を unequip (= インベントリに戻す) して整合性確保
+    if (!slotEl.classList.contains('is-empty')) {
+      console.warn(`[renderEquipSlots] slot collision at "${inv.equippedSlot}": item slot=${inv.slotIndex} reverted to inv`);
+      inv.equippedSlot = null;
+      continue;
+    }
+    slotEl.classList.remove('is-empty');
+    if (inv.mismatchReason === 'partial') slotEl.classList.add('is-partial');
+    // 装着中だが要件外れ (例: ジョブ変更でウィザード専用ワンドのまま剣士になった) → セピア表示
+    if (!inv.canEquip) slotEl.classList.add('is-ng');
+    slotEl.setAttribute('data-inv-slot', String(inv.slotIndex));
+    const rec = await Item.get(inv.itemId);
+    const iconUrl = rec ? getItemIconUrl(rec.imgId) : null;
+    const icon = slotEl.querySelector('.slot-icon');
+    if (icon && iconUrl) {
+      icon.src = iconUrl;
+      icon.style.display = '';
+      icon.onerror = () => { icon.style.display = 'none'; };
+    }
+  }
+}
+
+// === アイテム詳細 popup ===
+const KIND_NAME_CACHE = {};
+function kindName(kind) {
+  if (KIND_NAME_CACHE[kind] != null) return KIND_NAME_CACHE[kind];
+  const k = loader.master.kinds?.[String(kind)];
+  const n = (k && k.name) ? k.name : `kind${kind}`;
+  KIND_NAME_CACHE[kind] = n;
+  return n;
+}
+
+// ItemRecord + inv から詳細 popup の HTML を組み立てる
+function buildItemDetailHtml(inv, rec, character) {
+  if (!rec) return '';
+  const iconUrl = getItemIconUrl(rec.imgId) || '';
+  const kindStr = kindName(rec.kind);
+  // grade を日本語名へ。 N/N2/N3 (0-2) は表記なし。
+  const GRADE_NAMES = { 3:'エクセレント', 4:'ユニーク', 5:'DXユニーク', 6:'ULTユニーク', 7:'ユニークNx', 8:'DXユニークNx', 9:'ULTユニークNx' };
+  const gradeStr = GRADE_NAMES[rec.grade] || '';
+
+  let html = '';
+  html += `<div class="idp-header">`;
+  html += `<img src="${iconUrl}" alt="" onerror="this.style.visibility='hidden'">`;
+  const metaParts = [kindStr, gradeStr].filter(Boolean).join(' / ');
+  html += `<div class="idp-title"><span class="idp-title-main">${esc(stripGameTags(rec.name))}</span><span class="idp-title-meta">${esc(metaParts)}</span></div>`;
+  html += `</div>`;
+
+  // === 基本情報 (耐久力, 武器 atk, 防御力, ベース op) ===
+  html += `<div class="idp-section-title">&lt;基本情報&gt;</div>`;
+  if (rec.durability != null) {
+    html += `<span class="idp-row"><span class="idp-key">耐久力</span> <span class="idp-val">${rec.durability}</span></span>`;
+  }
+  if (rec.combat && (rec.combat.atkMin || rec.combat.atkMax)) {
+    const spdSec = rec.combat.speed ? (rec.combat.speed / 100).toFixed(2) + '秒' : '';
+    html += `<span class="idp-row"><span class="idp-key">攻撃力</span> <span class="idp-val">${rec.combat.atkMin}~${rec.combat.atkMax}</span>${spdSec ? ` (${spdSec})` : ''}</span>`;
+    if (rec.combat.range != null) {
+      html += `<span class="idp-row"><span class="idp-key">射程距離</span> <span class="idp-val">${rec.combat.range}</span></span>`;
+    }
+  }
+  if (rec.combat && rec.combat.def != null) {
+    html += `<span class="idp-row"><span class="idp-key">防御力</span> <span class="idp-val">+${rec.combat.def}</span></span>`;
+  }
+  // === ベース op (item.base) ===
+  const LvTemp = getEffectiveLv(character);
+  for (const slot of (rec.opSlots || [])) {
+    if (slot.slotKind !== 'base') continue;
+    const tpl = Op.getDisplayTemplate(slot.opId, 'item.base');
+    if (!tpl) continue;
+    let args = slot.vals || [];
+    const calc = calcOpValue(slot, inv, 'item.base', LvTemp, character);
+    if (calc && (calc.layer === 'lvLinked' || calc.layer === 'consumableLvMax')) {
+      args = [calc.displayValue || 0, ...(Array.isArray(args) ? args.slice(1) : [])];
+    }
+    const opHtml = formatOpText(tpl, args, [0,0,0,0]);
+    html += `<span class="idp-op is-base">- ${opHtml}</span>`;
+  }
+  // === 付与 op (op / nxop / long_*op) === prefix.csv family + value/addValue+divisor 経由 ===
+  for (const slot of (rec.opSlots || [])) {
+    if (slot.slotKind === 'base') continue;
+    const isNx = slot.slotKind === 'nxop' || slot.slotKind === 'long_nxop';
+    const family = OpPrefix.getFamily(slot.familyId);
+    if (!family) continue;
+    const isRatio = family.stat?.layer === 'lvLinked';
+    const isJobSkill = (slot.familyId === 103);
+    let text;
+    let extraClass = '';
+    if (isJobSkill) {
+      // family 103: <対象職業名> スキルレベル +value
+      // 装着キャラと対象 job が一致しない場合はグレー表示 (= 非活性)
+      const targetName = (loader.master?.jobs?.[String(slot.jobIdx)]?.[1]) || '?';
+      const matched = (character && character.job === slot.jobIdx);
+      text = `${targetName} スキルレベル +<span style="color:#ffff00">${slot.value ?? 0}</span>`;
+      if (!matched) extraClass = ' is-job-mismatch';
+    } else if (isRatio) {
+      const baseEffect = family.firstTierEffect || family.tiers?.[0]?.effect || '';
+      text = formatPrefixRatioEffect(baseEffect, slot.addValue ?? 0, slot.divisor ?? 1);
+    } else {
+      const tier = OpPrefix.findTier(slot.familyId, slot.value);
+      const effect = (tier && tier.effect) || family.firstTierEffect || '';
+      text = formatPrefixEffect(effect, slot.value);
+    }
+    html += `<span class="idp-op ${isNx ? 'is-nx' : ''}${extraClass}">- ${text}${isNx ? ' <span class="idp-nx-label">[Nx]</span>' : ''}</span>`;
+  }
+  // === ui.op (ユーザー選択 op) === 同じく prefix.csv family ===
+  if (inv && Array.isArray(inv.ops)) {
+    for (let i = 0; i < inv.ops.length; i++) {
+      const op = inv.ops[i];
+      if (!op || op.familyId == null || op.familyId < 0) continue;
+      const family = OpPrefix.getFamily(op.familyId);
+      if (!family) continue;
+      const isRatio = family.stat?.layer === 'lvLinked';
+      const isJobSkill = (op.familyId === 103);
+      let text;
+      let extraClass = '';
+      if (isJobSkill) {
+        const targetName = (loader.master?.jobs?.[String(op.jobIdx)]?.[1]) || '?';
+        const matched = (character && character.job === op.jobIdx);
+        text = `${targetName} スキルレベル +<span style="color:#ffff00">${op.value ?? 0}</span>`;
+        if (!matched) extraClass = ' is-job-mismatch';
+      } else if (isRatio) {
+        const baseEffect = family.firstTierEffect || family.tiers?.[0]?.effect || '';
+        text = formatPrefixRatioEffect(baseEffect, op.addValue ?? 0, op.divisor ?? 1);
+      } else {
+        const tier = OpPrefix.findTier(op.familyId, op.value);
+        const effect = (tier && tier.effect) || family.firstTierEffect || '';
+        text = formatPrefixEffect(effect, op.value);
+      }
+      html += `<span class="idp-op is-ui${extraClass}">+ ${text} <span class="idp-ui-label">[OP${i + 1}]</span></span>`;
+    }
+  }
+
+  // === 説明 ===
+  if (rec.desc) {
+    html += `<div class="idp-section-title">&lt;説明&gt;</div>`;
+    // 改行 + カラータグを formatOpText で軽処理
+    const descHtml = formatOpText(rec.desc, [], [0,0,0,0]).replace(/<br \/>&nbsp;/g, '<br />');
+    html += `<div class="idp-desc">${descHtml}</div>`;
+  }
+
+  // === 要求能力値 ===
+  if (rec.req) {
+    html += `<div class="idp-section-title">&lt;要求能力値&gt;</div>`;
+    const reqLv = rec.req.lv || 0;
+    const effLv = LvTemp;
+    const lvNg = effLv < reqLv;
+    html += `<span class="idp-row ${lvNg ? 'is-ng-row' : ''}"><span class="idp-key">レベル</span> <span class="idp-val">${reqLv}</span></span>`;
+    // 必要ステ
+    if (rec.req.st) {
+      const labels = { str:'力', agi:'敏捷', con:'健康', int:'知識', wiz:'知恵', chs:'カリスマ', luc:'運' };
+      for (const sid of STAT_KEYS) {
+        const req = rec.req.st[sid];
+        if (!req) continue;
+        const have = (character.stats?.equipped?.[sid]) || (character.stats?.base?.[sid]) || 0;
+        const override = inv?.reqStatOverride?.[sid];
+        const effective = (override != null) ? override : req;
+        const ng = have < effective;
+        let label = `<span class="idp-key">${labels[sid] || sid}</span> <span class="idp-val">${effective}</span>`;
+        if (override != null && override !== req) {
+          label += ` <span style="color:#888; font-size:10px">(本来 ${req})</span>`;
+        }
+        html += `<span class="idp-row ${ng ? 'is-ng-row' : ''}">${label}</span>`;
+      }
+    }
+    // 職業制限
+    if (rec.req.jobType === 3 && Array.isArray(rec.req.jobs) && rec.req.jobs.length) {
+      const jobNames = rec.req.jobs.map(jid => jobNameById(jid)).join(' ');
+      const ng = !rec.req.jobs.includes(character.job);
+      html += `<span class="idp-row ${ng ? 'is-ng-row' : ''}"><span class="idp-key">職業</span> <span class="idp-val">${esc(jobNames)}</span></span>`;
+    } else if (rec.req.jobType === 1) {
+      const ng = character.gender !== 1;
+      html += `<span class="idp-row ${ng ? 'is-ng-row' : ''}"><span class="idp-key">性別</span> <span class="idp-val">男性</span></span>`;
+    } else if (rec.req.jobType === 2) {
+      const ng = character.gender !== 2;
+      html += `<span class="idp-row ${ng ? 'is-ng-row' : ''}"><span class="idp-key">性別</span> <span class="idp-val">女性</span></span>`;
+    }
+  }
+
+  // === 状態 ===
+  let statusLine = '';
+  if (inv) {
+    if (inv.equippedSlot) statusLine = `装備中 (${inv.equippedSlot})`;
+    else if (!inv.canEquip) statusLine = `装着 NG: ${inv.mismatchReason || ''}`;
+    else statusLine = 'インベントリ';
+  }
+  if (statusLine) {
+    html += `<div class="idp-status">${esc(statusLine)}</div>`;
+  }
+  return html;
+}
+
+function showItemDetailPopup(anchorEl, inv, rec) {
+  const popup = $('item-detail-popup');
+  if (!popup || !rec) return;
+  const character = readCharacter();
+  popup.innerHTML = buildItemDetailHtml(inv, rec, character);
+  popup.style.display = 'block';
+  // 位置調整 (viewport 内に収める)
+  const r = anchorEl.getBoundingClientRect();
+  const pr = popup.getBoundingClientRect();
+  const margin = 6;
+  const vpW = window.innerWidth, vpH = window.innerHeight;
+  let left = r.right + margin;
+  let top = r.top;
+  if (left + pr.width > vpW - margin) left = r.left - pr.width - margin;
+  if (left < margin) left = margin;
+  if (top + pr.height > vpH - margin) top = vpH - pr.height - margin;
+  if (top < margin) top = margin;
+  popup.style.left = Math.round(left) + 'px';
+  popup.style.top = Math.round(top) + 'px';
+}
+
+function hideItemDetailPopup() {
+  const popup = $('item-detail-popup');
+  if (popup) popup.style.display = 'none';
+}
+
+function bindItemDetailHovers() {
+  // 現在 popup を表示中の anchor 要素を追跡 (再描画で消えたら自動非表示)
+  let currentAnchor = null;
+  const handleEnter = async (el) => {
+    const idxAttr = el.getAttribute('data-inv-slot') || el.getAttribute('data-slot-index');
+    if (idxAttr == null) return;
+    const inv = inventory.get(Number(idxAttr));
+    if (!inv) {
+      hideItemDetailPopup();
+      currentAnchor = null;
+      return;
+    }
+    // インベントリ cell の場合: equipped 中 (= cell が is-empty) なら表示しない
+    if (el.classList.contains('inv-cell') && el.classList.contains('is-empty')) {
+      hideItemDetailPopup();
+      currentAnchor = null;
+      return;
+    }
+    const rec = await Item.get(inv.itemId);
+    if (!rec) return;
+    currentAnchor = el;
+    showItemDetailPopup(el, inv, rec);
+  };
+  document.addEventListener('mouseover', (e) => {
+    const el = e.target.closest('.equip-slot[data-inv-slot], .inv-cell');
+    if (!el) {
+      // mouseover on non-tracked element — hide if not currently anchored
+      if (currentAnchor && !currentAnchor.contains(e.target)) {
+        hideItemDetailPopup();
+        currentAnchor = null;
+      }
+      return;
+    }
+    handleEnter(el);
+  });
+  document.addEventListener('mouseout', (e) => {
+    const el = e.target.closest('.equip-slot[data-inv-slot], .inv-cell');
+    if (!el) return;
+    if (e.relatedTarget && el.contains(e.relatedTarget)) return;
+    hideItemDetailPopup();
+    currentAnchor = null;
+  });
+  // 念のため: 画面外に出たら popup 非表示
+  document.addEventListener('mouseleave', () => {
+    hideItemDetailPopup();
+    currentAnchor = null;
+  });
+}
+
+// === インベントリグリッド (12×7=84) 描画 ===
+// ゲーム仕様:
+//   - 装備中 (equippedSlot != null) でも inv は元の slotIndex 位置を予約し続ける
+//   - グリッド上は **ghost (アイコン薄表示 + 'E' バッジ)** で「装備中だが予約」 を可視化
+//   - クリックすると装備解除 → 通常表示に戻る (slotIndex は不変)
+async function renderInventoryGrid() {
+  const grid = $('inv-grid');
+  if (!grid) return;
+  // 84 セル分 (12×7) の DOM を確保 (初回のみ)
+  if (grid.children.length === 0) {
+    for (let i = 0; i < INVENTORY_MAX; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'inv-cell is-empty';
+      cell.setAttribute('data-slot-index', String(i));
+      cell.innerHTML = `<img class="inv-icon" alt="">`;
+      grid.appendChild(cell);
+    }
+  }
+  // 全セルをクリア (空状態)
+  for (const cell of grid.children) {
+    cell.classList.add('is-empty');
+    cell.classList.remove('is-ng');
+    cell.classList.remove('is-equipped');
+    cell.removeAttribute('data-inv-id');
+    const icon = cell.querySelector('.inv-icon');
+    if (icon) { icon.src = ''; icon.style.display = 'none'; icon.onerror = null; }
+  }
+  // 装備中 inv も grid に ghost 表示 (= スロット予約の可視化)
+  for (const inv of inventory.items()) {
+    const cell = grid.children[inv.slotIndex];
+    if (!cell) continue;
+    cell.classList.remove('is-empty');
+    if (inv.equippedSlot) cell.classList.add('is-equipped');
+    if (!inv.canEquip && !inv.equippedSlot) cell.classList.add('is-ng');
+    cell.setAttribute('data-inv-id', String(inv.slotIndex));
+    const rec = await Item.get(inv.itemId);
+    const icon = cell.querySelector('.inv-icon');
+    const iconUrl = rec ? getItemIconUrl(rec.imgId) : null;
+    if (icon && iconUrl) {
+      icon.src = iconUrl;
+      icon.style.display = '';
+      icon.onerror = () => { icon.style.display = 'none'; };
+    }
+  }
+}
+
+function bindInventoryGridEvents() {
+  const grid = $('inv-grid');
+  if (!grid) return;
+  grid.addEventListener('click', async (e) => {
+    const cell = e.target.closest('.inv-cell');
+    if (!cell || cell.classList.contains('is-empty')) return;
+    const idx = Number(cell.getAttribute('data-slot-index'));
+    const inv = inventory.get(idx);
+    if (!inv) return;
+    // Shift+クリック: 削除
+    if (e.shiftKey) {
+      inventory.remove(idx);
+      if (selectedInv && selectedInv.inv.slotIndex === idx) selectedInv = null;
+      await recalcAll();
+      return;
+    }
+    // 詳細パネル更新
+    const rec = await Item.get(inv.itemId);
+    if (rec) {
+      selectedInv = { inv, item: rec };
+    }
+    // 装備中 ghost cell をクリック → 解除 (= スロット予約位置に通常表示で戻る)
+    // 未装備セルをクリック → 装備
+    if (inv.equippedSlot) {
+      unequipInvItem(inv);
+      await recalcAll();
+    } else {
+      await equipInvItem(inv);
+    }
+  });
+}
+
+function renderInventoryList() {
+  const el = $('inv-list');
+  if (!el) return;  
+  el.innerHTML = '';
+  for (const inv of inventory.items()) {
+    const div = document.createElement('div');
+    div.className = 'inv-row';
+    const reason = inv.mismatchReason;
+    const reasonText = reason ? mismatchLabel(reason) : '';
+    // 装着状態表示:
+    //   equippedSlot 設定済 → '→ slot' (緑)
+    //   canEquip=true だが slot 未割当 (例: ring 満杯) → '(空き待ち)' (黄)
+    //   canEquip=false → '(NG)' (赤) + mismatch 理由
+    let statusHtml;
+    if (inv.equippedSlot) {
+      statusHtml = `<span style="color:#00ff66">→ ${esc(inv.equippedSlot)}</span>`;
+    } else if (inv.canEquip) {
+      statusHtml = `<span style="color:#f8f000">(装着可・slot空き待ち)</span>`;
+    } else {
+      statusHtml = `<span style="color:#ff6666">(NG)</span>`;
+    }
+    div.innerHTML = `
+      <span style="flex:1; cursor:pointer" class="inv-label" data-slot="${inv.slotIndex}">
+        [${inv.slotIndex}] itemId=${inv.itemId}
+        ${statusHtml}
+        ${reasonText ? `<span style="color:#d8a743"> — ${esc(reasonText)}</span>` : ''}
+      </span>
+      <button class="pick-btn" data-slot="${inv.slotIndex}">表示</button>
+      <button class="remove-btn" data-slot="${inv.slotIndex}">削除</button>`;
+    el.appendChild(div);
+  }
+  el.querySelectorAll('.remove-btn').forEach((b) => {
+    b.addEventListener('click', () => {
+      inventory.remove(Number(b.getAttribute('data-slot')));
+      if (selectedInv && selectedInv.inv.slotIndex === Number(b.getAttribute('data-slot'))) {
+        selectedInv = null;
+      }
+      recalcAll();
+    });
+  });
+  const pick = async (slot) => {
+    const inv = inventory.get(slot);
+    if (!inv) return;
+    const rec = await Item.get(inv.itemId);
+    selectedInv = { inv, item: rec };
+  };
+  el.querySelectorAll('.pick-btn').forEach((b) => {
+    b.addEventListener('click', () => pick(Number(b.getAttribute('data-slot'))));
+  });
+  el.querySelectorAll('.inv-label').forEach((b) => {
+    b.addEventListener('click', () => pick(Number(b.getAttribute('data-slot'))));
+  });
+}
+
+// ================================================================
+// STTemp 内訳デバッグ表示
+//   各 stat について、layer 別の値と equipped 適用値を 1 行で並べる。
+//   master.statTypes.stats に登録のあるステ全てを displayOrder 順で出す。
+// ================================================================
+function buildStatBreakdownHtml(T, f, equippedList) {
+  const meta = loader.master?.statTypes?.stats || {};
+  const ids = Object.keys(meta).sort(
+    (a, b) => (meta[a].displayOrder || 9999) - (meta[b].displayOrder || 9999));
+  const rows = [];
+  rows.push('<table class="stat-breakdown">' +
+    '<thead><tr>' +
+    '<th>ステ</th><th>素</th><th>sum</th><th>lvL</th><th>set</th>' +
+    '<th>fixCap</th><th>attrCap</th><th>consMx</th><th>適用</th>' +
+    '</tr></thead><tbody>');
+  for (const sid of ids) {
+    const m = meta[sid];
+    const b   = T.base[sid]            || 0;
+    const sum = T.sum[sid]             || 0;
+    const lvL = T.lvLinked[sid]        || 0;
+    const set = T.setBonus[sid]        || 0;
+    const fixCap  = T.fixedCap[sid + 'FixedCap'] || 0;
+    const attrCap = T.attrFixedCap[sid] || 0;
+    const cMx = (T.consumableMax[sid] || 0) + (T.consumableLvMax[sid] || 0);
+    const eq  = f.equipped[sid]        || 0;
+    const cellsVal = [b, sum, lvL, set, fixCap, attrCap, cMx, eq];
+    const cells = cellsVal.map((v) => {
+      const cls = v > 0 ? 'is-plus' : (v < 0 ? 'is-minus' : 'is-zero');
+      return `<td class="${cls}">${v}</td>`;
+    }).join('');
+    rows.push(`<tr><td class="sb-name" title="${esc(m.category||'')}">${esc(m.name||sid)}</td>${cells}</tr>`);
+  }
+  rows.push('</tbody></table>');
+  // 未マップ op の警告 (装着中アイテムから抽出)
+  const unmapped = collectUnmappedOps(equippedList);
+  if (unmapped.length > 0) {
+    rows.push('<div class="sb-warn">未マップ op (statTargetCode 解決不可・displayOnly 扱い): ' +
+              unmapped.slice(0, 12).map((o) => `op${o.opId}(code=${o.code})`).join(', ') +
+              (unmapped.length > 12 ? ` ...他${unmapped.length - 12}件` : '') + '</div>');
+  }
+  return rows.join('');
+}
+
+// statTargetCode 単位で装備中 op を sum (master 未マップ系の補完用)。
+// 戻り値: { absorb:[6], weaken:[6], enhance:[6] } (火/水/風/大地/光/闇)
+//
+// calc=0 (1軸 Rev1 連動) の op はアイテム本体由来 (= base/option/nxoption slot)
+// であれば slot.vals[0] を主値として採用、それ以外の op (= ui/custom 等) は
+// (baseValue * r1) / lvDivisor の素朴な式で評価する。calcOpValue が
+// isDisplayOnly=true で打ち切るため、ここで直接 OpTemplate を参照する。
+function sumOpsByCode(equippedList, LvTemp, character) {
+  const out = {
+    absorb:  [0, 0, 0, 0, 0, 0],  // codes 75..80
+    weaken:  [0, 0, 0, 0, 0, 0],  // codes 132..137
+    enhance: [0, 0, 0, 0, 0, 0],  // codes 139..144
+    // 攻撃速度: code 41 (+, calc=0) / 154 (-, calc=3) / 207 (転生比例, calc=3)
+    //   3 値を分けて保持 (内訳デバッグ用)。最終値は base20 + plus - minus + rebirth。
+    atkspd:  { plus: 0, minus: 0, rebirth: 0 },
+    // 移動速度: code 40 (+, calc=0) / 153 (-, calc=3)
+    //   召喚獣の移動速度 (code 215) はキャラ自身の移動速度ではないので含めない。
+    mvspd:   { plus: 0, minus: 0 },
+    attackDetail: {
+      physDamage: 0,
+      physCrit: 0,
+      physStrong: 0,
+      physCritResistDown: 0,
+      magicDamage: 0,
+      magicCrit: 0,
+      magicStrong: 0,
+      finalDamage: 0,
+    },
+    limitBreak: {
+      physFlat: 0,
+      physPercent: 0,
+      magicFlat: 0,
+      magicPercent: 0,
+    },
+  };
+  const attrBucket = (code) => {
+    if (code >= 75  && code <= 80)  return { key: 'absorb',  idx: code - 75 };
+    if (code >= 132 && code <= 137) return { key: 'weaken',  idx: code - 132 };
+    if (code >= 139 && code <= 144) return { key: 'enhance', idx: code - 139 };
+    return null;
+  };
+  // statTargetCode → バケット (符号は呼び出し側で扱う)
+  const ATKSPD_CODE = { 41: 'plus', 154: 'minus', 207: 'rebirth' };
+  const MVSPD_CODE  = { 40: 'plus', 153: 'minus' };
+  const ATTACK_DETAIL_CODE = new Map([
+    [21, ['physDamage']], [460, ['physDamage']], [521, ['physDamage']], [873, ['physDamage']],
+    [34, ['physCrit']], [70, ['physCrit']], [208, ['physCrit']], [523, ['physCrit']], [635, ['physCrit']], [685, ['physCrit']],
+    [174, ['physStrong']], [462, ['physStrong']], [592, ['physStrong']], [593, ['physStrong']], [645, ['physStrong']], [689, ['physStrong']],
+    [290, ['physCritResistDown']], [623, ['physCritResistDown']], [633, ['physCritResistDown', 'physCrit']], [634, ['physCritResistDown']], [707, ['physCritResistDown']], [745, ['physCritResistDown']], [940, ['physCritResistDown']],
+    [145, ['magicDamage']], [371, ['magicDamage']], [372, ['magicDamage']], [373, ['magicDamage']], [631, ['magicDamage']], [653, ['magicDamage']], [654, ['magicDamage']], [729, ['magicDamage']], [866, ['magicDamage']], [891, ['magicDamage']], [948, ['magicDamage']],
+    [288, ['magicCrit']], [461, ['magicCrit']], [524, ['magicCrit']], [632, ['magicCrit', 'magicStrong']], [644, ['magicCrit']], [686, ['magicCrit']],
+    [321, ['magicStrong']], [690, ['magicStrong']], [723, ['magicStrong']],
+    [984, ['finalDamage']], [1000, ['finalDamage']],
+  ]);
+  const readOpAxisValue = (op, idx) => {
+    const vals = Array.isArray(op.vals) ? op.vals : (Array.isArray(op.revisions) ? op.revisions : []);
+    const raw = vals[idx];
+    if (Array.isArray(raw)) return Number(raw[0]) || 0;
+    return Number(raw) || 0;
+  };
+  const addLimitBreak = (op) => {
+    switch (Number(op.opId)) {
+      case 342:
+      case 922:
+        out.limitBreak.physPercent += readOpAxisValue(op, 0);
+        out.limitBreak.magicPercent += readOpAxisValue(op, 1);
+        return true;
+      case 703:
+      case 1060:
+        out.limitBreak.physFlat += readOpAxisValue(op, 0);
+        out.limitBreak.physPercent += readOpAxisValue(op, 1);
+        return true;
+      case 704:
+      case 983:
+        out.limitBreak.physPercent += readOpAxisValue(op, 0);
+        return true;
+      case 705:
+      case 1061:
+        out.limitBreak.magicFlat += readOpAxisValue(op, 0);
+        out.limitBreak.magicPercent += readOpAxisValue(op, 1);
+        return true;
+      case 706:
+        out.limitBreak.magicPercent += readOpAxisValue(op, 0);
+        return true;
+      case 1045:
+        out.limitBreak.physFlat += readOpAxisValue(op, 0);
+        out.limitBreak.magicFlat += readOpAxisValue(op, 1);
+        return true;
+      default:
+        return false;
+    }
+  };
+
+  for (const { inv, item } of equippedList || []) {
+    if (!inv.equippedSlot) continue;
+    for (const { op, source } of iterateAllOps(inv, item)) {
+      const base = Op.resolveBase(op.opId);
+      if (!base) continue;
+      const handledLimitBreak = addLimitBreak(op);
+      if (base.statTargetCode == null) continue;
+      const code = base.statTargetCode;
+
+      // 同じ statTargetCode が base slot と 付与 slot で異なる意味を持つ。
+      // attrBucket / ATKSPD_CODE / ATTACK_DETAIL_CODE は付与 slot 用解釈なので、
+      // base slot はこの集計ループから除外する (= family-route で別途処理済)。
+      // 例: opId=80
+      //   base slot 文脈 → "大地属性抵抗 +N%"       (= attrEarthResist)
+      //   付与 slot 文脈 → "闇属性ダメージ吸収 N%"  (= attrDarkAbsorb)
+      if (source === 'item.base') continue;
+
+      // calcOpValue を使えば calc 0..5 の式 / r1=inv.revisions[0] / item.* slot の
+      // vals[0] 優先などをまとめて処理してくれる。displayOnly でも value/constant は
+      // 入っているのでそちらを直接読む。
+      const calc = calcOpValue(op, inv, source, LvTemp || 0, character);
+      const v = (calc.value || 0) + (calc.constant || 0);
+
+      // === 属性 6 列 (吸収/弱化/強化) ===
+      const ab = attrBucket(code);
+      if (ab) { out[ab.key][ab.idx] += v; continue; }
+
+      // === 攻撃速度 ===
+      const atkBkt = ATKSPD_CODE[code];
+      if (atkBkt) { out.atkspd[atkBkt] += v; continue; }
+
+      // === 移動速度 ===
+      const mvBkt = MVSPD_CODE[code];
+      if (mvBkt) { out.mvspd[mvBkt] += v; continue; }
+
+      const attackDetailKeys = ATTACK_DETAIL_CODE.get(Math.abs(code));
+      if (attackDetailKeys) {
+        for (const key of attackDetailKeys) out.attackDetail[key] += v;
+        continue;
+      }
+      if (handledLimitBreak) continue;
+    }
+  }
+  return out;
+}
+
+function collectUnmappedOps(equippedList) {
+  const out = [];
+  const seen = new Set();
+  for (const { inv, item } of equippedList || []) {
+    if (!inv.equippedSlot) continue;
+    for (const { op } of iterateAllOps(inv, item)) {
+      const base = Op.resolveBase(op.opId);
+      if (!base || base.statTargetCode == null) continue;
+      if (base.isDisplayOnly) continue;
+      const r = loader.resolveStatTarget(base.statTargetCode);
+      if (r.layer !== 'displayOnly') continue;
+      const k = `${op.opId}/${base.statTargetCode}`;
+      if (seen.has(k)) continue;
+      seen.add(k);
+      out.push({ opId: op.opId, code: base.statTargetCode });
+    }
+  }
+  return out;
+}
+
+// ================================================================
+// 集計 + キャラ proxy 表示更新
+// ================================================================
+async function recalcAll() {
+  const ch = readCharacter();
+  const equipped = [];
+  for (const inv of inventory.items()) {
+    const item = await Item.get(inv.itemId);
+    if (!item) continue;
+    equipped.push({ inv, item });
+  }
+  // Pre-pass: canEquip / candidateSlot / mismatchReason を確定 (equippedSlot は触らない)
+  for (const { inv, item } of equipped) {
+    updateEquipmentMetadata(inv, item, ch);
+  }
+  // 本 aggregate: equippedSlot != null && canEquip な装着中 item の op を集計
+  const T = await aggregateForCharacter(ch, equipped);
+  const f = finalizeStats(T);
+
+  // 知恵 → 属性抵抗ボーナス: floor(装備込 wiz / 20) を resist 各列に加算
+  const wisdomVal = Number(f.equipped.wiz || ch.stats.base.wiz) || 0;
+  const wisdomBonus = Math.floor(wisdomVal / 20);
+
+  // 属性表示は 6 列 [火,水,風,大地,光,闇] (魔法は別系統につき UI 未表示)
+  const ATTR_KEYS = ['Fire','Water','Wind','Earth','Light','Dark'];
+  const resistTds  = document.querySelectorAll('#resist-row td');
+  const absorbTds  = document.querySelectorAll('#absorb-row td');
+  const enhanceTds = document.querySelectorAll('#enhance-row td');
+  const weakenTds  = document.querySelectorAll('#weaken-row td');
+  const vsPhysTds   = document.querySelectorAll('#vs-phys-row td');
+  const vsMagicTds  = document.querySelectorAll('#vs-magic-row td');
+  const fromRaceTds = document.querySelectorAll('#from-race-row td');
+
+  // 吸収 / 弱化 / 強化 (displayOnly 扱いされている) を統計コードから集計:
+  //   絶対 code 75..80 : 火/水/風/大地/光/闇 の属性吸収 (calc=0 / sum)
+  //   絶対 code 132..137: 火/水/風/大地/光/闇 の属性弱化 (calc=0 / sum、displayOnly 上書き)
+  //   絶対 code 139..144: 火/水/風/大地/光/闇 の属性強化 (calc=0 / sum、displayOnly 上書き)
+  //   絶対 code 41 / 154 / 207: 攻撃速度 + / - / 転生比例
+  // 魔法 (code 81/138/145) は 6 列 UI には載せない (詳細値は内訳テーブル側を参照)
+  const LvTemp = getEffectiveLv(ch);
+  const sideSum = sumOpsByCode(equipped, LvTemp, ch);
+
+  const setDetailPercent = (id, value) => {
+    const el = $(id);
+    if (!el) return;
+    const v = Math.floor(Number(value) || 0);
+    el.textContent = (v >= 0 ? '+' : '') + v + '%';
+  };
+  const setDetailFlat = (id, value) => {
+    const el = $(id);
+    if (!el) return;
+    const v = Math.floor(Number(value) || 0);
+    el.textContent = (v >= 0 ? '+' : '') + v;
+  };
+  // 物理ダメージ % = family 21 (prefix.csv 由来) を finalStats から読む
+  setDetailPercent('dt-phys-damage', f.equipped.physDamagePercent || 0);
+  // dt-phys-crit は label 「物理致命打」 のままだが、 中身は 致命打発動確率 (family 34 = physCritRate)
+  setDetailPercent('dt-phys-crit', f.equipped.physCritRate || 0);
+  // 命中率 / 回避率 / 薬回復 (families 31 / 32 / 42)
+  setDetailPercent('dt-hit', f.equipped.hit || 0);
+  setDetailPercent('dt-eva', f.equipped.eva || 0);
+  setDetailPercent('dt-potion-heal', f.equipped.potionHeal || 0);
+
+  // 致命/決定/異常/低下/呪い 5 抵抗には 知恵 + カリスマ 補正が乗る:
+  //   displayed = floor(min(2.0, 1 + (wiz + chs) / 1000) × baseStat)
+  //   (= wiz+chs が 1000 で倍率 2.0 (= 最大)、 wiz+chs=0 のとき 1.0 倍 で no-op)
+  // 後退抵抗 (knockbackResist) には倍率を掛けない。
+  const wizChs = (f.equipped.wiz || 0) + (f.equipped.chs || 0);
+  const resistMultiplier = Math.min(2.0, 1 + wizChs / 1000);
+  const setResistPercent = (id, value) => {
+    const el = $(id);
+    if (!el) return;
+    const v = Math.floor(Number(value) || 0);
+    el.textContent = v + '%';
+  };
+  const setResistPercentWithBoost = (id, value) => {
+    const el = $(id);
+    if (!el) return;
+    const raw = Math.floor(Number(value) || 0);
+    const v   = Math.floor(raw * resistMultiplier);
+    el.textContent = v + '%';
+    el.title = (resistMultiplier > 1.0001)
+      ? `生値 ${raw}% × ${resistMultiplier.toFixed(2)}倍 (知恵+カリスマ=${wizChs}) = ${v}%`
+      : `${v}%`;
+  };
+  setResistPercentWithBoost('dt-phys-crit-resist', f.equipped.physCritResist || 0);   // family 96
+  setResistPercentWithBoost('dt-crit-resist',      f.equipped.criticalResist || 0);   // family 97
+  setResistPercentWithBoost('dt-status-resist',    f.equipped.statusResist   || 0);   // family 91
+  setResistPercentWithBoost('dt-stat-down-resist', f.equipped.statDownResist || 0);   // family 92
+  setResistPercentWithBoost('dt-curse-resist',     f.equipped.curseResist    || 0);   // family 93
+  setResistPercent('dt-knockback-resist',          f.equipped.knockbackResist|| 0);   // family 95 (補正なし)
+  // 物理/魔法 致命打/強打/ダメ% など詳細パネル
+  setDetailPercent('dt-phys-strong',           f.equipped.physStrongRate || 0);   // 物理強打 発動率
+  setDetailPercent('dt-phys-crit-resist-down', f.equipped.enemyPhysCritResistReduce || 0);
+  setDetailPercent('dt-magic-damage',          f.equipped.attrMagic || 0);        // 魔法ダメ% (= attrMagic、 静的)
+  setDetailPercent('dt-magic-crit',            f.equipped.magicCritRate || 0);    // 魔法致命打 発動率
+  setDetailPercent('dt-magic-strong',          f.equipped.magicStrongRate || 0);  // 魔法強打 発動率
+  setDetailPercent('dt-final-damage',          (f.equipped.finalPhysDamage || 0) + (f.equipped.finalMagicDamage || 0) + (f.equipped.finalDamagePercent || 0));
+  // 限界突破
+  setDetailFlat('dt-phys-limit-flat',          f.equipped.limitBreakPhysFlat || 0);
+  setDetailPercent('dt-phys-limit-percent',    f.equipped.limitBreakPhysPercent || 0);
+  setDetailFlat('dt-magic-limit-flat',         f.equipped.limitBreakMagicFlat || 0);
+  setDetailPercent('dt-magic-limit-percent',   f.equipped.limitBreakMagicPercent || 0);
+  // スキル (= 全スキル family 104 + 職業別 family 103 合算 が skillLv stat に積まれている)
+  setDetailFlat('dt-skill',                    f.equipped.skillLv || 0);
+
+  // 属性抵抗の上限。通常マップでは 90%。 マップ補正 (一部マップで最小上限 50% など) や
+  // オプションによる緩和もあるが、現状は何の補正もないとき = 90% で固定。
+  // マップ選択 UI 実装時にここを書き換える。
+  const ATTR_RESIST_CAP = 90;
+  // 属性吸収の上限。 通常マップでは 100%。 マップ補正で変動する可能性あり。
+  const ATTR_ABSORB_CAP = 100;
+  // 装備での属性強化上限 (= 各属性 400%)、 弱化上限 (= 各属性 120%)。 他コンテンツ補正で変動可。
+  const ATTR_ENHANCE_CAP = 400;
+  const ATTR_WEAKEN_CAP  = 120;
+
+  for (let i = 0; i < ATTR_KEYS.length; i++) {
+    const k = ATTR_KEYS[i];
+    // 属性抵抗 = sum (families 68-73 + 74 全属性) + 知恵補正、 上限 90% でクランプ
+    const resistRaw = Math.floor((f.equipped['attr' + k + 'Resist'] || 0) + wisdomBonus);
+    const resistV = Math.min(ATTR_RESIST_CAP, resistRaw);
+    if (resistTds[i]) {
+      resistTds[i].textContent = resistV + '%';
+      resistTds[i].classList.toggle('is-capped', resistRaw >= ATTR_RESIST_CAP);
+      resistTds[i].title = resistRaw > ATTR_RESIST_CAP
+        ? `生値 ${resistRaw}% → 上限 ${ATTR_RESIST_CAP}% でクランプ`
+        : `${resistV}%`;
+    }
+
+    // 属性強化 = finalStats.equipped.attrFire..attrDark (families 139-144 + その他 attrDamage)
+    //   family route 経由で base meaning を扱う
+    //   装備上限 400% でクランプ (他コンテンツ補正で変動可)
+    const enhRaw = Math.floor(f.equipped['attr' + k] || 0);
+    const enhV   = (enhRaw >= 0) ? Math.min(ATTR_ENHANCE_CAP, enhRaw) : Math.max(-ATTR_ENHANCE_CAP, enhRaw);
+    if (enhanceTds[i]) {
+      enhanceTds[i].textContent = (enhV >= 0 ? '+' : '') + enhV + '%';
+      enhanceTds[i].classList.toggle('is-capped', Math.abs(enhRaw) >= ATTR_ENHANCE_CAP);
+      enhanceTds[i].title = (Math.abs(enhRaw) > ATTR_ENHANCE_CAP)
+        ? `生値 ${enhRaw}% → 装備上限 ${ATTR_ENHANCE_CAP}% でクランプ`
+        : `${enhV}%`;
+    }
+
+    // 属性吸収 = finalStats.equipped.attrFireAbsorb..attrDarkAbsorb (families 75-80)
+    //   family 81 (全属性吸収 / 全吸収 DX/ULT) は 7 属性 sumAll で同値加算される
+    //   通常マップでは 100% 上限でクランプ
+    const absRaw = Math.floor(f.equipped['attr' + k + 'Absorb'] || 0);
+    const absV   = Math.min(ATTR_ABSORB_CAP, absRaw);
+    if (absorbTds[i]) {
+      absorbTds[i].textContent = absV + '%';
+      absorbTds[i].classList.toggle('is-capped', absRaw >= ATTR_ABSORB_CAP);
+      absorbTds[i].title = absRaw > ATTR_ABSORB_CAP
+        ? `生値 ${absRaw}% → 上限 ${ATTR_ABSORB_CAP}% でクランプ`
+        : `${absV}%`;
+    }
+
+    // 属性弱化 = finalStats.equipped.attrFireWeaken..attrDarkWeaken (families 132-137 + 753)
+    //   装備上限 120% でクランプ (他コンテンツ補正で変動可)
+    const wkRaw = Math.floor(f.equipped['attr' + k + 'Weaken'] || 0);
+    const wkV   = Math.min(ATTR_WEAKEN_CAP, wkRaw);
+    if (weakenTds[i]) {
+      weakenTds[i].textContent = wkV + '%';
+      weakenTds[i].classList.toggle('is-capped', wkRaw >= ATTR_WEAKEN_CAP);
+      weakenTds[i].title = (wkRaw > ATTR_WEAKEN_CAP)
+        ? `生値 ${wkRaw}% → 装備上限 ${ATTR_WEAKEN_CAP}% でクランプ`
+        : `${wkV}%`;
+    }
+  }
+
+  // === 種族テーブル (アンデッド/悪魔/人間/動物/神獣 5 列) ===
+  // 対種族物理ダメ = vs<Race>Phys (families 651/652 由来)
+  // 対種族魔法ダメ = vs<Race>Magic (families 653/654 由来)
+  // 種族被ダメ軽減 = from<Race>DmgReduce (families 832-836 由来)
+  //   ※ 列順: アンデッド / 悪魔 / 人間 / 動物 / 神獣 (HTML thead と一致)
+  const RACE_KEYS = ['Undead', 'Demon', 'Humanoid', 'Animal', 'Deity'];
+  for (let i = 0; i < RACE_KEYS.length; i++) {
+    const r = RACE_KEYS[i];
+    const vsP = Math.floor(f.equipped['vs' + r + 'Phys']      || 0);
+    const vsM = Math.floor(f.equipped['vs' + r + 'Magic']     || 0);
+    const fr  = Math.floor(f.equipped['from' + r + 'DmgReduce'] || 0);
+    if (vsPhysTds[i])   vsPhysTds[i].textContent   = (vsP >= 0 ? '+' : '') + vsP + '%';
+    if (vsMagicTds[i])  vsMagicTds[i].textContent  = (vsM >= 0 ? '+' : '') + vsM + '%';
+    if (fromRaceTds[i]) fromRaceTds[i].textContent = (fr  >= 0 ? '-' : '+') + Math.abs(fr) + '%';
+  }
+
+  // 攻撃速度: 全部位の code 41 (+) + code 207 (転生比例 +) - code 154 (-) + 基本 20%
+  //   仕様参照: sokomin.github.io/calculation/calculation-attackspeed.html
+  //   2014/06/17 アプデで「無条件で基本攻撃速度に +20% 加算」が入ったため、装備 op が
+  //   ゼロでも +20% を表示する。
+  //
+  //   武器装備中はさらに「攻撃 frame」も併記。frame は
+  //     frame = floor(floor(16 * 武器秒数) * 100 / (100 + atkspd%))
+  //   (16 frame/sec)。秒数は item.combat.speed (centi-sec)。
+  //   sokomin.github.io/calculation/calculation-attackspeed.html の早見表で扱う秒数のみ
+  //   サポート。範囲外 / 武器未装備 → frame 非表示。
+  {
+    const ATKSPD_BASE = 20;
+    const atk = sideSum.atkspd;
+    const atkTotal = ATKSPD_BASE + (atk.plus || 0) + (atk.rebirth || 0) - (atk.minus || 0);
+
+    // sokomin の早見表が扱う武器秒数 (centi-sec 単位、0.75-1.80 の 12 値)
+    //   0.75 と 0.80 は frame 計算式上は同値 (floor(16*0.75) = floor(16*0.80) = 12) のため
+    //   早見表でも 1 列にまとまっている。
+    const SUPPORTED_WEAPON_SPEEDS = new Set([75, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180]);
+
+    // 装備中武器 (slot='weapon') を探す
+    let weaponSpeedCs = null;
+    let weaponName = null;
+    for (const { inv, item } of equipped) {
+      if (inv.equippedSlot === 'weapon') {
+        weaponSpeedCs = item?.combat?.speed ?? null;
+        weaponName = item?.name || null;
+        break;
+      }
+    }
+
+    let frameStr = '';
+    let frameDetail = '';
+    if (weaponSpeedCs != null && SUPPORTED_WEAPON_SPEEDS.has(weaponSpeedCs)) {
+      const sec = weaponSpeedCs / 100;
+      const numerator = Math.floor(16 * sec) * 100;
+      const denom = 100 + atkTotal;
+      const frame = denom > 0 ? Math.floor(numerator / denom) : 0;
+      frameStr = ` / ${frame}frame`;
+      frameDetail = `\n武器: ${weaponName} (${sec.toFixed(2)}秒) → ${frame} frame` +
+                    `\n  式: floor(floor(16*${sec.toFixed(2)})*100 / (100+${Math.floor(atkTotal)}))`;
+    } else if (weaponSpeedCs != null) {
+      frameDetail = `\n武器: ${weaponName} (${(weaponSpeedCs/100).toFixed(2)}秒) — 早見表対象外で frame 表示なし`;
+    }
+
+    const dt = $('dt-atkspd');
+    if (dt) {
+      dt.textContent = (atkTotal >= 0 ? '+' : '') + Math.floor(atkTotal) + '%' + frameStr;
+      // 内訳を tooltip (title) として表示
+      dt.title =
+        `基本: +${ATKSPD_BASE}%\n` +
+        `装備 (code 41+): +${Math.floor(atk.plus || 0)}%\n` +
+        `転生比例 (code 207): +${Math.floor(atk.rebirth || 0)}%\n` +
+        `減衰 (code 154-): -${Math.floor(atk.minus || 0)}%\n` +
+        `合計: ${atkTotal >= 0 ? '+' : ''}${Math.floor(atkTotal)}%` + frameDetail;
+    }
+  }
+
+  // 移動速度: code 40 (+, calc=0) - code 153 (-, calc=3)
+  //   仕様参照: sokomin.github.io/calculation/calculation-movespeed.html
+  //   走り 1frame の座標距離 = 0.0025 * mvspd + 0.25 (上限 1.0)
+  //   1 座標進む frame 数 = 1.0 / per_frame (キャップ到達で 1.000、 mvspd 300% で到達)
+  //   キャップ到達 (1.000) は赤文字 + 強調表示。
+  {
+    const mv = sideSum.mvspd;
+    const mvTotal = (mv.plus || 0) - (mv.minus || 0);
+
+    // 走り: 0.0025 * x + 0.25
+    const perFrameRaw = 0.0025 * mvTotal + 0.25;
+    const perFrame = Math.min(1.0, perFrameRaw);
+    const framesPerCoord = perFrame > 0 ? (1.0 / perFrame) : Infinity;
+    const isCapped = perFrameRaw >= 1.0;
+
+    // 走り キャップは mvspd 300%。 マップ補正で 走り / 絨毯 / GV モードが切り替わるが、
+    // 現状は「走り」固定で表示。マップ選択 UI 実装時にここの formula を切替する。
+    let frameStr = '';
+    let frameDetail = '';
+    if (mvTotal !== 0 || mv.plus || mv.minus) {
+      const frameTxt = isFinite(framesPerCoord) ? framesPerCoord.toFixed(3) : '∞';
+      frameStr = ` / ${frameTxt}flame`;
+      frameDetail =
+        `\n走り 1frame座標 = ${perFrame.toFixed(4)} (生 ${perFrameRaw.toFixed(4)})` +
+        `\n1座標進むframe数 = ${frameTxt}` +
+        (isCapped ? '\n★ キャップ到達 (mvspd 300% で 1.000/frame)' : '');
+    }
+
+    const dt = $('dt-mvspd');
+    if (dt) {
+      dt.textContent = (mvTotal >= 0 ? '+' : '') + Math.floor(mvTotal) + '%' + frameStr;
+      dt.classList.toggle('is-capped', isCapped);
+      dt.title =
+        `装備 (code 40+): +${Math.floor(mv.plus || 0)}%\n` +
+        `減衰 (code 153-): -${Math.floor(mv.minus || 0)}%\n` +
+        `合計: ${mvTotal >= 0 ? '+' : ''}${Math.floor(mvTotal)}%` + frameDetail;
+    }
+  }
+
+  // ステ差分表示 + hover popup 内訳
+  // ステ別の内訳: sum (categoryAdd / singletons) / lvLinked / setBonus / fixedCap (該当する場合)
+  const STAT_LABEL_JA = { str:'力', agi:'敏捷', con:'健康', int:'知識', wiz:'知恵', chs:'カリスマ', luc:'運' };
+  const STAT_DESC = {
+    str: '物理攻撃の攻撃力に影響を与える',
+    agi: '命中率/回避率に影響を与える',
+    con: '最大 HP に影響を与える',
+    int: '魔法攻撃の攻撃力 / 最大 CP に影響を与える',
+    wiz: '魔法効率 / 属性抵抗に影響を与える',
+    chs: '召喚獣/ペットに影響を与える',
+    luc: '致命打/レアドロップに影響を与える',
+  };
+  for (const s of STAT_KEYS) {
+    const baseV = f.base[s] || 0;
+    const eqV = f.equipped[s] || 0;
+    const delta = eqV - baseV;
+    const el = $(`st-${s}-eq`);
+    if (el) el.textContent = delta > 0 ? `+${delta} → ${eqV}` : (delta < 0 ? `${delta} → ${eqV}` : '');
+
+    // popup 内訳を生成
+    const pop = $(`st-${s}-pop`);
+    if (pop) {
+      const sumV = T.sum[s] || 0;
+      const lvLV = T.lvLinked[s] || 0;
+      const setV = T.setBonus[s] || 0;
+      const cMxV = T.consumableMax[s] || 0;
+      const cLvV = T.consumableLvMax[s] || 0;
+      const fixCap = T.fixedCap[s + 'FixedCap'] || 0;
+      const corrTotal = sumV + lvLV + setV + cMxV + cLvV + fixCap;
+      const total = baseV + corrTotal;
+      const lvRatio = (baseV > 0 && ch.realLv > 0) ? ((baseV * 100) / ch.realLv).toFixed(2) + '%' : '-';
+
+      const rows = [
+        ['初期 (素値)', baseV],
+        ['通常加算 (sum)', sumV],
+        ['Lv 連動', lvLV],
+        ['セットボーナス', setV],
+        ['消耗品 max', cMxV],
+        ['固定上限 (max)', fixCap],
+        ['補正値合計', corrTotal],
+        ['総合計', total],
+        ['適用値', eqV],
+        ['Lv比', lvRatio],
+      ];
+      let html = `<div class="pop-title">${STAT_LABEL_JA[s]} ${baseV}</div>` +
+                 `<div class="pop-desc">${STAT_DESC[s] || ''}</div>`;
+      for (const [k, v] of rows) {
+        const isStr = typeof v === 'string';
+        const cls = isStr ? '' : (v > 0 ? 'is-plus' : (v < 0 ? 'is-minus' : 'is-zero'));
+        html += `<div class="pop-row"><span class="pop-key">${k}</span>` +
+                `<span class="pop-val ${cls}">${isStr ? v : (v > 0 ? '+' + v : v)}</span></div>`;
+      }
+      pop.innerHTML = html;
+    }
+  }
+
+  // ポイント (素ステ合計)
+  let pts = 0;
+  for (const s of STAT_KEYS) pts += (Number(ch.stats.base[s]) || 0);
+  $('st-points').textContent = String(pts);
+
+  // 能力値 (HP/CP/攻撃力/防御力) — abilities.js で Job 別係数 + ステ + 武器 atk から計算
+  const ab = computeAbilities(ch, f, equipped, loader);
+  $('ab-hp').textContent  = String(ab.hpMax);
+  $('ab-cp').textContent  = String(ab.cpMax);
+  $('ab-atk').textContent = (ab.atkMin || ab.atkMax) ? `${ab.atkMin}~${ab.atkMax}` : '0';
+  $('ab-def').textContent = String(ab.def);
+
+  const stEl = $('sttemp-debug');
+  if (stEl) stEl.innerHTML = buildStatBreakdownHtml(T, f, equipped);
+
+  renderInventoryList();
+  await renderInventoryGrid();
+  await renderEquipSlots();
+
+  // 再描画後は popup を強制非表示 (アンカー要素が消えている可能性があるため)
+  hideItemDetailPopup();
+
+  // 自動保存 (debounce 500ms)
+  scheduleAutosave();
+}
+
+// ================================================================
+// イベント結線
+// ================================================================
+let filterDebounce = null;
+let recalcDebounce = null;
+// === ステ hover popup: ビューポート内に収まるよう位置調整 ===
+function positionStatPopup(statEl) {
+  const pop = statEl.querySelector('.sim-stat-popup');
+  if (!pop) return;
+  const cellRect = statEl.getBoundingClientRect();
+  // 一度表示してサイズ計算
+  pop.style.left = '0px';
+  pop.style.top = '0px';
+  pop.style.display = 'block';
+  const popRect = pop.getBoundingClientRect();
+  pop.style.display = '';
+
+  const margin = 4;
+  const vpW = window.innerWidth;
+  const vpH = window.innerHeight;
+  // 既定: セル下中央に配置
+  let left = cellRect.left + (cellRect.width / 2) - (popRect.width / 2);
+  let top  = cellRect.bottom + margin;
+  // 右側オーバーフロー
+  if (left + popRect.width > vpW - margin) {
+    left = vpW - popRect.width - margin;
+  }
+  // 左側オーバーフロー
+  if (left < margin) {
+    left = margin;
+  }
+  // 下側オーバーフロー → セル上に出す
+  if (top + popRect.height > vpH - margin) {
+    top = cellRect.top - popRect.height - margin;
+    if (top < margin) top = margin;
+  }
+  pop.style.left = Math.round(left) + 'px';
+  pop.style.top = Math.round(top) + 'px';
+}
+
+function bindStatPopups() {
+  for (const statEl of document.querySelectorAll('.sim-stat[data-stat]')) {
+    statEl.addEventListener('mouseenter', () => positionStatPopup(statEl));
+  }
+}
+
+function bindEvents() {
+  // 装備スロットクリック: 通常クリックで解除 (= インベントリの元位置に戻る)
+  //   Shift+クリックは「削除」(インベントリからも完全削除)
+  //   どちらでも詳細パネルは更新する
+  document.querySelectorAll('.equip-slot[data-slot]').forEach((slotEl) => {
+    slotEl.addEventListener('click', async (e) => {
+      const slotIdx = slotEl.getAttribute('data-inv-slot');
+      if (!slotIdx) return;
+      const inv = inventory.get(Number(slotIdx));
+      if (!inv) return;
+      const rec = await Item.get(inv.itemId);
+      selectedInv = { inv, item: rec };
+      // Shift+クリック: インベントリからも削除
+      if (e.shiftKey) {
+        inventory.remove(inv.slotIndex);
+        selectedInv = null;
+        await recalcAll();
+        return;
+      }
+      // 通常クリック: 装備解除 → インベントリ grid の元 slotIndex に戻る
+      unequipInvItem(inv);
+    });
+  });
+
+  // 検索
+  $('filter-name').addEventListener('input', (e) => {
+    formState.filterName = e.target.value;
+    clearTimeout(filterDebounce);
+    filterDebounce = setTimeout(refreshItemList, 200);
+  });
+  $('chk-feasible-only').addEventListener('change', (e) => {
+    formState.feasibleOnly = e.target.checked;
+    refreshItemList();
+  });
+  $('sel-item').addEventListener('change', (e) => { formState.itemId = Number(e.target.value); });
+  $('sel-item').addEventListener('dblclick', () => { if (formState.itemId !== -1) onMake(); });
+
+  // OP フリーワード検索 ×3
+  const opSearchDebounce = { 0: null, 1: null, 2: null };
+  document.querySelectorAll('.op-search-input').forEach((el) => {
+    el.addEventListener('input', (e) => {
+      const idx = Number(el.getAttribute('data-op'));
+      clearTimeout(opSearchDebounce[idx]);
+      opSearchDebounce[idx] = setTimeout(() => renderOpResults(idx, e.target.value), 150);
+    });
+  });
+  document.querySelectorAll('.op-search-results').forEach((sel) => {
+    sel.addEventListener('change', (e) => {
+      const idx = Number(sel.getAttribute('data-op'));
+      if (e.target.value !== '-1') selectOp(idx, e.target.value);
+    });
+    sel.addEventListener('dblclick', () => {
+      const idx = Number(sel.getAttribute('data-op'));
+      if (sel.value && sel.value !== '-1') selectOp(idx, sel.value);
+    });
+  });
+  document.querySelectorAll('[data-act="clear"]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const idx = Number(btn.getAttribute('data-op'));
+      clearOp(idx);
+    });
+  });
+
+  // 暁 / 作成 / 全クリア
+  $('chk-daybreak').addEventListener('change', (e) => { formState.daybreak = e.target.checked; });
+  $('btn-make').addEventListener('click', onMake);
+  $('btn-clear-all').addEventListener('click', () => {
+    Object.assign(formState, { itemId: -1, filterName: '', daybreak: false });
+    formState.ops = [{familyId:-1,value:0},{familyId:-1,value:0},{familyId:-1,value:0}];
+    $('filter-name').value = '';
+    $('chk-daybreak').checked = false;
+    for (let i = 0; i < 3; i++) clearOp(i);
+    refreshItemList();
+  });
+
+  // キャラ proxy: 変更で再計算 + 装着可能フィルタ再評価
+  const chInputs = ['ch-job','ch-lv','st-str','st-agi','st-con','st-int','st-wiz','st-chs','st-luc'];
+  for (const id of chInputs) {
+    const el = $(id);
+    if (!el) continue;
+    el.addEventListener('change', () => {
+      updateGenderLabel();
+      invalidateFeasibleCache();
+      clearTimeout(recalcDebounce);
+      recalcDebounce = setTimeout(async () => {
+        await recalcAll();
+        await refreshItemList();
+      }, 100);
+    });
+    if (el.tagName === 'INPUT') {
+      el.addEventListener('input', () => {
+        clearTimeout(recalcDebounce);
+        recalcDebounce = setTimeout(async () => {
+          updateGenderLabel();
+          invalidateFeasibleCache();
+          await recalcAll();
+          await refreshItemList();
+        }, 300);
+      });
+    }
+  }
+}
+
+// ================================================================
+// 起動
+// ================================================================
+function initSelectors() {
+  fillJobSelect();
+  // OP は検索インデックスを構築するだけ。dropdown は user 入力で動的に作る
+  buildOpSearchIndex();
+  for (let i = 0; i < 3; i++) clearOp(i);
+}
+
+// ================================================================
+// セッション保存/読込
+// ================================================================
+const SESSION_KEY = 'rs-character-simulator.session.v1';
+
+function readGraceRebirth() {
+  return {
+    rebirth: Number($('ch-rebirth')?.value) || 0,
+    grace:   Number($('ch-grace')?.value) || -1,
+  };
+}
+
+function buildSnapshot() {
+  const character = readCharacter();
+  return serializeSession(character, inventory, readGraceRebirth());
+}
+
+async function loadSnapshot(data, sourceLabel) {
+  if (!data) { setSessionStatus(`${sourceLabel || ''} 保存データ無し`); return; }
+  let parsed;
+  try { parsed = deserializeSession(data); }
+  catch (err) { setSessionStatus('読込失敗: ' + err.message); return; }
+
+  // === character 復元 ===
+  const c = parsed.character || {};
+  if (c.realLv != null) $('ch-lv').value = c.realLv;
+  if (c.job != null)    $('ch-job').value = c.job;
+  if (c.rebirth != null && $('ch-rebirth')) $('ch-rebirth').value = c.rebirth;
+  if (c.grace != null && $('ch-grace'))     $('ch-grace').value = c.grace;
+  if (c.base) {
+    for (const s of STAT_KEYS) {
+      if (c.base[s] != null && $(`st-${s}`)) $(`st-${s}`).value = c.base[s];
+    }
+  }
+  updateGenderLabel();
+
+  // === inventory 復元 ===
+  // 既存インベントリは全クリア (slot index 衝突回避)
+  for (const inv of [...inventory.items()]) inventory.remove(inv.slotIndex);
+  selectedInv = null;
+  for (const entry of (parsed.inventory || [])) {
+    if (!entry || entry.itemId == null) continue;
+    const rec = await Item.get(entry.itemId);
+    if (!rec) continue;
+    // makeItem に状態を渡して再構築
+    // ops のスキーマ {familyId, value, addValue, divisor, jobIdx} を温存
+    // (= ui.op の prefix.csv family 由来 op がリロードで消えるバグの修正)
+    const inv = makeItem({
+      itemId:     entry.itemId,
+      revisions:  Array.isArray(entry.revisions) ? entry.revisions : [0, 0, 0],
+      ops: (Array.isArray(entry.ops) ? entry.ops : []).map((o) => {
+        if (!o) return null;
+        if (o.familyId != null && o.familyId >= 0) {
+          const payload = { familyId: o.familyId };
+          if (o.value    != null) payload.value    = o.value;
+          if (o.addValue != null) payload.addValue = o.addValue;
+          if (o.divisor  != null) payload.divisor  = o.divisor;
+          if (o.jobIdx   != null) payload.jobIdx   = o.jobIdx;
+          return payload;
+        }
+        return null;
+      }),
+      opRevisions: (Array.isArray(entry.ops) ? entry.ops : [])
+        .map((o) => o ? (o.revisions || [0,0,0]) : [0,0,0]),
+      daybreak: !!entry.daybreak,
+    }, rec);
+    if (!inv) continue;
+    inventory.add(inv);
+    // saved equippedSlot を温存 (ring_N 等)
+    if (entry.equippedSlot) inv.equippedSlot = entry.equippedSlot;
+  }
+  invalidateFeasibleCache();
+  await recalcAll();
+  await refreshItemList();
+  setSessionStatus(`${sourceLabel || ''} 読込完了: inv=${parsed.inventory?.length || 0} 件`);
+}
+
+let sessionStatusTimer = null;
+function setSessionStatus(msg) {
+  const el = $('session-status');
+  if (!el) return;
+  el.textContent = msg;
+  clearTimeout(sessionStatusTimer);
+  sessionStatusTimer = setTimeout(() => { el.textContent = ''; }, 4000);
+}
+
+let autosaveTimer = null;
+function scheduleAutosave() {
+  clearTimeout(autosaveTimer);
+  autosaveTimer = setTimeout(() => {
+    const data = buildSnapshot();
+    if (saveToLocalStorage(SESSION_KEY, data)) {
+      // 過剰メッセージ抑止: 自動保存はステータスバーに簡潔表示
+      const el = $('session-status');
+      if (el) el.textContent = `自動保存 ${new Date().toLocaleTimeString()}`;
+    }
+  }, 500);
+}
+
+function bindSessionEvents() {
+  $('btn-save-file').addEventListener('click', () => {
+    const data = buildSnapshot();
+    const ts = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+    downloadJsonFile(`character_session_${ts}.json`, data);
+    setSessionStatus('ファイル保存完了');
+  });
+  $('btn-load-file').addEventListener('click', () => {
+    uploadJsonFile(async (data) => { await loadSnapshot(data, 'ファイル'); });
+  });
+  $('btn-save-local').addEventListener('click', () => {
+    const data = buildSnapshot();
+    if (saveToLocalStorage(SESSION_KEY, data)) {
+      setSessionStatus('localStorage 保存完了');
+    } else {
+      setSessionStatus('localStorage 保存失敗');
+    }
+  });
+  $('btn-load-local').addEventListener('click', async () => {
+    const data = loadFromLocalStorage(SESSION_KEY);
+    if (data) await loadSnapshot(data, 'localStorage');
+    else setSessionStatus('localStorage に保存データ無し');
+  });
+  $('btn-clear-session').addEventListener('click', async () => {
+    if (!confirm('現在のキャラ設定 + インベントリ全消去、localStorage も削除します。本当によろしいですか?')) return;
+    removeFromLocalStorage(SESSION_KEY);
+    for (const inv of [...inventory.items()]) inventory.remove(inv.slotIndex);
+    selectedInv = null;
+    invalidateFeasibleCache();
+    await recalcAll();
+    await refreshItemList();
+    setSessionStatus('全消去完了');
+  });
+}
+
+async function main() {
+  await loader.init();
+  initSelectors();
+  bindEvents();
+  bindStatPopups();
+  bindSessionEvents();
+  bindInventoryGridEvents();
+  bindItemDetailHovers();
+  // localStorage に保存データがあれば自動復元
+  const auto = loadFromLocalStorage(SESSION_KEY);
+  if (auto) {
+    try { await loadSnapshot(auto, '自動復元'); }
+    catch (err) { console.warn('autoload failed:', err); }
+  } else {
+    await recalcAll();
+    await refreshItemList();
+  }
+}
+
+main().catch((err) => {
+  console.error(err);
+  document.body.insertAdjacentHTML('beforeend',
+    `<pre style="color:red; background:#fff; padding:8px; position:fixed; bottom:10px; right:10px; z-index:999">ERROR: ${esc(err && err.stack ? err.stack : err)}</pre>`);
+});
+</script>
+</body>
+</html>
