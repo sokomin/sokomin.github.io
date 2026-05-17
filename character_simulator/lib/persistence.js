@@ -1,48 +1,23 @@
-// persistence.js — キャラ + インベントリ状態の保存/読込
-//
-// 公開 API:
-//   serializeSession(character, inventory, opts?)
-//   deserializeSession(data)
-//   saveToLocalStorage(key, data)
-//   loadFromLocalStorage(key)
-//   downloadJsonFile(filename, data)
-//   uploadJsonFile(callback)
-//
-// JSON フォーマット:
-//   {
-//     "v":       "rs-character-sim-v1",  // バージョン (deserialize 時の互換チェック)
-//     "saved":   "ISO timestamp",
-//     "character": {
-//       "realLv": 1250, "job": 0,
-//       "lvRevision": 0, "miniPetLvRevision": 0,
-//       "rebirth": 0,                    // 転生回数
-//       "grace":   -1,                    // 恩寵 ID (-1=なし)
-//       "base":    { str, agi, con, int, wiz, chs, luc }
-//     },
-//     "inventory": [
-//       {
-//         "slotIndex":     0,
-//         "itemId":        10775,
-//         "revisions":     [0, 0, 0],
-//         "exRevision":    null,
-//         "durabilityRevision": null,
-//         "ops":           [{ familyId, value, addValue?, divisor?, jobIdx? }, null, null],
-//         "daybreak":      false,
-//         "equippedSlot":  "neck"          // 装着位置 (ring_N を含む)
-//       },
-//       ...
-//     ]
-//   }
+
+
 
 const SCHEMA_VERSION = 'rs-character-sim-v1';
 
-/**
- * 現在のキャラ + インベントリを JSON 互換オブジェクトにシリアライズ。
- * @param {Object} character    Character (readCharacter() 戻り値)
- * @param {Object} inventory    Inventory インスタンス (items() で列挙)
- * @param {{ rebirth?: number, grace?: number }} [opts]
- * @returns {Object}
- */
+function cloneStones(stones) {
+  if (!stones || typeof stones !== 'object') return null;
+  const out = {};
+  for (const k of Object.keys(stones)) {
+    const s = stones[k];
+    if (!s) continue;
+    out[k] = {
+      stage: Number(s.stage) || 0,
+      skills: Array.isArray(s.skills) ? s.skills.map((v) => Number(v) || 0) : [],
+    };
+  }
+  return out;
+}
+
+
 export function serializeSession(character, inventory, opts = {}) {
   const invArr = [];
   for (const inv of inventory.items()) {
@@ -58,7 +33,7 @@ export function serializeSession(character, inventory, opts = {}) {
         addValue:  o.addValue  ?? null,
         divisor:   o.divisor   ?? null,
         jobIdx:    o.jobIdx    ?? null,
-        // 互換: opId/revisions を持つ古いスナップショット用にも残す
+        
         opId:      o.opId      ?? null,
         revisions: [...(o.revisions || [0, 0, 0])],
       } : null),
@@ -79,17 +54,13 @@ export function serializeSession(character, inventory, opts = {}) {
       grace:             opts.grace   ?? -1,
       kuroneTransTime:   character.kuroneTransTime || 0,
       base:              { ...(character.stats?.base || {}) },
+      stones:            cloneStones(character.stones),
     },
     inventory: invArr,
   };
 }
 
-/**
- * シリアライズされた JSON オブジェクトから読み込み用データを返す。
- * 呼び出し側で makeItem 等を使って実 InventoryItem に復元する。
- * @param {Object} data
- * @returns {{ character: Object, inventory: Object[], rebirth: number, grace: number }}
- */
+
 export function deserializeSession(data) {
   if (!data || typeof data !== 'object') {
     throw new Error('persistence: invalid data (not object)');
@@ -105,9 +76,7 @@ export function deserializeSession(data) {
   };
 }
 
-// ===================================================================
-// localStorage (autosave / autoload)
-// ===================================================================
+
 
 export function saveToLocalStorage(key, data) {
   try {
@@ -135,15 +104,9 @@ export function removeFromLocalStorage(key) {
   catch (err) { return false; }
 }
 
-// ===================================================================
-// ファイル入出力 (.json)
-// ===================================================================
 
-/**
- * JSON データをファイルダウンロード (= ユーザーの DL フォルダに保存)。
- * @param {string} filename
- * @param {Object} data
- */
+
+
 export function downloadJsonFile(filename, data) {
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
@@ -155,10 +118,7 @@ export function downloadJsonFile(filename, data) {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-/**
- * ファイル選択ダイアログを開いて .json を読み込み、callback(data) を呼ぶ。
- * @param {(data: Object) => void} callback
- */
+
 export function uploadJsonFile(callback) {
   const input = document.createElement('input');
   input.type = 'file';
@@ -177,6 +137,6 @@ export function uploadJsonFile(callback) {
     };
     reader.readAsText(f);
   });
-  // input は body に attach しない (ブラウザ非依存で click() は動く)
+  
   input.click();
 }
