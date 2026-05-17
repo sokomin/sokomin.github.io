@@ -194,6 +194,15 @@
     }
 
     
+    .skill-frame {
+      display: block;
+      width: 100%;
+      height: 1600px;
+      border: 1px solid #8b6a28;
+      background: #fff;
+    }
+
+    
     .flag-list {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -995,6 +1004,7 @@
           <nav class="sim-tab-bar" role="tablist">
             <button type="button" class="sim-tab-btn is-active" data-tab-btn="item"  role="tab">アイテム</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="stone" role="tab">フェーズストーン</button>
+            <button type="button" class="sim-tab-btn"           data-tab-btn="skill" role="tab">スキル</button>
           </nav>
 
           
@@ -1222,6 +1232,12 @@
             </div>
           </div>
 
+          
+          
+          <div class="tab-pane" data-tab="skill">
+            <iframe class="skill-frame" id="skill-frame" title="スキルシミュレーター" loading="lazy"></iframe>
+          </div>
+
         </div>
       </div>
 
@@ -1330,6 +1346,42 @@ const MALE_JOB_NAMES = new Set([
   '剣士', '戦士', 'ウィザード', 'ウルフマン', 'ビショップ', '追放天使',
   'シーフ', '武道家', '光奏師', '獣人', 'マスケッティア', 'アルケミスト',
 ]);
+
+
+const SKILL_SIM_BASE = 'https://sokomin.github.io/simulator/';
+const JOB_SKILL_SIMULATOR_MAP = {
+  0:  { file: 'knight',     isBack: false }, 
+  1:  { file: 'knight',     isBack: true  }, 
+  3:  { file: 'lancer',     isBack: false }, 
+  2:  { file: 'lancer',     isBack: true  }, 
+  4:  { file: 'wizard',     isBack: false }, 
+  5:  { file: 'wizard',     isBack: true  }, 
+  6:  { file: 'priest',     isBack: false }, 
+  7:  { file: 'priest',     isBack: true  }, 
+  8:  { file: 'tamer',      isBack: false }, 
+  9:  { file: 'tamer',      isBack: true  }, 
+  10: { file: 'rogue',      isBack: false }, 
+  11: { file: 'rogue',      isBack: true  }, 
+  12: { file: 'princess',   isBack: false }, 
+  13: { file: 'princess',   isBack: true  }, 
+  14: { file: 'necro',      isBack: false }, 
+  15: { file: 'necro',      isBack: true  }, 
+  16: { file: 'soul',       isBack: false }, 
+  17: { file: 'soul',       isBack: true  }, 
+  18: { file: 'opticalist', isBack: false }, 
+  24: { file: 'opticalist', isBack: true  }, 
+  19: { file: 'maid',       isBack: false }, 
+  20: { file: 'maid',       isBack: true  }, 
+  21: { file: 'musket',     isBack: false }, 
+  22: { file: 'musket',     isBack: true  }, 
+  23: { file: 'captain',    isBack: false }, 
+  25: { file: 'captain',    isBack: true  }, 
+};
+function skillSimUrlForJob(jobId) {
+  const m = JOB_SKILL_SIMULATOR_MAP[Number(jobId)];
+  if (!m) return null;
+  return `${SKILL_SIM_BASE}skill_${m.file}2023.html${m.isBack ? '?' : ''}`;
+}
 function genderForJobName(name) { return MALE_JOB_NAMES.has(name) ? 1 : 2; }
 function jobNameById(id) {
   const j = JOB_OPTIONS.find((x) => x.id === Number(id));
@@ -2871,6 +2923,8 @@ function bindEvents() {
     el.addEventListener('change', () => {
       updateGenderLabel();
       invalidateFeasibleCache();
+
+      if (id === 'ch-job' && isSkillTabActive()) refreshSkillFrame();
       clearTimeout(recalcDebounce);
       recalcDebounce = setTimeout(async () => {
         await recalcAll();
@@ -2910,8 +2964,16 @@ function readGraceRebirth() {
 }
 
 function buildSnapshot() {
+  
+  const frame = $('skill-frame');
+  if (skillFrameLoaded && frame?.contentDocument) {
+    const captured = captureSkillState(frame.contentDocument);
+    if (captured) skillStates[skillFrameLoaded] = captured;
+  }
   const character = readCharacter();
-  return serializeSession(character, inventory, readGraceRebirth());
+  const snap = serializeSession(character, inventory, readGraceRebirth());
+  snap.skills = { ...skillStates };  
+  return snap;
 }
 
 async function loadSnapshot(data, sourceLabel) {
@@ -2919,6 +2981,18 @@ async function loadSnapshot(data, sourceLabel) {
   let parsed;
   try { parsed = deserializeSession(data); }
   catch (err) { setSessionStatus('読込失敗: ' + err.message); return; }
+
+  
+  if (data.skills && typeof data.skills === 'object') {
+    skillStates = { ...data.skills };
+    
+    const frame = $('skill-frame');
+    if (skillFrameLoaded && skillStates[skillFrameLoaded] && frame?.contentDocument) {
+      restoreSkillState(frame.contentDocument, skillStates[skillFrameLoaded]);
+    }
+  } else {
+    skillStates = {};
+  }
 
   
   const c = parsed.character || {};
@@ -3063,8 +3137,179 @@ function bindTabBar() {
       const tab = btn.getAttribute('data-tab-btn');
       buttons.forEach((b) => b.classList.toggle('is-active', b === btn));
       panes.forEach((p) => p.classList.toggle('is-active', p.getAttribute('data-tab') === tab));
+      
+      if (tab === 'skill') refreshSkillFrame();
     });
   });
+}
+
+
+let skillStates = {};       
+let skillFrameLoaded = '';  
+let skillFramePending = null;
+
+
+const SKILL_TRANS_TYPE_IDS  = [900, 1000, 1100, 1200, 1300];
+const SKILL_TRANS_LEVEL_IDS = [901, 1001, 1101, 1201, 1301];
+
+function captureSkillState(doc) {
+  if (!doc) return null;
+  const state = { rebirth: 0, mq1: 0, mq2: 0, questBonus: '', ids: {}, trans: {} };
+  const reb = doc.getElementById('Rebirth');
+  const m1  = doc.getElementById('MQ1Skill');
+  const m2  = doc.getElementById('MQ2Skill');
+  if (reb) state.rebirth = reb.selectedIndex;
+  if (m1)  state.mq1     = m1.selectedIndex;
+  if (m2)  state.mq2     = m2.selectedIndex;
+  const a21 = doc.querySelector('input[name="a21"]');
+  if (a21) state.questBonus = a21.value || '';
+  for (let n = 1; n <= 68; n++) {
+    const sel = doc.getElementById('id' + n);
+    if (sel) state.ids[n] = sel.selectedIndex;
+  }
+  for (const t of SKILL_TRANS_TYPE_IDS.concat(SKILL_TRANS_LEVEL_IDS)) {
+    const sel = doc.getElementById('id' + t);
+    if (sel) state.trans[t] = sel.selectedIndex;
+  }
+  return state;
+}
+
+function restoreSkillState(doc, state) {
+  if (!doc || !state) return;
+  const win = doc.defaultView;
+  const setIdx = (id, idx) => {
+    const el = doc.getElementById(id);
+    if (el) el.selectedIndex = Number(idx) || 0;
+  };
+  setIdx('Rebirth',  state.rebirth);
+  setIdx('MQ1Skill', state.mq1);
+  setIdx('MQ2Skill', state.mq2);
+  const a21 = doc.querySelector('input[name="a21"]');
+  if (a21) a21.value = state.questBonus || '';
+  for (let n = 1; n <= 68; n++) setIdx('id' + n, state.ids?.[n] ?? 0);
+  
+  for (const t of SKILL_TRANS_TYPE_IDS) {
+    setIdx('id' + t, state.trans?.[t] ?? 0);
+    try { if (typeof win.CalcTransType === 'function') win.CalcTransType(t); } catch (e) {}
+  }
+  for (const t of SKILL_TRANS_LEVEL_IDS) {
+    setIdx('id' + t, state.trans?.[t] ?? 0);
+    try { if (typeof win.CalcTransPoint === 'function') win.CalcTransPoint(t); } catch (e) {}
+  }
+  try { if (typeof win.SkillRefresh === 'function') win.SkillRefresh(); } catch (e) {}
+}
+
+
+function attachSkillChangeListener(doc, file) {
+  if (!doc) return;
+  const handler = () => {
+    skillStates[file] = captureSkillState(doc);
+    scheduleAutosave();
+  };
+  doc.addEventListener('change', handler);
+  doc.addEventListener('input',  handler);
+  doc.addEventListener('click',  handler);
+}
+
+async function refreshSkillFrame() {
+  const frame = $('skill-frame');
+  if (!frame) return;
+  const jobId = Number($('ch-job').value) || 0;
+  const m = JOB_SKILL_SIMULATOR_MAP[jobId];
+  if (!m) return;
+  
+  if (m.file === skillFrameLoaded) return;
+  if (skillFramePending) return;
+
+  
+  if (skillFrameLoaded) {
+    const prev = frame.contentDocument;
+    if (prev) {
+      const captured = captureSkillState(prev);
+      if (captured) skillStates[skillFrameLoaded] = captured;
+    }
+  }
+
+  const fullUrl = `${SKILL_SIM_BASE}skill_${m.file}2023.html${m.isBack ? '?' : ''}`;
+  skillFramePending = (async () => {
+    try {
+      const srcdoc = await buildSkillSrcdoc(m);
+      
+      await new Promise((resolve) => {
+        frame.addEventListener('load', resolve, { once: true });
+        frame.removeAttribute('src');
+        frame.srcdoc = srcdoc;
+      });
+      skillFrameLoaded = m.file;
+      const saved = skillStates[m.file];
+      if (saved) restoreSkillState(frame.contentDocument, saved);
+      attachSkillChangeListener(frame.contentDocument, m.file);
+    } catch (err) {
+      console.warn('skill simulator fetch failed, fallback to raw iframe src:', err);
+      frame.removeAttribute('srcdoc');
+      frame.src = fullUrl;
+      skillFrameLoaded = m.file;  
+    } finally {
+      skillFramePending = null;
+    }
+  })();
+}
+
+const SOKOMIN_BASE = 'https://sokomin.github.io/';
+async function buildSkillSrcdoc(m) {
+
+  const baseUrl = `${SKILL_SIM_BASE}skill_${m.file}2023.html`;
+  const fullUrl = baseUrl + (m.isBack ? '?' : '');
+  const res = await fetch(fullUrl);
+  if (!res.ok) throw new Error(`HTTP ${res.status} for ${fullUrl}`);
+  const html = await res.text();
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  const mb  = doc.querySelector('.main-background');
+  if (!mb) throw new Error('.main-background not found in ' + fullUrl);
+
+
+  
+  const backFix = m.isBack ? `
+<script>
+  (function () {
+    var i1 = document.getElementById('id1');
+    var i26 = document.getElementById('id26');
+    if (i1)  { i1.selectedIndex = 0; if (i1.options[0])  i1.options[0].disabled = false; }
+    if (i26) { i26.selectedIndex = 1; if (i26.options[0]) i26.options[0].disabled = true; }
+    if (typeof SkillRefresh === 'function') SkillRefresh();
+  })();
+<\/script>` : '';
+
+  return `<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=960">
+<base href="${baseUrl}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="${SOKOMIN_BASE}material.indigo-pink.min.css">
+<link rel="stylesheet" href="${SOKOMIN_BASE}styles.css">
+<script src="${SOKOMIN_BASE}design/jquery-3.4.1.min.js"><\/script>
+<script>var rswitch = true;<\/script>
+<script src="js2023/skill_${m.file}.js"><\/script>
+<style>
+  html, body { margin: 0; padding: 0; background: #f7f3ea; }
+  .main-background {
+    background: url("${SOKOMIN_BASE}design/bg-base-01.png") repeat top left !important;
+    background-size: auto !important;
+    padding: 12px 8px 24px; min-height: 0;
+  }
+</style>
+</head>
+<body>
+${mb.outerHTML}${backFix}
+</body>
+</html>`;
+}
+
+function isSkillTabActive() {
+  const pane = document.querySelector('.tab-pane[data-tab="skill"]');
+  return !!(pane && pane.classList.contains('is-active'));
 }
 
 
@@ -3252,6 +3497,18 @@ function bindSessionEvents() {
     invalidateFeasibleCache();
     stoneState = newStones();
     renderStoneCards();
+    
+    skillStates = {};
+    if (skillFrameLoaded) {
+      const reload = skillFrameLoaded;
+      skillFrameLoaded = '';
+      if (isSkillTabActive()) await refreshSkillFrame();
+      else {
+        
+        const frame = $('skill-frame');
+        if (frame) { frame.removeAttribute('srcdoc'); frame.removeAttribute('src'); }
+      }
+    }
     await recalcAll();
     await refreshItemList();
     setSessionStatus('全消去完了');
