@@ -10,6 +10,14 @@ var skillData = [
 ;
 var skillIdMap = [];
 
+// creature passive overrides
+var creaturePassiveOverrides = {
+    269: { mainId: "40", mainLv: 30, sub1Id: "41", sub1IdLv: 15, sub2Id: "19", sub2IdLv: 15, sub3Id: "51", sub3IdLv: 15 },
+    270: { mainId: "43", mainLv: 30, sub1Id: "77", sub1IdLv: 15, sub2Id: "46", sub2IdLv: 15, sub3Id: "53", sub3IdLv: 15 },
+    271: { mainId: "87", mainLv: 30, sub1Id: "20", sub1IdLv: 15, sub2Id: "46", sub2IdLv: 15, sub3Id: "70", sub3IdLv: 15 },
+};
+// /creature passive overrides
+
 function translateTubo(num) {
     if (crnt_num === 10000) {
         console.log("これ以上登録できません。");
@@ -345,17 +353,21 @@ function createTable() {
     // 既存データの生成
     for (var i in creature_data) {
         var data = creature_data[i];
+        var override = creaturePassiveOverrides[Number(i)];
         var temp = {
             id: i, //ないと任意クリーチャー作るときに死ぬ
             name: data["name"],
             rank: Number(data["rank"]), //N,HR...など
             type: data["type"], //サポートとかそういうの
-            mainId:data["skill_0_id"],
-            mainLv:Number(data["skill_0_lv"]),
-            sub1Id:data["skill_2_id"],
-            sub1IdLv:Number(data["skill_2_lv"]),
-            sub2Id:data["skill_3_id"],
-            sub2IdLv:Number(data["skill_3_lv"]),
+            mainId:   override ? override.mainId   : data["skill_0_id"],
+            mainLv:   override ? override.mainLv   : Number(data["skill_0_lv"]),
+            sub1Id:   override ? override.sub1Id   : data["skill_2_id"],
+            sub1IdLv: override ? override.sub1IdLv : Number(data["skill_2_lv"]),
+            sub2Id:   override ? override.sub2Id   : data["skill_3_id"],
+            sub2IdLv: override ? override.sub2IdLv : Number(data["skill_3_lv"]),
+            // GR 専用 3 つ目のサブパッシブ。override 無しなら null (calc() 側で無視される)
+            sub3Id:   override ? override.sub3Id   : null,
+            sub3IdLv: override ? override.sub3IdLv : 0,
         };
         skillData.push(temp);
     }
@@ -423,6 +435,15 @@ function calc() {
                         rank: Number(searchaPassiveRank(skillData[j].sub2Id)),
                     }
                     merge(skillset, sub2);
+                    // GR 限定: 3 つ目のサブパッシブ
+                    if (skillData[j].sub3Id) {
+                        var sub3 = {
+                            skillName: Number(skillData[j].sub3Id),
+                            skillLv: Number(skillData[j].sub3IdLv),
+                            rank: Number(searchaPassiveRank(skillData[j].sub3Id)),
+                        }
+                        merge(skillset, sub3);
+                    }
                 } else {
                     var sub1 = {
                         skillName: Number(skillData[j].sub1Id),
@@ -436,6 +457,15 @@ function calc() {
                         rank: Number(searchaPassiveRank(skillData[j].sub2Id)),
                     }
                     merge(skillset, sub2);
+                    // GR 限定: サブクリーチャーとして使う場合も sub3 を発動
+                    if (skillData[j].sub3Id) {
+                        var sub3 = {
+                            skillName: Number(skillData[j].sub3Id),
+                            skillLv: Number(skillData[j].sub3IdLv),
+                            rank: Number(searchaPassiveRank(skillData[j].sub3Id)),
+                        }
+                        merge(skillset, sub3);
+                    }
                 }
             }
         }

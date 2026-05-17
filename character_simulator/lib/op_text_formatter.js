@@ -12,7 +12,6 @@
 //   master.skillNames
 //   getLoader() で取得 (data_loader.js)
 //
-// Python 移植元: decomin/batch/rs_decoder/common/op_text_formatter.py
 
 import { getLoader } from './item_api.js';
 

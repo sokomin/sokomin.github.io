@@ -1,7 +1,4 @@
 // item_viewer.html 用の補足テキスト
-// scenario_item.dat では表現できない追加情報（入手方法・注意書きなど）を
-// アイテム単位で直書きするファイル。ETL（decomin/batch）は何も触らない。
-//
 // 書式:
 //   ItemExtraInfoList = {
 //       <itemId>: ["<行1>", "<行2>", ...],

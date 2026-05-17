@@ -1,4 +1,3 @@
-// docs/assets/tabs.js
 const TABS = [
     { href: "../pages/sheet_01.html", label: "混沌の魔法書" },
     { href: "../pages/sheet_02.html", label: "光沢の混沌の魔法書" },

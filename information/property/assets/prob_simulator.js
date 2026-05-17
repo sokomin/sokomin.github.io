@@ -1,4 +1,3 @@
-// probability_jp/assets/prob_simulator.js
 // データ：probability_jp/data/sheet12_long_ja.csv を読み込む前提
 const DATA_CSV_PATH = "https://sokomin.github.io/information/property/data/sheet12_long_ja.csv";
 

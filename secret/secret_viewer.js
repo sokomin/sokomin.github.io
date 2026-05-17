@@ -1,15 +1,3 @@
-/* secret_viewer.js
- *
- * 秘密ダンジョン閲覧用ビューア (本番想定)。
- * - 既存 sokomin.github.io/map/{common.js, calc.js, mapdata.js} には依存しない (新規実装)。
- * - URL: ?id=<secret_id>  (maplist_secret.csv の id 列、10000 番台)
- * - 連動マップ・新連動マップ情報は扱わない (秘密ダンジョン仕様)。
- *
- * アセット解決:
- *   localhost で起動 (http://localhost:PORT/decomin/staging/secret/) → 同一サーバ root
- *     から /sokomin_repository2023/...、/sokomin_repository/... をたどる。
- *   それ以外 (sokomin.github.io 等) → 絶対 URL https://sokomin.github.io/... を使用。
- */
 (function () {
     "use strict";
 
@@ -239,9 +227,6 @@
     }
     ;
 
-    // ---- アイテム種別 (decomin/batch/rs_decoder/common/text.py の item_type_text を verbatim 移植) ----
-    // sokomin.github.io/update/js/itemtype_list.js の同名 const は window に attach されない
-    // (`const` は global object に乗らない仕様) ため、本ビューア内で自前定義する。
     var ITEM_TYPE_TEXT = {
         0: "ヘルメット",  1: "冠",        2: "グローブ",   3: "投擲機",     4: "爪",
         5: "ブレスレット", 6: "ベルト",    7: "ブーツ",     8: "ネックレス", 9: "リング",

@@ -78,7 +78,6 @@ export const Op = {
 
   /**
    * chainTo を辿って base op を返す。
-   * 05_op_calc.md Part A の resolveBaseOp に相当。
    * @param {number} opId
    * @returns {OpTemplate | null}
    */
@@ -102,7 +101,6 @@ export const Op = {
 
   /**
    * statTargetCode から { statId, layer, stats?, multiplier? } を解決。
-   * 05_op_calc.md Part B の resolveStatLayer に相当。
    * @param {number | null} statTargetCode
    */
   resolveStatTarget(statTargetCode) {
