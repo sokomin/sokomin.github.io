@@ -89,10 +89,6 @@
                 font-size: 10px !important;
                 margin: 0 !important;
             }
-            /* col 要素の px幅指定 (width="40" 等) を無効化 */
-            #item-viewer-host table > colgroup {
-                display: none !important;
-            }
             #item-viewer-host td,
             #item-viewer-host th {
                 padding: 2px 3px !important;
@@ -301,15 +297,42 @@
         }
     }
 
-    // スマホ幅のとき、アイコン rowspan="2" を1行に減らして、空いた1セル分を
-    // 要求能力値セルに吸収させて読みやすくする。
-    // 通常ULT (5列): 要求能力値 colspan 1 → 2
-    // Nx (12列): 要求能力値 colspan 1 → 3 (アイコン分 +1, 着用可能な職業 colspan 4→3 から +1)
+    // colgroup の <col span="2"> 等を明示的な col列に展開し、両端のアイコン列に 40px幅を指定。
+    // 12列 (Nx): 40-n-n-n-n-40-40-n-n-n-n-40
+    //  5列 (通常ULT): 40-n-n-n-n
+    function rewriteColgroup(table) {
+        const colgroup = table.querySelector(':scope > colgroup');
+        if (!colgroup) return 0;
+        const cols = colgroup.querySelectorAll('col');
+        let totalCols = 0;
+        cols.forEach(function(c) {
+            totalCols += parseInt(c.getAttribute('span') || '1', 10);
+        });
+        while (colgroup.firstChild) colgroup.removeChild(colgroup.firstChild);
+        let widths;
+        if (totalCols === 12) {
+            widths = ['40', '', '', '', '', '40', '40', '', '', '', '', '40'];
+        } else if (totalCols === 5) {
+            widths = ['40', '', '', '', ''];
+        } else {
+            widths = new Array(totalCols).fill('');
+        }
+        widths.forEach(function(w) {
+            const col = document.createElement('col');
+            col.setAttribute('span', '1');
+            if (w) col.setAttribute('width', w);
+            colgroup.appendChild(col);
+        });
+        return totalCols;
+    }
+
+    // PC/スマホ共通: アイコン rowspan="2" を削って後続行のセルを colspan=3 均等に再配分。
+    // 通常ULT (5列): 要求能力値 1→2 (アイコン分のみ吸収)
+    // Nx (12列): 要求能力値 1→3, 着用可能な職業 4→3, DropLv/係数 2→3, 価格 4→3 で全て colspan=3
     function adjustMobileLayout() {
-        const isMobile = window.matchMedia('(max-width: 768px)').matches;
-        if (!isMobile) return;
         const table = hostEl.querySelector('table#table1');
         if (!table) return;
+        rewriteColgroup(table);
         const iconCells = table.querySelectorAll('td[rowspan="2"]');
         if (iconCells.length === 0) return;
         iconCells.forEach(function(td) { td.removeAttribute('rowspan'); });
@@ -321,21 +344,33 @@
             for (let i = 0; i < tds.length; i++) {
                 const td = tds[i];
                 const text = td.textContent || '';
-                if (text.indexOf('要求能力値') === -1 && text.indexOf('要求能力') === -1) continue;
-                const current = parseInt(td.getAttribute('colspan') || '1', 10);
-                let newColspan = current + 1;
-                if (i + 1 < tds.length) {
-                    const next = tds[i + 1];
-                    const nextText = next.textContent || '';
-                    if (nextText.indexOf('着用可能な職業') !== -1) {
-                        const nextColspan = parseInt(next.getAttribute('colspan') || '1', 10);
-                        if (nextColspan >= 2) {
-                            next.setAttribute('colspan', String(nextColspan - 1));
-                            newColspan += 1;
+                if (text.indexOf('要求能力値') !== -1 || text.indexOf('要求能力') !== -1) {
+                    const current = parseInt(td.getAttribute('colspan') || '1', 10);
+                    let newColspan = current + 1;
+                    if (i + 1 < tds.length) {
+                        const next = tds[i + 1];
+                        if ((next.textContent || '').indexOf('着用可能な職業') !== -1) {
+                            const nextColspan = parseInt(next.getAttribute('colspan') || '1', 10);
+                            if (nextColspan >= 2) {
+                                next.setAttribute('colspan', String(nextColspan - 1));
+                                newColspan += 1;
+                            }
+                        }
+                    }
+                    td.setAttribute('colspan', String(newColspan));
+                } else if (text.indexOf('DropLv') !== -1 || text.indexOf('係数') !== -1) {
+                    const current = parseInt(td.getAttribute('colspan') || '1', 10);
+                    if (current >= 2 && i + 1 < tds.length) {
+                        const next = tds[i + 1];
+                        if ((next.textContent || '').indexOf('価格') !== -1) {
+                            const nextColspan = parseInt(next.getAttribute('colspan') || '1', 10);
+                            if (nextColspan >= 2) {
+                                next.setAttribute('colspan', String(nextColspan - 1));
+                                td.setAttribute('colspan', String(current + 1));
+                            }
                         }
                     }
                 }
-                td.setAttribute('colspan', String(newColspan));
             }
         }
     }
