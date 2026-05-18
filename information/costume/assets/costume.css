@@ -53,7 +53,17 @@ a:hover { text-decoration: underline; }
   margin: 0 auto;
 }
 @media (max-width: 720px) {
-  .job-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .job-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    padding: 12px;
+  }
+  .job-tile { min-height: 64px; padding: 8px; }
+  .job-tile__label { font-size: 14px; }
+  .job-tile__count { font-size: 10px; }
+}
+@media (max-width: 480px) {
+  .job-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 .job-tile {
   display: flex;
@@ -280,4 +290,67 @@ a:hover { text-decoration: underline; }
   display: block;
   margin: 0 auto;
   background: #f7f7f7;
+}
+
+/* ---- mobile (≤720px) responsive overrides ---- */
+@media (max-width: 720px) {
+  /* 既存6/7列固定を解除し、画面幅に応じて自動折返し。
+     セル最小幅で詰め込み、画像は枠内に縮小。
+     desktop の cols-N 指定はそのまま保持しつつ、ここで上書き。 */
+  .color-row,
+  .color-row.cols-1,
+  .color-row.cols-2,
+  .color-row.cols-3,
+  .color-row.cols-4,
+  .color-row.cols-5,
+  .color-row.cols-6,
+  .color-row.cols-7 {
+    grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+    gap: 4px;
+    justify-content: stretch;
+  }
+  .cos-cell { padding: 4px; }
+  .cos-cell__img {
+    max-width: 100%;
+    height: auto;
+  }
+  .cos-cell__color-label { font-size: 10px; margin-top: 2px; }
+
+  .costume-list { padding: 8px; }
+  .costume-section {
+    margin-bottom: 14px;
+    padding: 10px 12px;
+  }
+  .costume-section__head { gap: 8px; }
+  .costume-section__icon { width: 28px; height: 28px; }
+  .costume-section__title { font-size: 14px; padding-left: 6px; border-left-width: 3px; }
+  .costume-section__category { font-size: 10px; margin-right: 4px; padding: 1px 4px; }
+  .costume-section__description { font-size: 11px; padding-left: 8px; }
+
+  .costume-note {
+    margin: 10px 8px;
+    padding: 10px 12px;
+    font-size: 11px;
+  }
+  .costume-note__title { font-size: 14px; }
+
+  .legacy-page-note { padding: 0 12px; font-size: 11px; }
+
+  /* gif ダイアログも画面に収まる範囲に */
+  .gif-dialog { max-width: calc(100vw - 24px); padding: 12px 12px 8px; }
+  .gif-dialog__img { max-width: 100%; height: auto; }
+}
+
+/* 小型スマホ (~ 360px) ではさらに詰める */
+@media (max-width: 380px) {
+  .color-row,
+  .color-row.cols-1,
+  .color-row.cols-2,
+  .color-row.cols-3,
+  .color-row.cols-4,
+  .color-row.cols-5,
+  .color-row.cols-6,
+  .color-row.cols-7 {
+    grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+  }
 }
