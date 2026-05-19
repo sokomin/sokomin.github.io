@@ -1,0 +1,65 @@
+/*
+ * item2026 — common smartphone-layout CSS.
+ *
+ * Loaded after sokomin.github.io/styles.css. Only kicks in below 768px so the PC
+ * layout remains 1:1 with item2020.
+ *
+ * Strategy:
+ *  - #table10 (hub matrices) -> horizontal scroll, preserve density.
+ *  - #table1 (detail tables)  -> fluid width, smaller font, allow wrapping.
+ *  - Class hooks .android-content / .android-large-table follow the sokomin
+ *    convention used by the smartphone-layout skill.
+ *
+ * Tuning happens in Phase 2 after live verification.
+ */
+@media (max-width: 768px) {
+
+  /* ---- Detail tables (#table1) ---- */
+  .android-content table#table1,
+  .android-large-table table#table1,
+  table#table1 {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    font-size: 11px;
+  }
+
+  table#table1 td,
+  table#table1 th {
+    padding: 2px 3px;
+    /*
+     * word-break: break-all は ASCII 連続文字 (数字含む) も途中で割るため、
+     * 「35％」が「3 / 5％」になる。日本語は CJK 自然改行で十分なので外す。
+     * overflow-wrap: anywhere は「他に改行候補がないとき限定」の安全網として残す。
+     */
+    overflow-wrap: anywhere;
+  }
+
+  table#table1 td:has(> img) {
+    vertical-align: middle;
+    text-align: center;
+  }
+
+  /*
+   * ---- Hub matrix (#table10) -> swipe-scroll ----
+   * 各ページの inline `style="min-width: 700px"` 等で本来の最低幅が指定されているので
+   * その内容を尊重したい。`min-width: 0 !important` で潰すと columns が viewport 幅に
+   * 圧縮されて最右列 (例: 1250UMU) が見えなくなる。
+   *
+   * 戦略:
+   *   - display:block + overflow-x:auto でテーブル自体を横スクロール領域にする
+   *   - max-width: 100% !important で外箱を viewport に押し込め (inline max-width:480px
+   *     も上書き)、超過分は内部スクロール
+   *   - min-width は触らない (inline 値を尊重し、内部コンテンツの自然幅を維持)
+   */
+  table#table10 {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    max-width: 100% !important;
+  }
+
+  /* ---- Headings ---- */
+  h1 { font-size: 1.4em; }
+
+}
