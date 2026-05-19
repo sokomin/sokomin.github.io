@@ -21,6 +21,7 @@
         'defenseMode', 'defenseCoefficient',
         'finalAttackPowerPercent', 'vsTypePhysicalDamagePercent', 'vsTypeCapPercent',
         'enemyFinalDamageReductionPercent', 'mobDamageCutPercent',
+        'limitBreakLevel', 'physicalDamageCapBase',
         'limitBreakPhysicalEffectPercent',
         'physicalLimitDamageFlat', 'physicalLimitDamageFlatExtra',
         'diagramEffectPercent', 'diagramActivationRatePercent',
@@ -29,6 +30,17 @@
         'doubleCriticalDamageIncreasePercent', 'physicalHeavyHitDamageIncreasePercent',
         'finalPhysicalDamagePercent', 'heavyHitOnlyPercent',
         'capSubtractValue', 'capSubtractStage'
+    ];
+
+    // 限界突破称号 Lv 別効果 (公式 koreaupdate20240627 #3 より)
+    //   flat = ダメージ上限引き上げ量 / pct = 限界突破物理効果%
+    var LIMIT_BREAK_PHYS_LEVELS = [
+        { lv: 0, flat:     0, pct: 0 },
+        { lv: 1, flat:  3000, pct: 1 },
+        { lv: 2, flat:  6000, pct: 2 },
+        { lv: 3, flat:  9000, pct: 3 },
+        { lv: 4, flat: 12000, pct: 4 },
+        { lv: 5, flat: 15000, pct: 5 }
     ];
 
     var DEFAULT_INPUTS = {
@@ -52,8 +64,10 @@
         vsTypeCapPercent: 300,
         enemyFinalDamageReductionPercent: 0,
         mobDamageCutPercent: 0,
-        limitBreakPhysicalEffectPercent: 5,
-        physicalLimitDamageFlat: 15000,
+        limitBreakLevel: 0,
+        physicalDamageCapBase: 20000,
+        limitBreakPhysicalEffectPercent: 0,
+        physicalLimitDamageFlat: 0,
         physicalLimitDamageFlatExtra: 0,
         diagramEffectPercent: 0,
         diagramActivationRatePercent: 0,
@@ -178,6 +192,21 @@
                 node.checked = !!values[id];
             } else {
                 node.value = values[id];
+            }
+        }
+        // 旧データ後方互換: limitBreakLevel が無く flat/pct だけ持つ古い保存値に対して、
+        // 公式表と一致する flat があれば Lv セレクタを推定して合わせる (= UX 改善)。
+        if (!('limitBreakLevel' in values)) {
+            var lbSel = el('limitBreakLevel');
+            var flatNode = el('physicalLimitDamageFlat');
+            if (lbSel && flatNode) {
+                var f = toNumber(flatNode.value, 0);
+                for (var j = 0; j < LIMIT_BREAK_PHYS_LEVELS.length; j++) {
+                    if (LIMIT_BREAK_PHYS_LEVELS[j].flat === f) {
+                        lbSel.value = String(LIMIT_BREAK_PHYS_LEVELS[j].lv);
+                        break;
+                    }
+                }
             }
         }
     }
@@ -415,19 +444,30 @@
         current = current * mc;
         steps.push({ key: 'afterMobCut', label: 'Mobダメージカット 適用後', value: current });
 
-        // 7. 限界突破称号物理効果
+        // 7. 限界突破称号物理効果 (倍率)
         var lb = calcLimitBreakMultiplier(inputs);
         steps.push({ key: 'limitBreakMultiplier', label: '限界突破称号物理効果倍率', value: lb });
         current = current * lb;
         steps.push({ key: 'afterLimitBreak', label: '限界突破称号物理効果 適用後', value: current });
 
-        // 8. 物理限界ダメージ加算
-        var flat =
-              toNumber(inputs.physicalLimitDamageFlat, 0)
-            + toNumber(inputs.physicalLimitDamageFlatExtra, 0);
-        steps.push({ key: 'physicalLimitDamageFlat', label: '物理限界ダメージ加算値（合計）', value: flat });
-        current = current + flat;
-        steps.push({ key: 'afterPhysicalLimitFlat', label: '物理限界ダメージ加算 適用後', value: current });
+        // 8. 物理ダメージ上限キャップ
+        //   cap = ベース上限 (default 20,000) + 称号 Lv 由来 flat + その他 flat
+        //   通常ヒット相当のダメ部分を min(value, cap) でクリップ → そのあとクリ倍率等を乗せる。
+        var capBase  = toNumber(inputs.physicalDamageCapBase, 20000);
+        var capTitle = toNumber(inputs.physicalLimitDamageFlat, 0);
+        var capExtra = toNumber(inputs.physicalLimitDamageFlatExtra, 0);
+        var damageCap = capBase + capTitle + capExtra;
+        steps.push({ key: 'physicalDamageCap', label: 'ダメ上限 (キャップ)', value: damageCap,
+            note: 'ベース ' + formatNumber(capBase) +
+                  ' + 称号 ' + formatNumber(capTitle) +
+                  ' + その他 ' + formatNumber(capExtra) });
+        if (current > damageCap) {
+            steps.push({ key: 'beforeCap', label: 'キャップ適用前', value: current });
+            current = damageCap;
+            steps.push({ key: 'afterCap', label: 'キャップ適用後', value: current });
+        } else {
+            steps.push({ key: 'capNotApplied', label: 'キャップ未到達 (素通り)', value: current });
+        }
 
         // カンスト差し引き：主要倍率後
         var afterCap3 = applyCapSubtract(inputs, 'afterMain', current);
@@ -489,7 +529,7 @@
             warnings.push('カンスト差し引き位置「' + inputs.capSubtractStage + '」は暫定です。実機検証で位置が変わる可能性があります。');
         }
         if (toNumber(inputs.physicalLimitDamageFlat, 0) > 0 || toNumber(inputs.physicalLimitDamageFlatExtra, 0) > 0) {
-            warnings.push('物理限界ダメージ加算位置は暫定（主要倍率後）です。実機検証が必要です。');
+            warnings.push('物理限界ダメージは「ダメージ上限の引き上げ (キャップ)」として効きます。ベース上限 + 称号+ + その他+ を合計して min(value, cap) でクリップしています。実機の cap 算出ロジックは検証中。');
         }
         if (inputs.diagramExpectedValueMode && inputs.diagramAlwaysActivatedMode) {
             warnings.push('図案書「期待値計算」と「発動済み計算」が両方ONになっています。発動済み計算が優先されます。');
@@ -803,6 +843,24 @@
             if (!node) continue;
             node.addEventListener('input', recalc);
             node.addEventListener('change', recalc);
+        }
+
+        // 限界突破 Lv セレクタ: 選ぶと「物理効果%」と「上限+ (称号由来)」を自動セット
+        var lbSel = el('limitBreakLevel');
+        if (lbSel) {
+            lbSel.addEventListener('change', function () {
+                var lv = toNumber(lbSel.value, 0);
+                var row = null;
+                for (var k = 0; k < LIMIT_BREAK_PHYS_LEVELS.length; k++) {
+                    if (LIMIT_BREAK_PHYS_LEVELS[k].lv === lv) { row = LIMIT_BREAK_PHYS_LEVELS[k]; break; }
+                }
+                if (!row) return;
+                var flatNode = el('physicalLimitDamageFlat');
+                var pctNode  = el('limitBreakPhysicalEffectPercent');
+                if (flatNode) flatNode.value = row.flat;
+                if (pctNode)  pctNode.value  = row.pct;
+                recalc();
+            });
         }
 
         // 計算ボタン

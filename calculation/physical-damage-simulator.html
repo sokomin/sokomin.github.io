@@ -277,26 +277,44 @@
 
                         <div class="sokomin-pdamage-form-grid">
                             <div class="sokomin-pdamage-field">
-                                <label for="spd-limitBreakPhysicalEffectPercent">限界突破称号 物理効果%</label>
-                                <input type="number" id="spd-limitBreakPhysicalEffectPercent" step="0.1" value="5">
+                                <label for="spd-limitBreakLevel">限界突破称号 Lv</label>
+                                <select id="spd-limitBreakLevel">
+                                    <option value="0" selected>Lv 0 (称号なし)</option>
+                                    <option value="1">Lv 1 (+3,000 / +1%)</option>
+                                    <option value="2">Lv 2 (+6,000 / +2%)</option>
+                                    <option value="3">Lv 3 (+9,000 / +3%)</option>
+                                    <option value="4">Lv 4 (+12,000 / +4%)</option>
+                                    <option value="5">Lv 5 (+15,000 / +5%)</option>
+                                </select>
                             </div>
                             <div class="sokomin-pdamage-field">
-                                <label for="spd-physicalLimitDamageFlat">物理限界ダメージ加算値</label>
-                                <input type="number" id="spd-physicalLimitDamageFlat" step="1" value="15000">
+                                <label for="spd-physicalDamageCapBase">物理ダメ上限 (ベース)</label>
+                                <input type="number" id="spd-physicalDamageCapBase" step="1" value="20000">
                             </div>
 
                             <div class="sokomin-pdamage-field">
-                                <label for="spd-physicalLimitDamageFlatExtra">その他物理限界ダメージ加算値</label>
+                                <label for="spd-limitBreakPhysicalEffectPercent">限界突破物理効果% (合計)</label>
+                                <input type="number" id="spd-limitBreakPhysicalEffectPercent" step="0.1" value="0">
+                            </div>
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-physicalLimitDamageFlat">物理限界ダメージ上限+ (称号由来)</label>
+                                <input type="number" id="spd-physicalLimitDamageFlat" step="1" value="0">
+                            </div>
+
+                            <div class="sokomin-pdamage-field">
+                                <label for="spd-physicalLimitDamageFlatExtra">その他物理限界ダメージ上限+ (称号以外)</label>
                                 <input type="number" id="spd-physicalLimitDamageFlatExtra" step="1" value="0">
                             </div>
                         </div>
 
                         <details class="sokomin-pdamage-details">
-                            <summary>解説：限界突破称号の効果</summary>
+                            <summary>解説：限界突破称号の効果 (キャップモデル)</summary>
                             <p>
-                                限界突破称号Lv5 では、物理効果として既定で +5%、物理限界ダメージとして +15,000 が乗る読み取り値です。<br>
-                                支援ミニペット（最上級1.5% / 究極3%）、フェーストーン、潜在能力発現、BFOP、アルカナ補助OP（Lv15-28 = 0.6〜2.1%）、装備解放変換などで上乗せされる場合があります。<br>
-                                物理限界ダメージは「倍率」ではなく「加算値」として効くため、本シミュレーターでは加算位置を主要倍率の後ろに置いています。
+                                限界突破称号は <strong>「ダメージの加算」ではなく「ダメージ上限の引き上げ」</strong> として効きます。<br>
+                                称号なし時のダメージ上限はおおよそ <strong>20,000</strong>。限界突破Lv5 で +15,000 引き上げられて上限 <strong>35,000</strong> となります (称号なし→Lv5 で「+15,000 加算」ではなく「上限が 20,000→35,000 に広がる」のが本質)。<br>
+                                <strong>限界突破 Lv</strong> セレクタを動かすと、「物理効果%」と「上限+ (称号由来)」が自動で公式表の値にセットされます (Lv1=+3,000/+1%、Lv2=+6,000/+2%、…、Lv5=+15,000/+5%)。<br>
+                                <strong>「物理効果% (合計)」</strong>は称号 Lv 由来分のほか、支援ミニペット（最上級1.5% / 究極3%）、フェーストーン、潜在能力発現、BFOP、アルカナ補助OP（Lv15-28 = 0.6〜2.1%）、装備解放変換などからも加算されます。手動で総量を上書きしてください。<br>
+                                <strong>「その他物理限界ダメージ上限+ (称号以外)」</strong>は魔力ストーン (+20,000) ／ 変異ミニペット系 ／ フェーストーン由来の上限引き上げ等を入れる枠。称号 + その他 = 上限引き上げ量、ベース20,000 と合算したものが最終キャップになります。
                             </p>
                         </details>
                     </div>
@@ -485,14 +503,16 @@
                             90% 以上 / 75% 以上 / 50% 以上 / 50% 未満 など、Mob ごとに段階があります。
                         </p>
 
-                        <h4>7. 限界突破称号 物理効果%</h4>
+                        <h4>7. 限界突破称号 物理効果% (合計)</h4>
                         <p>
-                            基本値は限界突破称号Lv5 = 5%。支援ミニペット、フェーストーン、潜在能力発現、BFOP、アルカナ補助OP、装備解放変換などで上乗せされます。
+                            限界突破 Lv1=1% / Lv2=2% / Lv3=3% / Lv4=4% / Lv5=5%。これに加えて支援ミニペット、フェーストーン、潜在能力発現、BFOP、アルカナ補助OP、装備解放変換などで上乗せされます。
                         </p>
 
-                        <h4>8. 物理限界ダメージ数値（加算）</h4>
+                        <h4>8. 物理限界ダメージ上限 (キャップ)</h4>
                         <p>
-                            倍率ではなく加算値として効きます。基本（限界突破称号Lv5）= +15,000 ／ 魔力ストーン = +20,000 ／ フェーストーン関連 ／ 変異ミニペット組み合わせなどが代表例。
+                            限界突破は <strong>「ダメージの加算」ではなく「ダメージ上限の引き上げ」</strong> として効きます。<br>
+                            ベース上限 (称号なし時) = 20,000、限界突破Lv1=+3,000 / Lv2=+6,000 / Lv3=+9,000 / Lv4=+12,000 / Lv5=+15,000 / 魔力ストーン=+20,000 / フェーストーン関連 / 変異ミニペット組み合わせなどが上限引き上げ要素です。<br>
+                            主要倍率を一通り掛けたあとの値が cap を超えた場合は cap でクリップされます。
                         </p>
 
                         <h4>9. 図案書効果</h4>
