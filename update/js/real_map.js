@@ -16,7 +16,7 @@ function getCSV(mapid) {
 // 入れ子じゃん・・・ジェネレータだから許して。
 function getMapCSV(mapid, monster_str) {
     var req = new XMLHttpRequest();
-    req.open("get", "https://sokomin.github.io/sokomin_repository/db/maptiledb/maptile" + mapid + "_0.csv", true);
+    req.open("get", "https://sokomin.github.io/sokomin_repository2026/db/maptiledb/maptile" + mapid + "_0.csv", true);
     req.send(null);
     req.onload = function () {
         convertCSVtoArray(mapid, monster_str, req.responseText);
@@ -26,7 +26,7 @@ function getMapCSV(mapid, monster_str) {
 //移動可能領域
 function getMapCSV1(mapid) {
     var req = new XMLHttpRequest();
-    req.open("get", "https://sokomin.github.io/sokomin_repository/db/maptiledb/maptile" + mapid + "_1.csv", true);
+    req.open("get", "https://sokomin.github.io/sokomin_repository2026/db/maptiledb/maptile" + mapid + "_1.csv", true);
     req.send(null);
     req.onload = function () {
         convertAIndexCSVtoArray(mapid, req.responseText);
@@ -36,7 +36,7 @@ function getMapCSV1(mapid) {
 //0_3
 function getMapCSV3(mapid) {
     var req = new XMLHttpRequest();
-    req.open("get", "https://sokomin.github.io/sokomin_repository/db/maptiledb/maptile" + mapid + "_3.csv", true);
+    req.open("get", "https://sokomin.github.io/sokomin_repository2026/db/maptiledb/maptile" + mapid + "_3.csv", true);
     req.send(null);
     req.onload = function () {
         convert3IndexCSVtoArray(mapid, req.responseText);
@@ -46,7 +46,7 @@ function getMapCSV3(mapid) {
 //0_4
 function getMapCSV4(mapid) {
     var req = new XMLHttpRequest();
-    req.open("get", "https://sokomin.github.io/sokomin_repository/db/maptiledb/maptile" + mapid + "_4.csv", true);
+    req.open("get", "https://sokomin.github.io/sokomin_repository2026/db/maptiledb/maptile" + mapid + "_4.csv", true);
     req.send(null);
     req.onload = function () {
         convert4IndexCSVtoArray(mapid, req.responseText);
@@ -56,7 +56,7 @@ function getMapCSV4(mapid) {
 //0_5
 function getMapCSV5(mapid) {
     var req = new XMLHttpRequest();
-    req.open("get", "https://sokomin.github.io/sokomin_repository/db/maptiledb/maptile" + mapid + "_5.csv", true);
+    req.open("get", "https://sokomin.github.io/sokomin_repository2026/db/maptiledb/maptile" + mapid + "_5.csv", true);
     req.send(null);
     req.onload = function () {
         convert5IndexCSVtoArray(mapid, req.responseText);
@@ -332,11 +332,11 @@ function createTile() {
             var num = ('0000' + data[j]).slice(-4);
             var posx = j+1;
             var posy = parseInt(i)+1;
-            // html_append += '<img width="8px" height="4px" src="https://sokomin.github.io/sokomin_repository/db/mapset/Grassland/tile/tile_'+ num +'.png">'
+            // html_append += '<img width="8px" height="4px" src="https://sokomin.github.io/sokomin_repository2026/db/mapset/Grassland/tile/tile_'+ num +'.png">'
             if(is_small){
-                html_append += ('<img width="16px" height="8px" title=('+posx+','+posy+') src="https://sokomin.github.io/sokomin_repository/db/mapset/' + map_type_map[map_type] + '/tile/tile_' + num + '.png">')
+                html_append += ('<img width="16px" height="8px" title=('+posx+','+posy+') src="https://sokomin.github.io/sokomin_repository2026/db/mapset/' + map_type_map[map_type] + '/tile/tile_' + num + '.png">')
             } else {
-                html_append += ('<img title=('+posx+','+posy+') src="https://sokomin.github.io/sokomin_repository/db/mapset/' + map_type_map[map_type] + '/tile/tile_' + num + '.png">')
+                html_append += ('<img title=('+posx+','+posy+') src="https://sokomin.github.io/sokomin_repository2026/db/mapset/' + map_type_map[map_type] + '/tile/tile_' + num + '.png">')
             }
             if (i == 0) {
                 min_width += 5;
@@ -453,7 +453,7 @@ function setCanvasImage() {
             }
             let image1 = new Image();
             let num = ('0000' + data[j]).slice(-4);
-            let txt = 'https://sokomin.github.io/sokomin_repository/db/mapset/' + map_type_map[map_type] + '/tile/tile_' + num + '.png';
+            let txt = 'https://sokomin.github.io/sokomin_repository2026/db/mapset/' + map_type_map[map_type] + '/tile/tile_' + num + '.png';
             image_path_array.push(txt);
             image1.src = txt;
             image1.addEventListener('load', function() {
@@ -533,8 +533,8 @@ function setAIndexImage() {
             }
             if (adata[j] >= 1) {
                 let image1 = new Image();
-                // let txt = 'https://sokomin.github.io/sokomin_repository/db/mapset/Dungeon/tile/tile_0391.png';
-                let txt = 'https://sokomin.github.io/sokomin_repository/db/mapset/Hell/tile/tile_0022.png';
+                // let txt = 'https://sokomin.github.io/sokomin_repository2026/db/mapset/Dungeon/tile/tile_0391.png';
+                let txt = 'https://sokomin.github.io/sokomin_repository2026/db/mapset/Hell/tile/tile_0022.png';
                 image1.src = txt;
                 image1.addEventListener('load', function() {
                     context.drawImage(image1, j*img_width, i* img_height, img_width, img_height);
@@ -542,7 +542,7 @@ function setAIndexImage() {
             } else {
                 let image1 = new Image();
                 let num = ('0000' + data[j]).slice(-4);
-                let txt = 'https://sokomin.github.io/sokomin_repository/db/mapset/' + map_type_map[map_type] + '/tile/tile_' + num + '.png';
+                let txt = 'https://sokomin.github.io/sokomin_repository2026/db/mapset/' + map_type_map[map_type] + '/tile/tile_' + num + '.png';
                 image1.src = txt;
                 image1.addEventListener('load', function() {
                     context.drawImage(image1, j*img_width, i* img_height, img_width, img_height);
@@ -579,8 +579,8 @@ function setZIndexImage() {
             }
             if (zdata[j] < 1) {
                 let image1 = new Image();
-                let txt = 'https://sokomin.github.io/sokomin_repository/db/mapset/Dungeon/tile/tile_0391.png';
-                // let txt = 'https://sokomin.github.io/sokomin_repository/db/mapset/Yatikanu/tile/tile_0415.png';
+                let txt = 'https://sokomin.github.io/sokomin_repository2026/db/mapset/Dungeon/tile/tile_0391.png';
+                // let txt = 'https://sokomin.github.io/sokomin_repository2026/db/mapset/Yatikanu/tile/tile_0415.png';
                 image1.src = txt;
                 image1.addEventListener('load', function() {
                     context.drawImage(image1, j*img_width, i* img_height, img_width, img_height);
@@ -588,7 +588,7 @@ function setZIndexImage() {
             } else {
                 let image1 = new Image();
                 let num = ('0000' + data[j]).slice(-4);
-                let txt = 'https://sokomin.github.io/sokomin_repository/db/mapset/' + map_type_map[map_type] + '/tile/tile_' + num + '.png';
+                let txt = 'https://sokomin.github.io/sokomin_repository2026/db/mapset/' + map_type_map[map_type] + '/tile/tile_' + num + '.png';
                 image1.src = txt;
                 image1.addEventListener('load', function() {
                     context.drawImage(image1, j*img_width, i* img_height, img_width, img_height);
@@ -647,7 +647,7 @@ function set4IndexImage() {
                 context.fillStyle = "blue";
                 context.fillText(data4[j], (j*img_width+2), i* img_height+1);
                 // let image1 = new Image();
-                // let txt = 'https://sokomin.github.io/sokomin_repository/db/mapset/Dungeon/tile/tile_0391.png';
+                // let txt = 'https://sokomin.github.io/sokomin_repository2026/db/mapset/Dungeon/tile/tile_0391.png';
                 // image1.src = txt;
                 // image1.addEventListener('load', function() {
                 //     context.drawImage(image1, j*img_width, i* img_height, img_width, img_height);
@@ -676,7 +676,7 @@ function set5IndexImage() {
                 context.fillStyle = "red";
                 context.fillText(data5[j], (j*img_width+4), i* img_height+2);
                 // let image1 = new Image();
-                // let txt = 'https://sokomin.github.io/sokomin_repository/db/mapset/Dungeon/tile/tile_0391.png';
+                // let txt = 'https://sokomin.github.io/sokomin_repository2026/db/mapset/Dungeon/tile/tile_0391.png';
                 // image1.src = txt;
                 // image1.addEventListener('load', function() {
                 //     context.drawImage(image1, j*img_width, i* img_height, img_width, img_height);
