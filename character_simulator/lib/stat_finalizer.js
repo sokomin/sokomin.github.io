@@ -60,15 +60,26 @@ export function finalizeStats(STTemp, opts = {}) {
   
 
   
-  
   const pureAll = numOr0(STTemp.sum.pureStatPercentAll);
-  const pureStr = numOr0(STTemp.sum.pureStatPercentStr);
-  const pureInt = numOr0(STTemp.sum.pureStatPercentInt);
-  if (pureAll || pureStr || pureInt) {
+  
+  const PURE_PER_STAT_KEY = {
+    str: 'pureStatPercentStr',
+    agi: 'pureStatPercentAgi',
+    con: 'pureStatPercentCon',
+    int: 'pureStatPercentInt',
+    wiz: 'pureStatPercentWiz',
+    chs: 'pureStatPercentChs',
+    luc: 'pureStatPercentLuc',
+  };
+  
+  let hasAnyPerStat = false;
+  for (const sid of PRIMARY_STAT_IDS) {
+    if (numOr0(STTemp.sum[PURE_PER_STAT_KEY[sid]])) { hasAnyPerStat = true; break; }
+  }
+  if (pureAll || hasAnyPerStat) {
     for (const sid of PRIMARY_STAT_IDS) {
-      let bonusPct = pureAll;
-      if (sid === 'str') bonusPct += pureStr;
-      if (sid === 'int') bonusPct += pureInt;
+      const perStat = numOr0(STTemp.sum[PURE_PER_STAT_KEY[sid]]);
+      const bonusPct = pureAll + perStat;
       if (bonusPct === 0) continue;
       equipped[sid] = Math.floor(equipped[sid] * (1 + bonusPct / 100));
     }

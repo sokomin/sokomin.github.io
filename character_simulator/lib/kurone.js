@@ -1,20 +1,9 @@
-// kurone.js — 朱洛星処理
-//
-// 公開 API:
-//   getKuroneInfo(item)             → { lv, transTime, element } | null
-//   isKuroneItem(item)              → bool (setDef.kurone.transTime > 0 で判定)
-//   checkKuroneConstraint(item, character)
-//   checkSameKuroneConflict(item, equippedItems, character)
-//   getKuroneLabel(item)            → "[ファイア] Lv1" 等
-//
-// 「制約あり」 判定は item.setId が指すセットの kurone.transTime > 0 をトリガとする。
+
+
 
 import { getLoader } from './item_api.js';
 
-/**
- * @param {Object} item   ItemRecord
- * @returns {{ lv: number, transTime: number, element: string } | null}
- */
+
 export function getKuroneInfo(item) {
   if (!item || item.setId == null) return null;
   const loader = getLoader();
@@ -25,35 +14,23 @@ export function getKuroneInfo(item) {
   return setDef.kurone;
 }
 
-/**
- * 朱洛星制約のあるアイテムか。
- * setDef.kurone.transTime > 0 のとき true (装着時に変身時間チェック対象)。
- * transTime=0 のセットは UI 上「朱洛星」表示はあるが装着判定スキップ。
- */
+
 export function isKuroneItem(item) {
   const k = getKuroneInfo(item);
   return !!(k && k.transTime > 0);
 }
 
-/**
- * 装着判定: 変身時間を満たしているか。
- * @returns {boolean}
- */
+
 export function checkKuroneConstraint(item, character) {
   const k = getKuroneInfo(item);
-  if (!k || k.transTime <= 0) return true;     // 制約なし
+  if (!k || k.transTime <= 0) return true;     
   return (character && character.kuroneTransTime || 0) >= k.transTime;
 }
 
-/**
- * 同じ朱洛星 (transTime 同値) のセット品が既に装着済なら衝突 → false。
- * @param {Object} item
- * @param {{inv: Object, item: Object}[]} equippedItems  既装着のアイテム群 (自身含む可)
- * @returns {boolean}
- */
+
 export function checkSameKuroneConflict(item, equippedItems) {
   const k = getKuroneInfo(item);
-  if (!k || k.transTime <= 0) return true;  // 制約なし
+  if (!k || k.transTime <= 0) return true;  
 
   for (const entry of equippedItems) {
     if (!entry) continue;
@@ -68,9 +45,7 @@ export function checkSameKuroneConflict(item, equippedItems) {
   return true;
 }
 
-/**
- * ツールチップ用ラベル ("[ファイア] Lv1" 等)。
- */
+
 export function getKuroneLabel(item) {
   const k = getKuroneInfo(item);
   if (!k) return null;
