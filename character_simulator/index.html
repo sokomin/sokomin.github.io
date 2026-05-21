@@ -237,9 +237,41 @@
     .flag-row.is-on .flag-value { color: #00ff66; }
 
     
+    .badge-list {
+      display: flex; flex-direction: column;
+      gap: 2px;
+      font-size: 11.5px;
+    }
+    .badge-row {
+      padding: 3px 4px;
+      border-bottom: 1px dotted #443823;
+    }
+    .badge-row:last-child { border-bottom: 0; }
+    .badge-row .badge-name {
+      color: #d8a743;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .badge-row.is-on .badge-name { color: #f4e7a2; }
+    .badge-row label.badge-name { display: flex; gap: 4px; align-items: center; cursor: pointer; }
+    .badge-row .badge-tiers {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      padding: 2px 0 0 6px;
+      color: #b89868;
+    }
+    .badge-row .badge-tier-opt {
+      display: inline-flex; gap: 2px; align-items: center;
+      cursor: pointer;
+      font-size: 11px;
+    }
+    .badge-row .badge-tier-opt input { margin: 0; }
+
+    
+    
     .sim-tab-bar {
       display: flex;
-      gap: 2px;
+      flex-wrap: wrap;
+      row-gap: 2px;
+      column-gap: 2px;
       margin: 0 0 8px 0;
       padding: 0;
       border-bottom: 1px solid #8b6a28;
@@ -1049,6 +1081,65 @@
     .title-empty { color: #b0944c; font-size: 11.5px; padding: 8px 4px; text-align: center; }
 
     
+    .mbook-tab-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      padding: 6px 8px;
+    }
+    .mbook-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 8px;
+    }
+    .mbook-card {
+      background: #1a1610; border: 1px solid #5b3d12;
+      padding: 6px 8px; color: #f4e7a2; font-size: 12px;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .mbook-card h4 {
+      margin: 0; padding: 0 0 4px 0;
+      color: #ffd070; border-bottom: 1px solid #5b3d12; font-size: 13px;
+      display: flex; justify-content: space-between; align-items: baseline;
+    }
+    .mbook-card h4 .mbook-card-sub {
+      color: #b0944c; font-size: 10.5px; font-weight: normal;
+    }
+    .mbook-row {
+      display: grid; grid-template-columns: 110px 1fr;
+      gap: 6px; align-items: center;
+    }
+    .mbook-row .mbook-label { color: #ffd070; font-weight: bold; }
+    .mbook-row select {
+      background: #120c04; color: #00ff66; border: 1px solid #8b6a28;
+      font: inherit; padding: 1px 4px; width: 100%; box-sizing: border-box;
+    }
+    .mbook-chapter-name {
+      color: #b0944c; font-size: 11px; font-family: "MS PGothic", "Meiryo", sans-serif;
+      padding: 0 2px;
+    }
+    .mbook-effects {
+      margin: 0; padding: 4px 8px;
+      background: #120c04; border: 1px solid #443823;
+      color: #00ff66; font-size: 11px; font-family: "Consolas", monospace;
+      max-height: 220px; overflow-y: auto;
+      white-space: pre-wrap; line-height: 1.5;
+    }
+    .mbook-effects-empty { color: #6e5a2a; }
+    .mbook-completion {
+      padding: 4px 8px;
+      background: #0b0904; border: 1px solid #443823;
+      font-size: 11px; line-height: 1.5;
+    }
+    .mbook-completion-row { display: grid; grid-template-columns: 50px 1fr 16px; gap: 4px; }
+    .mbook-completion-row.is-done .mbook-completion-key { color: #ffd070; }
+    .mbook-completion-row.is-done .mbook-completion-val { color: #00ff66; }
+    .mbook-completion-row .mbook-completion-key { color: #6e5a2a; font-family: "Consolas", monospace; }
+    .mbook-completion-row .mbook-completion-val { color: #6e5a2a; }
+    .mbook-completion-row .mbook-completion-mark { color: #00ff66; text-align: center; }
+    .mbook-note { color: #b0944c; font-size: 10.5px; line-height: 1.5; padding: 4px 6px; background:#1f1a08; border:1px solid #443823; }
+
+    
     .dragon-tab-layout {
       display: grid;
       grid-template-columns: 1fr;
@@ -1471,6 +1562,7 @@
             <button type="button" class="sim-tab-btn"           data-tab-btn="creature" role="tab">クリーチャー</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="dragon"   role="tab">古龍の祝福</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="title"    role="tab">称号</button>
+            <button type="button" class="sim-tab-btn"           data-tab-btn="mbook"    role="tab">ミッションブック</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="damage"   role="tab">ダメージ計算</button>
           </nav>
 
@@ -1600,6 +1692,12 @@
               <div class="light-panel">
                 <h4>装備フラグ</h4>
                 <div id="flag-list" class="flag-list"></div>
+              </div>
+
+              
+              <div class="light-panel">
+                <h4>所持バッジ</h4>
+                <div id="badge-list" class="badge-list"></div>
               </div>
 
               </div>
@@ -1851,6 +1949,17 @@
 
           
           
+          <div class="tab-pane" data-tab="mbook">
+            <div class="mbook-tab-layout">
+              <div class="mbook-grid" id="mbook-grid">
+                
+              </div>
+              
+            </div>
+          </div>
+
+          
+          
           <div class="tab-pane" data-tab="damage">
             <div class="damage-tab-layout">
 
@@ -2020,8 +2129,8 @@ import { aggregateForCharacter } from './lib/stat_aggregator.js';
 import { finalizeStats } from './lib/stat_finalizer.js';
 import { formatOpText, stripOpTags } from './lib/op_text_formatter.js';
 import { updateEquipmentMetadata } from './lib/equipment_meta.js';
-import { calcOpValue, applyOpToSTTemp } from './lib/op_calc.js';
-import { getEffectiveLv } from './lib/character.js';
+import { calcOpValue, applyOpToSTTemp, aggregateAllOpsForItem } from './lib/op_calc.js';
+import { getEffectiveLv, PRIMARY_STAT_IDS } from './lib/character.js';
 import { computeAbilities, JOB_STAT_SWAP_IDS } from './lib/abilities.js';
 import {
   serializeSession, deserializeSession,
@@ -3238,6 +3347,10 @@ async function recalcAll() {
   }
 
   DragonBlessing.applyToSTTemp(T);
+
+  MissionBook.applyToSTTemp(T, getEffectiveLv(ch));
+
+  await applyBadgesToSTTemp(T, getEffectiveLv(ch), ch);
   
   applyJobPassivesToSTTemp(T, ch);
   const f = finalizeStats(T);
@@ -3633,6 +3746,10 @@ async function recalcAll() {
   catch (e) { console.warn('[DamageCalc] sync failed:', e); }
 
   
+  try { MissionBook._rerender(); }
+  catch (e) { console.warn('[MissionBook] rerender failed:', e); }
+
+  
   scheduleAutosave();
 }
 
@@ -3832,6 +3949,10 @@ function buildSnapshot() {
   snap.titles = Titles.getState();
   
   snap.dragon = DragonBlessing.getState();
+  
+  snap.missionBook = MissionBook.getState();
+  
+  snap.badges = { ...badgeState };
   return snap;
 }
 
@@ -3868,6 +3989,13 @@ async function loadSnapshot(data, sourceLabel) {
   
   if (data.dragon) DragonBlessing.setState(data.dragon);
   else DragonBlessing.reset();
+
+  
+  if (data.missionBook) MissionBook.setState(data.missionBook);
+  else MissionBook.reset();
+
+  
+  loadBadgeState(data.badges);
 
   
   const c = parsed.character || {};
@@ -4001,6 +4129,180 @@ function updateEquipmentFlags(equippedList, equipped) {
     const v = el.querySelector('.flag-value');
     if (v) v.textContent = on ? 'True' : 'False';
   }
+}
+
+
+const BADGE_DEFS = [
+  { id: 'elite',         label: '一流討伐団のバッジ',           type: 'single', itemId: 8535 },
+  { id: 'blackfire',     label: 'ブラックファイヤー討伐バッジ', type: 'tier', tiers: 3, itemIds: [9758, 9759, 9760] },
+  { id: 'deathhills',    label: 'デフヒルズ討伐バッジ',          type: 'tier', tiers: 3, itemIds: [9854, 9855, 9856] },
+  { id: 'greatmountain', label: 'グレートマウンテン討伐バッジ', type: 'tier', tiers: 3, itemIds: [10801, 10802, 10803] },
+];
+
+function activeBadgeItemIds() {
+  const ids = [];
+  for (const d of BADGE_DEFS) {
+    if (d.type === 'single') {
+      if (badgeState[d.id]) ids.push(d.itemId);
+    } else {
+      const t = Number(badgeState[d.id]) || 0;
+      if (t >= 1 && t <= d.tiers) ids.push(d.itemIds[t - 1]);
+    }
+  }
+  return ids;
+}
+
+
+async function applyBadgesToSTTemp(STTemp, LvTemp, ch) {
+  const ids = activeBadgeItemIds();
+  if (!ids.length) return;
+  for (const id of ids) {
+    const item = await Item.get(id);
+    if (!item) continue;
+    const inv = {
+      itemId: id,
+      slotIndex: -1,
+      equippedSlot: 'badge',
+      ops: [],
+      opRevisions: [],
+      revisions: [0, 0, 0],
+      daybreak: false,
+    };
+    aggregateAllOpsForItem(STTemp, inv, item, LvTemp, ch);
+    
+    if (Array.isArray(item.opSlots)) {
+      for (const slot of item.opSlots) {
+        if (!slot || slot.familyId == null) continue;
+        const v = Number(slot.value) || 0;
+        if (v === 0) continue;
+        if (slot.familyId === 175) {
+          STTemp.sum.finalDamagePercent = (STTemp.sum.finalDamagePercent || 0) + v;
+        } else if (slot.familyId === 172) {
+          for (const s of PRIMARY_STAT_IDS) {
+            STTemp.sum[s] = (STTemp.sum[s] || 0) + v;
+          }
+        }
+      }
+    }
+  }
+}
+
+let badgeState = newBadgeState();
+
+function newBadgeState() {
+  const s = {};
+  for (const d of BADGE_DEFS) s[d.id] = (d.type === 'single') ? false : 0;
+  return s;
+}
+
+function renderBadgeList() {
+  const root = $('badge-list');
+  if (!root) return;
+  root.innerHTML = '';
+  for (const d of BADGE_DEFS) {
+    const row = document.createElement('div');
+    row.className = 'badge-row';
+    row.dataset.badge = d.id;
+    if (d.type === 'single') {
+      row.innerHTML =
+        `<label class="badge-name">` +
+        `<input type="checkbox" data-badge="${esc(d.id)}">` +
+        `${esc(d.label)}` +
+        `</label>`;
+    } else {
+      const parts = [
+        `<label class="badge-tier-opt">` +
+          `<input type="radio" name="badge-${esc(d.id)}" data-badge="${esc(d.id)}" value="0" checked>` +
+          `未所持` +
+        `</label>`,
+      ];
+      for (let i = 1; i <= d.tiers; i++) {
+        parts.push(
+          `<label class="badge-tier-opt">` +
+            `<input type="radio" name="badge-${esc(d.id)}" data-badge="${esc(d.id)}" value="${i}">` +
+            `${i}段階` +
+          `</label>`
+        );
+      }
+      row.innerHTML =
+        `<div class="badge-name">${esc(d.label)}</div>` +
+        `<div class="badge-tiers">${parts.join('')}</div>`;
+    }
+    root.appendChild(row);
+  }
+  root.querySelectorAll('input[data-badge]').forEach((el) => {
+    el.addEventListener('change', () => {
+      readBadgeUI();
+      syncBadgeRowVisuals();
+      recalcAll().catch((e) => console.warn('[Badges] recalc failed:', e));
+      scheduleAutosave();
+    });
+  });
+  syncBadgeUIFromState();
+}
+
+function readBadgeUI() {
+  const root = $('badge-list');
+  if (!root) return;
+  for (const d of BADGE_DEFS) {
+    if (d.type === 'single') {
+      const el = root.querySelector(`input[type=checkbox][data-badge="${d.id}"]`);
+      badgeState[d.id] = !!(el && el.checked);
+    } else {
+      const checked = root.querySelector(`input[type=radio][data-badge="${d.id}"]:checked`);
+      const v = checked ? Number(checked.value) : 0;
+      badgeState[d.id] = (Number.isFinite(v) && v >= 0 && v <= d.tiers) ? v : 0;
+    }
+  }
+}
+
+function syncBadgeUIFromState() {
+  const root = $('badge-list');
+  if (!root) return;
+  for (const d of BADGE_DEFS) {
+    if (d.type === 'single') {
+      const el = root.querySelector(`input[type=checkbox][data-badge="${d.id}"]`);
+      if (el) el.checked = !!badgeState[d.id];
+    } else {
+      const v = Number(badgeState[d.id]) || 0;
+      const el = root.querySelector(`input[type=radio][data-badge="${d.id}"][value="${v}"]`);
+      if (el) el.checked = true;
+    }
+  }
+  syncBadgeRowVisuals();
+}
+
+function syncBadgeRowVisuals() {
+  const root = $('badge-list');
+  if (!root) return;
+  for (const d of BADGE_DEFS) {
+    const row = root.querySelector(`.badge-row[data-badge="${d.id}"]`);
+    if (!row) continue;
+    const on = (d.type === 'single') ? !!badgeState[d.id] : (Number(badgeState[d.id]) > 0);
+    row.classList.toggle('is-on', on);
+  }
+}
+
+function loadBadgeState(data) {
+  badgeState = newBadgeState();
+  if (data && typeof data === 'object') {
+    for (const d of BADGE_DEFS) {
+      const v = data[d.id];
+      if (v == null) continue;
+      if (d.type === 'single') {
+        badgeState[d.id] = !!v;
+      } else {
+        const n = Number(v);
+        if (Number.isFinite(n) && n >= 0 && n <= d.tiers) badgeState[d.id] = n | 0;
+      }
+    }
+  }
+  syncBadgeUIFromState();
+}
+
+function resetBadgeState() {
+  badgeState = newBadgeState();
+  syncBadgeUIFromState();
 }
 
 
@@ -5321,6 +5623,10 @@ function bindSessionEvents() {
     Titles.reset();
     
     DragonBlessing.reset();
+    
+    MissionBook.reset();
+    
+    resetBadgeState();
     await recalcAll();
     await refreshItemList();
     setSessionStatus('全消去完了');
@@ -5964,6 +6270,394 @@ const Titles = (() => {
   function reset() { state.limitBreakPhysLv = 0; state.limitBreakMagicLv = 0; applyToSelectors(); renderEffects(); }
 
   return { init, computeBonus, getState, setState, reset, LIMIT_BREAK_LEVELS };
+})();
+
+
+const MissionBook = (() => {
+  const STAT_KEYS_7 = ['str','agi','con','int','wiz','chs','luc'];
+  
+  const LABELS = {
+    str: '力', agi: '敏捷', con: '健康', int: '知識', wiz: '知恵', chs: 'カリスマ', luc: '運',
+    hit: '命中率', eva: '回避率', atkspd: '攻撃速度', mvspd: '移動速度',
+    defPercent: '防御力', finalDamagePercent: '最終ダメージ',
+    physDamagePercent: '物理攻撃力', attrMagic: '魔法攻撃力',
+    hp: '最大HP', hpPercent: '最大HP%', cp: '最大CP', cpPercent: '最大CP%',
+    attrFireResist: '火抵抗', attrWaterResist: '水抵抗', attrWindResist: '風抵抗',
+    attrEarthResist: '大地抵抗', attrLightResist: '光抵抗', attrDarkResist: '闇抵抗',
+    statusResist: '全状態異常抵抗', physCritResist: '物理致命抵抗',
+    knockbackResist: 'ノックバック抵抗', physCritRate: '致命打発動確率',
+    potionHeal: '薬回復', skillLv: '全スキルレベル',
+  };
+  const PERCENT_KEYS = new Set([
+    'hit','eva','atkspd','mvspd','defPercent','finalDamagePercent',
+    'physDamagePercent','attrMagic','hpPercent','cpPercent',
+    'attrFireResist','attrWaterResist','attrWindResist','attrEarthResist',
+    'attrLightResist','attrDarkResist',
+    'statusResist','physCritResist','knockbackResist','physCritRate','potionHeal',
+  ]);
+
+
+  
+  const DATA = {
+    mb1: {
+      name: '旅路の一歩',
+      chapters: [
+        { name: '旅路の心得', effects: [
+          ['flat','str',9],['flat','agi',7],['flat','con',12],['flat','int',10],
+          ['flat','wiz',8],['flat','chs',7],['flat','luc',5],
+          ['flat','atkspd',3],
+        ]},
+        { name: '冒険の幕開け', effects: [
+          ['flat','str',11],['flat','agi',14],['flat','con',15],['flat','int',13],
+          ['flat','wiz',13],['flat','chs',12],['flat','luc',12],
+          ['flat','potionHeal',50],
+        ]},
+        { name: 'モンスター退治', effects: [
+          ['flat','str',4],['flat','agi',5],['flat','con',6],['flat','int',3],
+          ['flat','wiz',3],['flat','chs',2],['flat','luc',2],
+          ['flat','eva',2],['flat','cp',200],
+        ]},
+        { name: '称号の獲得', effects: [
+          ['flat','str',5],['flat','agi',3],['flat','con',6],['flat','int',4],
+          ['flat','wiz',2],['flat','chs',2],['flat','luc',2],
+          ['flat','finalDamagePercent',3],['flat','hp',400],
+        ]},
+        { name: 'モンスター掃討', effects: [
+          ['flat','str',3],['flat','agi',4],['flat','con',8],['flat','int',2],
+          ['flat','wiz',1],['flat','chs',2],['flat','luc',2],
+          ['flat','defPercent',5],['flat','atkspd',8],
+        ]},
+        { name: '冒険家の使命', effects: [
+          ['flat','str',6],['flat','agi',2],['flat','con',2],['flat','int',8],
+          ['flat','wiz',2],['flat','chs',1],['flat','luc',2],
+          ['flat','defPercent',10],
+        ]},
+        { name: 'コレクションに終わりなし', effects: [
+
+          ['flat','str',13],['flat','agi',12],['flat','con',12],['flat','int',12],
+          ['flat','wiz',12],['flat','chs',13],['flat','luc',12],
+          ['flat','physDamagePercent',20],
+        ]},
+        { name: '小さな変数', effects: [
+          ['flat','str',4],['flat','agi',3],['flat','con',4],['flat','int',3],
+          ['flat','wiz',2],['flat','chs',4],['flat','luc',2],
+          ['flat','attrMagic',3],
+          ['ratio','chs',1,5],
+        ]},
+        { name: 'カウントマスター', effects: [
+          ['flat','str',4],['flat','agi',2],['flat','con',3],['flat','int',4],
+          ['flat','wiz',3],['flat','chs',2],['flat','luc',2],
+          ['flat','statusResist',5],
+          ['ratio','con',1,5],
+        ]},
+        { name: '名だけを残して', effects: [
+          
+          ['flat','str',3],['flat','agi',3],['flat','con',3],['flat','int',3],
+          ['flat','wiz',2],['flat','chs',2],
+          ['flat','hpPercent',3],
+          ['ratio','int',1,5],
+        ]},
+        { name: 'モンスター討伐', effects: [
+          ['flat','str',5],['flat','agi',2],['flat','con',5],['flat','int',4],
+          ['flat','wiz',4],['flat','luc',4],
+          ['note','魔法抵抗 +2% (sim 反映なし)'],
+          ['lvRatio','str',5],
+        ]},
+        { name: '冒険家の栄光', effects: [
+          ['flat','str',4],['flat','agi',3],['flat','con',2],['flat','int',4],
+          ['flat','wiz',3],['flat','chs',2],
+          
+          ['flat','physCritResist',3],
+          ['note','PVP 攻撃 +3% / PVP 防御 +3% (sim 反映なし)'],
+          ['ratio','wiz',1,5],
+        ]},
+      ],
+      completion: [
+        { at: 2,  effects: [['allStat',30]] },
+        { at: 4,  effects: [['flat','skillLv',1]] },
+        { at: 6,  effects: [['flat','eva',5]] },
+        { at: 8,  effects: [['flat','hpPercent',10]] },
+        { at: 12, effects: [['flat','finalDamagePercent',5]] },
+      ],
+    },
+    mb2: {
+      name: '永遠の挑戦',
+      chapters: [
+        { name: 'ベテラン冒険家', effects: [
+          ['flat','str',7],['flat','agi',8],['flat','con',7],['flat','int',9],
+          ['flat','wiz',8],['flat','chs',7],['flat','luc',5],
+          ['flat','attrMagic',3],
+        ]},
+        { name: '優秀な執事', effects: [
+          ['flat','str',14],['flat','agi',11],['flat','con',12],['flat','int',14],
+          ['flat','wiz',12],['flat','chs',12],['flat','luc',11],
+          ['flat','physDamagePercent',15],
+        ]},
+        { name: '不思議な行動', effects: [
+          ['flat','str',3],['flat','agi',2],['flat','con',2],['flat','int',3],
+          ['flat','wiz',3],['flat','chs',1],['flat','luc',2],
+          ['flat','eva',2],['flat','hp',400],
+        ]},
+        { name: '村の何でも屋', effects: [
+          ['flat','str',4],['flat','agi',4],['flat','int',3],
+          ['flat','wiz',6],['flat','chs',4],['flat','luc',2],
+          ['flat','mvspd',10],['flat','defPercent',15],
+        ]},
+        { name: '欲張り', effects: [
+          ['flat','str',2],['flat','agi',4],['flat','con',2],['flat','int',1],
+          ['flat','wiz',1],['flat','chs',2],['flat','luc',2],
+          ['flat','statusResist',5],['flat','atkspd',8],
+        ]},
+        { name: '狩り人', effects: [
+          ['flat','str',5],['flat','agi',3],['flat','con',3],['flat','int',3],
+          ['flat','wiz',1],['flat','chs',1],['flat','luc',1],
+          ['flat','defPercent',5],['flat','hpPercent',15],
+        ]},
+      ],
+      completion: [
+        { at: 2, effects: [['allStat',30]] },
+        { at: 4, effects: [['note','魔法抵抗 +10% (sim 反映なし)']] },
+        { at: 6, effects: [['ratio','con',1,5]] },
+      ],
+    },
+    mb3: {
+      name: '変わった冒険',
+      chapters: [
+        { name: '基礎鍛錬', effects: [
+          ['flat','str',7],['flat','agi',6],['flat','con',7],['flat','int',8],
+          ['flat','wiz',6],['flat','chs',5],['flat','luc',5],
+          ['note','召喚獣 / ペット 攻撃速度 +10% (sim 反映なし)'],
+        ]},
+        { name: '冒険の足跡', effects: [
+          ['flat','str',10],['flat','agi',11],['flat','con',12],['flat','int',10],
+          ['flat','wiz',11],['flat','chs',12],['flat','luc',13],
+          ['flat','skillLv',3],
+        ]},
+        { name: '風景の中の思い出', effects: [
+          ['flat','str',3],['flat','agi',2],['flat','con',3],['flat','int',1],
+          ['flat','wiz',2],['flat','chs',2],
+          ['flat','knockbackResist',2],['flat','hit',3],
+        ]},
+        { name: '変わった噂', effects: [
+          ['flat','str',2],['flat','con',2],['flat','int',2],
+          ['flat','wiz',2],['flat','chs',4],['flat','luc',1],
+          ['flat','attrDarkResist',2],['flat','attrEarthResist',2],
+        ]},
+        { name: '最高を目指すための準備', effects: [
+          ['flat','str',2],['flat','con',1],['flat','int',1],
+          ['flat','wiz',2],['flat','chs',2],['flat','luc',4],
+          ['flat','mvspd',10],['flat','attrFireResist',2],
+        ]},
+        { name: '実戦から学ぶ', effects: [
+          ['flat','str',2],['flat','agi',3],['flat','con',2],['flat','int',2],
+          ['flat','wiz',1],['flat','chs',2],['flat','luc',2],
+          ['flat','eva',5],['flat','attrWindResist',2],
+        ]},
+        { name: '頼もしい仲間', effects: [
+          ['flat','str',1],['flat','agi',3],['flat','int',3],
+          ['flat','wiz',5],['flat','chs',2],
+          ['flat','physCritRate',5],['flat','attrWaterResist',2],
+        ]},
+        { name: '旅のパートナー', effects: [
+          ['flat','str',3],['flat','agi',4],['flat','con',2],['flat','int',1],
+          ['flat','wiz',2],['flat','chs',3],['flat','luc',2],
+          ['flat','attrLightResist',5],
+          ['note','CP 獲得ボーナス +2% (sim 反映なし)'],
+        ]},
+        { name: '果てしない戦場', effects: [
+          ['flat','str',2],['flat','agi',3],['flat','con',3],['flat','int',2],
+          ['flat','wiz',1],['flat','chs',3],['flat','luc',1],
+          ['note','PVP 防御力 +2% / PVP 攻撃力 +2% (sim 反映なし)'],
+        ]},
+      ],
+      completion: [
+        { at: 2, effects: [['allStat',30]] },
+        { at: 4, effects: [['flat','physDamagePercent',5]] },
+        { at: 6, effects: [['flat','attrMagic',3]] },
+        { at: 9, effects: [['flat','statusResist',10]] },
+      ],
+    },
+  };
+
+  const state = { mb1: 0, mb2: 0, mb3: 0 };
+
+  
+  function reduceEffectsToMap(effectList, charLv) {
+    const sumMap = Object.create(null);
+    const notes = [];
+    const Lv = Math.max(1, Number(charLv) || 1);
+    for (const eff of effectList) {
+      if (!eff) continue;
+      const t = eff[0];
+      if (t === 'flat') {
+        const k = eff[1]; const v = Number(eff[2]) || 0;
+        sumMap[k] = (sumMap[k] || 0) + v;
+      } else if (t === 'allStat') {
+        const v = Number(eff[1]) || 0;
+        for (const k of STAT_KEYS_7) sumMap[k] = (sumMap[k] || 0) + v;
+      } else if (t === 'ratio') {
+        const k = eff[1];
+        const addV = Number(eff[2]) || 0;
+        const div  = Number(eff[3]) || 1;
+        const inc  = Math.floor(Lv * addV / div);
+        sumMap[k] = (sumMap[k] || 0) + inc;
+      } else if (t === 'lvRatio') {
+        const k = eff[1];
+        const div = Number(eff[2]) || 1;
+        const inc = Math.floor(Lv / div);
+        sumMap[k] = (sumMap[k] || 0) + inc;
+      } else if (t === 'note') {
+        notes.push(eff[1]);
+      }
+    }
+    return { sumMap, notes };
+  }
+
+  
+  function computeBookAggregate(bookId, charLv) {
+    const book = DATA[bookId];
+    if (!book) return { sumMap: {}, notes: [] };
+    const cleared = Math.max(0, Math.min(book.chapters.length, Number(state[bookId]) || 0));
+    const all = [];
+    for (let i = 0; i < cleared; i++) {
+      const ch = book.chapters[i];
+      if (ch && Array.isArray(ch.effects)) all.push(...ch.effects);
+    }
+    for (const comp of (book.completion || [])) {
+      if (cleared >= comp.at && Array.isArray(comp.effects)) all.push(...comp.effects);
+    }
+    return reduceEffectsToMap(all, charLv);
+  }
+
+  
+  function applyToSTTemp(STTemp, charLv) {
+    if (!STTemp || !STTemp.sum) return;
+    const Lv = Math.max(1, Number(charLv) || 1);
+    for (const bookId of ['mb1','mb2','mb3']) {
+      const { sumMap } = computeBookAggregate(bookId, Lv);
+      for (const [statId, v] of Object.entries(sumMap)) {
+        STTemp.sum[statId] = (STTemp.sum[statId] || 0) + v;
+      }
+    }
+  }
+
+  
+  function formatValue(statId, v) {
+    const isPct = PERCENT_KEYS.has(statId);
+    const sign = v >= 0 ? '+' : '';
+    return sign + v + (isPct ? '%' : '');
+  }
+  function renderEffectsSummary(bookId, charLv) {
+    const book = DATA[bookId];
+    if (!book) return '';
+    const cleared = Math.max(0, Math.min(book.chapters.length, Number(state[bookId]) || 0));
+    if (cleared === 0) return '<span class="mbook-effects-empty">未クリア</span>';
+    const { sumMap, notes } = computeBookAggregate(bookId, charLv);
+    const lines = [];
+    
+    for (const k of STAT_KEYS_7) {
+      if (sumMap[k]) lines.push(`${LABELS[k] || k} ${formatValue(k, sumMap[k])}`);
+    }
+    for (const k of Object.keys(sumMap)) {
+      if (STAT_KEYS_7.includes(k)) continue;
+      lines.push(`${LABELS[k] || k} ${formatValue(k, sumMap[k])}`);
+    }
+    for (const n of notes) lines.push(`※ ${n}`);
+    return esc(lines.join('\n'));
+  }
+  function renderCompletionList(bookId) {
+    const book = DATA[bookId];
+    if (!book || !book.completion?.length) return '';
+    const cleared = Math.max(0, Math.min(book.chapters.length, Number(state[bookId]) || 0));
+    const rows = book.completion.map((comp) => {
+      const done = cleared >= comp.at;
+      
+      const label = comp.effects.map((eff) => {
+        if (eff[0] === 'flat')     return `${LABELS[eff[1]] || eff[1]} ${formatValue(eff[1], eff[2])}`;
+        if (eff[0] === 'allStat')  return `全ステータス +${eff[1]}`;
+        if (eff[0] === 'ratio')    return `${LABELS[eff[1]] || eff[1]} +${eff[2]}/${eff[3]} (= Lv 比率上昇)`;
+        if (eff[0] === 'lvRatio')  return `${LABELS[eff[1]] || eff[1]} +Lv/${eff[2]}`;
+        if (eff[0] === 'note')     return `※ ${eff[1]}`;
+        return JSON.stringify(eff);
+      }).join(', ');
+      const cls = done ? 'is-done' : '';
+      const mark = done ? '✓' : '';
+      return `<div class="mbook-completion-row ${cls}"><span class="mbook-completion-key">[${comp.at}]</span><span class="mbook-completion-val">${esc(label)}</span><span class="mbook-completion-mark">${mark}</span></div>`;
+    }).join('');
+    return rows;
+  }
+  function renderCards() {
+    const root = $('mbook-grid');
+    if (!root) return;
+    const Lv = getCharacterLvForRender();
+    const cardHtml = ['mb1','mb2','mb3'].map((bookId) => {
+      const book = DATA[bookId];
+      const cleared = Number(state[bookId]) || 0;
+      const chapName = (cleared > 0 && book.chapters[cleared - 1]) ? book.chapters[cleared - 1].name : '—';
+      const opts = ['<option value="0">0 (未クリア)</option>'];
+      for (let i = 1; i <= book.chapters.length; i++) {
+        const selected = (i === cleared) ? ' selected' : '';
+        opts.push(`<option value="${i}"${selected}>${i} (${esc(book.chapters[i - 1].name)})</option>`);
+      }
+      return `
+        <div class="mbook-card">
+          <h4>${esc(book.name)} <span class="mbook-card-sub">全 ${book.chapters.length} 章</span></h4>
+          <div class="mbook-row">
+            <span class="mbook-label">クリア済み章数</span>
+            <select id="mbook-sel-${bookId}" data-book="${bookId}">${opts.join('')}</select>
+          </div>
+          <div class="mbook-chapter-name">直近クリア章: ${esc(chapName)}</div>
+          <div class="mbook-completion">
+            <div style="color:#ffd070; font-weight:bold; padding-bottom:2px;">完成ボーナス</div>
+            ${renderCompletionList(bookId)}
+          </div>
+          <div style="color:#ffd070; font-weight:bold; font-size:11.5px;">累計効果</div>
+          <pre class="mbook-effects" id="mbook-effects-${bookId}">${renderEffectsSummary(bookId, Lv)}</pre>
+        </div>
+      `;
+    }).join('');
+    root.innerHTML = cardHtml;
+    
+    for (const bookId of ['mb1','mb2','mb3']) {
+      const sel = $(`mbook-sel-${bookId}`);
+      if (!sel) continue;
+      sel.addEventListener('change', () => {
+        state[bookId] = Number(sel.value) || 0;
+        
+        renderCards();
+        if (typeof _onChange === 'function') _onChange();
+      });
+    }
+  }
+  function getCharacterLvForRender() {
+    
+    try {
+      const ch = (typeof readCharacter === 'function') ? readCharacter() : null;
+      if (ch && typeof getEffectiveLv === 'function') return getEffectiveLv(ch);
+      if (ch && ch.realLv) return Number(ch.realLv) || 1;
+    } catch (_) {}
+    return 1;
+  }
+
+  let _onChange = null;
+  function init(onChange) {
+    _onChange = onChange;
+    renderCards();
+  }
+  function getState() { return { ...state }; }
+  function setState(s) {
+    if (!s) return;
+    for (const k of ['mb1','mb2','mb3']) {
+      if (typeof s[k] === 'number') state[k] = s[k];
+    }
+    renderCards();
+  }
+  function reset() {
+    state.mb1 = 0; state.mb2 = 0; state.mb3 = 0;
+    renderCards();
+  }
+
+  return { init, applyToSTTemp, getState, setState, reset, DATA, _rerender: renderCards };
 })();
 
 
@@ -6667,10 +7361,16 @@ async function main() {
   bindTabBar();
   renderStoneCards();
   renderFlagList();
+  renderBadgeList();
   Titles.init(() => { recalcAll().catch((e) => console.warn('[Titles] recalc failed:', e)); });
   DragonBlessing.init(() => {
     
     recalcAll().catch((e) => console.warn('[DragonBlessing] recalc failed:', e));
+    scheduleAutosave();
+  });
+  MissionBook.init(() => {
+    
+    recalcAll().catch((e) => console.warn('[MissionBook] recalc failed:', e));
     scheduleAutosave();
   });
   DamageCalc.init();
