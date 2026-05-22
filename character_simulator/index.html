@@ -657,7 +657,7 @@
     .item-detail-popup .idp-op.is-job-mismatch { color: #888; text-decoration: line-through; }
     
     .item-detail-popup .idp-op .idp-nx-label { color: #c080ff; font-size: 10px; }
-    .item-detail-popup .idp-op .idp-ui-label { color: #00ffff; font-size: 10px; }
+    .item-detail-popup .idp-op .idp-ui-label { color: #7ed87e; font-size: 10px; }
     .item-detail-popup .idp-desc {
       color: #fff; font-style: normal; font-size: 12px;
       padding: 0 0 0 4px; white-space: pre-wrap;
@@ -1671,6 +1671,43 @@
                   </tr>
                   <tr class="row-sep"><td colspan="7"></td></tr>
 
+                  
+                  <tr id="ult-panel-row" style="display:none">
+                    <td colspan="7">
+                      <div id="ult-panel" style="border:1px solid #4f6f3a; background:#1d2418; padding:6px; border-radius:3px">
+                        <div class="tdtext" style="color:#cbe79b; font-size:11.5px; padding-bottom:4px">
+                          <b>ULT 深緑シリーズ (ウポス補助武器)</b>
+                          <span style="color:#9aa68b">— ベース 3 OP は Lv 自動算出。 OP1/2/3 は通常 OP として併用可</span>
+                        </div>
+                        <table class="form-table" style="width:100%"><tbody>
+                          <tr>
+                            <td class="tdtext" style="width:80px">ULT Lv</td>
+                            <td>
+                              <select id="ult-lv" class="select" style="width:80px">
+                                
+                              </select>
+                              <span id="ult-lv-info" class="tdtext" style="color:#9aa68b; padding-left:6px; font-size:11px"></span>
+                            </td>
+                          </tr>
+                          <tr class="row-sep"><td colspan="2"></td></tr>
+                          <tr>
+                            <td class="tdtext">ベース OP1</td>
+                            <td><select id="ult-base-0" class="select" data-ult-slot="0" style="width:100%"></select></td>
+                          </tr>
+                          <tr>
+                            <td class="tdtext">ベース OP2</td>
+                            <td><select id="ult-base-1" class="select" data-ult-slot="1" style="width:100%"></select></td>
+                          </tr>
+                          <tr>
+                            <td class="tdtext">ベース OP3</td>
+                            <td><select id="ult-base-2" class="select" data-ult-slot="2" style="width:100%"></select></td>
+                          </tr>
+                        </tbody></table>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="row-sep"><td colspan="7"></td></tr>
+
                   <tr>
                     <td colspan="2">
                       <label class="tdtext" style="cursor:pointer; padding-left:4px">
@@ -1692,6 +1729,15 @@
               <div class="light-panel">
                 <h4>装備フラグ</h4>
                 <div id="flag-list" class="flag-list"></div>
+              </div>
+
+              
+              <div class="light-panel">
+                <h4>セットオプション</h4>
+                
+                <div id="set-op-list" class="flag-list" style="grid-template-columns: 1fr;">
+                  <div class="tdtext" style="color:#9aa68b; font-size:11px">(装着中アイテムなし)</div>
+                </div>
               </div>
 
               
@@ -2150,6 +2196,21 @@ import {
   isUnlocked as stoneIsUnlocked,
   getSkillEffect as stoneGetSkillEffect,
 } from './lib/stone_effects.js';
+import {
+  BASE_OP_DEFS as ULT_BASE_OP_DEFS,
+  getBaseOpDef as ultGetBaseOpDef,
+  valueAtLv as ultValueAtLv,
+  unlockedBaseOpCount as ultUnlockedBaseOpCount,
+  availableOpsForLv as ultAvailableOpsForLv,
+  isUltDeepGreen,
+  buildBaseOpSlots as ultBuildBaseOpSlots,
+} from './lib/ult_deep_green.js';
+import {
+  SET_OP_DEFS,
+  getSetOpDef,
+  countSetOpsEquipped,
+  summarizeActiveSetOps,
+} from './lib/set_op_bonus.js';
 
 const loader = new DataLoader({ baseUrl: './lib/data' });
 setLoader(loader);
@@ -2230,6 +2291,9 @@ const formState = {
   daybreak: false,
   filterName: '',
   feasibleOnly: true,
+
+  ultLv: 1,
+  ultBaseOps: [null, null, null],
 };
 const INVENTORY_MAX = 84;  
 const inventory = new Inventory(INVENTORY_MAX);
@@ -2620,6 +2684,80 @@ function clearOp(idx) {
 }
 
 
+function refreshUltPanel() {
+  const row = $('ult-panel-row');
+  if (!row) return;
+  if (!isUltDeepGreen(formState.itemId)) {
+    row.style.display = 'none';
+    formState.ultBaseOps = [null, null, null];
+    return;
+  }
+  row.style.display = '';
+  
+  const lvSel = $('ult-lv');
+  if (lvSel) lvSel.value = String(formState.ultLv);
+  refreshUltBaseOpSelects();
+}
+
+function ensureUltLvSelectorPopulated() {
+  const sel = $('ult-lv');
+  if (!sel || sel.options.length > 0) return;
+  for (let lv = 1; lv <= 30; lv++) {
+    const o = document.createElement('option');
+    o.value = String(lv);
+    o.textContent = `Lv${lv}`;
+    sel.appendChild(o);
+  }
+  sel.value = String(formState.ultLv || 1);
+}
+
+
+function refreshUltBaseOpSelects() {
+  const ultLv = formState.ultLv;
+  const unlocked = ultUnlockedBaseOpCount(ultLv);
+  const info = $('ult-lv-info');
+  if (info) {
+    const remarks =
+      ultLv >= 15 ? '3 OP 全枠開放' :
+      ultLv >= 10 ? '2 OP 開放 (Lv15 で 3 OP 目)' :
+      '1 OP のみ (Lv10 で 2 OP 目, Lv15 で 3 OP 目)';
+    info.textContent = `[${remarks}]`;
+  }
+  for (let i = 0; i < 3; i++) {
+    const sel = $(`ult-base-${i}`);
+    if (!sel) continue;
+    
+    if (i >= unlocked) {
+      sel.innerHTML = '<option value="">(未開放)</option>';
+      sel.value = '';
+      sel.disabled = true;
+      formState.ultBaseOps[i] = null;
+      continue;
+    }
+    sel.disabled = false;
+    const opts = ['<option value="">(未選択)</option>'];
+
+    const list = ultAvailableOpsForLv(ultLv);
+    for (const d of list) {
+      const v = d.values[ultLv - 1];
+      if (v == null) continue;
+      const unit = d.unit || '';
+      const sign = (unit === '%' && v > 0) ? '+' : (v >= 0 ? '+' : '');
+      opts.push(`<option value="${esc(d.key)}">${esc(d.label)} (${sign}${v}${unit})</option>`);
+    }
+    sel.innerHTML = opts.join('');
+    
+    const cur = formState.ultBaseOps[i];
+    if (cur && list.find((d) => d.key === cur)) {
+      sel.value = cur;
+    } else {
+      sel.value = '';
+      formState.ultBaseOps[i] = null;
+    }
+  }
+}
+
+
 async function onMake() {
   if (formState.itemId === -1) { alert('アイテムを選択してください'); return; }
   const rec = await Item.get(formState.itemId);
@@ -2636,6 +2774,10 @@ async function onMake() {
       out.value = Number(o.value ?? 0);
     }
     if (o.jobIdx != null) out.jobIdx = Number(o.jobIdx);
+    
+    if (o.rowId != null) out.rowId = Number(o.rowId);
+    
+    if (o.name) out.name = String(o.name);
     return out;
   });
   const inv = makeItem({
@@ -2645,6 +2787,12 @@ async function onMake() {
     daybreak: formState.daybreak,
   }, rec);
   if (!inv) { alert('makeItem に失敗'); return; }
+  
+  if (isUltDeepGreen(rec)) {
+    inv.ultLv = formState.ultLv;
+    const slots = ultBuildBaseOpSlots(formState.ultLv, formState.ultBaseOps);
+    for (let i = 0; i < 3; i++) inv.customBaseOps[i] = slots[i];
+  }
   inventory.add(inv);
   selectedInv = { inv, item: rec };
   await recalcAll();
@@ -2825,6 +2973,15 @@ function buildItemDetailHtml(inv, rec, character) {
     const opHtml = formatOpText(tpl, args, [0,0,0,0]);
     html += `<span class="idp-op is-base">- ${opHtml}</span>`;
   }
+
+  function resolveOpTier(familyId, family, op) {
+    if (op && op.rowId != null && family && Array.isArray(family.tiers)) {
+      const t = family.tiers.find((tt) => Number(tt.id) === Number(op.rowId));
+      if (t) return t;
+    }
+    return OpPrefix.findTier(familyId, op?.value);
+  }
+
   
   for (const slot of (rec.opSlots || [])) {
     if (slot.slotKind === 'base') continue;
@@ -2835,6 +2992,7 @@ function buildItemDetailHtml(inv, rec, character) {
     const isJobSkill = (slot.familyId === 103);
     let text;
     let extraClass = '';
+    let tier = null;
     if (isJobSkill) {
 
       const targetName = (loader.master?.jobs?.[String(slot.jobIdx)]?.[1]) || '?';
@@ -2845,10 +3003,11 @@ function buildItemDetailHtml(inv, rec, character) {
       const baseEffect = family.firstTierEffect || family.tiers?.[0]?.effect || '';
       text = formatPrefixRatioEffect(baseEffect, slot.addValue ?? 0, slot.divisor ?? 1);
     } else {
-      const tier = OpPrefix.findTier(slot.familyId, slot.value);
+      tier = resolveOpTier(slot.familyId, family, slot);
       const effect = (tier && tier.effect) || family.firstTierEffect || '';
       text = formatPrefixEffect(effect, slot.value);
     }
+
     html += `<span class="idp-op ${isNx ? 'is-nx' : ''}${extraClass}">- ${text}${isNx ? ' <span class="idp-nx-label">[Nx]</span>' : ''}</span>`;
   }
   
@@ -2862,6 +3021,7 @@ function buildItemDetailHtml(inv, rec, character) {
       const isJobSkill = (op.familyId === 103);
       let text;
       let extraClass = '';
+      let tier = null;
       if (isJobSkill) {
         const targetName = (loader.master?.jobs?.[String(op.jobIdx)]?.[1]) || '?';
         const matched = (character && character.job === op.jobIdx);
@@ -2871,11 +3031,38 @@ function buildItemDetailHtml(inv, rec, character) {
         const baseEffect = family.firstTierEffect || family.tiers?.[0]?.effect || '';
         text = formatPrefixRatioEffect(baseEffect, op.addValue ?? 0, op.divisor ?? 1);
       } else {
-        const tier = OpPrefix.findTier(op.familyId, op.value);
+        tier = resolveOpTier(op.familyId, family, op);
         const effect = (tier && tier.effect) || family.firstTierEffect || '';
         text = formatPrefixEffect(effect, op.value);
       }
+
       html += `<span class="idp-op is-ui${extraClass}">+ ${text} <span class="idp-ui-label">[OP${i + 1}]</span></span>`;
+      
+      const setDef = (op.rowId != null) ? getSetOpDef(op.rowId) : null;
+      if (setDef) {
+        const tierLines = setDef.tiers.map((t) => `[${t.count}] ${esc(t.effects.map((e) => {
+          const tgt = (Array.isArray(e.stats) && e.stats.length) ? `${e.stats.length} 属性` : (e.statId || '?');
+          const sign = (e.value > 0) ? '+' : '';
+          return `${tgt} ${sign}${e.value}${e.displayOnly ? '※' : ''}`;
+        }).join(' / '))}`).join('  ');
+        html += `<span class="idp-op" style="margin-left:24px; color:#bcd9ff; font-size:11px">${esc(setDef.name)} — ${tierLines}</span>`;
+      }
+    }
+  }
+
+  
+  if (inv && inv.ultLv != null && Array.isArray(inv.customBaseOps)) {
+    html += `<div class="idp-section-title" style="color:#cbe79b">&lt;ULT 深緑 Lv ${inv.ultLv}&gt;</div>`;
+    for (let i = 0; i < 3; i++) {
+      const slot = inv.customBaseOps[i];
+      if (!slot) continue;
+      const def = slot.ultKey ? ultGetBaseOpDef(slot.ultKey) : null;
+      const label = def ? def.label : (slot.familyId != null ? `family#${slot.familyId}` : (slot.opId != null ? `op#${slot.opId}` : '?'));
+      const v = (slot.value != null) ? slot.value : (Array.isArray(slot.vals) ? slot.vals[0] : null);
+      const unit = def && def.unit ? def.unit : '';
+      const sign = (v != null && v >= 0) ? '+' : '';
+      const valTxt = (v != null) ? `${sign}${v}${unit}` : '?';
+      html += `<span class="idp-op is-base" style="border-left:2px solid #5a8f3a; padding-left:4px">- ${esc(label)} <span style="color:#ffff00">${esc(valTxt)}</span> <span class="idp-ui-label">[ベース${i + 1}]</span></span>`;
     }
   }
 
@@ -3737,6 +3924,8 @@ async function recalcAll() {
   await renderInventoryGrid();
   await renderEquipSlots();
   updateEquipmentFlags(equipped, f.equipped);
+  
+  renderSetOpList(equipped);
 
   
   hideItemDetailPopup();
@@ -3829,8 +4018,26 @@ function bindEvents() {
     formState.feasibleOnly = e.target.checked;
     refreshItemList();
   });
-  $('sel-item').addEventListener('change', (e) => { formState.itemId = Number(e.target.value); });
+  $('sel-item').addEventListener('change', (e) => {
+    formState.itemId = Number(e.target.value);
+    refreshUltPanel();
+  });
   $('sel-item').addEventListener('dblclick', () => { if (formState.itemId !== -1) onMake(); });
+
+  
+  ensureUltLvSelectorPopulated();
+  $('ult-lv').addEventListener('change', (e) => {
+    formState.ultLv = Math.max(1, Math.min(30, Number(e.target.value) || 1));
+    refreshUltBaseOpSelects();
+  });
+  for (let i = 0; i < 3; i++) {
+    const sel = $(`ult-base-${i}`);
+    if (!sel) continue;
+    sel.addEventListener('change', (e) => {
+      const key = e.target.value || '';
+      formState.ultBaseOps[Number(sel.getAttribute('data-ult-slot'))] = key || null;
+    });
+  }
 
   
   const opSearchDebounce = { 0: null, 1: null, 2: null };
@@ -3864,9 +4071,12 @@ function bindEvents() {
   $('btn-clear-all').addEventListener('click', () => {
     Object.assign(formState, { itemId: -1, filterName: '', daybreak: false });
     formState.ops = [{familyId:-1,value:0},{familyId:-1,value:0},{familyId:-1,value:0}];
+    formState.ultLv = 1;
+    formState.ultBaseOps = [null, null, null];
     $('filter-name').value = '';
     $('chk-daybreak').checked = false;
     for (let i = 0; i < 3; i++) clearOp(i);
+    refreshUltPanel();
     refreshItemList();
   });
 
@@ -4032,6 +4242,8 @@ async function loadSnapshot(data, sourceLabel) {
           if (o.addValue != null) payload.addValue = o.addValue;
           if (o.divisor  != null) payload.divisor  = o.divisor;
           if (o.jobIdx   != null) payload.jobIdx   = o.jobIdx;
+          if (o.rowId    != null) payload.rowId    = o.rowId;
+          if (o.name     != null) payload.name     = o.name;
           return payload;
         }
         return null;
@@ -4041,6 +4253,23 @@ async function loadSnapshot(data, sourceLabel) {
       daybreak: !!entry.daybreak,
     }, rec);
     if (!inv) continue;
+
+    if (entry.ultLv != null) inv.ultLv = Number(entry.ultLv);
+    if (Array.isArray(entry.customBaseOps)) {
+      for (let k = 0; k < 3; k++) {
+        const saved = entry.customBaseOps[k];
+        if (!saved) { inv.customBaseOps[k] = null; continue; }
+        if (saved.ultKey && inv.ultLv) {
+          
+          const slots = ultBuildBaseOpSlots(inv.ultLv, [saved.ultKey, null, null]);
+          inv.customBaseOps[k] = slots[0];
+        } else if (saved.familyId != null && saved.value != null) {
+          inv.customBaseOps[k] = { familyId: saved.familyId, value: saved.value, source: 'ult.base' };
+        } else if (saved.opId != null && Array.isArray(saved.vals)) {
+          inv.customBaseOps[k] = { opId: saved.opId, vals: saved.vals.slice(), source: 'ult.base' };
+        }
+      }
+    }
     inventory.add(inv);
     
     if (entry.equippedSlot) inv.equippedSlot = entry.equippedSlot;
@@ -4098,6 +4327,41 @@ function renderFlagList() {
       `<span class="flag-value">False</span>`;
     root.appendChild(row);
   }
+}
+
+
+function renderSetOpList(equippedList) {
+  const root = $('set-op-list');
+  if (!root) return;
+  let counts = new Map();
+  try {
+    counts = countSetOpsEquipped(equippedList || []);
+  } catch (err) {
+    console.warn('[renderSetOpList] countSetOpsEquipped failed:', err);
+  }
+  const summary = summarizeActiveSetOps(counts);
+  if (summary.length === 0) {
+    root.innerHTML = '<div class="tdtext" style="color:#9aa68b; font-size:11px">(セットオプション未装着)</div>';
+    return;
+  }
+  const rows = [];
+  for (const s of summary) {
+    const isActive = s.activeTier != null;
+    const gradeTxt = (s.def.grade === 'rare') ? '上級' : '一般';
+    
+    const stageTxt = isActive ? `${s.activeTier.count}段` : '未発動';
+    const nextTxt  = s.nextTier ? ` → ${s.nextTier.count}段` : '';
+    const stageColor = isActive ? '#a8e6a8' : '#d8a743';
+    rows.push(
+      
+      `<div class="flag-row" style="display:flex; align-items:center; padding:1px 4px; gap:6px; flex-wrap:nowrap; white-space:nowrap;${isActive ? '' : ' opacity:0.6;'}">` +
+        `<span class="flag-name" style="min-width:88px; flex:0 0 auto">${esc(s.def.name)}</span>` +
+        `<span class="tdtext" style="color:#9aa68b; flex:0 0 auto">${esc(gradeTxt)}</span>` +
+        `<span class="tdtext" style="color:${stageColor}; flex:1 1 auto">×${s.count} ${esc(stageTxt)}${esc(nextTxt)}</span>` +
+      `</div>`
+    );
+  }
+  root.innerHTML = rows.join('');
 }
 
 

@@ -6,6 +6,7 @@ import { newSTTemp } from './sttemp.js';
 import { aggregateAllOpsForItem } from './op_calc.js';
 import { PRIMARY_STAT_IDS, getEffectiveLv } from './character.js';
 import { countSetEquipped, applySetBonusesToSTTemp } from './set_bonus.js';
+import { countSetOpsEquipped, applySetOpsToSTTemp } from './set_op_bonus.js';
 import { updateEquipmentMetadata } from './equipment_meta.js';
 import { finalizeStats } from './stat_finalizer.js';
 import { applyStonesToSTTemp } from './stone_effects.js';
@@ -38,6 +39,13 @@ export async function aggregateForCharacter(character, equippedItems, opts = {})
     }
     const counts = countSetEquipped(resolved.filter(({ inv }) => inv.equippedSlot != null));
     applySetBonusesToSTTemp(STTemp, counts, LvTemp0);
+
+    try {
+      const opCounts0 = countSetOpsEquipped(resolved.filter(({ inv }) => inv.equippedSlot != null));
+      applySetOpsToSTTemp(STTemp, opCounts0);
+    } catch (err) {
+      console.warn('[aggregator] set OP application failed (validate=false):', err);
+    }
     applyStonesToSTTemp(STTemp, character.stones);
     return STTemp;
   }
@@ -59,6 +67,15 @@ export async function aggregateForCharacter(character, equippedItems, opts = {})
       resolved.map(({ inv, item }) => ({ inv: { ...inv, equippedSlot: '__pending__' }, item }))
     );
     applySetBonusesToSTTemp(maxT, counts0, LvTemp);
+    
+    try {
+      const opCounts0 = countSetOpsEquipped(
+        resolved.map(({ inv, item }) => ({ inv: { ...inv, equippedSlot: '__pending__' }, item }))
+      );
+      applySetOpsToSTTemp(maxT, opCounts0);
+    } catch (err) {
+      console.warn('[aggregator] set OP application failed (maxEquipped pre-pass):', err);
+    }
     applyStonesToSTTemp(maxT, c.stones);
     const maxF = finalizeStats(maxT);
     c.stats.maxEquipped = maxF.equipped;
@@ -84,6 +101,13 @@ export async function aggregateForCharacter(character, equippedItems, opts = {})
     }
     const counts = countSetEquipped(resolved.filter(({ inv }) => inv.equippedSlot != null));
     applySetBonusesToSTTemp(STTemp, counts, LvTemp);
+    
+    try {
+      const opCounts = countSetOpsEquipped(resolved.filter(({ inv }) => inv.equippedSlot != null));
+      applySetOpsToSTTemp(STTemp, opCounts);
+    } catch (err) {
+      console.warn('[aggregator] set OP application failed (Pass 2):', err);
+    }
     applyStonesToSTTemp(STTemp, c.stones);
 
     

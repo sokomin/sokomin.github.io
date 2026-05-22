@@ -33,6 +33,30 @@ export function getLayerAggregation(layer, statId) {
 export function calcOpValue(opOrSlot, inv, source, LvTemp, character) {
 
   
+  
+  if (opOrSlot.statId && opOrSlot.familyId == null && opOrSlot.opId == null) {
+    if (opOrSlot.isDisplayOnly) {
+      return { value: 0, constant: 0, statId: opOrSlot.statId, layer: 'sum',
+               multiplier: 1, isDisplayOnly: true, source };
+    }
+    return {
+      value:         numOrZero(opOrSlot.value),
+      constant:      0,
+      statId:        opOrSlot.statId,
+      layer:         opOrSlot.statLayer || 'sum',
+      multiplier:    1,
+      isDisplayOnly: false,
+      source,
+    };
+  }
+  
+  if (opOrSlot.isDisplayOnly && opOrSlot.familyId == null && opOrSlot.opId == null) {
+    return { value: 0, constant: 0, statId: null, layer: 'sum',
+             multiplier: 1, isDisplayOnly: true, source };
+  }
+
+
+  
   if (opOrSlot.familyId === 103) {
     const targetJob = opOrSlot.jobIdx;
     const charJob = character ? character.job : null;

@@ -52,6 +52,11 @@ export function makeItem(state, itemRecord, opts = {}) {
           slot.value = numOrZero(e.value);
         }
         if (e.jobIdx != null) slot.jobIdx = Number(e.jobIdx);
+
+        
+        if (e.rowId != null) slot.rowId = Number(e.rowId);
+        
+        if (e.name) slot.name = String(e.name);
         inv.ops[k] = slot;
       }
     }

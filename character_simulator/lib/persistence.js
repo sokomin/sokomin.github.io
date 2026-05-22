@@ -21,7 +21,7 @@ function cloneStones(stones) {
 export function serializeSession(character, inventory, opts = {}) {
   const invArr = [];
   for (const inv of inventory.items()) {
-    invArr.push({
+    const entry = {
       slotIndex:          inv.slotIndex,
       itemId:             inv.itemId,
       revisions:          [...(inv.revisions || [null, null, null])],
@@ -34,12 +34,29 @@ export function serializeSession(character, inventory, opts = {}) {
         divisor:   o.divisor   ?? null,
         jobIdx:    o.jobIdx    ?? null,
         
+        rowId:     o.rowId     ?? null,
+        
+        name:      o.name      ?? null,
+        
         opId:      o.opId      ?? null,
         revisions: [...(o.revisions || [0, 0, 0])],
       } : null),
       daybreak:     !!inv.daybreak,
       equippedSlot: inv.equippedSlot ?? null,
-    });
+    };
+
+    
+    if (inv.ultLv != null) entry.ultLv = inv.ultLv;
+    if (Array.isArray(inv.customBaseOps) && inv.customBaseOps.some((s) => s != null)) {
+      entry.customBaseOps = inv.customBaseOps.slice(0, 3).map((s) => s ? {
+        ultKey:   s.ultKey   ?? null,
+        familyId: s.familyId ?? null,
+        opId:     s.opId     ?? null,
+        value:    s.value    ?? null,
+        vals:     Array.isArray(s.vals) ? [...s.vals] : null,
+      } : null);
+    }
+    invArr.push(entry);
   }
   return {
     v:     SCHEMA_VERSION,
