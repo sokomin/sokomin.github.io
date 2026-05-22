@@ -1140,6 +1140,83 @@
     .mbook-note { color: #b0944c; font-size: 10.5px; line-height: 1.5; padding: 4px 6px; background:#1f1a08; border:1px solid #443823; }
 
     
+    .potential-tab-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      padding: 6px 8px;
+    }
+    .potential-control {
+      background: #1a1610; border: 1px solid #5b3d12;
+      padding: 6px 8px; color: #f4e7a2; font-size: 12px;
+      display: grid; grid-template-columns: 80px 1fr 90px 80px; gap: 8px;
+      align-items: center;
+    }
+    .potential-control label { color: #ffd070; font-weight: bold; }
+    .potential-control input[type="range"] { width: 100%; }
+    .potential-control input[type="number"] {
+      background: #120c04; color: #f8f000; border: 1px solid #8b6a28;
+      font: inherit; padding: 1px 4px; text-align: right;
+      font-family: "Consolas", monospace; width: 100%; box-sizing: border-box;
+    }
+    .potential-control .potential-stage-value { color: #00ff66; font-family: "Consolas", monospace; font-weight: bold; }
+    .potential-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 8px;
+    }
+    .potential-panel {
+      background: #1a1610; border: 1px solid #5b3d12;
+      padding: 6px 8px; color: #f4e7a2; font-size: 12px;
+    }
+    .potential-panel h4 {
+      margin: 0 0 4px 0; padding: 0 0 4px 0;
+      color: #ffd070; border-bottom: 1px solid #5b3d12; font-size: 13px;
+    }
+    .potential-effects-table {
+      width: 100%; border-collapse: collapse;
+      font-size: 11px; color: #f4e7a2;
+      font-family: "MS PGothic", "Meiryo", sans-serif;
+    }
+    .potential-effects-table th, .potential-effects-table td {
+      padding: 2px 4px; border-bottom: 1px dotted #443823;
+      vertical-align: top;
+    }
+    .potential-effects-table thead th {
+      color: #ffd070; background: #120c04;
+      border-bottom: 1px solid #5b3d12; text-align: left;
+      position: sticky; top: 0;
+    }
+    .potential-effects-table tbody tr.is-off { color: #5a4a25; }
+    .potential-effects-table tbody tr.is-off td { color: #5a4a25; }
+    .potential-effects-table tbody tr.is-on td.col-name { color: #ffd070; }
+    .potential-effects-table tbody tr.is-on td.col-effect { color: #00ff66; }
+    .potential-effects-table td.col-no { text-align: right; width: 28px; font-family: "Consolas", monospace; }
+    .potential-effects-table td.col-bg { width: 28px; text-align: center; }
+    .potential-effects-table td.col-gauge { text-align: right; width: 36px; font-family: "Consolas", monospace; }
+    .potential-bg-gray   { color: #b0b0b0; }
+    .potential-bg-green  { color: #6cc270; }
+    .potential-bg-blue   { color: #6ea8d8; }
+    .potential-bg-purple { color: #c08be0; }
+    .potential-bg-gold   { color: #f0c060; }
+    .potential-effects-scroll {
+      max-height: 540px; overflow-y: auto;
+      border: 1px solid #443823; background: #0b0904;
+    }
+    .potential-summary {
+      margin: 0; padding: 4px 8px;
+      background: #120c04; border: 1px solid #443823;
+      color: #00ff66; font-size: 11px; font-family: "Consolas", monospace;
+      max-height: 540px; overflow-y: auto;
+      white-space: pre-wrap; line-height: 1.5;
+    }
+    .potential-summary-empty { color: #6e5a2a; }
+    .potential-note {
+      color: #b0944c; font-size: 10.5px; line-height: 1.5;
+      padding: 4px 6px; background: #1f1a08; border: 1px solid #443823;
+    }
+
+    
     .dragon-tab-layout {
       display: grid;
       grid-template-columns: 1fr;
@@ -1563,6 +1640,7 @@
             <button type="button" class="sim-tab-btn"           data-tab-btn="dragon"   role="tab">古龍の祝福</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="title"    role="tab">称号</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="mbook"    role="tab">ミッションブック</button>
+            <button type="button" class="sim-tab-btn"           data-tab-btn="potential" role="tab">潜在能力</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="damage"   role="tab">ダメージ計算</button>
           </nav>
 
@@ -2001,6 +2079,36 @@
                 
               </div>
               
+            </div>
+          </div>
+
+          
+          
+          <div class="tab-pane" data-tab="potential">
+            <div class="potential-tab-layout">
+              <div class="potential-control">
+                <label for="potential-stage-range">段階</label>
+                <input type="range" id="potential-stage-range" min="0" max="82" step="1" value="0">
+                <input type="number" id="potential-stage-num" min="0" max="82" step="1" value="0">
+                <span class="potential-stage-value"><span id="potential-stage-display">0</span> / 82</span>
+              </div>
+              <div class="potential-grid">
+                <div class="potential-panel">
+                  <h4>効果一覧</h4>
+                  <div class="potential-effects-scroll">
+                    <table class="potential-effects-table" id="potential-effects-table">
+                      <thead>
+                        <tr><th class="col-no">段階</th><th class="col-bg">グレード</th><th class="col-gauge">ゲージ</th><th class="col-name">効果名</th><th class="col-effect">上昇量</th></tr>
+                      </thead>
+                      <tbody id="potential-effects-tbody"></tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="potential-panel">
+                  <h4>累計効果 (<span id="potential-effects-stage">0</span>段階)</h4>
+                  <pre class="potential-summary" id="potential-summary"></pre>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -3537,6 +3645,8 @@ async function recalcAll() {
 
   MissionBook.applyToSTTemp(T, getEffectiveLv(ch));
 
+  Potential.applyToSTTemp(T);
+
   await applyBadgesToSTTemp(T, getEffectiveLv(ch), ch);
   
   applyJobPassivesToSTTemp(T, ch);
@@ -3631,6 +3741,8 @@ async function recalcAll() {
 
   
   const titleBonus = Titles.computeBonus();
+  
+  const potentialBonus = Potential.computeLimitBreakBonus();
   const dragonBonus = DragonBlessing.computeBonus({
     str: Number(f.equipped.str) || Number(ch.stats.base.str) || 0,
     agi: Number(f.equipped.agi) || Number(ch.stats.base.agi) || 0,
@@ -3641,10 +3753,10 @@ async function recalcAll() {
     luc: Number(f.equipped.luc) || Number(ch.stats.base.luc) || 0,
   });
 
-  const lbPhysFlat   = (f.equipped.limitBreakPhysFlat    || 0) + (sideSum.limitBreak.physFlat    || 0) + titleBonus.physFlat  + dragonBonus.limitBreakPhysFlat;
-  const lbPhysPct    = (f.equipped.limitBreakPhysPercent || 0) + (sideSum.limitBreak.physPercent || 0) + titleBonus.physPct;
-  const lbMagicFlat  = (f.equipped.limitBreakMagicFlat   || 0) + (sideSum.limitBreak.magicFlat   || 0) + titleBonus.magicFlat + dragonBonus.limitBreakMagicFlat;
-  const lbMagicPct   = (f.equipped.limitBreakMagicPercent|| 0) + (sideSum.limitBreak.magicPercent|| 0) + titleBonus.magicPct;
+  const lbPhysFlat   = (f.equipped.limitBreakPhysFlat    || 0) + (sideSum.limitBreak.physFlat    || 0) + titleBonus.physFlat  + dragonBonus.limitBreakPhysFlat  + potentialBonus.physFlat;
+  const lbPhysPct    = (f.equipped.limitBreakPhysPercent || 0) + (sideSum.limitBreak.physPercent || 0) + titleBonus.physPct                                   + potentialBonus.physPct;
+  const lbMagicFlat  = (f.equipped.limitBreakMagicFlat   || 0) + (sideSum.limitBreak.magicFlat   || 0) + titleBonus.magicFlat + dragonBonus.limitBreakMagicFlat + potentialBonus.magicFlat;
+  const lbMagicPct   = (f.equipped.limitBreakMagicPercent|| 0) + (sideSum.limitBreak.magicPercent|| 0) + titleBonus.magicPct                                  + potentialBonus.magicPct;
   setDetailFlat('dt-phys-limit-flat',          lbPhysFlat);
   setDetailPercent('dt-phys-limit-percent',    lbPhysPct);
   setDetailFlat('dt-magic-limit-flat',         lbMagicFlat);
@@ -4162,6 +4274,8 @@ function buildSnapshot() {
   
   snap.missionBook = MissionBook.getState();
   
+  snap.potential = Potential.getState();
+  
   snap.badges = { ...badgeState };
   return snap;
 }
@@ -4203,6 +4317,10 @@ async function loadSnapshot(data, sourceLabel) {
   
   if (data.missionBook) MissionBook.setState(data.missionBook);
   else MissionBook.reset();
+
+  
+  if (data.potential) Potential.setState(data.potential);
+  else Potential.reset();
 
   
   loadBadgeState(data.badges);
@@ -5890,6 +6008,8 @@ function bindSessionEvents() {
     
     MissionBook.reset();
     
+    Potential.reset();
+    
     resetBadgeState();
     await recalcAll();
     await refreshItemList();
@@ -6925,6 +7045,252 @@ const MissionBook = (() => {
 })();
 
 
+const Potential = (() => {
+
+  
+
+  const EFFECTS = [
+    { no:1,  bg:'灰', gauge:3, name:'攻撃速度増加',                          effectText:'攻撃速度 1% 増加',                        action:'sum', stat:'atkspd',           amount:1 },
+    { no:2,  bg:'灰', gauge:5, name:'火属性抵抗増加',                        effectText:'火属性抵抗 1% 増加',                      action:'sum', stat:'attrFireResist',   amount:1 },
+    { no:3,  bg:'灰', gauge:5, name:'移動速度増加',                          effectText:'移動速度 1% 増加',                        action:'sum', stat:'mvspd',            amount:1 },
+    { no:4,  bg:'灰', gauge:5, name:'水属性抵抗増加',                        effectText:'水属性抵抗 1% 増加',                      action:'sum', stat:'attrWaterResist',  amount:1 },
+    { no:5,  bg:'灰', gauge:5, name:'経験値獲得ボーナス',                    effectText:'(Lv2000未満) 経験値 1% 増加',             action:'sum', stat:'expBonus',         amount:1 },
+    { no:6,  bg:'灰', gauge:5, name:'ポーション回復速度増加',                effectText:'ポーション 回復速度 2% 増加',             action:'sum', stat:'potionHeal',       amount:2 },
+    { no:7,  bg:'灰', gauge:5, name:'風属性抵抗増加',                        effectText:'風属性抵抗 1% 増加',                      action:'sum', stat:'attrWindResist',   amount:1 },
+    { no:8,  bg:'灰', gauge:5, name:'防御力 % 増加',                          effectText:'防御力 2% 増加',                          action:'sum', stat:'defPercent',       amount:2 },
+    { no:9,  bg:'灰', gauge:5, name:'大地属性抵抗増加',                      effectText:'大地属性抵抗 1% 増加',                    action:'sum', stat:'attrEarthResist',  amount:1 },
+    { no:10, bg:'灰', gauge:5, name:'アイテムドロップ率増加',                effectText:'アイテムドロップ率 1% 増加',              action:'sum', stat:'mfDrop',           amount:1 },
+    { no:11, bg:'緑', gauge:2, name:'物理限界ダメージ突破',                  effectText:'限界突破称号の物理効果 +300',             action:'lbPhysFlat', amount:300 },
+    { no:12, bg:'緑', gauge:2, name:'魔法限界ダメージ % 突破',                effectText:'限界突破称号の魔法効果 +1%',              action:'lbMagicPct', amount:1 },
+    { no:13, bg:'灰', gauge:5, name:'闇属性抵抗増加',                        effectText:'闇属性抵抗 1% 増加',                      action:'sum', stat:'attrDarkResist',   amount:1 },
+    { no:14, bg:'灰', gauge:5, name:'最大HP % 増加',                           effectText:'最大HP 1% 増加',                          action:'sum', stat:'hpPercent',        amount:1 },
+    { no:15, bg:'灰', gauge:5, name:'光属性抵抗増加',                        effectText:'光属性抵抗 1% 増加',                      action:'sum', stat:'attrLightResist',  amount:1 },
+    { no:16, bg:'灰', gauge:5, name:'物理ダメージ増加',                      effectText:'物理ダメージ 2% 増加',                    action:'sum', stat:'physDamagePercent',amount:2 },
+    { no:17, bg:'緑', gauge:5, name:'火属性抵抗増加II',                      effectText:'火属性抵抗 1% 増加',                      action:'sum', stat:'attrFireResist',   amount:1 },
+    { no:18, bg:'緑', gauge:5, name:'魔法ダメージ増加',                      effectText:'魔法ダメージ 1% 強化',                    action:'sum', stat:'attrMagic',        amount:1 },
+    { no:19, bg:'緑', gauge:3, name:'命中率増加',                            effectText:'命中率 1% 増加',                          action:'sum', stat:'hit',              amount:1 },
+    { no:20, bg:'緑', gauge:5, name:'水属性抵抗増加II',                      effectText:'水属性抵抗 1% 増加',                      action:'sum', stat:'attrWaterResist',  amount:1 },
+    { no:21, bg:'灰', gauge:5, name:'最大CP % 増加',                          effectText:'最大CP 1% 増加',                          action:'sum', stat:'cpPercent',        amount:1 },
+    { no:22, bg:'緑', gauge:5, name:'風属性抵抗増加II',                      effectText:'風属性抵抗 1% 増加',                      action:'sum', stat:'attrWindResist',   amount:1 },
+    { no:23, bg:'緑', gauge:5, name:'移動速度増加II',                        effectText:'移動速度 1% 増加',                        action:'sum', stat:'mvspd',            amount:1 },
+    { no:24, bg:'緑', gauge:5, name:'大地属性抵抗増加II',                    effectText:'大地属性抵抗 1% 増加',                    action:'sum', stat:'attrEarthResist',  amount:1 },
+    { no:25, bg:'青', gauge:2, name:'物理致命打発動確率増加',                effectText:'物理致命打発動確率 1% 増加',              action:'sum', stat:'physCritRate',     amount:1 },
+    { no:26, bg:'青', gauge:2, name:'スキル使用時消耗CP減少',                effectText:'スキル使用時消耗 1% CP減少',              action:'skip' },
+    { no:27, bg:'緑', gauge:5, name:'闇属性抵抗増加II',                      effectText:'闇属性抵抗 1% 増加',                      action:'sum', stat:'attrDarkResist',   amount:1 },
+    { no:28, bg:'緑', gauge:3, name:'物理クリティカルダメージ増加',          effectText:'物理致命打ダメージ 1% 増加',              action:'sum', stat:'physCritDamage',   amount:1 },
+    { no:29, bg:'緑', gauge:5, name:'光属性抵抗増加II',                      effectText:'光属性抵抗 1% 増加',                      action:'sum', stat:'attrLightResist',  amount:1 },
+    { no:30, bg:'青', gauge:2, name:'魔法致命打発動確率増加',                effectText:'魔法致命打発動確率 1% 増加',              action:'sum', stat:'magicCritRate',    amount:1 },
+    { no:31, bg:'緑', gauge:4, name:'CP獲得ボーナス増加',                    effectText:'CP獲得ボーナス 1% 増加',                  action:'skip' },
+    { no:32, bg:'緑', gauge:8, name:'火属性ダメージ強化',                    effectText:'火属性ダメージ 1% 強化',                  action:'sum', stat:'attrFire',         amount:1 },
+    { no:33, bg:'青', gauge:2, name:'敵物理クリティカル抵抗減少',            effectText:'敵物理致命打抵抗 1% 減少',                action:'sum', stat:'enemyPhysCritResistReduce', amount:1 },
+    { no:34, bg:'緑', gauge:2, name:'すべての状態異常抵抗増加',              effectText:'すべての状態異常 抵抗 2% 増加',           action:'sum', stat:'statusResist',     amount:2 },
+    { no:35, bg:'緑', gauge:8, name:'水属性ダメージ強化',                    effectText:'水属性ダメージ 1% 強化',                  action:'sum', stat:'attrWater',        amount:1 },
+    { no:36, bg:'青', gauge:4, name:'vs 悪魔型キャラの物理ダメージ増加',      effectText:'vs 悪魔型 物理ダメージ 2% 増加',          action:'sum', stat:'vsDemonPhys',      amount:2 },
+    { no:37, bg:'青', gauge:4, name:'vs 悪魔型キャラの魔法ダメージ増加',      effectText:'vs 悪魔型 魔法ダメージ 2% 増加',          action:'sum', stat:'vsDemonMagic',     amount:2 },
+    { no:38, bg:'緑', gauge:8, name:'風属性ダメージ強化',                    effectText:'風属性ダメージ 1% 強化',                  action:'sum', stat:'attrWind',         amount:1 },
+    { no:39, bg:'青', gauge:4, name:'vs 神獣型キャラの物理ダメージ増加',      effectText:'vs 神獣型 物理ダメージ 2% 増加',          action:'sum', stat:'vsDeityPhys',      amount:2 },
+    { no:40, bg:'青', gauge:4, name:'vs 神獣型キャラの魔法ダメージ増加',      effectText:'vs 神獣型 魔法ダメージ 2% 増加',          action:'sum', stat:'vsDeityMagic',     amount:2 },
+    { no:41, bg:'緑', gauge:3, name:'攻撃速度増加II',                        effectText:'攻撃速度 1% 増加',                        action:'sum', stat:'atkspd',           amount:1 },
+    { no:42, bg:'青', gauge:4, name:'vs アンデッド型 物理ダメージ増加',       effectText:'vs アンデッド 物理ダメージ 2% 増加',      action:'sum', stat:'vsUndeadPhys',     amount:2 },
+    { no:43, bg:'青', gauge:4, name:'vs アンデッド型 魔法ダメージ増加',       effectText:'vs アンデッド 魔法ダメージ 2% 増加',      action:'sum', stat:'vsUndeadMagic',    amount:2 },
+    { no:44, bg:'緑', gauge:3, name:'全てのスキルレベル増加',                effectText:'全てのスキルレベル +1',                   action:'sum', stat:'skillLv',          amount:1 },
+    { no:45, bg:'青', gauge:3, name:'物理限界ダメージ突破II',                effectText:'限界突破称号の物理効果 +300',             action:'lbPhysFlat', amount:300 },
+    { no:46, bg:'青', gauge:3, name:'魔法限界ダメージ % 突破II',              effectText:'限界突破称号の魔法効果 +1%',              action:'lbMagicPct', amount:1 },
+    { no:47, bg:'緑', gauge:8, name:'大地属性ダメージ強化',                  effectText:'大地属性ダメージ 1% 強化',                action:'sum', stat:'attrEarth',        amount:1 },
+    { no:48, bg:'緑', gauge:5, name:'最大CP % 増加II',                        effectText:'最大CP 1% 増加',                          action:'sum', stat:'cpPercent',        amount:1 },
+    { no:49, bg:'緑', gauge:8, name:'闇属性ダメージ強化',                    effectText:'闇属性ダメージ 1% 強化',                  action:'sum', stat:'attrDark',         amount:1 },
+    { no:50, bg:'青', gauge:3, name:'命中率増加II',                          effectText:'命中率 1% 増加',                          action:'sum', stat:'hit',              amount:1 },
+    { no:51, bg:'緑', gauge:4, name:'魔法ダメージ弱化',                      effectText:'ターゲットの魔法抵抗 1% 弱化',            action:'sum', stat:'attrMagicWeaken',  amount:1 },
+    { no:52, bg:'緑', gauge:4, name:'回避率増加',                            effectText:'物理回避率 1% 増加',                      action:'sum', stat:'eva',              amount:1 },
+    { no:53, bg:'緑', gauge:8, name:'光属性ダメージ強化',                    effectText:'光属性ダメージ 1% 強化',                  action:'sum', stat:'attrLight',        amount:1 },
+    { no:54, bg:'青', gauge:3, name:'物理致命打発動確率増加III',             effectText:'物理致命打発動確率 1% 増加',              action:'sum', stat:'physCritRate',     amount:1 },
+    { no:55, bg:'緑', gauge:5, name:'最大HP % 増加II',                         effectText:'最大HP 1% 増加',                          action:'sum', stat:'hpPercent',        amount:1 },
+    { no:56, bg:'緑', gauge:4, name:'火属性ダメージ弱化',                    effectText:'ターゲットの火抵抗 1% 弱化',              action:'sum', stat:'attrFireWeaken',   amount:1 },
+    { no:57, bg:'緑', gauge:5, name:'物理ダメージ増加II',                    effectText:'物理ダメージ 4% 増加',                    action:'sum', stat:'physDamagePercent',amount:4 },
+    { no:58, bg:'緑', gauge:4, name:'水属性ダメージ弱化',                    effectText:'ターゲットの水抵抗 1% 弱化',              action:'sum', stat:'attrWaterWeaken',  amount:1 },
+    { no:59, bg:'緑', gauge:3, name:'物理クリティカルダメージ増加II',        effectText:'物理致命打ダメージ 1% 増加',              action:'sum', stat:'physCritDamage',   amount:1 },
+    { no:60, bg:'緑', gauge:4, name:'風属性ダメージ弱化',                    effectText:'ターゲットの風抵抗 1% 弱化',              action:'sum', stat:'attrWindWeaken',   amount:1 },
+    { no:61, bg:'紫', gauge:3, name:'スキル使用時消耗CP減少II',              effectText:'スキル使用時消耗 1% CP減少',              action:'skip' },
+    { no:62, bg:'緑', gauge:4, name:'大地属性ダメージ弱化',                  effectText:'ターゲットの大地抵抗 1% 弱化',            action:'sum', stat:'attrEarthWeaken',  amount:1 },
+    { no:63, bg:'緑', gauge:5, name:'防御力 % 増加II',                         effectText:'防御力 3% 増加',                          action:'sum', stat:'defPercent',       amount:3 },
+    { no:64, bg:'緑', gauge:4, name:'闇属性ダメージ弱化',                    effectText:'ターゲットの闇抵抗 1% 弱化',              action:'sum', stat:'attrDarkWeaken',   amount:1 },
+    { no:65, bg:'青', gauge:5, name:'ポーション回復速度増加III',             effectText:'ポーション 回復速度 2% 増加',             action:'sum', stat:'potionHeal',       amount:2 },
+    { no:66, bg:'緑', gauge:4, name:'光属性ダメージ弱化',                    effectText:'ターゲットの光抵抗 1% 弱化',              action:'sum', stat:'attrLightWeaken',  amount:1 },
+    { no:67, bg:'青', gauge:4, name:'vs 動物型 物理ダメージ増加',            effectText:'vs 動物型 物理ダメージ 2% 増加',          action:'sum', stat:'vsAnimalPhys',     amount:2 },
+    { no:68, bg:'紫', gauge:5, name:'アイテムドロップ率増加II',              effectText:'アイテムドロップ率 1% 増加',              action:'sum', stat:'mfDrop',           amount:1 },
+    { no:69, bg:'青', gauge:4, name:'vs 動物型 魔法ダメージ増加',            effectText:'vs 動物型 魔法ダメージ 2% 増加',          action:'sum', stat:'vsAnimalMagic',    amount:2 },
+    { no:70, bg:'青', gauge:3, name:'敵物理致命打抵抗減少II',                effectText:'敵物理致命打抵抗 1% 減少',                action:'sum', stat:'enemyPhysCritResistReduce', amount:1 },
+    { no:71, bg:'青', gauge:4, name:'CP獲得ボーナス増加III',                 effectText:'CP獲得ボーナス 1% 増加',                  action:'skip' },
+    { no:72, bg:'青', gauge:5, name:'魔法ダメージ増加II',                    effectText:'魔法ダメージ 1% 強化',                    action:'sum', stat:'attrMagic',        amount:1 },
+    { no:73, bg:'青', gauge:3, name:'全てのスキルレベル増加II',              effectText:'全てのスキルレベル +1',                   action:'sum', stat:'skillLv',          amount:1 },
+    { no:74, bg:'紫', gauge:3, name:'魔法致命打発動確率増加III',             effectText:'魔法致命打発動確率 1% 増加',              action:'sum', stat:'magicCritRate',    amount:1 },
+    { no:75, bg:'紫', gauge:5, name:'経験値獲得ボーナスII',                  effectText:'(Lv2000未満) 経験値 1% 増加',             action:'sum', stat:'expBonus',         amount:1 },
+    { no:76, bg:'紫', gauge:4, name:'人間型キャラの魔法ダメージ増加',         effectText:'vs 人間型 魔法ダメージ 2% 増加',          action:'sum', stat:'vsHumanoidMagic',  amount:2 },
+    { no:77, bg:'紫', gauge:4, name:'物理ダブルクリティカルダメージ増加',     effectText:'ダブルクリティカルダメージ 2% 増加',      action:'sum', stat:'doubleCritDamage', amount:2 },
+    { no:78, bg:'紫', gauge:3, name:'魔法強打発動確率増加',                  effectText:'魔法強打発動確率 1% 増加',                action:'sum', stat:'magicStrongRate',  amount:1 },
+    { no:79, bg:'紫', gauge:4, name:'人間型キャラの物理ダメージ増加',         effectText:'vs 人間型 物理ダメージ 2% 増加',          action:'sum', stat:'vsHumanoidPhys',   amount:2 },
+    { no:80, bg:'金', gauge:3, name:'魔法限界ダメージ % 突破III',             effectText:'限界突破称号の魔法効果 +1%',              action:'lbMagicPct', amount:1 },
+    { no:81, bg:'金', gauge:3, name:'物理限界ダメージ % 突破III',             effectText:'限界突破称号の物理効果 +500',             action:'lbPhysFlat', amount:500 },
+    { no:82, bg:'金', gauge:3, name:'最終ダメージ増加',                      effectText:'最終攻撃力 1% 増加',                      action:'sum', stat:'finalDamagePercent', amount:1 },
+  ];
+
+  
+  const LABELS = {
+    str:'力', agi:'敏捷', con:'健康', int:'知識', wiz:'知恵', chs:'カリスマ', luc:'運',
+    hit:'命中率', eva:'回避率', atkspd:'攻撃速度', mvspd:'移動速度',
+    defPercent:'防御力%', finalDamagePercent:'最終ダメージ%',
+    physDamagePercent:'物理ダメージ%', attrMagic:'魔法ダメージ%',
+    hpPercent:'最大HP%', cpPercent:'最大CP%',
+    attrFireResist:'火属性抵抗', attrWaterResist:'水属性抵抗', attrWindResist:'風属性抵抗',
+    attrEarthResist:'大地属性抵抗', attrLightResist:'光属性抵抗', attrDarkResist:'闇属性抵抗',
+    attrFire:'火属性強化', attrWater:'水属性強化', attrWind:'風属性強化',
+    attrEarth:'大地属性強化', attrLight:'光属性強化', attrDark:'闇属性強化',
+    attrFireWeaken:'火属性弱化', attrWaterWeaken:'水属性弱化', attrWindWeaken:'風属性弱化',
+    attrEarthWeaken:'大地属性弱化', attrLightWeaken:'光属性弱化', attrDarkWeaken:'闇属性弱化',
+    attrMagicWeaken:'魔法弱化',
+    statusResist:'全状態異常抵抗', physCritRate:'物理致命打発動率',
+    physCritDamage:'物理致命打ダメージ%', doubleCritDamage:'ダブクリダメージ%',
+    magicCritRate:'魔法致命打発動率', magicStrongRate:'魔法強打発動率',
+    potionHeal:'ポーション回復速度', skillLv:'全スキルレベル',
+    vsDemonPhys:'vs 悪魔型 物理', vsDemonMagic:'vs 悪魔型 魔法',
+    vsDeityPhys:'vs 神獣型 物理', vsDeityMagic:'vs 神獣型 魔法',
+    vsUndeadPhys:'vs アンデッド 物理', vsUndeadMagic:'vs アンデッド 魔法',
+    vsAnimalPhys:'vs 動物型 物理', vsAnimalMagic:'vs 動物型 魔法',
+    vsHumanoidPhys:'vs 人間型 物理', vsHumanoidMagic:'vs 人間型 魔法',
+    expBonus:'経験値ボーナス', mfDrop:'アイテムドロップ率',
+    enemyPhysCritResistReduce:'敵物理致命打抵抗低下',
+  };
+  const FLAT_KEYS = new Set(['skillLv']); 
+  function formatSum(statId, v) {
+    const sign = v >= 0 ? '+' : '';
+    const unit = FLAT_KEYS.has(statId) ? '' : '%';
+    return sign + v + unit;
+  }
+  const BG_CLASS = { '灰':'potential-bg-gray', '緑':'potential-bg-green', '青':'potential-bg-blue', '紫':'potential-bg-purple', '金':'potential-bg-gold' };
+
+  const MAX_STAGE = EFFECTS.length; 
+  const state = { stage: 0 };
+
+
+  function aggregate(stageOverride) {
+    const stage = Math.max(0, Math.min(MAX_STAGE, (stageOverride != null ? stageOverride : state.stage) | 0));
+    const sumMap = Object.create(null);
+    let lbPhysFlat = 0;
+    let lbMagicPct = 0;
+    for (let i = 0; i < stage; i++) {
+      const e = EFFECTS[i];
+      const total = e.gauge * (Number(e.amount) || 0);
+      if (e.action === 'sum') {
+        sumMap[e.stat] = (sumMap[e.stat] || 0) + total;
+      } else if (e.action === 'lbPhysFlat') {
+        lbPhysFlat += total;
+      } else if (e.action === 'lbMagicPct') {
+        lbMagicPct += total;
+      }
+    }
+    return { sumMap, lbPhysFlat, lbMagicPct, stage };
+  }
+
+  
+  function applyToSTTemp(STTemp) {
+    if (!STTemp || !STTemp.sum) return;
+    const { sumMap } = aggregate();
+    for (const [k, v] of Object.entries(sumMap)) {
+      STTemp.sum[k] = (STTemp.sum[k] || 0) + v;
+    }
+  }
+
+  
+  function computeLimitBreakBonus() {
+    const { lbPhysFlat, lbMagicPct } = aggregate();
+    return { physFlat: lbPhysFlat, physPct: 0, magicFlat: 0, magicPct: lbMagicPct };
+  }
+
+  
+  function renderTable() {
+    const tbody = $('potential-effects-tbody');
+    if (!tbody) return;
+    const stage = state.stage;
+    const rows = EFFECTS.map((e) => {
+      const on = e.no <= stage;
+      const cls = on ? 'is-on' : 'is-off';
+      const bgCls = BG_CLASS[e.bg] || '';
+      return `<tr class="${cls}">
+        <td class="col-no">${e.no}</td>
+        <td class="col-bg ${bgCls}">${e.bg}</td>
+        <td class="col-gauge">${e.gauge}</td>
+        <td class="col-name">${esc(e.name)}</td>
+        <td class="col-effect">${esc(e.effectText)}</td>
+      </tr>`;
+    }).join('');
+    tbody.innerHTML = rows;
+  }
+  function renderSummary() {
+    const out = $('potential-summary');
+    const stageEl = $('potential-effects-stage');
+    if (stageEl) stageEl.textContent = String(state.stage);
+    if (!out) return;
+    if (state.stage === 0) {
+      out.innerHTML = '<span class="potential-summary-empty">未解放</span>';
+      return;
+    }
+    const { sumMap, lbPhysFlat, lbMagicPct } = aggregate();
+    const lines = [];
+    if (lbPhysFlat) lines.push(`限界突破 物理 +${lbPhysFlat}`);
+    if (lbMagicPct) lines.push(`限界突破 魔法 +${lbMagicPct}%`);
+    const keysInOrder = Object.keys(sumMap).sort((a, b) => {
+      const labA = LABELS[a] || a; const labB = LABELS[b] || b;
+      return labA.localeCompare(labB, 'ja');
+    });
+    for (const k of keysInOrder) {
+      if (!sumMap[k]) continue;
+      lines.push(`${LABELS[k] || k} ${formatSum(k, sumMap[k])}`);
+    }
+    out.textContent = lines.join('\n');
+  }
+  function setStage(n, suppressEvent) {
+    const v = Math.max(0, Math.min(MAX_STAGE, Number(n) || 0));
+    if (v === state.stage) {
+      
+      const r = $('potential-stage-range'); if (r) r.value = String(v);
+      const i = $('potential-stage-num');   if (i) i.value = String(v);
+      const d = $('potential-stage-display'); if (d) d.textContent = String(v);
+      return;
+    }
+    state.stage = v;
+    const r = $('potential-stage-range'); if (r) r.value = String(v);
+    const i = $('potential-stage-num');   if (i) i.value = String(v);
+    const d = $('potential-stage-display'); if (d) d.textContent = String(v);
+    renderTable();
+    renderSummary();
+    if (!suppressEvent && typeof _onChange === 'function') _onChange();
+  }
+
+  let _onChange = null;
+  function init(onChange) {
+    _onChange = onChange;
+    renderTable();
+    renderSummary();
+    const r = $('potential-stage-range');
+    const i = $('potential-stage-num');
+    if (r) r.addEventListener('input', () => setStage(r.value));
+    if (i) i.addEventListener('input', () => setStage(i.value));
+    if (i) i.addEventListener('change', () => setStage(i.value));
+  }
+  function getState() { return { stage: state.stage }; }
+  function setState(s) {
+    if (!s) return;
+    if (typeof s.stage === 'number') {
+      setStage(s.stage, true);
+    }
+  }
+  function reset() {
+    setStage(0, true);
+  }
+  return { init, applyToSTTemp, computeLimitBreakBonus, getState, setState, reset, EFFECTS, MAX_STAGE, _rerender: () => { renderTable(); renderSummary(); } };
+})();
+
+
 const DamageCalc = (() => {
 
   const JOB_SKILL_DB = {
@@ -7635,6 +8001,11 @@ async function main() {
   MissionBook.init(() => {
     
     recalcAll().catch((e) => console.warn('[MissionBook] recalc failed:', e));
+    scheduleAutosave();
+  });
+  Potential.init(() => {
+    
+    recalcAll().catch((e) => console.warn('[Potential] recalc failed:', e));
     scheduleAutosave();
   });
   DamageCalc.init();
