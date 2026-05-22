@@ -50,10 +50,17 @@ export function serializeSession(character, inventory, opts = {}) {
     if (Array.isArray(inv.customBaseOps) && inv.customBaseOps.some((s) => s != null)) {
       entry.customBaseOps = inv.customBaseOps.slice(0, 3).map((s) => s ? {
         ultKey:   s.ultKey   ?? null,
+        
+        abrKey:   s.abrKey   ?? null,
+        abrTier:  s.abrTier  ?? null,
         familyId: s.familyId ?? null,
         opId:     s.opId     ?? null,
+        statId:   s.statId   ?? null,
         value:    s.value    ?? null,
         vals:     Array.isArray(s.vals) ? [...s.vals] : null,
+        addValue: s.addValue ?? null,
+        divisor:  s.divisor  ?? null,
+        isDisplayOnly: !!s.isDisplayOnly,
       } : null);
     }
     invArr.push(entry);

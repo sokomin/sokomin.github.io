@@ -1033,6 +1033,88 @@
     }
 
     
+    .mapmon-tab-layout {
+      display: grid;
+      grid-template-columns: minmax(260px, 320px) 1fr;
+      gap: 8px; align-items: start;
+      padding: 6px 8px;
+    }
+    @media (max-width: 1100px) {
+      .mapmon-tab-layout { grid-template-columns: 1fr; }
+    }
+    .mapmon-panel {
+      background: #1a1610; border: 1px solid #5b3d12;
+      padding: 6px 8px; color: #f4e7a2; font-size: 12px;
+    }
+    .mapmon-panel h4 {
+      margin: 0 0 4px 0; padding: 0 0 4px 0;
+      color: #ffd070; border-bottom: 1px solid #5b3d12; font-size: 13px;
+    }
+    .mapmon-search-row {
+      display: grid; grid-template-columns: 1fr auto; gap: 4px;
+      align-items: center; margin-bottom: 4px;
+    }
+    .mapmon-search-row input {
+      background: #120c04; color: #00ff66; border: 1px solid #8b6a28;
+      font: inherit; padding: 2px 4px; box-sizing: border-box;
+    }
+    .mapmon-search-row .mapmon-hit-count {
+      color: #b0944c; font-size: 11px; min-width: 56px; text-align: right;
+    }
+    .mapmon-map-list, .mapmon-mob-list {
+      width: 100%; box-sizing: border-box;
+      background: #120c04; color: #f4e7a2;
+      border: 1px solid #8b6a28; font: inherit;
+      padding: 0;
+    }
+    .mapmon-map-list option, .mapmon-mob-list option {
+      padding: 1px 4px;
+    }
+    .mapmon-map-info {
+      margin-top: 6px; padding: 4px 6px;
+      background: #120c04; border: 1px solid #443823;
+      font-size: 11.5px; line-height: 1.4;
+    }
+    .mapmon-map-info .mapmon-mname { color: #ffd070; font-weight: bold; font-size: 12.5px; }
+    .mapmon-down-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 4px; }
+    .mapmon-down-table th, .mapmon-down-table td {
+      padding: 1px 3px; border: 1px solid #443823; text-align: center;
+    }
+    .mapmon-down-table th { background: #2a1a08; color: #ffd070; font-weight: normal; }
+    .mapmon-down-table td { color: #f4e7a2; font-family: "Consolas", monospace; }
+    .mapmon-detail {
+      display: grid; grid-template-columns: 80px 1fr;
+      gap: 6px; align-items: start;
+    }
+    .mapmon-detail .mapmon-mob-img {
+      width: 80px; min-height: 80px;
+      background: #000; border: 1px solid #443823;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .mapmon-detail .mapmon-mob-img img { max-width: 80px; max-height: 120px; image-rendering: pixelated; }
+    .mapmon-detail .mapmon-mob-meta { font-size: 12px; line-height: 1.5; }
+    .mapmon-detail .mapmon-mob-meta .mapmon-mob-name { color: #ffd070; font-weight: bold; font-size: 13px; }
+    .mapmon-detail .mapmon-mob-meta .mapmon-mob-name-db { color: #b0944c; font-size: 11.5px; }
+    .mapmon-detail .mapmon-mob-meta .mapmon-mob-spec { color: #b0944c; font-size: 11.5px; }
+    .mapmon-stat-table { width: 100%; border-collapse: collapse; font-size: 11.5px; margin-top: 4px; }
+    .mapmon-stat-table th, .mapmon-stat-table td {
+      padding: 1px 4px; border: 1px solid #443823;
+    }
+    .mapmon-stat-table th { background: #2a1a08; color: #ffd070; font-weight: normal; text-align: center; }
+    .mapmon-stat-table td.mapmon-key { background: #120c04; color: #b0944c; text-align: right; white-space: nowrap; }
+    .mapmon-stat-table td.mapmon-val { color: #f4e7a2; font-family: "Consolas", monospace; text-align: right; }
+    .mapmon-stat-table td.mapmon-val-mod { color: #00ff66; font-family: "Consolas", monospace; text-align: right; }
+    .mapmon-stat-table td.mapmon-val-equal { color: #555; font-family: "Consolas", monospace; text-align: right; }
+    .mapmon-mod-note {
+      margin-top: 4px; padding: 3px 6px;
+      background: #120c04; border: 1px solid #443823;
+      font-size: 11px; color: #b0944c; line-height: 1.4;
+    }
+    .mapmon-empty {
+      padding: 12px; text-align: center; color: #b0944c; font-size: 12px;
+    }
+
+    
     .title-tab-layout {
       display: grid;
       grid-template-columns: minmax(280px, 380px) 1fr;
@@ -1642,6 +1724,7 @@
             <button type="button" class="sim-tab-btn"           data-tab-btn="mbook"    role="tab">ミッションブック</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="potential" role="tab">潜在能力</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="damage"   role="tab">ダメージ計算</button>
+            <button type="button" class="sim-tab-btn"           data-tab-btn="mapmon"   role="tab">マップ&amp;モンスター</button>
           </nav>
 
           
@@ -1779,6 +1862,36 @@
                           <tr>
                             <td class="tdtext">ベース OP3</td>
                             <td><select id="ult-base-2" class="select" data-ult-slot="2" style="width:100%"></select></td>
+                          </tr>
+                        </tbody></table>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="row-sep"><td colspan="7"></td></tr>
+
+                  
+                  <tr id="abr-panel-row" style="display:none">
+                    <td colspan="7">
+                      <div id="abr-panel" style="border:1px solid #6b4f3a; background:#241d18; padding:6px; border-radius:3px">
+                        <div class="tdtext" style="color:#e7c89b; font-size:11.5px; padding-bottom:4px">
+                          <b>エリアボスリング (アスタロト/シュラグ/ゲリオ/ファルコン)</b>
+                          <span style="color:#a89683">— OP × 3 を選択 (補正値の幅は 高/中/低)。 装着スロットは指 9 (上右) 固定、 4 種は排他</span>
+                        </div>
+                        <table class="form-table" style="width:100%"><tbody>
+                          <tr>
+                            <td class="tdtext" style="width:80px">ベース OP1</td>
+                            <td><select id="abr-base-0" class="select" data-abr-slot="0" style="width:65%"></select>
+                                <select id="abr-tier-0" class="select" data-abr-tier="0" style="width:30%; margin-left:4px"></select></td>
+                          </tr>
+                          <tr>
+                            <td class="tdtext">ベース OP2</td>
+                            <td><select id="abr-base-1" class="select" data-abr-slot="1" style="width:65%"></select>
+                                <select id="abr-tier-1" class="select" data-abr-tier="1" style="width:30%; margin-left:4px"></select></td>
+                          </tr>
+                          <tr>
+                            <td class="tdtext">ベース OP3</td>
+                            <td><select id="abr-base-2" class="select" data-abr-slot="2" style="width:65%"></select>
+                                <select id="abr-tier-2" class="select" data-abr-tier="2" style="width:30%; margin-left:4px"></select></td>
                           </tr>
                         </tbody></table>
                       </div>
@@ -2224,6 +2337,42 @@
             </div>
           </div>
 
+          
+          <div class="tab-pane" data-tab="mapmon">
+            <div class="mapmon-tab-layout">
+
+              
+              <div class="mapmon-panel">
+                <h4>マップ選択</h4>
+                <div class="mapmon-search-row">
+                  <input type="search" id="mapmon-map-search" placeholder="マップ名で検索 (部分一致)" autocomplete="off">
+                  <span class="mapmon-hit-count" id="mapmon-map-hit-count">-</span>
+                </div>
+                <select id="mapmon-map-list" class="mapmon-map-list" size="10">
+                  <option value="">読み込み中…</option>
+                </select>
+
+                <div class="mapmon-map-info" id="mapmon-map-info">
+                  <span class="mapmon-empty">マップを選択してください</span>
+                </div>
+
+                <h4 style="margin-top:8px;">モンスター一覧</h4>
+                <select id="mapmon-mob-list" class="mapmon-mob-list" size="14">
+                  <option value="">マップを選択してください</option>
+                </select>
+              </div>
+
+              
+              <div class="mapmon-panel">
+                <h4>モンスター詳細</h4>
+                <div id="mapmon-detail">
+                  <div class="mapmon-empty">モンスターを選択してください</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -2314,11 +2463,34 @@ import {
   buildBaseOpSlots as ultBuildBaseOpSlots,
 } from './lib/ult_deep_green.js';
 import {
+  AREA_BOSS_RING_ITEM_IDS,
+  TIER_LABELS as ABR_TIER_LABELS,
+  isAreaBossRing,
+  getOpsForRing as abrGetOpsForRing,
+  getBaseOpDef as abrGetBaseOpDef,
+  getRingMeta as abrGetRingMeta,
+  valueAtTier as abrValueAtTier,
+  formatValue as abrFormatValue,
+  formatRange as abrFormatRange,
+  buildBaseOpSlots as abrBuildBaseOpSlots,
+} from './lib/area_boss_ring.js';
+import {
   SET_OP_DEFS,
   getSetOpDef,
   countSetOpsEquipped,
   summarizeActiveSetOps,
 } from './lib/set_op_bonus.js';
+import {
+  loadMapMonsterIndex,
+  getMapList, getMapMeta,
+  getMonstersForMap, searchMaps,
+  getMonsterImageUrl,
+  MOB_SPEC_LABEL, MOB_RANK_LABEL,
+} from './lib/map_monster.js';
+import {
+  getMapMonsterModifier, applyMapMonsterModifier,
+  applyMapSubInfoToMonster,
+} from './lib/map_monster_modifiers.js';
 
 const loader = new DataLoader({ baseUrl: './lib/data' });
 setLoader(loader);
@@ -2402,6 +2574,8 @@ const formState = {
 
   ultLv: 1,
   ultBaseOps: [null, null, null],
+
+  abrSlots: [null, null, null],
 };
 const INVENTORY_MAX = 84;  
 const inventory = new Inventory(INVENTORY_MAX);
@@ -2866,6 +3040,53 @@ function refreshUltBaseOpSelects() {
 }
 
 
+function refreshAbrPanel() {
+  const row = $('abr-panel-row');
+  if (!row) return;
+  if (!isAreaBossRing(formState.itemId)) {
+    row.style.display = 'none';
+    formState.abrSlots = [null, null, null];
+    return;
+  }
+  row.style.display = '';
+  refreshAbrSelects();
+}
+
+
+function refreshAbrSelects() {
+  const itemId = Number(formState.itemId);
+  const list = abrGetOpsForRing(itemId);
+  for (let i = 0; i < 3; i++) {
+    const opSel = $(`abr-base-${i}`);
+    const tierSel = $(`abr-tier-${i}`);
+    if (!opSel || !tierSel) continue;
+    
+    const opOpts = ['<option value="">(未選択)</option>'];
+    for (const d of list) {
+      const range = abrFormatRange(d);
+      opOpts.push(`<option value="${esc(d.key)}">${esc(d.label)} [${esc(range)}]</option>`);
+    }
+    opSel.innerHTML = opOpts.join('');
+    
+    const tierOpts = [];
+    for (let t = 0; t < 3; t++) {
+      tierOpts.push(`<option value="${t}">${ABR_TIER_LABELS[t]}</option>`);
+    }
+    tierSel.innerHTML = tierOpts.join('');
+    
+    const cur = formState.abrSlots[i];
+    if (cur && cur.key && list.find((d) => d.key === cur.key)) {
+      opSel.value = cur.key;
+      tierSel.value = String(Math.max(0, Math.min(2, Number(cur.tier) || 0)));
+    } else {
+      opSel.value = '';
+      tierSel.value = '0';
+      formState.abrSlots[i] = null;
+    }
+  }
+}
+
+
 async function onMake() {
   if (formState.itemId === -1) { alert('アイテムを選択してください'); return; }
   const rec = await Item.get(formState.itemId);
@@ -2899,6 +3120,11 @@ async function onMake() {
   if (isUltDeepGreen(rec)) {
     inv.ultLv = formState.ultLv;
     const slots = ultBuildBaseOpSlots(formState.ultLv, formState.ultBaseOps);
+    for (let i = 0; i < 3; i++) inv.customBaseOps[i] = slots[i];
+  }
+  
+  if (isAreaBossRing(rec)) {
+    const slots = abrBuildBaseOpSlots(Number(rec.id), formState.abrSlots);
     for (let i = 0; i < 3; i++) inv.customBaseOps[i] = slots[i];
   }
   inventory.add(inv);
@@ -2953,7 +3179,16 @@ async function equipInvItem(inv) {
   
   if (inv.equippedSlot) return;
   let slot = inv.candidateSlot;
-  if (slot == null) {
+  
+  if (isAreaBossRing(inv.itemId)) {
+    slot = 'ring_9';
+    for (const other of inventory.items()) {
+      if (other === inv) continue;
+      if (other.equippedSlot === 'ring_9' || isAreaBossRing(other.itemId)) {
+        other.equippedSlot = null;
+      }
+    }
+  } else if (slot == null) {
     
     slot = findFreeRingSlot();
     if (!slot) {
@@ -3171,6 +3406,23 @@ function buildItemDetailHtml(inv, rec, character) {
       const sign = (v != null && v >= 0) ? '+' : '';
       const valTxt = (v != null) ? `${sign}${v}${unit}` : '?';
       html += `<span class="idp-op is-base" style="border-left:2px solid #5a8f3a; padding-left:4px">- ${esc(label)} <span style="color:#ffff00">${esc(valTxt)}</span> <span class="idp-ui-label">[ベース${i + 1}]</span></span>`;
+    }
+  }
+
+
+  if (inv && Array.isArray(inv.customBaseOps) && inv.ultLv == null && isAreaBossRing(rec)) {
+    const meta = abrGetRingMeta(rec.id);
+    const heading = meta ? `${meta.boss}: ${meta.name}` : 'エリアボスリング';
+    html += `<div class="idp-section-title" style="color:#e7c89b">&lt;${esc(heading)}&gt;</div>`;
+    for (let i = 0; i < 3; i++) {
+      const slot = inv.customBaseOps[i];
+      if (!slot) continue;
+      const def = slot.abrKey ? abrGetBaseOpDef(Number(rec.id), slot.abrKey) : null;
+      const label = def ? def.label : (slot.familyId != null ? `family#${slot.familyId}` : (slot.statId ? slot.statId : (slot.opId != null ? `op#${slot.opId}` : '?')));
+      const tier = (slot.abrTier != null) ? Number(slot.abrTier) : 0;
+      const tierTxt = ABR_TIER_LABELS[Math.max(0, Math.min(2, tier))] || '';
+      const valTxt = def ? abrFormatValue(def, tier) : ((slot.value != null) ? `+${slot.value}` : '?');
+      html += `<span class="idp-op is-base" style="border-left:2px solid #8f6a3a; padding-left:4px">- ${esc(label)} <span style="color:#ffff00">${esc(valTxt)}</span> <span style="color:#a89683; font-size:11px">[${esc(tierTxt)}]</span> <span class="idp-ui-label">[ベース${i + 1}]</span></span>`;
     }
   }
 
@@ -4133,6 +4385,7 @@ function bindEvents() {
   $('sel-item').addEventListener('change', (e) => {
     formState.itemId = Number(e.target.value);
     refreshUltPanel();
+    refreshAbrPanel();
   });
   $('sel-item').addEventListener('dblclick', () => { if (formState.itemId !== -1) onMake(); });
 
@@ -4149,6 +4402,36 @@ function bindEvents() {
       const key = e.target.value || '';
       formState.ultBaseOps[Number(sel.getAttribute('data-ult-slot'))] = key || null;
     });
+  }
+
+  
+  for (let i = 0; i < 3; i++) {
+    const opSel = $(`abr-base-${i}`);
+    const tierSel = $(`abr-tier-${i}`);
+    if (opSel) {
+      opSel.addEventListener('change', () => {
+        const idx = Number(opSel.getAttribute('data-abr-slot'));
+        const key = opSel.value || '';
+        if (!key) {
+          formState.abrSlots[idx] = null;
+        } else {
+          const curTier = formState.abrSlots[idx]?.tier ?? Number(tierSel?.value || 0);
+          formState.abrSlots[idx] = { key, tier: Math.max(0, Math.min(2, curTier)) };
+        }
+        
+        refreshAbrSelects();
+      });
+    }
+    if (tierSel) {
+      tierSel.addEventListener('change', () => {
+        const idx = Number(tierSel.getAttribute('data-abr-tier'));
+        const tier = Math.max(0, Math.min(2, Number(tierSel.value) || 0));
+        if (formState.abrSlots[idx]) {
+          formState.abrSlots[idx].tier = tier;
+        }
+        refreshAbrSelects();
+      });
+    }
   }
 
   
@@ -4185,10 +4468,12 @@ function bindEvents() {
     formState.ops = [{familyId:-1,value:0},{familyId:-1,value:0},{familyId:-1,value:0}];
     formState.ultLv = 1;
     formState.ultBaseOps = [null, null, null];
+    formState.abrSlots = [null, null, null];
     $('filter-name').value = '';
     $('chk-daybreak').checked = false;
     for (let i = 0; i < 3; i++) clearOp(i);
     refreshUltPanel();
+    refreshAbrPanel();
     refreshItemList();
   });
 
@@ -4277,6 +4562,8 @@ function buildSnapshot() {
   snap.potential = Potential.getState();
   
   snap.badges = { ...badgeState };
+  
+  snap.mapMonster = { ...mapMonsterState };
   return snap;
 }
 
@@ -4324,6 +4611,25 @@ async function loadSnapshot(data, sourceLabel) {
 
   
   loadBadgeState(data.badges);
+
+
+  if (data.mapMonster && typeof data.mapMonster === 'object') {
+    mapMonsterState = {
+      mapId:           (data.mapMonster.mapId != null) ? Number(data.mapMonster.mapId) : null,
+      selectedMobid:   (data.mapMonster.selectedMobid != null) ? Number(data.mapMonster.selectedMobid) : null,
+      selectedRowKey:  (typeof data.mapMonster.selectedRowKey === 'string') ? data.mapMonster.selectedRowKey : null,
+    };
+  } else {
+    mapMonsterState = { mapId: null, selectedMobid: null, selectedRowKey: null };
+  }
+  if (mapMonsterInitialized && mapMonsterDataLoaded) {
+    refreshMapList($('mapmon-map-search')?.value || '');
+    if (mapMonsterState.mapId != null) {
+      const sel = $('mapmon-map-list');
+      if (sel) sel.value = String(mapMonsterState.mapId);
+      renderMapSelection(mapMonsterState.mapId);
+    }
+  }
 
   
   const c = parsed.character || {};
@@ -4381,8 +4687,18 @@ async function loadSnapshot(data, sourceLabel) {
           
           const slots = ultBuildBaseOpSlots(inv.ultLv, [saved.ultKey, null, null]);
           inv.customBaseOps[k] = slots[0];
+        } else if (saved.abrKey && isAreaBossRing(inv.itemId)) {
+          
+          const slotArr = [null, null, null];
+          slotArr[k] = { key: saved.abrKey, tier: saved.abrTier ?? 0 };
+          const slots = abrBuildBaseOpSlots(Number(inv.itemId), slotArr);
+          inv.customBaseOps[k] = slots[k];
+        } else if (saved.statId && saved.value != null) {
+          inv.customBaseOps[k] = { statId: saved.statId, value: saved.value, source: 'abr.base', isDisplayOnly: !!saved.isDisplayOnly };
         } else if (saved.familyId != null && saved.value != null) {
           inv.customBaseOps[k] = { familyId: saved.familyId, value: saved.value, source: 'ult.base' };
+        } else if (saved.familyId != null && saved.addValue != null && saved.divisor != null) {
+          inv.customBaseOps[k] = { familyId: saved.familyId, addValue: saved.addValue, divisor: saved.divisor, source: 'abr.base' };
         } else if (saved.opId != null && Array.isArray(saved.vals)) {
           inv.customBaseOps[k] = { opId: saved.opId, vals: saved.vals.slice(), source: 'ult.base' };
         }
@@ -4688,6 +5004,232 @@ function resetBadgeState() {
 }
 
 
+let mapMonsterInitialized = false;
+let mapMonsterDataLoaded  = false;
+let mapMonsterState = { mapId: null, selectedMobid: null, selectedRowKey: null };
+
+let currentMapMobs = [];
+
+async function initMapMonsterTab() {
+  
+  if (!mapMonsterInitialized) {
+    mapMonsterInitialized = true;
+    bindMapMonsterControls();
+  }
+  if (!mapMonsterDataLoaded) {
+    const status = $('mapmon-map-info');
+    if (status) status.innerHTML = '<span class="mapmon-empty">マップデータ読込中…</span>';
+    try {
+      await loadMapMonsterIndex();
+      mapMonsterDataLoaded = true;
+      refreshMapList('');
+      
+      if (mapMonsterState.mapId != null) {
+        const sel = $('mapmon-map-list');
+        if (sel) sel.value = String(mapMonsterState.mapId);
+        renderMapSelection(mapMonsterState.mapId);
+      } else {
+        if (status) status.innerHTML = '<span class="mapmon-empty">マップを選択してください</span>';
+      }
+    } catch (err) {
+      if (status) status.innerHTML = '<span class="mapmon-empty" style="color:#d77">読込失敗: ' + esc(err.message || String(err)) + '</span>';
+    }
+  }
+}
+
+function bindMapMonsterControls() {
+  const search  = $('mapmon-map-search');
+  const mapSel  = $('mapmon-map-list');
+  const mobSel  = $('mapmon-mob-list');
+  if (search) {
+    search.addEventListener('input', () => refreshMapList(search.value));
+  }
+  if (mapSel) {
+    mapSel.addEventListener('change', () => {
+      const mapId = Number(mapSel.value);
+      if (!Number.isFinite(mapId)) return;
+      mapMonsterState.mapId          = mapId;
+      mapMonsterState.selectedMobid  = null;
+      mapMonsterState.selectedRowKey = null;
+      renderMapSelection(mapId);
+      scheduleAutosave();
+    });
+  }
+  if (mobSel) {
+    
+    mobSel.addEventListener('change', () => {
+      const idx = mobSel.selectedIndex;
+      if (idx < 0 || idx >= currentMapMobs.length) return;
+      const row = currentMapMobs[idx];
+      if (!row || !row.monster) return;
+      mapMonsterState.selectedMobid  = row.monster.id;
+      mapMonsterState.selectedRowKey = mobRowKey(row);
+      renderMonsterDetailFromRow(row);
+      scheduleAutosave();
+    });
+  }
+}
+
+function refreshMapList(query) {
+  if (!mapMonsterDataLoaded) return;
+  const sel = $('mapmon-map-list');
+  const count = $('mapmon-map-hit-count');
+  if (!sel) return;
+  const hits = searchMaps(query);
+
+  let html = '';
+  for (const m of hits) {
+    const lv = (m.lvmin || m.lvmax) ? ` [Lv${m.lvmin}-${m.lvmax}]` : '';
+    html += '<option value="' + m.id + '">' + esc(m.name) + lv + '</option>';
+  }
+  sel.innerHTML = html || '<option value="">該当マップなし</option>';
+  if (count) count.textContent = hits.length + ' 件';
+  
+  if (mapMonsterState.mapId != null) {
+    const has = hits.some((m) => m.id === Number(mapMonsterState.mapId));
+    if (has) sel.value = String(mapMonsterState.mapId);
+  }
+}
+
+
+function mobRowKey(row) {
+  return row.monster.id + ':' + row.lvMin + '-' + row.lvMax + ':' + (row.mapMobName || '');
+}
+
+function renderMapSelection(mapId) {
+  const meta = getMapMeta(mapId);
+  const info = $('mapmon-map-info');
+  if (!meta) {
+    if (info) info.innerHTML = '<span class="mapmon-empty">該当マップなし</span>';
+    return;
+  }
+  
+  if (info) {
+    let html = '<div class="mapmon-mname">' + esc(meta.name) + '</div>';
+    if (meta.lvmin || meta.lvmax) html += '<div>適正Lv ' + meta.lvmin + '〜' + meta.lvmax + '</div>';
+    if (meta.subInfo) {
+      const si = meta.subInfo;
+      html += '<table class="mapmon-down-table"><thead>'
+            + '<tr><th>火</th><th>水</th><th>風</th><th>大地</th><th>光</th><th>闇</th>'
+            + '<th>ステ低下</th><th>抵抗上限</th></tr></thead><tbody>'
+            + '<tr><td>' + si.dfi + '</td><td>' + si.dwa + '</td><td>' + si.dwi + '</td>'
+            + '<td>' + si.dea + '</td><td>' + si.dli + '</td><td>' + si.dda + '</td>'
+            + '<td>' + si.st_down + '</td><td>' + (si.lbd || 90) + '%</td></tr>'
+            + '</tbody></table>';
+      if (si.req_map_lv > 0) html += '<div style="margin-top:2px;">必要マップ製作者Lv ' + si.req_map_lv + '</div>';
+    }
+    info.innerHTML = html;
+  }
+
+  
+  const mobs = getMonstersForMap(mapId);
+  currentMapMobs = mobs;
+  const mobSel = $('mapmon-mob-list');
+  if (mobSel) {
+    if (mobs.length === 0) {
+      mobSel.innerHTML = '<option value="">出現モンスターなし</option>';
+    } else {
+      let html = '';
+      for (let i = 0; i < mobs.length; i++) {
+        const row = mobs[i];
+        const m = row.monster;
+        const lv = (row.lvMin || row.lvMax) ? ` [Lv${row.lvMin}-${row.lvMax}]` : '';
+        const label = (row.mapMobName || m.name) + lv;
+        html += '<option value="' + i + '">' + esc(label) + '</option>';
+      }
+      mobSel.innerHTML = html;
+      
+      let restoreIdx = -1;
+      if (mapMonsterState.selectedRowKey) {
+        restoreIdx = mobs.findIndex((r) => mobRowKey(r) === mapMonsterState.selectedRowKey);
+      }
+      if (restoreIdx < 0 && mapMonsterState.selectedMobid != null) {
+        restoreIdx = mobs.findIndex((r) => r.monster.id === Number(mapMonsterState.selectedMobid));
+      }
+      if (restoreIdx >= 0) {
+        mobSel.selectedIndex = restoreIdx;
+        renderMonsterDetailFromRow(mobs[restoreIdx]);
+        return;
+      }
+    }
+  }
+  
+  const detail = $('mapmon-detail');
+  if (detail) detail.innerHTML = '<div class="mapmon-empty">モンスターを選択してください</div>';
+}
+
+
+function renderMonsterDetailFromRow(row) {
+  const detail = $('mapmon-detail');
+  if (!detail) return;
+  if (!row || !row.monster) {
+    detail.innerHTML = '<div class="mapmon-empty">該当モンスター無し</div>';
+    return;
+  }
+  const raw = row.monster;
+  const meta = getMapMeta(mapMonsterState.mapId);
+  const subAdjusted = applyMapSubInfoToMonster(raw, meta?.subInfo);
+  const modifier    = getMapMonsterModifier(mapMonsterState.mapId);
+  const final       = applyMapMonsterModifier(subAdjusted, modifier);
+
+  const imgUrl = getMonsterImageUrl(raw);
+  const specLabel = MOB_SPEC_LABEL[raw.species] || ('種別' + raw.species);
+  const rankLabel = MOB_RANK_LABEL[raw.lineage] || ('系統' + raw.lineage);
+  const lvText    = (row.lvMin || row.lvMax) ? (row.lvMin + '〜' + row.lvMax) : '-';
+
+  let html = '';
+  html += '<div class="mapmon-detail">';
+  html += '  <div class="mapmon-mob-img"><img src="' + esc(imgUrl) + '" onerror="this.style.display=\'none\'"></div>';
+  html += '  <div class="mapmon-mob-meta">';
+  html += '    <div class="mapmon-mob-name">' + esc(row.mapMobName || raw.name) + '</div>';
+  if (raw.name && raw.name !== row.mapMobName) {
+    html += '    <div class="mapmon-mob-name-db">(' + esc(raw.name) + ')</div>';
+  }
+  html += '    <div class="mapmon-mob-spec">' + esc(specLabel) + ' / ' + esc(rankLabel) + '</div>';
+  html += '    <div class="mapmon-mob-spec">適正Lv: ' + esc(lvText) + ' / EXP: ' + raw.defaultExp + '</div>';
+  html += '    <div class="mapmon-mob-spec">移動速度: ' + raw.movSpeed + ' / 攻撃速度: ' + raw.atcSpeed + ' / Blocking: ' + raw.blocking + '</div>';
+  html += '  </div>';
+  html += '</div>';
+
+  html += buildMonsterStatTable(raw, final);
+  detail.innerHTML = html;
+}
+
+function buildMonsterStatTable(raw, mod) {
+  
+  const rows = [
+    ['HP',                raw.defaultHp, mod.defaultHp],
+    ['ATK 最小',           raw.atcMin,    mod.atcMin],
+    ['ATK 最大',           raw.atcMax,    mod.atcMax],
+    ['防御力',             raw.def,       mod.def],
+    ['力 (STR)',          raw.str,       mod.str],
+    ['敏捷 (AGI)',         raw.agi,       mod.agi],
+    ['健康 (CON)',         raw.con,       mod.con],
+    ['知識 (INT)',         raw.intl,      mod.intl],
+    ['知恵 (WIS)',         raw.wis,       mod.wis],
+    ['カリスマ (CHS)',     raw.chs,       mod.chs],
+    ['運 (LUC)',           raw.luc,       mod.luc],
+    ['火 抵抗 %',          raw.fireRes,   mod.fireRes],
+    ['水 抵抗 %',          raw.waterRes,  mod.waterRes],
+    ['風 抵抗 %',          raw.windRes,   mod.windRes],
+    ['大地 抵抗 %',        raw.earthRes,  mod.earthRes],
+    ['光 抵抗 %',          raw.lightRes,  mod.lightRes],
+    ['闇 抵抗 %',          raw.darkRes,   mod.darkRes],
+  ];
+  let html = '<table class="mapmon-stat-table"><thead>'
+           + '<tr><th>項目</th><th>raw</th><th>適用後</th></tr>'
+           + '</thead><tbody>';
+  for (const [label, a, b] of rows) {
+    const cls = (a === b) ? 'mapmon-val-equal' : 'mapmon-val-mod';
+    html += '<tr><td class="mapmon-key">' + esc(label) + '</td>'
+          + '<td class="mapmon-val">' + a + '</td>'
+          + '<td class="' + cls + '">' + b + '</td></tr>';
+  }
+  html += '</tbody></table>';
+  return html;
+}
+
+
 function bindTabBar() {
   const buttons = document.querySelectorAll('.sim-tab-btn');
   const panes   = document.querySelectorAll('.sim-main-content .tab-pane');
@@ -4699,6 +5241,7 @@ function bindTabBar() {
       
       if (tab === 'skill')    refreshSkillFrame();
       if (tab === 'creature') initCreatureTab();
+      if (tab === 'mapmon')   initMapMonsterTab();
     });
   });
 }
@@ -6011,6 +6554,19 @@ function bindSessionEvents() {
     Potential.reset();
     
     resetBadgeState();
+    
+    mapMonsterState = { mapId: null, selectedMobid: null, selectedRowKey: null };
+    if (mapMonsterInitialized) {
+      const search = $('mapmon-map-search');
+      if (search) search.value = '';
+      if (mapMonsterDataLoaded) refreshMapList('');
+      const info = $('mapmon-map-info');
+      if (info) info.innerHTML = '<span class="mapmon-empty">マップを選択してください</span>';
+      const mobSel = $('mapmon-mob-list');
+      if (mobSel) mobSel.innerHTML = '<option value="">マップを選択してください</option>';
+      const detail = $('mapmon-detail');
+      if (detail) detail.innerHTML = '<div class="mapmon-empty">モンスターを選択してください</div>';
+    }
     await recalcAll();
     await refreshItemList();
     setSessionStatus('全消去完了');
