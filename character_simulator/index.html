@@ -2174,10 +2174,102 @@
               </div>
 
               <div class="title-panel">
-                <h4>他称号 (将来枠)</h4>
-                <div class="title-empty">
-                  追加予定の称号 (ボス討伐称号など) はここに増えていきます。<br>
-                  現在は限界突破称号のみ実装。
+                <h4>他称号</h4>
+
+                
+                <div class="title-row">
+                  <span class="title-name">5次転生 (fifthRebirth)</span>
+                  <label style="display:inline-flex; align-items:center; gap:4px;">
+                    <input type="checkbox" id="title-fifth-on"> ON
+                  </label>
+                  <span class="title-effect" id="title-fifth-effect">OFF</span>
+                </div>
+
+                
+                <div class="title-row">
+                  <span class="title-name">錬金術 (alchemy)</span>
+                  <select id="title-alchemy-lv">
+                    <option value="0">称号なし</option>
+                    <option value="1">Lv 1</option>
+                    <option value="2">Lv 2</option>
+                    <option value="3">Lv 3</option>
+                    <option value="4">Lv 4</option>
+                    <option value="5">Lv 5</option>
+                    <option value="6">Lv 6</option>
+                    <option value="7">Lv 7</option>
+                    <option value="8">Lv 8</option>
+                    <option value="9">Lv 9</option>
+                    <option value="10">Lv 10</option>
+                  </select>
+                  <span class="title-effect" id="title-alchemy-effect">+0%</span>
+                </div>
+
+                
+                <div class="title-row">
+                  <span class="title-name">ベルセルク (berserk)</span>
+                  <label style="display:inline-flex; align-items:center; gap:4px;">
+                    <input type="checkbox" id="title-berserk-on"> ON
+                  </label>
+                  <select id="title-berserk-lv">
+                    <option value="1">Lv 1</option>
+                    <option value="2">Lv 2</option>
+                    <option value="3">Lv 3</option>
+                    <option value="4">Lv 4</option>
+                    <option value="5">Lv 5</option>
+                    <option value="6">Lv 6</option>
+                    <option value="7">Lv 7</option>
+                    <option value="8">Lv 8</option>
+                    <option value="9">Lv 9</option>
+                    <option value="10">Lv 10</option>
+                  </select>
+                  <span class="title-effect" id="title-berserk-effect">OFF</span>
+                </div>
+
+                
+                <div class="title-row">
+                  <span class="title-name">MQ (mq)</span>
+                  <label style="display:inline-flex; align-items:center; gap:4px;">
+                    <input type="checkbox" id="title-mq-on"> ON
+                  </label>
+                  <span class="title-effect" id="title-mq-effect">OFF</span>
+                </div>
+
+                
+                <div class="title-row">
+                  <span class="title-name">密教 (esoteric)</span>
+                  <select id="title-esoteric-lv">
+                    <option value="0">称号なし</option>
+                    <option value="1">Lv 1</option>
+                    <option value="2">Lv 2</option>
+                    <option value="3">Lv 3</option>
+                    <option value="4">Lv 4</option>
+                    <option value="5">Lv 5</option>
+                    <option value="6">Lv 6</option>
+                    <option value="7">Lv 7</option>
+                    <option value="8">Lv 8</option>
+                    <option value="9">Lv 9</option>
+                    <option value="10">Lv 10</option>
+                  </select>
+                  <span class="title-effect" id="title-esoteric-effect">+0%</span>
+                </div>
+
+                
+                <div class="title-row">
+                  <span class="title-name">スキルマスター (skillMaster)</span>
+                  <label style="display:inline-flex; align-items:center; gap:4px;">
+                    <input type="checkbox" id="title-skillmaster-on"> ON
+                  </label>
+                  <span class="title-effect" id="title-skillmaster-effect">OFF</span>
+                </div>
+
+                <div style="margin-top: 8px; padding: 6px 8px; background:#1f1a08; border:1px solid #443823; font-size:11px; color:#b0944c; line-height:1.5;">
+                  <strong style="color:#ffd070;">補足</strong><br>
+                  ・<strong>5次転生 ON</strong> で「1個まで」リング (記憶/思い出/願い/希望/刻印 等) が 2個まで装着可能。<br>
+                  ・<strong>錬金術 Lv</strong> = 純粋な魔法ダメ +(Lv×2)% (= ダメ計算タブ「錬金術 Lv」へ自動連動)。<br>
+                  ・<strong>ベルセルク ON</strong> = 最終ステータス × (1 + (80+Lv×2)/100) (Lv1=82%, Lv10=100%)。<br>
+                  ・<strong>MQ ON</strong> = カリスマ+2 / 敏捷+5 / 力+3 (flat)。<br>
+                  ・<strong>密教 Lv</strong> = 全状態異常抵抗 +Lv%。<br>
+                  ・<strong>スキルマスター ON</strong> = 全スキル +5 (固定加算)。
                 </div>
               </div>
 
@@ -2474,6 +2566,7 @@ import {
   formatRange as abrFormatRange,
   buildBaseOpSlots as abrBuildBaseOpSlots,
 } from './lib/area_boss_ring.js';
+import { SOLO_EQUIP_RING_IDS, isSoloEquipRing } from './lib/title_rings.js';
 import {
   SET_OP_DEFS,
   getSetOpDef,
@@ -3170,6 +3263,30 @@ function findFreeRingSlot() {
   return null;
 }
 
+
+function enforceSoloRingLimit() {
+  const maxAllowed = (Titles.computeBonus().soloRingMaxAllowed) || 1;
+  const byId = new Map();
+  for (const inv of inventory.items()) {
+    if (!inv.equippedSlot) continue;
+    if (!isSoloEquipRing(inv.itemId)) continue;
+    const arr = byId.get(inv.itemId) || [];
+    arr.push(inv);
+    byId.set(inv.itemId, arr);
+  }
+  for (const [, arr] of byId) {
+    if (arr.length <= maxAllowed) continue;
+
+    arr.sort((a, b) => {
+      const na = Number(String(a.equippedSlot || 'ring_0').replace(/[^0-9]/g, '')) || 0;
+      const nb = Number(String(b.equippedSlot || 'ring_0').replace(/[^0-9]/g, '')) || 0;
+      return nb - na;
+    });
+    const toRemove = arr.length - maxAllowed;
+    for (let i = 0; i < toRemove; i++) arr[i].equippedSlot = null;
+  }
+}
+
 async function equipInvItem(inv) {
   if (!inv) return;
   if (!inv.canEquip) {
@@ -3187,6 +3304,27 @@ async function equipInvItem(inv) {
       if (other.equippedSlot === 'ring_9' || isAreaBossRing(other.itemId)) {
         other.equippedSlot = null;
       }
+    }
+  } else if (isSoloEquipRing(inv.itemId)) {
+    
+    const maxAllowed = (Titles.computeBonus().soloRingMaxAllowed) || 1;
+    const sameIdEquipped = [];
+    for (const other of inventory.items()) {
+      if (other === inv) continue;
+      if (other.equippedSlot && Number(other.itemId) === Number(inv.itemId)) sameIdEquipped.push(other);
+    }
+    if (sameIdEquipped.length >= maxAllowed) {
+      const msg = maxAllowed === 1
+        ? `このリングは 1 個まで (5次転生 ON で 2 個まで)`
+        : `このリングは ${maxAllowed} 個までしか装着できません`;
+      setSessionStatus(msg);
+      
+      sameIdEquipped[0].equippedSlot = null;
+    }
+    slot = findFreeRingSlot();
+    if (!slot) {
+      setSessionStatus('指スロット 10 個全て埋まっています');
+      return;
     }
   } else if (slot == null) {
     
@@ -3874,6 +4012,8 @@ function collectUnmappedOps(equippedList) {
 
 async function recalcAll() {
   const ch = readCharacter();
+
+  enforceSoloRingLimit();
   const equipped = [];
   for (const inv of inventory.items()) {
     const item = await Item.get(inv.itemId);
@@ -3899,12 +4039,16 @@ async function recalcAll() {
 
   Potential.applyToSTTemp(T);
 
+  Titles.applyToSTTemp(T);
+
   await applyBadgesToSTTemp(T, getEffectiveLv(ch), ch);
   
   applyJobPassivesToSTTemp(T, ch);
   const f = finalizeStats(T);
   
   applyJobPassivesPostFinalize(f, ch);
+  
+  Titles.applyBerserkPostFinalize(f);
 
   
   const wisdomVal = Number(f.equipped.wiz || ch.stats.base.wiz) || 0;
@@ -7143,9 +7287,22 @@ const Titles = (() => {
     ],
   };
 
+  
+  const MQ_ON_BONUS = { str: 3, agi: 5, chs: 2 };
+
+  
+  const SKILL_MASTER_PLUS = 5;
+
   const state = {
     limitBreakPhysLv: 0,
     limitBreakMagicLv: 0,
+    fifthRebirthOn: false,
+    alchemyLv: 0,
+    berserkOn: false,
+    berserkLv: 1,
+    mqOn: false,
+    esotericLv: 0,
+    skillMasterOn: false,
   };
 
   function levelFor(kind, lv) {
@@ -7154,15 +7311,58 @@ const Titles = (() => {
     return table.find((r) => r.lv === Number(lv)) || table[0];
   }
 
+  function berserkFinalPct() {
+    if (!state.berserkOn) return 0;
+    const lv = Math.max(1, Math.min(10, Number(state.berserkLv) || 1));
+    return 80 + lv * 2;
+  }
+
   function computeBonus() {
     const phys  = levelFor('phys',  state.limitBreakPhysLv);
     const magic = levelFor('magic', state.limitBreakMagicLv);
     return {
+      
       physFlat:  phys.flat,
       physPct:   phys.pct,
       magicFlat: magic.flat,
       magicPct:  magic.pct,
+      
+      fifthRebirthOn:  !!state.fifthRebirthOn,
+      soloRingMaxAllowed: state.fifthRebirthOn ? 2 : 1,
+      
+      alchemyLv: Math.max(0, Math.min(10, Number(state.alchemyLv) || 0)),
+      
+      berserkFinalPct: berserkFinalPct(),
+      
+      mqBonus: state.mqOn ? { ...MQ_ON_BONUS } : { str: 0, agi: 0, chs: 0 },
+      
+      statusResistPlus: Math.max(0, Math.min(10, Number(state.esotericLv) || 0)),
+      
+      skillLvPlus: state.skillMasterOn ? SKILL_MASTER_PLUS : 0,
     };
+  }
+
+
+  function applyToSTTemp(STTemp) {
+    if (!STTemp || !STTemp.sum) return;
+    const b = computeBonus();
+    if (b.mqBonus.str) STTemp.sum.str = (STTemp.sum.str || 0) + b.mqBonus.str;
+    if (b.mqBonus.agi) STTemp.sum.agi = (STTemp.sum.agi || 0) + b.mqBonus.agi;
+    if (b.mqBonus.chs) STTemp.sum.chs = (STTemp.sum.chs || 0) + b.mqBonus.chs;
+    if (b.statusResistPlus) STTemp.sum.statusResist = (STTemp.sum.statusResist || 0) + b.statusResistPlus;
+    if (b.skillLvPlus) STTemp.sum.skillLv = (STTemp.sum.skillLv || 0) + b.skillLvPlus;
+  }
+
+  
+  function applyBerserkPostFinalize(f) {
+    const pct = berserkFinalPct();
+    if (!pct || !f || !f.equipped) return;
+    const mult = 1 + pct / 100;
+    for (const k of ['str','agi','con','int','wiz','chs','luc']) {
+      if (typeof f.equipped[k] === 'number') {
+        f.equipped[k] = Math.floor(f.equipped[k] * mult);
+      }
+    }
   }
 
   function renderEffects() {
@@ -7176,17 +7376,47 @@ const Titles = (() => {
     if ($('title-sum-phys-pct'))   $('title-sum-phys-pct').textContent   = `+${phys.pct}%`;
     if ($('title-sum-magic-flat')) $('title-sum-magic-flat').textContent = `+${magic.flat.toLocaleString('en-US')}`;
     if ($('title-sum-magic-pct'))  $('title-sum-magic-pct').textContent  = `+${magic.pct}%`;
+
+    
+    if ($('title-fifth-effect')) {
+      $('title-fifth-effect').textContent = state.fifthRebirthOn ? 'ON (1個→2個)' : 'OFF';
+    }
+    if ($('title-alchemy-effect')) {
+      const lv = Number(state.alchemyLv) || 0;
+      $('title-alchemy-effect').textContent = lv > 0 ? `+${lv * 2}%` : '+0%';
+    }
+    if ($('title-berserk-effect')) {
+      const pct = berserkFinalPct();
+      $('title-berserk-effect').textContent = state.berserkOn ? `+${pct}%` : 'OFF';
+    }
+    if ($('title-mq-effect')) {
+      $('title-mq-effect').textContent = state.mqOn ? '力+3 敏+5 カ+2' : 'OFF';
+    }
+    if ($('title-esoteric-effect')) {
+      const lv = Number(state.esotericLv) || 0;
+      $('title-esoteric-effect').textContent = lv > 0 ? `+${lv}%` : '+0%';
+    }
+    if ($('title-skillmaster-effect')) {
+      $('title-skillmaster-effect').textContent = state.skillMasterOn ? '+5' : 'OFF';
+    }
   }
 
   function applyToSelectors() {
     const p = $('title-lb-phys');  if (p) p.value = String(state.limitBreakPhysLv);
     const m = $('title-lb-magic'); if (m) m.value = String(state.limitBreakMagicLv);
+    if ($('title-fifth-on'))       $('title-fifth-on').checked      = !!state.fifthRebirthOn;
+    if ($('title-alchemy-lv'))     $('title-alchemy-lv').value      = String(state.alchemyLv);
+    if ($('title-berserk-on'))     $('title-berserk-on').checked    = !!state.berserkOn;
+    if ($('title-berserk-lv'))     $('title-berserk-lv').value      = String(state.berserkLv);
+    if ($('title-mq-on'))          $('title-mq-on').checked         = !!state.mqOn;
+    if ($('title-esoteric-lv'))    $('title-esoteric-lv').value     = String(state.esotericLv);
+    if ($('title-skillmaster-on')) $('title-skillmaster-on').checked = !!state.skillMasterOn;
   }
 
   function init(onChange) {
     applyToSelectors();
     renderEffects();
-    const bind = (id, key) => {
+    const bindSelect = (id, key) => {
       const node = $(id);
       if (!node) return;
       node.addEventListener('change', () => {
@@ -7195,8 +7425,24 @@ const Titles = (() => {
         if (typeof onChange === 'function') onChange();
       });
     };
-    bind('title-lb-phys',  'limitBreakPhysLv');
-    bind('title-lb-magic', 'limitBreakMagicLv');
+    const bindCheckbox = (id, key) => {
+      const node = $(id);
+      if (!node) return;
+      node.addEventListener('change', () => {
+        state[key] = !!node.checked;
+        renderEffects();
+        if (typeof onChange === 'function') onChange();
+      });
+    };
+    bindSelect('title-lb-phys',     'limitBreakPhysLv');
+    bindSelect('title-lb-magic',    'limitBreakMagicLv');
+    bindCheckbox('title-fifth-on',  'fifthRebirthOn');
+    bindSelect('title-alchemy-lv',  'alchemyLv');
+    bindCheckbox('title-berserk-on','berserkOn');
+    bindSelect('title-berserk-lv',  'berserkLv');
+    bindCheckbox('title-mq-on',     'mqOn');
+    bindSelect('title-esoteric-lv', 'esotericLv');
+    bindCheckbox('title-skillmaster-on','skillMasterOn');
   }
 
   function getState()  { return { ...state }; }
@@ -7204,12 +7450,31 @@ const Titles = (() => {
     if (!s) return;
     if (typeof s.limitBreakPhysLv  === 'number') state.limitBreakPhysLv  = s.limitBreakPhysLv;
     if (typeof s.limitBreakMagicLv === 'number') state.limitBreakMagicLv = s.limitBreakMagicLv;
+    if (typeof s.fifthRebirthOn === 'boolean')   state.fifthRebirthOn    = s.fifthRebirthOn;
+    if (typeof s.alchemyLv      === 'number')    state.alchemyLv         = s.alchemyLv;
+    if (typeof s.berserkOn      === 'boolean')   state.berserkOn         = s.berserkOn;
+    if (typeof s.berserkLv      === 'number')    state.berserkLv         = s.berserkLv;
+    if (typeof s.mqOn           === 'boolean')   state.mqOn              = s.mqOn;
+    if (typeof s.esotericLv     === 'number')    state.esotericLv        = s.esotericLv;
+    if (typeof s.skillMasterOn  === 'boolean')   state.skillMasterOn     = s.skillMasterOn;
     applyToSelectors();
     renderEffects();
   }
-  function reset() { state.limitBreakPhysLv = 0; state.limitBreakMagicLv = 0; applyToSelectors(); renderEffects(); }
+  function reset() {
+    state.limitBreakPhysLv  = 0;
+    state.limitBreakMagicLv = 0;
+    state.fifthRebirthOn    = false;
+    state.alchemyLv         = 0;
+    state.berserkOn         = false;
+    state.berserkLv         = 1;
+    state.mqOn              = false;
+    state.esotericLv        = 0;
+    state.skillMasterOn     = false;
+    applyToSelectors();
+    renderEffects();
+  }
 
-  return { init, computeBonus, getState, setState, reset, LIMIT_BREAK_LEVELS };
+  return { init, computeBonus, applyToSTTemp, applyBerserkPostFinalize, getState, setState, reset, LIMIT_BREAK_LEVELS };
 })();
 
 
@@ -8460,9 +8725,12 @@ const DamageCalc = (() => {
       setIfAuto('dmg-in-mStrongRate', Number(eq.magicStrongRate) || 0);
 
       
-      const titleMagicPct = Titles.computeBonus().magicPct || 0;
+      const titleBonus2 = Titles.computeBonus();
+      const titleMagicPct = titleBonus2.magicPct || 0;
       setIfAuto('dmg-in-mLimitPct', titleMagicPct);
       setIfAuto('dmg-in-mFinalDmg', (Number(eq.finalMagicDamage) || 0) + (Number(eq.finalDamagePercent) || 0));
+      
+      setIfAuto('dmg-in-mAlchemy', titleBonus2.alchemyLv || 0);
     } finally {
       isSyncing = false;
     }
