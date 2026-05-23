@@ -108,6 +108,14 @@ export function serializeSession(character, inventory, opts = {}) {
     
     if (inv.ultLv != null) entry.ultLv = inv.ultLv;
 
+    if (inv.arcana && inv.arcana.key) {
+      entry.arcana = {
+        table: (inv.arcana.table === 'pet') ? 'pet' : 'normal',
+        key:   String(inv.arcana.key),
+        tier:  Math.max(0, Math.min(1, Number(inv.arcana.tier) || 0)),
+      };
+    }
+
     if (inv.scroll && inv.scroll.id) {
       entry.scroll = {
         type:  inv.scroll.type ?? null,
@@ -121,6 +129,10 @@ export function serializeSession(character, inventory, opts = {}) {
         
         abrKey:   s.abrKey   ?? null,
         abrTier:  s.abrTier  ?? null,
+        
+        arcanaKey:   s.arcanaKey   ?? null,
+        arcanaTier:  s.arcanaTier  ?? null,
+        arcanaTable: s.arcanaTable ?? null,
         familyId: s.familyId ?? null,
         opId:     s.opId     ?? null,
         statId:   s.statId   ?? null,

@@ -1955,6 +1955,35 @@
                   <tr class="row-sep"><td colspan="7"></td></tr>
 
                   
+                  <tr id="arcana-panel-row" style="display:none">
+                    <td colspan="7">
+                      <div id="arcana-panel" style="border:1px solid #6f4f8f; background:#1d182a; padding:6px; border-radius:3px">
+                        <div class="tdtext" style="color:#cdb6e7; font-size:11.5px; padding-bottom:4px">
+                          <b>アルカナ補助武器 (ハシュラム精鋭討伐)</b>
+                          <span style="color:#a89eb3">— OP 1 個固定 (上位/下位 の 2 段階)。 OP1/2/3 は通常 OP として併用可</span>
+                        </div>
+                        <table class="form-table" style="width:100%"><tbody>
+                          <tr>
+                            <td class="tdtext" style="width:80px">テーブル</td>
+                            <td>
+                              <select id="arcana-table" class="select" style="width:160px">
+                                <option value="normal">通常</option>
+                                <option value="pet">ペット・召喚獣用</option>
+                              </select>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="tdtext">ベース OP</td>
+                            <td><select id="arcana-key" class="select" style="width:65%"></select>
+                                <select id="arcana-tier" class="select" style="width:30%; margin-left:4px"></select></td>
+                          </tr>
+                        </tbody></table>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="row-sep"><td colspan="7"></td></tr>
+
+                  
                   <tr id="abr-panel-row" style="display:none">
                     <td colspan="7">
                       <div id="abr-panel" style="border:1px solid #6b4f3a; background:#241d18; padding:6px; border-radius:3px">
@@ -2892,6 +2921,18 @@ import {
   formatRange as abrFormatRange,
   buildBaseOpSlots as abrBuildBaseOpSlots,
 } from './lib/area_boss_ring.js';
+import {
+  ARCANA_ITEM_IDS,
+  TIER_LABELS as ARCANA_TIER_LABELS,
+  TABLE_LABELS as ARCANA_TABLE_LABELS,
+  isArcana,
+  getDefs as arcanaGetDefs,
+  getDef as arcanaGetDef,
+  valueAtTier as arcanaValueAtTier,
+  formatValue as arcanaFormatValue,
+  formatRange as arcanaFormatRange,
+  buildBaseOpSlot as arcanaBuildBaseOpSlot,
+} from './lib/arcana.js';
 import { SOLO_EQUIP_RING_IDS, isSoloEquipRing } from './lib/title_rings.js';
 import {
   BF_OPTIONS,
@@ -3019,6 +3060,9 @@ const formState = {
   ultBaseOps: [null, null, null],
 
   abrSlots: [null, null, null],
+
+  
+  arcana: { table: 'normal', key: null, tier: 0 },
 
   
   scroll: { type: null, id: null, stage: 1 },
@@ -4073,6 +4117,54 @@ function refreshAbrSelects() {
 }
 
 
+function refreshArcanaPanel() {
+  const row = $('arcana-panel-row');
+  if (!row) return;
+  if (!isArcana(formState.itemId)) {
+    row.style.display = 'none';
+    formState.arcana = { table: formState.arcana.table || 'normal', key: null, tier: 0 };
+    return;
+  }
+  row.style.display = '';
+  
+  const tableSel = $('arcana-table');
+  if (tableSel) tableSel.value = (formState.arcana.table === 'pet') ? 'pet' : 'normal';
+  refreshArcanaSelects();
+}
+
+
+function refreshArcanaSelects() {
+  const table = (formState.arcana.table === 'pet') ? 'pet' : 'normal';
+  const list = arcanaGetDefs(table);
+  const keySel = $('arcana-key');
+  const tierSel = $('arcana-tier');
+  if (keySel) {
+    const opts = ['<option value="">(未選択)</option>'];
+    for (const d of list) {
+      const range = arcanaFormatRange(d);
+      opts.push(`<option value="${esc(d.key)}">${esc(d.label)} [${esc(range)}]</option>`);
+    }
+    keySel.innerHTML = opts.join('');
+    
+    const cur = formState.arcana.key;
+    if (cur && list.find((d) => d.key === cur)) {
+      keySel.value = cur;
+    } else {
+      keySel.value = '';
+      formState.arcana.key = null;
+    }
+  }
+  if (tierSel) {
+    const tierOpts = [];
+    for (let t = 0; t < 2; t++) {
+      tierOpts.push(`<option value="${t}">${ARCANA_TIER_LABELS[t]}</option>`);
+    }
+    tierSel.innerHTML = tierOpts.join('');
+    tierSel.value = String(Math.max(0, Math.min(1, Number(formState.arcana.tier) || 0)));
+  }
+}
+
+
 async function onMake() {
   if (formState.itemId === -1) { alert('アイテムを選択してください'); return; }
   const rec = await Item.get(formState.itemId);
@@ -4155,6 +4247,17 @@ async function onMake() {
   if (isAreaBossRing(rec)) {
     const slots = abrBuildBaseOpSlots(Number(rec.id), formState.abrSlots);
     for (let i = 0; i < 3; i++) inv.customBaseOps[i] = slots[i];
+  }
+
+  if (isArcana(rec)) {
+    const table = (formState.arcana.table === 'pet') ? 'pet' : 'normal';
+    const key   = formState.arcana.key || null;
+    const tier  = Math.max(0, Math.min(1, Number(formState.arcana.tier) || 0));
+    inv.arcana = { table, key, tier };
+    const slot = arcanaBuildBaseOpSlot(table, key, tier);
+    inv.customBaseOps[0] = slot;
+    inv.customBaseOps[1] = null;
+    inv.customBaseOps[2] = null;
   }
   
   if (isScrollableForItem(rec)) {
@@ -4598,6 +4701,20 @@ function buildItemDetailHtml(inv, rec, character) {
         ? 'border-left:2px solid #d8884c; padding-left:4px; color:#a89683'
         : 'border-left:2px solid #cbe79b; padding-left:4px';
       html += `<span class="idp-op is-ui" style="${style}">+ ${esc(def.name)} <span style="color:#ffff00">${esc(valTxt)}</span> ${tierTag}${tag}</span>`;
+    }
+  }
+
+
+  if (inv && inv.arcana && inv.arcana.key) {
+    const table = (inv.arcana.table === 'pet') ? 'pet' : 'normal';
+    const tierIdx = Math.max(0, Math.min(1, Number(inv.arcana.tier) || 0));
+    const heading = `アルカナ補助武器 (${ARCANA_TABLE_LABELS[table] || table})`;
+    html += `<div class="idp-section-title" style="color:#cdb6e7">&lt;${esc(heading)}&gt;</div>`;
+    const def = arcanaGetDef(table, inv.arcana.key);
+    if (def) {
+      const valTxt = arcanaFormatValue(def, tierIdx);
+      const tierTxt = ARCANA_TIER_LABELS[tierIdx] || '';
+      html += `<span class="idp-op is-base" style="border-left:2px solid #8f6acf; padding-left:4px">- ${esc(def.label)} <span style="color:#ffff00">${esc(valTxt)}</span> <span style="color:#a89eb3; font-size:11px">[${esc(tierTxt)}]</span> <span class="idp-ui-label">[ベース1]</span></span>`;
     }
   }
 
@@ -5656,6 +5773,7 @@ function bindEvents() {
     formState.itemId = Number(e.target.value);
     refreshUltPanel();
     refreshAbrPanel();
+    refreshArcanaPanel();
     refreshScrollPanel();
     refreshBfPanel();
     refreshNxPanel();
@@ -5709,6 +5827,28 @@ function bindEvents() {
   }
 
   
+  const arcanaTableSel = $('arcana-table');
+  if (arcanaTableSel) {
+    arcanaTableSel.addEventListener('change', (e) => {
+      formState.arcana.table = (e.target.value === 'pet') ? 'pet' : 'normal';
+      
+      refreshArcanaSelects();
+    });
+  }
+  const arcanaKeySel = $('arcana-key');
+  if (arcanaKeySel) {
+    arcanaKeySel.addEventListener('change', (e) => {
+      formState.arcana.key = e.target.value || null;
+    });
+  }
+  const arcanaTierSel = $('arcana-tier');
+  if (arcanaTierSel) {
+    arcanaTierSel.addEventListener('change', (e) => {
+      formState.arcana.tier = Math.max(0, Math.min(1, Number(e.target.value) || 0));
+    });
+  }
+
+  
   const opSearchDebounce = { 0: null, 1: null, 2: null };
   document.querySelectorAll('.op-search-input').forEach((el) => {
     el.addEventListener('input', (e) => {
@@ -5758,6 +5898,7 @@ function bindEvents() {
     formState.ultLv = 1;
     formState.ultBaseOps = [null, null, null];
     formState.abrSlots = [null, null, null];
+    formState.arcana = { table: 'normal', key: null, tier: 0 };
     formState.scroll = { type: null, id: null, stage: 1 };
     formState.seirenStage = 0;
     formState.seirenOps = [null, null, null, null, null];
@@ -5779,6 +5920,7 @@ function bindEvents() {
     document.querySelectorAll('.nx-op-select').forEach((dd) => { dd.value = ''; });
     refreshUltPanel();
     refreshAbrPanel();
+    refreshArcanaPanel();
     refreshScrollPanel();
     refreshBfPanel();
     refreshNxPanel();
@@ -6083,6 +6225,14 @@ async function loadSnapshot(data, sourceLabel) {
     if (!inv) continue;
 
     if (entry.ultLv != null) inv.ultLv = Number(entry.ultLv);
+
+    if (entry.arcana && entry.arcana.key) {
+      inv.arcana = {
+        table: (entry.arcana.table === 'pet') ? 'pet' : 'normal',
+        key:   String(entry.arcana.key),
+        tier:  Math.max(0, Math.min(1, Number(entry.arcana.tier) || 0)),
+      };
+    }
     if (Array.isArray(entry.customBaseOps)) {
       for (let k = 0; k < 3; k++) {
         const saved = entry.customBaseOps[k];
@@ -6097,6 +6247,10 @@ async function loadSnapshot(data, sourceLabel) {
           slotArr[k] = { key: saved.abrKey, tier: saved.abrTier ?? 0 };
           const slots = abrBuildBaseOpSlots(Number(inv.itemId), slotArr);
           inv.customBaseOps[k] = slots[k];
+        } else if (saved.arcanaKey && isArcana(inv.itemId)) {
+          
+          const table = (saved.arcanaTable === 'pet') ? 'pet' : 'normal';
+          inv.customBaseOps[k] = arcanaBuildBaseOpSlot(table, saved.arcanaKey, saved.arcanaTier ?? 0);
         } else if (saved.statId && saved.value != null) {
           inv.customBaseOps[k] = { statId: saved.statId, value: saved.value, source: 'abr.base', isDisplayOnly: !!saved.isDisplayOnly };
         } else if (saved.familyId != null && saved.value != null) {
