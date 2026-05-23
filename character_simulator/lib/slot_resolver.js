@@ -18,7 +18,7 @@ const KIND_TO_PART = {
   58: 0,  
   82: 0,  
   
-  17: 1,  
+  17: 7,  
   8: 2,   
   0: 3,   
   1: 3,   
@@ -67,7 +67,7 @@ export const PART_LABELS = {
 
 const PART_TO_SLOT_KEY = {
   0: 'weapon',
-  1: 'job_armor',
+  
   2: 'neck',
   3: 'head',
   4: 'back_ear',  

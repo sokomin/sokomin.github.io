@@ -1899,6 +1899,47 @@
                   </tr>
                   <tr class="row-sep"><td colspan="7"></td></tr>
 
+                  
+                  <tr id="scroll-row-header" class="scroll-row" style="display:none">
+                    <td colspan="7" class="tdtext" style="padding-top:6px; color:#cbe79b">
+                      <b>図案書効果</b>
+                      <span style="color:#9aa68b">— セット OP とは別系統。 装備中 同一図案 2/4/5 個で発動</span>
+                    </td>
+                  </tr>
+                  <tr id="scroll-row-type" class="scroll-row" style="display:none">
+                    <td colspan="2" class="tdtext">種類</td>
+                    <td style="width:4px"></td>
+                    <td colspan="4">
+                      <select id="scroll-type" class="select" style="width:100%">
+                        <option value="">(無し)</option>
+                        <option value="normal">ノーマル</option>
+                        <option value="rare">レア</option>
+                        <option value="special">スペシャル</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr id="scroll-row-id" class="scroll-row" style="display:none">
+                    <td colspan="2" class="tdtext">図案</td>
+                    <td style="width:4px"></td>
+                    <td colspan="4">
+                      <select id="scroll-id" class="select" style="width:100%"></select>
+                    </td>
+                  </tr>
+                  <tr id="scroll-row-stage" class="scroll-row" style="display:none">
+                    <td colspan="2" class="tdtext">段階</td>
+                    <td style="width:4px"></td>
+                    <td colspan="4">
+                      <select id="scroll-stage" class="select" style="width:100%">
+                        <option value="1">1段</option>
+                        <option value="2">2段</option>
+                        <option value="3">3段</option>
+                        <option value="4">4段</option>
+                        <option value="5">5段 / 刻印</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr class="row-sep scroll-row" style="display:none"><td colspan="7"></td></tr>
+
                   <tr>
                     <td colspan="2">
                       <label class="tdtext" style="cursor:pointer; padding-left:4px">
@@ -1928,6 +1969,14 @@
                 
                 <div id="set-op-list" class="flag-list" style="grid-template-columns: 1fr;">
                   <div class="tdtext" style="color:#9aa68b; font-size:11px">(装着中アイテムなし)</div>
+                </div>
+              </div>
+
+              
+              <div class="light-panel">
+                <h4>図案書セット効果</h4>
+                <div id="scroll-set-list" class="flag-list" style="grid-template-columns: 1fr;">
+                  <div class="tdtext" style="color:#9aa68b; font-size:11px">(図案付き装備なし)</div>
                 </div>
               </div>
 
@@ -1984,10 +2033,7 @@
                           <img class="slot-icon" alt=""><span class="slot-tooltip"></span></div>
                       </div>
                       
-                      <div class="equip-grid-side">
-                        <div class="equip-slot is-empty" data-slot="job_armor" title="職専">
-                          <img class="slot-icon" alt=""><span class="slot-tooltip"></span></div>
-                      </div>
+                      <div class="equip-grid-side"></div>
                     </div>
                     
                     <div class="equip-grid-rings">
@@ -2517,6 +2563,7 @@
 import { DataLoader } from './lib/data_loader.js';
 import { setLoader, Item, Op, OpPrefix, iterateAllOps } from './lib/item_api.js';
 import { Inventory, newInventoryItem } from './lib/inventory.js';
+import { resolveEquipSlot } from './lib/slot_resolver.js';
 import { makeItem } from './lib/make_item.js';
 import { newCharacter } from './lib/character.js';
 import { newSTTemp, debugSnapshot } from './lib/sttemp.js';
@@ -2669,6 +2716,9 @@ const formState = {
   ultBaseOps: [null, null, null],
 
   abrSlots: [null, null, null],
+
+  
+  scroll: { type: null, id: null, stage: 1 },
 };
 const INVENTORY_MAX = 84;  
 const inventory = new Inventory(INVENTORY_MAX);
@@ -2680,6 +2730,88 @@ function invalidateFeasibleCache() { feasibleCache = new Map(); feasibleCacheKey
 
 
 let stoneState = newStones();
+
+
+const SCROLL_TYPE_LABELS = { normal: 'ノーマル', rare: 'レア', special: 'スペシャル' };
+let SCROLL_DB = null;
+const SCROLL_ICON_BASE = 'https://sokomin.github.io/quest/design/desination_icon/designation_icon_';
+
+async function loadScrollDb() {
+  if (SCROLL_DB) return SCROLL_DB;
+  try {
+    const res = await fetch('./lib/data/scrolls.json');
+    if (!res.ok) throw new Error(`scrolls.json ${res.status}`);
+    SCROLL_DB = await res.json();
+  } catch (err) {
+    console.warn('[scrolls] load failed:', err);
+    SCROLL_DB = { types: [], scrolls: [] };
+  }
+  return SCROLL_DB;
+}
+function scrollById(id) {
+  if (!id || !SCROLL_DB) return null;
+  return SCROLL_DB.scrolls.find((s) => s.id === id) || null;
+}
+function scrollsByType(type) {
+  if (!type || !SCROLL_DB) return [];
+  return SCROLL_DB.scrolls.filter((s) => s.type === type);
+}
+function scrollIconUrl(s) {
+  if (!s || !s.iconId) return null;
+  return `${SCROLL_ICON_BASE}${s.iconId}.png`;
+}
+
+function isScrollableForItem(rec) {
+  if (!rec) return false;
+
+  const slot = resolveEquipSlot(rec);
+  return slot === 'neck'  || slot === 'head' || slot === 'back_ear'
+      || slot === 'waist' || slot === 'hand' || slot === 'body' || slot === 'foot';
+}
+
+
+async function refreshScrollPanel() {
+  await loadScrollDb();
+  const rec = (formState.itemId >= 0) ? await Item.get(formState.itemId) : null;
+  const ok = isScrollableForItem(rec);
+  const rows = document.querySelectorAll('.scroll-row');
+  for (const r of rows) r.style.display = ok ? '' : 'none';
+  if (!ok) {
+    
+    formState.scroll = { type: null, id: null, stage: 1 };
+    if ($('scroll-type'))  $('scroll-type').value = '';
+    if ($('scroll-stage')) $('scroll-stage').value = '1';
+    refreshScrollIdSelect();
+    return;
+  }
+  if ($('scroll-type'))  $('scroll-type').value  = formState.scroll.type || '';
+  if ($('scroll-stage')) $('scroll-stage').value = String(formState.scroll.stage || 1);
+  refreshScrollIdSelect();
+}
+
+function refreshScrollIdSelect() {
+  const sel = $('scroll-id');
+  if (!sel) return;
+  const type = formState.scroll.type;
+  const list = type ? scrollsByType(type) : [];
+  
+  sel.innerHTML = '';
+  const opt0 = document.createElement('option');
+  opt0.value = '';
+  opt0.textContent = type ? '(図案を選択)' : '(種類未選択)';
+  sel.appendChild(opt0);
+  for (const s of list) {
+    const opt = document.createElement('option');
+    opt.value = s.id;
+    opt.textContent = s.name + (s.category ? `  〔${s.category}〕` : '');
+    sel.appendChild(opt);
+  }
+  sel.disabled = !type || list.length === 0;
+  sel.value = (formState.scroll.id && list.some((s) => s.id === formState.scroll.id))
+    ? formState.scroll.id : '';
+  
+  if (!sel.value) formState.scroll.id = null;
+}
 
 
 function readCharacter() {
@@ -3220,6 +3352,15 @@ async function onMake() {
     const slots = abrBuildBaseOpSlots(Number(rec.id), formState.abrSlots);
     for (let i = 0; i < 3; i++) inv.customBaseOps[i] = slots[i];
   }
+  
+  if (isScrollableForItem(rec)) {
+    const sc = formState.scroll;
+    const def = sc.id ? scrollById(sc.id) : null;
+    if (def && def.type === sc.type) {
+      const stage = Math.max(1, Math.min(5, Number(sc.stage) || 1));
+      inv.scroll = { type: def.type, id: def.id, stage };
+    }
+  }
   inventory.add(inv);
   selectedInv = { inv, item: rec };
   await recalcAll();
@@ -3544,6 +3685,18 @@ function buildItemDetailHtml(inv, rec, character) {
       const sign = (v != null && v >= 0) ? '+' : '';
       const valTxt = (v != null) ? `${sign}${v}${unit}` : '?';
       html += `<span class="idp-op is-base" style="border-left:2px solid #5a8f3a; padding-left:4px">- ${esc(label)} <span style="color:#ffff00">${esc(valTxt)}</span> <span class="idp-ui-label">[ベース${i + 1}]</span></span>`;
+    }
+  }
+
+
+  if (inv && inv.scroll && inv.scroll.id) {
+    const def = scrollById(inv.scroll.id);
+    if (def) {
+      const stage = Math.max(1, Math.min(5, Number(inv.scroll.stage) || 1));
+      const stageEntry = def.stages.find((st) => st.stage === stage) || def.stages[0];
+      const stageLabel = stageEntry ? stageEntry.label : `${stage}段`;
+      html += `<div class="idp-section-title" style="color:#cbe79b">&lt;魔力注入情報&gt;</div>`;
+      html += `<span class="idp-op is-base" style="border-left:2px solid #cbe79b; padding-left:4px">[${esc(def.name)}] ${esc(stageLabel)}</span>`;
     }
   }
 
@@ -4042,6 +4195,9 @@ async function recalcAll() {
   Titles.applyToSTTemp(T);
 
   await applyBadgesToSTTemp(T, getEffectiveLv(ch), ch);
+
+  
+  applyScrollsToSTTemp(T, equipped, getEffectiveLv(ch));
   
   applyJobPassivesToSTTemp(T, ch);
   const f = finalizeStats(T);
@@ -4434,6 +4590,8 @@ async function recalcAll() {
   updateEquipmentFlags(equipped, f.equipped);
   
   renderSetOpList(equipped);
+  
+  renderScrollSetList(equipped);
 
   
   hideItemDetailPopup();
@@ -4530,6 +4688,7 @@ function bindEvents() {
     formState.itemId = Number(e.target.value);
     refreshUltPanel();
     refreshAbrPanel();
+    refreshScrollPanel();
   });
   $('sel-item').addEventListener('dblclick', () => { if (formState.itemId !== -1) onMake(); });
 
@@ -4613,12 +4772,28 @@ function bindEvents() {
     formState.ultLv = 1;
     formState.ultBaseOps = [null, null, null];
     formState.abrSlots = [null, null, null];
+    formState.scroll = { type: null, id: null, stage: 1 };
     $('filter-name').value = '';
     $('chk-daybreak').checked = false;
     for (let i = 0; i < 3; i++) clearOp(i);
     refreshUltPanel();
     refreshAbrPanel();
+    refreshScrollPanel();
     refreshItemList();
+  });
+
+  
+  $('scroll-type').addEventListener('change', (e) => {
+    const v = e.target.value || null;
+    formState.scroll.type = v;
+    formState.scroll.id = null;
+    refreshScrollIdSelect();
+  });
+  $('scroll-id').addEventListener('change', (e) => {
+    formState.scroll.id = e.target.value || null;
+  });
+  $('scroll-stage').addEventListener('change', (e) => {
+    formState.scroll.stage = Math.max(1, Math.min(5, Number(e.target.value) || 1));
   });
 
 
@@ -4848,9 +5023,25 @@ async function loadSnapshot(data, sourceLabel) {
         }
       }
     }
-    inventory.add(inv);
     
-    if (entry.equippedSlot) inv.equippedSlot = entry.equippedSlot;
+    if (entry.scroll && entry.scroll.id) {
+      const stage = Math.max(1, Math.min(5, Number(entry.scroll.stage) || 1));
+      inv.scroll = {
+        type:  entry.scroll.type || null,
+        id:    String(entry.scroll.id),
+        stage,
+      };
+    }
+    inventory.add(inv);
+
+    if (entry.equippedSlot) {
+      let restoredSlot = entry.equippedSlot;
+      if (restoredSlot === 'job_armor') {
+        const bodyTaken = [...inventory.items()].some((other) => other !== inv && other.equippedSlot === 'body');
+        restoredSlot = bodyTaken ? null : 'body';
+      }
+      if (restoredSlot) inv.equippedSlot = restoredSlot;
+    }
   }
   invalidateFeasibleCache();
   await recalcAll();
@@ -4908,6 +5099,23 @@ function renderFlagList() {
 }
 
 
+function formatSetOpEffectText(eff) {
+  if (!eff) return '';
+  const meta = loader.master?.statTypes?.stats || {};
+  let label;
+  if (Array.isArray(eff.stats) && eff.stats.length) {
+    label = eff.stats.map((sid) => meta[sid]?.name || sid).join(' / ');
+  } else if (eff.statId) {
+    label = meta[eff.statId]?.name || eff.statId;
+  } else {
+    label = '?';
+  }
+  const v = Number(eff.value) || 0;
+  const sign = v > 0 ? '+' : '';
+  const suffix = eff.displayOnly ? '※' : '';
+  return `${label} ${sign}${v}${suffix}`;
+}
+
 function renderSetOpList(equippedList) {
   const root = $('set-op-list');
   if (!root) return;
@@ -4922,24 +5130,219 @@ function renderSetOpList(equippedList) {
     root.innerHTML = '<div class="tdtext" style="color:#9aa68b; font-size:11px">(セットオプション未装着)</div>';
     return;
   }
-  const rows = [];
+
+  
+  const blocks = [];
   for (const s of summary) {
     const isActive = s.activeTier != null;
-    const gradeTxt = (s.def.grade === 'rare') ? '上級' : '一般';
-    
-    const stageTxt = isActive ? `${s.activeTier.count}段` : '未発動';
-    const nextTxt  = s.nextTier ? ` → ${s.nextTier.count}段` : '';
+    const stageTxt = isActive ? `${s.activeTier.count}セット 発動` : '未発動';
+    const nextTxt  = s.nextTier ? ` → 次は ${s.nextTier.count}セット` : '';
     const stageColor = isActive ? '#a8e6a8' : '#d8a743';
-    rows.push(
-      
-      `<div class="flag-row" style="display:flex; align-items:center; padding:1px 4px; gap:6px; flex-wrap:nowrap; white-space:nowrap;${isActive ? '' : ' opacity:0.6;'}">` +
-        `<span class="flag-name" style="min-width:88px; flex:0 0 auto">${esc(s.def.name)}</span>` +
-        `<span class="tdtext" style="color:#9aa68b; flex:0 0 auto">${esc(gradeTxt)}</span>` +
-        `<span class="tdtext" style="color:${stageColor}; flex:1 1 auto">×${s.count} ${esc(stageTxt)}${esc(nextTxt)}</span>` +
+
+    const effectRows = [];
+    for (const tier of s.def.tiers) {
+      const tierActive = s.count >= tier.count;
+      const text = (tier.effects || []).map(formatSetOpEffectText).filter(Boolean).join('、 ');
+      if (!text) continue;
+      const color = tierActive ? '#e7c89b' : '#7d8773';
+      const opacity = tierActive ? '' : ' opacity:0.55;';
+      effectRows.push(
+        `<div class="tdtext" style="padding-left:6px; color:${color};${opacity} white-space:normal; word-break:break-word;">` +
+          `<span style="color:#a89683">[${tier.count}セット]</span> ${esc(text)}` +
+        `</div>`
+      );
+    }
+
+    blocks.push(
+      `<div class="flag-row" style="display:block; padding:3px 4px;">` +
+        `<div style="${isActive ? 'color:#cbe79b; font-weight:bold;' : 'color:#9aa68b;'}">` +
+          `${esc(s.def.name)} ` +
+          `<span class="tdtext" style="color:${stageColor}">×${s.count} ${esc(stageTxt)}${esc(nextTxt)}</span>` +
+        `</div>` +
+        effectRows.join('') +
       `</div>`
     );
   }
-  root.innerHTML = rows.join('');
+  root.innerHTML = blocks.join('');
+}
+
+
+function summarizeActiveScrolls(equippedList) {
+  if (!SCROLL_DB || !Array.isArray(equippedList)) return [];
+  
+  const acc = new Map();
+  for (const { inv, item } of equippedList) {
+    if (!inv || !inv.equippedSlot) continue;
+    if (!item || !isScrollableForItem(item)) continue;
+    const sc = inv.scroll;
+    if (!sc || !sc.id) continue;
+    const def = scrollById(sc.id);
+    if (!def) continue;
+    const stage = Math.max(1, Math.min(5, Number(sc.stage) || 1));
+    const prev = acc.get(sc.id);
+    if (!prev) {
+      acc.set(sc.id, { def, count: 1, minStage: stage });
+    } else {
+      prev.count += 1;
+      if (stage < prev.minStage) prev.minStage = stage;
+    }
+  }
+  return [...acc.values()].sort((a, b) => b.count - a.count || a.def.name.localeCompare(b.def.name, 'ja'));
+}
+
+
+
+
+const SCROLL_LABEL_TO_STAT = {
+  
+  '力':           { statId: 'str' },
+  '敏捷':         { statId: 'agi' },
+  '健康':         { statId: 'con' },
+  '知識':         { statId: 'int' },
+  '知恵':         { statId: 'wiz' },
+  'カリスマ':     { statId: 'chs' },
+  '運':           { statId: 'luc' },
+  
+  'HP':           { statId: 'hp' },          
+  '最大HP':       { statId: 'hpPercent', requirePct: true },
+  'CP':           { statId: 'cp' },
+  '最大CP':       { statId: 'cp' },          
+  
+  '防御力':       { statId: 'def', pctStatId: 'defPercent' },
+  
+  '攻撃速度':     { statId: 'atkspd', requirePct: true },
+  '回避率':       { statId: 'eva', requirePct: true },
+  
+  'ダメージ':           { statId: 'physDamagePercent', requirePct: true },
+  '魔法ダメージ':       { statId: 'attrMagic',          requirePct: true },
+  
+  'CP獲得ボーナス':     { statId: 'cpBonus',            requirePct: true },
+  
+  '強打':               { statId: 'physStrongRate',     requirePct: true },
+  '物理強打':           { statId: 'physStrongRate',     requirePct: true },
+  '魔法強打':           { statId: 'magicStrongRate',    requirePct: true },
+  
+  'スキルレベル':       { statId: 'skillLv' },
+  
+  'ターゲットの魔法の抵抗': { statId: 'attrMagicWeaken', requirePct: true },
+};
+
+
+function parseScrollEffect(text) {
+  if (!text || typeof text !== 'string') return null;
+
+  let m = text.match(/^(.+?)\s*\+(\d+)\s*\/\s*レベル\s*(\d+)?/);
+  if (m) {
+    const map = SCROLL_LABEL_TO_STAT[m[1].trim()];
+    if (map) return { statId: map.statId, isLvLinked: true, addValue: Number(m[2]) || 0, divisor: Math.max(1, Number(m[3]) || 1) };
+  }
+  
+  m = text.match(/(ターゲットの魔法の抵抗)\s*を\s*\+?(\d+(?:\.\d+)?)(%|％)/);
+  if (m) {
+    const map = SCROLL_LABEL_TO_STAT[m[1]];
+    if (map) return { statId: map.statId, value: Number(m[2]) || 0 };
+  }
+  
+  m = text.match(/^(.+?)\s*([+\-])?\s*(\d+(?:\.\d+)?)(%|％)?\s*$/);
+  if (m) {
+    const label    = m[1].trim();
+    const sign     = (m[2] === '-') ? -1 : 1;
+    const valueRaw = Number(m[3]) || 0;
+    const isPct    = !!m[4];
+    const map = SCROLL_LABEL_TO_STAT[label];
+    if (!map) return null;
+    
+    let statId = map.statId;
+    if (isPct && map.pctStatId) statId = map.pctStatId;
+    if (map.requirePct && !isPct) return null;       
+    return { statId, value: valueRaw * sign };
+  }
+  return null;
+}
+
+
+function collectScrollEffectLinesActive(def, stageEntry, count) {
+  if (!def || !stageEntry || count < 2) return [];
+  const tier = (count >= 5) ? 'pc5' : (count >= 4) ? 'pc4' : 'pc2';
+  const lines = [...(stageEntry[tier] || [])];
+  if (count >= 5 && Array.isArray(def.pc5Fixed)) lines.push(...def.pc5Fixed);
+  return lines;
+}
+
+function applyScrollsToSTTemp(STTemp, equippedList, LvTemp) {
+  if (!STTemp || !STTemp.sum) return;
+  const summary = summarizeActiveScrolls(equippedList);
+  for (const { def, count, minStage } of summary) {
+    if (count < 2) continue;
+    const stageEntry = def.stages.find((st) => st.stage === minStage) || def.stages[0];
+    if (!stageEntry) continue;
+    const lines = collectScrollEffectLinesActive(def, stageEntry, count);
+    for (const text of lines) {
+      const eff = parseScrollEffect(text);
+      if (!eff) continue;
+      if (eff.isLvLinked) {
+        const v = Math.floor((LvTemp || 0) / eff.divisor) * eff.addValue;
+        STTemp.sum[eff.statId] = (STTemp.sum[eff.statId] || 0) + v;
+      } else {
+        STTemp.sum[eff.statId] = (STTemp.sum[eff.statId] || 0) + (Number(eff.value) || 0);
+      }
+    }
+  }
+}
+
+function renderScrollSetList(equippedList) {
+  const root = $('scroll-set-list');
+  if (!root) return;
+  const summary = summarizeActiveScrolls(equippedList);
+  if (summary.length === 0) {
+    root.innerHTML = '<div class="tdtext" style="color:#9aa68b; font-size:11px">(図案付き装備なし)</div>';
+    return;
+  }
+
+  
+  const blocks = [];
+  for (const { def, count, minStage } of summary) {
+    const stageEntry = def.stages.find((st) => st.stage === minStage) || def.stages[0];
+    const stageLabel = stageEntry ? stageEntry.label : `${minStage}段`;
+    const headStyle = (count >= 2) ? 'color:#cbe79b; font-weight:bold;' : 'color:#9aa68b;';
+    const tierBadge = (count >= 5) ? '5セット 発動' : (count >= 4) ? '4セット 発動' : (count >= 2) ? '2セット 発動' : '未発動';
+    const tierBadgeColor = (count >= 2) ? '#a8e6a8' : '#d8a743';
+
+    const rows = [];
+    function pushRow(thresh, effects, isFixed) {
+      const isActive = count >= thresh;
+      const labelN = isFixed ? '5セット固定' : `${thresh}セット`;
+      const text = (Array.isArray(effects) && effects.length) ? effects.join('、 ') : '';
+      const color = !isActive ? '#7d8773' : (isFixed ? '#bcd9ff' : '#e7c89b');
+      const opacity = isActive ? '' : ' opacity:0.55;';
+      rows.push(
+        `<div class="tdtext" style="padding-left:6px; color:${color};${opacity} white-space:normal; word-break:break-word;">` +
+          `<span style="color:#a89683">[${esc(labelN)}]</span> ${esc(text)}` +
+        `</div>`
+      );
+    }
+    pushRow(2, stageEntry?.pc2, false);
+    pushRow(4, stageEntry?.pc4, false);
+    pushRow(5, stageEntry?.pc5, false);
+    if (Array.isArray(def.pc5Fixed) && def.pc5Fixed.length) pushRow(5, def.pc5Fixed, true);
+
+    
+    const nextThreshold = (count < 2) ? 2 : (count < 4) ? 4 : (count < 5) ? 5 : null;
+    if (nextThreshold) {
+      rows.push(`<div class="tdtext" style="padding-left:6px; color:#9aa68b; font-style:italic;">(あと ${nextThreshold - count} 個で ${nextThreshold}セット 発動)</div>`);
+    }
+
+    blocks.push(
+      `<div class="flag-row" style="display:block; padding:3px 4px;">` +
+        `<div style="${headStyle}">[${esc(def.name)}] ` +
+          `<span class="tdtext" style="color:#9aa68b">${esc(stageLabel)}</span> ` +
+          `<span class="tdtext" style="color:${tierBadgeColor}">×${count} ${esc(tierBadge)}</span>` +
+        `</div>` +
+        rows.join('') +
+      `</div>`
+    );
+  }
+  root.innerHTML = blocks.join('');
 }
 
 
@@ -8806,6 +9209,14 @@ const DamageCalc = (() => {
 
 async function main() {
   await loader.init();
+
+  loadScrollDb().then(() => {
+    const root = $('scroll-set-list');
+    if (root && root.textContent.includes('図案付き装備なし')) {
+      
+      recalcAll().catch(() => {  });
+    }
+  }).catch(() => {  });
   initSelectors();
   bindEvents();
   bindStatPopups();

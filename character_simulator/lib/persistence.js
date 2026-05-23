@@ -47,6 +47,14 @@ export function serializeSession(character, inventory, opts = {}) {
 
     
     if (inv.ultLv != null) entry.ultLv = inv.ultLv;
+
+    if (inv.scroll && inv.scroll.id) {
+      entry.scroll = {
+        type:  inv.scroll.type ?? null,
+        id:    String(inv.scroll.id),
+        stage: Math.max(1, Math.min(5, Number(inv.scroll.stage) || 1)),
+      };
+    }
     if (Array.isArray(inv.customBaseOps) && inv.customBaseOps.some((s) => s != null)) {
       entry.customBaseOps = inv.customBaseOps.slice(0, 3).map((s) => s ? {
         ultKey:   s.ultKey   ?? null,
