@@ -66,6 +66,36 @@ export function serializeSession(character, inventory, opts = {}) {
     }
 
     
+
+    
+    
+    if (typeof inv.nxUnlockedCount === 'number' && inv.nxUnlockedCount !== 4) {
+      entry.nxUnlockedCount = Math.max(0, Math.min(4, inv.nxUnlockedCount));
+    }
+    if (Array.isArray(inv.nxUnlockedOps) && inv.nxUnlockedOps.some((s) => s != null)) {
+      entry.nxUnlockedOps = inv.nxUnlockedOps.slice(0, 4).map((s) => {
+        if (!s) return null;
+        
+        if (s.ocName != null) {
+          return {
+            name:      String(s.ocName),
+            value:     s.ocValue ?? null,
+            converter: s.ocConverter || 'normal',
+          };
+        }
+        
+        if (s.bfId) {
+          return {
+            id:    String(s.bfId),
+            grade: (s.bfGrade === 'white') ? 'white' : 'black',
+            tier:  s.bfTier || 'top',
+          };
+        }
+        return null;
+      });
+    }
+
+    
     
     if (inv.bfop && inv.bfop.bfId) {
       entry.bfop = {

@@ -3,6 +3,7 @@
 
 import { resolveEquipSlot } from './slot_resolver.js';
 import { checkKuroneConstraint } from './kurone.js';
+import { computeItemRequiredLv } from './req_lv.js';
 
 const STAT_KEYS = ['str', 'agi', 'con', 'int', 'wiz', 'chs', 'luc'];
 
@@ -80,7 +81,7 @@ export function isJobAllowed(item, character) {
 
 export function computeRequiredLv(inv, item) {
   if (!item || !item.req) return 0;
-  return Number(item.req.lv || 0);
+  return computeItemRequiredLv(item, inv);
 }
 
 

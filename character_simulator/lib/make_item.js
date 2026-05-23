@@ -5,6 +5,7 @@ import { newInventoryItem } from './inventory.js';
 import { Op, iterateAllOps } from './item_api.js';
 import { getLoader } from './item_api.js';
 import { buildBfopSlot } from './bf_options.js';
+import { buildOpConvertSlot } from './op_convert.js';
 
 const STAT_KEYS = ['str', 'agi', 'con', 'int', 'wiz', 'chs', 'luc'];
 
@@ -111,6 +112,47 @@ export function makeItem(state, itemRecord, opts = {}) {
     if (e.seirenName)  slot.seirenName  = String(e.seirenName);
     if (e.seirenTier)  slot.seirenTier  = String(e.seirenTier);
     inv.seirenOps[k] = slot;
+  }
+
+
+  
+
+  
+
+  
+  
+  if (typeof state.nxUnlockedCount === 'number') {
+    inv.nxUnlockedCount = Math.max(0, Math.min(4, state.nxUnlockedCount));
+  } else {
+    inv.nxUnlockedCount = 4;
+  }
+  const nxOps = state.nxUnlockedOps || [];
+  for (let k = 0; k < 4; k++) {
+    const e = nxOps[k];
+    if (!e) { inv.nxUnlockedOps[k] = null; continue; }
+    
+    if (e.name && e.value != null) {
+      inv.nxUnlockedOps[k] = buildOpConvertSlot(
+        { name: e.name, value: e.value },
+        e.converter || 'normal',
+      );
+      continue;
+    }
+    
+    if (e.id) {
+      const slot = buildBfopSlot({
+        id:    String(e.id),
+        grade: (e.grade === 'white') ? 'white' : 'black',
+        tier:  e.tier || 'top',
+      });
+      if (slot) {
+        slot.source = 'nx.unlocked';
+        slot._nxConverted = true;
+      }
+      inv.nxUnlockedOps[k] = slot;
+      continue;
+    }
+    inv.nxUnlockedOps[k] = null;
   }
 
 

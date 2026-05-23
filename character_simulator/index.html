@@ -1978,6 +1978,77 @@
                   <tr class="row-sep bf-row" style="display:none"><td colspan="7"></td></tr>
 
                   
+                  <tr id="nx-row-header" class="nx-row" style="display:none">
+                    <td colspan="7" class="tdtext" style="padding-top:6px; color:#cbe79b">
+                      <b>封印解放 / 解放OP変換</b>
+                    </td>
+                  </tr>
+                  <tr id="nx-row-count" class="nx-row" style="display:none">
+                    <td colspan="2" class="tdtext">解放数</td>
+                    <td style="width:4px"></td>
+                    <td colspan="4">
+                      <select id="nx-count" class="select" style="width:100%">
+                        <option value="0">0 (全封印)</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4" selected>4 (全開放)</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr id="nx-row-converter" class="nx-row" style="display:none">
+                    <td colspan="2" class="tdtext">変換器</td>
+                    <td style="width:4px"></td>
+                    <td colspan="4">
+                      <select id="nx-converter" class="select" style="width:100%">
+                        <option value="">(変換なし)</option>
+                        <option value="replica">レプリカ解放OP変換器</option>
+                        <option value="normal">解放OP変換器(通常)</option>
+                        <option value="improved">解放オプション変換器・改</option>
+                        <option value="burning">灼熱解放OP変換器</option>
+                      </select>
+                    </td>
+                  </tr>
+                  
+                  <tr class="row-sep nx-row" style="display:none"><td colspan="7"></td></tr>
+
+                  <tr class="nx-row nx-slot-row" data-nx-slot="0" style="display:none">
+                    <td colspan="2" class="tdtext">解放OP1<br><span id="nx-default-0" style="color:#9aa68b; font-size:10.5px">(デフォルト)</span></td>
+                    <td style="width:4px"></td>
+                    <td colspan="4">
+                      <select class="select nx-op-select" data-nx-slot="0" style="width:100%; font-size:11.5px"></select>
+                    </td>
+                  </tr>
+                  <tr class="row-sep nx-row nx-slot-row" data-nx-slot="0" style="display:none"><td colspan="7"></td></tr>
+
+                  <tr class="nx-row nx-slot-row" data-nx-slot="1" style="display:none">
+                    <td colspan="2" class="tdtext">解放OP2<br><span id="nx-default-1" style="color:#9aa68b; font-size:10.5px">(デフォルト)</span></td>
+                    <td style="width:4px"></td>
+                    <td colspan="4">
+                      <select class="select nx-op-select" data-nx-slot="1" style="width:100%; font-size:11.5px"></select>
+                    </td>
+                  </tr>
+                  <tr class="row-sep nx-row nx-slot-row" data-nx-slot="1" style="display:none"><td colspan="7"></td></tr>
+
+                  <tr class="nx-row nx-slot-row" data-nx-slot="2" style="display:none">
+                    <td colspan="2" class="tdtext">解放OP3<br><span id="nx-default-2" style="color:#9aa68b; font-size:10.5px">(デフォルト)</span></td>
+                    <td style="width:4px"></td>
+                    <td colspan="4">
+                      <select class="select nx-op-select" data-nx-slot="2" style="width:100%; font-size:11.5px"></select>
+                    </td>
+                  </tr>
+                  <tr class="row-sep nx-row nx-slot-row" data-nx-slot="2" style="display:none"><td colspan="7"></td></tr>
+
+                  <tr class="nx-row nx-slot-row" data-nx-slot="3" style="display:none">
+                    <td colspan="2" class="tdtext">解放OP4<br><span id="nx-default-3" style="color:#9aa68b; font-size:10.5px">(デフォルト)</span></td>
+                    <td style="width:4px"></td>
+                    <td colspan="4">
+                      <select class="select nx-op-select" data-nx-slot="3" style="width:100%; font-size:11.5px"></select>
+                    </td>
+                  </tr>
+                  <tr class="row-sep nx-row" style="display:none"><td colspan="7"></td></tr>
+
+                  
                   <tr id="seiren-row-header" class="seiren-row" style="display:none">
                     <td colspan="7" class="tdtext" style="padding-top:6px; color:#cbe79b">
                       <b>製錬</b>
@@ -2677,6 +2748,7 @@ import { aggregateForCharacter } from './lib/stat_aggregator.js';
 import { finalizeStats } from './lib/stat_finalizer.js';
 import { formatOpText, stripOpTags } from './lib/op_text_formatter.js';
 import { updateEquipmentMetadata } from './lib/equipment_meta.js';
+import { computeItemRequiredLv, computeRequiredLvBreakdown } from './lib/req_lv.js';
 import { calcOpValue, applyOpToSTTemp, aggregateAllOpsForItem } from './lib/op_calc.js';
 import { getEffectiveLv, PRIMARY_STAT_IDS } from './lib/character.js';
 import { computeAbilities, JOB_STAT_SWAP_IDS } from './lib/abilities.js';
@@ -2732,6 +2804,15 @@ import {
   formatBfOption,
   listBfOptionsForGrade,
 } from './lib/bf_options.js';
+import {
+  CONVERTER_LABELS as OC_CONVERTER_LABELS,
+  CONVERTER_GRADE_REQUIRED as OC_GRADE_REQUIRED,
+  loadOpConvertData,
+  resolveItemCategory as ocResolveItemCategory,
+  resolveItemGradeForConvert as ocResolveItemGrade,
+  listOptionsForSlot as ocListOptionsForSlot,
+  buildOpConvertSlot,
+} from './lib/op_convert.js';
 import {
   SET_OP_DEFS,
   getSetOpDef,
@@ -2844,6 +2925,10 @@ const formState = {
 
   
   bfop: { grade: 'black', id: null, tier: 'top' },
+
+  nxUnlockedCount: 4,
+  nxConverter:    '',
+  nxUnlockedOps:  [null, null, null, null],
 };
 const INVENTORY_MAX = 84;  
 const inventory = new Inventory(INVENTORY_MAX);
@@ -2985,6 +3070,137 @@ async function refreshBfPanel() {
   refreshBfOpSelect();
 }
 
+
+function isNxFormItem(rec) {
+  if (!rec) return false;
+  if (!rec.nxAvailable) return false;
+  
+  const slot = resolveEquipSlot(rec);
+  return !!slot;
+}
+
+
+function getNxDefaultOpInfo(rec, pos) {
+  if (!rec || !Array.isArray(rec.opSlots)) return null;
+  for (const slot of rec.opSlots) {
+    if (!slot) continue;
+    const isNx = (slot.slotKind === 'nxop' || slot.slotKind === 'long_nxop');
+    if (!isNx) continue;
+    const slotPos = (slot.pos != null) ? Number(slot.pos) : -1;
+    if (slotPos !== pos) continue;
+    return resolveOpDisplayInfo(slot.familyId, slot.value);
+  }
+  return null;
+}
+
+
+const SPECIAL_FAMILY_LABELS = {
+  736: { name: 'このアイテムの着用レベル', unit: '', sign: '-' },  
+  175: { name: '魔法致命打ダメージ増加',   unit: '%', sign: '+' }, 
+};
+function resolveOpDisplayInfo(familyId, value) {
+  const sp = SPECIAL_FAMILY_LABELS[Number(familyId)];
+  if (sp) return { name: sp.name, value, unit: sp.unit, sign: sp.sign };
+  const family = OpPrefix.getFamily(familyId);
+  if (!family) return { name: `family#${familyId}`, value, unit: '', sign: '+' };
+  const t0 = family.tiers && family.tiers[0];
+  const effect = (t0 && t0.effect) || '';
+  const nameMatch = effect.match(/^([^\s\d\[]+)/);
+  const name = nameMatch ? nameMatch[1] : `family#${familyId}`;
+  return { name, value, unit: effect.includes('％') ? '%' : '', sign: '+' };
+}
+
+
+function listConvertOptionsForSlot(rec, slotIdx) {
+  const converter = formState.nxConverter;
+  if (!converter || !rec) return [];
+  const cat = ocResolveItemCategory(rec, converter);
+  if (!cat) return [];
+  const gradeRequired = OC_GRADE_REQUIRED[converter];
+  const grade = gradeRequired ? ocResolveItemGrade(rec) : null;
+  if (gradeRequired && !grade) return [];
+  return ocListOptionsForSlot(converter, cat, grade, slotIdx + 1) || [];
+}
+
+
+function formatConvertOpForDropdown(o) {
+  
+  const m = String(o.name || '');
+  
+  if (/着用.*レベル.*減少|アイテム着用Lv.*減少/.test(m)) {
+    return `このアイテムの着用レベル -${o.value}`;
+  }
+  return `${o.name} +${o.value}`;
+}
+
+function refreshNxSlotSelect(slotIdx, rec) {
+  const sel = document.querySelector(`.nx-op-select[data-nx-slot="${slotIdx}"]`);
+  if (!sel) return;
+  sel.innerHTML = '';
+  
+  const opt0 = document.createElement('option');
+  opt0.value = '';
+  opt0.textContent = '(デフォルト)';
+  sel.appendChild(opt0);
+
+  const list = listConvertOptionsForSlot(rec, slotIdx);
+  for (const o of list) {
+    const opt = document.createElement('option');
+    opt.value = String(o.name);
+    opt.textContent = formatConvertOpForDropdown(o);
+    sel.appendChild(opt);
+  }
+  
+  const cur = formState.nxUnlockedOps[slotIdx];
+  if (cur && cur.name) {
+    if ([...sel.options].some((opt) => opt.value === cur.name)) sel.value = cur.name;
+    else { sel.value = ''; formState.nxUnlockedOps[slotIdx] = null; }
+  } else {
+    sel.value = '';
+  }
+  
+  sel.disabled = !formState.nxConverter;
+}
+
+async function refreshNxPanel() {
+  const rec = (formState.itemId >= 0) ? await Item.get(formState.itemId) : null;
+  const ok = isNxFormItem(rec);
+  const rows = document.querySelectorAll('.nx-row');
+  for (const r of rows) r.style.display = ok ? '' : 'none';
+  if (!ok) {
+    formState.nxUnlockedCount = 4;
+    formState.nxConverter = '';
+    formState.nxUnlockedOps = [null, null, null, null];
+    if ($('nx-count'))     $('nx-count').value = '4';
+    if ($('nx-converter')) $('nx-converter').value = '';
+    return;
+  }
+  
+  try { await loadOpConvertData(); }
+  catch (err) { console.warn('[op_convert] load failed:', err); }
+
+  if ($('nx-count'))     $('nx-count').value = String(formState.nxUnlockedCount);
+  if ($('nx-converter')) $('nx-converter').value = formState.nxConverter || '';
+
+  
+  const slotRows = document.querySelectorAll('.nx-slot-row');
+  for (const r of slotRows) {
+    const k = Number(r.dataset.nxSlot);
+    r.style.display = (k < formState.nxUnlockedCount) ? '' : 'none';
+  }
+  
+  for (let k = 0; k < 4; k++) {
+    const info = getNxDefaultOpInfo(rec, k);
+    const defLabel = $(`nx-default-${k}`);
+    if (defLabel) {
+      defLabel.textContent = info
+        ? `デフォルト: ${info.name} ${info.sign || '+'}${info.value}${info.unit || ''}`
+        : '(デフォルト OP 未定義)';
+    }
+    refreshNxSlotSelect(k, rec);
+  }
+}
+
 function refreshScrollIdSelect() {
   const sel = $('scroll-id');
   if (!sel) return;
@@ -3083,8 +3299,8 @@ function buildSeirenOptionList(pool, stage) {
         const v = Array.isArray(arr) ? arr[stageIdx] : null;
         if (v == null) continue;
         const tierLabel = SEIREN_TIER_LABEL[tierKey];
-        const tag = (isUnsupported && !isPetSummon) ? ' ※未対応' : '';
-        const label = `[${tierLabel}] ${nmStr} +${v}${unit}${tag}`;
+        
+        const label = `[${tierLabel}] ${nmStr} +${v}${unit}`;
         const val   = `ent:${ei}:nm:${ni}:tier:${tierKey}`;
         lines.push(`<option value="${val}">${esc(label)}</option>`);
       }
@@ -3782,6 +3998,20 @@ async function onMake() {
         tier:  formState.bfop.tier || 'top',
       }
     : null;
+
+  const nxStateForMake = isNxFormItem(rec)
+    ? {
+        nxUnlockedCount: formState.nxUnlockedCount,
+
+        nxUnlockedOps:   formState.nxUnlockedOps.map((o) => {
+          if (!o) return null;
+          if (o.name && o.value != null) {
+            return { name: o.name, value: o.value, converter: o.converter || formState.nxConverter || 'normal' };
+          }
+          return null;
+        }),
+      }
+    : {};
   const inv = makeItem({
     itemId: formState.itemId,
     revisions: [0, 0, 0],
@@ -3790,6 +4020,7 @@ async function onMake() {
     seirenStage: formState.seirenStage,
     seirenOps,
     bfop: bfopState,
+    ...nxStateForMake,
   }, rec);
   if (!inv) { alert('makeItem に失敗'); return; }
   
@@ -4055,10 +4286,55 @@ function buildItemDetailHtml(inv, rec, character) {
     return OpPrefix.findTier(familyId, op?.value);
   }
 
-  
+
+  const unlockedCount = inv && typeof inv.nxUnlockedCount === 'number'
+    ? Math.max(0, Math.min(4, inv.nxUnlockedCount))
+    : 4;
   for (const slot of (rec.opSlots || [])) {
     if (slot.slotKind === 'base') continue;
     const isNx = slot.slotKind === 'nxop' || slot.slotKind === 'long_nxop';
+    const nxPos = (isNx && slot.pos != null) ? Number(slot.pos) : -1;
+    
+    if (isNx && nxPos >= 0 && nxPos < unlockedCount && inv && inv.nxUnlockedOps && inv.nxUnlockedOps[nxPos]) {
+      const ovr = inv.nxUnlockedOps[nxPos];
+      
+      if (ovr.ocName) {
+        const v = ovr.value ?? ovr.ocValue;
+        const convLabel = ({ replica:'レプリカ', normal:'通常', improved:'改', burning:'灼熱' })[ovr.ocConverter] || ovr.ocConverter || '';
+        
+        const isLvRed = (ovr.familyId === 736) || /着用.*レベル.*減少|アイテム着用Lv.*減少/.test(ovr.ocName);
+        if (isLvRed) {
+          html += `<span class="idp-op is-nx">- このアイテムの着用レベル <span style="color:#ffff00">-${esc(v)}</span> <span class="idp-nx-label">[Nx変換 ${esc(convLabel)}]</span></span>`;
+          continue;
+        }
+
+        html += `<span class="idp-op is-nx">- ${esc(ovr.ocName)} <span style="color:#ffff00">+${esc(v)}</span> <span class="idp-nx-label">[Nx変換 ${esc(convLabel)}]</span></span>`;
+        continue;
+      }
+      
+      const def = getBfOption(ovr.bfId);
+      if (def) {
+        const v = ovr.value;
+        const unit = def.unit || '';
+        const valTxt = (v != null) ? `+${v}${unit}` : '';
+        const gradeLabel = (ovr.bfGrade === 'white') ? '白' : '黒';
+        html += `<span class="idp-op is-nx">- ${esc(def.name)} <span style="color:#ffff00">${esc(valTxt)}</span> <span class="idp-nx-label">[Nx変換 ${gradeLabel}]</span></span>`;
+        continue;
+      }
+    }
+    
+    if (isNx && nxPos >= unlockedCount) {
+      const info0 = resolveOpDisplayInfo(slot.familyId, slot.value);
+      html += `<span class="idp-op is-nx" style="color:#7a7a7a">- ${esc(info0.name)} <span style="font-size:10.5px">[封印中]</span></span>`;
+      continue;
+    }
+    
+    if (isNx && (slot.familyId === 736 || slot.familyId === 175)) {
+      const info0 = resolveOpDisplayInfo(slot.familyId, slot.value);
+      html += `<span class="idp-op is-nx">- ${esc(info0.name)} <span style="color:#ffff00">${info0.sign}${esc(info0.value)}${esc(info0.unit)}</span> <span class="idp-nx-label">[Nx]</span></span>`;
+      continue;
+    }
+    
     const family = OpPrefix.getFamily(slot.familyId);
     if (!family) continue;
     const isRatio = family.stat?.layer === 'lvLinked';
@@ -4067,7 +4343,6 @@ function buildItemDetailHtml(inv, rec, character) {
     let extraClass = '';
     let tier = null;
     if (isJobSkill) {
-
       const targetName = (loader.master?.jobs?.[String(slot.jobIdx)]?.[1]) || '?';
       const matched = (character && character.job === slot.jobIdx);
       text = `${targetName} スキルレベル +<span style="color:#ffff00">${slot.value ?? 0}</span>`;
@@ -4080,7 +4355,6 @@ function buildItemDetailHtml(inv, rec, character) {
       const effect = (tier && tier.effect) || family.firstTierEffect || '';
       text = formatPrefixEffect(effect, slot.value);
     }
-
     html += `<span class="idp-op ${isNx ? 'is-nx' : ''}${extraClass}">- ${text}${isNx ? ' <span class="idp-nx-label">[Nx]</span>' : ''}</span>`;
   }
   
@@ -4139,9 +4413,8 @@ function buildItemDetailHtml(inv, rec, character) {
       const unit = getSeirenFamilyUnit(op.familyId);
       const valTxt = (v != null) ? `<span style="color:#ffff00">+${v}${unit}</span>` : '';
       if (op.displayOnly || op.familyId == null || op.familyId < 0) {
-        const isPet = /(召喚獣|ペット)/.test(nameTxt);
-        const marker = isPet ? '' : ' <span style="font-size:10.5px">※未対応</span>';
-        html += `<span class="idp-op is-ui" style="border-left:2px solid #cbe79b; padding-left:4px; color:#a89683">+ ${tierTxt}${esc(nameTxt)} ${valTxt}${marker} <span class="idp-ui-label">[製錬${i + 1}]</span></span>`;
+
+        html += `<span class="idp-op is-ui" style="border-left:2px solid #cbe79b; padding-left:4px; color:#a89683">+ ${tierTxt}${esc(nameTxt)} ${valTxt} <span class="idp-ui-label">[製錬${i + 1}]</span></span>`;
         continue;
       }
       html += `<span class="idp-op is-ui" style="border-left:2px solid #cbe79b; padding-left:4px">+ ${tierTxt}${esc(nameTxt)} ${valTxt} <span class="idp-ui-label">[製錬${i + 1}]</span></span>`;
@@ -4195,9 +4468,10 @@ function buildItemDetailHtml(inv, rec, character) {
       html += `<div class="idp-section-title" style="color:#cbe79b">&lt;${esc(heading)}&gt;</div>`;
       const valTxt = (v != null) ? `+${v}${unit}` : (range ? `+${range.max}${unit}` : '?');
       const tierTag = `<span style="color:${tierColor}; font-size:11px">[${esc(tierLabel)}]</span>`;
+
       const tag = suppressed
         ? ` <span class="idp-ui-label" style="color:#d8884c">[BF制限]</span>`
-        : (dispOnly ? ` <span style="font-size:10.5px; color:#a89683">※未対応</span>` : '');
+        : '';
       const style = suppressed
         ? 'border-left:2px solid #d8884c; padding-left:4px; color:#a89683'
         : 'border-left:2px solid #cbe79b; padding-left:4px';
@@ -4233,10 +4507,20 @@ function buildItemDetailHtml(inv, rec, character) {
   
   if (rec.req) {
     html += `<div class="idp-section-title">&lt;要求能力値&gt;</div>`;
-    const reqLv = rec.req.lv || 0;
+
+    const bd = computeRequiredLvBreakdown(rec, inv);
+    const reqLv = bd.total;
     const effLv = LvTemp;
     const lvNg = effLv < reqLv;
-    html += `<span class="idp-row ${lvNg ? 'is-ng-row' : ''}"><span class="idp-key">レベル</span> <span class="idp-val">${reqLv}</span></span>`;
+    let lvDetail = '';
+    if (bd.total !== bd.baseLv) {
+      const diff = bd.total - bd.baseLv;
+      const sign = diff >= 0 ? '+' : '';
+      lvDetail = ` <span style="color:#888; font-size:10px">(本来 ${bd.baseLv}${diff !== 0 ? ` / ${sign}${diff}` : ''}${bd.isUM ? ' UM' : ''})</span>`;
+    } else if (bd.isUM) {
+      lvDetail = ` <span style="color:#888; font-size:10px">(UM)</span>`;
+    }
+    html += `<span class="idp-row ${lvNg ? 'is-ng-row' : ''}"><span class="idp-key">レベル</span> <span class="idp-val">${reqLv}</span>${lvDetail}</span>`;
     
     if (rec.req.st) {
       const labels = { str:'力', agi:'敏捷', con:'健康', int:'知識', wiz:'知恵', chs:'カリスマ', luc:'運' };
@@ -5200,6 +5484,7 @@ function bindEvents() {
     refreshAbrPanel();
     refreshScrollPanel();
     refreshBfPanel();
+    refreshNxPanel();
     refreshSeirenPanel();
   });
   $('sel-item').addEventListener('dblclick', () => { if (formState.itemId !== -1) onMake(); });
@@ -5303,6 +5588,9 @@ function bindEvents() {
     formState.seirenStage = 0;
     formState.seirenOps = [null, null, null, null, null];
     formState.bfop = { grade: 'black', id: null, tier: 'top' };
+    formState.nxUnlockedCount = 4;
+    formState.nxConverter = '';
+    formState.nxUnlockedOps = [null, null, null, null];
     $('filter-name').value = '';
     $('chk-daybreak').checked = false;
     for (let i = 0; i < 3; i++) clearOp(i);
@@ -5311,11 +5599,15 @@ function bindEvents() {
       dd.innerHTML = '<option value="">(未選択)</option>';
       dd.value = '';
     });
-    if ($('seiren-stage')) $('seiren-stage').value = '0';
+    if ($('seiren-stage'))  $('seiren-stage').value = '0';
+    if ($('nx-count'))      $('nx-count').value = '4';
+    if ($('nx-converter'))  $('nx-converter').value = '';
+    document.querySelectorAll('.nx-op-select').forEach((dd) => { dd.value = ''; });
     refreshUltPanel();
     refreshAbrPanel();
     refreshScrollPanel();
     refreshBfPanel();
+    refreshNxPanel();
     refreshSeirenPanel();
     refreshItemList();
   });
@@ -5350,6 +5642,42 @@ function bindEvents() {
   $('bf-tier').addEventListener('change', (e) => {
     const v = String(e.target.value);
     formState.bfop.tier = BF_TIERS.includes(v) ? v : 'top';
+  });
+
+  
+  if ($('nx-count')) {
+    $('nx-count').addEventListener('change', (e) => {
+      formState.nxUnlockedCount = Math.max(0, Math.min(4, Number(e.target.value) || 0));
+      refreshNxPanel();
+    });
+  }
+  if ($('nx-converter')) {
+    $('nx-converter').addEventListener('change', async (e) => {
+      formState.nxConverter = e.target.value || '';
+
+      formState.nxUnlockedOps = [null, null, null, null];
+      await refreshNxPanel();
+    });
+  }
+  document.querySelectorAll('.nx-op-select').forEach((sel) => {
+    sel.addEventListener('change', (e) => {
+      const slotIdx = Number(e.target.dataset.nxSlot);
+      const v = e.target.value || '';
+      if (!v) { formState.nxUnlockedOps[slotIdx] = null; return; }
+
+      const rec = (formState.itemId >= 0) ? null : null;  
+      Item.get(formState.itemId).then((r) => {
+        const list = listConvertOptionsForSlot(r, slotIdx);
+        const entry = list.find((o) => o.name === v);
+        if (entry) {
+          formState.nxUnlockedOps[slotIdx] = {
+            name:      entry.name,
+            value:     entry.value,
+            converter: formState.nxConverter,
+          };
+        }
+      });
+    });
   });
 
 
@@ -5617,6 +5945,36 @@ async function loadSnapshot(data, sourceLabel) {
         tier:  entry.bfop.tier || 'top',
       });
       if (slot) inv.bfop = slot;
+    }
+
+    if (typeof entry.nxUnlockedCount === 'number') {
+      inv.nxUnlockedCount = Math.max(0, Math.min(4, entry.nxUnlockedCount));
+    }
+    if (Array.isArray(entry.nxUnlockedOps)) {
+      for (let k = 0; k < 4; k++) {
+        const e = entry.nxUnlockedOps[k];
+        if (!e) { inv.nxUnlockedOps[k] = null; continue; }
+        
+        if (e.name && e.value != null) {
+          inv.nxUnlockedOps[k] = buildOpConvertSlot(
+            { name: e.name, value: e.value },
+            e.converter || 'normal',
+          );
+          continue;
+        }
+        
+        if (e.id) {
+          const slot = buildBfopSlot({
+            id:    String(e.id),
+            grade: (e.grade === 'white') ? 'white' : 'black',
+            tier:  e.tier || 'top',
+          });
+          if (slot) { slot.source = 'nx.unlocked'; slot._nxConverted = true; }
+          inv.nxUnlockedOps[k] = slot;
+          continue;
+        }
+        inv.nxUnlockedOps[k] = null;
+      }
     }
     inventory.add(inv);
 
@@ -7594,7 +7952,8 @@ function renderStoneCards() {
       const r = document.createElement('div');
       const mapped = !!mapForCat[idx];
       r.className = 'stone-effect-row' + (mapped ? '' : ' is-unmapped');
-      r.title = mapped ? '' : '計算未対応 (式未確定): 表示のみ';
+
+      r.title = '';
       r.innerHTML =
         `<span class="stone-effect-name">${esc(eff.name)}</span>` +
         `<span class="stone-effect-value">+${eff.value}${eff.unit}</span>`;
@@ -9164,7 +9523,8 @@ const DamageCalc = (() => {
     currentJobId = Number(jobId);
     if (!prefix) {
       skillDb = null;
-      populateSkillSelectEmpty(`このジョブはまだダメージ計算未対応です。`);
+
+      populateSkillSelectEmpty(`このジョブのダメージ計算は準備中です。`);
       renderSkillInfo(null, null);
       renderResults(null);
       return;

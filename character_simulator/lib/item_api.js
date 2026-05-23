@@ -148,7 +148,17 @@ export function* iterateAllOps(inv, item) {
 
   const nxAuto = !!(item && item.nxAvailable);
 
+
   
+
+  
+
+  const unlockedCount = (inv && typeof inv.nxUnlockedCount === 'number')
+    ? Math.max(0, Math.min(4, inv.nxUnlockedCount))
+    : 4;
+
+  
+  let nxopPosCounter = 0;  
   for (let i = 0; i < item.opSlots.length; i++) {
     const slot = item.opSlots[i];
     if (slot == null) continue;
@@ -160,7 +170,21 @@ export function* iterateAllOps(inv, item) {
       : slot.slotKind === 'long_nxop' ? 'item.nxoption'
       : 'item.base';
     const isNx = source === 'item.nxoption';
-    if (isNx && !(nxAuto || (inv && inv.nxActive))) continue;
+    if (isNx) {
+      if (!(nxAuto || (inv && inv.nxActive))) continue;
+
+      const pos = (slot.pos != null) ? Number(slot.pos) : nxopPosCounter++;
+      
+      if (pos >= unlockedCount) continue;
+      
+      if (inv && Array.isArray(inv.nxUnlockedOps) && inv.nxUnlockedOps[pos]) {
+        yield { op: inv.nxUnlockedOps[pos], source: 'nx.unlocked', index: pos };
+        continue;
+      }
+      
+      yield { op: _normalizeOpSlot(slot), source, index: i };
+      continue;
+    }
     yield { op: _normalizeOpSlot(slot), source, index: i };
   }
 
@@ -172,11 +196,16 @@ export function* iterateAllOps(inv, item) {
       if (inv.ops[k]) yield { op: _normalizeOpSlot(inv.ops[k]), source: 'ui.op', index: k };
     }
   }
+
   
+
   if (inv.nxActive && Array.isArray(inv.nxUnlockedOps)) {
-    const n = Math.min(inv.nxUnlockedCount || 0, inv.nxUnlockedOps.length);
-    for (let k = 0; k < n; k++) {
-      if (inv.nxUnlockedOps[k]) yield { op: inv.nxUnlockedOps[k], source: 'nx.unlocked', index: k };
+    const nxopInItem = (item.opSlots || []).some((s) => s && (s.slotKind === 'nxop' || s.slotKind === 'long_nxop'));
+    if (!nxopInItem) {
+      const n = Math.min(unlockedCount, inv.nxUnlockedOps.length);
+      for (let k = 0; k < n; k++) {
+        if (inv.nxUnlockedOps[k]) yield { op: inv.nxUnlockedOps[k], source: 'nx.unlocked', index: k };
+      }
     }
   }
   

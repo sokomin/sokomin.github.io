@@ -22,7 +22,9 @@ export function newInventoryItem(itemId, overrides = {}) {
     ops:                [null, null, null],
 
     nxActive:           false,
-    nxUnlockedCount:    0,
+
+    
+    nxUnlockedCount:    4,
     nxUnlockedOps:      [null, null, null, null],
 
     customBaseOps:      [null, null, null, null, null],
