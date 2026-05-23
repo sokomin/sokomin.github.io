@@ -93,6 +93,8 @@
       border: 1px solid #8b6a28; background: #080808;
       color: #00ff66; font: inherit; font-weight: bold;
     }
+    
+    .sim-stat-input { color: #f8f000; }
     .sim-character-select { color: #f8f000; }
     .sim-character-input, .sim-stat-input { padding: 0 4px; text-align: right; }
     .sim-character-sub { color: #f8f000; }
@@ -116,7 +118,7 @@
     #st-points.is-over  { color: #ff5050; }   
     #st-points.is-under { color: #f8d000; }   
     .sim-stat-equipped {
-      display: block; color: #f8f000; font-size: 10px;
+      display: block; color: #00ff66; font-size: 10px;
       text-align: right; min-height: 12px;
     }
 
@@ -1525,7 +1527,7 @@
               </div>
               <div class="sim-character-line">
                 <span class="sim-character-label">Lv</span>
-                <input class="sim-character-input" id="ch-lv" type="number" min="1" max="1500" value="1250" aria-label="レベル">
+                <input class="sim-character-input" id="ch-lv" type="number" min="1" max="2000" value="1250" aria-label="レベル">
               </div>
               <div class="sim-character-line">
                 <span class="sim-character-label">恩寵</span>
@@ -2346,7 +2348,7 @@
               <div class="title-panel">
                 <h4>限界突破称号</h4>
                 <div class="title-row">
-                  <span class="title-name">物理 (limitBreakPhys)</span>
+                  <span class="title-name">物理</span>
                   <select id="title-lb-phys">
                     <option value="0">称号なし</option>
                     <option value="1">Lv 1</option>
@@ -2358,7 +2360,7 @@
                   <span class="title-effect" id="title-lb-phys-effect">+0 / +0%</span>
                 </div>
                 <div class="title-row">
-                  <span class="title-name">魔法 (limitBreakMagic)</span>
+                  <span class="title-name">魔法</span>
                   <select id="title-lb-magic">
                     <option value="0">称号なし</option>
                     <option value="1">Lv 1</option>
@@ -2401,7 +2403,7 @@
 
                 
                 <div class="title-row">
-                  <span class="title-name">5次転生 (fifthRebirth)</span>
+                  <span class="title-name">5次転生</span>
                   <label style="display:inline-flex; align-items:center; gap:4px;">
                     <input type="checkbox" id="title-fifth-on"> ON
                   </label>
@@ -2410,7 +2412,7 @@
 
                 
                 <div class="title-row">
-                  <span class="title-name">錬金術 (alchemy)</span>
+                  <span class="title-name">錬金術</span>
                   <select id="title-alchemy-lv">
                     <option value="0">称号なし</option>
                     <option value="1">Lv 1</option>
@@ -2429,7 +2431,7 @@
 
                 
                 <div class="title-row">
-                  <span class="title-name">ベルセルク (berserk)</span>
+                  <span class="title-name">ベルセルク</span>
                   <label style="display:inline-flex; align-items:center; gap:4px;">
                     <input type="checkbox" id="title-berserk-on"> ON
                   </label>
@@ -2450,7 +2452,7 @@
 
                 
                 <div class="title-row">
-                  <span class="title-name">MQ (mq)</span>
+                  <span class="title-name">MQ</span>
                   <label style="display:inline-flex; align-items:center; gap:4px;">
                     <input type="checkbox" id="title-mq-on"> ON
                   </label>
@@ -2459,7 +2461,7 @@
 
                 
                 <div class="title-row">
-                  <span class="title-name">密教 (esoteric)</span>
+                  <span class="title-name">密教</span>
                   <select id="title-esoteric-lv">
                     <option value="0">称号なし</option>
                     <option value="1">Lv 1</option>
@@ -2478,7 +2480,7 @@
 
                 
                 <div class="title-row">
-                  <span class="title-name">スキルマスター (skillMaster)</span>
+                  <span class="title-name">スキルマスター</span>
                   <label style="display:inline-flex; align-items:center; gap:4px;">
                     <input type="checkbox" id="title-skillmaster-on"> ON
                   </label>
@@ -3468,11 +3470,14 @@ function reapplySeirenSelection(idx, value, partKey) {
 
 
 
+const MAX_INTERNAL_LV = 2000;
+
 function readCharacter() {
   const jobId = Number($('ch-job').value) || 0;
   const gender = genderForJobName(jobNameById(jobId));
+  const rawLv = Number($('ch-lv').value) || 1;
   return newCharacter({
-    realLv: Number($('ch-lv').value) || 1,
+    realLv: Math.min(MAX_INTERNAL_LV, Math.max(1, rawLv)),
     job: jobId,
     gender,
     stats: { base: {
@@ -3529,11 +3534,11 @@ function computeAvailablePoints(jobId, realLv, rebirthCount) {
 function fillJobSelect() {
   const sel = $('ch-job');
   sel.innerHTML = '';
+  
   for (const j of JOB_OPTIONS) {
     const o = document.createElement('option');
     o.value = j.id;
-    const mf = genderForJobName(j.name) === 1 ? '男' : '女';
-    o.textContent = `${j.name} (${mf})`;
+    o.textContent = j.name;
     sel.appendChild(o);
   }
   sel.value = '0';
@@ -5317,7 +5322,8 @@ async function recalcAll() {
     const eqV = f.equipped[s] || 0;
     const delta = eqV - baseV;
     const el = $(`st-${s}-eq`);
-    if (el) el.textContent = delta > 0 ? `+${delta} → ${eqV}` : (delta < 0 ? `${delta} → ${eqV}` : '');
+
+    if (el) el.textContent = (delta !== 0) ? String(eqV) : '';
 
     
     const pop = $(`st-${s}-pop`);
@@ -5848,7 +5854,7 @@ async function loadSnapshot(data, sourceLabel) {
 
   
   const c = parsed.character || {};
-  if (c.realLv != null) $('ch-lv').value = c.realLv;
+  if (c.realLv != null) $('ch-lv').value = Math.min(MAX_INTERNAL_LV, Math.max(1, Number(c.realLv) || 1));
   if (c.job != null)    $('ch-job').value = c.job;
   if (c.rebirth != null && $('ch-rebirth')) $('ch-rebirth').value = c.rebirth;
   if (c.grace != null && $('ch-grace'))     $('ch-grace').value = c.grace;
