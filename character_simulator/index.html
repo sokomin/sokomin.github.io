@@ -1903,7 +1903,6 @@
                   <tr id="scroll-row-header" class="scroll-row" style="display:none">
                     <td colspan="7" class="tdtext" style="padding-top:6px; color:#cbe79b">
                       <b>図案書効果</b>
-                      <span style="color:#9aa68b">— セット OP とは別系統。 装備中 同一図案 2/4/5 個で発動</span>
                     </td>
                   </tr>
                   <tr id="scroll-row-type" class="scroll-row" style="display:none">
@@ -1939,6 +1938,75 @@
                     </td>
                   </tr>
                   <tr class="row-sep scroll-row" style="display:none"><td colspan="7"></td></tr>
+
+                  
+                  <tr id="seiren-row-header" class="seiren-row" style="display:none">
+                    <td colspan="7" class="tdtext" style="padding-top:6px; color:#cbe79b">
+                      <b>製錬</b>
+                    </td>
+                  </tr>
+                  <tr id="seiren-row-stage" class="seiren-row" style="display:none">
+                    <td colspan="2" class="tdtext">製錬段階</td>
+                    <td style="width:4px"></td>
+                    <td colspan="4">
+                      <select id="seiren-stage" class="select" style="width:100%">
+                        <option value="0">0 (未製錬)</option>
+                        <option value="1">1 (OP 1 開放)</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5 (OP 2 開放)</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10 (OP 3 開放)</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15 (OP 4 開放)</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr class="row-sep seiren-row" style="display:none"><td colspan="7"></td></tr>
+
+                  
+                  <tr class="seiren-row seiren-slot-row" data-seiren-slot="0" style="display:none">
+                    <td colspan="2" class="tdtext">製錬OP1<br><span style="color:#9aa68b; font-size:10.5px">(1段階)</span></td>
+                    <td style="width:4px"></td>
+                    <td colspan="4">
+                      <select class="select sop-select" data-sop="0" style="width:100%; font-size:11.5px"></select>
+                    </td>
+                  </tr>
+                  <tr class="row-sep seiren-row seiren-slot-row" data-seiren-slot="0" style="display:none"><td colspan="7"></td></tr>
+
+                  <tr class="seiren-row seiren-slot-row" data-seiren-slot="1" style="display:none">
+                    <td colspan="2" class="tdtext">製錬OP2<br><span style="color:#9aa68b; font-size:10.5px">(5段階)</span></td>
+                    <td style="width:4px"></td>
+                    <td colspan="4">
+                      <select class="select sop-select" data-sop="1" style="width:100%; font-size:11.5px"></select>
+                    </td>
+                  </tr>
+                  <tr class="row-sep seiren-row seiren-slot-row" data-seiren-slot="1" style="display:none"><td colspan="7"></td></tr>
+
+                  <tr class="seiren-row seiren-slot-row" data-seiren-slot="2" style="display:none">
+                    <td colspan="2" class="tdtext">製錬OP3<br><span style="color:#9aa68b; font-size:10.5px">(10段階)</span></td>
+                    <td style="width:4px"></td>
+                    <td colspan="4">
+                      <select class="select sop-select" data-sop="2" style="width:100%; font-size:11.5px"></select>
+                    </td>
+                  </tr>
+                  <tr class="row-sep seiren-row seiren-slot-row" data-seiren-slot="2" style="display:none"><td colspan="7"></td></tr>
+
+                  <tr class="seiren-row seiren-slot-row" data-seiren-slot="3" style="display:none">
+                    <td colspan="2" class="tdtext">製錬OP4<br><span style="color:#9aa68b; font-size:10.5px">(15段階)</span></td>
+                    <td style="width:4px"></td>
+                    <td colspan="4">
+                      <select class="select sop-select" data-sop="3" style="width:100%; font-size:11.5px"></select>
+                    </td>
+                  </tr>
+                  <tr class="row-sep seiren-row" style="display:none"><td colspan="7"></td></tr>
 
                   <tr>
                     <td colspan="2">
@@ -2564,7 +2632,7 @@ import { DataLoader } from './lib/data_loader.js';
 import { setLoader, Item, Op, OpPrefix, iterateAllOps } from './lib/item_api.js';
 import { Inventory, newInventoryItem } from './lib/inventory.js';
 import { resolveEquipSlot } from './lib/slot_resolver.js';
-import { makeItem } from './lib/make_item.js';
+import { makeItem, seirenUnlockedCount } from './lib/make_item.js';
 import { newCharacter } from './lib/character.js';
 import { newSTTemp, debugSnapshot } from './lib/sttemp.js';
 import { aggregateForCharacter } from './lib/stat_aggregator.js';
@@ -2719,6 +2787,10 @@ const formState = {
 
   
   scroll: { type: null, id: null, stage: 1 },
+
+  
+  seirenStage: 0,
+  seirenOps: [null, null, null, null, null],
 };
 const INVENTORY_MAX = 84;  
 const inventory = new Inventory(INVENTORY_MAX);
@@ -2812,6 +2884,233 @@ function refreshScrollIdSelect() {
   
   if (!sel.value) formState.scroll.id = null;
 }
+
+
+let SEIREN_DATA = null;
+async function loadSeirenData() {
+  if (SEIREN_DATA) return SEIREN_DATA;
+  try {
+    const res = await fetch('./lib/data/seiren_options.json');
+    if (!res.ok) throw new Error(`seiren_options.json ${res.status}`);
+    SEIREN_DATA = await res.json();
+  } catch (err) {
+    console.warn('[seiren] load failed:', err);
+    SEIREN_DATA = { parts: {} };
+  }
+  return SEIREN_DATA;
+}
+
+const SEIREN_TIER_LABEL = { lower: '下級', middle: '中級', upper: '上級' };
+const SEIREN_TIER_COLOR = { lower: '#a0a0a0', middle: '#9bd1ff', upper: '#ff8a6f' };
+
+
+function isSeirenTarget(rec) {
+  if (!rec) return false;
+  const slot = resolveEquipSlot(rec);
+  if (!slot) return false;
+  if (slot === 'sub_weapon') return false;
+  if (slot.startsWith('ring_') || slot === 'ring') return false;
+  if (Number(rec.kind) === 9) return false;
+  return SEIREN_DATA && SEIREN_DATA.parts && SEIREN_DATA.parts[slot] != null;
+}
+
+async function getSeirenPartKey() {
+  if (formState.itemId < 0) return null;
+  const rec = await Item.get(formState.itemId);
+  if (!rec) return null;
+  if (!SEIREN_DATA) await loadSeirenData();
+  const slot = resolveEquipSlot(rec);
+  return (SEIREN_DATA.parts && SEIREN_DATA.parts[slot]) ? slot : null;
+}
+
+
+function isSeirenPetSummonName(nm) {
+  const n = (nm && nm.name) ? String(nm.name) : '';
+  return /(召喚獣|ペット)/.test(n);
+}
+
+
+function getSeirenFamilyUnit(familyId) {
+  if (familyId == null || familyId < 0) return '';
+  const fam = loader.optionPrefix?.families?.[String(familyId)];
+  if (!fam) return '';
+  const statId = fam.stat?.id || (Array.isArray(fam.stat?.stats) ? fam.stat.stats[0] : null);
+  if (!statId) return '';
+  const stat = loader.master?.statTypes?.stats?.[statId];
+  return (stat && stat.unit) ? String(stat.unit) : '';
+}
+
+function buildSeirenOptionList(pool, stage) {
+  const lines = ['<option value="">(未選択)</option>'];
+  if (!Array.isArray(pool) || pool.length === 0) return lines.join('');
+  const stageIdx = Math.max(1, Math.min(20, Number(stage) || 1)) - 1;
+  for (let ei = 0; ei < pool.length; ei++) {
+    const entry = pool[ei];
+    if (!entry || !Array.isArray(entry.names)) continue;
+    for (let ni = 0; ni < entry.names.length; ni++) {
+      const nm = entry.names[ni];
+      const nmStr = (nm && nm.name) ? nm.name : '?';
+      const isUnsupported = !nm || nm.familyId == null || nm.familyId < 0;
+      const isPetSummon   = isSeirenPetSummonName(nm);
+
+      const unit = isUnsupported ? '' : getSeirenFamilyUnit(nm.familyId);
+      for (const tierKey of ['lower', 'middle', 'upper']) {
+        const arr = entry.tiers ? entry.tiers[tierKey] : null;
+        const v = Array.isArray(arr) ? arr[stageIdx] : null;
+        if (v == null) continue;
+        const tierLabel = SEIREN_TIER_LABEL[tierKey];
+        const tag = (isUnsupported && !isPetSummon) ? ' ※未対応' : '';
+        const label = `[${tierLabel}] ${nmStr} +${v}${unit}${tag}`;
+        const val   = `ent:${ei}:nm:${ni}:tier:${tierKey}`;
+        lines.push(`<option value="${val}">${esc(label)}</option>`);
+      }
+    }
+  }
+  return lines.join('');
+}
+
+
+async function refreshSeirenPanel() {
+  const headerRow = $('seiren-row-header');
+  if (!headerRow) return;
+  if (!SEIREN_DATA) await loadSeirenData();
+  const partKey = await getSeirenPartKey();
+  const ok = (partKey != null);
+  document.querySelectorAll('.seiren-row').forEach((r) => {
+    if (r.classList.contains('seiren-slot-row')) return;
+    r.style.display = ok ? '' : 'none';
+  });
+  if (!ok) {
+    formState.seirenStage = 0;
+    formState.seirenOps = [null, null, null, null, null];
+    const sel = $('seiren-stage');
+    if (sel) sel.value = '0';
+    document.querySelectorAll('.seiren-slot-row').forEach((r) => { r.style.display = 'none'; });
+    for (let k = 0; k < 4; k++) {
+      const dd = document.querySelector(`.sop-select[data-sop="${k}"]`);
+      if (dd) { dd.innerHTML = '<option value="">(未選択)</option>'; dd.value = ''; }
+    }
+    return;
+  }
+  const sel = $('seiren-stage');
+  if (sel) sel.value = String(formState.seirenStage || 0);
+  refreshSeirenSlots(partKey);
+}
+
+function refreshSeirenSlots(partKey) {
+  const headerVisible = ($('seiren-row-header')?.style.display !== 'none');
+  if (!headerVisible) {
+    document.querySelectorAll('.seiren-slot-row').forEach((r) => { r.style.display = 'none'; });
+    return;
+  }
+  const partData = (partKey && SEIREN_DATA && SEIREN_DATA.parts && SEIREN_DATA.parts[partKey]) || {};
+  const thresholds = ['1', '5', '10', '15'];
+  const unlocked = seirenUnlockedCount(formState.seirenStage);
+  const stage = Math.max(1, Math.min(15, Number(formState.seirenStage) || 1));
+  for (let k = 0; k < 4; k++) {
+    const visible = (k < unlocked);
+    document.querySelectorAll(`.seiren-slot-row[data-seiren-slot="${k}"]`).forEach((r) => {
+      r.style.display = visible ? '' : 'none';
+    });
+    const dd = document.querySelector(`.sop-select[data-sop="${k}"]`);
+    if (!dd) continue;
+    if (!visible) {
+      formState.seirenOps[k] = null;
+      dd.innerHTML = '<option value="">(未選択)</option>';
+      dd.value = '';
+      continue;
+    }
+    const pool = partData[thresholds[k]] || [];
+    dd.innerHTML = buildSeirenOptionList(pool, stage);
+    
+    const cur = formState.seirenOps[k];
+    if (cur && cur.seirenSel) {
+      const v = cur.seirenSel;
+      if (Array.from(dd.options).some((o) => o.value === v)) {
+        dd.value = v;
+        
+        reapplySeirenSelection(k, v, partKey);
+      } else {
+        formState.seirenOps[k] = null;
+        dd.value = '';
+      }
+    } else {
+      dd.value = '';
+    }
+  }
+}
+
+
+function parseSeirenSelValue(value) {
+  const m = value.match(/^ent:(\d+):nm:(\d+):tier:(lower|middle|upper)$/);
+  if (!m) return null;
+  return { ei: Number(m[1]), ni: Number(m[2]), tier: m[3] };
+}
+
+function applySeirenSelection(idx, value, partKey) {
+  if (!value) { formState.seirenOps[idx] = null; return; }
+  const parsed = parseSeirenSelValue(value);
+  if (!parsed) { formState.seirenOps[idx] = null; return; }
+  const thresholds = ['1', '5', '10', '15'];
+  const pool = (partKey && SEIREN_DATA.parts[partKey])
+    ? (SEIREN_DATA.parts[partKey][thresholds[idx]] || [])
+    : [];
+  const entry = pool[parsed.ei];
+  const nm    = entry?.names?.[parsed.ni];
+  if (!entry || !nm) { formState.seirenOps[idx] = null; return; }
+  const stage = Math.max(1, Math.min(15, Number(formState.seirenStage) || 1));
+  const stageIdx = stage - 1;
+  const value0 = (entry.tiers?.[parsed.tier] || [])[stageIdx];
+  if (value0 == null) { formState.seirenOps[idx] = null; return; }
+
+  const familyId = (nm.familyId != null) ? Number(nm.familyId) : -1;
+  const isUnsupported = !(familyId >= 0);
+
+  if (isUnsupported) {
+    formState.seirenOps[idx] = {
+      familyId: -1,
+      displayOnly: true,
+      seirenSel: value,
+      seirenName: nm.name,
+      seirenTier: parsed.tier,
+      value: Number(value0),
+      
+      name: nm.name,
+    };
+    return;
+  }
+
+  
+  const fam = loader.optionPrefix?.families?.[String(familyId)];
+  const isRatio = fam?.stat?.layer === 'lvLinked';
+  const isJobSkill = (familyId === 103);
+  const slot = {
+    familyId,
+    source:    'ui.seiren',
+    seirenSel: value,
+    seirenName: nm.name,
+    seirenTier: parsed.tier,
+    name: nm.name,
+  };
+  if (isJobSkill) {
+    slot.value = Number(value0);
+    
+  } else if (isRatio) {
+    
+    slot.addValue = Number(value0);
+    slot.divisor  = 1;
+  } else {
+    slot.value = Number(value0);
+  }
+  formState.seirenOps[idx] = slot;
+}
+
+
+function reapplySeirenSelection(idx, value, partKey) {
+  if (!partKey) return;
+  applySeirenSelection(idx, value, partKey);
+}
+
 
 
 function readCharacter() {
@@ -3334,11 +3633,30 @@ async function onMake() {
     if (o.name) out.name = String(o.name);
     return out;
   });
+
+  
+  const seirenOps = formState.seirenOps.map((o) => {
+    if (!o) return null;
+    return {
+      familyId:    o.familyId    ?? null,
+      value:       o.value       ?? null,
+      addValue:    o.addValue    ?? null,
+      divisor:     o.divisor     ?? null,
+      jobIdx:      o.jobIdx      ?? null,
+      name:        o.name        ?? null,
+      displayOnly: o.displayOnly ?? null,
+      seirenSel:   o.seirenSel   ?? null,
+      seirenName:  o.seirenName  ?? null,
+      seirenTier:  o.seirenTier  ?? null,
+    };
+  });
   const inv = makeItem({
     itemId: formState.itemId,
     revisions: [0, 0, 0],
     ops: uiOps,
     daybreak: formState.daybreak,
+    seirenStage: formState.seirenStage,
+    seirenOps,
   }, rec);
   if (!inv) { alert('makeItem に失敗'); return; }
   
@@ -3672,6 +3990,31 @@ function buildItemDetailHtml(inv, rec, character) {
     }
   }
 
+
+  
+  if (inv && inv.seirenStage && inv.seirenStage > 0 && Array.isArray(inv.seirenOps)) {
+    html += `<div class="idp-section-title" style="color:#cbe79b">&lt;製錬 Lv ${inv.seirenStage}&gt;</div>`;
+    const tierLabel = { lower: '下級', middle: '中級', upper: '上級' };
+    for (let i = 0; i < inv.seirenOps.length; i++) {
+      const op = inv.seirenOps[i];
+      if (!op) continue;
+      const tierTxt = op.seirenTier ? `[${tierLabel[op.seirenTier] || op.seirenTier}] ` : '';
+      const nameTxt = op.seirenName || op.name || '?';
+      let v = (op.value != null) ? op.value
+            : (op.addValue != null) ? op.addValue
+            : null;
+      const unit = getSeirenFamilyUnit(op.familyId);
+      const valTxt = (v != null) ? `<span style="color:#ffff00">+${v}${unit}</span>` : '';
+      if (op.displayOnly || op.familyId == null || op.familyId < 0) {
+        const isPet = /(召喚獣|ペット)/.test(nameTxt);
+        const marker = isPet ? '' : ' <span style="font-size:10.5px">※未対応</span>';
+        html += `<span class="idp-op is-ui" style="border-left:2px solid #cbe79b; padding-left:4px; color:#a89683">+ ${tierTxt}${esc(nameTxt)} ${valTxt}${marker} <span class="idp-ui-label">[製錬${i + 1}]</span></span>`;
+        continue;
+      }
+      html += `<span class="idp-op is-ui" style="border-left:2px solid #cbe79b; padding-left:4px">+ ${tierTxt}${esc(nameTxt)} ${valTxt} <span class="idp-ui-label">[製錬${i + 1}]</span></span>`;
+    }
+  }
+
   
   if (inv && inv.ultLv != null && Array.isArray(inv.customBaseOps)) {
     html += `<div class="idp-section-title" style="color:#cbe79b">&lt;ULT 深緑 Lv ${inv.ultLv}&gt;</div>`;
@@ -3943,9 +4286,11 @@ function renderInventoryList() {
     } else {
       statusHtml = `<span style="color:#ff6666">(NG)</span>`;
     }
+    const seirenTag = (inv.seirenStage && inv.seirenStage > 0)
+      ? ` <span style="color:#cbe79b">[製錬Lv${inv.seirenStage}]</span>` : '';
     div.innerHTML = `
       <span style="flex:1; cursor:pointer" class="inv-label" data-slot="${inv.slotIndex}">
-        [${inv.slotIndex}] itemId=${inv.itemId}
+        [${inv.slotIndex}] itemId=${inv.itemId}${seirenTag}
         ${statusHtml}
         ${reasonText ? `<span style="color:#d8a743"> — ${esc(reasonText)}</span>` : ''}
       </span>
@@ -4689,6 +5034,7 @@ function bindEvents() {
     refreshUltPanel();
     refreshAbrPanel();
     refreshScrollPanel();
+    refreshSeirenPanel();
   });
   $('sel-item').addEventListener('dblclick', () => { if (formState.itemId !== -1) onMake(); });
 
@@ -4764,6 +5110,21 @@ function bindEvents() {
   });
 
   
+  document.querySelectorAll('.sop-select').forEach((dd) => {
+    dd.addEventListener('change', async (e) => {
+      const idx = Number(dd.getAttribute('data-sop'));
+      const partKey = await getSeirenPartKey();
+      applySeirenSelection(idx, e.target.value, partKey);
+    });
+  });
+  
+  $('seiren-stage').addEventListener('change', async (e) => {
+    formState.seirenStage = Math.max(0, Math.min(15, Number(e.target.value) || 0));
+    const partKey = await getSeirenPartKey();
+    refreshSeirenSlots(partKey);
+  });
+
+  
   $('chk-daybreak').addEventListener('change', (e) => { formState.daybreak = e.target.checked; });
   $('btn-make').addEventListener('click', onMake);
   $('btn-clear-all').addEventListener('click', () => {
@@ -4773,12 +5134,21 @@ function bindEvents() {
     formState.ultBaseOps = [null, null, null];
     formState.abrSlots = [null, null, null];
     formState.scroll = { type: null, id: null, stage: 1 };
+    formState.seirenStage = 0;
+    formState.seirenOps = [null, null, null, null, null];
     $('filter-name').value = '';
     $('chk-daybreak').checked = false;
     for (let i = 0; i < 3; i++) clearOp(i);
+    
+    document.querySelectorAll('.sop-select').forEach((dd) => {
+      dd.innerHTML = '<option value="">(未選択)</option>';
+      dd.value = '';
+    });
+    if ($('seiren-stage')) $('seiren-stage').value = '0';
     refreshUltPanel();
     refreshAbrPanel();
     refreshScrollPanel();
+    refreshSeirenPanel();
     refreshItemList();
   });
 
@@ -4994,6 +5364,26 @@ async function loadSnapshot(data, sourceLabel) {
       opRevisions: (Array.isArray(entry.ops) ? entry.ops : [])
         .map((o) => o ? (o.revisions || [0,0,0]) : [0,0,0]),
       daybreak: !!entry.daybreak,
+
+      seirenStage: Math.max(0, Math.min(15, Number(entry.seirenStage) || 0)),
+      seirenOps: (Array.isArray(entry.seirenOps) ? entry.seirenOps : []).map((o) => {
+        if (!o) return null;
+
+        const payload = {};
+        if (o.familyId    != null) payload.familyId    = o.familyId;
+        if (o.value       != null) payload.value       = o.value;
+        if (o.addValue    != null) payload.addValue    = o.addValue;
+        if (o.divisor     != null) payload.divisor     = o.divisor;
+        if (o.jobIdx      != null) payload.jobIdx      = o.jobIdx;
+        if (o.rowId       != null) payload.rowId       = o.rowId;
+        if (o.name        != null) payload.name        = o.name;
+        if (o.displayOnly != null) payload.displayOnly = o.displayOnly;
+        if (o.seirenSel   != null) payload.seirenSel   = o.seirenSel;
+        if (o.seirenName  != null) payload.seirenName  = o.seirenName;
+        if (o.seirenTier  != null) payload.seirenTier  = o.seirenTier;
+        if (Object.keys(payload).length === 0) return null;
+        return payload;
+      }),
     }, rec);
     if (!inv) continue;
 
@@ -9217,6 +9607,8 @@ async function main() {
       recalcAll().catch(() => {  });
     }
   }).catch(() => {  });
+  
+  loadSeirenData().catch(() => {  });
   initSelectors();
   bindEvents();
   bindStatPopups();

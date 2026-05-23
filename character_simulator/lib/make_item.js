@@ -10,6 +10,16 @@ const STAT_KEYS = ['str', 'agi', 'con', 'int', 'wiz', 'chs', 'luc'];
 
 
 
+export function seirenUnlockedCount(stage) {
+  const s = Math.max(0, Math.min(15, Number(stage) || 0));
+  if (s >= 15) return 4;
+  if (s >= 10) return 3;
+  if (s >= 5)  return 2;
+  if (s >= 1)  return 1;
+  return 0;
+}
+
+
 export function makeItem(state, itemRecord, opts = {}) {
   if (!itemRecord || itemRecord.id !== state.itemId) {
     return null;
@@ -60,6 +70,46 @@ export function makeItem(state, itemRecord, opts = {}) {
         inv.ops[k] = slot;
       }
     }
+  }
+
+
+  
+
+  
+
+  
+
+  
+  inv.seirenStage = Math.max(0, Math.min(15, Number(state.seirenStage) || 0));
+  const seirenOps = state.seirenOps || [];
+  const unlocked = seirenUnlockedCount(inv.seirenStage);
+  for (let k = 0; k < 5; k++) {
+    if (k >= unlocked) { inv.seirenOps[k] = null; continue; }
+    const e = seirenOps[k];
+    if (e == null || typeof e !== 'object') { inv.seirenOps[k] = null; continue; }
+    const slot = { source: 'ui.seiren' };
+    if (e.displayOnly || e.familyId == null || e.familyId < 0) {
+      
+      if (!e.seirenName && !e.name) { inv.seirenOps[k] = null; continue; }
+      slot.familyId    = -1;
+      slot.displayOnly = true;
+      if (e.value    != null) slot.value    = numOrZero(e.value);
+    } else {
+      slot.familyId = Number(e.familyId);
+      if (e.addValue != null || e.divisor != null) {
+        slot.addValue = numOrZero(e.addValue);
+        slot.divisor  = numOrZero(e.divisor) || 1;
+      } else {
+        slot.value = numOrZero(e.value);
+      }
+      if (e.jobIdx != null) slot.jobIdx = Number(e.jobIdx);
+    }
+    
+    if (e.name)        slot.name        = String(e.name);
+    if (e.seirenSel)   slot.seirenSel   = String(e.seirenSel);
+    if (e.seirenName)  slot.seirenName  = String(e.seirenName);
+    if (e.seirenTier)  slot.seirenTier  = String(e.seirenTier);
+    inv.seirenOps[k] = slot;
   }
 
 

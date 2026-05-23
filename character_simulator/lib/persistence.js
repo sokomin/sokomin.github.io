@@ -46,6 +46,26 @@ export function serializeSession(character, inventory, opts = {}) {
     };
 
     
+
+    if (inv.seirenStage && inv.seirenStage > 0) {
+      entry.seirenStage = Math.max(0, Math.min(15, Number(inv.seirenStage) || 0));
+      entry.seirenOps = (inv.seirenOps || []).map((o) => o ? {
+        familyId:    o.familyId    ?? null,
+        value:       o.value       ?? null,
+        addValue:    o.addValue    ?? null,
+        divisor:     o.divisor     ?? null,
+        jobIdx:      o.jobIdx      ?? null,
+        rowId:       o.rowId       ?? null,
+        name:        o.name        ?? null,
+        displayOnly: o.displayOnly ?? null,
+
+        seirenSel:   o.seirenSel   ?? null,
+        seirenName:  o.seirenName  ?? null,
+        seirenTier:  o.seirenTier  ?? null,
+      } : null);
+    }
+
+    
     if (inv.ultLv != null) entry.ultLv = inv.ultLv;
 
     if (inv.scroll && inv.scroll.id) {
