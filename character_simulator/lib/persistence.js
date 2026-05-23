@@ -108,6 +108,11 @@ export function serializeSession(character, inventory, opts = {}) {
     
     if (inv.ultLv != null) entry.ultLv = inv.ultLv;
 
+    
+    if (inv.incusedRingLv != null && Number(inv.incusedRingLv) !== 1) {
+      entry.incusedRingLv = Math.max(1, Math.min(30, Number(inv.incusedRingLv) | 0));
+    }
+
     if (inv.arcana && inv.arcana.key) {
       entry.arcana = {
         table: (inv.arcana.table === 'pet') ? 'pet' : 'normal',

@@ -1,6 +1,15 @@
 (function (global) {
   'use strict';
 
+  const FORM_PARENT = {
+    spirit:  'base',
+    nature:  'base',
+    divine:  'base',
+    spirit2: 'spirit',
+    nature2: 'nature',
+    divine2: 'divine',
+  };
+
   const MinipetData = {
     pets: null,
     promoters: null,
@@ -62,7 +71,30 @@
 
     getSkills(pet) {
       if (!pet) return [];
-      return pet.skills || [];
+      if (pet.category) return Array.isArray(pet.skills) ? pet.skills : [];
+      if (!this.pets) return Array.isArray(pet.skills) ? pet.skills : [];
+      const seen = new Set();
+      const chain = [];
+      let current = pet;
+      while (current) {
+        if (Array.isArray(current.skills)) {
+          for (const s of current.skills) {
+            if (!s || !s.name || seen.has(s.name)) continue;
+            seen.add(s.name);
+            chain.push(s);
+          }
+        }
+        const parentFormId = FORM_PARENT[current.form];
+        if (!parentFormId) break;
+        const parent = this.pets.pets.find(p => p.element === current.element && p.form === parentFormId);
+        if (!parent || parent === current) break;
+        current = parent;
+      }
+      return chain;
+    },
+
+    getOwnSkills(pet) {
+      return (pet && Array.isArray(pet.skills)) ? pet.skills : [];
     }
   };
 

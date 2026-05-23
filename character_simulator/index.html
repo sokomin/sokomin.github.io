@@ -2876,6 +2876,25 @@
                   </div>
 
                   
+                  
+                  <div class="item-panel" id="edit-incused-ring-section" style="display:none">
+                    <h4>刻印 Lv (1-30)</h4>
+                    <table class="form-table"><tbody>
+                      <tr>
+                        <td colspan="2" class="tdtext">刻印 Lv</td>
+                        <td style="width:4px"></td>
+                        <td colspan="4">
+                          <select id="edit-incused-ring-lv" class="select" style="width:100%"></select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="7" id="edit-incused-ring-effect" class="tdtext"
+                            style="color:#00ff66; font-size:11.5px; padding:6px 4px; white-space:pre-wrap; line-height:1.6"></td>
+                      </tr>
+                    </tbody></table>
+                  </div>
+
+                  
                   <div class="item-panel" id="edit-bfop-section" style="display:none">
                     <h4>BFOP変更</h4>
                     <table class="form-table"><tbody>
@@ -5099,8 +5118,31 @@ function buildItemDetailHtml(inv, rec, character) {
   }
   
   const LvTemp = getEffectiveLv(character);
+
+  const isIncusedRingItem = IncusedRing.isIncusedRingId(rec.id);
+  const incusedLv = isIncusedRingItem ? IncusedRing.clampLv(inv?.incusedRingLv ?? 1) : 1;
   for (const slot of (rec.opSlots || [])) {
     if (slot.slotKind !== 'base') continue;
+
+    
+    if (isIncusedRingItem) {
+      if (slot.pos === 0) {
+        
+        const tpl = Op.getDisplayTemplate(slot.opId, 'item.base');
+        if (!tpl) continue;
+        const opHtml = formatOpText(tpl, [incusedLv], [0,0,0,0]);
+        html += `<span class="idp-op is-base">- ${opHtml}</span>`;
+        continue;
+      }
+      if (slot.pos === 1) {
+        const def = IncusedRing.getDef(rec.id);
+        if (def && typeof def.variableLine === 'function') {
+          html += `<span class="idp-op is-base">- ${esc(def.variableLine(incusedLv))}</span>`;
+          continue;
+        }
+      }
+    }
+
     const tpl = Op.getDisplayTemplate(slot.opId, 'item.base');
     if (!tpl) continue;
     let args = slot.vals || [];
@@ -5883,6 +5925,9 @@ async function recalcAll() {
   Titles.applyToSTTemp(T);
 
   TransSkill.applyToSTTemp(T, ch.job);
+
+  
+  IncusedRing.applyToSTTemp(T, equipped);
 
   await applyBadgesToSTTemp(T, getEffectiveLv(ch), ch);
 
@@ -6873,6 +6918,10 @@ async function loadSnapshot(data, sourceLabel) {
     if (!inv) continue;
 
     if (entry.ultLv != null) inv.ultLv = Number(entry.ultLv);
+    
+    if (entry.incusedRingLv != null) {
+      inv.incusedRingLv = Math.max(1, Math.min(30, Number(entry.incusedRingLv) | 0));
+    }
 
     if (entry.arcana && entry.arcana.key) {
       inv.arcana = {
@@ -11562,6 +11611,85 @@ const Potential = (() => {
 })();
 
 
+const IncusedRing = (() => {
+
+  const DEFS = {
+    4533: {
+      label: '記憶の指輪[チャージ]',
+      variableLine: (lv) => `[7~5]秒ごとにCPを ${lv * 3} 回復`,
+      desc: (lv) => `[7~5]秒ごとにCPを ${lv * 3} 回復 (active)\n魔法抵抗 +15% / 異常抵抗 +25% (固定)`,
+    },
+    4534: {
+      label: '記憶の指輪[トラップ]',
+      variableLine: (lv) => `レベル ${lv} のヘルプリズン使用 (60s CT)`,
+      desc: (lv) => `レベル ${lv} のヘルプリズン使用 (60s CT, active)\n魔法抵抗 +15% / 異常抵抗 +25% (固定)`,
+    },
+    4535: {
+      label: '記憶の指輪[プログレス]',
+      stats: (lv) => {
+        const v = lv * 2 + 10;
+        return [
+          { stat: 'str', v }, { stat: 'agi', v }, { stat: 'con', v },
+          { stat: 'int', v }, { stat: 'wiz', v }, { stat: 'chs', v }, { stat: 'luc', v },
+        ];
+      },
+      variableLine: (lv) => `すべてのステータス +${lv * 2 + 10}`,
+      desc: (lv) => `全ステ +${lv * 2 + 10}\n魔法抵抗 +15% / 異常抵抗 +25% (固定)`,
+    },
+    4536: {
+      label: '記憶の指輪[トランスフォーム]',
+      variableLine: (lv) => `レベル ${lv * 10} のファミリアに ${lv + 1} 分間変身`,
+      desc: (lv) => `ファミリア Lv ${lv * 10} / 変身時間 ${lv + 1}分 (active)\n魔法抵抗 +15% / 異常抵抗 +25% (固定)`,
+    },
+    4537: {
+      label: '思い出の指輪[エクスペリエンス]',
+      stats: (lv) => [{ stat: 'expBonus', v: lv + 5 }],
+      variableLine: (lv) => `獲得経験値が +${lv + 5}% 増加`,
+      desc: (lv) => `経験値 +${lv + 5}%\nスキルレベル +3 (固定)`,
+    },
+    4538: {
+      label: '思い出の指輪[ソウルガード]',
+      variableLine: (lv) => `${(lv / 3 + 2).toFixed(2)}秒間 パーティ無敵 (300s CT)`,
+      desc: (lv) => `無敵 ${(lv / 3 + 2).toFixed(2)}秒 (300s CT, active)\nスキルレベル +3 (固定)`,
+    },
+    4539: {
+      label: '思い出の指輪[バーサーカー]',
+      variableLine: (lv) => `使用時、攻撃力 +${lv * 2 + 10}% 増加 (1200s CT)`,
+      desc: (lv) => `攻撃力 +${lv * 2 + 10}% (1200s CT, active)\nスキルレベル +3 (固定)`,
+    },
+    4540: {
+      label: '思い出の指輪[バイタリティー]',
+      stats: (lv) => [{ stat: 'hp', v: lv * 50 + 100 }],
+      variableLine: (lv) => `最大体力 +${lv * 50 + 100}`,
+      desc: (lv) => `最大HP +${lv * 50 + 100}\nスキルレベル +3 (固定)`,
+    },
+  };
+
+  function isIncusedRingId(id) { return DEFS[Number(id)] != null; }
+  function getDef(id) { return DEFS[Number(id)] || null; }
+  function clampLv(n) {
+    const v = Math.max(1, Math.min(30, Number(n) | 0));
+    return Number.isFinite(v) ? v : 1;
+  }
+
+  
+  function applyToSTTemp(STTemp, equipped) {
+    if (!STTemp || !STTemp.sum || !Array.isArray(equipped)) return;
+    for (const { inv } of equipped) {
+      if (!inv || !inv.equippedSlot || !inv.canEquip) continue;
+      const def = getDef(inv.itemId);
+      if (!def || typeof def.stats !== 'function') continue;
+      const lv = clampLv(inv.incusedRingLv ?? 1);
+      for (const { stat, v } of def.stats(lv)) {
+        STTemp.sum[stat] = (STTemp.sum[stat] || 0) + v;
+      }
+    }
+  }
+
+  return { DEFS, isIncusedRingId, getDef, clampLv, applyToSTTemp };
+})();
+
+
 const TransSkill = (() => {
 
   
@@ -12904,6 +13032,8 @@ const editState = {
   nxUnlockedCount: 4,
   nxConverter: '',
   nxUnlockedOps: [null, null, null, null],
+  
+  incusedRingLv: 1,
 };
 let editTargetSlotIdx = -1;
 
@@ -13098,6 +13228,12 @@ async function loadEditStateFromInv(inv) {
     editState.nxConverter = '';
     editState.nxUnlockedOps = [null, null, null, null];
   }
+  
+  if (IncusedRing.isIncusedRingId(inv.itemId)) {
+    editState.incusedRingLv = IncusedRing.clampLv(inv.incusedRingLv ?? 1);
+  } else {
+    editState.incusedRingLv = 1;
+  }
 }
 
 
@@ -13187,8 +13323,31 @@ async function refreshEditUI() {
     bfopSec.style.display = isBfTargetForItem(rec) ? '' : 'none';
     if (isBfTargetForItem(rec)) refreshEditBfopPanel();
   }
+  
+  const irSec = document.getElementById('edit-incused-ring-section');
+  if (irSec) {
+    const isIR = IncusedRing.isIncusedRingId(inv.itemId);
+    irSec.style.display = isIR ? '' : 'none';
+    if (isIR) refreshEditIncusedRingPanel(rec);
+  }
 }
 
+
+function refreshEditIncusedRingPanel(rec) {
+  const lvSel  = document.getElementById('edit-incused-ring-lv');
+  const effDiv = document.getElementById('edit-incused-ring-effect');
+  if (!lvSel || !effDiv) return;
+  if (lvSel.options.length === 0) {
+    for (let lv = 1; lv <= 30; lv++) {
+      const opt = document.createElement('option');
+      opt.value = String(lv); opt.textContent = `Lv ${lv}`;
+      lvSel.appendChild(opt);
+    }
+  }
+  lvSel.value = String(IncusedRing.clampLv(editState.incusedRingLv));
+  const def = IncusedRing.getDef(rec?.id);
+  effDiv.textContent = def ? def.desc(IncusedRing.clampLv(editState.incusedRingLv)) : '';
+}
 
 async function refreshEditUltPanel() {
   
@@ -13537,6 +13696,10 @@ async function applyEditToInv() {
       built.scroll = null;
     }
   }
+  
+  if (IncusedRing.isIncusedRingId(rec?.id)) {
+    built.incusedRingLv = IncusedRing.clampLv(editState.incusedRingLv);
+  }
 
   built.slotIndex = inv.slotIndex;
   built.equippedSlot = inv.equippedSlot;
@@ -13577,6 +13740,20 @@ function bindEditTabEvents() {
       const idx = Number(sel.dataset.eop);
       editState.opTiers[idx] = Math.max(0, Math.min(2, Number(sel.value) || 2));
     });
+  });
+
+  
+  const incusedLv = document.getElementById('edit-incused-ring-lv');
+  if (incusedLv) incusedLv.addEventListener('change', async () => {
+    editState.incusedRingLv = IncusedRing.clampLv(incusedLv.value);
+    
+    if (editTargetSlotIdx >= 0) {
+      const inv = inventory.get(editTargetSlotIdx);
+      if (inv) {
+        const rec = await Item.get(inv.itemId);
+        refreshEditIncusedRingPanel(rec);
+      }
+    }
   });
 
   

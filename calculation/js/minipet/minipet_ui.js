@@ -158,7 +158,9 @@
     const maxLv = MinipetData.getMaxLevel(currentPet);
     const lvInput = $('pet-level');
     lvInput.max = maxLv;
-    if (parseInt(lvInput.value, 10) > maxLv) lvInput.value = maxLv;
+    // ペット切替時は maxLv にスナップ (= 突然変異 = 150 / 2次 = 150 / 1次 = 100 / 基本 = 30)。
+    // SP 上限が直感的に出るように、 前のペットの lv を引き継がず常に最大値で表示する。
+    lvInput.value = maxLv;
     renderSkillList();
     updateSPDisplay();
   }
@@ -283,6 +285,21 @@
       $('sel-convert-target').value = r.mutant.id;
       refreshConvertTarget();
       log(`→ 変換タブの対象を ${r.mutant.name} に切替`);
+    }
+    // 進化先ペットを スキル振りタブ にピボット = 継承後の全スキル (5+5+2=12) を確認可能に
+    const pivot = r.isMutant ? r.mutant : r.evolved;
+    if (pivot) {
+      if (pivot.category) {
+        $('sel-mutant').value = pivot.id;
+        currentPet = pivot;
+        renderCurrentPet();
+      } else {
+        $('sel-mutant').value = '';
+        $('sel-element').value = pivot.element;
+        $('sel-form').value = pivot.form;
+        refreshCurrentPet();
+      }
+      html += ` <a href="#container" style="margin-left:8px;font-size:12px;">↑ スキル振りタブで確認</a>`;
     }
     $('synth-result').innerHTML = html;
     log(`合成: ${basePet.name} × ${sacPet.name} [${promoter?.name||''}] → ${r.evolved.name}${r.isMutant?' + 突然変異 '+r.mutant.name:''}`);
