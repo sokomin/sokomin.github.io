@@ -3123,6 +3123,17 @@ function listConvertOptionsForSlot(rec, slotIdx) {
 }
 
 
+const _nxSlotOptionsCache = [new Map(), new Map(), new Map(), new Map()];
+function setNxSlotOptionsCache(slotIdx, list) {
+  const m = _nxSlotOptionsCache[slotIdx];
+  m.clear();
+  for (const o of list) m.set(String(o.name), o);
+}
+function getNxSlotOption(slotIdx, name) {
+  return _nxSlotOptionsCache[slotIdx].get(String(name)) || null;
+}
+
+
 function formatConvertOpForDropdown(o) {
   
   const m = String(o.name || '');
@@ -3144,6 +3155,8 @@ function refreshNxSlotSelect(slotIdx, rec) {
   sel.appendChild(opt0);
 
   const list = listConvertOptionsForSlot(rec, slotIdx);
+  
+  setNxSlotOptionsCache(slotIdx, list);
   for (const o of list) {
     const opt = document.createElement('option');
     opt.value = String(o.name);
@@ -3173,6 +3186,8 @@ async function refreshNxPanel() {
     formState.nxUnlockedOps = [null, null, null, null];
     if ($('nx-count'))     $('nx-count').value = '4';
     if ($('nx-converter')) $('nx-converter').value = '';
+    
+    for (let k = 0; k < 4; k++) setNxSlotOptionsCache(k, []);
     return;
   }
   
@@ -4512,13 +4527,14 @@ function buildItemDetailHtml(inv, rec, character) {
     const reqLv = bd.total;
     const effLv = LvTemp;
     const lvNg = effLv < reqLv;
+    const parts = [];
+    if (bd.nxRed > 0)   parts.push(`Nx -${bd.nxRed}`);
+    if (bd.otherRed > 0) parts.push(`他 -${bd.otherRed}`);
+    if (bd.opAdd > 0)   parts.push(`OP +${bd.opAdd}`);
+    if (bd.isUM)        parts.push('UM');
     let lvDetail = '';
-    if (bd.total !== bd.baseLv) {
-      const diff = bd.total - bd.baseLv;
-      const sign = diff >= 0 ? '+' : '';
-      lvDetail = ` <span style="color:#888; font-size:10px">(本来 ${bd.baseLv}${diff !== 0 ? ` / ${sign}${diff}` : ''}${bd.isUM ? ' UM' : ''})</span>`;
-    } else if (bd.isUM) {
-      lvDetail = ` <span style="color:#888; font-size:10px">(UM)</span>`;
+    if (parts.length > 0) {
+      lvDetail = ` <span style="color:#888; font-size:10px">(本来 ${bd.baseLv} / ${parts.join(' / ')})</span>`;
     }
     html += `<span class="idp-row ${lvNg ? 'is-ng-row' : ''}"><span class="idp-key">レベル</span> <span class="idp-val">${reqLv}</span>${lvDetail}</span>`;
     
@@ -5665,18 +5681,14 @@ function bindEvents() {
       const v = e.target.value || '';
       if (!v) { formState.nxUnlockedOps[slotIdx] = null; return; }
 
-      const rec = (formState.itemId >= 0) ? null : null;  
-      Item.get(formState.itemId).then((r) => {
-        const list = listConvertOptionsForSlot(r, slotIdx);
-        const entry = list.find((o) => o.name === v);
-        if (entry) {
-          formState.nxUnlockedOps[slotIdx] = {
-            name:      entry.name,
-            value:     entry.value,
-            converter: formState.nxConverter,
-          };
-        }
-      });
+      const entry = getNxSlotOption(slotIdx, v);
+      if (entry) {
+        formState.nxUnlockedOps[slotIdx] = {
+          name:      entry.name,
+          value:     entry.value,
+          converter: formState.nxConverter,
+        };
+      }
     });
   });
 
