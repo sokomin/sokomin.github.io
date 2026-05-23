@@ -4,6 +4,7 @@
 import { newInventoryItem } from './inventory.js';
 import { Op, iterateAllOps } from './item_api.js';
 import { getLoader } from './item_api.js';
+import { buildBfopSlot } from './bf_options.js';
 
 const STAT_KEYS = ['str', 'agi', 'con', 'int', 'wiz', 'chs', 'luc'];
 
@@ -110,6 +111,15 @@ export function makeItem(state, itemRecord, opts = {}) {
     if (e.seirenName)  slot.seirenName  = String(e.seirenName);
     if (e.seirenTier)  slot.seirenTier  = String(e.seirenTier);
     inv.seirenOps[k] = slot;
+  }
+
+
+  
+
+  if (state.bfop && state.bfop.id) {
+    inv.bfop = buildBfopSlot(state.bfop);
+  } else {
+    inv.bfop = null;
   }
 
 

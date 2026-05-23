@@ -1940,6 +1940,44 @@
                   <tr class="row-sep scroll-row" style="display:none"><td colspan="7"></td></tr>
 
                   
+                  <tr id="bf-row-header" class="bf-row" style="display:none">
+                    <td colspan="7" class="tdtext" style="padding-top:6px; color:#cbe79b">
+                      <b>強化情報</b>
+                    </td>
+                  </tr>
+                  <tr id="bf-row-grade" class="bf-row" style="display:none">
+                    <td colspan="2" class="tdtext">種類</td>
+                    <td style="width:4px"></td>
+                    <td colspan="4">
+                      <select id="bf-grade" class="select" style="width:100%">
+                        <option value="">(無し)</option>
+                        <option value="black">ブラックファイヤー (黒)</option>
+                        <option value="white">白い異界 (白)</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr id="bf-row-op" class="bf-row" style="display:none">
+                    <td colspan="2" class="tdtext">強化OP</td>
+                    <td style="width:4px"></td>
+                    <td colspan="4">
+                      <select id="bf-op" class="select" style="width:100%; font-size:11.5px"></select>
+                    </td>
+                  </tr>
+                  <tr id="bf-row-tier" class="bf-row" style="display:none">
+                    <td colspan="2" class="tdtext">等級</td>
+                    <td style="width:4px"></td>
+                    <td colspan="4">
+                      <select id="bf-tier" class="select" style="width:100%">
+                        <option value="low">下級</option>
+                        <option value="mid">中級</option>
+                        <option value="high">上級</option>
+                        <option value="top" selected>最上級</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr class="row-sep bf-row" style="display:none"><td colspan="7"></td></tr>
+
+                  
                   <tr id="seiren-row-header" class="seiren-row" style="display:none">
                     <td colspan="7" class="tdtext" style="padding-top:6px; color:#cbe79b">
                       <b>製錬</b>
@@ -2683,6 +2721,18 @@ import {
 } from './lib/area_boss_ring.js';
 import { SOLO_EQUIP_RING_IDS, isSoloEquipRing } from './lib/title_rings.js';
 import {
+  BF_OPTIONS,
+  BF_TIERS,
+  BF_TIER_LABELS,
+  BF_TIER_COLORS,
+  BF_GRADE_LABELS,
+  getBfOption,
+  getBfRange,
+  buildBfopSlot,
+  formatBfOption,
+  listBfOptionsForGrade,
+} from './lib/bf_options.js';
+import {
   SET_OP_DEFS,
   getSetOpDef,
   countSetOpsEquipped,
@@ -2791,6 +2841,9 @@ const formState = {
   
   seirenStage: 0,
   seirenOps: [null, null, null, null, null],
+
+  
+  bfop: { grade: 'black', id: null, tier: 'top' },
 };
 const INVENTORY_MAX = 84;  
 const inventory = new Inventory(INVENTORY_MAX);
@@ -2859,6 +2912,77 @@ async function refreshScrollPanel() {
   if ($('scroll-type'))  $('scroll-type').value  = formState.scroll.type || '';
   if ($('scroll-stage')) $('scroll-stage').value = String(formState.scroll.stage || 1);
   refreshScrollIdSelect();
+}
+
+
+function isBfTargetForItem(rec) {
+  if (!rec) return false;
+  const slot = resolveEquipSlot(rec);
+  
+  return slot === 'weapon' || slot === 'neck' || slot === 'head' || slot === 'back_ear'
+      || slot === 'waist'  || slot === 'hand' || slot === 'body' || slot === 'foot';
+}
+
+function refreshBfOpSelect() {
+  const sel = $('bf-op');
+  if (!sel) return;
+  const grade = formState.bfop.grade;
+  
+  sel.innerHTML = '';
+  const opt0 = document.createElement('option');
+  opt0.value = '';
+  opt0.textContent = grade ? '(OP を選択)' : '(種類未選択)';
+  sel.appendChild(opt0);
+  
+  const list = listBfOptionsForGrade(grade);
+  for (const def of list) {
+    const opt = document.createElement('option');
+    opt.value = def.id;
+
+    opt.textContent = formatBfOption(def, grade, 'top');
+    sel.appendChild(opt);
+  }
+  sel.disabled = !grade;
+  
+  const stillSelectable = (formState.bfop.id && list.some((o) => o.id === formState.bfop.id));
+  sel.value = stillSelectable ? formState.bfop.id : '';
+  if (!sel.value) formState.bfop.id = null;
+}
+
+
+function applyBfDedupSuppress(equipped) {
+  
+  for (const { inv } of equipped) {
+    if (inv.bfop) inv.bfop._suppressed = false;
+  }
+  
+  const count = new Map();
+  for (const { inv } of equipped) {
+    if (!inv.equippedSlot) continue;
+    if (!inv.bfop || !inv.bfop.bfId) continue;
+    const id = String(inv.bfop.bfId);
+    const n  = (count.get(id) || 0) + 1;
+    count.set(id, n);
+    if (n > 2) inv.bfop._suppressed = true;  
+  }
+}
+
+async function refreshBfPanel() {
+  const rec = (formState.itemId >= 0) ? await Item.get(formState.itemId) : null;
+  const ok = isBfTargetForItem(rec);
+  const rows = document.querySelectorAll('.bf-row');
+  for (const r of rows) r.style.display = ok ? '' : 'none';
+  if (!ok) {
+    
+    formState.bfop = { grade: 'black', id: null, tier: 'top' };
+    if ($('bf-grade')) $('bf-grade').value = '';
+    if ($('bf-tier'))  $('bf-tier').value  = 'top';
+    refreshBfOpSelect();
+    return;
+  }
+  if ($('bf-grade')) $('bf-grade').value = formState.bfop.grade || '';
+  if ($('bf-tier'))  $('bf-tier').value  = formState.bfop.tier  || 'top';
+  refreshBfOpSelect();
 }
 
 function refreshScrollIdSelect() {
@@ -3650,6 +3774,14 @@ async function onMake() {
       seirenTier:  o.seirenTier  ?? null,
     };
   });
+
+  const bfopState = (isBfTargetForItem(rec) && formState.bfop.grade && formState.bfop.id)
+    ? {
+        id:    formState.bfop.id,
+        grade: formState.bfop.grade,
+        tier:  formState.bfop.tier || 'top',
+      }
+    : null;
   const inv = makeItem({
     itemId: formState.itemId,
     revisions: [0, 0, 0],
@@ -3657,6 +3789,7 @@ async function onMake() {
     daybreak: formState.daybreak,
     seirenStage: formState.seirenStage,
     seirenOps,
+    bfop: bfopState,
   }, rec);
   if (!inv) { alert('makeItem に失敗'); return; }
   
@@ -4040,6 +4173,35 @@ function buildItemDetailHtml(inv, rec, character) {
       const stageLabel = stageEntry ? stageEntry.label : `${stage}段`;
       html += `<div class="idp-section-title" style="color:#cbe79b">&lt;魔力注入情報&gt;</div>`;
       html += `<span class="idp-op is-base" style="border-left:2px solid #cbe79b; padding-left:4px">[${esc(def.name)}] ${esc(stageLabel)}</span>`;
+    }
+  }
+
+
+  
+  if (inv && inv.bfop && inv.bfop.bfId) {
+    const def = getBfOption(inv.bfop.bfId);
+    if (def) {
+      const grade = (inv.bfop.bfGrade === 'white') ? 'white' : 'black';
+      const tier  = inv.bfop.bfTier || 'top';
+      const gradeLabel = BF_GRADE_LABELS[grade] || grade;
+      const tierLabel  = BF_TIER_LABELS[tier] || tier;
+      const tierColor  = BF_TIER_COLORS[tier] || '#ffff00';
+      const range = getBfRange(def.id, grade, tier);
+      const v = inv.bfop.value;
+      const unit = def.unit || '';
+      const suppressed = !!inv.bfop._suppressed;
+      const dispOnly = !!inv.bfop.isDisplayOnly;
+      const heading = `${gradeLabel}強化`;
+      html += `<div class="idp-section-title" style="color:#cbe79b">&lt;${esc(heading)}&gt;</div>`;
+      const valTxt = (v != null) ? `+${v}${unit}` : (range ? `+${range.max}${unit}` : '?');
+      const tierTag = `<span style="color:${tierColor}; font-size:11px">[${esc(tierLabel)}]</span>`;
+      const tag = suppressed
+        ? ` <span class="idp-ui-label" style="color:#d8884c">[BF制限]</span>`
+        : (dispOnly ? ` <span style="font-size:10.5px; color:#a89683">※未対応</span>` : '');
+      const style = suppressed
+        ? 'border-left:2px solid #d8884c; padding-left:4px; color:#a89683'
+        : 'border-left:2px solid #cbe79b; padding-left:4px';
+      html += `<span class="idp-op is-ui" style="${style}">+ ${esc(def.name)} <span style="color:#ffff00">${esc(valTxt)}</span> ${tierTag}${tag}</span>`;
     }
   }
 
@@ -4522,6 +4684,9 @@ async function recalcAll() {
   for (const { inv, item } of equipped) {
     updateEquipmentMetadata(inv, item, ch);
   }
+
+  
+  applyBfDedupSuppress(equipped);
   
   const T = await aggregateForCharacter(ch, equipped);
   
@@ -5034,6 +5199,7 @@ function bindEvents() {
     refreshUltPanel();
     refreshAbrPanel();
     refreshScrollPanel();
+    refreshBfPanel();
     refreshSeirenPanel();
   });
   $('sel-item').addEventListener('dblclick', () => { if (formState.itemId !== -1) onMake(); });
@@ -5136,6 +5302,7 @@ function bindEvents() {
     formState.scroll = { type: null, id: null, stage: 1 };
     formState.seirenStage = 0;
     formState.seirenOps = [null, null, null, null, null];
+    formState.bfop = { grade: 'black', id: null, tier: 'top' };
     $('filter-name').value = '';
     $('chk-daybreak').checked = false;
     for (let i = 0; i < 3; i++) clearOp(i);
@@ -5148,6 +5315,7 @@ function bindEvents() {
     refreshUltPanel();
     refreshAbrPanel();
     refreshScrollPanel();
+    refreshBfPanel();
     refreshSeirenPanel();
     refreshItemList();
   });
@@ -5164,6 +5332,24 @@ function bindEvents() {
   });
   $('scroll-stage').addEventListener('change', (e) => {
     formState.scroll.stage = Math.max(1, Math.min(5, Number(e.target.value) || 1));
+  });
+
+  
+  $('bf-grade').addEventListener('change', (e) => {
+    const v = e.target.value || null;
+    formState.bfop.grade = v;
+    
+    if (!v) {
+      formState.bfop.id = null;
+    }
+    refreshBfOpSelect();
+  });
+  $('bf-op').addEventListener('change', (e) => {
+    formState.bfop.id = e.target.value || null;
+  });
+  $('bf-tier').addEventListener('change', (e) => {
+    const v = String(e.target.value);
+    formState.bfop.tier = BF_TIERS.includes(v) ? v : 'top';
   });
 
 
@@ -5421,6 +5607,16 @@ async function loadSnapshot(data, sourceLabel) {
         id:    String(entry.scroll.id),
         stage,
       };
+    }
+
+    
+    if (entry.bfop && entry.bfop.id) {
+      const slot = buildBfopSlot({
+        id:    String(entry.bfop.id),
+        grade: (entry.bfop.grade === 'white') ? 'white' : 'black',
+        tier:  entry.bfop.tier || 'top',
+      });
+      if (slot) inv.bfop = slot;
     }
     inventory.add(inv);
 

@@ -185,8 +185,10 @@ export function* iterateAllOps(inv, item) {
       if (inv.customBaseOps[k]) yield { op: inv.customBaseOps[k], source: 'custom.base', index: k };
     }
   }
+
   
-  if (inv.bfop) yield { op: inv.bfop, source: 'bfop', index: 0 };
+  
+  if (inv.bfop && !inv.bfop._suppressed) yield { op: inv.bfop, source: 'bfop', index: 0 };
   
   if (Array.isArray(inv.seirenOps)) {
     for (let k = 0; k < inv.seirenOps.length; k++) {

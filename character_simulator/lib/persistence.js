@@ -66,6 +66,16 @@ export function serializeSession(character, inventory, opts = {}) {
     }
 
     
+    
+    if (inv.bfop && inv.bfop.bfId) {
+      entry.bfop = {
+        id:    String(inv.bfop.bfId),
+        grade: (inv.bfop.bfGrade === 'white') ? 'white' : 'black',
+        tier:  inv.bfop.bfTier || 'top',
+      };
+    }
+
+    
     if (inv.ultLv != null) entry.ultLv = inv.ultLv;
 
     if (inv.scroll && inv.scroll.id) {
