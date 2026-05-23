@@ -13,8 +13,14 @@
 
   
   <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en"
+    media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    media="print" onload="this.media='all'" />
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  </noscript>
   <link rel="stylesheet" href="https://sokomin.github.io/material.indigo-pink.min.css">
   <link rel="stylesheet" href="https://sokomin.github.io/styles.css">
   <script defer src="https://sokomin.github.io/material.min.js"></script>
@@ -3092,7 +3098,7 @@
                 <div class="title-summary">
                   <div class="title-summary-row is-header">
                     <div>項目</div>
-                    <div class="title-summary-val">上限+ (flat)</div>
+                    <div class="title-summary-val">上限+</div>
                     <div class="title-summary-val">ダメ% 加算</div>
                   </div>
                   <div class="title-summary-row">
@@ -8802,6 +8808,8 @@ function applyMinipetToSTTemp(STTemp, ch) {
 }
 
 
+const deferredTabInits = {};
+
 function bindTabBar() {
   const buttons = document.querySelectorAll('.sim-tab-btn');
   const panes   = document.querySelectorAll('.sim-main-content .tab-pane');
@@ -8810,12 +8818,19 @@ function bindTabBar() {
       const tab = btn.getAttribute('data-tab-btn');
       buttons.forEach((b) => b.classList.toggle('is-active', b === btn));
       panes.forEach((p) => p.classList.toggle('is-active', p.getAttribute('data-tab') === tab));
+
+      let didDeferredInit = false;
+      if (typeof deferredTabInits[tab] === 'function') {
+        try { deferredTabInits[tab](); didDeferredInit = true; }
+        catch (e) { console.warn('[deferredInit] ' + tab + ' failed:', e); }
+        deferredTabInits[tab] = null;
+      }
       
       if (tab === 'skill')    refreshSkillFrame();
       if (tab === 'creature') initCreatureTab();
       if (tab === 'pet')      initPetTab();
       if (tab === 'minipet')  initMinipetTab();
-      if (tab === 'trans')    TransSkill.rerender();
+      if (tab === 'trans' && !didDeferredInit)   TransSkill.rerender();
       if (tab === 'mapmon')   initMapMonsterTab();
     });
   });
@@ -9734,13 +9749,6 @@ function renderCreatureSlotDetail() {
     root.appendChild(lockNote);
   }
 
-  
-  const note = document.createElement('div');
-  note.className = 'csd-note';
-  note.textContent = (creatureActiveSlot === 0)
-    ? '※ メインパッシブはメインスロット時のみ発動。 サブパッシブは全スロットで発動。'
-    : '※ サブスロットではサブパッシブのみ発動 (メインパッシブは無効)。';
-  root.appendChild(note);
 }
 
 function renderCreatureRankFilter() {
@@ -12830,28 +12838,32 @@ async function main() {
   renderStoneCards();
   renderFlagList();
   renderBadgeList();
-  Titles.init(() => { recalcAll().catch((e) => console.warn('[Titles] recalc failed:', e)); });
-  DragonBlessing.init(() => {
+
+  
+  deferredTabInits.title    = () => Titles.init(() => {
+    recalcAll().catch((e) => console.warn('[Titles] recalc failed:', e));
+  });
+  deferredTabInits.dragon   = () => DragonBlessing.init(() => {
     
     recalcAll().catch((e) => console.warn('[DragonBlessing] recalc failed:', e));
     scheduleAutosave();
   });
-  MissionBook.init(() => {
+  deferredTabInits.mbook    = () => MissionBook.init(() => {
     
     recalcAll().catch((e) => console.warn('[MissionBook] recalc failed:', e));
     scheduleAutosave();
   });
-  Potential.init(() => {
+  deferredTabInits.potential = () => Potential.init(() => {
     
     recalcAll().catch((e) => console.warn('[Potential] recalc failed:', e));
     scheduleAutosave();
   });
-  TransSkill.init(() => {
+  deferredTabInits.trans    = () => TransSkill.init(() => {
     
     recalcAll().catch((e) => console.warn('[TransSkill] recalc failed:', e));
     scheduleAutosave();
   });
-  DamageCalc.init();
+  deferredTabInits.damage   = () => DamageCalc.init();
   
   const auto = loadFromLocalStorage(SESSION_KEY);
   if (auto) {
