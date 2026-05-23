@@ -1470,6 +1470,57 @@
     }
 
     
+    .trans-tab-layout {
+      display: grid; grid-template-columns: 1fr; gap: 8px; padding: 6px 8px;
+    }
+    .trans-tab-header { display: block; }
+    .trans-tab-summary {
+      background: #1a1610; border: 1px solid #5b3d12;
+      padding: 6px 8px; color: #f4e7a2; font-size: 12px;
+      display: flex; flex-direction: column; gap: 3px;
+    }
+    .trans-summary-label { color: #ffd070; font-weight: bold; font-size: 11.5px; }
+    .trans-summary-pre {
+      margin: 0; padding: 4px 6px; background: #120c04; border: 1px solid #443823;
+      color: #00ff66; font-size: 11px; font-family: "Consolas", monospace;
+      white-space: pre-wrap; line-height: 1.5; max-height: 160px; overflow-y: auto;
+    }
+    .trans-summary-pre.is-empty { color: #6e5a2a; }
+    .trans-slot-list {
+      display: grid; gap: 6px;
+      grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+    }
+    .trans-slot {
+      background: #1a1610; border: 1px solid #5b3d12;
+      padding: 6px 8px; color: #f4e7a2; font-size: 12px;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .trans-slot-header {
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid #443823; padding-bottom: 3px;
+    }
+    .trans-slot-title { color: #ffd070; font-weight: bold; font-size: 12.5px; }
+    .trans-slot-sub   { color: #b0944c; font-size: 11px; }
+    .trans-slot-row {
+      display: grid; grid-template-columns: 90px 1fr; gap: 6px; align-items: center;
+    }
+    .trans-slot-row label { color: #ffd070; font-size: 11.5px; font-weight: bold; }
+    .trans-slot-row select {
+      background: #120c04; color: #f4e7a2; border: 1px solid #8b6a28;
+      font: inherit; padding: 1px 4px; width: 100%; box-sizing: border-box;
+    }
+    .trans-slot-row select:disabled { opacity: 0.45; }
+    .trans-slot-effects {
+      margin: 3px 0 0 0; padding: 4px 6px;
+      background: #120c04; border: 1px solid #443823;
+      color: #00ff66; font-size: 11px; font-family: "Consolas", monospace;
+      white-space: pre-wrap; line-height: 1.5; min-height: 36px;
+    }
+    .trans-slot-effects.is-empty { color: #6e5a2a; }
+    .trans-slot-effects-note { color: #b0944c; }
+    .trans-slot.is-empty .trans-slot-effects { background: #0b0904; }
+
+    
     .dragon-tab-layout {
       display: grid;
       grid-template-columns: 1fr;
@@ -1897,6 +1948,7 @@
             <button type="button" class="sim-tab-btn"           data-tab-btn="title"    role="tab">称号</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="mbook"    role="tab">ミッションブック</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="potential" role="tab">潜在能力</button>
+            <button type="button" class="sim-tab-btn"           data-tab-btn="trans"    role="tab">超越スキル</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="damage"   role="tab">ダメージ計算</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="mapmon"   role="tab">マップ&amp;モンスター</button>
           </nav>
@@ -3204,6 +3256,20 @@
                   <pre class="potential-summary" id="potential-summary"></pre>
                 </div>
               </div>
+            </div>
+          </div>
+
+          
+          
+          <div class="tab-pane" data-tab="trans">
+            <div class="trans-tab-layout">
+              <div class="trans-tab-header">
+                <div class="trans-tab-summary" id="trans-tab-summary">
+                  <span class="trans-summary-label">累計補正</span>
+                  <pre class="trans-summary-pre" id="trans-summary-pre">未編成</pre>
+                </div>
+              </div>
+              <div class="trans-slot-list" id="trans-slot-list"></div>
             </div>
           </div>
 
@@ -5810,6 +5876,8 @@ async function recalcAll() {
 
   Titles.applyToSTTemp(T);
 
+  TransSkill.applyToSTTemp(T, ch.job);
+
   await applyBadgesToSTTemp(T, getEffectiveLv(ch), ch);
 
   
@@ -6545,6 +6613,8 @@ function bindEvents() {
       invalidateFeasibleCache();
 
       if (id === 'ch-job' && isSkillTabActive()) refreshSkillFrame();
+
+      if (id === 'ch-job') TransSkill.rerender();
       clearTimeout(recalcDebounce);
       recalcDebounce = setTimeout(async () => {
         await recalcAll();
@@ -6619,6 +6689,8 @@ function buildSnapshot() {
   
   snap.potential = Potential.getState();
   
+  snap.transSkill = TransSkill.getState();
+  
   snap.badges = { ...badgeState };
   
   snap.mapMonster = { ...mapMonsterState };
@@ -6681,6 +6753,10 @@ async function loadSnapshot(data, sourceLabel) {
   
   if (data.potential) Potential.setState(data.potential);
   else Potential.reset();
+
+  
+  if (data.transSkill) TransSkill.setState(data.transSkill);
+  else TransSkill.reset();
 
   
   loadBadgeState(data.badges);
@@ -8739,6 +8815,7 @@ function bindTabBar() {
       if (tab === 'creature') initCreatureTab();
       if (tab === 'pet')      initPetTab();
       if (tab === 'minipet')  initMinipetTab();
+      if (tab === 'trans')    TransSkill.rerender();
       if (tab === 'mapmon')   initMapMonsterTab();
     });
   });
@@ -10051,6 +10128,8 @@ function bindSessionEvents() {
     MissionBook.reset();
     
     Potential.reset();
+    
+    TransSkill.reset();
     
     resetBadgeState();
     
@@ -11475,6 +11554,566 @@ const Potential = (() => {
 })();
 
 
+const TransSkill = (() => {
+
+  
+
+  const flat = (perLv) => ({ flat: 0, perLv });
+  const flatT2 = (at10, perLvAfter) => ({ flat: at10, perLv: perLvAfter });
+
+
+  const JOB_RARE_SKILLS = {
+    0:  { name: 'パラレルスティング改',    note: '最大攻撃回数 1 回増加' },
+    1:  { name: 'ドラゴンツイスター改',    note: '30%程度で追加発動' },
+    2:  { name: 'テイルチェイサー改',      note: '最大体力比例ダメージ 10%' },
+    3:  { name: 'オーサムフォートレス改',  note: '分身数 +4 / 攻撃回数 +1 / 範囲 +2m' },
+    4:  { name: 'フォーベガチャージング改', note: '持続時間 10 秒増加' },
+    5:  { name: 'ビーストベルセルク改',    note: '体力吸収 1% / 無敵 2 秒 / CT 30 秒' },
+    6:  { name: 'ミラータワー改',          note: '最大 HP の 2 倍シールド生成' },
+    7:  { name: 'ホーリークロス改',        note: '回復値が シールド HP 化' },
+    8:  { name: '唐辛子を食べさせる改',    note: '特技発動確率 +10%' },
+    9:  { name: '召喚獣パワーアップ改',    note: '最大体力 1.5 倍増加' },
+    10: { name: 'ダーティーフィーバー改',  note: '最小攻撃回数 8 回' },
+    11: { name: '分身改',                  note: '分身 1 体増加' },
+    12: { name: 'ゴリアテスレイヤー改',    note: '敵引き寄せ / PVP 時 CT 10 秒' },
+    13: { name: '花の乙女スペシャル改',    note: '攻撃回数 +1 回' },
+    14: { name: '死霊術改',                note: '調教ペット HP 100% 増加' },
+    15: { name: '広がる悪意改',            note: '火抵抗 40% 以上敵を攻撃時、 抵抗を 40% に低下' },
+    16: { name: '乱斬り改',                note: '攻撃 1 回に変更 / 4m 内敵に最終ダメージ 600% 増加' },
+    17: { name: '半月いなし改',            note: '(詳細未記載)' },
+    18: { name: '放射光改',                note: '1 秒間無敵状態' },
+    19: { name: '掃除の邪魔しちゃダメ改',  note: '最大攻撃回数 1 回増加' },
+    20: { name: 'デモンコマンダー改',      note: 'CP 消費なし発動 (極低確率)' },
+    21: { name: 'アトラクションドロー改',  note: 'CT 2 秒に短縮' },
+    22: { name: 'アウトブレイク改',        note: '最大攻撃回数 +1 回' },
+    23: { name: 'サージングウェーブ改',    note: '回転速度 50% 増加' },
+    24: { name: 'パニッシュメントクロス改', note: '分身 1 個追加' },
+    25: { name: 'サージングウェーブ改',    note: '回転速度 50% 増加' },
+  };
+
+  
+  const DEFS = [
+    
+    { id: 'n_str', name: '筋力強化', category: 'normal', maxSp: 76100,
+      effects: [
+        { stat: 'str', tier1: flat(50),  tier2: flatT2(500, 10),  special: flat(50) },
+        { stat: 'con', tier1: flat(-25), tier2: flatT2(-250, -10) },
+      ] },
+    { id: 'n_int', name: '知識強化', category: 'normal', maxSp: 76100,
+      effects: [
+        { stat: 'int', tier1: flat(50),  tier2: flatT2(500, 10),  special: flat(50) },
+        { stat: 'con', tier1: flat(-25), tier2: flatT2(-250, -10) },
+      ] },
+    { id: 'n_agi', name: '敏捷強化', category: 'normal', maxSp: 76100,
+      effects: [
+        { stat: 'agi', tier1: flat(50),  tier2: flatT2(500, 10),  special: flat(50) },
+        { stat: 'chs', tier1: flat(-25), tier2: flatT2(-250, -10) },
+      ] },
+    { id: 'n_wiz', name: '知恵強化', category: 'normal', maxSp: 76100,
+      effects: [
+        { stat: 'wiz', tier1: flat(50),  tier2: flatT2(500, 10),  special: flat(50) },
+        { stat: 'agi', tier1: flat(-25), tier2: flatT2(-250, -10) },
+      ] },
+    { id: 'n_con', name: '健康強化', category: 'normal', maxSp: 76100,
+      effects: [
+        { stat: 'con', tier1: flat(50),  tier2: flatT2(500, 10),  special: flat(50) },
+        { stat: 'chs', tier1: flat(-25), tier2: flatT2(-250, -10) },
+      ] },
+    { id: 'n_chs', name: 'カリスマ強化', category: 'normal', maxSp: 76100,
+      effects: [
+        { stat: 'chs', tier1: flat(50),  tier2: flatT2(500, 10),  special: flat(50) },
+        { stat: 'agi', tier1: flat(-25), tier2: flatT2(-250, -10) },
+      ] },
+    { id: 'n_maintenance', name: 'メンテナンス術', category: 'normal', maxSp: 76100,
+      displayOnly: [
+        { label: '装備耐久減少確率', tier1: { flat: 30, perLv: 3 }, tier2: { flat: 60, perLv: 1 }, special: { flat: 0, perLv: 4 }, unit: '%' },
+      ] },
+    { id: 'n_regen', name: '体力再生', category: 'normal', maxSp: 76100,
+      displayOnly: [
+        { label: '体力回復', tier1: { flat: 20, perLv: 30 }, tier2: { flat: 320, perLv: 5 }, special: { flat: 0, perLv: 20 }, unit: '' },
+      ] },
+    { id: 'n_random_dmg', name: 'ランダム追加ダメージ', category: 'normal', maxSp: 76100,
+      displayOnly: [
+        { label: 'ランダム属性追加ダメージ', tier1: { flat: 500, perLv: 50 }, tier2: { flat: 1000, perLv: 10 }, special: { flat: 250, perLv: 50 }, unit: '' },
+      ] },
+
+    
+    { id: 'r_str_focus', name: '筋力集中鍛錬', category: 'rareCommon', maxSp: 30000,
+      effects: [
+        { stat: 'str',               tier1: flat(150), tier2: flatT2(1500, 30) },
+        { stat: 'physDamagePercent', special: flat(50) },
+      ] },
+    { id: 'r_int_focus', name: '知識集中鍛錬', category: 'rareCommon', maxSp: 30000,
+      effects: [
+        { stat: 'int',       tier1: flat(150), tier2: flatT2(1500, 30) },
+        { stat: 'attrMagic', special: flat(15) },
+      ] },
+    { id: 'r_agi_focus', name: '敏捷集中鍛錬', category: 'rareCommon', maxSp: 30000,
+      effects: [
+        { stat: 'agi',            tier1: flat(150), tier2: flatT2(1500, 30) },
+        { stat: 'physCritDamage', special: flat(3) },
+      ] },
+    { id: 'r_wiz_focus', name: '知恵集中鍛錬', category: 'rareCommon', maxSp: 30000,
+      effects: [
+        { stat: 'wiz', tier1: flat(150), tier2: flatT2(1500, 30) },
+      ],
+      displayOnly: [
+        { label: '被魔法ダメージ吸収', special: { flat: 0, perLv: 1 }, unit: '%' },
+      ] },
+    { id: 'r_con_focus', name: '健康集中鍛錬', category: 'rareCommon', maxSp: 30000,
+      effects: [
+        { stat: 'con',       tier1: flat(150), tier2: flatT2(1500, 30) },
+        { stat: 'hpPercent', special: flat(20) },
+      ] },
+    { id: 'r_chs_focus', name: 'カリスマ集中鍛錬', category: 'rareCommon', maxSp: 30000,
+      effects: [
+        { stat: 'chs',       tier1: flat(150), tier2: flatT2(1500, 30) },
+        { stat: 'cpPercent', special: flat(20) },
+      ] },
+    { id: 'r_luc_focus', name: '運集中鍛錬', category: 'rareCommon', maxSp: 30000,
+      effects: [
+        { stat: 'luc', tier1: flat(150), tier2: flatT2(1500, 30) },
+      ] },
+    { id: 'r_range', name: '領域展開', category: 'rareCommon', maxSp: 30000,
+      displayOnly: [
+        { label: '攻撃範囲', tier1: { flat: 0.05, perLv: 0.05 }, tier2: { flat: 0.55, perLv: 0.01 }, special: { flat: 0.2, perLv: 0.05 }, unit: 'm', decimals: 2 },
+      ] },
+    { id: 'r_sight', name: '視野展開', category: 'rareCommon', maxSp: 30000,
+      displayOnly: [
+        { label: '武器射程', tier1: { flat: 10, perLv: 5 }, tier2: { flat: 55, perLv: 1 }, special: { flat: 20, perLv: 5 }, unit: '' },
+      ] },
+    { id: 'r_breath', name: '生命の息吹', category: 'rareCommon', maxSp: 30000,
+      displayOnly: [
+        { label: '回復速度', tier1: { flat: 0, perLv: 10 }, tier2: { flat: 100, perLv: 1 }, special: { flat: 0, perLv: 10 }, unit: '' },
+      ] },
+    { id: 'r_ct', name: '早まる時空改', category: 'rareCommon', maxSp: 30000,
+      displayOnly: [
+        { label: 'CT', note: 'SLv1 で 1 秒減少 (固定)' },
+      ] },
+
+    
+    { id: 'u_phys_strong', name: '物理強打', category: 'unique', maxSp: 148700,
+      effects: [
+        { stat: 'physStrongRate',   tier1: flat(1.0), tier2: flatT2(10, 0.2) },
+        { stat: 'doubleCritDamage', special: flat(1.0) },
+      ] },
+    { id: 'u_magic_strong', name: '魔法強打', category: 'unique', maxSp: 148700,
+      effects: [
+        { stat: 'magicStrongRate',     tier1: flat(1.0), tier2: flatT2(10, 0.2) },
+        { stat: 'finalDamagePercent',  special: flat(1.0) },
+      ] },
+    { id: 'u_burst', name: '魔力の暴走', category: 'unique', maxSp: 148700,
+      displayOnly: [
+        { label: '追加ダメージ', tier1: { flat: 0, perLv: 5.0 }, tier2: { flat: 50, perLv: 1.0 }, special: { flat: 0, perLv: 0.5 }, unit: '%', note: '発動確率 10% (SLv1-5 のみ 5%)' },
+      ] },
+    { id: 'u_awake', name: '覚醒', category: 'unique', maxSp: 148700,
+      effects: [
+        { stat: 'finalDamagePercent', special: flat(1.0) },
+      ],
+      displayOnly: [
+        { label: '発動確率', tier1: { flat: 0, perLv: 0.5 }, tier2: { flat: 5, perLv: 0.1 }, unit: '%' },
+      ] },
+    { id: 'u_adapt', name: '適応力', category: 'unique', maxSp: 148700,
+      effects: [
+        
+        { stat: 'pureStatPercentStr', special: flat(1.0) },
+        { stat: 'pureStatPercentAgi', special: flat(1.0) },
+        { stat: 'pureStatPercentCon', special: flat(1.0) },
+        { stat: 'pureStatPercentInt', special: flat(1.0) },
+        { stat: 'pureStatPercentWiz', special: flat(1.0) },
+        { stat: 'pureStatPercentChs', special: flat(1.0) },
+        { stat: 'pureStatPercentLuc', special: flat(1.0) },
+      ],
+      displayOnly: [
+        { label: 'ステータス回復', tier1: { flat: 0, perLv: 0.30 }, tier2: { flat: 3, perLv: 0.06 }, unit: '%' },
+      ] },
+    { id: 'u_cp_drain', name: '魔力吸収', category: 'unique', maxSp: 148700,
+      displayOnly: [
+        { label: 'CP 回復', tier1: { flat: 0, perLv: 0.05 }, tier2: { flat: 0, perLv: 0.01 }, special: { flat: 0, perLv: 0.04 }, unit: '%', decimals: 2 },
+      ] },
+    { id: 'u_warp', name: '時空の歪み', category: 'unique', maxSp: 148700,
+      displayOnly: [
+        { label: '受けるダメージ減少', tier1: { flat: 0, perLv: 50 }, tier2: { flat: 500, perLv: 10 }, unit: '' },
+        { label: 'PVP 防御 (特殊強化)', special: { flat: 0, perLv: 2 }, unit: '%' },
+      ] },
+    { id: 'u_resist', name: '耐性', category: 'unique', maxSp: 148700,
+      displayOnly: [
+        { label: '最大抵抗値回復', tier1: { flat: 0, perLv: 0.50 }, tier2: { flat: 5, perLv: 0.1 }, special: { flat: 0, perLv: 0.5 }, unit: '%' },
+      ] },
+    { id: 'u_wedge', name: '楔', category: 'unique', maxSp: 148700,
+      effects: [
+        { stat: 'enemyPhysCritResistReduce', tier1: flat(1.00), tier2: flatT2(10, 0.2) },
+        { stat: 'doubleCritDamage',          special: flat(1.0) },
+      ] },
+    { id: 'u_magic_amp', name: '魔力増幅', category: 'unique', maxSp: 148700,
+      effects: [
+        { stat: 'magicCritDamage', tier1: flat(0.3), tier2: flatT2(3, 0.06), special: flat(0.3) },
+      ] },
+  ];
+
+
+  function buildJobRareDef(jobId) {
+    const rec = JOB_RARE_SKILLS[Number(jobId)];
+    if (!rec) return null;
+    return {
+      id: `rj_${jobId}`,
+      name: rec.name,
+      category: 'rareJob',
+      maxSp: 30000,
+      displayOnly: [{ label: '効果', note: rec.note }],
+    };
+  }
+
+  
+  const STAT_LABELS = {
+    str:'力', agi:'敏捷', con:'健康', int:'知識', wiz:'知恵', chs:'カリスマ', luc:'運',
+    hpPercent:'最大HP%', cpPercent:'最大CP%',
+    physDamagePercent:'物理ダメージ%', attrMagic:'魔法ダメージ%',
+    physCritDamage:'物理致命打ダメージ%', magicCritDamage:'魔法致命打ダメージ%',
+    doubleCritDamage:'ダブルクリティカルダメージ%',
+    physStrongRate:'物理強打発動率', magicStrongRate:'魔法強打発動率',
+    finalDamagePercent:'最終ダメージ%',
+    enemyPhysCritResistReduce:'敵物理致命打抵抗低下',
+    pureStatPercentStr:'純粋 力 %', pureStatPercentAgi:'純粋 敏捷 %',
+    pureStatPercentCon:'純粋 健康 %', pureStatPercentInt:'純粋 知識 %',
+    pureStatPercentWiz:'純粋 知恵 %', pureStatPercentChs:'純粋 カリスマ %',
+    pureStatPercentLuc:'純粋 運 %',
+  };
+  const FLAT_KEYS = new Set(['str','agi','con','int','wiz','chs','luc','enemyPhysCritResistReduce']);
+  const CATEGORY_LABELS = {
+    normal: 'ノーマル',
+    rareCommon: 'レア (共通)',
+    rareJob: 'レア (職業専用)',
+    unique: 'ユニーク',
+  };
+  const SLOT_LABELS = [
+    { title: 'スロット 1', sub: '900Lv～' },
+    { title: 'スロット 2', sub: '1000Lv～' },
+    { title: 'スロット 3', sub: '1200Lv～' },
+    { title: 'スロット 4', sub: 'プレミア' },
+  ];
+
+  
+  function tierValue(tier, slv) {
+    if (!tier) return 0;
+    return (Number(tier.flat) || 0) + (Number(tier.perLv) || 0) * Math.max(0, slv);
+  }
+  
+  function evalEntry(entry, slv, specialLv) {
+    let v = 0;
+    if (slv >= 1 && slv <= 10 && entry.tier1) v += tierValue(entry.tier1, slv);
+    else if (slv >= 11 && entry.tier2)         v += tierValue(entry.tier2, slv - 10);
+    if (specialLv > 0 && entry.special)        v += tierValue(entry.special, specialLv);
+    return v;
+  }
+
+  
+  function aggregate(jobId) {
+    const sumMap = Object.create(null);
+    const slotInfos = state.slots.map(() => ({ skill: null, lines: [] }));
+    for (let i = 0; i < state.slots.length; i++) {
+      const s = state.slots[i];
+      if (!s || !s.skillId) continue;
+      const def = findDef(s.skillId, jobId);
+      if (!def) continue;
+      const slv = clampSlv(s.slv);
+      const sp  = clampSpecial(s.specialLv);
+      slotInfos[i].skill = def;
+      slotInfos[i].slv = slv;
+      slotInfos[i].specialLv = sp;
+
+      for (const eff of (def.effects || [])) {
+        const v = evalEntry(eff, slv, sp);
+        if (v === 0) continue;
+        sumMap[eff.stat] = (sumMap[eff.stat] || 0) + v;
+        slotInfos[i].lines.push(formatStatLine(eff.stat, v));
+      }
+      for (const dis of (def.displayOnly || [])) {
+        const hasFormula = !!(dis.tier1 || dis.tier2 || dis.special);
+        const v = evalEntry(dis, slv, sp);
+        
+        if (dis.note && !hasFormula) {
+          slotInfos[i].lines.push(`${dis.label}: ${dis.note}`);
+          continue;
+        }
+        
+        if (hasFormula && v === 0) continue;
+        const unit = dis.unit ?? '';
+        const decimals = (typeof dis.decimals === 'number') ? dis.decimals : 0;
+        const valStr = (decimals > 0) ? v.toFixed(decimals) : Math.round(v);
+        const sign = (Number(valStr) >= 0) ? '+' : '';
+        let line = `${dis.label} ${sign}${valStr}${unit}`;
+        if (dis.note) line += ` (${dis.note})`;
+        slotInfos[i].lines.push(line);
+      }
+    }
+    return { sumMap, slotInfos };
+  }
+  function formatStatLine(stat, v) {
+    const label = STAT_LABELS[stat] || stat;
+    const isFlat = FLAT_KEYS.has(stat);
+    const sign = v >= 0 ? '+' : '';
+    
+    const num = Number.isInteger(v) ? v : Number(v.toFixed(1));
+    return `${label} ${sign}${num}${isFlat ? '' : '%'}`;
+  }
+  function clampSlv(n) { n = Number(n) || 0; return Math.max(0, Math.min(20, n | 0)); }
+  function clampSpecial(n) { n = Number(n) || 0; return Math.max(0, Math.min(5, n | 0)); }
+
+  
+  function findDef(skillId, jobId) {
+    if (!skillId) return null;
+    if (skillId.startsWith('rj_')) {
+      const jid = Number(skillId.slice(3));
+      const def = buildJobRareDef(jid);
+      
+      return def;
+    }
+    return DEFS.find((d) => d.id === skillId) || null;
+  }
+
+  
+  function applyToSTTemp(STTemp, jobId) {
+    if (!STTemp || !STTemp.sum) return;
+    const { sumMap } = aggregate(jobId);
+    for (const [k, v] of Object.entries(sumMap)) {
+      STTemp.sum[k] = (STTemp.sum[k] || 0) + v;
+    }
+  }
+
+  
+  const state = {
+    slots: [
+      { skillId: '', slv: 0, specialLv: 0 },
+      { skillId: '', slv: 0, specialLv: 0 },
+      { skillId: '', slv: 0, specialLv: 0 },
+      { skillId: '', slv: 0, specialLv: 0 },
+    ],
+  };
+
+  
+  function isSkillTakenByOther(skillId, slotIdx) {
+    if (!skillId) return false;
+    return state.slots.some((s, i) => i !== slotIdx && s && s.skillId === skillId);
+  }
+
+  
+  function availableDefs(jobId) {
+    const list = [...DEFS];
+    const jobRare = buildJobRareDef(jobId);
+    if (jobRare) {
+      
+      const uniqueStart = list.findIndex((d) => d.category === 'unique');
+      const insertAt = uniqueStart >= 0 ? uniqueStart : list.length;
+      list.splice(insertAt, 0, jobRare);
+    }
+    return list;
+  }
+
+  
+  function readCurrentJobId() {
+    try {
+      const el = document.getElementById('ch-job');
+      return el ? Number(el.value) || 0 : 0;
+    } catch (_) { return 0; }
+  }
+
+  function renderSlots() {
+    const root = $('trans-slot-list');
+    if (!root) return;
+    const jobId = readCurrentJobId();
+
+    let pruned = false;
+    for (const s of state.slots) {
+      if (!s || !s.skillId || !s.skillId.startsWith('rj_')) continue;
+      const slotJobId = Number(s.skillId.slice(3));
+      if (slotJobId !== jobId) {
+        s.skillId = ''; s.slv = 0; s.specialLv = 0;
+        pruned = true;
+      }
+    }
+    const defs  = availableDefs(jobId);
+    const html = state.slots.map((s, idx) => {
+      const meta = SLOT_LABELS[idx] || { title: `スロット ${idx+1}`, sub: '' };
+      
+      const groups = ['normal', 'rareCommon', 'rareJob', 'unique'].map((cat) => {
+        const opts = defs
+          .filter((d) => d.category === cat)
+          .map((d) => {
+            const taken = isSkillTakenByOther(d.id, idx);
+            const selected = (s.skillId === d.id) ? ' selected' : '';
+            const disabled = (taken && s.skillId !== d.id) ? ' disabled' : '';
+            const label = taken && s.skillId !== d.id ? `${d.name} (他スロット使用中)` : d.name;
+            return `<option value="${esc(d.id)}"${selected}${disabled}>${esc(label)}</option>`;
+          }).join('');
+        if (!opts) return '';
+        return `<optgroup label="${esc(CATEGORY_LABELS[cat])}">${opts}</optgroup>`;
+      }).join('');
+
+      
+      const slvOpts = Array.from({ length: 21 }, (_, i) =>
+        `<option value="${i}"${i === s.slv ? ' selected' : ''}>${i}</option>`).join('');
+      
+      const spOpts = Array.from({ length: 6 }, (_, i) =>
+        `<option value="${i}"${i === s.specialLv ? ' selected' : ''}>${i}</option>`).join('');
+
+      
+      const def = findDef(s.skillId, jobId);
+      let effHtml = '<span class="trans-slot-effects-note">スキル未選択</span>';
+      let isEmpty = true;
+      if (def) {
+        const single = aggregateSingleSlot(s, jobId);
+        if (single.lines.length === 0) {
+          effHtml = '<span class="trans-slot-effects-note">SLv 1 以上で効果が発動</span>';
+        } else {
+          effHtml = single.lines.map((l) => esc(l)).join('\n');
+          isEmpty = false;
+        }
+      }
+
+      const isEmptyCls = (!def) ? ' is-empty' : '';
+      const emptyEffCls = isEmpty ? ' is-empty' : '';
+
+      return `<div class="trans-slot${isEmptyCls}" data-slot="${idx}">
+        <div class="trans-slot-header">
+          <div class="trans-slot-title">${esc(meta.title)}</div>
+          <div class="trans-slot-sub">${esc(meta.sub)}</div>
+        </div>
+        <div class="trans-slot-row">
+          <label>スキル</label>
+          <select data-trans-skill="${idx}">
+            <option value="">(未選択)</option>
+            ${groups}
+          </select>
+        </div>
+        <div class="trans-slot-row">
+          <label>SLv</label>
+          <select data-trans-slv="${idx}"${def ? '' : ' disabled'}>${slvOpts}</select>
+        </div>
+        <div class="trans-slot-row">
+          <label>特殊強化</label>
+          <select data-trans-sp="${idx}"${def ? '' : ' disabled'}>${spOpts}</select>
+        </div>
+        <pre class="trans-slot-effects${emptyEffCls}">${effHtml}</pre>
+      </div>`;
+    }).join('');
+    root.innerHTML = html;
+    bindSlotEvents();
+    renderSummary();
+  }
+
+  
+  function aggregateSingleSlot(slot, jobId) {
+    if (!slot || !slot.skillId) return { lines: [] };
+    const tmpState = { slots: [slot] };
+    const orig = state.slots;
+    try {
+      state.slots = tmpState.slots;
+      const { slotInfos } = aggregate(jobId);
+      return slotInfos[0] || { lines: [] };
+    } finally {
+      state.slots = orig;
+    }
+  }
+
+  function renderSummary() {
+    const pre = $('trans-summary-pre');
+    if (!pre) return;
+    const jobId = readCurrentJobId();
+    const { sumMap } = aggregate(jobId);
+    const lines = [];
+    
+    const STAT_ORDER = ['str','agi','con','int','wiz','chs','luc'];
+    for (const k of STAT_ORDER) {
+      if (sumMap[k]) lines.push(formatStatLine(k, sumMap[k]));
+    }
+    for (const k of Object.keys(sumMap)) {
+      if (STAT_ORDER.includes(k)) continue;
+      lines.push(formatStatLine(k, sumMap[k]));
+    }
+    if (lines.length === 0) {
+      pre.textContent = '未編成';
+      pre.classList.add('is-empty');
+    } else {
+      pre.textContent = lines.join('\n');
+      pre.classList.remove('is-empty');
+    }
+  }
+
+  function bindSlotEvents() {
+    document.querySelectorAll('[data-trans-skill]').forEach((sel) => {
+      sel.addEventListener('change', () => {
+        const idx = Number(sel.getAttribute('data-trans-skill'));
+        if (state.slots[idx]) {
+          const newId = sel.value;
+          if (newId && isSkillTakenByOther(newId, idx)) {
+            
+            sel.value = state.slots[idx].skillId;
+            return;
+          }
+          state.slots[idx].skillId = newId;
+          if (!newId) { state.slots[idx].slv = 0; state.slots[idx].specialLv = 0; }
+        }
+        renderSlots();
+        notifyChange();
+      });
+    });
+    document.querySelectorAll('[data-trans-slv]').forEach((sel) => {
+      sel.addEventListener('change', () => {
+        const idx = Number(sel.getAttribute('data-trans-slv'));
+        if (state.slots[idx]) state.slots[idx].slv = clampSlv(sel.value);
+        renderSlots();
+        notifyChange();
+      });
+    });
+    document.querySelectorAll('[data-trans-sp]').forEach((sel) => {
+      sel.addEventListener('change', () => {
+        const idx = Number(sel.getAttribute('data-trans-sp'));
+        if (state.slots[idx]) state.slots[idx].specialLv = clampSpecial(sel.value);
+        renderSlots();
+        notifyChange();
+      });
+    });
+  }
+
+  let _onChange = null;
+  function notifyChange() {
+    if (typeof _onChange === 'function') _onChange();
+  }
+  function init(onChange) {
+    _onChange = onChange;
+    renderSlots();
+  }
+  function rerender() { renderSlots(); }
+  function getState() {
+    return { slots: state.slots.map((s) => ({ skillId: s.skillId || '', slv: clampSlv(s.slv), specialLv: clampSpecial(s.specialLv) })) };
+  }
+  function setState(s) {
+    if (!s || !Array.isArray(s.slots)) return;
+    for (let i = 0; i < state.slots.length; i++) {
+      const src = s.slots[i] || {};
+      state.slots[i] = {
+        skillId:   typeof src.skillId === 'string' ? src.skillId : '',
+        slv:       clampSlv(src.slv),
+        specialLv: clampSpecial(src.specialLv),
+      };
+    }
+    renderSlots();
+  }
+  function reset() {
+    state.slots = [
+      { skillId: '', slv: 0, specialLv: 0 },
+      { skillId: '', slv: 0, specialLv: 0 },
+      { skillId: '', slv: 0, specialLv: 0 },
+      { skillId: '', slv: 0, specialLv: 0 },
+    ];
+    renderSlots();
+  }
+
+  return { init, applyToSTTemp, getState, setState, reset, rerender, DEFS, JOB_RARE_SKILLS };
+})();
+
+
 const DamageCalc = (() => {
 
   const JOB_SKILL_DB = {
@@ -12205,6 +12844,11 @@ async function main() {
   Potential.init(() => {
     
     recalcAll().catch((e) => console.warn('[Potential] recalc failed:', e));
+    scheduleAutosave();
+  });
+  TransSkill.init(() => {
+    
+    recalcAll().catch((e) => console.warn('[TransSkill] recalc failed:', e));
     scheduleAutosave();
   });
   DamageCalc.init();
