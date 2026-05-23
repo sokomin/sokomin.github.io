@@ -1117,6 +1117,88 @@
     }
 
     
+    .pet-tab-layout { padding: 6px 8px; color: #f4e7a2; font-size: 12px; }
+    .pet-tab-disabled-msg {
+      padding: 14px; margin: 6px 0;
+      background: #1a1610; border: 1px solid #5b3d12;
+      color: #d09a4a; font-size: 12.5px; line-height: 1.6; text-align: center;
+    }
+    .pet-slot-list { display: flex; flex-direction: column; gap: 6px; }
+    .pet-slot {
+      display: grid;
+      grid-template-columns: 28px 96px 1fr;
+      gap: 8px; align-items: stretch;
+      background: #1a1610; border: 1px solid #5b3d12;
+      padding: 6px 8px;
+    }
+    .pet-slot-num {
+      color: #ffd070; font-weight: bold; font-size: 16px;
+      display: flex; align-items: center; justify-content: center;
+      border-right: 1px solid #443823;
+    }
+    .pet-slot-left {
+      display: flex; flex-direction: column; gap: 4px; align-items: center;
+    }
+    .pet-slot-img {
+      width: 80px; height: 96px; display: flex; align-items: center; justify-content: center;
+      background: #0d0904; border: 1px solid #443823;
+    }
+    .pet-slot-img img { max-width: 80px; max-height: 96px; image-rendering: pixelated; }
+    .pet-slot-img .pet-slot-img-empty { color: #555; font-size: 11px; text-align: center; }
+    .pet-slot-right { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+    .pet-slot-row {
+      display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+    }
+    .pet-slot-row label { color: #b0944c; font-size: 11.5px; }
+    .pet-slot-row select { font-size: 12px; min-width: 200px; max-width: 400px; }
+    .pet-slot-row input[type=number] { width: 70px; font-size: 12px; }
+    .pet-slot-row .pet-slot-lv-hint { color: #777; font-size: 11px; }
+    .pet-slot-row button {
+      font-size: 11px; padding: 2px 8px; cursor: pointer;
+    }
+    .pet-slot-name { color: #ffd070; font-weight: bold; font-size: 13px; }
+    .pet-slot-name-db { color: #b0944c; font-size: 11px; }
+    .pet-slot-stat-table { width: 100%; border-collapse: collapse; font-size: 11.5px; margin-top: 2px; }
+    .pet-slot-stat-table td {
+      border: 1px solid #443823; padding: 2px 4px;
+    }
+    .pet-slot-stat-table td.pet-key {
+      background: #120c04; color: #b0944c; text-align: right; white-space: nowrap; width: 32%;
+    }
+    .pet-slot-stat-table td.pet-val {
+      color: #f4e7a2; font-family: "Consolas", monospace; text-align: right;
+    }
+    .pet-slot-empty {
+      padding: 12px; text-align: center; color: #b0944c; font-size: 12px;
+    }
+
+    
+    
+    .pet-ops-panel {
+      margin-top: 10px; padding: 6px 8px;
+      background: #1a1610; border: 1px solid #5b3d12;
+      color: #f4e7a2; font-size: 12px;
+    }
+    .pet-ops-panel-title {
+      color: #ffd070; font-weight: bold; font-size: 12.5px;
+      margin-bottom: 4px;
+      border-bottom: 1px solid #443823; padding-bottom: 3px;
+    }
+    .pet-ops-panel-note {
+      color: #b0944c; font-size: 11px; margin-bottom: 4px;
+    }
+    
+    .pet-ops-panel .sim-detail-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .pet-ops-panel .pet-ops-mark {
+      color: #00ff66; font-weight: bold; margin-right: 4px;
+    }
+    .pet-ops-panel .sim-detail-value.pet-ops-val-zero {
+      color: #555;
+    }
+
+    
     .title-tab-layout {
       display: grid;
       grid-template-columns: minmax(280px, 380px) 1fr;
@@ -1720,6 +1802,7 @@
             <button type="button" class="sim-tab-btn is-active" data-tab-btn="item"  role="tab">アイテム</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="stone"    role="tab">フェーズストーン</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="skill"    role="tab">スキル</button>
+            <button type="button" class="sim-tab-btn"           data-tab-btn="pet"      role="tab">ペット</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="creature" role="tab">クリーチャー</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="dragon"   role="tab">古龍の祝福</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="title"    role="tab">称号</button>
@@ -2263,6 +2346,22 @@
           
           <div class="tab-pane" data-tab="skill">
             <iframe class="skill-frame" id="skill-frame" title="スキルシミュレーター" loading="lazy"></iframe>
+          </div>
+
+          
+          
+          <div class="tab-pane" data-tab="pet">
+            <div class="pet-tab-layout">
+              
+              <div class="pet-tab-disabled-msg" id="pet-tab-disabled-msg" hidden>
+                このジョブではペットを使用できません。<br>
+                対応職業: ビーストテイマー / ネクロマンサー
+              </div>
+              
+              <div class="pet-slot-list" id="pet-slot-list">
+                <div class="pet-slot-empty">読み込み中…</div>
+              </div>
+            </div>
           </div>
 
           
@@ -2826,12 +2925,15 @@ import {
   getMapList, getMapMeta,
   getMonstersForMap, searchMaps,
   getMonsterImageUrl,
+  getMonsterById, getTameableMonsters,
   MOB_SPEC_LABEL, MOB_RANK_LABEL,
 } from './lib/map_monster.js';
 import {
   getMapMonsterModifier, applyMapMonsterModifier,
   applyMapSubInfoToMonster,
 } from './lib/map_monster_modifiers.js';
+import { applyMonsterLevel } from './lib/monster_level_calc.js';
+import { computePetStats, isPetCapableJob } from './lib/pet_calc.js';
 
 const loader = new DataLoader({ baseUrl: './lib/data' });
 setLoader(loader);
@@ -4975,6 +5077,45 @@ function collectUnmappedOps(equippedList) {
 }
 
 
+function getCurrentMapSubInfo() {
+  if (!mapMonsterDataLoaded) return null;
+  if (mapMonsterState.mapId == null) return null;
+  const meta = getMapMeta(mapMonsterState.mapId);
+  return meta?.subInfo || null;
+}
+
+
+function applyMapEffectsToCharacter(f, subInfo) {
+  if (!f || !f.equipped) return;
+  if (!subInfo) {
+    f.equipped.__attrResistCap = 90;
+    return;
+  }
+  const stDown = Number(subInfo.st_down) || 0;
+  if (stDown > 0) {
+    const mul = 1.0 - stDown / 100.0;
+    for (const s of STAT_KEYS) {
+      if (typeof f.equipped[s] === 'number') {
+        f.equipped[s] = Math.floor(f.equipped[s] * mul);
+      }
+    }
+  }
+  const RES_MAP = [
+    ['attrFireResist',  'dfi'],
+    ['attrWaterResist', 'dwa'],
+    ['attrWindResist',  'dwi'],
+    ['attrEarthResist', 'dea'],
+    ['attrLightResist', 'dli'],
+    ['attrDarkResist',  'dda'],
+  ];
+  for (const [resKey, subKey] of RES_MAP) {
+    const cur = Number(f.equipped[resKey]) || 0;
+    const dec = Number(subInfo[subKey]) || 0;
+    f.equipped[resKey] = cur - dec;
+  }
+  f.equipped.__attrResistCap = Number(subInfo.lbd) || 90;
+}
+
 async function recalcAll() {
   const ch = readCharacter();
 
@@ -5020,6 +5161,9 @@ async function recalcAll() {
   applyJobPassivesPostFinalize(f, ch);
   
   Titles.applyBerserkPostFinalize(f);
+
+
+  applyMapEffectsToCharacter(f, getCurrentMapSubInfo());
 
   
   const wisdomVal = Number(f.equipped.wiz || ch.stats.base.wiz) || 0;
@@ -5143,8 +5287,8 @@ async function recalcAll() {
   
   setDetailFlat('dt-skill',                    f.equipped.skillLv || 0);
 
-  
-  const ATTR_RESIST_CAP  =  90;
+
+  const ATTR_RESIST_CAP  = Number(f.equipped.__attrResistCap) || 90;
   const ATTR_ABSORB_CAP  = 100;
   const ATTR_ENHANCE_CAP = 400;
   const ATTR_WEAKEN_CAP  = 120;
@@ -5419,6 +5563,14 @@ async function recalcAll() {
   
   try { MissionBook._rerender(); }
   catch (e) { console.warn('[MissionBook] rerender failed:', e); }
+
+
+  lastFinalStats = f.equipped;
+
+  if (petUIInitialized) {
+    try { renderPetTab(); }
+    catch (e) { console.warn('[Pet] rerender failed:', e); }
+  }
 
   
   scheduleAutosave();
@@ -5785,6 +5937,8 @@ function buildSnapshot() {
   snap.badges = { ...badgeState };
   
   snap.mapMonster = { ...mapMonsterState };
+  
+  snap.pet = { slots: petState.slots.map((s) => s ? { mobid: s.mobid, customLv: s.customLv } : null) };
   return snap;
 }
 
@@ -5839,10 +5993,19 @@ async function loadSnapshot(data, sourceLabel) {
       mapId:           (data.mapMonster.mapId != null) ? Number(data.mapMonster.mapId) : null,
       selectedMobid:   (data.mapMonster.selectedMobid != null) ? Number(data.mapMonster.selectedMobid) : null,
       selectedRowKey:  (typeof data.mapMonster.selectedRowKey === 'string') ? data.mapMonster.selectedRowKey : null,
+      detailLv:        (data.mapMonster.detailLv != null) ? Number(data.mapMonster.detailLv) : null,
     };
   } else {
-    mapMonsterState = { mapId: null, selectedMobid: null, selectedRowKey: null };
+    mapMonsterState = { mapId: null, selectedMobid: null, selectedRowKey: null, detailLv: null };
   }
+
+
+  if (data.pet && Array.isArray(data.pet.slots)) {
+    petState.slots = [0, 1, 2].map((i) => normalizePetSlot(data.pet.slots[i]));
+  } else {
+    petState.slots = [null, null, null];
+  }
+  if (petUIInitialized) renderPetTab();
   if (mapMonsterInitialized && mapMonsterDataLoaded) {
     refreshMapList($('mapmon-map-search')?.value || '');
     if (mapMonsterState.mapId != null) {
@@ -6515,7 +6678,8 @@ function resetBadgeState() {
 
 let mapMonsterInitialized = false;
 let mapMonsterDataLoaded  = false;
-let mapMonsterState = { mapId: null, selectedMobid: null, selectedRowKey: null };
+
+let mapMonsterState = { mapId: null, selectedMobid: null, selectedRowKey: null, detailLv: null };
 
 let currentMapMobs = [];
 
@@ -6525,24 +6689,26 @@ async function initMapMonsterTab() {
     mapMonsterInitialized = true;
     bindMapMonsterControls();
   }
+  const status = $('mapmon-map-info');
+
   if (!mapMonsterDataLoaded) {
-    const status = $('mapmon-map-info');
     if (status) status.innerHTML = '<span class="mapmon-empty">マップデータ読込中…</span>';
     try {
       await loadMapMonsterIndex();
       mapMonsterDataLoaded = true;
-      refreshMapList('');
-      
-      if (mapMonsterState.mapId != null) {
-        const sel = $('mapmon-map-list');
-        if (sel) sel.value = String(mapMonsterState.mapId);
-        renderMapSelection(mapMonsterState.mapId);
-      } else {
-        if (status) status.innerHTML = '<span class="mapmon-empty">マップを選択してください</span>';
-      }
     } catch (err) {
       if (status) status.innerHTML = '<span class="mapmon-empty" style="color:#d77">読込失敗: ' + esc(err.message || String(err)) + '</span>';
+      return;
     }
+  }
+  
+  refreshMapList($('mapmon-map-search')?.value || '');
+  if (mapMonsterState.mapId != null) {
+    const sel = $('mapmon-map-list');
+    if (sel) sel.value = String(mapMonsterState.mapId);
+    renderMapSelection(mapMonsterState.mapId);
+  } else {
+    if (status) status.innerHTML = '<span class="mapmon-empty">マップを選択してください</span>';
   }
 }
 
@@ -6560,7 +6726,10 @@ function bindMapMonsterControls() {
       mapMonsterState.mapId          = mapId;
       mapMonsterState.selectedMobid  = null;
       mapMonsterState.selectedRowKey = null;
+      mapMonsterState.detailLv       = null;
       renderMapSelection(mapId);
+
+      recalcAll().catch((e) => console.warn('[MapMonster] recalc failed:', e));
       scheduleAutosave();
     });
   }
@@ -6573,6 +6742,7 @@ function bindMapMonsterControls() {
       if (!row || !row.monster) return;
       mapMonsterState.selectedMobid  = row.monster.id;
       mapMonsterState.selectedRowKey = mobRowKey(row);
+      mapMonsterState.detailLv       = null;
       renderMonsterDetailFromRow(row);
       scheduleAutosave();
     });
@@ -6677,7 +6847,10 @@ function renderMonsterDetailFromRow(row) {
   }
   const raw = row.monster;
   const meta = getMapMeta(mapMonsterState.mapId);
-  const subAdjusted = applyMapSubInfoToMonster(raw, meta?.subInfo);
+  const lvDefault = row.lvMin || row.lvMax || 1;
+  const lvCurrent = (mapMonsterState.detailLv != null) ? Number(mapMonsterState.detailLv) : lvDefault;
+  const leveled     = applyMonsterLevel(raw, lvCurrent, 0);
+  const subAdjusted = applyMapSubInfoToMonster(leveled, meta?.subInfo);
   const modifier    = getMapMonsterModifier(mapMonsterState.mapId);
   const final       = applyMapMonsterModifier(subAdjusted, modifier);
 
@@ -6695,47 +6868,348 @@ function renderMonsterDetailFromRow(row) {
     html += '    <div class="mapmon-mob-name-db">(' + esc(raw.name) + ')</div>';
   }
   html += '    <div class="mapmon-mob-spec">' + esc(specLabel) + ' / ' + esc(rankLabel) + '</div>';
-  html += '    <div class="mapmon-mob-spec">適正Lv: ' + esc(lvText) + ' / EXP: ' + raw.defaultExp + '</div>';
+  html += '    <div class="mapmon-mob-spec">適正Lv: ' + esc(lvText) + ' / EXP: ' + final.defaultExp + '</div>';
   html += '    <div class="mapmon-mob-spec">移動速度: ' + raw.movSpeed + ' / 攻撃速度: ' + raw.atcSpeed + ' / Blocking: ' + raw.blocking + '</div>';
+  html += '    <div class="mapmon-mob-spec">'
+       +  '      Lv: <input type="number" id="mapmon-detail-lv" min="1" max="999" value="' + lvCurrent + '" style="width:70px;">'
+       +  '      <span style="color:#777;font-size:11px;margin-left:6px;">(デフォルト ' + lvDefault + ')</span>'
+       +  '    </div>';
   html += '  </div>';
   html += '</div>';
 
-  html += buildMonsterStatTable(raw, final);
+  html += buildMonsterStatTable(raw, final, lvCurrent);
   detail.innerHTML = html;
+
+  
+  const lvInput = $('mapmon-detail-lv');
+  if (lvInput) {
+    lvInput.addEventListener('change', () => {
+      const v = Number(lvInput.value);
+      mapMonsterState.detailLv = (Number.isFinite(v) && v >= 1) ? v : null;
+      renderMonsterDetailFromRow(row);
+      scheduleAutosave();
+    });
+  }
 }
 
-function buildMonsterStatTable(raw, mod) {
-  
+function buildMonsterStatTable(_raw, mod, lvCurrent) {
+
   const rows = [
-    ['HP',                raw.defaultHp, mod.defaultHp],
-    ['ATK 最小',           raw.atcMin,    mod.atcMin],
-    ['ATK 最大',           raw.atcMax,    mod.atcMax],
-    ['防御力',             raw.def,       mod.def],
-    ['力 (STR)',          raw.str,       mod.str],
-    ['敏捷 (AGI)',         raw.agi,       mod.agi],
-    ['健康 (CON)',         raw.con,       mod.con],
-    ['知識 (INT)',         raw.intl,      mod.intl],
-    ['知恵 (WIS)',         raw.wis,       mod.wis],
-    ['カリスマ (CHS)',     raw.chs,       mod.chs],
-    ['運 (LUC)',           raw.luc,       mod.luc],
-    ['火 抵抗 %',          raw.fireRes,   mod.fireRes],
-    ['水 抵抗 %',          raw.waterRes,  mod.waterRes],
-    ['風 抵抗 %',          raw.windRes,   mod.windRes],
-    ['大地 抵抗 %',        raw.earthRes,  mod.earthRes],
-    ['光 抵抗 %',          raw.lightRes,  mod.lightRes],
-    ['闇 抵抗 %',          raw.darkRes,   mod.darkRes],
+    ['HP',                mod.defaultHp],
+    ['ATK 最小',           mod.atcMin],
+    ['ATK 最大',           mod.atcMax],
+    ['防御力',             mod.def],
+    ['力 (STR)',          mod.str],
+    ['敏捷 (AGI)',         mod.agi],
+    ['健康 (CON)',         mod.con],
+    ['知識 (INT)',         mod.intl],
+    ['知恵 (WIS)',         mod.wis],
+    ['カリスマ (CHS)',     mod.chs],
+    ['運 (LUC)',           mod.luc],
+    ['火 抵抗 %',          mod.fireRes],
+    ['水 抵抗 %',          mod.waterRes],
+    ['風 抵抗 %',          mod.windRes],
+    ['大地 抵抗 %',        mod.earthRes],
+    ['光 抵抗 %',          mod.lightRes],
+    ['闇 抵抗 %',          mod.darkRes],
   ];
+  const lvLabel = (lvCurrent != null) ? ('Lv' + lvCurrent + ' 適用後') : '適用後';
   let html = '<table class="mapmon-stat-table"><thead>'
-           + '<tr><th>項目</th><th>raw</th><th>適用後</th></tr>'
+           + '<tr><th>項目</th><th>' + esc(lvLabel) + '</th></tr>'
            + '</thead><tbody>';
-  for (const [label, a, b] of rows) {
-    const cls = (a === b) ? 'mapmon-val-equal' : 'mapmon-val-mod';
+  for (const [label, v] of rows) {
     html += '<tr><td class="mapmon-key">' + esc(label) + '</td>'
-          + '<td class="mapmon-val">' + a + '</td>'
-          + '<td class="' + cls + '">' + b + '</td></tr>';
+          + '<td class="mapmon-val">' + v + '</td></tr>';
   }
   html += '</tbody></table>';
   return html;
+}
+
+
+
+
+const PET_SLOT_COUNT = 3;
+
+let petState = { slots: [null, null, null] };
+let petUIInitialized = false;
+
+let lastFinalStats = null;
+
+function getCharacterLvForPet() {
+
+  const v = Number($('ch-lv')?.value);
+  return Number.isFinite(v) && v >= 1 ? v : 1;
+}
+
+
+function petDisplayName(mob) {
+  if (!mob || !mob.name) return '';
+  return mob.name.replace(/^\[T\]/, '');
+}
+
+function normalizePetSlot(raw) {
+  if (!raw || typeof raw !== 'object') return null;
+  const mobid = Number(raw.mobid);
+  if (!Number.isFinite(mobid) || mobid <= 0) return null;
+  const customLv = (raw.customLv != null && Number.isFinite(Number(raw.customLv)))
+    ? Math.max(1, Number(raw.customLv)) : null;
+  return { mobid, customLv };
+}
+
+async function initPetTab() {
+  if (!mapMonsterDataLoaded) {
+
+    const slotList = $('pet-slot-list');
+    if (slotList) slotList.innerHTML = '<div class="pet-slot-empty">データ読込中…</div>';
+    try {
+      await loadMapMonsterIndex();
+      mapMonsterDataLoaded = true;
+    } catch (err) {
+      if (slotList) slotList.innerHTML = '<div class="pet-slot-empty" style="color:#d77">読込失敗: '
+        + esc(err.message || String(err)) + '</div>';
+      return;
+    }
+  }
+  petUIInitialized = true;
+  renderPetTab();
+}
+
+
+function renderPetTab() {
+  if (!petUIInitialized) return;
+  const ch = readCharacter();
+  const capable = isPetCapableJob(ch.job);
+  const msg     = $('pet-tab-disabled-msg');
+  const slotList = $('pet-slot-list');
+  if (msg)      msg.hidden = capable;
+  if (!slotList) return;
+  if (!capable) {
+    slotList.innerHTML = '';
+    return;
+  }
+  const charLv = getCharacterLvForPet();
+  const tameables = getTameableMonsters();
+  
+  const chStats = lastFinalStats || ch.stats?.base || {};
+  let html = '';
+  for (let i = 0; i < PET_SLOT_COUNT; i++) {
+    html += renderPetSlotHtml(i, petState.slots[i], tameables, charLv, chStats, ch.job);
+  }
+
+  html += buildPetOpsSummaryHtml(chStats);
+  slotList.innerHTML = html;
+  bindPetSlotEvents(tameables);
+}
+
+
+function buildPetOpsSummaryHtml(chStats) {
+  const read = (k) => Number(chStats?.[k]) || 0;
+  
+  const opRows = [
+    ['全ステ',             read('petAllStat'),              '',  true],
+    ['最大HP',             read('petMaxHp'),                '%', true],
+    
+    ['物理攻撃力',         read('petPhysAtk') + read('petPhysDamage'), '%', true],
+    ['物理致命打 確率',    read('petPhysCritRate'),         '%', false],
+    ['物理致命打 ダメ',    read('petPhysCritDamage'),       '%', false],
+    ['物理強打 確率',      read('petPhysStrongRate'),       '%', false],
+    ['物理強打 ダメ',      read('petPhysStrongDamage'),     '%', false],
+    ['ダブルクリダメ',     read('petDoubleCritDamage'),     '%', false],
+    
+    ['魔法攻撃力',         read('petMagicAtk') + read('petMagicDamage'), '%', false],
+    ['魔法致命打 確率',    read('petMagicCritRate'),        '%', false],
+    ['魔法致命打 ダメ',    read('petMagicCritDamage'),      '%', false],
+    ['魔法強打 確率',      read('petMagicStrongRate'),      '%', false],
+    ['魔法強打 ダメ',      read('petMagicStrongDamage'),    '%', false],
+    
+    ['全属性攻撃力',       read('petAttrAtk') + read('petAttrAllBonus'), '%', false],
+    ['最終ダメージ',       read('petFinalDamage'),          '%', false],
+    ['属性吸収無視',       read('petAbsorbIgnore') > 0 ? 1 : 0, 'flag', false],
+    
+    ['攻撃速度',           read('petAtkSpeed'),             '%', false],
+    ['移動速度',           read('petMoveSpeed'),            '',  false],
+    ['状態異常抵抗',       read('petStatusResist'),         '%', false],
+    ['敵致命打抵抗減少',   read('petEnemyCritResistReduce'),'%', false],
+  ];
+
+  let html = '<div class="pet-ops-panel" aria-label="（ペット・召喚獣）装備補正等まとめ">';
+  html += '  <div class="pet-ops-panel-title">（ペット・召喚獣）装備補正等まとめ</div>';
+  html += '  <div class="pet-ops-panel-note">✓ = ペットステに反映済 / 他 = 表示のみ</div>';
+  html += '  <div class="sim-detail-grid">';
+  for (const [label, val, unit, applied] of opRows) {
+    let valTxt;
+    if (unit === 'flag') {
+      valTxt = val ? 'ON' : 'OFF';
+    } else {
+      valTxt = (val >= 0 ? '+' : '') + val + unit;
+    }
+    const mark = applied ? '<span class="pet-ops-mark">✓</span>' : '';
+    const isActive = (unit === 'flag') ? !!val : (val !== 0);
+    const valCls = isActive ? 'sim-detail-value' : 'sim-detail-value pet-ops-val-zero';
+    html += '<div class="sim-detail">'
+         +  '<span class="sim-detail-name">' + mark + esc(label) + '</span>'
+         +  '<span class="' + valCls + '">' + esc(valTxt) + '</span>'
+         +  '</div>';
+  }
+  html += '  </div>';
+  html += '</div>';
+  return html;
+}
+
+function renderPetSlotHtml(slotIdx, slot, tameables, charLv, chStats, jobId) {
+  const num = slotIdx + 1;
+  const mob = (slot && slot.mobid) ? getMonsterById(slot.mobid) : null;
+  const lvDefault = charLv;
+  const lvCurrent = (slot && slot.customLv != null) ? slot.customLv : lvDefault;
+
+
+  let opts = '<option value="">(未選択)</option>';
+  for (const m of tameables) {
+    const sel = (slot && slot.mobid === m.id) ? ' selected' : '';
+    opts += '<option value="' + m.id + '"' + sel + '>'
+          + esc(petDisplayName(m)) + '</option>';
+  }
+
+  
+  let imgHtml;
+  if (mob) {
+    const url = getMonsterImageUrl(mob);
+    imgHtml = '<img src="' + esc(url) + '" onerror="this.style.display=\'none\'">';
+  } else {
+    imgHtml = '<div class="pet-slot-img-empty">(未選択)</div>';
+  }
+
+  
+  let statsHtml = '';
+  let nameHtml = '';
+  if (mob) {
+    const leveled = computePetStats(mob, lvCurrent, chStats, jobId);
+    nameHtml = '<div class="pet-slot-name">' + esc(petDisplayName(mob)) + '</div>';
+    statsHtml = buildPetStatTable(leveled);
+  }
+
+  
+  let detailHtml = '';
+  if (mob) {
+    const lvResetBtn = (lvCurrent !== lvDefault)
+      ? '<button type="button" class="pet-slot-lv-reset" data-slot="' + slotIdx + '">本体Lvに戻す</button>'
+      : '';
+    detailHtml = ''
+      + '<div class="pet-slot-row">'
+      +   '<label>Lv:</label>'
+      +   '<input type="number" class="pet-slot-lv-input" data-slot="' + slotIdx
+      +     '" min="1" max="9999" value="' + lvCurrent + '">'
+      +   '<span class="pet-slot-lv-hint">(本体Lv ' + lvDefault + ')</span>'
+      +   lvResetBtn
+      + '</div>'
+      + statsHtml;
+  }
+  const clearBtn = mob
+    ? '<button type="button" class="pet-slot-clear" data-slot="' + slotIdx + '">しまう</button>'
+    : '';
+
+  return ''
+    + '<div class="pet-slot" data-slot="' + slotIdx + '">'
+    +   '<div class="pet-slot-num">' + num + '</div>'
+    +   '<div class="pet-slot-left">'
+    +     '<div class="pet-slot-img">' + imgHtml + '</div>'
+    +   '</div>'
+    +   '<div class="pet-slot-right">'
+    +     '<div class="pet-slot-row">'
+    +       '<label>ペット:</label>'
+    +       '<select class="pet-slot-picker" data-slot="' + slotIdx + '">' + opts + '</select>'
+    +       clearBtn
+    +     '</div>'
+    +     nameHtml
+    +     detailHtml
+    +   '</div>'
+    + '</div>';
+}
+
+function buildPetStatTable(mod) {
+
+  
+  const stats7 = mod.str + ' / ' + mod.agi + ' / ' + mod.con + ' / '
+               + mod.intl + ' / ' + mod.wis + ' / ' + mod.chs + ' / ' + mod.luc;
+  const rows = [
+    ['HP',                mod.defaultHp],
+    ['攻撃力',             mod.atcMin + '〜' + mod.atcMax],
+    ['防御力',             mod.def],
+    ['力/敏捷/健康/知識/知恵/カリスマ/運', stats7],
+    ['火/水/風/大地/光/闇 抵抗',
+       mod.fireRes + '/' + mod.waterRes + '/' + mod.windRes + '/'
+       + mod.earthRes + '/' + mod.lightRes + '/' + mod.darkRes],
+  ];
+
+  if (mod.petBonusApplicable) {
+    const pct = mod.petBonusPct;
+    const pctTxt = (pct >= 0 ? '+' : '') + pct.toFixed(1) + ' %';
+    rows.push(['ペット全ステ補正',  pctTxt]);
+    rows.push(['ペットスキルLv',    '+' + mod.petSkillLvBonus]);
+    rows.push(['秒間HP回復量',      mod.petChCon]);
+    rows.push(['特技発動確率',      mod.petChWiz]);
+  }
+
+  let html = '<table class="pet-slot-stat-table"><tbody>';
+  for (const [label, v] of rows) {
+    html += '<tr><td class="pet-key">' + esc(label) + '</td>'
+          + '<td class="pet-val">' + esc(String(v)) + '</td></tr>';
+  }
+  html += '</tbody></table>';
+  return html;
+}
+
+
+function bindPetSlotEvents(_tameables) {
+  
+  for (const sel of document.querySelectorAll('.pet-slot-picker')) {
+    sel.addEventListener('change', () => {
+      const slotIdx = Number(sel.getAttribute('data-slot'));
+      const v = Number(sel.value);
+      if (!Number.isFinite(v) || v <= 0) {
+        petState.slots[slotIdx] = null;
+      } else {
+        const prev = petState.slots[slotIdx];
+        petState.slots[slotIdx] = { mobid: v, customLv: prev?.customLv ?? null };
+      }
+      renderPetTab();
+      scheduleAutosave();
+    });
+  }
+  
+  for (const btn of document.querySelectorAll('.pet-slot-clear')) {
+    btn.addEventListener('click', () => {
+      const slotIdx = Number(btn.getAttribute('data-slot'));
+      petState.slots[slotIdx] = null;
+      renderPetTab();
+      scheduleAutosave();
+    });
+  }
+  
+  for (const inp of document.querySelectorAll('.pet-slot-lv-input')) {
+    inp.addEventListener('change', () => {
+      const slotIdx = Number(inp.getAttribute('data-slot'));
+      const slot = petState.slots[slotIdx];
+      if (!slot) return;
+      const v = Number(inp.value);
+      const charLv = getCharacterLvForPet();
+      
+      slot.customLv = (Number.isFinite(v) && v >= 1 && v !== charLv) ? v : null;
+      renderPetTab();
+      scheduleAutosave();
+    });
+  }
+  
+  for (const btn of document.querySelectorAll('.pet-slot-lv-reset')) {
+    btn.addEventListener('click', () => {
+      const slotIdx = Number(btn.getAttribute('data-slot'));
+      const slot = petState.slots[slotIdx];
+      if (!slot) return;
+      slot.customLv = null;
+      renderPetTab();
+      scheduleAutosave();
+    });
+  }
 }
 
 
@@ -6750,6 +7224,7 @@ function bindTabBar() {
       
       if (tab === 'skill')    refreshSkillFrame();
       if (tab === 'creature') initCreatureTab();
+      if (tab === 'pet')      initPetTab();
       if (tab === 'mapmon')   initMapMonsterTab();
     });
   });
@@ -8065,7 +8540,10 @@ function bindSessionEvents() {
     
     resetBadgeState();
     
-    mapMonsterState = { mapId: null, selectedMobid: null, selectedRowKey: null };
+    mapMonsterState = { mapId: null, selectedMobid: null, selectedRowKey: null, detailLv: null };
+    
+    petState.slots = [null, null, null];
+    if (petUIInitialized) renderPetTab();
     if (mapMonsterInitialized) {
       const search = $('mapmon-map-search');
       if (search) search.value = '';
@@ -10226,6 +10704,11 @@ async function main() {
     if (hasAny) await recalcAll();
     if (creatureUIInitialized) renderCreatureTab();
   }).catch(() => {  });
+
+  loadMapMonsterIndex().then(async () => {
+    mapMonsterDataLoaded = true;
+    if (mapMonsterState.mapId != null) await recalcAll();
+  }).catch((e) => console.warn('[MapMonster] preload failed:', e));
 }
 
 main().catch((err) => {

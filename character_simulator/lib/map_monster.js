@@ -116,6 +116,17 @@ export function getMonsterById(mobid) {
   return _mobById.get(Number(mobid)) || null;
 }
 
+export function getTameableMonsters() {
+  const list = [];
+  for (const mob of _mobById.values()) {
+    if (!mob || !mob.name) continue;
+    if (!mob.name.startsWith('[T]')) continue;
+    list.push(mob);
+  }
+  list.sort((a, b) => a.id - b.id);
+  return list;
+}
+
 export function searchMaps(query) {
   const q = normalizeQuery(query);
   const list = getMapList();
@@ -231,10 +242,17 @@ function normalizeMonster(row) {
     resistance11: Number(row['Resistance11']) || 0,
     resistance12: Number(row['Resistance12']) || 0,
     resistance13: Number(row['Resistance13']) || 0,
+
+    resistance14: Number(row['Resistance14']) || 0,
     
     defaultExp:  Number(row['DefaultExp']) || 0,
-    levelUpBonus: Number(row['LevelUpBonus']) || 0,
-    conditionBonus: Number(row['ConditionBonus']) || 0,
+
+    
+
+    levelUpBonus:    Number(row['LevelUpBonus'])    || 0,
+    conditionBonus:  Number(row['ConditionBonus'])  || 0,
+    unknown_109:     Number(row['unknown_109'])     || 0,
+    unknown_112:     Number(row['unknown_112'])     || 0,
   };
 }
 
