@@ -223,9 +223,7 @@ export function formatBfOption(def, grade = 'black', tier = 'top') {
   const unit = def.unit || '';
   const valTxt = (r.min === r.max) ? `+${r.max}${unit}` : `+${r.min}~${r.max}${unit}`;
   const mark   = def.whiteOnly ? ' 〔白限定〕' : '';
-  const probTxt = (grade === 'white' && def.whiteProb != null)
-    ? ` 出現${def.whiteProb}%` : '';
-  return `${def.name} ${valTxt}${mark}${probTxt}`;
+  return `${def.name} ${valTxt}${mark}`;
 }
 
 export function buildBfopSlot(state) {

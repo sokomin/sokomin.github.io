@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://sokomin.github.io/material.indigo-pink.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        .mps-section {
+            text-align: left;
+            max-width: 980px;
+            margin: 0 auto 20px;
+            padding: 12px 16px;
+            background: #fafafa;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .mps-section h3 {
+            margin: 0 0 8px 0;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            border-bottom: 2px solid #9d896c;
+            padding-bottom: 4px;
+        }
+        .mps-h4 { font-size: 14px; margin: 10px 0 4px; color: #444; }
+        .mps-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        .mps-col {
+            flex: 1 1 280px;
+            min-width: 280px;
+        }
+        .mps-section label {
+            font-size: 12px;
+            color: #555;
+            margin-right: 6px;
+        }
+        .mps-section select, .mps-section input[type="number"] {
+            font-size: 13px;
+            padding: 2px 4px;
+        }
+        .mps-button {
+            display: inline-block;
+            padding: 8px 18px;
+            background: #9d896c;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 0 2px 4px 2px;
+        }
+        .mps-button:hover { background: #b6a07f; }
+        .mps-button:disabled { background: #ccc; cursor: not-allowed; }
+        .mps-button.secondary { background: #777; }
+        .mps-button.secondary:hover { background: #999; }
+        .mps-button.danger { background: #aa5050; }
+        .mps-button.danger:hover { background: #c46c6c; }
+        .mps-petcard {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            background: #efe9d9;
+            border: 1px solid #9d896c;
+            border-radius: 4px;
+        }
+        .mps-icon {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            background: #fff;
+            border: 1px solid #bbb;
+            border-radius: 3px;
+            text-align: center;
+            line-height: 32px;
+            font-size: 11px;
+            color: #666;
+        }
+        .mps-pettag { font-size: 12px; color: #555; }
+        .mps-sp-bar {
+            font-size: 13px;
+            padding: 6px 10px;
+            background: #fff7d6;
+            border-left: 4px solid #d8a13c;
+            margin: 8px 0;
+        }
+        table.mps-skill-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-top: 6px;
+        }
+        table.mps-skill-table th,
+        table.mps-skill-table td {
+            border: 1px solid #aaa;
+            padding: 4px 8px;
+        }
+        table.mps-skill-table th {
+            background: #9d896c;
+            color: #fff;
+            font-weight: bold;
+            font-size: 12px;
+            text-align: center;
+        }
+        .mps-prereq { font-size: 11px; color: #666; }
+        .mps-lvbtn {
+            font-size: 12px;
+            padding: 2px 8px;
+            margin-right: 2px;
+            border: 1px solid #aaa;
+            background: #fff;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        .mps-lvbtn:disabled {
+            color: #bbb;
+            background: #f5f5f5;
+            cursor: not-allowed;
+        }
+        .mps-from { font-size: 11px; color: #888; }
+        .mps-grade-HR { color: #1f6bd2; font-weight: bold; }
+        .mps-grade-R  { color: #2e9648; font-weight: bold; }
+        .mps-grade-N  { color: #888; }
+        .mps-tag-random {
+            display: inline-block;
+            padding: 1px 8px;
+            background: #aa3380;
+            color: #fff;
+            border-radius: 10px;
+            font-size: 11px;
+        }
+        .mps-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            background: #aa3380;
+            color: #fff;
+            border-radius: 10px;
+            font-size: 12px;
+            margin-left: 6px;
+        }
+        .mps-placeholder { color: #888; font-style: italic; font-size: 12px; }
+        .mps-err { color: #aa3333; font-weight: bold; }
+        .mps-log {
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 12px;
+            background: #1e1e1e;
+            color: #cfd2cf;
+            padding: 8px 10px;
+            border-radius: 3px;
+            max-height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        .mps-result-list {
+            margin: 4px 0 0 16px;
+            font-size: 13px;
+        }
+        .mps-note {
+            font-size: 12px;
+            color: #666;
+            margin-top: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <title>ミニペット シミュレーター　赤石の民衆</title>
+    <meta name="description" content="ミニペットのスキル振り / 2次進化合成 (変異促進剤シルバー〜ULT 対応) / 突然変異スキル変換 を試せるシミュレーター" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE,レッドストーン,赤石の民衆,ミニペット,シミュレーター,合成,突然変異,変異促進剤,スキル変換" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="../index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text" onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="../index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="../calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="../history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="../link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="../index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="../calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="../history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="../link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h2>メニュー</h2>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+        <div class="android-large-table mdl-layout__content">
+            <a href="../index.html">トップ</a> &gt;&gt;
+            <a href="../calculator.html">計算機</a> &gt;&gt;
+            ミニペット シミュレーター<br>
+
+            <div class="main-background mdl-typography--text-center">
+                <br>
+                <h1>ミニペット シミュレーター</h1>
+                <p style="max-width: 880px; margin: 0 auto 16px; text-align: left; font-size: 13px;">
+                    ミニペットのスキル振り / 2次進化合成 (変異促進剤 シルバー〜ULT 対応) / 突然変異 スキル変換 を試せるシミュレーターです。<br>
+                    関連: <a href="../skill/minipet2024.html">ミニペットスキル一覧</a> ／ <a href="../information/minipet.html">ミニペットシステム</a>
+                </p>
+
+                <div class="mps-section">
+                    <h3>1. スキル振り</h3>
+                    <div class="mps-row">
+                        <div class="mps-col" style="flex:0 0 auto;">
+                            <label>属性</label>
+                            <select id="sel-element"></select>
+                            <label style="margin-left:8px;">形態</label>
+                            <select id="sel-form"></select>
+                            <label style="margin-left:8px;">or 突然変異</label>
+                            <select id="sel-mutant">
+                                <option value="">（通常から選ぶ）</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="pet-info" style="margin:8px 0;"></div>
+                    <div class="mps-sp-bar">
+                        レベル: <input id="pet-level" type="number" min="1" value="100" style="width:60px;" />
+                        　使用 SP: <span id="sp-used">0</span> /
+                        最大 SP: <span id="sp-max">99</span>
+                        <button id="btn-skill-reset" class="mps-button secondary" style="margin-left:12px;">スキル振りリセット</button>
+                    </div>
+                    <div id="skill-list"></div>
+                    <div class="mps-note">
+                        スキル Lv は SLv1=1pt, SLv2=3pt, SLv3=6pt, SLv4=10pt, SLv5=15pt (累積) で消費します。<br>
+                        前提スキル未達のスキルは半透明 + 振り不可で表示されます。
+                    </div>
+                </div>
+
+                <div class="mps-section">
+                    <h3>2. 合成体験 (2次進化 + 突然変異)</h3>
+                    <div class="mps-row">
+                        <div class="mps-col">
+                            <div class="mps-h4">ベース (左)</div>
+                            <select id="sel-base-element"></select>
+                            <select id="sel-base-form"></select>
+                            <div id="base-info" class="mps-petcard" style="margin-top:6px;"></div>
+                        </div>
+                        <div class="mps-col">
+                            <div class="mps-h4">生贄 (右)</div>
+                            <select id="sel-sac-element"></select>
+                            <select id="sel-sac-form"></select>
+                            <div id="sac-info" class="mps-petcard" style="margin-top:6px;"></div>
+                        </div>
+                        <div class="mps-col">
+                            <div class="mps-h4">変異促進剤</div>
+                            <select id="sel-promoter" style="width:280px;"></select>
+                            <div id="promoter-info" class="mps-placeholder" style="margin-top:6px;"></div>
+                        </div>
+                    </div>
+                    <div style="margin-top:8px;">
+                        <button id="btn-synth" class="mps-button">合成する (×1)</button>
+                        <button id="btn-synth100" class="mps-button secondary">100 回試行 (統計)</button>
+                        <span id="synth-prob" style="margin-left:12px; font-size:12px; color:#555;"></span>
+                    </div>
+                    <div id="synth-result" style="margin-top:8px;"></div>
+                    <div id="synth-stats" style="margin-top:8px;"></div>
+                    <div class="mps-note">
+                        同属性同士は合成できません。 光×闇 のときのみベース突然変異確率が 0.2%（その他は 0.1%）になります。<br>
+                        促進剤の効果は <b>加算</b> です (通常 +10 / シルバー +20 / ゴールド +30 / プラチナ +50 / ULT +70)。
+                    </div>
+                </div>
+
+                <div class="mps-section">
+                    <h3>3. 突然変異 スキル変換</h3>
+                    <div class="mps-row">
+                        <div class="mps-col" style="flex:0 0 auto;">
+                            <label>変換対象ペット</label>
+                            <select id="sel-convert-target" style="min-width:280px;">
+                                <option value="">（未選択）</option>
+                            </select>
+                            <span id="convert-info" style="margin-left:12px; font-size:12px; color:#555;"></span>
+                        </div>
+                    </div>
+                    <div style="margin-top:8px;">
+                        <button id="btn-convert" class="mps-button danger" disabled>変換 (ランダム枠を 2 つ同時抽選)</button>
+                        <button id="btn-convert-reset" class="mps-button secondary">ランダム枠をリセット</button>
+                    </div>
+                    <div id="convert-skills" style="margin-top:8px;"></div>
+                    <div id="convert-result" style="margin-top:8px;"></div>
+                    <div class="mps-note">
+                        本来は専用アイテムによる変換ですが、本シミュレーターでは変換ボタンで即抽選します。<br>
+                        ベースで既に固有所持しているスキルは抽選から除外され、確率を再正規化して抽選します。
+                    </div>
+                </div>
+
+                <div class="mps-section">
+                    <h3>ログ</h3>
+                    <div id="log" class="mps-log"></div>
+                    <button id="btn-log-clear" class="mps-button secondary" style="margin-top:6px;">クリア</button>
+                </div>
+
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">
+                        当サイトで利用している画像及びデータは、L&amp;K Co., Ltd.に帰属します。<br>
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    © L&amp;K Co., Ltd. All Rights Reserved.<br>
+                </footer>
+            </div>
+
+            <script src="https://sokomin.github.io/material.min.js"></script>
+        </div>
+    </div>
+
+    <script src="./js/minipet/minipet_data.js"></script>
+    <script src="./js/minipet/minipet_synthesis.js"></script>
+    <script src="./js/minipet/minipet_convert.js"></script>
+    <script src="./js/minipet/minipet_ui.js"></script>
+    <script>
+        MinipetData.loadAll().then(() => {
+            MinipetUI.init();
+        }).catch(err => {
+            document.getElementById('log').textContent = '[ERROR] データロード失敗: ' + err.message;
+        });
+    </script>
+
+</body>
+
+</html>

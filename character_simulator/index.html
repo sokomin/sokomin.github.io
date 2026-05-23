@@ -590,6 +590,11 @@
       pointer-events: none;
     }
     .inv-cell.is-equipped:hover { filter: brightness(1.3); }
+    
+    .inv-cell.is-edit-target {
+      outline: 2px solid #ffe066;
+      box-shadow: 0 0 6px rgba(255,224,102,0.7);
+    }
     .inv-cell .inv-tooltip {
       position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
       z-index: 50; display: none;
@@ -1800,6 +1805,7 @@
           
           <nav class="sim-tab-bar" role="tablist">
             <button type="button" class="sim-tab-btn is-active" data-tab-btn="item"  role="tab">アイテム</button>
+            <button type="button" class="sim-tab-btn"           data-tab-btn="enhance"  role="tab">アイテム強化</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="stone"    role="tab">フェーズストーン</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="skill"    role="tab">スキル</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="pet"      role="tab">ペット</button>
@@ -2358,6 +2364,422 @@
                   <h4>インベントリ</h4>
                   <div id="inv-grid" class="inventory-grid"></div>
                   
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          
+          
+          <div class="tab-pane" data-tab="enhance">
+            <div class="item-tab-layout">
+
+              
+              <div>
+                <div class="item-panel">
+                  <h4>編集対象</h4>
+                  <table class="form-table"><tbody>
+                    <tr><td colspan="7" id="edit-target-info" class="tdtext"
+                            style="padding:6px; color:#cbe79b; min-height:18px">
+                      (右のインベントリからアイテムをクリックで選択)
+                    </td></tr>
+                    <tr id="edit-target-actions" style="display:none">
+                      <td colspan="3">
+                        <input type="button" id="edit-btn-reload" value="現在値を再読込" style="width:100%">
+                      </td>
+                      <td style="width:4px"></td>
+                      <td colspan="3" style="text-align:right">
+                        <input type="button" id="edit-btn-apply" value="適用 (再計算)"
+                          style="width:100%; background:linear-gradient(180deg,#5a8f3a 0%,#3a6f2a 100%)">
+                      </td>
+                    </tr>
+                  </tbody></table>
+                </div>
+
+                
+                <div id="edit-sections" style="display:none">
+
+                  
+                  <div class="item-panel">
+                    <h4>OP変更 / 補正値 / 削除</h4>
+                    <table class="form-table"><tbody>
+
+                      
+                      <tr>
+                        <td colspan="2"><input type="button" class="edit-op-clear" data-eop="0" value="OP1削除" style="width:100%"></td>
+                        <td style="width:4px"></td>
+                        <td colspan="4">
+                          <input type="text" class="textblue edit-op-search-input" data-eop="0"
+                            placeholder="OP1: 検索ワード (例: 力 / 致命)">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="7">
+                          <select size="6" class="edit-op-search-results" data-eop="0"
+                            style="width:100%; display:none; font-size:11.5px"></select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="3" class="tdtext">補正値</td>
+                        <td style="width:4px"></td>
+                        <td colspan="3">
+                          <select class="edit-op-tier" data-eop="0" style="width:100%">
+                            <option value="2">高 (最大)</option>
+                            <option value="1">中 (中央)</option>
+                            <option value="0">低 (最小)</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="7">
+                          <span class="tdtext edit-op-selected-label" data-eop="0"
+                            style="color:#FFE0B0; font-size:11.5px">OP1: (未選択)</span>
+                        </td>
+                      </tr>
+                      <tr class="row-sep"><td colspan="7"></td></tr>
+
+                      
+                      <tr>
+                        <td colspan="2"><input type="button" class="edit-op-clear" data-eop="1" value="OP2削除" style="width:100%"></td>
+                        <td style="width:4px"></td>
+                        <td colspan="4">
+                          <input type="text" class="textblue edit-op-search-input" data-eop="1"
+                            placeholder="OP2: 検索ワード">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="7">
+                          <select size="6" class="edit-op-search-results" data-eop="1"
+                            style="width:100%; display:none; font-size:11.5px"></select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="3" class="tdtext">補正値</td>
+                        <td style="width:4px"></td>
+                        <td colspan="3">
+                          <select class="edit-op-tier" data-eop="1" style="width:100%">
+                            <option value="2">高 (最大)</option>
+                            <option value="1">中 (中央)</option>
+                            <option value="0">低 (最小)</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="7">
+                          <span class="tdtext edit-op-selected-label" data-eop="1"
+                            style="color:#FFE0B0; font-size:11.5px">OP2: (未選択)</span>
+                        </td>
+                      </tr>
+                      <tr class="row-sep"><td colspan="7"></td></tr>
+
+                      
+                      <tr>
+                        <td colspan="2"><input type="button" class="edit-op-clear" data-eop="2" value="OP3削除" style="width:100%"></td>
+                        <td style="width:4px"></td>
+                        <td colspan="4">
+                          <input type="text" class="textblue edit-op-search-input" data-eop="2"
+                            placeholder="OP3: 検索ワード">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="7">
+                          <select size="6" class="edit-op-search-results" data-eop="2"
+                            style="width:100%; display:none; font-size:11.5px"></select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="3" class="tdtext">補正値</td>
+                        <td style="width:4px"></td>
+                        <td colspan="3">
+                          <select class="edit-op-tier" data-eop="2" style="width:100%">
+                            <option value="2">高 (最大)</option>
+                            <option value="1">中 (中央)</option>
+                            <option value="0">低 (最小)</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="7">
+                          <span class="tdtext edit-op-selected-label" data-eop="2"
+                            style="color:#FFE0B0; font-size:11.5px">OP3: (未選択)</span>
+                        </td>
+                      </tr>
+
+                    </tbody></table>
+                  </div>
+
+                  
+                  <div class="item-panel" id="edit-ult-section" style="display:none">
+                    <h4>ウポスOP変更 (ULT 深緑シリーズ)</h4>
+                    <table class="form-table"><tbody>
+                      <tr>
+                        <td colspan="2" class="tdtext">Lv</td>
+                        <td style="width:4px"></td>
+                        <td colspan="4">
+                          <select id="edit-ult-lv" class="select" style="width:100%"></select>
+                        </td>
+                      </tr>
+                      <tr class="row-sep"><td colspan="7"></td></tr>
+                      <tr>
+                        <td colspan="2" class="tdtext">ベースOP1</td>
+                        <td style="width:4px"></td>
+                        <td colspan="4"><select id="edit-ult-base-0" class="select" style="width:100%"></select></td>
+                      </tr>
+                      <tr>
+                        <td colspan="2" class="tdtext">ベースOP2</td>
+                        <td style="width:4px"></td>
+                        <td colspan="4"><select id="edit-ult-base-1" class="select" style="width:100%"></select></td>
+                      </tr>
+                      <tr>
+                        <td colspan="2" class="tdtext">ベースOP3</td>
+                        <td style="width:4px"></td>
+                        <td colspan="4"><select id="edit-ult-base-2" class="select" style="width:100%"></select></td>
+                      </tr>
+                    </tbody></table>
+                  </div>
+
+                  
+                  <div class="item-panel" id="edit-abr-section" style="display:none">
+                    <h4>エリアボスリング ベースOP変更</h4>
+                    <table class="form-table"><tbody>
+                      <tr id="edit-abr-row-0">
+                        <td colspan="2" class="tdtext">OP1</td>
+                        <td style="width:4px"></td>
+                        <td colspan="2"><select id="edit-abr-base-0" class="select" style="width:100%"></select></td>
+                        <td><select id="edit-abr-tier-0" class="select" style="width:100%"></select></td>
+                        <td></td>
+                      </tr>
+                      <tr id="edit-abr-row-1">
+                        <td colspan="2" class="tdtext">OP2</td>
+                        <td style="width:4px"></td>
+                        <td colspan="2"><select id="edit-abr-base-1" class="select" style="width:100%"></select></td>
+                        <td><select id="edit-abr-tier-1" class="select" style="width:100%"></select></td>
+                        <td></td>
+                      </tr>
+                      <tr id="edit-abr-row-2">
+                        <td colspan="2" class="tdtext">OP3</td>
+                        <td style="width:4px"></td>
+                        <td colspan="2"><select id="edit-abr-base-2" class="select" style="width:100%"></select></td>
+                        <td><select id="edit-abr-tier-2" class="select" style="width:100%"></select></td>
+                        <td></td>
+                      </tr>
+                    </tbody></table>
+                  </div>
+
+                  
+                  <div class="item-panel" id="edit-arcana-section" style="display:none">
+                    <h4>アルカナOP変更 (補助武器)</h4>
+                    <table class="form-table"><tbody>
+                      <tr>
+                        <td colspan="2" class="tdtext">テーブル</td>
+                        <td style="width:4px"></td>
+                        <td colspan="4">
+                          <select id="edit-arcana-table" class="select" style="width:100%">
+                            <option value="normal">通常 (Normal)</option>
+                            <option value="pet">ペット/召喚獣 (Pet)</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2" class="tdtext">キー</td>
+                        <td style="width:4px"></td>
+                        <td colspan="4"><select id="edit-arcana-key" class="select" style="width:100%"></select></td>
+                      </tr>
+                      <tr>
+                        <td colspan="2" class="tdtext">段階</td>
+                        <td style="width:4px"></td>
+                        <td colspan="4">
+                          <select id="edit-arcana-tier" class="select" style="width:100%">
+                            <option value="0">上位</option>
+                            <option value="1">下位</option>
+                          </select>
+                        </td>
+                      </tr>
+                    </tbody></table>
+                  </div>
+
+                  
+                  <div class="item-panel" id="edit-scroll-section" style="display:none">
+                    <h4>図案書変更</h4>
+                    <table class="form-table"><tbody>
+                      <tr>
+                        <td colspan="2" class="tdtext">種別</td>
+                        <td style="width:4px"></td>
+                        <td colspan="4">
+                          <select id="edit-scroll-type" class="select" style="width:100%">
+                            <option value="">(なし)</option>
+                            <option value="normal">通常</option>
+                            <option value="rare">レア</option>
+                            <option value="special">スペシャル</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2" class="tdtext">図案</td>
+                        <td style="width:4px"></td>
+                        <td colspan="4"><select id="edit-scroll-id" class="select" style="width:100%"></select></td>
+                      </tr>
+                      <tr>
+                        <td colspan="2" class="tdtext">段階</td>
+                        <td style="width:4px"></td>
+                        <td colspan="4">
+                          <select id="edit-scroll-stage" class="select" style="width:100%">
+                            <option value="1">+1</option>
+                            <option value="2">+2</option>
+                            <option value="3">+3</option>
+                            <option value="4">+4</option>
+                            <option value="5">+5</option>
+                          </select>
+                        </td>
+                      </tr>
+                    </tbody></table>
+                  </div>
+
+                  
+                  <div class="item-panel" id="edit-nx-section" style="display:none">
+                    <h4>封印解放 / 解放OP変換</h4>
+                    <table class="form-table"><tbody>
+                      <tr>
+                        <td colspan="2" class="tdtext">解放数</td>
+                        <td style="width:4px"></td>
+                        <td colspan="4">
+                          <select id="edit-nx-count" class="select" style="width:100%">
+                            <option value="0">0 (全封印)</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4 (全開放)</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2" class="tdtext">変換器</td>
+                        <td style="width:4px"></td>
+                        <td colspan="4">
+                          <select id="edit-nx-converter" class="select" style="width:100%">
+                            <option value="">(変換なし)</option>
+                            <option value="replica">レプリカ解放OP変換器</option>
+                            <option value="normal">解放OP変換器(通常)</option>
+                            <option value="improved">解放オプション変換器・改</option>
+                            <option value="burning">灼熱解放OP変換器</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr class="row-sep"><td colspan="7"></td></tr>
+                      <tr class="edit-nx-slot-row" data-enx="0">
+                        <td colspan="2" class="tdtext">解放OP1</td>
+                        <td style="width:4px"></td>
+                        <td colspan="4"><select class="select edit-nx-op-select" data-enx="0" style="width:100%; font-size:11.5px"></select></td>
+                      </tr>
+                      <tr class="edit-nx-slot-row" data-enx="1">
+                        <td colspan="2" class="tdtext">解放OP2</td>
+                        <td style="width:4px"></td>
+                        <td colspan="4"><select class="select edit-nx-op-select" data-enx="1" style="width:100%; font-size:11.5px"></select></td>
+                      </tr>
+                      <tr class="edit-nx-slot-row" data-enx="2">
+                        <td colspan="2" class="tdtext">解放OP3</td>
+                        <td style="width:4px"></td>
+                        <td colspan="4"><select class="select edit-nx-op-select" data-enx="2" style="width:100%; font-size:11.5px"></select></td>
+                      </tr>
+                      <tr class="edit-nx-slot-row" data-enx="3">
+                        <td colspan="2" class="tdtext">解放OP4</td>
+                        <td style="width:4px"></td>
+                        <td colspan="4"><select class="select edit-nx-op-select" data-enx="3" style="width:100%; font-size:11.5px"></select></td>
+                      </tr>
+                    </tbody></table>
+                  </div>
+
+                  
+                  <div class="item-panel" id="edit-seiren-section" style="display:none">
+                    <h4>製錬</h4>
+                    <table class="form-table"><tbody>
+                      <tr>
+                        <td colspan="2" class="tdtext">製錬段階</td>
+                        <td style="width:4px"></td>
+                        <td colspan="4">
+                          <select id="edit-seiren-stage" class="select" style="width:100%">
+                            <option value="0">0 (未製錬)</option>
+                            <option value="1">1 (OP1)</option>
+                            <option value="2">2</option><option value="3">3</option><option value="4">4</option>
+                            <option value="5">5 (OP2)</option>
+                            <option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option>
+                            <option value="10">10 (OP3)</option>
+                            <option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option>
+                            <option value="15">15 (OP4)</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr class="row-sep"><td colspan="7"></td></tr>
+                      <tr class="edit-sop-row" data-esop="0">
+                        <td colspan="2" class="tdtext">製錬OP1 (1段階)</td>
+                        <td style="width:4px"></td>
+                        <td colspan="4"><select class="select edit-sop-select" data-esop="0" style="width:100%; font-size:11.5px"></select></td>
+                      </tr>
+                      <tr class="edit-sop-row" data-esop="1">
+                        <td colspan="2" class="tdtext">製錬OP2 (5段階)</td>
+                        <td style="width:4px"></td>
+                        <td colspan="4"><select class="select edit-sop-select" data-esop="1" style="width:100%; font-size:11.5px"></select></td>
+                      </tr>
+                      <tr class="edit-sop-row" data-esop="2">
+                        <td colspan="2" class="tdtext">製錬OP3 (10段階)</td>
+                        <td style="width:4px"></td>
+                        <td colspan="4"><select class="select edit-sop-select" data-esop="2" style="width:100%; font-size:11.5px"></select></td>
+                      </tr>
+                      <tr class="edit-sop-row" data-esop="3">
+                        <td colspan="2" class="tdtext">製錬OP4 (15段階)</td>
+                        <td style="width:4px"></td>
+                        <td colspan="4"><select class="select edit-sop-select" data-esop="3" style="width:100%; font-size:11.5px"></select></td>
+                      </tr>
+                    </tbody></table>
+                  </div>
+
+                  
+                  <div class="item-panel" id="edit-bfop-section" style="display:none">
+                    <h4>BFOP変更</h4>
+                    <table class="form-table"><tbody>
+                      <tr>
+                        <td colspan="2" class="tdtext">グレード</td>
+                        <td style="width:4px"></td>
+                        <td colspan="4">
+                          <select id="edit-bfop-grade" class="select" style="width:100%">
+                            <option value="black">黒 (異界)</option>
+                            <option value="white">白 (白い異界)</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2" class="tdtext">OP</td>
+                        <td style="width:4px"></td>
+                        <td colspan="4"><select id="edit-bfop-id" class="select" style="width:100%"></select></td>
+                      </tr>
+                      <tr>
+                        <td colspan="2" class="tdtext">補正値</td>
+                        <td style="width:4px"></td>
+                        <td colspan="4">
+                          <select id="edit-bfop-tier" class="select" style="width:100%">
+                            <option value="top">最上級</option>
+                            <option value="high">上級</option>
+                            <option value="mid">中級</option>
+                            <option value="low">下級</option>
+                          </select>
+                        </td>
+                      </tr>
+                    </tbody></table>
+                  </div>
+
+                </div>
+              </div>
+
+              
+              <div>
+                <div class="light-panel">
+                  <h4>インベントリ</h4>
+                  <div id="inv-grid-edit" class="inventory-grid"></div>
+                  <div class="tdtext" style="color:#9aa68b; font-size:11px; padding:6px 4px">
+                    クリック = 編集対象として選択 / Shift+クリック = 完全削除<br>
+                    ※ このタブでは装備/解除はできません (アイテムタブから行ってください)
+                  </div>
                 </div>
               </div>
 
@@ -4919,6 +5341,10 @@ async function renderInventoryGrid() {
       icon.style.display = '';
       icon.onerror = () => { icon.style.display = 'none'; };
     }
+  }
+  
+  if (typeof renderEditInventoryGrid === 'function') {
+    try { await renderEditInventoryGrid(); } catch (e) {  }
   }
 }
 
@@ -10822,6 +11248,7 @@ async function main() {
   bindInventoryGridEvents();
   bindItemDetailHovers();
   bindTabBar();
+  initEnhanceTab();
   renderStoneCards();
   renderFlagList();
   renderBadgeList();
@@ -10863,6 +11290,861 @@ async function main() {
     mapMonsterDataLoaded = true;
     if (mapMonsterState.mapId != null) await recalcAll();
   }).catch((e) => console.warn('[MapMonster] preload failed:', e));
+}
+
+
+
+const editState = {
+  ops: [{ familyId:-1, value:0 },{ familyId:-1, value:0 },{ familyId:-1, value:0 }],
+  opTiers: [2, 2, 2],  
+  daybreak: false,
+  ultLv: 1,
+  ultBaseOps: [null, null, null],
+  abrSlots: [null, null, null],
+  arcana: { table: 'normal', key: null, tier: 0 },
+  scroll: { type: null, id: null, stage: 1 },
+  seirenStage: 0,
+  seirenOps: [null, null, null, null, null],
+  bfop: { grade: 'black', id: null, tier: 'top' },
+  nxUnlockedCount: 4,
+  nxConverter: '',
+  nxUnlockedOps: [null, null, null, null],
+};
+let editTargetSlotIdx = -1;
+
+
+async function renderEditInventoryGrid() {
+  const grid = document.getElementById('inv-grid-edit');
+  if (!grid) return;
+  
+  if (grid.children.length === 0) {
+    for (let i = 0; i < INVENTORY_MAX; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'inv-cell is-empty';
+      cell.setAttribute('data-slot-index', String(i));
+      cell.innerHTML = `<img class="inv-icon" alt="">`;
+      grid.appendChild(cell);
+    }
+  }
+  
+  for (const cell of grid.children) {
+    cell.classList.add('is-empty');
+    cell.classList.remove('is-ng');
+    cell.classList.remove('is-equipped');
+    cell.classList.remove('is-edit-target');
+    cell.removeAttribute('data-inv-id');
+    const icon = cell.querySelector('.inv-icon');
+    if (icon) { icon.src = ''; icon.style.display = 'none'; icon.onerror = null; }
+  }
+  for (const inv of inventory.items()) {
+    const cell = grid.children[inv.slotIndex];
+    if (!cell) continue;
+    cell.classList.remove('is-empty');
+    if (inv.equippedSlot) cell.classList.add('is-equipped');
+    if (inv.slotIndex === editTargetSlotIdx) cell.classList.add('is-edit-target');
+    cell.setAttribute('data-inv-id', String(inv.slotIndex));
+    const rec = await Item.get(inv.itemId);
+    const icon = cell.querySelector('.inv-icon');
+    const iconUrl = rec ? getItemIconUrl(rec.imgId) : null;
+    if (icon && iconUrl) {
+      icon.src = iconUrl;
+      icon.style.display = '';
+      icon.onerror = () => { icon.style.display = 'none'; };
+    }
+  }
+}
+
+function bindEditInventoryEvents() {
+  const grid = document.getElementById('inv-grid-edit');
+  if (!grid) return;
+  grid.addEventListener('click', async (e) => {
+    const cell = e.target.closest('.inv-cell');
+    if (!cell || cell.classList.contains('is-empty')) return;
+    const idx = Number(cell.getAttribute('data-slot-index'));
+    const inv = inventory.get(idx);
+    if (!inv) return;
+    if (e.shiftKey) {
+      inventory.remove(idx);
+      if (editTargetSlotIdx === idx) {
+        editTargetSlotIdx = -1;
+        await refreshEditUI();
+      }
+      await recalcAll();
+      return;
+    }
+    editTargetSlotIdx = idx;
+    await loadEditStateFromInv(inv);
+    await refreshEditUI();
+    await renderEditInventoryGrid();
+  });
+}
+
+
+function detectOpTierFromValue(op) {
+  if (!op || op.familyId == null) return 2;
+  
+  if (op.addValue != null || op.divisor != null) return 2;
+  if (op.jobIdx != null) return 2;
+  const range = extractEffectRange(op.effect || '');
+  if (!range) return 2;
+  const v = Number(op.value ?? 0);
+  if (v === range.max) return 2;
+  if (v === range.min) return 0;
+  return 1;
+}
+
+async function loadEditStateFromInv(inv) {
+  
+  const rec = await Item.get(inv.itemId);
+  
+  for (let k = 0; k < 3; k++) {
+    const o = (inv.ops && inv.ops[k]) ? inv.ops[k] : null;
+    if (o && o.familyId != null && o.familyId >= 0) {
+
+      let effect = o.effect || '';
+      if (!effect && o.rowId != null) {
+        const ent = opSearchIndex.find((e) => e.rowId === Number(o.rowId));
+        if (ent) effect = ent.effect || '';
+      }
+      if (!effect && o.name) {
+        const ent = opSearchIndex.find((e) =>
+          e.familyId === Number(o.familyId) && e.name === o.name);
+        if (ent) effect = ent.effect || '';
+      }
+      editState.ops[k] = {
+        rowId:    o.rowId    ?? -1,
+        familyId: Number(o.familyId),
+        sortid:   o.sortid   ?? 0,
+        name:     o.name     ?? '',
+        effect,
+        value:    o.value    ?? 0,
+        addValue: o.addValue,
+        divisor:  o.divisor,
+        jobIdx:   o.jobIdx,
+      };
+      editState.opTiers[k] = detectOpTierFromValue(editState.ops[k]);
+    } else {
+      editState.ops[k] = { rowId:-1, familyId:-1, value:0 };
+      editState.opTiers[k] = 2;
+    }
+  }
+  
+  editState.ultLv = (inv.ultLv != null) ? Number(inv.ultLv) : 1;
+  editState.ultBaseOps = [null, null, null];
+  if (isUltDeepGreen(rec) && Array.isArray(inv.customBaseOps)) {
+    for (let i = 0; i < 3; i++) {
+      const slot = inv.customBaseOps[i];
+      if (slot && slot.statId) editState.ultBaseOps[i] = slot.opKey || null;
+    }
+  }
+  
+  editState.abrSlots = [null, null, null];
+  if (isAreaBossRing(rec) && Array.isArray(inv.customBaseOps)) {
+    for (let i = 0; i < 3; i++) {
+      const slot = inv.customBaseOps[i];
+      if (slot && slot.opKey) editState.abrSlots[i] = { key: slot.opKey, tier: slot.tier ?? 0 };
+    }
+  }
+  
+  if (isArcana(rec) && inv.arcana) {
+    editState.arcana = {
+      table: inv.arcana.table === 'pet' ? 'pet' : 'normal',
+      key:   inv.arcana.key || null,
+      tier:  Math.max(0, Math.min(1, Number(inv.arcana.tier) || 0)),
+    };
+  } else {
+    editState.arcana = { table: 'normal', key: null, tier: 0 };
+  }
+  
+  if (isScrollableForItem(rec) && inv.scroll) {
+    editState.scroll = {
+      type:  inv.scroll.type  || null,
+      id:    inv.scroll.id    || null,
+      stage: Math.max(1, Math.min(5, Number(inv.scroll.stage) || 1)),
+    };
+  } else {
+    editState.scroll = { type: null, id: null, stage: 1 };
+  }
+  
+  editState.seirenStage = Math.max(0, Math.min(15, Number(inv.seirenStage) || 0));
+  editState.seirenOps = [null, null, null, null, null];
+  if (Array.isArray(inv.seirenOps)) {
+    for (let k = 0; k < 5; k++) {
+      const o = inv.seirenOps[k];
+      if (o) editState.seirenOps[k] = { ...o };
+    }
+  }
+  
+  if (isBfTargetForItem(rec) && inv.bfop) {
+    editState.bfop = {
+      grade: inv.bfop.grade || 'black',
+      id:    inv.bfop.bfId  || inv.bfop.id || null,
+      tier:  inv.bfop.tier  || 'top',
+    };
+  } else {
+    editState.bfop = { grade: 'black', id: null, tier: 'top' };
+  }
+  
+  if (isNxFormItem(rec)) {
+    editState.nxUnlockedCount = (inv.nxUnlockedCount != null)
+      ? Math.max(0, Math.min(4, Number(inv.nxUnlockedCount))) : 4;
+    editState.nxConverter = inv.nxConverter || '';
+    editState.nxUnlockedOps = [null, null, null, null];
+    if (Array.isArray(inv.nxUnlockedOps)) {
+      for (let k = 0; k < 4; k++) {
+        const o = inv.nxUnlockedOps[k];
+        if (o && o.name) {
+          editState.nxUnlockedOps[k] = { name: o.name, value: o.value, converter: o.converter || editState.nxConverter };
+        }
+      }
+    }
+  } else {
+    editState.nxUnlockedCount = 4;
+    editState.nxConverter = '';
+    editState.nxUnlockedOps = [null, null, null, null];
+  }
+}
+
+
+async function refreshEditUI() {
+  const info = document.getElementById('edit-target-info');
+  const actions = document.getElementById('edit-target-actions');
+  const sections = document.getElementById('edit-sections');
+  if (editTargetSlotIdx < 0) {
+    if (info) info.textContent = '(右のインベントリからアイテムをクリックで選択)';
+    if (actions) actions.style.display = 'none';
+    if (sections) sections.style.display = 'none';
+    return;
+  }
+  const inv = inventory.get(editTargetSlotIdx);
+  if (!inv) {
+    editTargetSlotIdx = -1;
+    await refreshEditUI();
+    return;
+  }
+  const rec = await Item.get(inv.itemId);
+  if (info) {
+    const equipTag = inv.equippedSlot ? ` [装備中: ${esc(inv.equippedSlot)}]` : '';
+    info.innerHTML = `<b style="color:#ffe0b0">${esc(rec ? rec.name : '?')}</b>` +
+                     `  <span style="color:#9aa68b; font-size:11px">slot=${inv.slotIndex}${equipTag}</span>`;
+  }
+  if (actions) actions.style.display = '';
+  if (sections) sections.style.display = '';
+
+  
+  for (let k = 0; k < 3; k++) {
+    const label = document.querySelector(`.edit-op-selected-label[data-eop="${k}"]`);
+    const tierSel = document.querySelector(`.edit-op-tier[data-eop="${k}"]`);
+    const o = editState.ops[k];
+    if (label) {
+      if (o && o.familyId != null && o.familyId >= 0) {
+        label.textContent = `OP${k+1}: ${esc(o.name || '?')} ${esc(o.effect || '')}`;
+        label.style.color = '#FFE0B0';
+      } else {
+        label.textContent = `OP${k+1}: (未選択)`;
+        label.style.color = '#9aa68b';
+      }
+    }
+    if (tierSel) tierSel.value = String(editState.opTiers[k]);
+  }
+
+  
+  const ultSec = document.getElementById('edit-ult-section');
+  if (ultSec) {
+    ultSec.style.display = isUltDeepGreen(rec) ? '' : 'none';
+    if (isUltDeepGreen(rec)) await refreshEditUltPanel();
+  }
+  
+  const abrSec = document.getElementById('edit-abr-section');
+  if (abrSec) {
+    abrSec.style.display = isAreaBossRing(rec) ? '' : 'none';
+    if (isAreaBossRing(rec)) refreshEditAbrPanel(rec);
+  }
+  
+  const arcanaSec = document.getElementById('edit-arcana-section');
+  if (arcanaSec) {
+    arcanaSec.style.display = isArcana(rec) ? '' : 'none';
+    if (isArcana(rec)) refreshEditArcanaPanel();
+  }
+  
+  const scrollSec = document.getElementById('edit-scroll-section');
+  if (scrollSec) {
+    scrollSec.style.display = isScrollableForItem(rec) ? '' : 'none';
+    if (isScrollableForItem(rec)) refreshEditScrollPanel();
+  }
+  
+  const nxSec = document.getElementById('edit-nx-section');
+  if (nxSec) {
+    nxSec.style.display = isNxFormItem(rec) ? '' : 'none';
+    if (isNxFormItem(rec)) await refreshEditNxPanel(rec);
+  }
+  
+  const seirenSec = document.getElementById('edit-seiren-section');
+  if (seirenSec) {
+    if (!SEIREN_DATA) await loadSeirenData();
+    const isTarget = isSeirenTarget(rec);
+    seirenSec.style.display = isTarget ? '' : 'none';
+    if (isTarget) await refreshEditSeirenPanel(rec);
+  }
+  
+  const bfopSec = document.getElementById('edit-bfop-section');
+  if (bfopSec) {
+    bfopSec.style.display = isBfTargetForItem(rec) ? '' : 'none';
+    if (isBfTargetForItem(rec)) refreshEditBfopPanel();
+  }
+}
+
+
+async function refreshEditUltPanel() {
+  
+  const lvSel = document.getElementById('edit-ult-lv');
+  if (lvSel && lvSel.options.length === 0) {
+    for (let lv = 1; lv <= 30; lv++) {
+      const opt = document.createElement('option');
+      opt.value = String(lv); opt.textContent = `Lv ${lv}`;
+      lvSel.appendChild(opt);
+    }
+  }
+  if (lvSel) lvSel.value = String(editState.ultLv);
+  
+  for (let i = 0; i < 3; i++) {
+    const sel = document.getElementById(`edit-ult-base-${i}`);
+    if (!sel) continue;
+    if (sel.options.length === 0) {
+      sel.innerHTML = '<option value="">(未選択)</option>' +
+        ULT_BASE_OP_DEFS.map((d) => `<option value="${esc(d.key)}">${esc(d.label)}</option>`).join('');
+    }
+    sel.value = editState.ultBaseOps[i] || '';
+  }
+}
+function refreshEditAbrPanel(rec) {
+  const list = abrGetOpsForRing(Number(rec.id));
+  for (let i = 0; i < 3; i++) {
+    const opSel = document.getElementById(`edit-abr-base-${i}`);
+    const tierSel = document.getElementById(`edit-abr-tier-${i}`);
+    if (!opSel || !tierSel) continue;
+    const opOpts = ['<option value="">(未選択)</option>'];
+    for (const d of list) opOpts.push(`<option value="${esc(d.key)}">${esc(d.label)}</option>`);
+    opSel.innerHTML = opOpts.join('');
+    tierSel.innerHTML = ABR_TIER_LABELS.map((lbl, t) => `<option value="${t}">${esc(lbl)}</option>`).join('');
+    const cur = editState.abrSlots[i];
+    if (cur && cur.key) {
+      opSel.value = cur.key;
+      tierSel.value = String(Math.max(0, Math.min(2, Number(cur.tier) || 0)));
+    } else {
+      opSel.value = ''; tierSel.value = '0';
+    }
+  }
+}
+function refreshEditArcanaPanel() {
+  const tableSel = document.getElementById('edit-arcana-table');
+  const keySel   = document.getElementById('edit-arcana-key');
+  const tierSel  = document.getElementById('edit-arcana-tier');
+  if (tableSel) tableSel.value = editState.arcana.table;
+  const list = arcanaGetDefs(editState.arcana.table);
+  if (keySel) {
+    keySel.innerHTML = '<option value="">(未選択)</option>' +
+      list.map((d) => `<option value="${esc(d.key)}">${esc(d.label)}</option>`).join('');
+    keySel.value = editState.arcana.key || '';
+  }
+  if (tierSel) tierSel.value = String(editState.arcana.tier);
+}
+function refreshEditScrollPanel() {
+  const typeSel  = document.getElementById('edit-scroll-type');
+  const idSel    = document.getElementById('edit-scroll-id');
+  const stageSel = document.getElementById('edit-scroll-stage');
+  if (typeSel)  typeSel.value  = editState.scroll.type || '';
+  if (stageSel) stageSel.value = String(editState.scroll.stage || 1);
+  if (idSel) {
+    const list = editState.scroll.type ? scrollsByType(editState.scroll.type) : [];
+    idSel.innerHTML = '<option value="">(図案を選択)</option>' +
+      list.map((s) => `<option value="${esc(s.id)}">${esc(s.name)}</option>`).join('');
+    idSel.value = (editState.scroll.id && list.some((s) => s.id === editState.scroll.id))
+      ? editState.scroll.id : '';
+    if (!idSel.value) editState.scroll.id = null;
+    idSel.disabled = !editState.scroll.type;
+  }
+}
+
+const _editNxSlotOptionsCache = [new Map(), new Map(), new Map(), new Map()];
+
+async function refreshEditNxPanel(rec) {
+  try { await loadOpConvertData(); } catch (e) {  }
+  const countSel = document.getElementById('edit-nx-count');
+  const convSel  = document.getElementById('edit-nx-converter');
+  if (countSel) countSel.value = String(editState.nxUnlockedCount);
+  if (convSel)  convSel.value  = editState.nxConverter || '';
+  
+  const rows = document.querySelectorAll('.edit-nx-slot-row');
+  for (const r of rows) {
+    const k = Number(r.dataset.enx);
+    r.style.display = (k < editState.nxUnlockedCount) ? '' : 'none';
+  }
+
+  const _backupConverter = formState.nxConverter;
+  formState.nxConverter = editState.nxConverter;
+  try {
+    for (let k = 0; k < 4; k++) {
+      const sel = document.querySelector(`.edit-nx-op-select[data-enx="${k}"]`);
+      if (!sel) continue;
+      sel.innerHTML = '<option value="">(デフォルト)</option>';
+      const list = listConvertOptionsForSlot(rec, k);
+      _editNxSlotOptionsCache[k].clear();
+      for (const o of list) {
+        _editNxSlotOptionsCache[k].set(String(o.name), o);
+        const opt = document.createElement('option');
+        opt.value = String(o.name); opt.textContent = formatConvertOpForDropdown(o);
+        sel.appendChild(opt);
+      }
+      const cur = editState.nxUnlockedOps[k];
+      if (cur && cur.name && [...sel.options].some((opt) => opt.value === cur.name)) {
+        sel.value = cur.name;
+      } else {
+        sel.value = '';
+      }
+      sel.disabled = !editState.nxConverter;
+    }
+  } finally {
+    formState.nxConverter = _backupConverter;
+  }
+}
+async function refreshEditSeirenPanel(rec) {
+  if (!SEIREN_DATA) await loadSeirenData();
+  const stageSel = document.getElementById('edit-seiren-stage');
+  if (stageSel) stageSel.value = String(editState.seirenStage);
+  const slot = resolveEquipSlot(rec);
+  const partPool = SEIREN_DATA && SEIREN_DATA.parts && SEIREN_DATA.parts[slot];
+  const unlocked = seirenUnlockedCount(editState.seirenStage);
+  const THRESHOLDS = ['1','5','10','15'];
+  const slotRows = document.querySelectorAll('.edit-sop-row');
+  for (const r of slotRows) {
+    const k = Number(r.dataset.esop);
+    r.style.display = (k < unlocked) ? '' : 'none';
+  }
+  for (let k = 0; k < 4; k++) {
+    const sel = document.querySelector(`.edit-sop-select[data-esop="${k}"]`);
+    if (!sel) continue;
+    const pool = partPool ? partPool[THRESHOLDS[k]] : null;
+    sel.innerHTML = buildSeirenOptionList(pool, editState.seirenStage);
+    const cur = editState.seirenOps[k];
+    if (cur && cur.seirenSel) {
+      if ([...sel.options].some((opt) => opt.value === cur.seirenSel)) sel.value = cur.seirenSel;
+      else sel.value = '';
+    } else {
+      sel.value = '';
+    }
+  }
+}
+function refreshEditBfopPanel() {
+  const gradeSel = document.getElementById('edit-bfop-grade');
+  const idSel    = document.getElementById('edit-bfop-id');
+  const tierSel  = document.getElementById('edit-bfop-tier');
+  if (gradeSel) gradeSel.value = editState.bfop.grade || 'black';
+  if (tierSel)  tierSel.value  = editState.bfop.tier  || 'top';
+  if (idSel) {
+    idSel.innerHTML = '<option value="">(OP を選択)</option>';
+    const list = listBfOptionsForGrade(editState.bfop.grade || 'black');
+    for (const def of list) {
+      const opt = document.createElement('option');
+      opt.value = def.id;
+      opt.textContent = formatBfOption(def, editState.bfop.grade || 'black', editState.bfop.tier || 'top');
+      idSel.appendChild(opt);
+    }
+    idSel.value = (editState.bfop.id && list.some((o) => o.id === editState.bfop.id))
+      ? editState.bfop.id : '';
+    if (!idSel.value) editState.bfop.id = null;
+  }
+}
+
+
+function renderEditOpResults(idx, query) {
+  const sel = document.querySelector(`.edit-op-search-results[data-eop="${idx}"]`);
+  if (!sel) return;
+  sel.innerHTML = '';
+  if (!query.trim()) { sel.style.display = 'none'; return; }
+  const results = searchOps(query);
+  if (results.length === 0) {
+    const o = document.createElement('option');
+    o.value = -1; o.textContent = '(該当なし)'; o.disabled = true;
+    sel.appendChild(o); sel.style.display = 'block'; return;
+  }
+  for (const r of results) {
+    const o = document.createElement('option');
+    o.value = r.rowId;
+    o.textContent = opDisplayLabel(r);
+    o.title = opDisplayLabel(r);
+    sel.appendChild(o);
+  }
+  sel.style.display = 'block';
+}
+function selectEditOp(idx, rowId) {
+  const id = Number(rowId);
+  if (!Number.isFinite(id) || id < 0) return;
+  const entry = opSearchIndex.find((e) => e.rowId === id);
+  if (!entry) return;
+  const family = loader.optionPrefix?.families?.[String(entry.familyId)];
+  const isRatio = family?.stat?.layer === 'lvLinked';
+  const isJobSkill = (entry.familyId === 103);
+  const slotPayload = {
+    rowId: entry.rowId, familyId: entry.familyId, sortid: entry.sortid,
+    name:  entry.name,  effect:  entry.effect,
+  };
+  if (isJobSkill) {
+    const m = entry.effect.match(/^([^\s]+)\s+スキルレベル/);
+    let jobIdx = -1;
+    if (m && loader.master?.jobs) {
+      const target = m[1];
+      for (const k of Object.keys(loader.master.jobs)) {
+        const row = loader.master.jobs[k];
+        if (Array.isArray(row) && row[1] === target) { jobIdx = Number(k); break; }
+      }
+    }
+    const range = extractEffectRange(entry.effect.replace(/^[^\s]+\s+スキルレベル/, ''));
+    slotPayload.value = range ? range.max : 1;
+    slotPayload.jobIdx = jobIdx;
+  } else if (isRatio) {
+    const r = extractRatioRanges(entry.effect);
+    slotPayload.addValue = r ? r.addMax : 0;
+    slotPayload.divisor  = r ? r.divMin : 1;
+  } else {
+    const range = extractEffectRange(entry.effect);
+    slotPayload.value = range ? range.max : 0;
+  }
+  editState.ops[idx] = slotPayload;
+  const label = document.querySelector(`.edit-op-selected-label[data-eop="${idx}"]`);
+  if (label) {
+    const text = `OP${idx+1}: ${opDisplayLabel(entry)}`;
+    label.textContent = text.length > 110 ? text.slice(0, 110) + '...' : text;
+    label.style.color = '#FFE0B0';
+  }
+}
+function clearEditOp(idx) {
+  editState.ops[idx] = { rowId:-1, familyId:-1, value:0 };
+  editState.opTiers[idx] = 2;
+  const input = document.querySelector(`.edit-op-search-input[data-eop="${idx}"]`);
+  if (input) input.value = '';
+  const sel = document.querySelector(`.edit-op-search-results[data-eop="${idx}"]`);
+  if (sel) { sel.innerHTML = ''; sel.style.display = 'none'; }
+  const tier = document.querySelector(`.edit-op-tier[data-eop="${idx}"]`);
+  if (tier) tier.value = '2';
+  const label = document.querySelector(`.edit-op-selected-label[data-eop="${idx}"]`);
+  if (label) {
+    label.textContent = `OP${idx+1}: (未選択 = 削除)`;
+    label.style.color = '#9aa68b';
+  }
+}
+
+
+async function applyEditToInv() {
+  if (editTargetSlotIdx < 0) return;
+  const inv = inventory.get(editTargetSlotIdx);
+  if (!inv) return;
+  const rec = await Item.get(inv.itemId);
+  if (!rec) return;
+
+  
+  const uiOps = editState.ops.map((o, k) => {
+    if (!o || o.familyId == null || o.familyId < 0) return null;
+    const out = { familyId: Number(o.familyId) };
+    if (o.addValue != null || o.divisor != null) {
+      
+      out.addValue = Number(o.addValue ?? 0);
+      out.divisor  = Number(o.divisor  ?? 1);
+    } else if (o.jobIdx != null) {
+      
+      out.value  = Number(o.value ?? 0);
+      out.jobIdx = Number(o.jobIdx);
+    } else {
+      
+      const range = extractEffectRange(o.effect || '');
+      const tier  = Math.max(0, Math.min(2, editState.opTiers[k] ?? 2));
+      let v = Number(o.value ?? 0);
+      if (range) {
+        if (tier === 2) v = range.max;
+        else if (tier === 0) v = range.min;
+        else v = Math.round((range.min + range.max) / 2);
+      }
+      out.value = v;
+    }
+    if (o.rowId != null) out.rowId = Number(o.rowId);
+    if (o.name)          out.name  = String(o.name);
+    return out;
+  });
+  const seirenOps = editState.seirenOps.map((o) => {
+    if (!o) return null;
+    return {
+      familyId: o.familyId ?? null, value: o.value ?? null,
+      addValue: o.addValue ?? null, divisor: o.divisor ?? null,
+      jobIdx: o.jobIdx ?? null, name: o.name ?? null,
+      displayOnly: o.displayOnly ?? null, seirenSel: o.seirenSel ?? null,
+      seirenName: o.seirenName ?? null, seirenTier: o.seirenTier ?? null,
+    };
+  });
+  const bfopState = (isBfTargetForItem(rec) && editState.bfop.grade && editState.bfop.id)
+    ? { id: editState.bfop.id, grade: editState.bfop.grade, tier: editState.bfop.tier || 'top' }
+    : null;
+  const nxStateForMake = isNxFormItem(rec)
+    ? {
+        nxUnlockedCount: editState.nxUnlockedCount,
+        nxUnlockedOps:   editState.nxUnlockedOps.map((o) => {
+          if (!o) return null;
+          if (o.name && o.value != null) {
+            return { name: o.name, value: o.value, converter: o.converter || editState.nxConverter || 'normal' };
+          }
+          return null;
+        }),
+      }
+    : {};
+
+  const builtRevisions = [
+    inv.revisions?.[0] ?? null,
+    inv.revisions?.[1] ?? null,
+    inv.revisions?.[2] ?? null,
+  ];
+  const built = makeItem({
+    itemId:      inv.itemId,
+    revisions:   builtRevisions,
+    ops:         uiOps,
+    daybreak:    inv.daybreak,
+    seirenStage: editState.seirenStage,
+    seirenOps,
+    bfop:        bfopState,
+    ...nxStateForMake,
+  }, rec);
+  if (!built) { alert('適用に失敗しました'); return; }
+  
+  if (isUltDeepGreen(rec)) {
+    built.ultLv = editState.ultLv;
+    const slots = ultBuildBaseOpSlots(editState.ultLv, editState.ultBaseOps);
+    for (let i = 0; i < 3; i++) built.customBaseOps[i] = slots[i];
+  }
+  if (isAreaBossRing(rec)) {
+    const slots = abrBuildBaseOpSlots(Number(rec.id), editState.abrSlots);
+    for (let i = 0; i < 3; i++) built.customBaseOps[i] = slots[i];
+  }
+  if (isArcana(rec)) {
+    const table = (editState.arcana.table === 'pet') ? 'pet' : 'normal';
+    const key   = editState.arcana.key || null;
+    const tier  = Math.max(0, Math.min(1, Number(editState.arcana.tier) || 0));
+    built.arcana = { table, key, tier };
+    const slot = arcanaBuildBaseOpSlot(table, key, tier);
+    built.customBaseOps[0] = slot;
+    built.customBaseOps[1] = null;
+    built.customBaseOps[2] = null;
+  }
+  if (isScrollableForItem(rec)) {
+    const sc = editState.scroll;
+    const def = sc.id ? scrollById(sc.id) : null;
+    if (def && def.type === sc.type) {
+      const stage = Math.max(1, Math.min(5, Number(sc.stage) || 1));
+      built.scroll = { type: def.type, id: def.id, stage };
+    } else {
+      built.scroll = null;
+    }
+  }
+
+  built.slotIndex = inv.slotIndex;
+  built.equippedSlot = inv.equippedSlot;
+  
+  inventory._slots[inv.slotIndex] = built;
+  if (selectedInv && selectedInv.inv.slotIndex === inv.slotIndex) {
+    selectedInv = { inv: built, item: rec };
+  }
+  await recalcAll();
+  await refreshEditUI();
+  await renderEditInventoryGrid();
+}
+
+
+function bindEditTabEvents() {
+  
+  document.querySelectorAll('.edit-op-search-input').forEach((el) => {
+    el.addEventListener('input', () => {
+      const idx = Number(el.dataset.eop);
+      renderEditOpResults(idx, el.value);
+    });
+  });
+  document.querySelectorAll('.edit-op-search-results').forEach((sel) => {
+    sel.addEventListener('change', () => {
+      const idx = Number(sel.dataset.eop);
+      selectEditOp(idx, sel.value);
+      sel.style.display = 'none';
+      const input = document.querySelector(`.edit-op-search-input[data-eop="${idx}"]`);
+      if (input) input.value = '';
+    });
+  });
+  document.querySelectorAll('.edit-op-clear').forEach((btn) => {
+    btn.addEventListener('click', () => clearEditOp(Number(btn.dataset.eop)));
+  });
+  
+  document.querySelectorAll('.edit-op-tier').forEach((sel) => {
+    sel.addEventListener('change', () => {
+      const idx = Number(sel.dataset.eop);
+      editState.opTiers[idx] = Math.max(0, Math.min(2, Number(sel.value) || 2));
+    });
+  });
+
+  
+  const ultLv = document.getElementById('edit-ult-lv');
+  if (ultLv) ultLv.addEventListener('change', () => { editState.ultLv = Math.max(1, Math.min(30, Number(ultLv.value) || 1)); });
+  for (let i = 0; i < 3; i++) {
+    const sel = document.getElementById(`edit-ult-base-${i}`);
+    if (sel) sel.addEventListener('change', () => { editState.ultBaseOps[i] = sel.value || null; });
+  }
+  
+  for (let i = 0; i < 3; i++) {
+    const opSel = document.getElementById(`edit-abr-base-${i}`);
+    const tierSel = document.getElementById(`edit-abr-tier-${i}`);
+    if (opSel) opSel.addEventListener('change', () => {
+      if (!opSel.value) { editState.abrSlots[i] = null; return; }
+      editState.abrSlots[i] = { key: opSel.value, tier: editState.abrSlots[i]?.tier ?? 0 };
+    });
+    if (tierSel) tierSel.addEventListener('change', () => {
+      if (editState.abrSlots[i]) editState.abrSlots[i].tier = Math.max(0, Math.min(2, Number(tierSel.value) || 0));
+    });
+  }
+  
+  const arcanaTable = document.getElementById('edit-arcana-table');
+  const arcanaKey   = document.getElementById('edit-arcana-key');
+  const arcanaTier  = document.getElementById('edit-arcana-tier');
+  if (arcanaTable) arcanaTable.addEventListener('change', () => {
+    editState.arcana.table = (arcanaTable.value === 'pet') ? 'pet' : 'normal';
+    editState.arcana.key = null;
+    refreshEditArcanaPanel();
+  });
+  if (arcanaKey) arcanaKey.addEventListener('change', () => { editState.arcana.key = arcanaKey.value || null; });
+  if (arcanaTier) arcanaTier.addEventListener('change', () => { editState.arcana.tier = Math.max(0, Math.min(1, Number(arcanaTier.value) || 0)); });
+  
+  const scrollType  = document.getElementById('edit-scroll-type');
+  const scrollId    = document.getElementById('edit-scroll-id');
+  const scrollStage = document.getElementById('edit-scroll-stage');
+  if (scrollType) scrollType.addEventListener('change', () => {
+    editState.scroll.type = scrollType.value || null;
+    editState.scroll.id = null;
+    refreshEditScrollPanel();
+  });
+  if (scrollId)    scrollId.addEventListener('change',    () => { editState.scroll.id    = scrollId.value || null; });
+  if (scrollStage) scrollStage.addEventListener('change', () => { editState.scroll.stage = Math.max(1, Math.min(5, Number(scrollStage.value) || 1)); });
+  
+  const nxCount = document.getElementById('edit-nx-count');
+  const nxConv  = document.getElementById('edit-nx-converter');
+  if (nxCount) nxCount.addEventListener('change', async () => {
+    editState.nxUnlockedCount = Math.max(0, Math.min(4, Number(nxCount.value) || 0));
+    if (editTargetSlotIdx >= 0) {
+      const inv = inventory.get(editTargetSlotIdx);
+      const rec = inv ? await Item.get(inv.itemId) : null;
+      if (rec) await refreshEditNxPanel(rec);
+    }
+  });
+  if (nxConv)  nxConv.addEventListener('change', async () => {
+    editState.nxConverter = nxConv.value || '';
+    if (!editState.nxConverter) editState.nxUnlockedOps = [null, null, null, null];
+    if (editTargetSlotIdx >= 0) {
+      const inv = inventory.get(editTargetSlotIdx);
+      const rec = inv ? await Item.get(inv.itemId) : null;
+      if (rec) await refreshEditNxPanel(rec);
+    }
+  });
+  document.querySelectorAll('.edit-nx-op-select').forEach((sel) => {
+    sel.addEventListener('change', () => {
+      const k = Number(sel.dataset.enx);
+      const name = sel.value;
+      if (!name) { editState.nxUnlockedOps[k] = null; return; }
+      
+      const info = _editNxSlotOptionsCache[k].get(name);
+      if (!info) { editState.nxUnlockedOps[k] = null; return; }
+      editState.nxUnlockedOps[k] = {
+        name: info.name,
+        value: Number(info.value ?? 0),
+        converter: editState.nxConverter || 'normal',
+      };
+    });
+  });
+  
+  const seirenStage = document.getElementById('edit-seiren-stage');
+  if (seirenStage) seirenStage.addEventListener('change', async () => {
+    editState.seirenStage = Math.max(0, Math.min(15, Number(seirenStage.value) || 0));
+    if (editTargetSlotIdx >= 0) {
+      const inv = inventory.get(editTargetSlotIdx);
+      const rec = inv ? await Item.get(inv.itemId) : null;
+      if (rec) {
+        
+        const partKey = resolveEquipSlot(rec);
+        if (partKey) {
+          const _bStage = formState.seirenStage;
+          const _bOps   = formState.seirenOps;
+          formState.seirenStage = editState.seirenStage;
+          formState.seirenOps   = [null, null, null, null, null];
+          try {
+            for (let k = 0; k < 5; k++) {
+              const cur = editState.seirenOps[k];
+              if (cur && cur.seirenSel) {
+                applySeirenSelection(k, cur.seirenSel, partKey);
+                editState.seirenOps[k] = formState.seirenOps[k] || null;
+              }
+            }
+          } finally {
+            formState.seirenStage = _bStage;
+            formState.seirenOps   = _bOps;
+          }
+        }
+        await refreshEditSeirenPanel(rec);
+      }
+    }
+  });
+  document.querySelectorAll('.edit-sop-select').forEach((sel) => {
+    sel.addEventListener('change', async () => {
+      const k = Number(sel.dataset.esop);
+      const val = sel.value;
+      if (!val) { editState.seirenOps[k] = null; return; }
+
+      
+      const inv = (editTargetSlotIdx >= 0) ? inventory.get(editTargetSlotIdx) : null;
+      const rec = inv ? await Item.get(inv.itemId) : null;
+      const partKey = rec ? resolveEquipSlot(rec) : null;
+      if (!partKey) { editState.seirenOps[k] = { seirenSel: val }; return; }
+      const _bStage = formState.seirenStage;
+      const _bOps   = formState.seirenOps;
+      formState.seirenStage = editState.seirenStage;
+      formState.seirenOps   = [null, null, null, null, null];
+      try {
+        applySeirenSelection(k, val, partKey);
+        editState.seirenOps[k] = formState.seirenOps[k];
+      } finally {
+        formState.seirenStage = _bStage;
+        formState.seirenOps   = _bOps;
+      }
+    });
+  });
+  
+  const bfGrade = document.getElementById('edit-bfop-grade');
+  const bfId    = document.getElementById('edit-bfop-id');
+  const bfTier  = document.getElementById('edit-bfop-tier');
+  if (bfGrade) bfGrade.addEventListener('change', () => {
+    editState.bfop.grade = bfGrade.value || 'black';
+    editState.bfop.id = null;
+    refreshEditBfopPanel();
+  });
+  if (bfId)   bfId.addEventListener('change',   () => { editState.bfop.id   = bfId.value   || null; });
+  if (bfTier) bfTier.addEventListener('change', () => { editState.bfop.tier = bfTier.value || 'top'; });
+
+  
+  const btnApply  = document.getElementById('edit-btn-apply');
+  const btnReload = document.getElementById('edit-btn-reload');
+  if (btnApply)  btnApply.addEventListener('click', () => { applyEditToInv().catch((e) => { console.error(e); alert('適用エラー: ' + e.message); }); });
+  if (btnReload) btnReload.addEventListener('click', async () => {
+    if (editTargetSlotIdx < 0) return;
+    const inv = inventory.get(editTargetSlotIdx);
+    if (inv) { await loadEditStateFromInv(inv); await refreshEditUI(); }
+  });
+}
+
+
+function initEnhanceTab() {
+  bindEditTabEvents();
+  bindEditInventoryEvents();
+
+  renderEditInventoryGrid().catch(() => {  });
 }
 
 main().catch((err) => {
