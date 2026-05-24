@@ -1623,13 +1623,13 @@
     }
     .omni-actions button:hover { filter: brightness(1.3); }
     .omni-body {
-      display: grid; grid-template-columns: 280px 1fr; gap: 8px;
+      display: grid; grid-template-columns: 240px 1fr; gap: 8px;
       align-items: stretch;
     }
     
     .omni-graph-wrap {
       position: relative; background: #0a0a14; border: 1px solid #443823;
-      min-height: 620px; overflow: hidden;
+      min-height: 880px; overflow: hidden;
     }
     .omni-graph-svg { display: block; width: 100%; height: 100%; }
     .omni-edge {
@@ -1666,7 +1666,7 @@
     
     .omni-side {
       background: #120c04; border: 1px solid #443823; padding: 6px 8px;
-      display: flex; flex-direction: column; gap: 6px; min-height: 620px;
+      display: flex; flex-direction: column; gap: 6px; min-height: 880px;
     }
     .omni-side-empty { color: #6e5a2a; }
     .omni-side-name {
@@ -1689,6 +1689,7 @@
     .omni-side-lv-ctrl button {
       background: #2a1f10; color: #f4e7a2; border: 1px solid #8b6a28;
       font: inherit; padding: 1px 8px; cursor: pointer; min-width: 30px;
+      white-space: nowrap;
     }
     .omni-side-lv-ctrl button:hover:not(:disabled) { filter: brightness(1.3); }
     .omni-side-lv-ctrl button:disabled { opacity: 0.35; cursor: not-allowed; }
@@ -3551,8 +3552,7 @@
               <div class="omni-section" id="omni-section">
                 <h4>オムニスキル</h4>
                 <div class="omni-header-line">
-                  <span><span class="omni-key">オムニLv:</span><span class="omni-val" id="omni-lv">0</span><span class="omni-info-sub" id="omni-lv-detail" style="color:#b0944c"> (= max(0, 本体Lv - 2000))</span></span>
-                  <span><span class="omni-key">SP:</span><span class="omni-val" id="omni-sp-status">0 / 0</span></span>
+                  <span><span class="omni-key">オムニスキルポイント:</span><span class="omni-val" id="omni-sp-status">0 / 0</span></span>
                   <span><span class="omni-key">活性ノード:</span><span class="omni-val" id="omni-active-count">0</span></span>
                   <span class="omni-actions">
                     <button type="button" id="omni-reset" title="全ての振り分けを初期化">リセット</button>
@@ -3572,12 +3572,12 @@
                   </div>
                   
                   <div class="omni-graph-wrap">
-                    <svg id="omni-graph-svg" class="omni-graph-svg" viewBox="0 0 1400 1400" preserveAspectRatio="xMidYMid meet"></svg>
+                    <svg id="omni-graph-svg" class="omni-graph-svg" viewBox="280 280 840 840" preserveAspectRatio="xMidYMid meet"></svg>
                   </div>
                 </div>
                 
                 <div style="margin-top: 6px;">
-                  <div class="omni-key" style="color:#ffd070;font-weight:bold;font-size:11.5px;margin-bottom:3px;">累計補正 (= 装備込み 7 ステ等に注入される値)</div>
+                  <div class="omni-key" style="color:#ffd070;font-weight:bold;font-size:11.5px;margin-bottom:3px;">累計補正</div>
                   <pre class="omni-summary is-empty" id="omni-summary">未振り分け</pre>
                 </div>
               </div>
@@ -12853,127 +12853,138 @@ const BloodRecord = (() => {
 const OmniSkill = (() => {
   
   let dataPromise = null;
-  let dataLoaded = null;  
-  let skillMap = null;    
+  let templatePromise = null;
+  let dataLoaded = null;     
+  let templateMap = null;    
+  let skillMap = null;       
   function loadData() {
     if (dataPromise) return dataPromise;
-    dataPromise = fetch('./lib/data/omni_skills.json')
-      .then((r) => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)))
-      .then((j) => {
-        dataLoaded = j;
-        skillMap = new Map();
-        for (const s of j.skills) {
-          
-          s.__parsed = parseEffect(s.effect, s.max_lv);
-          skillMap.set(s.id, s);
-        }
-        return j;
-      })
-      .catch((e) => {
-        console.warn('[OmniSkill] data load failed:', e);
-        dataLoaded = null;
-        throw e;
-      });
+    dataPromise = Promise.all([
+      fetch('./lib/data/omni_skills.json').then((r) => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status))),
+      fetch('./lib/data/omni_effect_templates.json').then((r) => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status))),
+    ]).then(([j, tpl]) => {
+      dataLoaded = j;
+      templateMap = new Map((tpl.templates || []).map((t) => [t.id, t]));
+      skillMap = new Map();
+      for (const s of j.skills) {
+        skillMap.set(s.id, s);
+      }
+      return j;
+    }).catch((e) => {
+      console.warn('[OmniSkill] data load failed:', e);
+      dataLoaded = null;
+      throw e;
+    });
     return dataPromise;
   }
 
 
   
   const ATTR_KEYS  = ['Fire','Water','Wind','Earth','Light','Dark'];
-  const ATTR_RESIST_KEYS = ATTR_KEYS.map((k) => 'attr' + k + 'Resist');
-  const ATTR_ENH_KEYS    = ATTR_KEYS.map((k) => 'attr' + k);
-  const STAT_TABLE = {
-    '力':       { stat: 'str',   pct: false },
-    '敏捷':     { stat: 'agi',   pct: false },
-    '健康':     { stat: 'con',   pct: false },
-    '知識':     { stat: 'int',   pct: false },
-    '知恵':     { stat: 'wiz',   pct: false },
-    'カリスマ': { stat: 'chs',   pct: false },
-    '運':       { stat: 'luc',   pct: false },
-    '命中率':         { stat: 'hit',     pct: true },
-    '回避率':         { stat: 'eva',     pct: true },
-    '攻撃速度':       { stat: 'atkspd',  pct: true },
-    '物理攻撃力':     { stat: 'physDamagePercent', pct: true },
-    '魔法攻撃力':     { stat: 'attrMagic',         pct: true },
-    '全属性攻撃力':   { expand: ATTR_ENH_KEYS,     pct: true },
-    '武器攻撃力':     { stat: 'weaponAtkFlat',     pct: false },
-    '防御力':         { stat: 'defPercent',        pct: true },
-    '物理防御力':     { stat: 'defPercent',        pct: true },
-    '基本防御力':     { stat: 'defFlat',           pct: false },
-    '物理回避速度':   { stat: 'eva',               pct: true },
-    '異常状態耐性':   { stat: 'statusResist',      pct: true },
-    '異常状態での被ダメージ減少':   { stat: 'reduceStatusDmg',     pct: true },
-    '受ける魔法ダメージ':           { stat: 'reduceMagicDmg',      pct: true },
-    '魔法耐性力':                   { stat: 'magicResist',         pct: true },
-    '属性耐性':                     { expand: ATTR_RESIST_KEYS,    pct: true },
-    'ダブルクリティカル':           { stat: 'doubleCritDamage',    pct: true },
-    'マジック強打ダメージ':         { stat: 'magicStrongDamage',   pct: true },
-    '強打ダメージ':                 { stat: 'physStrongDamage',    pct: true },
-    'ターゲットの全属性抵抗減少':   { stat: 'enemyAllAttrResistReduce', pct: true },
-    'ターゲット全属性抵抗減少':     { stat: 'enemyAllAttrResistReduce', pct: true },
-    '最大CP':                       { stat: 'cpPercent',           pct: true },
-    '最大体力':                     { stat: 'hpPercent',           pct: true },
-    '固定体力':                     { stat: 'hpFlat',              pct: false },
-    '最終物理攻撃力':               { stat: 'finalPhysDamage',     pct: true },
-    '最終魔法攻撃力':               { stat: 'finalMagicDamage',    pct: true },
-    'クールタイム減少':             { stat: 'skillCooldownReduce', pct: true },
-    '限界突破強化の物理効果':       { stat: 'limitBreakPhysFlat',  pct: false },
-    '限界突破強化の魔法効果':       { stat: 'limitBreakMagicFlat', pct: false },
-    'ブロック率':                   { stat: 'blockRate',           pct: true },
+  const STAT_NAME_TO_KEY = { '力':'str', '敏捷':'agi', '健康':'con', '知識':'int', '知恵':'wiz', 'カリスマ':'chs', '運':'luc' };
+  const TEMPLATE_STAT_MAP = {
+    25341895: { stat: 'potionHeal',                pct: true  },
+    25345095: { stat: 'weaponAtkFlat',             pct: false },
+    25345165: { stat: 'physDamagePercent',         pct: true  },
+    25345225: { stat: 'physCritDamage',            pct: true  },
+    25345293: { stat: 'doubleCritDamage',          pct: true  },
+    25345370: { stat: 'physStrongDamage',          pct: true  },
+    25345436: { stat: 'hit',                       pct: true  },
+    25345492: { stat: 'atkspd',                    pct: true  },
+    25345550: { stat: 'eva',                       pct: true  },
+    25345606: { stat: 'hpPercent',                 pct: true  },
+    25345662: { stat: 'defPercent',                pct: true  },
+    25345718: { stat: 'blockRate',                 pct: true  },
+    25345778: { stat: 'attrMagic',                 pct: true  },
+    25345838: { expand: ATTR_KEYS.map((k) => 'attr' + k),       pct: true },
+    25345904: { stat: 'magicCritDamage',           pct: true  },
+    25345972: { stat: 'magicStrongDamage',         pct: true  },
+    25346039: { stat: 'enemyAllAttrResistReduce', pct: true  },
+    25346115: { stat: 'cpPercent',                 pct: true  },
+    25346171: { stat: 'skillCooldownReduce',       pct: true  },
+    25346241: { stat: 'statusResist',              pct: true  },
+    25346448: { stat: 'shieldValue',               pct: false },
+    25346508: { stat: 'potionHealSpeed',           pct: true  },
+    25346576: { stat: 'finalPhysDamage',           pct: true  },
+    25346640: { stat: 'finalMagicDamage',          pct: true  },
+    25346704: { stat: 'limitBreakPhysFlat',        pct: false },
+    25346774: { stat: 'limitBreakMagicFlat',       pct: false },
+    25346844: { stat: 'defFlat',                   pct: false },
+    25346902: { stat: 'hpFlat',                    pct: false },
+    25346956: { kind: 'stat',                      pct: false },
+    25347037: { stat: 'finalPhysDamage',           pct: true  },
+    25347103: { stat: 'finalMagicDamage',          pct: true  },
+    25347169: { stat: 'finalDamagePercent',        pct: true  },
+    25347298: { stat: 'reducePhysDmg',             pct: true  },
+    25347362: { stat: 'reduceMagicDmg',            pct: true  },
+    25347548: { stat: 'reduceStatusDmg',           pct: true  },
+    25347626: { stat: 'magicResist',               pct: true  },
+
+    99000001: { stat: 'petHpPercent',              pct: true  },
+    99000002: { stat: 'petStatusResist',           pct: true  },
+    99000003: { stat: 'petKnockbackResist',        pct: true  },
+    99000004: { expand: ATTR_KEYS.map((k) => 'attr' + k + 'Resist'), pct: true },
+
+    99000005: { stat: 'bleedBaseDmgPercent',       pct: true  },
+    99000006: { stat: 'dotDmgPercent',             pct: true  },
+
+    99000007: { stat: 'hpMaxCapRaise',             pct: false },
   };
 
+  
+  function effectiveValue(s, lv) {
+    const perLv = Number(s.perLv) || 0;
+    const max = (s.maxVal != null) ? Number(s.maxVal) : (perLv * s.max_lv);
+    return Math.min(perLv * lv, max);
+  }
 
-  const FIXED_PATTERNS = [
-    { re: /最終物理ダメージ増加\+?([\d.]+)%/g,         stat: 'finalPhysDamage',   pct: true },
-    { re: /最終魔法ダメージ増加\+?([\d.]+)%/g,         stat: 'finalMagicDamage',  pct: true },
-    { re: /最終ダメージ増加\+?([\d.]+)%/g,             stat: 'finalDamagePercent', pct: true },
-    { re: /最終物理攻撃力\+?([\d.]+)%増加/g,           stat: 'finalPhysDamage',   pct: true },
-    { re: /最終魔法攻撃力\+?([\d.]+)%増加/g,           stat: 'finalMagicDamage',  pct: true },
-    { re: /魔力攻撃力が([\d.]+)%増加/g,                stat: 'attrMagic',         pct: true },
-    { re: /致命打ダメージ増加\+?([\d.]+)%/g,           stat: 'physCritDamage',    pct: true },
-    { re: /ダブルクリティカルダメージ増加\+?([\d.]+)%/g, stat: 'doubleCritDamage', pct: true },
-    { re: /魔法致命打ダメージ増加\+?([\d.]+)%/g,       stat: 'magicCritDamage',   pct: true },
-    { re: /最大体力増加\+?([\d.]+)%/g,                 stat: 'hpPercent',         pct: true },
-    { re: /受ける物理ダメージを\+?([\d.]+)%減少/g,     stat: 'reducePhysDmg',     pct: true },
-    { re: /武器攻撃力(\d+)、/g,                        stat: 'weaponAtkFlat',     pct: false },
-    { re: /、?力(\d+)増加/g,                           stat: 'str',               pct: false },
-  ];
 
-  function parseEffect(eff, maxLv) {
-    if (!eff) return { effects: [], displayOnly: '', complex: false };
-    const cleaned = eff.replace(/\s+/g, ' ').trim();
-    
-    const m = cleaned.match(/^スキルレベル1あたり(.+?)(?:（最大([\d.]+)(%?)）)?$/);
-    if (m) {
-      const body = m[1].trim();
-      const m2 = body.match(/^(.+?)(?:増加)?([\d.]+)(%?)$/);
-      if (m2) {
-        let label = m2[1].replace(/増加$/, '').trim();
-        const perLv = Number(m2[2]);
-        const t = STAT_TABLE[label];
-        if (t) {
-          const stats = t.expand ? t.expand : [t.stat];
-          const max = m[2] ? Number(m[2]) : (Number(maxLv) || 99) * perLv;
-          return {
-            effects: stats.map((stat) => ({ stat, perLv, max, pct: t.pct })),
-            displayOnly: cleaned,
-            complex: false,
-            label, perLvLabel: `${label} +${perLv}${t.pct ? '%' : ''}/Lv (最大${max}${t.pct ? '%' : ''})`,
-          };
-        }
-        return { effects: [], displayOnly: cleaned, complex: false, label, unmapped: true };
-      }
+  function resolveTemplate(s, lv) {
+    if (!s.templateId || !templateMap) return null;
+    const tpl = templateMap.get(s.templateId);
+    if (!tpl) return null;
+    let text = String(tpl.text);
+    text = text.replace(/<c:[A-Z_]+>/g, '').replace(/<n>/g, '');
+    const val = effectiveValue(s, lv);
+    const valF = (Number.isInteger(val * 10)) ? (Math.round(val * 10) / 10).toString() : val.toFixed(2);
+    const valI = String(Math.floor(val));
+    text = text.replace(/\[RESULT_F\/\d+\]/g, valF);
+    text = text.replace(/\[RESULT_I\/\d+\]/g, valI);
+    if (s.statName) text = text.replace(/\[STAT\/\d+\]/g, s.statName);
+    return text.trim();
+  }
+
+
+  
+  function injectByTemplate(T, templateId, val, statName) {
+    const m = TEMPLATE_STAT_MAP[templateId];
+    if (!m || !val) return;
+    if (m.kind === 'stat') {
+      const key = STAT_NAME_TO_KEY[statName];
+      if (key) T.sum[key] = (T.sum[key] || 0) + val;
+      return;
     }
-    
-    const effs = [];
-    for (const pat of FIXED_PATTERNS) {
-      pat.re.lastIndex = 0;
-      let mm;
-      while ((mm = pat.re.exec(cleaned)) !== null) {
-        effs.push({ stat: pat.stat, perLv: Number(mm[1]), max: Number(mm[1]), pct: pat.pct, fixed: true });
-      }
+    if (m.expand) {
+      for (const k of m.expand) T.sum[k] = (T.sum[k] || 0) + val;
+      return;
     }
-    return { effects: effs, displayOnly: cleaned, complex: effs.length === 0 };
+    if (m.stat) T.sum[m.stat] = (T.sum[m.stat] || 0) + val;
+  }
+
+
+  
+  function injectSkillEffect(T, s, lv) {
+    if (!s.templateId) return;
+    if (s.fixed) {
+      
+      if (lv <= 0) return;
+      injectByTemplate(T, s.templateId, Number(s.perLv) || 0, s.statName);
+      
+      for (const ex of (s.extras || [])) injectByTemplate(T, ex.templateId, Number(ex.perLv) || 0, ex.statName);
+    } else {
+      const val = effectiveValue(s, lv);
+      injectByTemplate(T, s.templateId, val, s.statName);
+    }
   }
 
   
@@ -12988,6 +12999,12 @@ const OmniSkill = (() => {
     if (v === 0) delete state.levels[id];
     else state.levels[id] = v;
   }
+
+  function skillCost(s) {
+    if (!dataLoaded || !s) return 1;
+    const gc = dataLoaded.meta.gradeCost || {};
+    return gc[s.grade_official] || gc[s.grade] || 1;
+  }
   function totalSpent() {
     if (!dataLoaded) return 0;
     let pts = 0;
@@ -12995,9 +13012,7 @@ const OmniSkill = (() => {
       const id = Number(idStr);
       const s = skillMap.get(id);
       if (!s) continue;
-      const lv = getLv(id);
-      const cost = dataLoaded.meta.gradeCost[s.grade] || 1;
-      pts += lv * cost;
+      pts += getLv(id) * skillCost(s);
     }
     return pts;
   }
@@ -13027,18 +13042,8 @@ const OmniSkill = (() => {
     for (const idStr of Object.keys(state.levels)) {
       const id = Number(idStr);
       const s = skillMap.get(id);
-      if (!s || !s.__parsed) continue;
-      const lv = getLv(id);
-      for (const eff of (s.__parsed.effects || [])) {
-        
-        if (eff.fixed) {
-          T.sum[eff.stat] = (T.sum[eff.stat] || 0) + eff.perLv;
-        } else {
-          const v = eff.perLv * lv;
-          const capped = (eff.max != null) ? Math.min(v, eff.max) : v;
-          T.sum[eff.stat] = (T.sum[eff.stat] || 0) + capped;
-        }
-      }
+      if (!s) continue;
+      injectSkillEffect(T, s, getLv(id));
     }
   }
 
@@ -13156,17 +13161,23 @@ const OmniSkill = (() => {
     const s = skillMap.get(_selectedId);
     if (!s) { side.innerHTML = '<div class="omni-side-empty">ノードが見つかりません</div>'; return; }
     const lv = getLv(s.id);
-    const cost = dataLoaded.meta.gradeCost[s.grade] || 1;
+    const cost = skillCost(s);
     const takeable = isTakeable(s);
-    const parsed = s.__parsed;
-    const effText = parsed?.complex
-      ? `(条件付き効果のためステ計算には未反映)\n${parsed.displayOnly}`
-      : parsed?.unmapped
-      ? `(未マップ label - 表示のみ)\n${parsed.displayOnly}`
-      : parsed?.perLvLabel
-      ? `${parsed.perLvLabel}\n${parsed.displayOnly}`
-      : (parsed?.displayOnly || s.effect);
-    const effCls = (parsed?.complex || parsed?.unmapped) ? ' is-displayOnly' : '';
+
+    
+    const isMapped = !!(s.templateId && TEMPLATE_STAT_MAP[s.templateId]);
+    let effLines = [];
+    if (s.templateId) {
+      const resolved = resolveTemplate(s, lv > 0 ? lv : s.max_lv);
+      if (s.perLv != null && !s.fixed) {
+        const max = (s.maxVal != null) ? s.maxVal : (s.perLv * s.max_lv);
+        const pctMark = s.isPct ? '%' : '';
+        effLines.push(`${s.statName ? s.statName + ' ステータス' : '効果'} +${s.perLv}${pctMark}/Lv (最大 ${max}${pctMark})`);
+      }
+      if (resolved) effLines.push((lv > 0 ? '現在: ' : 'max 時: ') + resolved);
+    }
+    if (!effLines.length) effLines.push(s.effect || '(効果情報なし)');
+    const effCls = isMapped ? '' : ' is-displayOnly';
     
     const path = prereqPath(s.id);
     let prereqHtml = '';
@@ -13175,27 +13186,34 @@ const OmniSkill = (() => {
       const lines = path.map((p) => `${p.isReady ? '✓' : '×'} ${p.name} (${p.lv}/${p.max})`).join('\n');
       prereqHtml = `<div class="omni-side-prereq${blockedCount ? ' is-blocked' : ''}">前提パス (center → このスキル):\n${esc(lines)}</div>`;
     }
+    
+    const nameOffline = (s.name_official && s.name_official !== s.name)
+      ? `<div class="omni-side-meta">${esc(s.name_official)}</div>`
+      : '';
+    const gradeLabel = s.grade_official ? `${s.grade} (${s.grade_official})` : (s.grade || '?');
     side.innerHTML = [
-      `<div class="omni-side-name"><span>${esc(s.name)}</span><span class="omni-side-meta">${esc(s.grade || '?')} / ring ${s.ring}</span></div>`,
-      `<div class="omni-side-meta">最大Lv ${s.max_lv} / コスト ${cost} SP × Lv</div>`,
-      `<div class="omni-side-eff${effCls}">${esc(effText)}</div>`,
-      prereqHtml,
+      `<div class="omni-side-name"><span>${esc(s.name)}</span><span class="omni-side-meta">${esc(gradeLabel)} / ring ${s.ring}</span></div>`,
+      nameOffline,
+      `<div class="omni-side-meta">最大Lv ${s.max_lv} / コスト ${cost} SP × Lv${!isMapped && s.effect ? ' / (条件付きか固有効果でステ計算には未反映)' : ''}</div>`,
+      `<div class="omni-side-eff${effCls}">${esc(effLines.join('\n'))}</div>`,
       `<div class="omni-side-lv-ctrl">`,
         `<label>Lv</label>`,
         `<button type="button" data-omni-lv="-1" ${lv <= 0 ? 'disabled' : ''}>−</button>`,
         `<input type="number" id="omni-side-lv-num" min="0" max="${s.max_lv}" step="1" value="${lv}">`,
         `<button type="button" data-omni-lv="+1" ${(lv >= s.max_lv || (lv === 0 && !takeable)) ? 'disabled' : ''}>＋</button>`,
+        `<button type="button" data-omni-lv="max" ${(lv >= s.max_lv || (lv === 0 && !takeable)) ? 'disabled' : ''} title="最大Lv まで一気に振る">最大</button>`,
         `<span class="omni-side-cost">/ ${s.max_lv}</span>`,
       `</div>`,
       !takeable && lv === 0 ? `<div class="omni-side-prereq is-blocked">⚠ 前提未達 (隣接 max が必要)</div>` : '',
-      `<div class="omni-side-cost">このノードに費やす SP: ${lv * cost}</div>`,
     ].join('');
     
     side.querySelectorAll('[data-omni-lv]').forEach((btn) => {
       btn.addEventListener('click', () => {
-        const delta = Number(btn.getAttribute('data-omni-lv'));
+        const attr = btn.getAttribute('data-omni-lv');
         const cur = getLv(s.id);
-        const next = Math.max(0, Math.min(s.max_lv, cur + delta));
+        let next;
+        if (attr === 'max') next = s.max_lv;
+        else next = Math.max(0, Math.min(s.max_lv, cur + Number(attr)));
         if (next > 0 && !isTakeable(s) && cur === 0) return;
         setLv(s.id, next);
         renderAll();
@@ -13218,18 +13236,64 @@ const OmniSkill = (() => {
   }
 
   function renderHeader() {
-    const lvEl = document.getElementById('omni-lv');
     const spEl = document.getElementById('omni-sp-status');
     const acEl = document.getElementById('omni-active-count');
     const oLv = readOmniLv();
     const budget = oLv * 10;
     const used   = totalSpent();
-    if (lvEl) lvEl.textContent = String(oLv);
     if (spEl) {
       spEl.textContent = `${used} / ${budget}`;
       spEl.classList.toggle('is-over', used > budget);
     }
     if (acEl) acEl.textContent = String(activeCount());
+  }
+
+  
+  const KEY_META = {
+    physDamagePercent:   { jp: '物理攻撃力',          pct: true  },
+    attrMagic:           { jp: '魔法攻撃力',          pct: true  },
+    hpPercent:           { jp: '最大HP',              pct: true  },
+    cpPercent:           { jp: '最大CP',              pct: true  },
+    finalPhysDamage:     { jp: '最終物理ダメージ',    pct: true  },
+    finalMagicDamage:    { jp: '最終魔法ダメージ',    pct: true  },
+    finalDamagePercent:  { jp: '最終ダメージ',        pct: true  },
+    skillCooldownReduce: { jp: 'クールタイム減少',    pct: true  },
+    physCritDamage:      { jp: '物理致命打ダメージ',  pct: true  },
+    doubleCritDamage:    { jp: 'ダブルクリティカル',  pct: true  },
+    physStrongDamage:    { jp: '物理強打ダメージ',    pct: true  },
+    magicStrongDamage:   { jp: '魔法強打ダメージ',    pct: true  },
+    magicCritDamage:     { jp: '魔法致命打ダメージ',  pct: true  },
+    hit:                 { jp: '命中率',              pct: true  },
+    eva:                 { jp: '回避率',              pct: true  },
+    atkspd:              { jp: '攻撃速度',            pct: true  },
+    defPercent:          { jp: '防御力',              pct: true  },
+    blockRate:           { jp: 'ブロック率',          pct: true  },
+    statusResist:        { jp: '状態異常抵抗',        pct: true  },
+    reduceMagicDmg:      { jp: '被魔法ダメージ減少',  pct: true  },
+    reducePhysDmg:       { jp: '被物理ダメージ減少',  pct: true  },
+    reduceStatusDmg:     { jp: '異常系の被ダメ減少',  pct: true  },
+    magicResist:         { jp: '魔法抵抗力',          pct: true  },
+    enemyAllAttrResistReduce: { jp: 'ターゲット全属性抵抗減少', pct: true },
+    potionHeal:          { jp: 'ポーション回復量',    pct: true  },
+    potionHealSpeed:     { jp: 'ポーション回復速度',  pct: true  },
+    weaponAtkFlat:       { jp: '武器攻撃力',          pct: false },
+    defFlat:             { jp: '基本防御力',          pct: false },
+    hpFlat:              { jp: '最大HP',              pct: false },
+    shieldValue:         { jp: 'シールド数値',        pct: false },
+    limitBreakPhysFlat:  { jp: '限界突破称号の物理',  pct: false },
+    limitBreakMagicFlat: { jp: '限界突破称号の魔法',  pct: false },
+    
+    petHpPercent:        { jp: 'ペット&召喚 最大HP', pct: true  },
+    petStatusResist:     { jp: 'ペット&召喚 状態異常耐性', pct: true },
+    petKnockbackResist:  { jp: 'ペット&召喚 ノックバック/低下抵抗', pct: true },
+    
+    bleedBaseDmgPercent: { jp: '出血ダメージ基本値',     pct: true  },
+    dotDmgPercent:       { jp: '持続ダメージ系効果',     pct: true  },
+    hpMaxCapRaise:       { jp: '最大HP上限引き上げ',     pct: false },
+  };
+  for (const k of ATTR_KEYS) {
+    KEY_META['attr' + k]         = { jp: k + '属性攻撃力',  pct: true };
+    KEY_META['attr' + k + 'Resist'] = { jp: k + '属性抵抗', pct: true };
   }
 
   function renderSummary() {
@@ -13239,26 +13303,17 @@ const OmniSkill = (() => {
     applyToSTTemp(T);
     const sum = T.sum;
     const STAT_ORDER = ['str','agi','con','int','wiz','chs','luc'];
-    const STAT_JP    = { str:'力', agi:'敏捷', con:'健康', int:'知識', wiz:'知恵', chs:'カリスマ', luc:'運' };
-    const PCT_KEYS = new Set([
-      'physDamagePercent','attrMagic','hpPercent','cpPercent','finalPhysDamage','finalMagicDamage',
-      'finalDamagePercent','skillCooldownReduce','physCritDamage','doubleCritDamage','physStrongDamage',
-      'magicStrongDamage','magicCritDamage','hit','eva','atkspd','defPercent','blockRate','statusResist',
-      'reduceMagicDmg','reducePhysDmg','reduceStatusDmg','magicResist','enemyAllAttrResistReduce',
-    ]);
-    for (const k of ATTR_KEYS) { PCT_KEYS.add('attr' + k); PCT_KEYS.add('attr' + k + 'Resist'); }
     const lines = [];
-    
     for (const k of STAT_ORDER) {
       const v = sum[k]; if (!v) continue;
-      lines.push(`${STAT_JP[k]} ${v >= 0 ? '+' : ''}${v}`);
+      lines.push(`${STAT_NAME_TO_KEY_R[k]} ${v >= 0 ? '+' : ''}${formatVal(v, false)}`);
     }
-    
     for (const k of Object.keys(sum)) {
       if (STAT_ORDER.includes(k)) continue;
       const v = sum[k]; if (!v) continue;
+      const meta = KEY_META[k] || { jp: k, pct: false };
       const sign = v >= 0 ? '+' : '';
-      lines.push(`${k} ${sign}${PCT_KEYS.has(k) ? v.toFixed(2).replace(/\.0+$/, '') + '%' : v}`);
+      lines.push(`${meta.jp} ${sign}${formatVal(v, meta.pct)}`);
     }
     if (lines.length === 0) {
       pre.textContent = '未振り分け';
@@ -13268,6 +13323,13 @@ const OmniSkill = (() => {
       pre.classList.remove('is-empty');
     }
   }
+  
+  function formatVal(v, pct) {
+    const trimmed = (Number.isInteger(v) ? String(v) : Number(v.toFixed(2)).toString());
+    return pct ? trimmed + '%' : trimmed;
+  }
+  
+  const STAT_NAME_TO_KEY_R = { str: '力', agi: '敏捷', con: '健康', int: '知識', wiz: '知恵', chs: 'カリスマ', luc: '運' };
 
   function renderAll() {
     renderGraph();

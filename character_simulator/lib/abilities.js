@@ -41,7 +41,14 @@ export function computeAbilities(character, finalStats, equippedItems, loader) {
   const atkMinFlat   = numOrZero(eq.atkMinFlat);
   const atkMaxFlat   = numOrZero(eq.atkMaxFlat);
 
-  const hpMax = Math.floor((baseHp + Lv + hpStat) * (1 + hpPercent / 100) + hpFlat);
+  
+  
+  const HP_CAP_DEFAULT = 200000;
+  const HP_CAP_RAISED  = 1000000;
+  const hpMaxCapRaise  = numOrZero(eq.hpMaxCapRaise);
+  const hpCap = (hpMaxCapRaise > 0) ? HP_CAP_RAISED : HP_CAP_DEFAULT;
+  const hpMaxRaw = Math.floor((baseHp + Lv + hpStat) * (1 + hpPercent / 100) + hpFlat);
+  const hpMax = Math.min(hpCap, hpMaxRaw);
   const cpMax = Math.floor((baseCp + Lv + cpStat) * (1 + cpPercent / 100) + cpFlat);
 
   let weaponName = '';
