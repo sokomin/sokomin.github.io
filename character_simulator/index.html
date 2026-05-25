@@ -1592,6 +1592,13 @@
     .blood-info-line .blood-info-val { color: #00ff66; font-family: "Consolas", monospace; }
     .blood-info-line .blood-info-sub { color: #b0944c; font-size: 11px; margin-left: 4px; }
     .blood-info-line .blood-info-effect-empty { color: #6e5a2a; }
+    .blood-info-line select.blood-field-select {
+      background: #120c04; color: #f4e7a2; border: 1px solid #8b6a28;
+      font: inherit; padding: 1px 4px; min-width: 12em;
+    }
+    .blood-info-line .blood-effect-pos { color: #00ff66; font-family: "Consolas", monospace; font-weight: bold; }
+    .blood-info-line .blood-effect-neg { color: #ff6060; font-family: "Consolas", monospace; font-weight: bold; }
+    .blood-info-line .blood-effect-zero { color: #b0944c; font-family: "Consolas", monospace; }
     .blood-alloc-header {
       display: flex; justify-content: space-between; align-items: baseline;
       margin: 8px 0 4px 0;
@@ -3556,11 +3563,17 @@
                   <span class="blood-info-sub" id="blood-total-record-detail">(基礎 0 + 補正 0)</span>
                 </div>
                 <div class="blood-info-line">
-                  <span class="blood-info-key">現在のフィールドにおすすめのブラッドレコード:</span>
+                  <label class="blood-info-key" for="blood-field-select">現在のフィールド:</label>
+                  <select id="blood-field-select" class="blood-field-select">
+                    <option value="">-未選択-</option>
+                  </select>
+                </div>
+                <div class="blood-info-line">
+                  <span class="blood-info-key">おすすめのブラッドレコード:</span>
                   <span class="blood-info-val" id="blood-field-recommend">-</span>
                 </div>
                 <div class="blood-info-line">
-                  <span class="blood-info-key">現在フィールドに適用中の効果:</span>
+                  <span class="blood-info-key">適用中の効果:</span>
                   <span class="blood-info-effect-empty" id="blood-field-effect">-無し-</span>
                 </div>
 
@@ -3654,6 +3667,7 @@
                   <tr><th>vs型別物理ダメ%</th><td><input type="number" id="dmg-in-vsTypePct" value="0" step="1"></td></tr>
                   <tr><th>最終攻撃力%</th><td><input type="number" id="dmg-in-finalAtkPct" value="0" step="1"></td></tr>
                   <tr><th>最終物理ダメ%</th><td><input type="number" id="dmg-in-finalPhysPct" value="0" step="1"></td></tr>
+                  <tr><th>ブラッドレコード最終ダメ%</th><td><input type="number" id="dmg-in-bloodFieldDmg" value="0" step="1" title="ブラッドレコード適用マップで発生する 「外側」 の最終ダメージ層。 通常の最終ダメ% とは別に独立して × (1+x/100) で乗算される。"></td></tr>
                   <tr><th>致命打率%</th><td><input type="number" id="dmg-in-critRate" value="0" step="0.1"></td></tr>
                   <tr><th>ダブクリ率% (致命中)</th><td><input type="number" id="dmg-in-doubleCritRate" value="0" step="0.1"></td></tr>
                   <tr><th>強打率%</th><td><input type="number" id="dmg-in-strongRate" value="0" step="0.1"></td></tr>
@@ -3678,6 +3692,7 @@
                   <tr><th>敵の属性抵抗%</th><td><input type="number" id="dmg-in-mEnemyResist" value="0" step="1"></td></tr>
                   <tr><th>敵の属性弱化%</th><td><input type="number" id="dmg-in-mEnemyWeaken" value="0" step="1"></td></tr>
                   <tr><th>最終ダメ%</th><td><input type="number" id="dmg-in-mFinalDmg" value="0" step="1"></td></tr>
+                  <tr><th>ブラッドレコード最終ダメ%</th><td><input type="number" id="dmg-in-mBloodFieldDmg" value="0" step="1" title="ブラッドレコード適用マップで発生する 「外側」 の最終ダメージ層。 通常の最終ダメ% とは別に独立して × (1+x/100) で乗算される。"></td></tr>
                   <tr><th>敵ダメージカット%</th><td><input type="number" id="dmg-in-mMobCut" value="0" step="1"></td></tr>
                   <tr><th>魔法致命打率%</th><td><input type="number" id="dmg-in-mCritRate" value="0" step="0.1"></td></tr>
                   <tr><th>魔法強打率%</th><td><input type="number" id="dmg-in-mStrongRate" value="0" step="0.1"></td></tr>
@@ -12729,7 +12744,47 @@ const BloodRecord = (() => {
   const state = {
     lv: 0,
     alloc: { str:0, agi:0, con:0, int:0, wiz:0, chs:0, luc:0 },
+    fieldId: '',
   };
+
+
+  let fieldData = null;
+  let fieldLoadPromise = null;
+  function loadFieldData() {
+    if (fieldLoadPromise) return fieldLoadPromise;
+    fieldLoadPromise = fetch('./lib/data/blood_field_effects.json')
+      .then((r) => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)))
+      .then((j) => { fieldData = j; return j; })
+      .catch((e) => { console.warn('[BloodRecord] field data load failed:', e); fieldData = null; });
+    return fieldLoadPromise;
+  }
+  function getField(id) {
+    if (!fieldData || !id) return null;
+    return (fieldData.fields || []).find((f) => f.id === id) || null;
+  }
+
+  
+
+  function computeFieldEffect(field, totalBR) {
+    if (!field || !fieldData || !fieldData.deltaBrackets) return null;
+    const B = fieldData.deltaBrackets;
+    if (!B.length) return null;
+    const delta = (totalBR | 0) - (field.reqBR | 0);
+    let row = B[0];
+    for (const r of B) {
+      if (delta >= r[0]) row = r;
+      else break;
+    }
+    const sec1 = row[1];
+    const sec2 = row[2];
+    return {
+      delta:                delta,
+      sec1:                 sec1,
+      sec2:                 sec2,
+      finalDmgPercent:      sec2,        
+      finalDmgTakenReduce: -sec1,        
+    };
+  }
 
   function clampLv(n) {
     n = Number(n) || 0;
@@ -12753,6 +12808,8 @@ const BloodRecord = (() => {
   }
 
 
+  
+
   function applyToSTTemp(T) {
     if (!T || !T.sum) return;
     for (const k of STAT_KEYS_7) {
@@ -12761,6 +12818,17 @@ const BloodRecord = (() => {
     }
     const br = baseRecord(state.lv);
     if (br) T.sum.bloodRecord = (T.sum.bloodRecord || 0) + br;
+
+
+    const field = getField(state.fieldId);
+    if (field) {
+      const totalBR = Number(T.sum.bloodRecord) || 0;
+      const eff = computeFieldEffect(field, totalBR);
+      if (eff) {
+        if (eff.finalDmgPercent)      T.sum.bloodFieldFinalDmg   = (T.sum.bloodFieldFinalDmg   || 0) + eff.finalDmgPercent;
+        if (eff.finalDmgTakenReduce)  T.sum.finalDmgTakenReduce  = (T.sum.finalDmgTakenReduce  || 0) + eff.finalDmgTakenReduce;
+      }
+    }
   }
 
   
@@ -12788,6 +12856,56 @@ const BloodRecord = (() => {
     } catch (_) { equipBonus = 0; }
     if (totalEl)  totalEl.textContent  = String(br + equipBonus);
     if (detailEl) detailEl.textContent = `(基礎 ${br} + 補正 ${equipBonus})`;
+
+
+    const selectEl = document.getElementById('blood-field-select');
+    if (selectEl) {
+      const wantId = state.fieldId || '';
+      const fields = (fieldData && fieldData.fields) ? fieldData.fields : [];
+      const expectKey = fields.map((f) => f.id).join('|') + '||' + wantId;
+      if (selectEl.dataset.builtKey !== expectKey) {
+        const opts = ['<option value="">-未選択-</option>'].concat(
+          fields.map((f) => {
+            const sel = (f.id === wantId) ? ' selected' : '';
+            return `<option value="${f.id}"${sel}>${f.shortName} (推奨 BR ${f.reqBR})</option>`;
+          })
+        );
+        selectEl.innerHTML = opts.join('');
+        selectEl.dataset.builtKey = expectKey;
+      } else {
+        selectEl.value = wantId;
+      }
+    }
+
+    
+    const field = getField(state.fieldId);
+    const recEl    = document.getElementById('blood-field-recommend');
+    const effectEl = document.getElementById('blood-field-effect');
+    if (recEl) {
+      recEl.textContent = field ? String(field.reqBR) : '-';
+    }
+    if (effectEl) {
+      effectEl.className = ''; 
+      if (!field) {
+        effectEl.className = 'blood-info-effect-empty';
+        effectEl.textContent = '-無し-';
+      } else {
+        const totalBR = br + equipBonus;
+        const eff = computeFieldEffect(field, totalBR);
+        if (!eff) {
+          effectEl.className = 'blood-info-effect-empty';
+          effectEl.textContent = '-無し-';
+        } else {
+          const up    = eff.finalDmgPercent;
+          const taken = eff.finalDmgTakenReduce;
+          const sign = (v) => (v > 0 ? '+' : '') + v;
+          const cls  = (v) => (v > 0 ? 'blood-effect-pos' : v < 0 ? 'blood-effect-neg' : 'blood-effect-zero');
+          effectEl.innerHTML =
+            `最終ダメ <span class="${cls(up)}">${sign(up)}%</span> / ` +
+            `最終被ダメ減少 <span class="${cls(taken)}">${sign(taken)}%</span>`;
+        }
+      }
+    }
 
     const usedV = usedPoints();
     const availV = availablePoints(state.lv);
@@ -12845,6 +12963,14 @@ const BloodRecord = (() => {
         notifyChange();
       });
     }
+    const fieldSel = document.getElementById('blood-field-select');
+    if (fieldSel) {
+      fieldSel.addEventListener('change', () => {
+        state.fieldId = String(fieldSel.value || '');
+        render();
+        notifyChange();
+      });
+    }
   }
 
   function init(onChange) {
@@ -12857,7 +12983,7 @@ const BloodRecord = (() => {
   }
   function rerender() { if (_initialized) render(); }
   function getState() {
-    const out = { lv: clampLv(state.lv), alloc: {} };
+    const out = { lv: clampLv(state.lv), alloc: {}, fieldId: state.fieldId || '' };
     for (const k of STAT_KEYS_7) out.alloc[k] = clampAlloc(state.alloc[k]);
     return out;
   }
@@ -12869,13 +12995,23 @@ const BloodRecord = (() => {
     } else {
       for (const k of STAT_KEYS_7) state.alloc[k] = 0;
     }
+    state.fieldId = (typeof s.fieldId === 'string') ? s.fieldId : '';
     if (_initialized) render();
   }
   function reset() {
     state.lv = 0;
     for (const k of STAT_KEYS_7) state.alloc[k] = 0;
+    state.fieldId = '';
     if (_initialized) render();
   }
+
+
+  loadFieldData().then(() => {
+    if (_initialized) render();
+    if (state.fieldId && typeof recalcAll === 'function') {
+      recalcAll().catch(() => {});
+    }
+  });
 
   return { init, applyToSTTemp, getState, setState, reset, rerender, baseRecord };
 })();
@@ -13709,6 +13845,7 @@ const DamageCalc = (() => {
       vsTypePct: num('dmg-in-vsTypePct'),
       finalAtkPct: num('dmg-in-finalAtkPct'),
       finalPhysPct: num('dmg-in-finalPhysPct'),
+      bloodFieldDmg: num('dmg-in-bloodFieldDmg'),
       critRate: num('dmg-in-critRate'),
       doubleCritRate: num('dmg-in-doubleCritRate'),
       strongRate: num('dmg-in-strongRate'),
@@ -13735,6 +13872,7 @@ const DamageCalc = (() => {
       enemyResist:   num('dmg-in-mEnemyResist'),
       enemyWeaken:   num('dmg-in-mEnemyWeaken'),
       finalDmg:      num('dmg-in-mFinalDmg'),
+      bloodFieldDmg: num('dmg-in-mBloodFieldDmg'),
       mobCut:        num('dmg-in-mMobCut'),
       critRate:      num('dmg-in-mCritRate'),
       strongRate:    num('dmg-in-mStrongRate'),
@@ -13771,6 +13909,8 @@ const DamageCalc = (() => {
     if (hitType === 'double') base *= (1 + inputs.doubleCritDmg / 100);
     if (hitType === 'strong') base *= (1 + inputs.strongDmg / 100);
     base *= (1 + inputs.finalPhysPct / 100);
+
+    base *= (1 + (inputs.bloodFieldDmg || 0) / 100);
     if (attackCount && attackCount > 1) base *= attackCount;
     return base;
   }
@@ -13798,6 +13938,9 @@ const DamageCalc = (() => {
     if (hitType === 'crit')   hitMul = 2;  
     else if (hitType === 'strong') hitMul = 4;  
     base *= hitMul;
+
+
+    base *= (1 + (inputs.bloodFieldDmg || 0) / 100);
 
     if (attackCount && attackCount > 1) base *= attackCount;
     return base;
@@ -13953,6 +14096,7 @@ const DamageCalc = (() => {
           `(魔法ダメ${fmt(r.baseMagicDmgPct || 0)} + 属性${fmt(r.attrPct || 0)} + 錬金×2=${fmt(inp.alchemyLv * 2)} + 石像${fmt(inp.stoneStatue)} + 神秘${fmt(inp.mysticWater)} + 刃油${fmt(inp.bladeOil)})`],
         ['属性: (100 - 抵抗 + 弱化)', `${(100 - inp.enemyResist + inp.enemyWeaken).toFixed(0)}%`],
         ['最終ダメ% 倍率', (1 + inp.finalDmg / 100).toFixed(3) + ' 倍'],
+        ['ブラッドレコード最終ダメ% 倍率 (外側)', (1 + (inp.bloodFieldDmg || 0) / 100).toFixed(3) + ' 倍'],
         ['Mobカット 倍率', (1 - inp.mobCut / 100).toFixed(3) + ' 倍'],
         ['魔法ダメ制限 (cap)', fmtInt(inp.capBase || 20000)],
         ['限界突破 超過%', `${fmt(inp.limitPct)}% ` +
@@ -13989,6 +14133,7 @@ const DamageCalc = (() => {
         ['ダブクリダメ増 倍率', (1 + inp.doubleCritDmg / 100).toFixed(3) + ' 倍'],
         ['強打ダメ増 倍率', (1 + inp.strongDmg / 100).toFixed(3) + ' 倍'],
         ['最終物理ダメ% 倍率', (1 + inp.finalPhysPct / 100).toFixed(3) + ' 倍'],
+        ['ブラッドレコード最終ダメ% 倍率 (外側)', (1 + (inp.bloodFieldDmg || 0) / 100).toFixed(3) + ' 倍'],
         ['攻撃回数', r.attackCount ? fmt(r.attackCount) : '—'],
         ['1発間隔 (1/(1+atkSpd%))', (1 / (1 + inp.attackSpd / 100)).toFixed(3) + ' 秒'],
       ];
@@ -14029,6 +14174,7 @@ const DamageCalc = (() => {
           ? eq.__withTitleLimitBreakPhysFlat
           : (Number(eq.limitBreakPhysFlat) || 0));
       setIfAuto('dmg-in-finalPhysPct', (Number(eq.finalPhysDamage) || 0) + (Number(eq.finalDamagePercent) || 0));
+      setIfAuto('dmg-in-bloodFieldDmg', Number(eq.bloodFieldFinalDmg) || 0);
       setIfAuto('dmg-in-vsTypePct',  Number(eq.vsBossDamage) || 0);
       setIfAuto('dmg-in-skillCdReduce', Number(eq.skillCooldownReduce) || 0);
 
@@ -14044,6 +14190,7 @@ const DamageCalc = (() => {
       const titleMagicPct = titleBonus2.magicPct || 0;
       setIfAuto('dmg-in-mLimitPct', titleMagicPct);
       setIfAuto('dmg-in-mFinalDmg', (Number(eq.finalMagicDamage) || 0) + (Number(eq.finalDamagePercent) || 0));
+      setIfAuto('dmg-in-mBloodFieldDmg', Number(eq.bloodFieldFinalDmg) || 0);
       
       setIfAuto('dmg-in-mAlchemy', titleBonus2.alchemyLv || 0);
     } finally {
@@ -14089,6 +14236,7 @@ const DamageCalc = (() => {
       
       'dmg-in-weaponMin','dmg-in-weaponMax','dmg-in-nonWeapon','dmg-in-str',
       'dmg-in-physDmgPct','dmg-in-vsTypePct','dmg-in-finalAtkPct','dmg-in-finalPhysPct',
+      'dmg-in-bloodFieldDmg',
       'dmg-in-critRate','dmg-in-doubleCritRate','dmg-in-strongRate',
       'dmg-in-doubleCritDmg','dmg-in-strongDmg',
       'dmg-in-limitBreakPct','dmg-in-limitBreakFlat','dmg-in-physCapBase',
@@ -14097,7 +14245,7 @@ const DamageCalc = (() => {
       'dmg-in-mInt','dmg-in-mDmgPct','dmg-in-mAlchemy','dmg-in-mStoneStatue',
       'dmg-in-mMysticWater','dmg-in-mBladeOil',
       'dmg-in-mEnemyResist','dmg-in-mEnemyWeaken',
-      'dmg-in-mFinalDmg','dmg-in-mMobCut',
+      'dmg-in-mFinalDmg','dmg-in-mBloodFieldDmg','dmg-in-mMobCut',
       'dmg-in-mCritRate','dmg-in-mStrongRate',
       'dmg-in-mLimitPct','dmg-in-mLimitFlat','dmg-in-mCapBase',
       'dmg-in-mAttackSpd','dmg-in-mDmgMode',

@@ -166,6 +166,30 @@
                 加えて<a href="#2">オムニスキル</a>と<a href="#3">ブラッドレコード</a>によってキャラクターを強化できます。<br>
                 これらのシステムにアクセスするには前提クエストをクリアする必要があります。<br>
                 <br>
+                <div class="index_table">
+                    <table id="table10" style="max-width:640px">
+                        <tbody>
+                            <tr>
+                                <th colspan="3">目次</th>
+                            </tr>
+                            <tr>
+                                <td align="center"><a href="#1">▼基本仕様</a></td>
+                                <td align="center"><a href="#11">▼ベリー系アイテム仕様</a></td>
+                                <td align="center"><a href="#2">▼オムニスキル</a></td>
+                            </tr>
+                            <tr>
+                                <td align="center"><a href="#3">▼ブラッドレコード</a></td>
+                                <td align="center"><a href="#31">▼ブラッドレコード補正計算式</a></td>
+                                <td align="center"><a href="#32">▼マップ別ブラッドレコード補正早見表</a></td>
+                            </tr>
+                            <tr>
+                                <td align="center"><a href="#99">▼備考</a></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <br>
                 <br>
                 <a name="1"></a>
@@ -242,10 +266,205 @@
                     border="0" alt="" name="insertImg" /><br><br>
                 <br>
                 <br>
-                <!-- 対応表は以下。<br> -->
-                <!-- ４０に対して30だと最終ダメ+30%、被ダメ減少+30% -->
-                <!-- ベルセにも乗る？要検証 -->
+                <a name="31"></a>
+                <font color="#e95388">
+                    <h4>ブラッドレコード補正計算式</h4>
+                </font>
+                与ダメージ補正・被ダメージ補正の倍率は、自身のブラッドレコード値とフィールドの推奨ブラッドレコード値の<b>比率</b>で決まります。<br>
+                比率は20%刻みでステップ的に変化し、150%以上で上限・20%未満で下限に張り付きます。<br>
                 <br>
+                <b>計算式</b><br>
+                ・比率 (%) = <font color="#e95388"><b>自身のブラッドレコード ÷ フィールドの推奨ブラッドレコード × 100</b></font><br>
+                ・上記比率に応じて、下表の与ダメージ補正・被ダメージ補正がフィールド内のダメージ計算の最終段にかかります。<br>
+                <br>
+                <b>例</b><br>
+                ・推奨ブラッドレコード 30 のフィールドで自身のブラッドレコード=30 → 比率 100% → 与ダメ ±0% / 被ダメ ±0% (補正なし)<br>
+                ・推奨ブラッドレコード 30 のフィールドで自身のブラッドレコード=45 → 比率 150% → 与ダメ <font color="blue">+50%</font> / 被ダメ <font color="blue">-50%</font> (上限。これ以上ブラッドレコードを上げても変わらない)<br>
+                ・推奨ブラッドレコード 145 のフィールドで自身のブラッドレコード=30 → 比率 約20% → 与ダメ <font color="red">-80%</font> / 被ダメ <font color="red">+40%</font><br>
+                <br>
+                <b>共通対応表 (比率 → 補正値)</b><br>
+                <table id="table10" class="sokomin-shadow" style="max-width:560px">
+                    <tbody>
+                        <tr>
+                            <th>比率 (個人 / 推奨)</th>
+                            <th>与ダメージ補正</th>
+                            <th>被ダメージ補正</th>
+                        </tr>
+                        <tr><td align="center">0% ～ 19%</td><td align="center"><font color="red">-90%</font></td><td align="center"><font color="red">+50%</font></td></tr>
+                        <tr><td align="center">20% ～ 39%</td><td align="center"><font color="red">-80%</font></td><td align="center"><font color="red">+40%</font></td></tr>
+                        <tr><td align="center">40% ～ 59%</td><td align="center"><font color="red">-60%</font></td><td align="center"><font color="red">+30%</font></td></tr>
+                        <tr><td align="center">60% ～ 79%</td><td align="center"><font color="red">-40%</font></td><td align="center"><font color="red">+20%</font></td></tr>
+                        <tr><td align="center">80% ～ 99%</td><td align="center"><font color="red">-20%</font></td><td align="center"><font color="red">+10%</font></td></tr>
+                        <tr><td align="center"><b>100% ～ 109%</b></td><td align="center"><b>±0%</b></td><td align="center"><b>±0%</b></td></tr>
+                        <tr><td align="center">110% ～ 119%</td><td align="center"><font color="blue">+10%</font></td><td align="center"><font color="blue">-10%</font></td></tr>
+                        <tr><td align="center">120% ～ 129%</td><td align="center"><font color="blue">+20%</font></td><td align="center"><font color="blue">-20%</font></td></tr>
+                        <tr><td align="center">130% ～ 139%</td><td align="center"><font color="blue">+30%</font></td><td align="center"><font color="blue">-30%</font></td></tr>
+                        <tr><td align="center">140% ～ 149%</td><td align="center"><font color="blue">+40%</font></td><td align="center"><font color="blue">-40%</font></td></tr>
+                        <tr><td align="center"><b>150% 以上</b></td><td align="center"><font color="blue"><b>+50%</b></font></td><td align="center"><font color="blue"><b>-50%</b></font></td></tr>
+                    </tbody>
+                </table>
+                ※20%未満は -90% / +50% で下限、150%以上は +50% / -50% で上限に張り付き、それ以上ブラッドレコードを上げても変化しません。<br>
+                ※比率は小数点以下切り捨てで判定します (例：自身のブラッドレコード=29, 推奨ブラッドレコード=145 → 19.99% → 19% 扱いで最下限)。<br>
+                <br>
+                <br>
+                <a name="32"></a>
+                <font color="#e95388">
+                    <h4>マップ別 ブラッドレコード 補正早見表</h4>
+                </font>
+                各マップで、自身のブラッドレコードが下表のレンジにあるとき、対応する与ダメージ補正・被ダメージ補正が適用されます。<br>
+                与ダメ・被ダメ補正の対応は上の共通対応表と同じです。<br>
+                <br>
+                <table id="table10" class="sokomin-shadow" style="font-size:13px;max-width:960px">
+                    <tbody>
+                        <tr>
+                            <th rowspan="2">比率</th>
+                            <th rowspan="2">与ダメ<br>補正</th>
+                            <th rowspan="2">被ダメ<br>補正</th>
+                            <th colspan="7">個人のブラッドレコード レンジ (マップ別)</th>
+                        </tr>
+                        <tr>
+                            <th>南部<br>(推奨 30)</th>
+                            <th>北部<br>(推奨 50)</th>
+                            <th>飼育場<br>(推奨 80)</th>
+                            <th>孤立飼育地<br>(推奨 145)</th>
+                            <th>地下研究所<br>(推奨 175)</th>
+                            <th>2000精鋭<br>(推奨 215)</th>
+                            <th>エルシュカ<br>(推奨 290)</th>
+                        </tr>
+                        <tr>
+                            <td align="center">0%～19%</td>
+                            <td align="center"><font color="red">-90%</font></td>
+                            <td align="center"><font color="red">+50%</font></td>
+                            <td align="center">0 ～ 5</td>
+                            <td align="center">0 ～ 9</td>
+                            <td align="center">0 ～ 15</td>
+                            <td align="center">0 ～ 28</td>
+                            <td align="center">0 ～ 34</td>
+                            <td align="center">0 ～ 42</td>
+                            <td align="center">0 ～ 57</td>
+                        </tr>
+                        <tr>
+                            <td align="center">20%～39%</td>
+                            <td align="center"><font color="red">-80%</font></td>
+                            <td align="center"><font color="red">+40%</font></td>
+                            <td align="center">6 ～ 11</td>
+                            <td align="center">10 ～ 19</td>
+                            <td align="center">16 ～ 31</td>
+                            <td align="center">29 ～ 57</td>
+                            <td align="center">35 ～ 69</td>
+                            <td align="center">43 ～ 85</td>
+                            <td align="center">58 ～ 115</td>
+                        </tr>
+                        <tr>
+                            <td align="center">40%～59%</td>
+                            <td align="center"><font color="red">-60%</font></td>
+                            <td align="center"><font color="red">+30%</font></td>
+                            <td align="center">12 ～ 17</td>
+                            <td align="center">20 ～ 29</td>
+                            <td align="center">32 ～ 47</td>
+                            <td align="center">58 ～ 86</td>
+                            <td align="center">70 ～ 104</td>
+                            <td align="center">86 ～ 128</td>
+                            <td align="center">116 ～ 173</td>
+                        </tr>
+                        <tr>
+                            <td align="center">60%～79%</td>
+                            <td align="center"><font color="red">-40%</font></td>
+                            <td align="center"><font color="red">+20%</font></td>
+                            <td align="center">18 ～ 23</td>
+                            <td align="center">30 ～ 39</td>
+                            <td align="center">48 ～ 63</td>
+                            <td align="center">87 ～ 115</td>
+                            <td align="center">105 ～ 139</td>
+                            <td align="center">129 ～ 171</td>
+                            <td align="center">174 ～ 231</td>
+                        </tr>
+                        <tr>
+                            <td align="center">80%～99%</td>
+                            <td align="center"><font color="red">-20%</font></td>
+                            <td align="center"><font color="red">+10%</font></td>
+                            <td align="center">24 ～ 29</td>
+                            <td align="center">40 ～ 49</td>
+                            <td align="center">64 ～ 79</td>
+                            <td align="center">116 ～ 144</td>
+                            <td align="center">140 ～ 174</td>
+                            <td align="center">172 ～ 214</td>
+                            <td align="center">232 ～ 289</td>
+                        </tr>
+                        <tr style="background:#f8f8f8">
+                            <td align="center"><b>100%～109%</b></td>
+                            <td align="center"><b>±0%</b></td>
+                            <td align="center"><b>±0%</b></td>
+                            <td align="center"><b>30 ～ 32</b></td>
+                            <td align="center"><b>50 ～ 54</b></td>
+                            <td align="center"><b>80 ～ 87</b></td>
+                            <td align="center"><b>145 ～ 159</b></td>
+                            <td align="center"><b>175 ～ 192</b></td>
+                            <td align="center"><b>215 ～ 236</b></td>
+                            <td align="center"><b>290 ～ 318</b></td>
+                        </tr>
+                        <tr>
+                            <td align="center">110%～119%</td>
+                            <td align="center"><font color="blue">+10%</font></td>
+                            <td align="center"><font color="blue">-10%</font></td>
+                            <td align="center">33 ～ 35</td>
+                            <td align="center">55 ～ 59</td>
+                            <td align="center">88 ～ 95</td>
+                            <td align="center">160 ～ 173</td>
+                            <td align="center">193 ～ 209</td>
+                            <td align="center">237 ～ 257</td>
+                            <td align="center">319 ～ 347</td>
+                        </tr>
+                        <tr>
+                            <td align="center">120%～129%</td>
+                            <td align="center"><font color="blue">+20%</font></td>
+                            <td align="center"><font color="blue">-20%</font></td>
+                            <td align="center">36 ～ 38</td>
+                            <td align="center">60 ～ 64</td>
+                            <td align="center">96 ～ 103</td>
+                            <td align="center">174 ～ 188</td>
+                            <td align="center">210 ～ 227</td>
+                            <td align="center">258 ～ 279</td>
+                            <td align="center">348 ～ 376</td>
+                        </tr>
+                        <tr>
+                            <td align="center">130%～139%</td>
+                            <td align="center"><font color="blue">+30%</font></td>
+                            <td align="center"><font color="blue">-30%</font></td>
+                            <td align="center">39 ～ 41</td>
+                            <td align="center">65 ～ 69</td>
+                            <td align="center">104 ～ 111</td>
+                            <td align="center">189 ～ 202</td>
+                            <td align="center">228 ～ 244</td>
+                            <td align="center">280 ～ 300</td>
+                            <td align="center">377 ～ 405</td>
+                        </tr>
+                        <tr>
+                            <td align="center">140%～149%</td>
+                            <td align="center"><font color="blue">+40%</font></td>
+                            <td align="center"><font color="blue">-40%</font></td>
+                            <td align="center">42 ～ 44</td>
+                            <td align="center">70 ～ 74</td>
+                            <td align="center">112 ～ 119</td>
+                            <td align="center">203 ～ 217</td>
+                            <td align="center">245 ～ 262</td>
+                            <td align="center">301 ～ 322</td>
+                            <td align="center">406 ～ 434</td>
+                        </tr>
+                        <tr>
+                            <td align="center"><b>150%以上</b></td>
+                            <td align="center"><font color="blue"><b>+50%</b></font></td>
+                            <td align="center"><font color="blue"><b>-50%</b></font></td>
+                            <td align="center"><b>45 ～</b></td>
+                            <td align="center"><b>75 ～</b></td>
+                            <td align="center"><b>120 ～</b></td>
+                            <td align="center"><b>218 ～</b></td>
+                            <td align="center"><b>263 ～</b></td>
+                            <td align="center"><b>323 ～</b></td>
+                            <td align="center"><b>435 ～</b></td>
+                        </tr>
+                    </tbody>
+                </table>
                 <br>
                 <br>
                 <br>
@@ -259,7 +478,6 @@
                 前提クエストが進行不可能になった場合、サポートセンターより復旧の問い合わせをすることで復旧してもらえます。<br>
                 <br>
                 <!-- [参考]<a href="">特設ページ</a><br> -->
-                [参考]<a href="https://www.redstoneonline.jp/bbs/2/view?ano=1024">新規コンテンツ「ブラッドレコード」のご案内</a><br>
                 [参考]<a href="https://www.redstoneonline.jp/bbs/2/view?ano=1024">新規コンテンツ「ブラッドレコード」のご案内</a><br>
                 <br>
                 <br>
