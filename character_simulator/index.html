@@ -174,6 +174,7 @@
       font-weight: bold; color: #f8f000; border-bottom: 1px solid #8b6a28;
       padding-bottom: 2px; margin-bottom: 3px;
     }
+    .sim-stat-popup .pop-title .pop-title-value.is-adjusted { color: #00ff66; }
     .sim-stat-popup .pop-row {
       display: grid; grid-template-columns: 70px 1fr;
       gap: 4px; padding: 1px 0;
@@ -519,8 +520,6 @@
       transition: filter 0.1s;
     }
     .equip-slot:hover { filter: brightness(1.4); }
-    .equip-slot.is-partial { box-shadow: inset 0 0 0 1px #f8f000; }
-    .equip-slot.is-partial::after { content: '⚠'; position: absolute; top: 0; right: 1px; color: #f8f000; font-size: 10px; }
 
     
     .equip-slot[data-slot="weapon"]    { background-image: url('https://sokomin.github.io/character_simulator/img/soubiback-none1.PNG'); }
@@ -3959,6 +3958,9 @@
         <br>
         <br>
         <br>
+        <div style="text-align: center; margin: -4px 0 14px;">
+          <a href="additional_information.html">シミュレーター補足情報</a>
+        </div>
         <br>
         <br>
         <br>
@@ -4835,6 +4837,18 @@ function characterSignature(c) {
   return [c.realLv, c.job, c.gender,
           JSON.stringify(c.stats.base), JSON.stringify(c.stats.equipped)].join('|');
 }
+
+function withCurrentEquippedStats(character) {
+  if (!lastFinalStats) return character;
+  character.stats.equipped = Object.assign(Object.create(null), lastFinalStats);
+  character.stats.maxEquipped = Object.assign(Object.create(null), lastFinalStats);
+  return character;
+}
+
+function readCharacterForRequirementChecks() {
+  return withCurrentEquippedStats(readCharacter());
+}
+
 async function checkFeasible(itemId, character) {
   if (feasibleCache.has(itemId)) return feasibleCache.get(itemId);
   let ok = false;
@@ -4890,7 +4904,7 @@ async function refreshItemList() {
     renderItemList(byName.slice(0, MAX_LIST), byName.length, null);
     return;
   }
-  const character = readCharacter();
+  const character = readCharacterForRequirementChecks();
   const sig = characterSignature(character);
   if (sig !== feasibleCacheKey) { feasibleCacheKey = sig; feasibleCache = new Map(); }
   const effLv = (character.realLv || 0) + (character.lvRevision || 0) + (character.miniPetLvRevision || 0);
@@ -5927,7 +5941,8 @@ function buildItemDetailHtml(inv, rec, character) {
         const override = inv?.reqStatOverride?.[sid];
         const effective = (override != null) ? override : req;
         const ng = have < effective;
-        let label = `<span class="idp-key">${labels[sid] || sid}</span> <span class="idp-val">${effective}</span>`;
+        let label = `<span class="idp-key">${labels[sid] || sid}</span> <span class="idp-val">${effective}</span>` +
+                    ` <span style="color:${ng ? '#ff6666' : '#00ff66'}; font-size:10px">(現在 ${have})</span>`;
         if (override != null && override !== req) {
           label += ` <span style="color:#888; font-size:10px">(本来 ${req})</span>`;
         }
@@ -5964,7 +5979,7 @@ function buildItemDetailHtml(inv, rec, character) {
 function showItemDetailPopup(anchorEl, inv, rec) {
   const popup = $('item-detail-popup');
   if (!popup || !rec) return;
-  const character = readCharacter();
+  const character = readCharacterForRequirementChecks();
   popup.innerHTML = buildItemDetailHtml(inv, rec, character);
   popup.style.display = 'block';
   
@@ -6778,13 +6793,12 @@ async function recalcAll() {
         ['Lv 連動', lvLV],
         ['セットボーナス', setV],
         ['消耗品 max', cMxV],
-        ['固定上限 (max)', fixCap],
+        ['ステータス固定', fixCap],
         ['補正値合計', corrTotal],
-        ['総合計', total],
-        ['適用値', eqV],
         ['Lv比', lvRatio],
       ];
-      let html = `<div class="pop-title">${STAT_LABEL_JA[s]} ${baseV}</div>` +
+      const titleValueClass = (delta !== 0) ? 'pop-title-value is-adjusted' : 'pop-title-value';
+      let html = `<div class="pop-title">${STAT_LABEL_JA[s]} <span class="${titleValueClass}">${eqV}</span></div>` +
                  `<div class="pop-desc">${STAT_DESC[s] || ''}</div>`;
       for (const [k, v] of rows) {
         const isStr = typeof v === 'string';
@@ -10560,7 +10574,9 @@ function renderStoneCards() {
       stoneState[cat.key].stage = Number(e.target.value) || 0;
 
       renderStoneCards();
+      invalidateFeasibleCache();
       await recalcAll();
+      await refreshItemList();
       scheduleAutosave();
     });
     stageRow.appendChild(stageSel);
@@ -10594,7 +10610,9 @@ function renderStoneCards() {
       sel.addEventListener('change', async (e) => {
         stoneState[cat.key].skills[idx] = Number(e.target.value) || 0;
         renderStoneCards();
+        invalidateFeasibleCache();
         await recalcAll();
+        await refreshItemList();
         scheduleAutosave();
       });
       row.appendChild(sel);
@@ -10650,7 +10668,9 @@ function renderStoneCards() {
     btnReset.addEventListener('click', async () => {
       stoneState[cat.key].skills = stoneState[cat.key].skills.map(() => 0);
       renderStoneCards();
+      invalidateFeasibleCache();
       await recalcAll();
+      await refreshItemList();
       scheduleAutosave();
     });
     actions.appendChild(btnReset);
