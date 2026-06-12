@@ -921,9 +921,29 @@
     .creature-slot-detail .csd-empty {
       padding: 6px 4px; color: #6a5530; text-align: center;
     }
+    .creature-slot-detail .csd-base-rank-row,
+    .creature-slot-detail .csd-transcend-row {
+      display: grid;
+      grid-template-columns: 70px minmax(0, 1fr);
+      gap: 4px;
+      align-items: center;
+      padding: 2px 0 4px;
+      border-bottom: 1px dotted #2a1a08;
+      margin-bottom: 2px;
+    }
+    .creature-slot-detail .csd-base-rank-row label,
+    .creature-slot-detail .csd-transcend-row label {
+      color: #d8a743; font-weight: bold; font-size: 11px;
+    }
+    .creature-slot-detail .csd-base-rank-select,
+    .creature-slot-detail .csd-transcend-select {
+      background: #120c04; color: #f4e7a2; border: 1px solid #5b3d12;
+      font-family: inherit; font-size: 11px; padding: 1px 3px;
+      width: 100%; box-sizing: border-box;
+    }
     .creature-slot-detail .csd-row {
       display: grid;
-      grid-template-columns: 70px minmax(0, 1fr) 36px 60px 24px;
+      grid-template-columns: 70px minmax(0, 1fr) 36px 86px 24px;
       gap: 4px;
       align-items: center;
       padding: 2px 0;
@@ -955,6 +975,7 @@
       border: 1px solid #8b6a28; font: inherit;
     }
     .creature-slot-detail .csd-awaken .csd-cap { color: #6a5530; font-size: 10px; }
+    .creature-slot-detail .csd-awaken .csd-trans-bonus { color: #00ff66; font-size: 10px; }
     .creature-slot-detail .csd-reset {
       background: #2a1a08; color: #f4e7a2;
       border: 1px solid #5b3d12; cursor: pointer;
@@ -7277,6 +7298,8 @@ function buildSnapshot() {
   snap.creature = {
     slots: creatureState.slots.map((s) => ({
       id: s && s.id ? s.id : null,
+      baseRank: (s && s.baseRank) || null,
+      transcend: Number(s && s.transcend) || 0,
       awaken: {
         main: Number(s && s.awaken && s.awaken.main) || 0,
         sub1: Number(s && s.awaken && s.awaken.sub1) || 0,
@@ -9669,10 +9692,71 @@ const CREATURE_AWAKEN_MAX = {
   GR: { main: 20, sub: 10 },
 };
 
+const CREATURE_BASE_RANK_LEVELS = {
+  normal: {
+    N:  { main: 8,  sub: 4  },
+    R:  { main: 16, sub: 8  },
+    HR: { main: 24, sub: 12 },
+    SR: { main: 32, sub: 16 },
+    LR: { main: 32, sub: 20 },
+  },
+  rare: {
+    HR: { main: 5,  sub: 3  },
+    SR: { main: 10, sub: 5  },
+    LR: { main: 20, sub: 10 },
+  },
+};
+
+const CREATURE_TRANSCEND_BONUS = {
+  N: [
+    { main: 0, sub: 0 },
+    { main: 1, sub: 1 },
+    { main: 2, sub: 1 },
+    { main: 3, sub: 1 },
+  ],
+  R: [
+    { main: 0, sub: 0 },
+    { main: 1, sub: 1 },
+    { main: 2, sub: 1 },
+    { main: 3, sub: 2 },
+  ],
+  HR: [
+    { main: 0, sub: 0 },
+    { main: 1, sub: 1 },
+    { main: 2, sub: 2 },
+    { main: 3, sub: 2 },
+  ],
+  SR: [
+    { main: 0, sub: 0 },
+    { main: 1, sub: 1 },
+    { main: 2, sub: 1 },
+    { main: 3, sub: 2 },
+    { main: 4, sub: 3 },
+    { main: 6, sub: 5 },
+  ],
+  LR: [
+    { main: 0, sub: 0 },
+    { main: 5, sub: 4 },
+    { main: 6, sub: 4 },
+    { main: 7, sub: 5 },
+    { main: 9, sub: 6 },
+    { main: 10, sub: 8 },
+  ],
+  GR: [
+    { main: 0, sub: 0 },
+    { main: 0, sub: 5 },
+    { main: 0, sub: 6 },
+    { main: 0, sub: 7 },
+    { main: 0, sub: 9 },
+    { main: 0, sub: 10 },
+  ],
+};
 
 function newCreatureSlot() {
   return {
     id: null,
+    baseRank: null,
+    transcend: 0,
     awaken: { main: 0, sub1: 0, sub2: 0, sub3: 0 },
     override: { sub1: null, sub2: null, sub3: null },
   };
@@ -9683,6 +9767,11 @@ function normalizeCreatureSlot(raw) {
   const slot = newCreatureSlot();
   if (!raw) return slot;
   if (raw.id) slot.id = String(raw.id);
+  if (raw.baseRank && CREATURE_RANK_ORDER.includes(raw.baseRank)) slot.baseRank = raw.baseRank;
+  if (raw.transcend != null) {
+    const v = Number(raw.transcend);
+    slot.transcend = (Number.isFinite(v) && v >= 0) ? Math.floor(v) : 0;
+  }
   if (raw.awaken && typeof raw.awaken === 'object') {
     for (const k of ['main','sub1','sub2','sub3']) {
       const v = Number(raw.awaken[k]);
@@ -9809,6 +9898,59 @@ function getCreatureAwakenCap(creature) {
   return CREATURE_AWAKEN_MAX[creature.rank] || { main: 0, sub: 0 };
 }
 
+function getCreatureBaseRankOptions(creature) {
+  if (!creature) return [];
+  const baseIdx = CREATURE_RANK_ORDER.indexOf(creature.rank);
+  const lrIdx = CREATURE_RANK_ORDER.indexOf('LR');
+  if (baseIdx < 0 || baseIdx >= lrIdx) return [];
+  return CREATURE_RANK_ORDER.slice(baseIdx, lrIdx + 1);
+}
+
+function getEffectiveCreatureBaseRank(slot, creature) {
+  const options = getCreatureBaseRankOptions(creature);
+  if (!options.length) return creature ? creature.rank : '';
+  const rank = slot && slot.baseRank;
+  return options.includes(rank) ? rank : creature.rank;
+}
+
+function getCreatureBaseLvForRole(slot, creature, role, fallbackLv, passiveId, db) {
+  if (!creature) return Number(fallbackLv) || 0;
+  if (role === 'main') return Number(fallbackLv) || 0;
+  const rank = slot && slot.baseRank;
+  const options = getCreatureBaseRankOptions(creature);
+  if (!rank || !options.includes(rank) || rank === creature.rank) return Number(fallbackLv) || 0;
+  const passiveInfo = passiveId != null && db ? db.passives[String(passiveId)] : null;
+  const passiveKind = passiveInfo && Number(passiveInfo.rank) === 1 ? 'rare' : 'normal';
+  const table = CREATURE_BASE_RANK_LEVELS[passiveKind] && CREATURE_BASE_RANK_LEVELS[passiveKind][rank];
+  if (!table) return Number(fallbackLv) || 0;
+  return role === 'main' ? table.main : table.sub;
+}
+
+function getCreatureTranscendRank(slot, creature) {
+  if (!creature) return '';
+  return CREATURE_TRANSCEND_BONUS[creature.rank] ? creature.rank : '';
+}
+
+function getCreatureTranscendMax(slot, creature) {
+  const table = CREATURE_TRANSCEND_BONUS[getCreatureTranscendRank(slot, creature)];
+  return table ? table.length - 1 : 0;
+}
+
+function getCreatureTranscendLevel(slot, creature) {
+  const max = getCreatureTranscendMax(slot, creature);
+  let lv = Number(slot && slot.transcend) || 0;
+  if (lv < 0) lv = 0;
+  if (lv > max) lv = max;
+  return Math.floor(lv);
+}
+
+function getCreatureTranscendBonusForRole(slot, creature, role) {
+  const table = CREATURE_TRANSCEND_BONUS[getCreatureTranscendRank(slot, creature)];
+  if (!table) return 0;
+  const entry = table[getCreatureTranscendLevel(slot, creature)] || table[0];
+  return role === 'main' ? (Number(entry.main) || 0) : (Number(entry.sub) || 0);
+}
+
 function isCreatureSub3Unlocked(slot, creature) {
   if (!creature || !slot) return false;
   if (creature.sub3) return true;
@@ -9828,37 +9970,38 @@ function resolveSlotPassive(slot, role, creature, db) {
   if (!creature) return null;
   const awakenKey = (role === 'main') ? 'main' : role;
   const awakenLv  = Number(slot && slot.awaken && slot.awaken[awakenKey]) || 0;
+  const transcendLv = getCreatureTranscendBonusForRole(slot, creature, role);
 
 
   if (role === 'sub3') {
     const baseP = creature.sub3;
     let effId   = baseP ? String(baseP.id) : null;
-    let baseLv  = baseP ? (Number(baseP.lv) || 0) : 0;
     const ov = slot && slot.override && slot.override.sub3;
     if (ov != null && ov !== '' && db && db.passives[ov]) effId = String(ov);
+    let baseLv  = baseP ? getCreatureBaseLvForRole(slot, creature, role, baseP.lv, effId, db) : 0;
     
     if (!baseP) {
       if (!isCreatureSub3Unlocked(slot, creature)) return null;
-      baseLv = (creature.sub1 && Number(creature.sub1.lv)) || 0;
+      baseLv = getCreatureBaseLvForRole(slot, creature, role, creature.sub1 && creature.sub1.lv, effId, db);
     }
     if (!effId || baseLv <= 0) return null;
-    return { passiveId: effId, baseLv, awakenLv, totalLv: baseLv + awakenLv };
+    return { passiveId: effId, baseLv, awakenLv, transcendLv, totalLv: baseLv + awakenLv + transcendLv };
   }
 
   
   const baseP = creature[role];
   if (!baseP) return null;
   const baseId = baseP.id;
-  const baseLv = Number(baseP.lv) || 0;
-  if (!baseId || baseLv <= 0) return null;
+  if (!baseId) return null;
   let effId = String(baseId);
   if (role === 'sub1' || role === 'sub2') {
     const ov = slot && slot.override && slot.override[role];
     if (ov != null && ov !== '' && db && db.passives[ov]) effId = String(ov);
   }
-  return { passiveId: effId, baseLv, awakenLv, totalLv: baseLv + awakenLv };
+  const baseLv = getCreatureBaseLvForRole(slot, creature, role, baseP.lv, effId, db);
+  if (baseLv <= 0) return null;
+  return { passiveId: effId, baseLv, awakenLv, transcendLv, totalLv: baseLv + awakenLv + transcendLv };
 }
-
 
 function computeMergedPassives(state, db) {
   if (!db) return [];
@@ -9888,7 +10031,7 @@ function computeMergedPassives(state, db) {
       }
       entry.slv += r.totalLv;
       entry.contributions.push({
-        slot: i, role, baseLv: r.baseLv, awakenLv: r.awakenLv, creatureId: cid,
+        slot: i, role, baseLv: r.baseLv, awakenLv: r.awakenLv, transcendLv: r.transcendLv, creatureId: cid,
       });
     };
     addRole('main');
@@ -10132,8 +10275,12 @@ function renderCreatureSlots() {
 
     const info = document.createElement('div');
     if (c) {
+      const effectiveBaseRank = getEffectiveCreatureBaseRank(slot, c);
+      const rankText = effectiveBaseRank && effectiveBaseRank !== c.rank
+        ? `${c.rank}→${effectiveBaseRank}`
+        : c.rank;
       info.innerHTML = `<div class="creature-slot-name">${esc(c.name)}</div>` +
-                      `<div class="creature-slot-meta">${esc(c.rank)} / ${esc(c.type)}</div>`;
+                      `<div class="creature-slot-meta">${esc(rankText)} / ${esc(c.type)}</div>`;
     } else {
       info.innerHTML = `<div class="creature-slot-name is-empty">(未選択)</div>`;
     }
@@ -10219,6 +10366,66 @@ function renderCreatureSlotDetail() {
     return;
   }
 
+  const baseRankOptions = getCreatureBaseRankOptions(c);
+  if (baseRankOptions.length) {
+    const baseRankRow = document.createElement('div');
+    baseRankRow.className = 'csd-base-rank-row';
+    const baseRankLabel = document.createElement('label');
+    baseRankLabel.textContent = 'Rank';
+    baseRankRow.appendChild(baseRankLabel);
+    const baseRankSel = document.createElement('select');
+    baseRankSel.className = 'csd-base-rank-select';
+    for (const rank of baseRankOptions) {
+      const opt = document.createElement('option');
+      opt.value = rank;
+      opt.textContent = rank;
+      baseRankSel.appendChild(opt);
+    }
+    baseRankSel.value = getEffectiveCreatureBaseRank(slot, c);
+    baseRankSel.title = '基本Lvだけに反映。 覚醒上限と追加分は元等級のまま';
+    baseRankSel.addEventListener('change', async () => {
+      const nextRank = baseRankSel.value;
+      slot.baseRank = (nextRank && nextRank !== c.rank) ? nextRank : null;
+      slot.transcend = Math.min(Number(slot.transcend) || 0, getCreatureTranscendMax(slot, c));
+      renderCreatureSlots();
+      renderCreatureSlotDetail();
+      renderCreaturePassiveList();
+      scheduleAutosave();
+      await recalcAll();
+    });
+    baseRankRow.appendChild(baseRankSel);
+    root.appendChild(baseRankRow);
+  }
+
+  const transcendMax = getCreatureTranscendMax(slot, c);
+  if (transcendMax > 0) {
+    slot.transcend = Math.min(Number(slot.transcend) || 0, transcendMax);
+    const transRow = document.createElement('div');
+    transRow.className = 'csd-transcend-row';
+    const transLabel = document.createElement('label');
+    transLabel.textContent = '超越Lv';
+    transRow.appendChild(transLabel);
+    const transSel = document.createElement('select');
+    transSel.className = 'csd-transcend-select';
+    for (let lv = 0; lv <= transcendMax; lv++) {
+      const opt = document.createElement('option');
+      opt.value = String(lv);
+      opt.textContent = String(lv);
+      transSel.appendChild(opt);
+    }
+    transSel.value = String(getCreatureTranscendLevel(slot, c));
+    transSel.title = 'ベース等級に応じて、メイン/サブの覚醒Lv増加を加算';
+    transSel.addEventListener('change', async () => {
+      slot.transcend = Math.max(0, Math.min(transcendMax, Number(transSel.value) || 0));
+      renderCreatureSlotDetail();
+      renderCreaturePassiveList();
+      scheduleAutosave();
+      await recalcAll();
+    });
+    transRow.appendChild(transSel);
+    root.appendChild(transRow);
+  }
+
   const awakenCap = getCreatureAwakenCap(c);
   const sub3Unlocked = isCreatureSub3Unlocked(slot, c);
 
@@ -10230,10 +10437,10 @@ function renderCreatureSlotDetail() {
     let baseName = '';
     if (isSub3 && !baseP) {
       
-      baseLvForRow = (c.sub1 && Number(c.sub1.lv)) || 0;
+      baseLvForRow = getCreatureBaseLvForRole(slot, c, role, c.sub1 && c.sub1.lv, c.sub1 && c.sub1.id, creatureDb);
     } else {
       if (!baseP || !baseP.id || (Number(baseP.lv) || 0) <= 0) return;
-      baseLvForRow = Number(baseP.lv) || 0;
+      baseLvForRow = getCreatureBaseLvForRole(slot, c, role, baseP.lv, baseP.id, creatureDb);
       const baseInfo = creatureDb.passives[String(baseP.id)];
       baseName = (baseInfo && baseInfo.name) || `?(${baseP.id})`;
     }
@@ -10256,6 +10463,9 @@ function renderCreatureSlotDetail() {
     const effectiveInfo = effectiveId ? creatureDb.passives[effectiveId] : null;
     const effectiveName = (effectiveInfo && effectiveInfo.name)
       || (effectiveId ? `?(${effectiveId})` : '');
+    baseLvForRow = (isSub3 && !baseP)
+      ? getCreatureBaseLvForRole(slot, c, role, c.sub1 && c.sub1.lv, effectiveId, creatureDb)
+      : getCreatureBaseLvForRole(slot, c, role, baseP && baseP.lv, effectiveId, creatureDb);
 
     if (!isOverridable) {
       const fix = document.createElement('span');
@@ -10300,6 +10510,7 @@ function renderCreatureSlotDetail() {
     
     const isMain = (role === 'main');
     const cap = isMain ? awakenCap.main : awakenCap.sub;
+    const transBonus = getCreatureTranscendBonusForRole(slot, c, role);
     const awakenKey = isMain ? 'main' : role;
     const aw = document.createElement('span');
     aw.className = 'csd-awaken';
@@ -10325,6 +10536,12 @@ function renderCreatureSlotDetail() {
     capEl.className = 'csd-cap';
     capEl.textContent = `/${cap}`;
     aw.appendChild(plus); aw.appendChild(awIn); aw.appendChild(capEl);
+    if (transBonus > 0) {
+      const transEl = document.createElement('span');
+      transEl.className = 'csd-trans-bonus';
+      transEl.textContent = `超+${transBonus}`;
+      aw.appendChild(transEl);
+    }
     row.appendChild(aw);
 
     
