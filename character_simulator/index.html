@@ -4012,7 +4012,8 @@ import { updateEquipmentMetadata } from './lib/equipment_meta.js';
 import { computeItemRequiredLv, computeRequiredLvBreakdown } from './lib/req_lv.js';
 import { calcOpValue, applyOpToSTTemp, aggregateAllOpsForItem } from './lib/op_calc.js';
 import { getEffectiveLv, PRIMARY_STAT_IDS } from './lib/character.js';
-import { computeAbilities, JOB_STAT_SWAP_IDS } from './lib/abilities.js';
+import { computeAbilities } from './lib/abilities.js';
+import { clampBaseStatsToFloor, computeBaseStatFloor, getAutoStatId, preserveAllocatedStatsForFloorChange, statTotal } from './lib/job_stats.js';
 import {
   serializeSession, deserializeSession,
   saveToLocalStorage, loadFromLocalStorage, removeFromLocalStorage,
@@ -4752,24 +4753,54 @@ function reapplySeirenSelection(idx, value, partKey) {
 
 
 const MAX_INTERNAL_LV = 2000;
+let currentStatFloor = null;
+
+function readSelectedJobId() {
+  return Number($('ch-job')?.value) || 0;
+}
+
+function readSelectedRealLv() {
+  const rawLv = Number($('ch-lv')?.value) || 1;
+  return Math.min(MAX_INTERNAL_LV, Math.max(1, rawLv));
+}
+
+function readBaseStatInputs() {
+  const out = Object.create(null);
+  for (const s of STAT_KEYS) out[s] = Number($(`st-${s}`)?.value) || 0;
+  return out;
+}
+
+function writeBaseStatInputs(stats) {
+  for (const s of STAT_KEYS) {
+    const el = $(`st-${s}`);
+    if (el) el.value = String(Number(stats?.[s]) || 0);
+  }
+}
+
+function normalizeBaseStatInputs({ preserveAllocation = false } = {}) {
+  const nextFloor = computeBaseStatFloor(readSelectedJobId(), readSelectedRealLv(), loader);
+  const rawStats = readBaseStatInputs();
+  const normalized = (preserveAllocation && currentStatFloor)
+    ? preserveAllocatedStatsForFloorChange(rawStats, currentStatFloor, nextFloor)
+    : clampBaseStatsToFloor(rawStats, nextFloor);
+  writeBaseStatInputs(normalized);
+  currentStatFloor = nextFloor;
+  return normalized;
+}
 
 function readCharacter() {
-  const jobId = Number($('ch-job').value) || 0;
+  const jobId = readSelectedJobId();
   const gender = genderForJobName(jobNameById(jobId));
-  const rawLv = Number($('ch-lv').value) || 1;
+  const realLv = readSelectedRealLv();
+  const baseStats = clampBaseStatsToFloor(
+    readBaseStatInputs(),
+    computeBaseStatFloor(jobId, realLv, loader),
+  );
   return newCharacter({
-    realLv: Math.min(MAX_INTERNAL_LV, Math.max(1, rawLv)),
+    realLv,
     job: jobId,
     gender,
-    stats: { base: {
-      str: Number($('st-str').value) || 0,
-      agi: Number($('st-agi').value) || 0,
-      con: Number($('st-con').value) || 0,
-      int: Number($('st-int').value) || 0,
-      wiz: Number($('st-wiz').value) || 0,
-      chs: Number($('st-chs').value) || 0,
-      luc: Number($('st-luc').value) || 0,
-    } },
+    stats: { base: baseStats },
     stones: stoneState,
   });
 }
@@ -4778,28 +4809,22 @@ function readCharacter() {
 const POINTS_INITIAL_TOTAL = 90;
 const POINTS_REBIRTH_BONUS = [0, 100, 300, 600, 1000, 1500];
 const POINTS_STAT_LABEL    = ['力', '敏捷', '健康', '知識', '知恵', 'カリスマ', '運'];
-const POINTS_WOLFMAN_REMAP = [3, 4, 5, 0, 1, 2, 6];
 
 function computeAvailablePoints(jobId, realLv, rebirthCount) {
   const lvDelta = Math.max(0, (Number(realLv) || 1) - 1);
   const reb = Math.max(0, Math.min(5, Number(rebirthCount) || 0));
-  const jobRow = loader?.master?.jobs?.[String(Number(jobId) || 0)];
-  const baseAutoIdx = (Array.isArray(jobRow) && Number.isFinite(jobRow[8])) ? jobRow[8] : null;
-  const rawFreePerLv = (Array.isArray(jobRow) && Number.isFinite(jobRow[9])) ? jobRow[9] : 5;
-  
-  const isFreeJob = (baseAutoIdx == null) || rawFreePerLv === 5;
-  let autoStatIdx = isFreeJob ? null : baseAutoIdx;
-
-  if (autoStatIdx != null && JOB_STAT_SWAP_IDS.has(Number(jobId))) {
-    autoStatIdx = POINTS_WOLFMAN_REMAP.indexOf(autoStatIdx);
-  }
+  const floor = computeBaseStatFloor(jobId, realLv, loader);
+  const initial = statTotal(computeBaseStatFloor(jobId, 1, loader)) || POINTS_INITIAL_TOTAL;
+  const autoStatId = getAutoStatId(jobId, loader);
+  const autoStatIdx = autoStatId ? STAT_KEYS.indexOf(autoStatId) : null;
+  const isFreeJob = !autoStatId;
   const freePerLv  = isFreeJob ? 5 : 4;
-  const autoTotal  = isFreeJob ? 0 : lvDelta;
+  const autoTotal  = autoStatId ? lvDelta : 0;
   const lvFreePts  = lvDelta * freePerLv;
   const rebirthBn  = POINTS_REBIRTH_BONUS[reb];
   return {
-    total:         POINTS_INITIAL_TOTAL + autoTotal + lvFreePts + rebirthBn,
-    initial:       POINTS_INITIAL_TOTAL,
+    total:         statTotal(floor) + lvFreePts + rebirthBn,
+    initial,
     autoTotal,
     autoStatIdx,
     autoStatLabel: (autoStatIdx != null) ? POINTS_STAT_LABEL[autoStatIdx] : null,
@@ -7191,6 +7216,7 @@ function bindEvents() {
     const el = $(id);
     if (!el) continue;
     el.addEventListener('change', () => {
+      normalizeBaseStatInputs({ preserveAllocation: id === 'ch-job' || id === 'ch-lv' });
       updateGenderLabel();
       invalidateFeasibleCache();
 
@@ -7205,6 +7231,7 @@ function bindEvents() {
     });
     if (el.tagName === 'INPUT') {
       el.addEventListener('input', () => {
+        normalizeBaseStatInputs({ preserveAllocation: id === 'ch-lv' });
         clearTimeout(recalcDebounce);
         recalcDebounce = setTimeout(async () => {
           updateGenderLabel();
@@ -7220,6 +7247,7 @@ function bindEvents() {
 
 function initSelectors() {
   fillJobSelect();
+  normalizeBaseStatInputs();
   
   buildOpSearchIndex();
   for (let i = 0; i < 3; i++) clearOp(i);
@@ -7538,6 +7566,7 @@ async function loadSnapshot(data, sourceLabel) {
       if (c.base[s] != null && $(`st-${s}`)) $(`st-${s}`).value = c.base[s];
     }
   }
+  normalizeBaseStatInputs();
   
   stoneState = normalizeStones(c.stones);
   renderStoneCards();
