@@ -904,8 +904,85 @@
     .passive-list .passive-empty {
       padding: 12px; color: #6a5530; text-align: center;
     }
+    .creature-stat-panel {
+      font-family: "MS PGothic", "Meiryo", sans-serif;
+      font-size: 12px;
+      color: #f4e7a2;
+    }
+    .creature-stat-empty {
+      padding: 12px; color: #6a5530; text-align: center;
+    }
+    .creature-stat-head {
+      display: grid;
+      grid-template-columns: 46px minmax(0, 1fr) 76px;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+    .creature-stat-head img {
+      width: 42px; height: 42px;
+      image-rendering: pixelated; object-fit: contain;
+      background: #070502; border: 1px solid #5b3d12;
+    }
+    .creature-stat-name {
+      color: #00ff66; font-weight: bold;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .creature-stat-meta { color: #d8a743; font-size: 10.5px; }
+    .creature-stat-level {
+      display: grid; grid-template-columns: 22px minmax(0, 1fr);
+      gap: 3px; align-items: center;
+      color: #ffd070; font-size: 11px;
+    }
+    .creature-stat-level input {
+      width: 100%; box-sizing: border-box;
+      background: #1a1610; color: #f8f000;
+      border: 1px solid #8b6a28;
+      font: inherit; text-align: right; padding: 1px 3px;
+    }
+    .creature-stat-main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px 12px;
+      padding-top: 4px;
+      border-top: 1px dotted #2a1a08;
+    }
+    .creature-stat-line {
+      display: grid;
+      grid-template-columns: 36px minmax(0, 1fr) 10px 54px 44px;
+      gap: 4px; align-items: baseline;
+      border-bottom: 1px dotted #2a1a08;
+      padding: 1px 0;
+    }
+    .creature-stat-line .cstat-label { color: #d8a743; }
+    .creature-stat-line .cstat-value { color: #f4e7a2; text-align: right; }
+    .creature-stat-line .cstat-plus { color: #6a5530; text-align: center; }
+    .creature-stat-line .cstat-alloc-wrap {
+      display: flex; align-items: center; justify-content: center;
+      color: #6a5530; gap: 1px;
+    }
+    .creature-stat-line .cstat-alloc {
+      width: 42px; box-sizing: border-box;
+      background: #1a1610; color: #00ff66;
+      border: 1px solid #5b3d12;
+      font: inherit; text-align: right; padding: 0 2px;
+    }
+    .creature-stat-line .cstat-bonus { color: #00ff66; text-align: right; font-size: 11px; }
+    .creature-stat-summary {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4px 12px; margin-top: 5px;
+      color: #d4d4a8;
+    }
+    .creature-stat-summary b { color: #f8f000; }
+    .creature-stat-points {
+      margin-top: 5px; padding-top: 4px;
+      border-top: 1px dotted #2a1a08;
+      color: #d4d4a8;
+      display: flex; justify-content: space-between; gap: 8px;
+    }
+    .creature-stat-points b { color: #f8f000; }
+    .creature-stat-points.is-over b { color: #ff5050; }
 
-    
     .creature-slot-detail {
       margin-top: 4px;
       padding: 5px 6px;
@@ -3479,6 +3556,12 @@
                   <h4>発動中パッシブ</h4>
                   <div class="passive-list" id="creature-passive-list">
                     <div class="passive-empty">クリーチャー未選択</div>
+                  </div>
+                </div>
+                <div class="item-panel" style="margin-top:6px">
+                  <h4>能力値</h4>
+                  <div class="creature-stat-panel" id="creature-stat-panel">
+                    <div class="creature-stat-empty">メインクリーチャー未選択</div>
                   </div>
                 </div>
               </div>
@@ -6478,6 +6561,7 @@ async function recalcAll() {
     const LvTempCreature = getEffectiveLv(ch);
     const mergedPassives = computeMergedPassives(creatureState, creatureDb);
     applyCreaturePassivesToSTTemp(T, mergedPassives, creatureDb, LvTempCreature, ch);
+    applyCreatureStatsToSTTemp(T, creatureState, creatureDb);
   }
 
   if (minipetDb) applyMinipetToSTTemp(T, ch);
@@ -7299,6 +7383,12 @@ function buildSnapshot() {
     slots: creatureState.slots.map((s) => ({
       id: s && s.id ? s.id : null,
       baseRank: (s && s.baseRank) || null,
+      level: (s && s.level != null) ? Number(s.level) || null : null,
+      statAlloc: (() => {
+        const out = {};
+        for (const def of CREATURE_STAT_KEYS) out[def.key] = Number(s && s.statAlloc && s.statAlloc[def.key]) || 0;
+        return out;
+      })(),
       transcend: Number(s && s.transcend) || 0,
       awaken: {
         main: Number(s && s.awaken && s.awaken.main) || 0,
@@ -9656,8 +9746,18 @@ function isSkillTabActive() {
 const CREATURE_CSV_BASE   = 'https://sokomin.github.io/sokomin_repository/db/';
 const CREATURE_IMG_BASE   = 'https://sokomin.github.io/information/creature2_files/';
 const CREATURE_OPLIST_URL = 'https://sokomin.github.io/update/js/option-list2022.js';
+const CREATURE_STAT_URL   = 'lib/data/creature_stats.json';
 
 const CREATURE_RANK_ORDER = ['N', 'R', 'HR', 'SR', 'LR', 'GR'];
+const CREATURE_MAX_LEVEL_BY_RANK = { N: 60, R: 70, HR: 80, SR: 90, LR: 100, GR: 120 };
+const CREATURE_STAT_POINT_PER_LEVEL = { N: 1, R: 2, HR: 3, SR: 4, LR: 5, GR: 5 };
+const CREATURE_STAT_KEYS = [
+  { key: 'str', label: 'STR', statId: 'str' },
+  { key: 'int', label: 'INT', statId: 'int' },
+  { key: 'agi', label: 'DEX', statId: 'agi' },
+  { key: 'luc', label: 'LUK', statId: 'luc' },
+  { key: 'con', label: 'VIT', statId: 'con' },
+];
 
 
 const CREATURE_CHARA_NAMES = {
@@ -9709,46 +9809,46 @@ const CREATURE_BASE_RANK_LEVELS = {
 
 const CREATURE_TRANSCEND_BONUS = {
   N: [
-    { main: 0, sub: 0 },
-    { main: 1, sub: 1 },
-    { main: 2, sub: 1 },
-    { main: 3, sub: 1 },
+    { main: 0, sub: 0, maxLevel: 60 },
+    { main: 1, sub: 1, maxLevel: 62 },
+    { main: 2, sub: 1, maxLevel: 64 },
+    { main: 3, sub: 1, maxLevel: 66 },
   ],
   R: [
-    { main: 0, sub: 0 },
-    { main: 1, sub: 1 },
-    { main: 2, sub: 1 },
-    { main: 3, sub: 2 },
+    { main: 0, sub: 0, maxLevel: 70 },
+    { main: 1, sub: 1, maxLevel: 72 },
+    { main: 2, sub: 1, maxLevel: 74 },
+    { main: 3, sub: 2, maxLevel: 76 },
   ],
   HR: [
-    { main: 0, sub: 0 },
-    { main: 1, sub: 1 },
-    { main: 2, sub: 2 },
-    { main: 3, sub: 2 },
+    { main: 0, sub: 0, maxLevel: 80 },
+    { main: 1, sub: 1, maxLevel: 82 },
+    { main: 2, sub: 2, maxLevel: 84 },
+    { main: 3, sub: 2, maxLevel: 86 },
   ],
   SR: [
-    { main: 0, sub: 0 },
-    { main: 1, sub: 1 },
-    { main: 2, sub: 1 },
-    { main: 3, sub: 2 },
-    { main: 4, sub: 3 },
-    { main: 6, sub: 5 },
+    { main: 0, sub: 0, maxLevel: 90 },
+    { main: 1, sub: 1, maxLevel: 92 },
+    { main: 2, sub: 1, maxLevel: 94 },
+    { main: 3, sub: 2, maxLevel: 96 },
+    { main: 4, sub: 3, maxLevel: 98 },
+    { main: 6, sub: 5, maxLevel: 100 },
   ],
   LR: [
-    { main: 0, sub: 0 },
-    { main: 5, sub: 4 },
-    { main: 6, sub: 4 },
-    { main: 7, sub: 5 },
-    { main: 9, sub: 6 },
-    { main: 10, sub: 8 },
+    { main: 0, sub: 0, maxLevel: 100 },
+    { main: 5, sub: 4, maxLevel: 104 },
+    { main: 6, sub: 4, maxLevel: 108 },
+    { main: 7, sub: 5, maxLevel: 112 },
+    { main: 9, sub: 6, maxLevel: 116 },
+    { main: 10, sub: 8, maxLevel: 120 },
   ],
   GR: [
-    { main: 0, sub: 0 },
-    { main: 0, sub: 5 },
-    { main: 0, sub: 6 },
-    { main: 0, sub: 7 },
-    { main: 0, sub: 9 },
-    { main: 0, sub: 10 },
+    { main: 0, sub: 0, maxLevel: 120 },
+    { main: 0, sub: 5, maxLevel: 125 },
+    { main: 0, sub: 6, maxLevel: 130 },
+    { main: 0, sub: 7, maxLevel: 135 },
+    { main: 0, sub: 8, maxLevel: 140 },
+    { main: 0, sub: 10, maxLevel: 145 },
   ],
 };
 
@@ -9756,6 +9856,8 @@ function newCreatureSlot() {
   return {
     id: null,
     baseRank: null,
+    level: null,
+    statAlloc: { str: 0, int: 0, agi: 0, luc: 0, con: 0 },
     transcend: 0,
     awaken: { main: 0, sub1: 0, sub2: 0, sub3: 0 },
     override: { sub1: null, sub2: null, sub3: null },
@@ -9768,6 +9870,16 @@ function normalizeCreatureSlot(raw) {
   if (!raw) return slot;
   if (raw.id) slot.id = String(raw.id);
   if (raw.baseRank && CREATURE_RANK_ORDER.includes(raw.baseRank)) slot.baseRank = raw.baseRank;
+  if (raw.level != null) {
+    const v = Number(raw.level);
+    slot.level = (Number.isFinite(v) && v > 0) ? Math.floor(v) : null;
+  }
+  if (raw.statAlloc && typeof raw.statAlloc === 'object') {
+    for (const def of CREATURE_STAT_KEYS) {
+      const v = Number(raw.statAlloc[def.key]);
+      slot.statAlloc[def.key] = (Number.isFinite(v) && v >= 0) ? Math.floor(v) : 0;
+    }
+  }
   if (raw.transcend != null) {
     const v = Number(raw.transcend);
     slot.transcend = (Number.isFinite(v) && v >= 0) ? Math.floor(v) : 0;
@@ -9833,7 +9945,7 @@ async function loadCreatureDataOnce() {
   creatureDbError  = null;
   creatureDbPromise = (async () => {
     try {
-      const [cText, pText, optionTexts] = await Promise.all([
+      const [cText, pText, optionTexts, statData] = await Promise.all([
         fetch(CREATURE_CSV_BASE + 'creatureInfo_creature.csv').then((r) => {
           if (!r.ok) throw new Error(`creatureInfo_creature.csv HTTP ${r.status}`);
           return r.text();
@@ -9843,6 +9955,10 @@ async function loadCreatureDataOnce() {
           return r.text();
         }),
         loadCreatureOptionTexts(),
+        fetch(CREATURE_STAT_URL).then((r) => {
+          if (!r.ok) throw new Error(`creature_stats.json HTTP ${r.status}`);
+          return r.json();
+        }),
       ]);
       const creatureRows = parseCreatureCsv(cText);
       const passiveRows  = parseCreatureCsv(pText);
@@ -9866,6 +9982,7 @@ async function loadCreatureDataOnce() {
           sub1:  override ? override.sub1 : sub1,
           sub2:  override ? override.sub2 : sub2,
           sub3:  override ? override.sub3 : null,
+          stats: statData[idPad] || null,
         };
       }
       
@@ -9949,6 +10066,127 @@ function getCreatureTranscendBonusForRole(slot, creature, role) {
   if (!table) return 0;
   const entry = table[getCreatureTranscendLevel(slot, creature)] || table[0];
   return role === 'main' ? (Number(entry.main) || 0) : (Number(entry.sub) || 0);
+}
+
+function getCreatureTranscendLevelMaxBonus(slot, creature) {
+  const rank = getCreatureTranscendRank(slot, creature);
+  const table = CREATURE_TRANSCEND_BONUS[rank];
+  if (!table) return 0;
+  const entry = table[getCreatureTranscendLevel(slot, creature)] || table[0];
+  const baseMax = CREATURE_MAX_LEVEL_BY_RANK[rank] || 0;
+  const maxLevel = Number(entry.maxLevel) || baseMax;
+  return Math.max(0, maxLevel - baseMax);
+}
+
+function getCreatureMaxLevel(slot, creature) {
+  const rank = getEffectiveCreatureBaseRank(slot, creature) || (creature && creature.rank) || 'N';
+  return (CREATURE_MAX_LEVEL_BY_RANK[rank] || CREATURE_MAX_LEVEL_BY_RANK.N) + getCreatureTranscendLevelMaxBonus(slot, creature);
+}
+
+function getCreatureSlotLevel(slot, creature) {
+  const max = getCreatureMaxLevel(slot, creature);
+  let lv = Number(slot && slot.level);
+  if (!Number.isFinite(lv) || lv <= 0) lv = max;
+  lv = Math.floor(lv);
+  if (lv < 1) lv = 1;
+  if (lv > max) lv = max;
+  return lv;
+}
+
+function clampCreatureSlotLevel(slot, creature) {
+  if (!slot || !creature) return 0;
+  const lv = getCreatureSlotLevel(slot, creature);
+  slot.level = lv;
+  normalizeCreatureStatAllocation(slot, creature);
+  return lv;
+}
+
+function getCreatureStatPointPerLevel(slot, creature) {
+  const rank = getEffectiveCreatureBaseRank(slot, creature) || (creature && creature.rank) || 'N';
+  return CREATURE_STAT_POINT_PER_LEVEL[rank] || 0;
+}
+
+function getCreatureStatPointBudget(slot, creature) {
+  const lv = getCreatureSlotLevel(slot, creature);
+  return Math.max(0, lv - 1) * getCreatureStatPointPerLevel(slot, creature);
+}
+
+function getCreatureStatAllocUsed(slot) {
+  if (!slot || !slot.statAlloc) return 0;
+  let used = 0;
+  for (const def of CREATURE_STAT_KEYS) used += Math.max(0, Math.floor(Number(slot.statAlloc[def.key]) || 0));
+  return used;
+}
+
+function normalizeCreatureStatAllocation(slot, creature) {
+  if (!slot) return { used: 0, budget: 0, remaining: 0 };
+  if (!slot.statAlloc || typeof slot.statAlloc !== 'object') slot.statAlloc = {};
+  const budget = creature ? getCreatureStatPointBudget(slot, creature) : 0;
+  let remaining = budget;
+  for (const def of CREATURE_STAT_KEYS) {
+    let v = Math.max(0, Math.floor(Number(slot.statAlloc[def.key]) || 0));
+    if (v > remaining) v = remaining;
+    slot.statAlloc[def.key] = v;
+    remaining -= v;
+  }
+  const used = budget - remaining;
+  return { used, budget, remaining };
+}
+
+function setCreatureStatAllocation(slot, creature, key, value) {
+  if (!slot || !creature) return;
+  if (!slot.statAlloc || typeof slot.statAlloc !== 'object') slot.statAlloc = {};
+  normalizeCreatureStatAllocation(slot, creature);
+  const current = Math.max(0, Math.floor(Number(slot.statAlloc[key]) || 0));
+  const usedWithoutCurrent = getCreatureStatAllocUsed(slot) - current;
+  const budget = getCreatureStatPointBudget(slot, creature);
+  const maxForThis = Math.max(0, budget - usedWithoutCurrent);
+  slot.statAlloc[key] = Math.max(0, Math.min(maxForThis, Math.floor(Number(value) || 0)));
+  normalizeCreatureStatAllocation(slot, creature);
+}
+
+function computeCreatureStatValues(slot, creature) {
+  if (!slot || !creature || !creature.stats) return null;
+  const lv = getCreatureSlotLevel(slot, creature);
+  const points = normalizeCreatureStatAllocation(slot, creature);
+  const stats = {};
+  for (const def of CREATURE_STAT_KEYS) {
+    const pair = creature.stats[def.key];
+    const base = Number(Array.isArray(pair) ? pair[0] : 0) || 0;
+    const growth = Number(Array.isArray(pair) ? pair[1] : 0) || 0;
+    const value = Math.floor(base + growth * Math.max(0, lv - 1));
+    const allocated = Math.max(0, Math.floor(Number(slot.statAlloc && slot.statAlloc[def.key]) || 0));
+    const total = value + allocated;
+    stats[def.key] = {
+      value,
+      allocated,
+      total,
+      bonus: Math.floor(total / 2),
+      base,
+      growth,
+    };
+  }
+  return {
+    level: lv,
+    maxLevel: getCreatureMaxLevel(slot, creature),
+    points,
+    attack: Math.floor((stats.str.total || 0) + (stats.int.total || 0) / 2),
+    hp: (stats.con.total || 0) * 12,
+    stats,
+  };
+}
+
+function applyCreatureStatsToSTTemp(STTemp, state, db) {
+  if (!STTemp || !state || !db) return;
+  const slot = state.slots && state.slots[0];
+  const creature = slot && slot.id ? db.creatures[slot.id] : null;
+  const computed = computeCreatureStatValues(slot, creature);
+  if (!computed) return;
+  for (const def of CREATURE_STAT_KEYS) {
+    const v = Number(computed.stats[def.key] && computed.stats[def.key].bonus) || 0;
+    if (v === 0) continue;
+    STTemp.sum[def.statId] = (STTemp.sum[def.statId] || 0) + v;
+  }
 }
 
 function isCreatureSub3Unlocked(slot, creature) {
@@ -10386,10 +10624,12 @@ function renderCreatureSlotDetail() {
     baseRankSel.addEventListener('change', async () => {
       const nextRank = baseRankSel.value;
       slot.baseRank = (nextRank && nextRank !== c.rank) ? nextRank : null;
+      clampCreatureSlotLevel(slot, c);
       slot.transcend = Math.min(Number(slot.transcend) || 0, getCreatureTranscendMax(slot, c));
       renderCreatureSlots();
       renderCreatureSlotDetail();
       renderCreaturePassiveList();
+      renderCreatureStatPanel();
       scheduleAutosave();
       await recalcAll();
     });
@@ -10419,6 +10659,7 @@ function renderCreatureSlotDetail() {
       slot.transcend = Math.max(0, Math.min(transcendMax, Number(transSel.value) || 0));
       renderCreatureSlotDetail();
       renderCreaturePassiveList();
+      renderCreatureStatPanel();
       scheduleAutosave();
       await recalcAll();
     });
@@ -10674,6 +10915,7 @@ async function pickCreatureForSlot(creatureId) {
   if (isCreatureDuplicateForSlot(creatureId, creatureActiveSlot)) return;
   const fresh = newCreatureSlot();
   fresh.id = creatureId;
+  fresh.level = getCreatureMaxLevel(fresh, creatureDb.creatures[creatureId]);
   creatureState.slots[creatureActiveSlot] = fresh;
   
   let nextSlot = creatureActiveSlot;
@@ -10725,12 +10967,95 @@ function renderCreaturePassiveList() {
   }
 }
 
+function renderCreatureStatPanel() {
+  const root = $('creature-stat-panel');
+  if (!root) return;
+  if (!creatureDb) {
+    root.innerHTML = `<div class="creature-stat-empty">${
+      creatureDbStatus === 'error' ? 'データ読込失敗' : '読み込み中…'
+    }</div>`;
+    return;
+  }
+  const slot = creatureState.slots[0];
+  const creature = slot && slot.id ? creatureDb.creatures[slot.id] : null;
+  if (!creature) {
+    root.innerHTML = '<div class="creature-stat-empty">メインクリーチャー未選択</div>';
+    return;
+  }
+  const computed = computeCreatureStatValues(slot, creature);
+  if (!computed) {
+    root.innerHTML = `<div class="creature-stat-empty">${esc(creature.name || '???')} は能力値データ未登録</div>`;
+    return;
+  }
+  clampCreatureSlotLevel(slot, creature);
+  const effectiveRank = getEffectiveCreatureBaseRank(slot, creature);
+  const rankText = effectiveRank && effectiveRank !== creature.rank
+    ? `${creature.rank}→${effectiveRank}`
+    : creature.rank;
+  root.innerHTML = '';
+
+  const head = document.createElement('div');
+  head.className = 'creature-stat-head';
+  head.innerHTML =
+    `<img src="${CREATURE_IMG_BASE}creature_${esc(creature.id)}.png" alt="">` +
+    `<div><div class="creature-stat-name">${esc(creature.name || '???')}</div>` +
+    `<div class="creature-stat-meta">Rank [${esc(rankText)}] Type ${esc(creature.type || '-')}</div></div>`;
+  const lvWrap = document.createElement('label');
+  lvWrap.className = 'creature-stat-level';
+  lvWrap.innerHTML = `<span>Lv</span><input type="number" min="1" max="${computed.maxLevel}" value="${computed.level}" aria-label="クリーチャーLv">`;
+  const lvInput = lvWrap.querySelector('input');
+  lvInput.addEventListener('change', async () => {
+    slot.level = Math.max(1, Math.min(getCreatureMaxLevel(slot, creature), Math.floor(Number(lvInput.value) || 1)));
+    renderCreatureStatPanel();
+    scheduleAutosave();
+    await recalcAll();
+  });
+  head.appendChild(lvWrap);
+  root.appendChild(head);
+
+  const main = document.createElement('div');
+  main.className = 'creature-stat-main';
+  for (const def of CREATURE_STAT_KEYS) {
+    const st = computed.stats[def.key];
+    const line = document.createElement('div');
+    line.className = 'creature-stat-line';
+    line.title = `Lv1 ${st.base} / Lvごと +${st.growth}`;
+    line.innerHTML = `<span class="cstat-label">${def.label}</span>` +
+                     `<span class="cstat-value">${st.value}</span>` +
+                     `<span class="cstat-plus">+</span>` +
+                     `<span class="cstat-alloc-wrap">[<input class="cstat-alloc" type="number" min="0" value="${st.allocated}" aria-label="${def.label}割り振り">]</span>` +
+                     `<span class="cstat-bonus">+${st.bonus}</span>`;
+    const allocInput = line.querySelector('.cstat-alloc');
+    allocInput.addEventListener('change', async () => {
+      setCreatureStatAllocation(slot, creature, def.key, allocInput.value);
+      renderCreatureStatPanel();
+      scheduleAutosave();
+      await recalcAll();
+    });
+    main.appendChild(line);
+  }
+  root.appendChild(main);
+
+  const summary = document.createElement('div');
+  summary.className = 'creature-stat-summary';
+  summary.innerHTML = `<span>攻撃力 <b>${computed.attack}</b></span>` +
+                      `<span>HP <b>${computed.hp}</b></span>`;
+  root.appendChild(summary);
+
+  const points = document.createElement('div');
+  points.className = 'creature-stat-points' + (computed.points.remaining < 0 ? ' is-over' : '');
+  points.innerHTML = `<span>Point <b>${computed.points.remaining}</b> / ${computed.points.budget}</span>` +
+                     `<span>使用 ${computed.points.used}</span>`;
+  root.appendChild(points);
+}
+
 function renderCreatureTab() {
   renderCreatureSlots();
   renderCreatureSlotDetail();
   
   renderCreatureSearchResults();
   renderCreaturePassiveList();
+  renderCreatureStatPanel();
 }
 
 function bindCreatureSearchInput() {
