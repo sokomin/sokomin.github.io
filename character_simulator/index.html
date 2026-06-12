@@ -1068,6 +1068,99 @@
       opacity: 0.35; cursor: not-allowed;
     }
     .creature-search-row.is-disabled:hover { background: transparent; }
+    .creature-book-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 260px;
+      gap: 6px;
+    }
+    .creature-book-tools {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      gap: 4px;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+    .creature-book-clear {
+      background: linear-gradient(#6a4420,#2a1808); color: #f4e7a2;
+      border: 1px solid #8b6a28; cursor: pointer;
+      font: inherit; font-size: 11px; padding: 2px 8px;
+      white-space: nowrap;
+    }
+    .creature-book-list {
+      max-height: 520px; overflow-y: auto;
+      background: #070502; border: 1px solid #5b3d12;
+      font-size: 11.5px;
+    }
+    .creature-book-row {
+      display: grid;
+      grid-template-columns: 24px 32px minmax(0, 1fr) 34px 48px 118px;
+      gap: 5px;
+      align-items: center;
+      padding: 2px 6px;
+      border-bottom: 1px dotted #2a1a08;
+    }
+    .creature-book-row:hover { background: #1a1208; }
+    .creature-book-row input {
+      width: 16px; height: 16px; margin: 0;
+      accent-color: #d28d2c;
+    }
+    .creature-book-row img {
+      width: 28px; height: 28px;
+      image-rendering: pixelated; object-fit: contain;
+    }
+    .creature-book-name {
+      color: #f4e7a2;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .creature-book-rank {
+      font-weight: bold; text-align: center;
+      text-shadow: 0 0 2px #000;
+    }
+    .creature-book-rank.r-N  { color: #f4e7a2; }
+    .creature-book-rank.r-R  { color: #00F800; }
+    .creature-book-rank.r-HR { color: #50A0F8; }
+    .creature-book-rank.r-SR { color: #D080F8; }
+    .creature-book-rank.r-LR { color: #E8C898; }
+    .creature-book-type { color: #d8a743; text-align: center; }
+    .creature-book-bonus { color: #00ff66; text-align: right; font-size: 11px; }
+    .creature-book-empty {
+      padding: 12px; color: #6a5530; text-align: center;
+    }
+    .creature-book-summary {
+      font-size: 12px;
+      color: #f4e7a2;
+    }
+    .creature-book-count {
+      display: flex; justify-content: space-between; gap: 8px;
+      padding-bottom: 5px; margin-bottom: 5px;
+      border-bottom: 1px dotted #2a1a08;
+      color: #d4d4a8;
+    }
+    .creature-book-count b { color: #f8f000; }
+    .creature-book-stat {
+      display: grid;
+      grid-template-columns: 70px minmax(0, 1fr);
+      gap: 8px;
+      padding: 2px 0;
+      border-bottom: 1px dotted #2a1a08;
+    }
+    .creature-book-stat span:first-child { color: #d8a743; }
+    .creature-book-stat span:last-child { color: #00ff66; text-align: right; }
+    .creature-book-bulk {
+      margin-top: 6px;
+      padding-top: 5px;
+      border-top: 1px dotted #2a1a08;
+      font-size: 11px;
+    }
+    .creature-book-bulk-title {
+      color: #d8a743;
+      margin-bottom: 4px;
+    }
+    .creature-book-rank-actions {
+      display: flex;
+      gap: 3px;
+      flex-wrap: wrap;
+    }
 
     
     .damage-tab-layout {
@@ -2376,6 +2469,7 @@
             <button type="button" class="sim-tab-btn"           data-tab-btn="minipet"  role="tab">ミニペット</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="costume"  role="tab">コスチューム</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="creature" role="tab">クリーチャー</button>
+            <button type="button" class="sim-tab-btn"           data-tab-btn="creature-book" role="tab">クリーチャー図鑑</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="dragon"   role="tab">古龍の祝福</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="title"    role="tab">称号</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="mbook"    role="tab">ミッションブック</button>
@@ -3563,6 +3657,43 @@
                   <div class="creature-stat-panel" id="creature-stat-panel">
                     <div class="creature-stat-empty">メインクリーチャー未選択</div>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" data-tab="creature-book">
+            <div class="creature-book-layout">
+              <div class="item-panel">
+                <h4>クリーチャー図鑑</h4>
+                <div class="creature-book-tools">
+                  <input type="text" id="creature-book-search-input" class="textblue"
+                    placeholder="クリーチャー名で検索"
+                    style="width:100%; box-sizing:border-box"
+                    autocomplete="off">
+                  <button type="button" class="creature-book-clear" id="creature-book-register-all">全登録</button>
+                  <button type="button" class="creature-book-clear" id="creature-book-clear">全解除</button>
+                </div>
+                <div class="creature-rank-filter" id="creature-book-rank-filter"></div>
+                <div class="creature-book-list" id="creature-book-list">
+                  <div class="creature-book-empty">読み込み中…</div>
+                </div>
+                <div class="creature-book-bulk">
+                  <div class="creature-book-bulk-title">ランク別 全登録</div>
+                  <div class="creature-book-rank-actions">
+                    <button type="button" class="creature-book-clear" data-creature-book-rank="N">N</button>
+                    <button type="button" class="creature-book-clear" data-creature-book-rank="R">R</button>
+                    <button type="button" class="creature-book-clear" data-creature-book-rank="HR">HR</button>
+                    <button type="button" class="creature-book-clear" data-creature-book-rank="SR">SR</button>
+                    <button type="button" class="creature-book-clear" data-creature-book-rank="LR">LR</button>
+                    <button type="button" class="creature-book-clear" data-creature-book-rank="GR">GR</button>
+                  </div>
+                </div>
+              </div>
+              <div class="item-panel">
+                <h4>図鑑ボーナス</h4>
+                <div class="creature-book-summary" id="creature-book-summary">
+                  <div class="creature-book-empty">登録なし</div>
                 </div>
               </div>
             </div>
@@ -6562,6 +6693,8 @@ async function recalcAll() {
     const mergedPassives = computeMergedPassives(creatureState, creatureDb);
     applyCreaturePassivesToSTTemp(T, mergedPassives, creatureDb, LvTempCreature, ch);
     applyCreatureStatsToSTTemp(T, creatureState, creatureDb);
+    applyCreatureBookToSTTemp(T, creatureState, creatureDb, LvTempCreature);
+    if (creatureBookUIInitialized) renderCreatureBookSummary();
   }
 
   if (minipetDb) applyMinipetToSTTemp(T, ch);
@@ -7402,6 +7535,9 @@ function buildSnapshot() {
         sub3: (s && s.override && s.override.sub3) || null,
       },
     })),
+    book: {
+      registered: { ...(creatureState.book && creatureState.book.registered ? creatureState.book.registered : {}) },
+    },
   };
   
   snap.titles = Titles.getState();
@@ -7590,10 +7726,13 @@ async function loadSnapshot(data, sourceLabel) {
 
   if (data.creature && Array.isArray(data.creature.slots)) {
     creatureState.slots = [0,1,2,3].map((i) => normalizeCreatureSlot(data.creature.slots[i]));
+    creatureState.book = normalizeCreatureBookState(data.creature.book);
   } else {
     creatureState.slots = [newCreatureSlot(), newCreatureSlot(), newCreatureSlot(), newCreatureSlot()];
+    creatureState.book = newCreatureBookState();
   }
   if (creatureUIInitialized) renderCreatureTab();
+  if (creatureBookUIInitialized) renderCreatureBookTab();
 
   
   if (data.titles) Titles.setState(data.titles);
@@ -9560,6 +9699,7 @@ function bindTabBar() {
       
       if (tab === 'skill')    refreshSkillFrame();
       if (tab === 'creature') initCreatureTab();
+      if (tab === 'creature-book') initCreatureBookTab();
       if (tab === 'pet')      initPetTab();
       if (tab === 'minipet')  initMinipetTab();
       if (tab === 'trans' && !didDeferredInit)   TransSkill.rerender();
@@ -9751,6 +9891,47 @@ const CREATURE_STAT_URL   = 'lib/data/creature_stats.json';
 const CREATURE_RANK_ORDER = ['N', 'R', 'HR', 'SR', 'LR', 'GR'];
 const CREATURE_MAX_LEVEL_BY_RANK = { N: 60, R: 70, HR: 80, SR: 90, LR: 100, GR: 120 };
 const CREATURE_STAT_POINT_PER_LEVEL = { N: 1, R: 2, HR: 3, SR: 4, LR: 5, GR: 5 };
+const CREATURE_BOOK_ELIGIBLE_IDS = new Set([
+  '0000','0001','0002','0003','0004','0005','0006','0007','0008','0009',
+  '0010','0011','0012','0013','0014','0015','0016','0017','0018','0019',
+  '0020','0021','0022','0023','0024','0025','0026','0027','0028','0029',
+  '0030','0031','0032','0033','0034','0035','0036','0037','0038','0039',
+  '0040','0041','0042','0043','0044','0045','0046','0047','0048','0049',
+  '0050','0051','0052','0053','0054','0055','0056','0057','0058','0059',
+  '0060','0061','0062','0063','0064','0065','0066','0067','0068','0069',
+  '0070','0071','0072','0073','0074','0075','0076','0077','0078','0079',
+  '0080','0081','0082','0083','0084','0085','0086','0087','0088','0089',
+  '0090','0091','0092','0093','0094','0095','0096','0097','0105','0106',
+  '0108','0109','0098','0099','0100','0101','0102','0107','0110','0111',
+  '0103','0104','0112',
+  '0184','0216','0260','0261','0269','0270','0271',
+]);
+const CREATURE_BOOK_BONUS_OVERRIDES = {
+  '0184': [{ statId: 'int', divisor: 8 }],
+  '0216': [{ statId: 'chs', divisor: 8 }],
+  '0260': [{ statId: 'luc', divisor: 2 }],
+  '0261': [{ statId: 'chs', divisor: 2 }],
+  '0269': [{ statId: 'str', divisor: 3 }, { statId: 'con', divisor: 3 }],
+  '0270': [{ statId: 'int', divisor: 3 }, { statId: 'chs', divisor: 3 }],
+  '0271': [{ statId: 'agi', divisor: 3 }, { statId: 'luc', divisor: 3 }],
+};
+const CREATURE_BOOK_LUCK_SUPPORT_NAMES = new Set([
+  'レビット',
+  'ヴィド',
+  'リボンのルジュエ',
+  '地獄のフレア',
+  'マスクグール',
+  '泣き虫ルドルフ',
+  'ラストウィッチ',
+]);
+const CREATURE_BOOK_STAT_LABELS = {
+  str: '力',
+  int: '知識',
+  agi: '敏捷',
+  con: '健康',
+  chs: 'カリスマ',
+  luc: '運',
+};
 const CREATURE_STAT_KEYS = [
   { key: 'str', label: 'STR', statId: 'str' },
   { key: 'int', label: 'INT', statId: 'int' },
@@ -9865,6 +10046,21 @@ function newCreatureSlot() {
 }
 
 
+function newCreatureBookState() {
+  return { registered: {} };
+}
+
+function normalizeCreatureBookState(raw) {
+  const state = newCreatureBookState();
+  const src = raw && typeof raw === 'object' ? raw.registered : null;
+  if (!src || typeof src !== 'object') return state;
+  for (const id of Object.keys(src)) {
+    const idPad = String(id).padStart(4, '0');
+    if (src[id] && CREATURE_BOOK_ELIGIBLE_IDS.has(idPad)) state.registered[idPad] = true;
+  }
+  return state;
+}
+
 function normalizeCreatureSlot(raw) {
   const slot = newCreatureSlot();
   if (!raw) return slot;
@@ -9902,10 +10098,13 @@ function normalizeCreatureSlot(raw) {
 let creatureState = {
   
   slots: [newCreatureSlot(), newCreatureSlot(), newCreatureSlot(), newCreatureSlot()],
+  book: newCreatureBookState(),
 };
 let creatureSearchFilter = { text: '', rank: '' };
+let creatureBookFilter = { text: '', rank: '' };
 let creatureActiveSlot   = 0;
 let creatureUIInitialized = false;
+let creatureBookUIInitialized = false;
 
 
 function parseCreatureCsv(text) {
@@ -10186,6 +10385,77 @@ function applyCreatureStatsToSTTemp(STTemp, state, db) {
     const v = Number(computed.stats[def.key] && computed.stats[def.key].bonus) || 0;
     if (v === 0) continue;
     STTemp.sum[def.statId] = (STTemp.sum[def.statId] || 0) + v;
+  }
+}
+
+function isCreatureBookEligible(creature) {
+  return !!(creature && (creature.rank === 'GR' || CREATURE_BOOK_ELIGIBLE_IDS.has(creature.id)));
+}
+
+function getCreatureBookStatId(creature) {
+  if (!creature) return null;
+  if (creature.type === '力') return 'str';
+  if (creature.type === '知識') return 'int';
+  if (creature.type === '健康') return 'con';
+  if (creature.type === 'サポート') {
+    return CREATURE_BOOK_LUCK_SUPPORT_NAMES.has(creature.name) ? 'luc' : 'chs';
+  }
+  return null;
+}
+
+function getCreatureBookBonusValue(creature, charLv) {
+  const rank = creature && creature.rank;
+  const lv = Math.max(1, Math.floor(Number(charLv) || 1));
+  if (rank === 'N') return 3;
+  if (rank === 'R') return 5;
+  if (rank === 'HR') return 20;
+  if (rank === 'SR') return Math.floor(lv / 8);
+  if (rank === 'LR') return Math.floor(lv / 2);
+  return 0;
+}
+
+function getCreatureBookBonusEntries(creature, charLv) {
+  const lv = Math.max(1, Math.floor(Number(charLv) || 1));
+  const override = creature && CREATURE_BOOK_BONUS_OVERRIDES[creature.id];
+  if (override) {
+    return override
+      .map((entry) => ({
+        statId: entry.statId,
+        value: Math.floor(lv / Math.max(1, Number(entry.divisor) || 1)),
+      }))
+      .filter((entry) => entry.statId && entry.value);
+  }
+  const statId = getCreatureBookStatId(creature);
+  const value = getCreatureBookBonusValue(creature, lv);
+  return statId && value ? [{ statId, value }] : [];
+}
+
+function computeCreatureBookBonus(state, db, charLv) {
+  const out = {
+    count: 0,
+    max: db ? Object.values(db.creatures).filter(isCreatureBookEligible).length : CREATURE_BOOK_ELIGIBLE_IDS.size,
+    stats: { str: 0, int: 0, agi: 0, con: 0, chs: 0, luc: 0 },
+  };
+  if (!state || !db) return out;
+  const registered = state.book && state.book.registered ? state.book.registered : {};
+  for (const id of Object.keys(registered)) {
+    if (!registered[id]) continue;
+    const creature = db.creatures[id];
+    if (!isCreatureBookEligible(creature)) continue;
+    out.count += 1;
+    for (const entry of getCreatureBookBonusEntries(creature, charLv)) {
+      out.stats[entry.statId] = (out.stats[entry.statId] || 0) + entry.value;
+    }
+  }
+  return out;
+}
+
+function applyCreatureBookToSTTemp(STTemp, state, db, charLv) {
+  if (!STTemp || !STTemp.sum) return;
+  const bonus = computeCreatureBookBonus(state, db, charLv);
+  for (const [statId, value] of Object.entries(bonus.stats)) {
+    if (!value) continue;
+    STTemp.sum[statId] = (STTemp.sum[statId] || 0) + value;
   }
 }
 
@@ -11058,6 +11328,142 @@ function renderCreatureTab() {
   renderCreatureStatPanel();
 }
 
+function getCreatureBookEntries() {
+  if (!creatureDb) return [];
+  return Object.values(creatureDb.creatures)
+    .filter(isCreatureBookEligible)
+    .sort((a, b) => {
+      const ra = CREATURE_RANK_ORDER.indexOf(a.rank);
+      const rb = CREATURE_RANK_ORDER.indexOf(b.rank);
+      if (ra !== rb) return ra - rb;
+      return Number(a.rawId) - Number(b.rawId);
+    });
+}
+
+function formatCreatureBookBonus(creature) {
+  const entries = getCreatureBookBonusEntries(creature, getEffectiveLv(readCharacter()));
+  if (!entries.length) return '-';
+  return entries
+    .map((entry) => `${CREATURE_BOOK_STAT_LABELS[entry.statId] || entry.statId}+${entry.value}`)
+    .join(' / ');
+}
+
+function renderCreatureBookRankFilter() {
+  const root = $('creature-book-rank-filter');
+  if (!root) return;
+  root.innerHTML = '';
+  const mkBtn = (label, value) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = label;
+    if (creatureBookFilter.rank === value) b.classList.add('is-active');
+    b.addEventListener('click', () => {
+      creatureBookFilter.rank = value;
+      renderCreatureBookRankFilter();
+      renderCreatureBookList();
+    });
+    return b;
+  };
+  root.appendChild(mkBtn('全て', ''));
+  for (const r of ['N', 'R', 'HR', 'SR', 'LR']) root.appendChild(mkBtn(r, r));
+}
+
+function renderCreatureBookSummary() {
+  const root = $('creature-book-summary');
+  if (!root) return;
+  if (!creatureDb) {
+    root.innerHTML = `<div class="creature-book-empty">${
+      creatureDbStatus === 'error' ? 'データ読込失敗' : '読み込み中…'
+    }</div>`;
+    return;
+  }
+  const bonus = computeCreatureBookBonus(creatureState, creatureDb, getEffectiveLv(readCharacter()));
+  root.innerHTML = '';
+  const count = document.createElement('div');
+  count.className = 'creature-book-count';
+  count.innerHTML = `<span>登録 <b>${bonus.count}</b> / ${bonus.max}</span>`;
+  root.appendChild(count);
+  let any = false;
+  for (const statId of ['str', 'int', 'agi', 'con', 'chs', 'luc']) {
+    const v = Number(bonus.stats[statId]) || 0;
+    if (!v) continue;
+    any = true;
+    const row = document.createElement('div');
+    row.className = 'creature-book-stat';
+    row.innerHTML = `<span>${esc(CREATURE_BOOK_STAT_LABELS[statId] || statId)}</span><span>+${v}</span>`;
+    root.appendChild(row);
+  }
+  if (!any) {
+    const empty = document.createElement('div');
+    empty.className = 'creature-book-empty';
+    empty.textContent = '登録なし';
+    root.appendChild(empty);
+  }
+}
+
+function renderCreatureBookList() {
+  const root = $('creature-book-list');
+  if (!root) return;
+  if (!creatureDb) {
+    root.innerHTML = `<div class="creature-book-empty">${
+      creatureDbStatus === 'error' ? 'データ読込失敗' : '読み込み中…'
+    }</div>`;
+    return;
+  }
+  const q = (creatureBookFilter.text || '').trim().toLowerCase();
+  const rf = creatureBookFilter.rank;
+  const entries = getCreatureBookEntries().filter((c) => {
+    if (rf && c.rank !== rf) return false;
+    if (q && !c.name.toLowerCase().includes(q)) return false;
+    return true;
+  });
+  root.innerHTML = '';
+  if (!entries.length) {
+    root.innerHTML = '<div class="creature-book-empty">該当なし</div>';
+    return;
+  }
+  const registered = creatureState.book && creatureState.book.registered ? creatureState.book.registered : {};
+  for (const c of entries) {
+    const row = document.createElement('label');
+    row.className = 'creature-book-row';
+    row.title = c.name;
+    const checked = !!registered[c.id];
+    row.innerHTML =
+      `<input type="checkbox" ${checked ? 'checked' : ''} aria-label="${esc(c.name)} 図鑑登録">` +
+      `<img src="${CREATURE_IMG_BASE}creature_${esc(c.id)}.png" alt="">` +
+      `<div class="creature-book-name">${esc(c.name)}</div>` +
+      `<div class="creature-book-rank r-${esc(c.rank)}">${esc(c.rank)}</div>` +
+      `<div class="creature-book-type">${esc(c.type)}</div>` +
+      `<div class="creature-book-bonus">${esc(formatCreatureBookBonus(c))}</div>`;
+    const input = row.querySelector('input');
+    input.addEventListener('change', async () => {
+      if (!creatureState.book) creatureState.book = newCreatureBookState();
+      if (input.checked) creatureState.book.registered[c.id] = true;
+      else delete creatureState.book.registered[c.id];
+      renderCreatureBookSummary();
+      scheduleAutosave();
+      await recalcAll();
+    });
+    root.appendChild(row);
+  }
+}
+
+function renderCreatureBookTab() {
+  renderCreatureBookRankFilter();
+  renderCreatureBookList();
+  renderCreatureBookSummary();
+}
+
+async function registerCreatureBookEntries(entries) {
+  if (!creatureState.book) creatureState.book = newCreatureBookState();
+  for (const c of entries || []) {
+    if (isCreatureBookEligible(c)) creatureState.book.registered[c.id] = true;
+  }
+  renderCreatureBookTab();
+  scheduleAutosave();
+  await recalcAll();
+}
+
 function bindCreatureSearchInput() {
   const input = $('creature-search-input');
   if (!input) return;
@@ -11065,6 +11471,53 @@ function bindCreatureSearchInput() {
     creatureSearchFilter.text = input.value || '';
     renderCreatureSearchResults();
   });
+}
+
+function bindCreatureBookControls() {
+  const input = $('creature-book-search-input');
+  if (input) {
+    input.addEventListener('input', () => {
+      creatureBookFilter.text = input.value || '';
+      renderCreatureBookList();
+    });
+  }
+  const clear = $('creature-book-clear');
+  if (clear) {
+    clear.addEventListener('click', async () => {
+      creatureState.book = newCreatureBookState();
+      renderCreatureBookTab();
+      scheduleAutosave();
+      await recalcAll();
+    });
+  }
+  const registerAll = $('creature-book-register-all');
+  if (registerAll) {
+    registerAll.addEventListener('click', async () => {
+      await registerCreatureBookEntries(getCreatureBookEntries());
+    });
+  }
+  document.querySelectorAll('[data-creature-book-rank]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const rank = btn.getAttribute('data-creature-book-rank') || '';
+      await registerCreatureBookEntries(getCreatureBookEntries().filter((c) => c.rank === rank));
+    });
+  });
+}
+
+async function initCreatureBookTab() {
+  if (creatureBookUIInitialized) {
+    renderCreatureBookTab();
+    return;
+  }
+  creatureBookUIInitialized = true;
+  renderCreatureBookTab();
+  bindCreatureBookControls();
+  try {
+    await loadCreatureDataOnce();
+  } catch (err) {
+    
+  }
+  renderCreatureBookTab();
 }
 
 async function initCreatureTab() {
@@ -11297,8 +11750,10 @@ function bindSessionEvents() {
     }
     
     creatureState.slots = [newCreatureSlot(), newCreatureSlot(), newCreatureSlot(), newCreatureSlot()];
+    creatureState.book = newCreatureBookState();
     creatureActiveSlot = 0;
     if (creatureUIInitialized) renderCreatureTab();
+    if (creatureBookUIInitialized) renderCreatureBookTab();
     
     Titles.reset();
     
@@ -15554,8 +16009,10 @@ async function main() {
   loadCreatureDataOnce().then(async () => {
     
     const hasAny = creatureState.slots.some((s) => s && s.id);
-    if (hasAny) await recalcAll();
+    const hasBook = !!(creatureState.book && creatureState.book.registered && Object.keys(creatureState.book.registered).length);
+    if (hasAny || hasBook) await recalcAll();
     if (creatureUIInitialized) renderCreatureTab();
+    if (creatureBookUIInitialized) renderCreatureBookTab();
   }).catch(() => {  });
 
   loadMapMonsterIndex().then(async () => {
