@@ -49,6 +49,11 @@
             margin-left: 1em;
             color: #666;
         }
+        #search-limit {
+            margin-left: 8px;
+            padding: 6px;
+            font-size: 0.9em;
+        }
         table#item-search-results {
             margin: 1em auto;
             border-collapse: collapse;
@@ -124,6 +129,10 @@
             #search-status {
                 display: block;
                 margin: 6px 0;
+            }
+            #search-limit {
+                margin-left: 0;
+                margin-top: 6px;
             }
             .cache-reload-btn {
                 margin-left: 0;
@@ -225,6 +234,13 @@
                 <p>アイテム名・効果・説明文・職業などで検索できます。スペース区切りで AND 検索。</p>
                 <div>
                     <input type="text" id="search-input" placeholder="例: 防御力 ヘルメット" autofocus>
+                    <select id="search-limit" title="検索結果の表示件数">
+                        <option value="100" selected>100件</option>
+                        <option value="200">200件</option>
+                        <option value="300">300件</option>
+                        <option value="500">500件</option>
+                        <option value="1000">1000件</option>
+                    </select>
                     <span id="search-status">データ未読み込み</span>
                     <button class="cache-reload-btn" id="btn-cache-reload" onclick="reloadSearchNoCache()">キャッシュ更新</button>
                 </div>
@@ -244,7 +260,7 @@
                 </table>
                 <br>
                 <p>
-                    ・検索結果は最大100件まで表示します。<br>
+                    ・検索結果の表示件数は 100 / 200 / 300 / 500 / 1000 件から選択できます。<br>
                     ・名前のリンクから個別アイテム表示ページへ移動できます。<br>
                 </p>
                 <br>
@@ -286,7 +302,7 @@
     const DATA_URL = "data/items_search.json";
     const VIEWER_URL = "item_viewer.html";
     const IMG_BASE = "../item/design/image/item/iconItem_";
-    const PAGE_LIMIT = 100;
+    const DEFAULT_PAGE_LIMIT = 100;
 
     let DATA = null;
     let loading = false;
@@ -294,9 +310,15 @@
 
     const inputEl = document.getElementById('search-input');
     const statusEl = document.getElementById('search-status');
+    const limitEl = document.getElementById('search-limit');
     const tableEl = document.getElementById('item-search-results');
     const tbodyEl = document.getElementById('search-tbody');
     const messageEl = document.getElementById('search-message');
+
+    function getPageLimit() {
+        const limit = parseInt(limitEl.value, 10);
+        return Number.isFinite(limit) ? limit : DEFAULT_PAGE_LIMIT;
+    }
 
     async function ensureDataLoaded() {
         if (DATA || loading) return;
@@ -335,6 +357,7 @@
             return;
         }
         const t0 = performance.now();
+        const pageLimit = getPageLimit();
         const kws = kw.toLowerCase().split(/\s+/).filter(Boolean);
         const hits = [];
         for (const r of DATA.rows) {
@@ -344,10 +367,10 @@
                 if (blob.indexOf(k) === -1) { ok = false; break; }
             }
             if (ok) hits.push(r);
-            if (hits.length >= PAGE_LIMIT * 10) break;
+            if (hits.length >= pageLimit * 10) break;
         }
         const total = hits.length;
-        const shown = Math.min(total, PAGE_LIMIT);
+        const shown = Math.min(total, pageLimit);
 
         const frag = document.createDocumentFragment();
         for (let i = 0; i < shown; i++) {
@@ -373,7 +396,7 @@
         tableEl.style.display = "";
 
         const t1 = performance.now();
-        const capped = total >= PAGE_LIMIT ? " (先頭" + PAGE_LIMIT + "件を表示)" : "";
+        const capped = total >= pageLimit ? " (先頭" + pageLimit + "件を表示)" : "";
         statusEl.innerHTML = '<span class="search-hits">' + total + '件ヒット</span>' + capped + ' / 検索' + (t1 - t0).toFixed(0) + 'ms';
     }
 
@@ -386,6 +409,7 @@
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(runSearch, 120);
     });
+    limitEl.addEventListener('change', runSearch);
 
     // 初期表示・ブラウザ戻る（bfcache 復元含む）・フォーム自動復元で
     // 入力内容が残っている場合に再検索する。
