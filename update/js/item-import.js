@@ -293,7 +293,7 @@ function calc2(is_sort) {
         var warn_text = "";
         var res_text = "";
         var is_dx_title = true;
-        // U,DXUの場合は接頭辞つける
+        // U,DXUの場合はオプションつける
         if (item_info && item_info[0].grade) {
             if (item_info[0].grade == 4) {
                 res_text += u_state_table;

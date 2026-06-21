@@ -4,7 +4,7 @@ const DATA_CSV_PATH = "https://sokomin.github.io/information/property/data/sheet
 const STAGES = ["1次", "2次", "3次"];
 const LS_KEY_HISTORY = "prob_sim_history_v1";
 
-let rows = []; // {書, 段階, 接頭辞名, 確率}
+let rows = []; // {書, 段階, オプション名, 確率}
 
 function $(id){ return document.getElementById(id); }
 
@@ -169,7 +169,7 @@ function runSimulation(){
     const candidates = rows
       .filter(r => r["書"] === book && r["段階"] === stage)
       .map(r => ({
-        name: r["接頭辞名"],
+        name: r["オプション名"],
         weight: parsePercentToWeight(r["確率"]),
         prob: r["確率"]
       }))
@@ -201,9 +201,9 @@ async function init(){
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const text = await resp.text();
 
-    // 期待列：書 / 段階 / 接頭辞名 / 確率（他列あってもOK）
+    // 期待列：書 / 段階 / オプション名 / 確率（他列あってもOK）
     const parsed = parseCSV(text);
-    rows = parsed.filter(r => r["書"] && r["段階"] && r["接頭辞名"] && r["確率"]);
+    rows = parsed.filter(r => r["書"] && r["段階"] && r["オプション名"] && r["確率"]);
 
     setStatus(`データ読込完了（${rows.length}行）`);
     setTimeout(() => setStatus(""), 1200);
