@@ -5210,7 +5210,8 @@ async function refreshItemList() {
     if (NAME_EXCLUDE_RE.test(name)) return false;
     return true;
   });
-  const byName = filtered.filter((r) => String(r[2]).indexOf(q) >= 0);
+  const qNorm = normalizeItemSearchText(q);
+  const byName = filtered.filter((r) => buildItemSearchText(r).includes(qNorm));
   const status = $('search-status');
 
   if (!formState.feasibleOnly) {
@@ -5231,11 +5232,55 @@ async function refreshItemList() {
 
 function stripGameTags(name) {
   if (!name) return '';
-  return String(name)
+  return recoverUtf8Mojibake(String(name))
     .replace(/<c:[A-Za-z0-9_]+>/g, '')   
     .replace(/<n>/g, '')                  
+    .replace(/\s*\[\s*刻印(?:\s*Lv\s*\[?\s*\d+\s*~\s*\d+\s*\]?\s*)?\]?\s*$/i, '')
     .replace(/\s*\[\s*$/, '')             
     .trim();
+}
+
+function recoverUtf8Mojibake(text) {
+  const s = String(text || '');
+  if (!/[ÃÂã]/.test(s) || typeof TextDecoder === 'undefined') return s;
+  try {
+    const bytes = new Uint8Array(Array.from(s, (ch) => ch.charCodeAt(0) & 0xff));
+    const decoded = new TextDecoder('utf-8').decode(bytes);
+    const score = (decoded.match(/[\u3040-\u30ff\u3400-\u9fff]/g) || []).length;
+    return score >= 2 ? decoded : s;
+  } catch (_) {
+    return s;
+  }
+}
+
+function normalizeItemSearchText(text) {
+  return stripGameTags(text)
+    .replace(/[［]/g, '[')
+    .replace(/[］]/g, ']')
+    .replace(/\s+/g, '')
+    .toLowerCase();
+}
+
+const ITEM_SEARCH_GROUP_ALIASES = new Map([
+  ...[8948, 8949, 8944, 8945, 8947, 8946, 8942, 8943, 8940, 8941, 8951, 8950]
+    .map((id) => [id, 'Fate fate フェイト Fate刻印 Fate刻印装備']),
+  ...[11464, 11463, 11462, 11461, 11454, 11453, 11456, 11455, 11460, 11459, 11458, 11457, 11452, 11451, 11450, 11449, 11446, 11445, 11448, 11447, 11468, 11467, 11466, 11465]
+    .map((id) => [id, '閃の軌跡 閃の軌跡4 閃の軌跡Ⅳ 軌跡 コラボ 閃の軌跡刻印装備']),
+  ...[8582, 8583, 8584, 8585, 9603, 9604]
+    .map((id) => [id, '火鳥 火鳥の聖火 刻印イヤリング 火鳥刻印イヤリング']),
+  ...[11351, 11352, 11353, 11354, 11355, 11356, 11357, 11358, 11359, 11360, 11361]
+    .map((id) => [id, 'ヤティカヌ ヤティカヌ刻印 ヤティカヌ刻印防具 刻印防具']),
+  [13921, '古代 古代刻印 古代刻印の指輪 古代刻印指輪'],
+  ...[10362, 10363, 10364, 10365, 10366]
+    .map((id) => [id, '混沌 混沌の大地 混沌の大地刻印リング 混沌刻印']),
+  ...[8360, 8367, 8361]
+    .map((id) => [id, '試練 試練指 試練のリング 試練刻印']),
+]);
+
+function buildItemSearchText(row) {
+  if (!row) return '';
+  const alias = ITEM_SEARCH_GROUP_ALIASES.get(Number(row[0])) || '';
+  return normalizeItemSearchText(`${row[2] || ''} ${alias}`);
 }
 
 function renderItemList(filtered, totalShown, totalBeforeFeasibility) {
@@ -5989,10 +6034,18 @@ function buildItemDetailHtml(inv, rec, character) {
   const isYatikanuIncusedArmor = YatikanuIncusedArmor.isTargetId(rec.id);
   const isAncientIncusedRing = AncientIncusedRing.isTargetId(rec.id);
   const isChaosIncusedRing = ChaosIncusedRing.isTargetId(rec.id);
+  const isTrialIncusedRing = TrialIncusedRing.isTargetId(rec.id);
+  const isFateIncusedEquipment = FateIncusedEquipment.isTargetId(rec.id);
+  const isSennoKisekiIncusedEquipment = SennoKisekiIncusedEquipment.isTargetId(rec.id);
+  const isIncusedEarring = IncusedEarring.isTargetId(rec.id);
   const incusedLv = isIncusedRingItem ? IncusedRing.clampLv(inv?.incusedRingLv ?? 1) : 1;
   const yatikanuLv = isYatikanuIncusedArmor ? YatikanuIncusedArmor.clampLv(inv?.incusedRingLv ?? 1) : 1;
   const ancientLv = isAncientIncusedRing ? AncientIncusedRing.clampLv(inv?.incusedRingLv ?? 1) : 1;
   const chaosLv = isChaosIncusedRing ? ChaosIncusedRing.clampLv(inv?.incusedRingLv ?? 1) : 1;
+  const trialLv = isTrialIncusedRing ? TrialIncusedRing.effectiveLv(rec.id, inv?.incusedRingLv ?? 1) : 1;
+  const fateLv = isFateIncusedEquipment ? FateIncusedEquipment.clampLv(inv?.incusedRingLv ?? 1) : 1;
+  const sennoLv = isSennoKisekiIncusedEquipment ? SennoKisekiIncusedEquipment.clampLv(inv?.incusedRingLv ?? 1) : 1;
+  const earringLv = isIncusedEarring ? IncusedEarring.clampLv(inv?.incusedRingLv ?? 1) : 1;
   for (const slot of (rec.opSlots || [])) {
     if (slot.slotKind !== 'base') continue;
 
@@ -6008,6 +6061,23 @@ function buildItemDetailHtml(inv, rec, character) {
     }
     if (isChaosIncusedRing) {
       if (slot.pos === 0) html += `<span class="idp-op is-base">- ${esc(`刻印レベル ${chaosLv}`)}</span>`;
+      continue;
+    }
+
+    if (isTrialIncusedRing) {
+      if (slot.pos === 0) html += `<span class="idp-op is-base">- ${esc(`刻印レベル ${trialLv}`)}</span>`;
+      continue;
+    }
+    if (isFateIncusedEquipment) {
+      if (slot.pos === 0) html += `<span class="idp-op is-base">- ${esc(`刻印レベル ${fateLv}`)}</span>`;
+      continue;
+    }
+    if (isSennoKisekiIncusedEquipment) {
+      if (slot.pos === 0) html += `<span class="idp-op is-base">- ${esc(`刻印レベル ${sennoLv}`)}</span>`;
+      continue;
+    }
+    if (isIncusedEarring) {
+      if (slot.pos === 0) html += `<span class="idp-op is-base">- ${esc(`刻印レベル ${earringLv}`)}</span>`;
       continue;
     }
 
@@ -6070,11 +6140,39 @@ function buildItemDetailHtml(inv, rec, character) {
       html += `<span class="idp-op is-base">- ${esc(line)}</span>`;
     }
   }
+  if (isTrialIncusedRing) {
+    html += `<div class="idp-section-title" style="color:#cbe79b">&lt;試練のリング 刻印 Lv ${trialLv}&gt;</div>`;
+    for (const line of TrialIncusedRing.describe(rec.id, inv?.incusedRingLv ?? 1)) {
+      html += `<span class="idp-op is-base">- ${esc(line)}</span>`;
+    }
+  }
+  if (isFateIncusedEquipment) {
+    html += `<div class="idp-section-title" style="color:#cbe79b">&lt;Fate刻印装備 Lv ${fateLv}&gt;</div>`;
+    for (const line of FateIncusedEquipment.describe(rec.id, fateLv)) {
+      html += `<span class="idp-op is-base">- ${esc(line)}</span>`;
+    }
+  }
+  if (isSennoKisekiIncusedEquipment) {
+    html += `<div class="idp-section-title" style="color:#cbe79b">&lt;閃の軌跡刻印装備 Lv ${sennoLv}&gt;</div>`;
+    for (const line of SennoKisekiIncusedEquipment.describe(rec.id, sennoLv)) {
+      html += `<span class="idp-op is-base">- ${esc(line)}</span>`;
+    }
+  }
+  if (isIncusedEarring) {
+    html += `<div class="idp-section-title" style="color:#cbe79b">&lt;火鳥刻印イヤリング Lv ${earringLv}&gt;</div>`;
+    for (const line of IncusedEarring.describe(rec.id, earringLv)) {
+      html += `<span class="idp-op is-base">- ${esc(line)}</span>`;
+    }
+  }
   for (const slot of (rec.opSlots || [])) {
     if (slot.slotKind === 'base') continue;
     if (isYatikanuIncusedArmor) continue;
     if (isAncientIncusedRing) continue;
     if (isChaosIncusedRing) continue;
+    if (isTrialIncusedRing) continue;
+    if (isFateIncusedEquipment) continue;
+    if (isSennoKisekiIncusedEquipment) continue;
+    if (isIncusedEarring) continue;
     const isNx = slot.slotKind === 'nxop' || slot.slotKind === 'long_nxop';
     const nxPos = (isNx && slot.pos != null) ? Number(slot.pos) : -1;
     
@@ -6848,6 +6946,10 @@ async function recalcAll() {
   YatikanuIncusedArmor.applyToSTTemp(T, equipped, getEffectiveLv(ch), ch);
   AncientIncusedRing.applyToSTTemp(T, equipped, getEffectiveLv(ch), ch);
   ChaosIncusedRing.applyToSTTemp(T, equipped, getEffectiveLv(ch), ch);
+  TrialIncusedRing.applyToSTTemp(T, equipped, getEffectiveLv(ch), ch);
+  FateIncusedEquipment.applyToSTTemp(T, equipped, getEffectiveLv(ch), ch);
+  SennoKisekiIncusedEquipment.applyToSTTemp(T, equipped, getEffectiveLv(ch), ch);
+  IncusedEarring.applyToSTTemp(T, equipped, getEffectiveLv(ch), ch);
 
   await applyBadgesToSTTemp(T, getEffectiveLv(ch), ch);
 
@@ -13964,6 +14066,543 @@ const IncusedRing = (() => {
   return { DEFS, isIncusedRingId, getDef, clampLv, applyToSTTemp };
 })();
 
+const TrialIncusedRing = (() => {
+  const DEFS = {
+    8360: { name: '試練のリング[挑戦]', minLv: 1, maxLv: 14, magicResist: 5, expBonus: 0 },
+    8367: { name: '試練のリング', minLv: 1, maxLv: 14, magicResist: 5, expBonus: 0 },
+    8361: { name: '試練のリング[勇気]', minLv: 15, maxLv: 30, magicResist: 15, expBonus: 5 },
+  };
+
+  function clampLv(n) {
+    const v = Math.max(1, Math.min(30, Number(n) | 0));
+    return Number.isFinite(v) ? v : 1;
+  }
+  function isTargetId(id) { return DEFS[Number(id)] != null; }
+  function getDef(id) { return DEFS[Number(id)] || null; }
+  function effectiveLv(id, n) {
+    const def = getDef(id);
+    const lv = clampLv(n);
+    if (!def) return lv;
+    return Math.max(def.minLv, Math.min(def.maxLv, lv));
+  }
+  function effects(id, lv) {
+    const def = getDef(id);
+    if (!def) return [];
+    const l = effectiveLv(id, lv);
+    const statValue = l * 3 + 10;
+    const out = [
+      { label: '力', stats: ['str'], value: statValue },
+      { label: '知識', stats: ['int'], value: statValue },
+      { label: '魔法抵抗', stats: ['attrMagicResist'], value: def.magicResist, unit: '%' },
+    ];
+    if (def.expBonus) out.push({ label: 'モンスター討伐経験値', stats: ['expBonus'], value: def.expBonus, unit: '%' });
+    return out;
+  }
+  function addStat(STTemp, stat, value) {
+    if (!stat || value == null || !Number.isFinite(Number(value))) return;
+    STTemp.sum[stat] = (STTemp.sum[stat] || 0) + Number(value);
+  }
+  function subtractLayer(STTemp, layer, stat, value) {
+    if (!STTemp[layer] || value == null || !Number.isFinite(Number(value))) return;
+    STTemp[layer][stat] = (STTemp[layer][stat] || 0) - Number(value);
+  }
+  function subtractNativeItemOps(STTemp, inv, item, LvTemp, character) {
+    const raw = newSTTemp();
+    for (const slot of (item?.opSlots || [])) {
+      if (slot.slotKind !== 'base' && slot.slotKind !== 'op') continue;
+      const source = slot.slotKind === 'base' ? 'item.base' : 'item.option';
+      applyOpToSTTemp(raw, calcOpValue(slot, inv, source, LvTemp || 0, character), item);
+    }
+    for (const layer of Object.keys(raw)) {
+      for (const [stat, value] of Object.entries(raw[layer])) subtractLayer(STTemp, layer, stat, value);
+    }
+  }
+  function applyToSTTemp(STTemp, equipped, LvTemp, character) {
+    if (!STTemp || !STTemp.sum || !Array.isArray(equipped)) return;
+    for (const { inv, item } of equipped) {
+      if (!isTargetId(inv?.itemId) || !inv?.equippedSlot || !inv.canEquip) continue;
+      subtractNativeItemOps(STTemp, inv, item, LvTemp, character);
+      for (const effect of effects(inv.itemId, inv.incusedRingLv ?? 1)) {
+        for (const stat of effect.stats) addStat(STTemp, stat, effect.value);
+      }
+    }
+  }
+  function describe(id, lv) {
+    const def = getDef(id);
+    if (!def) return [];
+    const rawLv = clampLv(lv);
+    const usedLv = effectiveLv(id, lv);
+    const out = [];
+    if (rawLv !== usedLv) out.push(`適用刻印レベル ${usedLv} (対応Lv ${def.minLv}~${def.maxLv})`);
+    for (const effect of effects(id, lv)) {
+      out.push(`${effect.label} ${Number(effect.value) >= 0 ? '+' : ''}${effect.value}${effect.unit || ''}`);
+    }
+    return out;
+  }
+  function desc(id, lv) {
+    const def = getDef(id);
+    if (!def) return '';
+    return [`${def.name} [刻印]`, ...describe(id, lv)].join('\n');
+  }
+
+  return { DEFS, isTargetId, getDef, clampLv, effectiveLv, applyToSTTemp, describe, desc };
+})();
+
+const FateIncusedEquipment = (() => {
+  const FOUR_ATTR_RESISTS = ['attrFireResist', 'attrWaterResist', 'attrWindResist', 'attrEarthResist'];
+  const def = (name, effects) => ({ name, effects });
+  const e = (label, stat, value, unit = '') => {
+    const stats = Array.isArray(stat) ? stat : (stat ? [stat] : []);
+    return { label, stats, value, unit };
+  };
+  const note = (label) => e(label, null, null);
+
+  const DEFS = {
+    8948: def('ライダーのチョーカー', (l) => [
+      e('致命打抵抗', 'physCritResist', l, '%'), e('決定打抵抗', 'criticalResist', l, '%'),
+      e('すべての異常系抵抗', 'statusResist', l + 10, '%'), e('ダメージ', 'physDamagePercent', l, '%'),
+      e('知恵', 'wiz', l * 5), e('健康', 'con', l * 5), e('スキルレベル', 'skillLv', 3),
+      l >= 20 ? e('[怪力] PVP時、攻撃力増加', 'pvpDamage', 10, '%') : null,
+    ]),
+    8949: def('凛のペンダント', (l) => [
+      e('致命打抵抗', 'physCritResist', l, '%'), e('決定打抵抗', 'criticalResist', l, '%'),
+      e('即死抵抗', 'instantDeathResist', l, '%'), e('炎、水、風、大地抵抗', FOUR_ATTR_RESISTS, l, '%'),
+      e('最大HP', 'hpPercent', l, '%'), e('知恵', 'wiz', l * 5), e('健康', 'con', l * 5),
+      l >= 20 ? e('[宝石魔術] 魔法攻撃力', 'attrMagic', 50, '%') : null,
+    ]),
+    8944: def('ライダーのアイマスク', (l) => [
+      e('防御力', 'def', l), e('大地属性抵抗', 'attrEarthResist', l, '%'),
+      e('力', 'str', l * 7), e('カリスマ', 'chs', l * 7), e('攻撃速度', 'atkspd', l, '%'), e('移動速度', 'mvspd', l, '%'),
+      l >= 20 ? e('[魔眼] ダメージ', 'physDamagePercent', 30, '%') : null,
+    ]),
+    8945: def('真アサシンの髑髏仮面', (l) => [
+      e('防御力', 'def', l), e('敏捷', 'agi', l * 7), e('移動速度', 'mvspd', l, '%'),
+      e('致命打発動確率', 'physCritRate', l * 0.5, '%'), note(`ブロッキング速度 +${l * 1.5}%`), e('回避率', 'eva', 10, '%'),
+      l >= 20 ? e('[投擲] 命中率', 'hit', 15, '%') : null,
+    ]),
+    8947: def('バーサーカーのベルト', (l) => [
+      e('防御力', 'def', l), note('スタックアイテム +6個'), e('防御力', 'defPercent', l, '%'),
+      e('ダメージ', 'physDamagePercent', l, '%'), e('敏捷', 'agi', l * 5),
+      l >= 20 ? e('[勇猛] ダメージ', 'physDamagePercent', 50, '%') : null,
+    ]),
+    8946: def('アーチャーのベルト', (l) => [
+      e('防御力', 'def', l), note('スタックアイテム +6個'), e('致命打発動確率', 'physCritRate', l * 0.5, '%'),
+      e('回避率', 'eva', l * 0.5, '%'), e('移動速度', 'mvspd', l * 0.5, '%'), e('最大HP', 'hpPercent', l, '%'),
+      l >= 20 ? e('[投影魔術] PVP時、防御力増加', 'pvpDefBonus', 10, '%') : null,
+    ]),
+    8942: def('バーサーカーのブレスレット', (l) => [
+      e('防御力', 'def', l), e('炎、水、風、大地抵抗', FOUR_ATTR_RESISTS, l, '%'),
+      e('ダメージ', 'physDamagePercent', l * 2, '%'), e('攻撃速度', 'atkspd', l, '%'),
+      e('致命打発動確率', 'physCritRate', l * 0.5, '%'), e('力', 'str', l + 20),
+      l >= 20 ? note('[十二の試練] 受けるダメージ 50減少') : null,
+    ]),
+    8943: def('キャスターのグローブ', (l) => [
+      e('防御力', 'def', l), e('炎、水、風、大地抵抗', FOUR_ATTR_RESISTS, l, '%'), note(`CP獲得ボーナス +${l}%`),
+      e('攻撃速度', 'atkspd', l, '%'), e('移動速度', 'mvspd', l * 0.5, '%'), e('魔法攻撃力', 'attrMagic', l * 0.5, '%'),
+      l >= 20 ? e('[高速神言] スキルレベル', 'skillLv', 2) : null,
+    ]),
+    8940: def('セイバーの甲冑', (l) => [
+      e('防御力', 'def', l), e('魔法抵抗', 'attrMagicResist', l, '%'), e('知識', 'int', l * 5), e('カリスマ', 'chs', l * 5),
+      e('魔法攻撃力', 'attrMagic', l, '%'), e('スキルレベル', 'skillLv', 3),
+      l >= 20 ? e('[直感] 魔法致命打', 'magicCritRate', 7, '%') : null,
+    ]),
+    8941: def('ランサーの戦闘装束', (l) => [
+      e('防御力', 'def', l), e('敏捷', 'agi', l * 5), e('健康', 'con', l * 5),
+      e('致命打発動確率', 'physCritRate', l, '%'), e('攻撃速度', 'atkspd', 20, '%'),
+      l >= 20 ? e('[矢避けの加護] 回避率', 'eva', 15, '%') : null,
+    ]),
+    8951: def('セイバーの足鎧', (l) => [
+      e('防御力', 'def', l), e('ノックバック抵抗', 'knockbackResist', l * 2, '%'), e('魔法抵抗', 'attrMagicResist', l, '%'),
+      e('魔法攻撃力', 'attrMagic', l, '%'), e('移動速度', 'mvspd', l, '%'), e('スキルレベル', 'skillLv', 3),
+      l >= 20 ? e('[魔力放出] PVP時、攻撃力増加', 'pvpDamage', 10, '%') : null,
+    ]),
+    8950: def('アサシンの草履', (l) => [
+      e('防御力', 'def', l), e('ノックバック抵抗', 'knockbackResist', l * 2, '%'), e('最大HP', 'hpPercent', l, '%'),
+      e('ダメージ', 'physDamagePercent', l * 2, '%'), e('致命打発動確率', 'physCritRate', l * 0.5, '%'), e('命中率', 'hit', 10, '%'),
+      l >= 20 ? note('[燕返し] 限界ダメージ無視確率 +3%') : null,
+    ]),
+  };
+
+  function clampLv(n) {
+    const v = Math.max(1, Math.min(30, Number(n) | 0));
+    return Number.isFinite(v) ? v : 1;
+  }
+  function isTargetId(id) { return DEFS[Number(id)] != null; }
+  function getDef(id) { return DEFS[Number(id)] || null; }
+  function effects(id, lv) {
+    const d = getDef(id);
+    return d ? d.effects(clampLv(lv)).filter(Boolean) : [];
+  }
+  function addStat(STTemp, stat, value) {
+    if (!stat || value == null || !Number.isFinite(Number(value))) return;
+    STTemp.sum[stat] = (STTemp.sum[stat] || 0) + Number(value);
+  }
+  function subtractLayer(STTemp, layer, stat, value) {
+    if (!STTemp[layer] || value == null || !Number.isFinite(Number(value))) return;
+    STTemp[layer][stat] = (STTemp[layer][stat] || 0) - Number(value);
+  }
+  function subtractNativeItemOps(STTemp, inv, item, LvTemp, character) {
+    const raw = newSTTemp();
+    for (const slot of (item?.opSlots || [])) {
+      if (slot.slotKind !== 'base' && slot.slotKind !== 'op') continue;
+      const source = slot.slotKind === 'base' ? 'item.base' : 'item.option';
+      applyOpToSTTemp(raw, calcOpValue(slot, inv, source, LvTemp || 0, character), item);
+    }
+    for (const layer of Object.keys(raw)) {
+      for (const [stat, value] of Object.entries(raw[layer])) subtractLayer(STTemp, layer, stat, value);
+    }
+  }
+  function applyToSTTemp(STTemp, equipped, LvTemp, character) {
+    if (!STTemp || !STTemp.sum || !Array.isArray(equipped)) return;
+    for (const { inv, item } of equipped) {
+      if (!isTargetId(inv?.itemId) || !inv?.equippedSlot || !inv.canEquip) continue;
+      subtractNativeItemOps(STTemp, inv, item, LvTemp, character);
+      for (const effect of effects(inv.itemId, inv.incusedRingLv ?? 1)) {
+        for (const stat of effect.stats) addStat(STTemp, stat, effect.value);
+      }
+    }
+  }
+  function fmtValue(value) {
+    if (value == null) return '';
+    return Number.isInteger(value) ? String(value) : String(Math.round(value * 10) / 10);
+  }
+  function describe(id, lv) {
+    const out = [];
+    for (const effect of effects(id, lv)) {
+      if (effect.value == null) out.push(effect.label);
+      else out.push(`${effect.label} ${Number(effect.value) >= 0 ? '+' : ''}${fmtValue(effect.value)}${effect.unit || ''}`);
+    }
+    return out;
+  }
+  function desc(id, lv) {
+    const d = getDef(id);
+    if (!d) return '';
+    return [`${d.name} [Fate刻印]`, ...describe(id, lv)].join('\n');
+  }
+
+  return { DEFS, isTargetId, getDef, clampLv, applyToSTTemp, describe, desc };
+})();
+
+const IncusedEarring = (() => {
+  const def = (name, effects) => ({ name, effects });
+  const e = (label, stat, value, unit = '') => {
+    const stats = Array.isArray(stat) ? stat : (stat ? [stat] : []);
+    return { label, stats, value, unit };
+  };
+  const note = (label) => e(label, null, null);
+
+  const DEFS = {
+    8582: def('エムバーイヤリング', (l) => [
+      e('すべての状態異常抵抗', 'statusResist', 10 + l, '%'), e('物理ダメージ', 'physDamagePercent', l, '%'),
+      e('力', 'str', l * 3), e('物理致命打発動確率', 'physCritRate', l * 0.5, '%'), note('火ダメージ 300～300'),
+    ]),
+    8583: def('バードサウンド', (l) => [
+      e('すべての状態異常抵抗', 'statusResist', 10 + l, '%'), e('魔法ダメージ', 'attrMagic', l, '%'),
+      e('知識', 'int', l * 3), e('攻撃速度', 'atkspd', l * 0.5, '%'), e('スキルレベル', 'skillLv', 2),
+    ]),
+    8584: def('ブラタックボーンイヤリング', (l) => [
+      e('すべての状態異常抵抗', 'statusResist', 10 + l, '%'), e('防御力', 'defPercent', l, '%'),
+      e('健康', 'con', l * 3), e('最大HP', 'hpPercent', l, '%'), e('回避率', 'eva', 3, '%'),
+    ]),
+    8585: def('サモンファイヤーバード', (l) => [
+      e('すべての状態異常抵抗', 'statusResist', 10 + l, '%'), note(`CP獲得ボーナス +${fmtValue(l * 0.5)}%`),
+      e('カリスマ', 'chs', l * 3), e('最大CP', 'cpPercent', l, '%'), e('移動速度', 'mvspd', 5, '%'),
+    ]),
+    9603: def('インテンスブレス', (l) => [
+      e('すべての状態異常抵抗', 'statusResist', 10, '%'), e('攻撃速度', 'atkspd', l * 0.5, '%'),
+      e('物理ダメージ', 'physDamagePercent', l, '%'), e('力', 'str', l * 3), e('最大HP', 'hpPercent', l, '%'),
+      note('アイテム自動リロード'),
+    ]),
+    9604: def('ブレイジングジュエル', (l) => [
+      e('すべての状態異常抵抗', 'statusResist', 10, '%'), e('決定打抵抗', 'criticalResist', l, '%'),
+      e('魔法ダメージ', 'attrMagic', l, '%'), e('知識', 'int', l * 3), e('ノックバック抵抗', 'knockbackResist', l, '%'),
+      e('魔法致命打', 'magicCritRate', 5, '%'),
+    ]),
+  };
+
+  function clampLv(n) {
+    const v = Math.max(1, Math.min(30, Number(n) | 0));
+    return Number.isFinite(v) ? v : 1;
+  }
+  function isTargetId(id) { return DEFS[Number(id)] != null; }
+  function getDef(id) { return DEFS[Number(id)] || null; }
+  function effects(id, lv) {
+    const d = getDef(id);
+    return d ? d.effects(clampLv(lv)).filter(Boolean) : [];
+  }
+  function addStat(STTemp, stat, value) {
+    if (!stat || value == null || !Number.isFinite(Number(value))) return;
+    STTemp.sum[stat] = (STTemp.sum[stat] || 0) + Number(value);
+  }
+  function subtractLayer(STTemp, layer, stat, value) {
+    if (!STTemp[layer] || value == null || !Number.isFinite(Number(value))) return;
+    STTemp[layer][stat] = (STTemp[layer][stat] || 0) - Number(value);
+  }
+  function subtractNativeItemOps(STTemp, inv, item, LvTemp, character) {
+    const raw = newSTTemp();
+    for (const slot of (item?.opSlots || [])) {
+      if (slot.slotKind !== 'base' && slot.slotKind !== 'op') continue;
+      const source = slot.slotKind === 'base' ? 'item.base' : 'item.option';
+      applyOpToSTTemp(raw, calcOpValue(slot, inv, source, LvTemp || 0, character), item);
+    }
+    for (const layer of Object.keys(raw)) {
+      for (const [stat, value] of Object.entries(raw[layer])) subtractLayer(STTemp, layer, stat, value);
+    }
+  }
+  function applyToSTTemp(STTemp, equipped, LvTemp, character) {
+    if (!STTemp || !STTemp.sum || !Array.isArray(equipped)) return;
+    for (const { inv, item } of equipped) {
+      if (!isTargetId(inv?.itemId) || !inv?.equippedSlot || !inv.canEquip) continue;
+      subtractNativeItemOps(STTemp, inv, item, LvTemp, character);
+      for (const effect of effects(inv.itemId, inv.incusedRingLv ?? 1)) {
+        for (const stat of effect.stats) addStat(STTemp, stat, effect.value);
+      }
+    }
+  }
+  function fmtValue(value) {
+    if (value == null) return '';
+    return Number.isInteger(value) ? String(value) : String(Math.round(value * 10) / 10);
+  }
+  function describe(id, lv) {
+    const out = [];
+    for (const effect of effects(id, lv)) {
+      if (effect.value == null) out.push(effect.label);
+      else out.push(`${effect.label} ${Number(effect.value) >= 0 ? '+' : ''}${fmtValue(effect.value)}${effect.unit || ''}`);
+    }
+    return out;
+  }
+  function desc(id, lv) {
+    const d = getDef(id);
+    if (!d) return '';
+    return [`${d.name} [火鳥刻印]`, ...describe(id, lv)].join('\n');
+  }
+
+  return { DEFS, isTargetId, getDef, clampLv, applyToSTTemp, describe, desc };
+})();
+
+const SennoKisekiIncusedEquipment = (() => {
+  const ALL_STATS = ['str', 'agi', 'con', 'int', 'wiz', 'chs', 'luc'];
+  const FOUR_ATTR_RESISTS = ['attrFireResist', 'attrWaterResist', 'attrWindResist', 'attrEarthResist'];
+  const def = (name, effects) => ({ name, effects });
+  const e = (label, stat, value, unit = '') => {
+    const stats = Array.isArray(stat) ? stat : (stat ? [stat] : []);
+    return { label, stats, value, unit };
+  };
+  const note = (label) => e(label, null, null);
+  const baseDef = (value) => e('防御力', 'def', value);
+  const stack10 = () => note('スタックアイテム +10個');
+
+  function clampLv(n) {
+    const v = Math.max(1, Math.min(30, Number(n) | 0));
+    return Number.isFinite(v) ? v : 1;
+  }
+  function span(lv, min, max) {
+    const l = clampLv(lv);
+    return Math.round(min + (max - min) * ((l - 1) / 29));
+  }
+  function unlock(lv, max, from = 11) {
+    const l = clampLv(lv);
+    if (l < from) return null;
+    return Math.max(1, Math.round(max * ((l - from + 1) / (30 - from + 1))));
+  }
+  function unlocked(label, stat, lv, max, unit = '%') {
+    const value = unlock(lv, max);
+    return value == null ? null : e(label, stat, value, unit);
+  }
+  function unlockedNote(lv, makeLabel, max) {
+    const value = unlock(lv, max);
+    return value == null ? null : note(makeLabel(value));
+  }
+  function perLevel(label, stat, lv, LvTemp, div) {
+    if (clampLv(lv) < 21) return null;
+    const level = Number(LvTemp);
+    if (!Number.isFinite(level)) return note(`${label} +1 / レベル ${div}`);
+    return e(label, stat, Math.floor(level / div));
+  }
+
+  const DEFS = {
+    11464: def('アビスシャドウ', (l) => [
+      e('ポーション回復速度', 'potionHeal', 80, '%'), e('全てのステータス', ALL_STATS, span(l, 2, 80)),
+      unlocked('移動速度', 'mvspd', l, 16), unlockedNote(l, (v) => `CP獲得ボーナス +${v}%`, 8),
+      unlocked('フィールドのステータス低下に対する抵抗', 'fieldStatDownResist', l, 3),
+      unlocked('フィールドの属性最大値制限に対する抵抗', 'fieldAttrCapResist', l, 4),
+    ]),
+    11463: def('グラールロケット', (l) => [
+      e('ポーション回復速度', 'potionHeal', 80, '%'), e('全てのステータス', ALL_STATS, span(l, 3, 100)),
+      unlocked('移動速度', 'mvspd', l, 20), unlockedNote(l, (v) => `CP獲得ボーナス +${v}%`, 10),
+      unlocked('フィールドのステータス低下に対する抵抗', 'fieldStatDownResist', l, 5),
+      unlocked('フィールドの属性最大値制限に対する抵抗', 'fieldAttrCapResist', l, 5),
+    ]),
+    11462: def('パシオンルージュ', (l) => [
+      e('物理致命打抵抗', 'physCritResist', 40, '%'), e('決定打抵抗', 'criticalResist', 40, '%'),
+      e('物理ダメージ', 'physDamagePercent', span(l, 1, 8), '%'), e('魔法ダメージ', 'attrMagic', span(l, 1, 4), '%'),
+      unlocked('HP吸収', 'hpAbsorb', l, 3), unlockedNote(l, (v) => `${v}%の確率で魔法ダメージの 1%をHP吸収`, 4),
+      unlocked('最終ダメージ', 'finalDamagePercent', l, 4),
+    ]),
+    11461: def('覇者のメダリオン', (l) => [
+      e('物理致命打抵抗', 'physCritResist', 40, '%'), e('決定打抵抗', 'criticalResist', 40, '%'),
+      e('物理ダメージ', 'physDamagePercent', span(l, 1, 10), '%'), e('魔法ダメージ', 'attrMagic', span(l, 1, 5), '%'),
+      unlocked('HP吸収', 'hpAbsorb', l, 4), unlockedNote(l, (v) => `${v}%の確率で魔法ダメージの 1%をHP吸収`, 5),
+      unlocked('最終ダメージ', 'finalDamagePercent', l, 5),
+    ]),
+    11454: def('パンツァーゴーグル', (l, LvTemp) => [
+      baseDef(30), e('被ダメージ時、物理致命打ダメージ減少', null, span(l, 1, 24), '%'),
+      unlocked('物理致命打発動確率', 'physCritRate', l, 8),
+      unlockedNote(l, (v) => `武器最小攻撃力 +${v}`, 3), unlockedNote(l, (v) => `武器最大攻撃力 +${v}`, 5),
+      perLevel('力', 'str', l, LvTemp, 4),
+    ]),
+    11453: def('ライトニングゴーグル', (l, LvTemp) => [
+      baseDef(30), e('被ダメージ時、物理致命打ダメージ減少', null, span(l, 1, 30), '%'),
+      unlocked('物理致命打発動確率', 'physCritRate', l, 10),
+      unlockedNote(l, (v) => `武器最小攻撃力 +${v}`, 5), unlockedNote(l, (v) => `武器最大攻撃力 +${v}`, 7),
+      perLevel('力', 'str', l, LvTemp, 3),
+    ]),
+    11456: def('覚醒ハチマキ', (l, LvTemp) => [
+      baseDef(15), e('魔法ダメージ', 'attrMagic', span(l, 1, 16), '%'), e('すべての状態異常抵抗', 'statusResist', span(l, 1, 16), '%'),
+      unlocked('ターゲットの魔法抵抗弱化', 'attrMagicWeaken', l, 16),
+      perLevel('知恵', 'wiz', l, LvTemp, 4), perLevel('知識', 'int', l, LvTemp, 4),
+    ]),
+    11455: def('ローゼンクラウン', (l, LvTemp) => [
+      baseDef(15), e('魔法ダメージ', 'attrMagic', span(l, 1, 20), '%'), e('すべての状態異常抵抗', 'statusResist', span(l, 1, 20), '%'),
+      unlocked('ターゲットの魔法抵抗弱化', 'attrMagicWeaken', l, 20),
+      perLevel('知恵', 'wiz', l, LvTemp, 3), perLevel('知識', 'int', l, LvTemp, 3),
+    ]),
+    11460: def('ひんやりベルト', (l, LvTemp) => [
+      baseDef(25), stack10(), e('知識', 'int', span(l, 4, 160)), e('知恵', 'wiz', span(l, 4, 160)),
+      unlocked('魔法属性ダメージ吸収', 'attrMagicAbsorb', l, 16), perLevel('健康', 'con', l, LvTemp, 3),
+    ]),
+    11459: def('ヴィクトリーベルト', (l, LvTemp) => [
+      baseDef(25), stack10(), e('知識', 'int', span(l, 5, 200)), e('知恵', 'wiz', span(l, 5, 200)),
+      unlocked('魔法属性ダメージ吸収', 'attrMagicAbsorb', l, 20), perLevel('健康', 'con', l, LvTemp, 3),
+    ]),
+    11458: def('真・闘魂ベルト', (l, LvTemp) => [
+      baseDef(20), stack10(), e('力', 'str', span(l, 4, 160)), e('敏捷', 'agi', span(l, 4, 160)),
+      unlocked('物理致命打抵抗', 'physCritResist', l, 24), unlocked('全てのスキルレベル', 'skillLv', l, 4, ''),
+      perLevel('健康', 'con', l, LvTemp, 4),
+    ]),
+    11457: def('金剛黒帯', (l, LvTemp) => [
+      baseDef(20), stack10(), e('力', 'str', span(l, 5, 200)), e('敏捷', 'agi', span(l, 5, 200)),
+      unlocked('物理致命打抵抗', 'physCritResist', l, 30), unlocked('全てのスキルレベル', 'skillLv', l, 5, ''),
+      perLevel('健康', 'con', l, LvTemp, 3),
+    ]),
+    11452: def('ドレスグローブ', (l) => [
+      baseDef(10), e('魔法ダメージ', 'attrMagic', span(l, 1, 25), '%'),
+      unlocked('移動速度', 'mvspd', l, 16), unlocked('攻撃速度', 'atkspd', l, 8), unlocked('魔法強打発動確率', 'magicStrongRate', l, 4),
+    ]),
+    11451: def('ソーサラーグローブ', (l) => [
+      baseDef(10), e('魔法ダメージ', 'attrMagic', span(l, 1, 30), '%'),
+      unlocked('移動速度', 'mvspd', l, 20), unlocked('攻撃速度', 'atkspd', l, 10), unlocked('魔法強打発動確率', 'magicStrongRate', l, 5),
+    ]),
+    11450: def('ライダーグローブ', (l) => [
+      baseDef(15), e('物理ダメージ', 'physDamagePercent', span(l, 1, 32), '%'),
+      unlocked('物理致命打発動確率', 'physCritRate', l, 16), unlocked('移動速度', 'mvspd', l, 12),
+      unlocked('最大CP', 'cpPercent', l, 120), unlockedNote(l, (v) => `CP獲得ボーナス +${v}%`, 12),
+    ]),
+    11449: def('ソルジャーグローブ', (l) => [
+      baseDef(15), e('物理ダメージ', 'physDamagePercent', span(l, 1, 40), '%'),
+      unlocked('物理致命打発動確率', 'physCritRate', l, 20), unlocked('移動速度', 'mvspd', l, 15),
+      unlocked('最大CP', 'cpPercent', l, 150), unlockedNote(l, (v) => `CP獲得ボーナス +${v}%`, 15),
+    ]),
+    11446: def('アドバンスジャケット', (l) => [
+      baseDef(55), e('火、水、風、大地抵抗', FOUR_ATTR_RESISTS, 15, '%'),
+      e('力', 'str', span(l, 4, 160)), e('運', 'luc', span(l, 4, 160)),
+      unlocked('ダブルクリティカルダメージ', 'doubleCritDamage', l, 8), unlocked('敵の致命打抵抗減少', 'enemyPhysCritResistReduce', l, 12),
+    ]),
+    11445: def('アヴァロンガーヴ', (l) => [
+      baseDef(55), e('火、水、風、大地抵抗', FOUR_ATTR_RESISTS, 15, '%'),
+      e('力', 'str', span(l, 5, 200)), e('運', 'luc', span(l, 5, 200)),
+      unlocked('ダブルクリティカルダメージ', 'doubleCritDamage', l, 10), unlocked('敵の致命打抵抗減少', 'enemyPhysCritResistReduce', l, 15),
+    ]),
+    11448: def('ジェネラルコート', (l) => [
+      baseDef(50), e('火、水、風、大地抵抗', FOUR_ATTR_RESISTS, 15, '%'), e('知識', 'int', span(l, 4, 160)),
+      unlocked('防御力', 'defPercent', l, 80), unlocked('最大CP', 'cpPercent', l, 80),
+      unlocked('魔法ダメージ', 'attrMagic', l, 16), unlocked('魔法致命打', 'magicCritRate', l, 4),
+    ]),
+    11447: def('ヴァリアントコート', (l) => [
+      baseDef(55), e('火、水、風、大地抵抗', FOUR_ATTR_RESISTS, 15, '%'), e('知識', 'int', span(l, 5, 200)),
+      unlocked('防御力', 'defPercent', l, 100), unlocked('最大CP', 'cpPercent', l, 100),
+      unlocked('魔法ダメージ', 'attrMagic', l, 20), unlocked('魔法致命打', 'magicCritRate', l, 5),
+    ]),
+    11468: def('アドバンスギア', (l) => [
+      baseDef(20), e('ノックバック抵抗', 'knockbackResist', span(l, 2, 64), '%'), e('移動速度', 'mvspd', span(l, 1, 24), '%'),
+      unlockedNote(l, (v) => `スキル難易度 1 以下のスキルレベル +${v}`, 3),
+      unlockedNote(l, (v) => `スキル難易度 3 以下のスキルレベル +${v}`, 2),
+      unlockedNote(l, (v) => `スキル難易度 5 以下のスキルレベル +${v}`, 1),
+    ]),
+    11467: def('エンハンスブーツ', (l) => [
+      baseDef(20), e('ノックバック抵抗', 'knockbackResist', span(l, 2, 80), '%'), e('移動速度', 'mvspd', span(l, 1, 30), '%'),
+      unlockedNote(l, (v) => `スキル難易度 1 以下のスキルレベル +${v}`, 4),
+      unlockedNote(l, (v) => `スキル難易度 3 以下のスキルレベル +${v}`, 3),
+      unlockedNote(l, (v) => `スキル難易度 5 以下のスキルレベル +${v}`, 2),
+    ]),
+    11466: def('ダマスカスブーツ', (l) => [
+      baseDef(20), e('ノックバック抵抗', 'knockbackResist', span(l, 2, 64), '%'), e('移動速度', 'mvspd', span(l, 1, 24), '%'),
+      unlocked('物理ダメージ', 'physDamagePercent', l, 48), unlocked('物理致命打発動確率', 'physCritRate', l, 12),
+      unlocked('物理強打', 'physStrongRate', l, 4),
+    ]),
+    11465: def('ストレガーZ', (l) => [
+      baseDef(20), e('ノックバック抵抗', 'knockbackResist', span(l, 2, 80), '%'), e('移動速度', 'mvspd', span(l, 1, 30), '%'),
+      unlocked('物理ダメージ', 'physDamagePercent', l, 60), unlocked('物理致命打発動確率', 'physCritRate', l, 15),
+      unlocked('物理強打', 'physStrongRate', l, 5),
+    ]),
+  };
+
+  function isTargetId(id) { return DEFS[Number(id)] != null; }
+  function getDef(id) { return DEFS[Number(id)] || null; }
+  function effects(id, lv, LvTemp) {
+    const d = getDef(id);
+    return d ? d.effects(clampLv(lv), LvTemp).filter(Boolean) : [];
+  }
+  function addStat(STTemp, stat, value) {
+    if (!stat || value == null || !Number.isFinite(Number(value))) return;
+    STTemp.sum[stat] = (STTemp.sum[stat] || 0) + Number(value);
+  }
+  function subtractLayer(STTemp, layer, stat, value) {
+    if (!STTemp[layer] || value == null || !Number.isFinite(Number(value))) return;
+    STTemp[layer][stat] = (STTemp[layer][stat] || 0) - Number(value);
+  }
+  function subtractNativeItemOps(STTemp, inv, item, LvTemp, character) {
+    const raw = newSTTemp();
+    for (const slot of (item?.opSlots || [])) {
+      if (slot.slotKind !== 'base' && slot.slotKind !== 'op') continue;
+      const source = slot.slotKind === 'base' ? 'item.base' : 'item.option';
+      applyOpToSTTemp(raw, calcOpValue(slot, inv, source, LvTemp || 0, character), item);
+    }
+    for (const layer of Object.keys(raw)) {
+      for (const [stat, value] of Object.entries(raw[layer])) subtractLayer(STTemp, layer, stat, value);
+    }
+  }
+  function applyToSTTemp(STTemp, equipped, LvTemp, character) {
+    if (!STTemp || !STTemp.sum || !Array.isArray(equipped)) return;
+    for (const { inv, item } of equipped) {
+      if (!isTargetId(inv?.itemId) || !inv?.equippedSlot || !inv.canEquip) continue;
+      subtractNativeItemOps(STTemp, inv, item, LvTemp, character);
+      for (const effect of effects(inv.itemId, inv.incusedRingLv ?? 1, LvTemp)) {
+        for (const stat of effect.stats) addStat(STTemp, stat, effect.value);
+      }
+    }
+  }
+  function fmtValue(value) {
+    if (value == null) return '';
+    return Number.isInteger(value) ? String(value) : String(Math.round(value * 10) / 10);
+  }
+  function describe(id, lv, LvTemp) {
+    const out = [];
+    for (const effect of effects(id, lv, LvTemp)) {
+      if (effect.value == null) out.push(effect.label);
+      else out.push(`${effect.label} ${Number(effect.value) >= 0 ? '+' : ''}${fmtValue(effect.value)}${effect.unit || ''}`);
+    }
+    return out;
+  }
+  function desc(id, lv) {
+    const d = getDef(id);
+    if (!d) return '';
+    return [`${d.name} [閃の軌跡刻印]`, ...describe(id, lv)].join('\n');
+  }
+
+  return { DEFS, isTargetId, getDef, clampLv, applyToSTTemp, describe, desc };
+})();
+
 const YatikanuIncusedArmor = (() => {
   const ATTR_RESISTS = ['attrFireResist', 'attrWaterResist', 'attrWindResist', 'attrEarthResist', 'attrLightResist', 'attrDarkResist'];
   const ATTR_WEAKENS = ['attrFireWeaken', 'attrWaterWeaken', 'attrWindWeaken', 'attrEarthWeaken', 'attrLightWeaken', 'attrDarkWeaken'];
@@ -16720,8 +17359,10 @@ async function loadEditStateFromInv(inv) {
     editState.nxUnlockedOps = [null, null, null, null];
   }
   
-  if (IncusedRing.isIncusedRingId(inv.itemId) || YatikanuIncusedArmor.isTargetId(inv.itemId) || AncientIncusedRing.isTargetId(inv.itemId) || ChaosIncusedRing.isTargetId(inv.itemId)) {
-    editState.incusedRingLv = IncusedRing.clampLv(inv.incusedRingLv ?? 1);
+  if (IncusedRing.isIncusedRingId(inv.itemId) || YatikanuIncusedArmor.isTargetId(inv.itemId) || AncientIncusedRing.isTargetId(inv.itemId) || ChaosIncusedRing.isTargetId(inv.itemId) || TrialIncusedRing.isTargetId(inv.itemId) || FateIncusedEquipment.isTargetId(inv.itemId) || SennoKisekiIncusedEquipment.isTargetId(inv.itemId) || IncusedEarring.isTargetId(inv.itemId)) {
+    editState.incusedRingLv = TrialIncusedRing.isTargetId(inv.itemId)
+      ? TrialIncusedRing.effectiveLv(inv.itemId, inv.incusedRingLv ?? 1)
+      : IncusedRing.clampLv(inv.incusedRingLv ?? 1);
   } else {
     editState.incusedRingLv = 1;
   }
@@ -16822,7 +17463,7 @@ async function refreshEditUI() {
   
   const irSec = document.getElementById('edit-incused-ring-section');
   if (irSec) {
-    const isIR = IncusedRing.isIncusedRingId(inv.itemId) || YatikanuIncusedArmor.isTargetId(inv.itemId) || AncientIncusedRing.isTargetId(inv.itemId) || ChaosIncusedRing.isTargetId(inv.itemId);
+    const isIR = IncusedRing.isIncusedRingId(inv.itemId) || YatikanuIncusedArmor.isTargetId(inv.itemId) || AncientIncusedRing.isTargetId(inv.itemId) || ChaosIncusedRing.isTargetId(inv.itemId) || TrialIncusedRing.isTargetId(inv.itemId) || FateIncusedEquipment.isTargetId(inv.itemId) || SennoKisekiIncusedEquipment.isTargetId(inv.itemId) || IncusedEarring.isTargetId(inv.itemId);
     irSec.style.display = isIR ? '' : 'none';
     if (isIR) refreshEditIncusedRingPanel(rec);
   }
@@ -16846,7 +17487,12 @@ function refreshEditIncusedRingPanel(rec) {
   if (ringDef) effDiv.textContent = ringDef.desc(lv);
   else if (YatikanuIncusedArmor.isTargetId(rec?.id)) effDiv.textContent = YatikanuIncusedArmor.desc(rec?.id, lv);
   else if (AncientIncusedRing.isTargetId(rec?.id)) effDiv.textContent = AncientIncusedRing.desc(rec?.id, lv);
-  else effDiv.textContent = ChaosIncusedRing.desc(rec?.id, lv);
+  else if (ChaosIncusedRing.isTargetId(rec?.id)) effDiv.textContent = ChaosIncusedRing.desc(rec?.id, lv);
+  else if (TrialIncusedRing.isTargetId(rec?.id)) effDiv.textContent = TrialIncusedRing.desc(rec?.id, lv);
+  else if (FateIncusedEquipment.isTargetId(rec?.id)) effDiv.textContent = FateIncusedEquipment.desc(rec?.id, lv);
+  else if (SennoKisekiIncusedEquipment.isTargetId(rec?.id)) effDiv.textContent = SennoKisekiIncusedEquipment.desc(rec?.id, lv);
+  else if (IncusedEarring.isTargetId(rec?.id)) effDiv.textContent = IncusedEarring.desc(rec?.id, lv);
+  else effDiv.textContent = '';
 }
 
 async function refreshEditUltPanel() {
@@ -17213,8 +17859,10 @@ async function applyEditToInv() {
     }
   }
   
-  if (IncusedRing.isIncusedRingId(rec?.id) || YatikanuIncusedArmor.isTargetId(rec?.id) || AncientIncusedRing.isTargetId(rec?.id) || ChaosIncusedRing.isTargetId(rec?.id)) {
-    built.incusedRingLv = IncusedRing.clampLv(editState.incusedRingLv);
+  if (IncusedRing.isIncusedRingId(rec?.id) || YatikanuIncusedArmor.isTargetId(rec?.id) || AncientIncusedRing.isTargetId(rec?.id) || ChaosIncusedRing.isTargetId(rec?.id) || TrialIncusedRing.isTargetId(rec?.id) || FateIncusedEquipment.isTargetId(rec?.id) || SennoKisekiIncusedEquipment.isTargetId(rec?.id) || IncusedEarring.isTargetId(rec?.id)) {
+    built.incusedRingLv = TrialIncusedRing.isTargetId(rec?.id)
+      ? TrialIncusedRing.effectiveLv(rec?.id, editState.incusedRingLv)
+      : IncusedRing.clampLv(editState.incusedRingLv);
   }
 
   built.slotIndex = inv.slotIndex;
@@ -17267,7 +17915,8 @@ function bindEditTabEvents() {
       const inv = inventory.get(editTargetSlotIdx);
       if (inv) {
         const rec = await Item.get(inv.itemId);
-        if (IncusedRing.isIncusedRingId(rec?.id) || YatikanuIncusedArmor.isTargetId(rec?.id) || AncientIncusedRing.isTargetId(rec?.id) || ChaosIncusedRing.isTargetId(rec?.id)) {
+        if (IncusedRing.isIncusedRingId(rec?.id) || YatikanuIncusedArmor.isTargetId(rec?.id) || AncientIncusedRing.isTargetId(rec?.id) || ChaosIncusedRing.isTargetId(rec?.id) || TrialIncusedRing.isTargetId(rec?.id) || FateIncusedEquipment.isTargetId(rec?.id) || SennoKisekiIncusedEquipment.isTargetId(rec?.id) || IncusedEarring.isTargetId(rec?.id)) {
+          if (TrialIncusedRing.isTargetId(rec?.id)) editState.incusedRingLv = TrialIncusedRing.effectiveLv(rec.id, editState.incusedRingLv);
           inv.incusedRingLv = editState.incusedRingLv;
           if (selectedInv && selectedInv.inv.slotIndex === inv.slotIndex) selectedInv.inv.incusedRingLv = editState.incusedRingLv;
           scheduleAutosave();
