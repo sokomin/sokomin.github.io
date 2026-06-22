@@ -1982,6 +1982,13 @@
     .omni-node[data-grade=""]    .omni-node-circle,
     .omni-node[data-grade="null"] .omni-node-circle { fill: #2a2a2a; stroke: #555; }
     
+    .omni-node[data-grade-rank="N"]  .omni-node-circle { fill: #34383d; stroke: #c5ced8; }
+    .omni-node[data-grade-rank="R"]  .omni-node-circle { fill: #174f31; stroke: #62d68b; }
+    .omni-node[data-grade-rank="HR"] .omni-node-circle { fill: #0d4969; stroke: #4fc3f7; }
+    .omni-node[data-grade-rank="SR"] .omni-node-circle { fill: #55306f; stroke: #c084fc; }
+    .omni-node[data-grade-rank="LR"] .omni-node-circle { fill: #6b4d0f; stroke: #ffd166; }
+    .omni-node[data-grade-rank="GR"] .omni-node-circle { fill: #72163a; stroke: #ff6fa6; }
+    
     .omni-node.is-active .omni-node-circle  { stroke-width: 2.5; filter: brightness(1.35); }
     .omni-node.is-maxed  .omni-node-circle  { stroke: #f4e7a2; stroke-width: 3; }
     .omni-node.is-takeable .omni-node-circle { stroke-dasharray: 0; }
@@ -4004,11 +4011,12 @@
                   </span>
                 </div>
                 <div class="omni-grade-legend">
-                  <span><span class="swatch" style="background:#4a3520;border-color:#8b6a28"></span>一般 (1pt/Lv)</span>
-                  <span><span class="swatch" style="background:#285030;border-color:#5a8060"></span>希少 (2pt/Lv)</span>
-                  <span><span class="swatch" style="background:#283f60;border-color:#5878a8"></span>英雄 (5pt/Lv)</span>
-                  <span><span class="swatch" style="background:#5e4612;border-color:#f0c850"></span>伝説 (10pt/Lv)</span>
-                  <span><span class="swatch" style="background:#4a2050;border-color:#a060c0"></span>幻想 (10pt/Lv)</span>
+                  <span><span class="swatch" style="background:#34383d;border-color:#c5ced8"></span>N/一般 (1pt/Lv)</span>
+                  <span><span class="swatch" style="background:#174f31;border-color:#62d68b"></span>R (2pt/Lv)</span>
+                  <span><span class="swatch" style="background:#0d4969;border-color:#4fc3f7"></span>HR (5pt/Lv)</span>
+                  <span><span class="swatch" style="background:#55306f;border-color:#c084fc"></span>SR (10pt/Lv)</span>
+                  <span><span class="swatch" style="background:#6b4d0f;border-color:#ffd166"></span>LR (10pt/Lv)</span>
+                  <span><span class="swatch" style="background:#72163a;border-color:#ff6fa6"></span>GR</span>
                 </div>
                 <div class="omni-body">
                   
@@ -14922,6 +14930,12 @@ const OmniSkill = (() => {
     
     return { '一般': 16, '希少': 18, '英雄': 22, '伝説': 24, '幻想': 24 }[s.grade] || 14;
   }
+  function nodeRankKey(s) {
+    const official = String(s?.grade_official || '');
+    if (official === '基本' || official.startsWith('一般_')) return 'N';
+    if (['R', 'HR', 'SR', 'LR', 'GR'].includes(official)) return official;
+    return '';
+  }
 
   function renderGraph() {
     const svg = document.getElementById('omni-graph-svg');
@@ -14962,8 +14976,9 @@ const OmniSkill = (() => {
       const r = nodeRadius(s);
       const cx = px(s.x).toFixed(1);
       const cy = px(s.y).toFixed(1);
+      const rankKey = nodeRankKey(s);
       nodesHtml.push(
-        `<g class="${cls}" data-grade="${s.grade || ''}" data-omni-id="${s.id}">` +
+        `<g class="${cls}" data-grade="${s.grade || ''}" data-grade-rank="${rankKey}" data-omni-id="${s.id}">` +
           `<circle class="omni-node-circle" cx="${cx}" cy="${cy}" r="${r}"/>` +
           (isActive ? `<text class="omni-node-lv" x="${cx}" y="${cy}">${lv}/${s.max_lv}</text>` : '') +
         `</g>`
