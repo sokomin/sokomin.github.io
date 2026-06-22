@@ -304,6 +304,27 @@
     const IMG_BASE = "../item/design/image/item/iconItem_";
     const DEFAULT_PAGE_LIMIT = 100;
 
+    function rangeIds(start, end) {
+        const ids = [];
+        for (let id = start; id <= end; id++) ids.push(String(id));
+        return ids;
+    }
+
+    const ITEM_SEARCH_ALIAS_SPECS = [
+        { ids: rangeIds(8940, 8951), text: "Fate fate フェイト Fate刻印 Fate刻印装備 Fateコラボ" },
+        { ids: rangeIds(11445, 11468), text: "閃の軌跡 閃の軌跡4 閃の軌跡IV 閃の軌跡Ⅳ 軌跡 閃の軌跡刻印装備" },
+        { ids: rangeIds(8582, 8585).concat(rangeIds(9603, 9604)), text: "火鳥 火鳥の聖火 刻印イヤリング 火鳥刻印イヤリング" },
+        { ids: rangeIds(11351, 11361), text: "ヤティカヌ ヤティカヌ刻印 ヤティカヌ刻印防具 刻印防具" },
+        { ids: ["13921"], text: "古代 古代刻印 古代刻印の指輪 古代刻印指輪 ヤティカヌ" },
+        { ids: rangeIds(10362, 10366), text: "混沌 混沌の大地 混沌の大地刻印リング 混沌刻印" },
+        { ids: ["8360", "8367", "8361"], text: "試練 試練指 試練のリング 試練刻印" }
+    ];
+    const ITEM_SEARCH_GROUP_ALIASES = new Map();
+    for (const spec of ITEM_SEARCH_ALIAS_SPECS) {
+        for (const id of spec.ids) ITEM_SEARCH_GROUP_ALIASES.set(id, spec.text);
+    }
+
+
     let DATA = null;
     let loading = false;
     let debounceTimer = null;
@@ -345,6 +366,29 @@
             .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     }
 
+
+    function normalizeItemSearchText(s) {
+        return String(s || "")
+            .replace(/<c:[^>]*>/gi, "")
+            .replace(/<n>/gi, "")
+            .replace(/[［\[]\s*刻印\s*Lv\s*[［\[]?\s*1\s*[~～-]\s*30\s*[］\]]?\s*[］\]]/gi, "")
+            .replace(/[［\[]\s*刻印[^］\]]*[］\]]/gi, "")
+            .replace(/\s+/g, " ")
+            .trim()
+            .toLowerCase();
+    }
+
+    function getItemAliasText(r) {
+        const idAlias = ITEM_SEARCH_GROUP_ALIASES.get(String(r[0])) || "";
+        const rawBlob = String(r[8] || "");
+        const fateAlias = /fate/i.test(rawBlob) ? "Fate fate フェイト Fateコラボ" : "";
+        return idAlias + " " + fateAlias;
+    }
+
+    function getItemSearchBlob(r) {
+        return normalizeItemSearchText(String(r[8] || "") + " " + getItemAliasText(r));
+    }
+
     function render(kw) {
         tbodyEl.innerHTML = "";
         if (!DATA) {
@@ -358,10 +402,10 @@
         }
         const t0 = performance.now();
         const pageLimit = getPageLimit();
-        const kws = kw.toLowerCase().split(/\s+/).filter(Boolean);
+        const kws = normalizeItemSearchText(kw).split(/\s+/).filter(Boolean);
         const hits = [];
         for (const r of DATA.rows) {
-            const blob = r[8].toLowerCase();
+            const blob = getItemSearchBlob(r);
             let ok = true;
             for (const k of kws) {
                 if (blob.indexOf(k) === -1) { ok = false; break; }
