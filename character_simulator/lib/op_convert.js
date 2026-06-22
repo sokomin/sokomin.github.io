@@ -6,6 +6,7 @@ const SOURCES = {
   normal:   DATA_BASE + '/normal.json',
   improved: DATA_BASE + '/normal.json',
   burning:  DATA_BASE + '/burning.json',
+  college:  DATA_BASE + '/college.json',
 };
 const NAME_MAP_URL = DATA_BASE + '/op_name_mapping.json';
 
@@ -14,6 +15,7 @@ export const CONVERTER_LABELS = {
   normal:   '通常',
   improved: '改',
   burning:  '灼熱',
+  college:  '協会',
 };
 
 export const PROB_KEY = {
@@ -21,6 +23,7 @@ export const PROB_KEY = {
   normal:   'prob_normal',
   improved: 'prob_improved',
   burning:  'prob',
+  college:  'prob',
 };
 
 export const CONVERTER_GRADE_REQUIRED = {
@@ -28,20 +31,40 @@ export const CONVERTER_GRADE_REQUIRED = {
   normal:   true,
   improved: true,
   burning:  false,   
+  college:  false,
 };
 
 let _data = null;     
 let _nameMap = null;  
 
+const _KIND_TO_COLLEGE_CATEGORY = {
+  4: 'college_weapon', 18: 'college_weapon', 20: 'college_weapon', 21: 'college_weapon',
+  22: 'college_weapon', 23: 'college_weapon', 25: 'college_weapon', 26: 'college_weapon',
+  28: 'college_weapon', 32: 'college_weapon', 58: 'college_weapon', 82: 'college_weapon',
+  29: 'college_weapon_pet',
+  16: 'college_armor',
+  17: 'college_armor',
+  10: 'college_ear_cape',
+  11: 'college_ear_cape',
+  0:  'college_helmet',
+  1:  'college_crown',
+  6:  'college_belt',
+  2:  'college_glove_bracelet',
+  5:  'college_glove_bracelet',
+  7:  'college_boots',
+  8:  'college_necklace',
+};
+
 export async function loadOpConvertData() {
   if (_data && _nameMap) return { ..._data, nameMap: _nameMap };
-  const [replica, normal, burning, nameMap] = await Promise.all([
+  const [replica, normal, burning, college, nameMap] = await Promise.all([
     fetch(SOURCES.replica).then((r) => r.ok ? r.json() : Promise.reject(new Error('replica.json'))),
     fetch(SOURCES.normal).then((r) => r.ok ? r.json() : Promise.reject(new Error('normal.json'))),
     fetch(SOURCES.burning).then((r) => r.ok ? r.json() : Promise.reject(new Error('burning.json'))),
+    fetch(SOURCES.college).then((r) => r.ok ? r.json() : Promise.reject(new Error('college.json'))),
     fetch(NAME_MAP_URL).then((r) => r.ok ? r.json() : Promise.reject(new Error('op_name_mapping.json'))),
   ]);
-  _data = { replica, normal, burning };
+  _data = { replica, normal, burning, college };
   _nameMap = nameMap;
   return { ..._data, nameMap: _nameMap };
 }
@@ -87,6 +110,7 @@ export function resolveItemCategory(itemRec, converter) {
   if (!itemRec) return null;
   const kind = Number(itemRec.kind);
   if (converter === 'burning') return _KIND_TO_BURNING_CATEGORY[kind] || null;
+  if (converter === 'college') return _KIND_TO_COLLEGE_CATEGORY[kind] || null;
   return _KIND_TO_NORMAL_CATEGORY[kind] || null;
 }
 
@@ -118,7 +142,7 @@ export function listOptionsForSlot(converter, categoryId, grade, slot) {
   const src = (converter === 'improved') ? _data.normal : _data[converter];
   if (!src) return [];
   
-  const gradeForLookup = (converter === 'burning') ? null : grade;
+  const gradeForLookup = (converter === 'burning' || converter === 'college') ? null : grade;
   const tbl = _findTable(src, categoryId, gradeForLookup, slot);
   if (!tbl) return [];
   const probKey = PROB_KEY[converter];

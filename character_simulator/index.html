@@ -2703,6 +2703,7 @@
                         <option value="normal">ノーマル</option>
                         <option value="rare">レア</option>
                         <option value="special">スペシャル</option>
+                        <option value="college">協会</option>
                       </select>
                     </td>
                   </tr>
@@ -2795,6 +2796,7 @@
                         <option value="normal">解放OP変換器(通常)</option>
                         <option value="improved">解放オプション変換器・改</option>
                         <option value="burning">灼熱解放OP変換器</option>
+                        <option value="college">協会専用封印解放OP変換器</option>
                       </select>
                     </td>
                   </tr>
@@ -3302,6 +3304,7 @@
                             <option value="normal">通常</option>
                             <option value="rare">レア</option>
                             <option value="special">スペシャル</option>
+                            <option value="college">協会</option>
                           </select>
                         </td>
                       </tr>
@@ -3353,6 +3356,7 @@
                             <option value="normal">解放OP変換器(通常)</option>
                             <option value="improved">解放オプション変換器・改</option>
                             <option value="burning">灼熱解放OP変換器</option>
+                            <option value="college">協会専用封印解放OP変換器</option>
                           </select>
                         </td>
                       </tr>
@@ -4465,9 +4469,10 @@ function invalidateFeasibleCache() { feasibleCache = new Map(); feasibleCacheKey
 let stoneState = newStones();
 
 
-const SCROLL_TYPE_LABELS = { normal: 'ノーマル', rare: 'レア', special: 'スペシャル' };
+const SCROLL_TYPE_LABELS = { normal: 'ノーマル', rare: 'レア', special: 'スペシャル', college: '協会' };
 let SCROLL_DB = null;
 const SCROLL_ICON_BASE = 'https://sokomin.github.io/quest/design/desination_icon/designation_icon_';
+let currentScrollPanelItem = null;
 
 async function loadScrollDb() {
   if (SCROLL_DB) return SCROLL_DB;
@@ -4489,6 +4494,43 @@ function scrollsByType(type) {
   if (!type || !SCROLL_DB) return [];
   return SCROLL_DB.scrolls.filter((s) => s.type === type);
 }
+function isCollegeEquipmentItem(rec) {
+  if (!rec) return false;
+  const name = String(rec.name || '');
+  const desc = String(rec.desc || '');
+  return name.startsWith('協会') || desc.includes('冒険家協会が製作した');
+}
+function isCollegeScrollDef(scroll) {
+  if (!scroll) return false;
+  return scroll.type === 'college' || String(scroll.category || '').includes('協会');
+}
+function scrollAllowedForItem(scroll, rec) {
+  return isCollegeEquipmentItem(rec) ? isCollegeScrollDef(scroll) : !isCollegeScrollDef(scroll);
+}
+function scrollsForItem(type, rec) {
+  return scrollsByType(type).filter((s) => scrollAllowedForItem(s, rec));
+}
+function scrollTypeAllowedForItem(type, rec) {
+  if (!type) return true;
+  return isCollegeEquipmentItem(rec) ? type === 'college' : type !== 'college';
+}
+function refreshScrollTypeOptions(sel, rec, state) {
+  if (!sel) return;
+  for (const opt of sel.options) {
+    if (!opt.value) {
+      opt.hidden = false;
+      opt.disabled = false;
+      continue;
+    }
+    const ok = scrollTypeAllowedForItem(opt.value, rec);
+    opt.hidden = !ok;
+    opt.disabled = !ok;
+  }
+  if (state && state.type && !scrollTypeAllowedForItem(state.type, rec)) {
+    state.type = null;
+    state.id = null;
+  }
+}
 function scrollIconUrl(s) {
   if (!s || !s.iconId) return null;
   return `${SCROLL_ICON_BASE}${s.iconId}.png`;
@@ -4498,6 +4540,7 @@ function isScrollableForItem(rec) {
   if (!rec) return false;
 
   const slot = resolveEquipSlot(rec);
+  if (isCollegeEquipmentItem(rec)) return !!slot && !String(slot).startsWith('ring');
   return slot === 'neck'  || slot === 'head' || slot === 'back_ear'
       || slot === 'waist' || slot === 'hand' || slot === 'body' || slot === 'foot';
 }
@@ -4506,6 +4549,7 @@ function isScrollableForItem(rec) {
 async function refreshScrollPanel() {
   await loadScrollDb();
   const rec = (formState.itemId >= 0) ? await Item.get(formState.itemId) : null;
+  currentScrollPanelItem = rec;
   const ok = isScrollableForItem(rec);
   const rows = document.querySelectorAll('.scroll-row');
   for (const r of rows) r.style.display = ok ? '' : 'none';
@@ -4517,9 +4561,10 @@ async function refreshScrollPanel() {
     refreshScrollIdSelect();
     return;
   }
+  refreshScrollTypeOptions($('scroll-type'), rec, formState.scroll);
   if ($('scroll-type'))  $('scroll-type').value  = formState.scroll.type || '';
   if ($('scroll-stage')) $('scroll-stage').value = String(formState.scroll.stage || 1);
-  refreshScrollIdSelect();
+  refreshScrollIdSelect(rec);
 }
 
 
@@ -4743,11 +4788,11 @@ async function refreshNxPanel() {
   }
 }
 
-function refreshScrollIdSelect() {
+function refreshScrollIdSelect(rec = currentScrollPanelItem) {
   const sel = $('scroll-id');
   if (!sel) return;
   const type = formState.scroll.type;
-  const list = type ? scrollsByType(type) : [];
+  const list = type ? scrollsForItem(type, rec) : [];
   
   sel.innerHTML = '';
   const opt0 = document.createElement('option');
@@ -5214,6 +5259,14 @@ function renderItemList(filtered, totalShown, totalBeforeFeasibility) {
 
 
 let opSearchIndex = [];
+function opGradeSearchLabel(gradeClass) {
+  if (gradeClass === 'dx') return 'DX';
+  if (gradeClass === 'ult') return 'ULT';
+  if (gradeClass === 'college') return '協会 college';
+  if (gradeClass === 'set') return 'セット set';
+  if (gradeClass === 'npc') return 'NPC';
+  return '';
+}
 function buildOpSearchIndex() {
   opSearchIndex = [];
   const opPrefix = loader.optionPrefix;
@@ -5225,9 +5278,11 @@ function buildOpSearchIndex() {
     const family = opPrefix.families[fk];
     const familyId = Number(fk);
     for (const tier of (family.tiers || [])) {
+      const gradeClass = tier.gradeClass || 'normal';
       const search = (
         tier.id + ' ' + familyId + ' ' + tier.sortid + ' ' +
-        (tier.name || '') + ' ' + (tier.effect || '')
+        (tier.name || '') + ' ' + (tier.effect || '') + ' ' +
+        gradeClass + ' ' + opGradeSearchLabel(gradeClass)
       ).toLowerCase();
       opSearchIndex.push({
         rowId:     tier.id,
@@ -5235,7 +5290,7 @@ function buildOpSearchIndex() {
         sortid:    tier.sortid,
         name:      tier.name || '',
         effect:    tier.effect || '',
-        gradeClass: tier.gradeClass || 'normal',
+        gradeClass,
         equipKinds: tier.equipKinds || [],
         search,
       });
@@ -5678,7 +5733,7 @@ async function onMake() {
   if (isScrollableForItem(rec)) {
     const sc = formState.scroll;
     const def = sc.id ? scrollById(sc.id) : null;
-    if (def && def.type === sc.type) {
+    if (def && def.type === sc.type && scrollAllowedForItem(def, rec)) {
       const stage = Math.max(1, Math.min(5, Number(sc.stage) || 1));
       inv.scroll = { type: def.type, id: def.id, stage };
     }
@@ -5963,7 +6018,7 @@ function buildItemDetailHtml(inv, rec, character) {
       
       if (ovr.ocName) {
         const v = ovr.value ?? ovr.ocValue;
-        const convLabel = ({ replica:'レプリカ', normal:'通常', improved:'改', burning:'灼熱' })[ovr.ocConverter] || ovr.ocConverter || '';
+        const convLabel = ({ replica:'レプリカ', normal:'通常', improved:'改', burning:'灼熱', college:'協会' })[ovr.ocConverter] || ovr.ocConverter || '';
         
         const isLvRed = (ovr.familyId === 736) || /着用.*レベル.*減少|アイテム着用Lv.*減少/.test(ovr.ocName);
         if (isLvRed) {
@@ -16203,11 +16258,16 @@ async function loadEditStateFromInv(inv) {
   }
   
   if (isScrollableForItem(rec) && inv.scroll) {
-    editState.scroll = {
-      type:  inv.scroll.type  || null,
-      id:    inv.scroll.id    || null,
-      stage: Math.max(1, Math.min(5, Number(inv.scroll.stage) || 1)),
-    };
+    const def = scrollById(inv.scroll.id);
+    if (!def || scrollAllowedForItem(def, rec)) {
+      editState.scroll = {
+        type:  inv.scroll.type  || null,
+        id:    inv.scroll.id    || null,
+        stage: Math.max(1, Math.min(5, Number(inv.scroll.stage) || 1)),
+      };
+    } else {
+      editState.scroll = { type: null, id: null, stage: 1 };
+    }
   } else {
     editState.scroll = { type: null, id: null, stage: 1 };
   }
@@ -16239,7 +16299,13 @@ async function loadEditStateFromInv(inv) {
     if (Array.isArray(inv.nxUnlockedOps)) {
       for (let k = 0; k < 4; k++) {
         const o = inv.nxUnlockedOps[k];
-        if (o && o.name) {
+        if (o && o.ocName) {
+          editState.nxUnlockedOps[k] = {
+            name: String(o.ocName),
+            value: o.ocValue ?? o.value,
+            converter: o.ocConverter || editState.nxConverter,
+          };
+        } else if (o && o.name) {
           editState.nxUnlockedOps[k] = { name: o.name, value: o.value, converter: o.converter || editState.nxConverter };
         }
       }
@@ -16327,7 +16393,7 @@ async function refreshEditUI() {
   const scrollSec = document.getElementById('edit-scroll-section');
   if (scrollSec) {
     scrollSec.style.display = isScrollableForItem(rec) ? '' : 'none';
-    if (isScrollableForItem(rec)) refreshEditScrollPanel();
+    if (isScrollableForItem(rec)) refreshEditScrollPanel(rec);
   }
   
   const nxSec = document.getElementById('edit-nx-section');
@@ -16429,14 +16495,15 @@ function refreshEditArcanaPanel() {
   }
   if (tierSel) tierSel.value = String(editState.arcana.tier);
 }
-function refreshEditScrollPanel() {
+function refreshEditScrollPanel(rec = null) {
   const typeSel  = document.getElementById('edit-scroll-type');
   const idSel    = document.getElementById('edit-scroll-id');
   const stageSel = document.getElementById('edit-scroll-stage');
+  refreshScrollTypeOptions(typeSel, rec, editState.scroll);
   if (typeSel)  typeSel.value  = editState.scroll.type || '';
   if (stageSel) stageSel.value = String(editState.scroll.stage || 1);
   if (idSel) {
-    const list = editState.scroll.type ? scrollsByType(editState.scroll.type) : [];
+    const list = editState.scroll.type ? scrollsForItem(editState.scroll.type, rec) : [];
     idSel.innerHTML = '<option value="">(図案を選択)</option>' +
       list.map((s) => `<option value="${esc(s.id)}">${esc(s.name)}</option>`).join('');
     idSel.value = (editState.scroll.id && list.some((s) => s.id === editState.scroll.id))
@@ -16730,7 +16797,7 @@ async function applyEditToInv() {
   if (isScrollableForItem(rec)) {
     const sc = editState.scroll;
     const def = sc.id ? scrollById(sc.id) : null;
-    if (def && def.type === sc.type) {
+    if (def && def.type === sc.type && scrollAllowedForItem(def, rec)) {
       const stage = Math.max(1, Math.min(5, Number(sc.stage) || 1));
       built.scroll = { type: def.type, id: def.id, stage };
     } else {
@@ -16831,10 +16898,12 @@ function bindEditTabEvents() {
   const scrollType  = document.getElementById('edit-scroll-type');
   const scrollId    = document.getElementById('edit-scroll-id');
   const scrollStage = document.getElementById('edit-scroll-stage');
-  if (scrollType) scrollType.addEventListener('change', () => {
+  if (scrollType) scrollType.addEventListener('change', async () => {
     editState.scroll.type = scrollType.value || null;
     editState.scroll.id = null;
-    refreshEditScrollPanel();
+    const inv = editTargetSlotIdx >= 0 ? inventory.get(editTargetSlotIdx) : null;
+    const rec = inv ? await Item.get(inv.itemId) : null;
+    refreshEditScrollPanel(rec);
   });
   if (scrollId)    scrollId.addEventListener('change',    () => { editState.scroll.id    = scrollId.value || null; });
   if (scrollStage) scrollStage.addEventListener('change', () => { editState.scroll.stage = Math.max(1, Math.min(5, Number(scrollStage.value) || 1)); });
@@ -16868,7 +16937,7 @@ function bindEditTabEvents() {
       if (!info) { editState.nxUnlockedOps[k] = null; return; }
       editState.nxUnlockedOps[k] = {
         name: info.name,
-        value: Number(info.value ?? 0),
+        value: info.value ?? 0,
         converter: editState.nxConverter || 'normal',
       };
     });
