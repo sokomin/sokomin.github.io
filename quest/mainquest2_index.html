@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <!-- Page styles -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://sokomin.github.io/material.indigo-pink.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+    </style>
+</head>
+
+<body>
+    <title>メインクエスト Season2 赤石の民衆</title>
+    <meta name="description" content="RED STONE メインクエスト Season2 のChapter・Part一覧ページ" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE,レッドストーン,赤石の民衆,メインクエスト,Season2,Chapter,Part" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h2>メニュー</h2>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"
+                    href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"
+                    href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend"
+                    href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"
+                    href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+        <div class="android-large-table mdl-layout__content">
+
+            <!--main-->
+            <a href="../index.html">トップ</a> >> <a href="../quest/quest.html">クエスト</a> >> <a
+                href="../quest/mainquest2_index.html">メインクエスト Season2</a><br>
+            <div class="main-background mdl-typography--text-center korea-content">
+                <br>
+                <h1>メインクエスト Season2</h1>
+                <br>
+                <table id="table14" style="text-align:left">
+                    <colgroup>
+                        <col span="1" width="270">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th rowspan="10"><a href="mainquest2_1.html">Chapter1 ストレンジの脅威</a></th>
+                            <td><a href="mainquest2_1.html#part1">Part1 消えた冒険家たち</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_1.html#part2">Part2 弔いの儀式</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_1.html#part3">Part3 衛星都市ロングテール</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_1.html#part4">Part4 運命の出会い</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_1.html#part5">Part5 本格的な調査</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_1.html#part6">Part6 目に見えるもの</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_1.html#part7">Part7 天上界へ</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_1.html#part8">Part8 ゾナス</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_1.html#part9">Part9 黒い陰謀</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_1.html#part10">Part10 約束</a></td>
+                        </tr>
+                        <tr>
+                            <th rowspan="10"><a href="mainquest2_2.html">Chapter2 ロズウェルト財団</a></th>
+                            <td><a href="mainquest2_2.html#part1">Part1 再会</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_2.html#part2">Part2 地下界へ</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_2.html#part3">Part3 ロズウェルト邸へ</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_2.html#part4">Part4 巨商との邂逅</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_2.html#part5">Part5 境界</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_2.html#part6">Part6 閉じられぬゲート</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_2.html#part7">Part7 謎の少女</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_2.html#part8">Part8 一時しのぎ</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_2.html#part9">Part9 理事長の拉致</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_2.html#part10">Part10 明かされた真実</a></td>
+                        </tr>
+                        <tr>
+                            <th rowspan="10"><a href="mainquest2_3.html">Chapter3 消え失せる星</a></th>
+                            <td><a href="mainquest2_3.html#part1">Part1 消えかかる星明かり</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_3.html#part2">Part2 地下界からの使者</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_3.html#part3">Part3 変異したRED STONE</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_3.html#part4">Part4 エリプトの侵攻</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_3.html#part5">Part5 上級悪魔イケル</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_3.html#part6">Part6 ブラックファイヤーの噂</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_3.html#part7">Part7 新しい仲間</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_3.html#part8">Part8 ゲート封鎖の鍵</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_3.html#part9">Part9 試行錯誤</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_3.html#part10">Part10 旅の憩いの場</a></td>
+                        </tr>
+                        <tr>
+                            <th rowspan="11"><a href="mainquest2_4.html">Chapter4 みんなの気持ち</a></th>
+                            <td><a href="mainquest2_4.html#part1">Part1 憩いの場</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_4.html#part2">Part2 人の感情</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_4.html#part3">Part3 変化</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_4.html#part4">Part4 後を追う者</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_4.html#part5">Part5 変異したレッドストーンの浄化</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_4.html#part6">Part6 マリオネット</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_4.html#part7">Part7 黒炎のゲート封鎖</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_4.html#part8">Part8 混乱</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_4.html#part9">Part9 欲望の果て</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_4.html#part10">Part10 帰るべき場所</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="mainquest2_4.html#part11">Part11 浄化</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                [関連]<a href="mainquest.html">メインクエスト Season1</a><br>
+                [関連]<a href="mainquest2_1.html">メインクエ Season2 Chapter1</a><br>
+                [関連]<a href="mainquest2_2.html">メインクエ Season2 Chapter2</a><br>
+                [関連]<a href="mainquest2_3.html">メインクエ Season2 Chapter3</a><br>
+                [関連]<a href="mainquest2_4.html">メインクエ Season2 Chapter4</a><br>
+                [関連]<a href="mq2_reward.html">メインクエ Season2 報酬一覧</a><br>
+                <br>
+                <br>
+                <br>
+                <br>                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">
+                            当サイトで利用している画像及びデータは、L&K Co., Ltd.に帰属します。<br>
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    © L&K Co., Ltd. All Rights Reserved.<br>
+                </footer>
+                <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+            </div>
+            <script src="https://sokomin.github.io/material.min.js"></script>
+
+        </div>
+</body>
+
+</html>
