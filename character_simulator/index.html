@@ -2237,7 +2237,7 @@
       <a class="mdl-navigation__link sokomin-layout-pt"
         href="https://sokomin.github.io/monster/monster.html"><strong>モンスター</strong></a>
       <a class="mdl-navigation__link sokomin-layout-pt"
-        href="https://sokomin.github.io/secret/secret.html"><strong>ダンジョン</strong></a>
+        href="/secret/secret.html"><strong>ダンジョン</strong></a>
       <a class="mdl-navigation__link sokomin-layout-quest"
         href="https://sokomin.github.io/quest/quest.html"><strong>クエスト</strong></a>
       <a class="mdl-navigation__link sokomin-layout-guild"
@@ -5784,6 +5784,18 @@ function findFreeRingSlot() {
 
 function enforceSoloRingLimit() {
   const maxAllowed = (Titles.computeBonus().soloRingMaxAllowed) || 1;
+  const ancientEquipped = [];
+  for (const inv of inventory.items()) {
+    if (inv.equippedSlot && AncientIncusedRing.isTargetId(inv.itemId)) ancientEquipped.push(inv);
+  }
+  if (ancientEquipped.length > 1) {
+    ancientEquipped.sort((a, b) => {
+      const na = Number(String(a.equippedSlot || 'ring_0').replace(/[^0-9]/g, '')) || 0;
+      const nb = Number(String(b.equippedSlot || 'ring_0').replace(/[^0-9]/g, '')) || 0;
+      return nb - na;
+    });
+    for (let i = 0; i < ancientEquipped.length - 1; i++) ancientEquipped[i].equippedSlot = null;
+  }
   const byId = new Map();
   for (const inv of inventory.items()) {
     if (!inv.equippedSlot) continue;
@@ -5822,6 +5834,18 @@ async function equipInvItem(inv) {
       if (other.equippedSlot === 'ring_9' || isAreaBossRing(other.itemId)) {
         other.equippedSlot = null;
       }
+    }
+  } else if (AncientIncusedRing.isTargetId(inv.itemId)) {
+    for (const other of inventory.items()) {
+      if (other === inv) continue;
+      if (other.equippedSlot && AncientIncusedRing.isTargetId(other.itemId)) {
+        other.equippedSlot = null;
+      }
+    }
+    slot = findFreeRingSlot();
+    if (!slot) {
+      setSessionStatus('指スロット 10 個すべて埋まっています');
+      return;
     }
   } else if (isSoloEquipRing(inv.itemId)) {
     
@@ -5962,11 +5986,25 @@ function buildItemDetailHtml(inv, rec, character) {
   const LvTemp = getEffectiveLv(character);
 
   const isIncusedRingItem = IncusedRing.isIncusedRingId(rec.id);
+  const isYatikanuIncusedArmor = YatikanuIncusedArmor.isTargetId(rec.id);
+  const isAncientIncusedRing = AncientIncusedRing.isTargetId(rec.id);
   const incusedLv = isIncusedRingItem ? IncusedRing.clampLv(inv?.incusedRingLv ?? 1) : 1;
+  const yatikanuLv = isYatikanuIncusedArmor ? YatikanuIncusedArmor.clampLv(inv?.incusedRingLv ?? 1) : 1;
+  const ancientLv = isAncientIncusedRing ? AncientIncusedRing.clampLv(inv?.incusedRingLv ?? 1) : 1;
   for (const slot of (rec.opSlots || [])) {
     if (slot.slotKind !== 'base') continue;
 
-    
+    if (isYatikanuIncusedArmor && slot.pos === 0) {
+      const def = YatikanuIncusedArmor.getDef(rec.id);
+      html += `<span class="idp-op is-base">- ${esc(`刻印レベル ${yatikanuLv}`)}</span>`;
+      if (def) html += `<span class="idp-op is-base">- ${esc(`刻印属性 [${def.attr}]`)}</span>`;
+      continue;
+    }
+    if (isAncientIncusedRing && slot.pos === 0) {
+      html += `<span class="idp-op is-base">- ${esc(`刻印レベル ${ancientLv}`)}</span>`;
+      continue;
+    }
+
     if (isIncusedRingItem) {
       if (slot.pos === 0) {
         
@@ -6008,8 +6046,22 @@ function buildItemDetailHtml(inv, rec, character) {
   const unlockedCount = inv && typeof inv.nxUnlockedCount === 'number'
     ? Math.max(0, Math.min(4, inv.nxUnlockedCount))
     : 4;
+  if (isYatikanuIncusedArmor) {
+    html += `<div class="idp-section-title" style="color:#cbe79b">&lt;ヤティカヌ刻印 Lv ${yatikanuLv}&gt;</div>`;
+    for (const line of YatikanuIncusedArmor.describe(rec.id, yatikanuLv)) {
+      html += `<span class="idp-op is-base">- ${esc(line)}</span>`;
+    }
+  }
+  if (isAncientIncusedRing) {
+    html += `<div class="idp-section-title" style="color:#cbe79b">&lt;古代刻印 Lv ${ancientLv}&gt;</div>`;
+    for (const line of AncientIncusedRing.describe(ancientLv)) {
+      html += `<span class="idp-op is-base">- ${esc(line)}</span>`;
+    }
+  }
   for (const slot of (rec.opSlots || [])) {
     if (slot.slotKind === 'base') continue;
+    if (isYatikanuIncusedArmor) continue;
+    if (isAncientIncusedRing) continue;
     const isNx = slot.slotKind === 'nxop' || slot.slotKind === 'long_nxop';
     const nxPos = (isNx && slot.pos != null) ? Number(slot.pos) : -1;
     
@@ -6780,6 +6832,8 @@ async function recalcAll() {
 
   
   IncusedRing.applyToSTTemp(T, equipped);
+  YatikanuIncusedArmor.applyToSTTemp(T, equipped, getEffectiveLv(ch), ch);
+  AncientIncusedRing.applyToSTTemp(T, equipped, getEffectiveLv(ch), ch);
 
   await applyBadgesToSTTemp(T, getEffectiveLv(ch), ch);
 
@@ -6919,7 +6973,7 @@ async function recalcAll() {
   setDetailFlat('dt-skill',                    f.equipped.skillLv || 0);
 
 
-  const ATTR_RESIST_CAP  = Number(f.equipped.__attrResistCap) || 90;
+  const ATTR_RESIST_CAP  = Math.min(90, (Number(f.equipped.__attrResistCap) || 90) + (Number(f.equipped.fieldAttrCapResist) || 0));
   const ATTR_ABSORB_CAP  = 100;
   const ATTR_ENHANCE_CAP = 400;
   const ATTR_WEAKEN_CAP  = 120;
@@ -13896,6 +13950,225 @@ const IncusedRing = (() => {
   return { DEFS, isIncusedRingId, getDef, clampLv, applyToSTTemp };
 })();
 
+const YatikanuIncusedArmor = (() => {
+  const ATTR_RESISTS = ['attrFireResist', 'attrWaterResist', 'attrWindResist', 'attrEarthResist', 'attrLightResist', 'attrDarkResist'];
+  const ATTR_WEAKENS = ['attrFireWeaken', 'attrWaterWeaken', 'attrWindWeaken', 'attrEarthWeaken', 'attrLightWeaken', 'attrDarkWeaken'];
+  const ATTR_DAMAGES = ['attrFire', 'attrWater', 'attrWind', 'attrEarth', 'attrLight', 'attrDark'];
+  const ATTR_ABSORBS = ['attrFireAbsorb', 'attrWaterAbsorb', 'attrWindAbsorb', 'attrEarthAbsorb', 'attrLightAbsorb', 'attrDarkAbsorb', 'attrMagicAbsorb'];
+
+  function e(label, stat, value, unit = '') {
+    const stats = Array.isArray(stat) ? stat : (stat ? [stat] : []);
+    return { label, stats, value, unit };
+  }
+  function fixed(label, stat, value, unit = '') { return { ...e(label, stat, value, unit), mode: 'fixed' }; }
+  function interp(label, stat, fromValue, toValue, unit = '') { return { ...e(label, stat, toValue, unit), mode: 'interp', fromValue, toValue }; }
+  function scale(label, stat, from, toValue, unit = '') { return { ...e(label, stat, toValue, unit), mode: 'scale', from, toValue }; }
+  function at(label, stat, from, value, unit = '') { return { ...e(label, stat, value, unit), mode: 'at', from }; }
+
+  const DEFS = {
+    11351: { attr: '野性', name: '鋭い見張り人', effects: [
+      fixed('防御力', 'def', 37), fixed('物理ダメージ', 'physDamagePercent', 80, '%'),
+      interp('防御力', 'defPercent', 4, 300, '%'), scale('運', 'luc', 10, 750),
+      scale('物理クリティカル発動確率', 'physCritRate', 20, 40, '%'), at('物理クリティカルダメージ', 'physCritDamage', 30, 25, '%'),
+    ] },
+    11352: { attr: '凶暴', name: '狩りの巨匠', effects: [
+      fixed('防御力', 'def', 63), fixed('力', 'str', 250), fixed('スキルレベル', 'skillLv', 3),
+      fixed('スタックアイテム', null, 10, '個'), interp('健康', 'con', 10, 2250),
+      scale('最大HP', 'hp', 10, 1050), scale('フィールドのステータス低下抵抗', 'fieldStatDownResist', 20, 11, '%'),
+      at('物理強打ダメージ', 'physStrongDamage', 30, 30, '%'),
+    ] },
+    11353: { attr: '乱暴な', name: 'エクリプスステップ', effects: [
+      fixed('防御力', 'def', 27), fixed('知恵', 'wiz', 200), fixed('防御力', 'defPercent', 50, '%'),
+      fixed('スキルレベル', 'skillLv', 4), fixed('ノックバック抵抗', 'knockbackResist', 80, '%'),
+      interp('敏捷', 'agi', 10, 2250), scale('物理ダメージ', 'physDamagePercent', 10, 80, '%'),
+      scale('物理強打発動確率', 'physStrongRate', 20, 11, '%'),
+    ] },
+    11354: { attr: '猛獣', name: 'ラストパイオニア', effects: [
+      fixed('防御力', 'def', 55), fixed('防御力', 'defPercent', 30, '%'), fixed('運', 'luc', 200),
+      fixed('スキルレベル', 'skillLv', 2), interp('最大HP', 'hpPercent', 4, 300, '%'),
+      scale('物理ダメージ', 'physDamagePercent', 10, 120, '%'), scale('物理クリティカル発動確率', 'physCritRate', 20, 30, '%'),
+      at('敵の物理クリティカル抵抗減少', 'enemyPhysCritResistReduce', 30, 32, '%'),
+    ] },
+    11355: { attr: '爽快な', name: '祭司長の礼服', effects: [
+      fixed('防御力', 'def', 50), fixed('スキルレベル', 'skillLv', 8), fixed('知識', 'int', 200),
+      interp('最大HP', 'hpPercent', 4, 300, '%'), scale('カリスマ', 'chs', 10, 300),
+      scale('ターゲットの全ての属性抵抗弱化', ATTR_WEAKENS, 20, 30, '%'), at('魔法致命打', 'magicCritRate', 30, 10, '%'),
+    ] },
+    11356: { attr: '涼しい', name: '共鳴する未知', effects: [
+      fixed('防御力', 'def', 15), fixed('全てのスキルレベル', 'skillLv', 1), fixed('魔法致命打', 'magicCritRate', 10, '%'),
+      fixed('10%確率で魔法ダメージの5%をHPに吸収', null, null), fixed('知恵', 'wiz', 300),
+      scale('知識', 'int', 10, 2250), scale('力', 'str', 20, 1050),
+      at('スキルレベル', 'skillLv', 30, 24), at('ターゲットの魔法抵抗弱化', 'attrMagicWeaken', 30, 50, '%'),
+    ] },
+    11357: { attr: '瞑想', name: '燃え上がる意志', effects: [
+      fixed('防御力', 'def', 11), fixed('健康', 'con', 200), fixed('防御力', 'defPercent', 50, '%'),
+      fixed('スキルレベル', 'skillLv', 4), interp('知識', 'int', 5, 1125),
+      scale('カリスマ', 'chs', 10, 600), scale('ターゲットの魔法抵抗弱化', 'attrMagicWeaken', 20, 25, '%'),
+      at('魔法強打', 'magicStrongRate', 30, 15, '%'),
+    ] },
+    11358: { attr: 'そよ風', name: '先導者の足跡', effects: [
+      fixed('防御力', 'def', 27), fixed('ノックバック抵抗', 'knockbackResist', 80, '%'), fixed('健康', 'con', 200),
+      fixed('スキルレベル', 'skillLv', 8), fixed('防御力', 'defPercent', 30, '%'), interp('カリスマ', 'chs', 5, 1125),
+      scale('移動速度', 'mvspd', 10, 41, '%'), scale('ターゲットの全ての属性抵抗弱化', ATTR_WEAKENS, 20, 25, '%'),
+      at('全ての属性ダメージ', ATTR_DAMAGES, 30, 30, '%'),
+    ] },
+    11359: { attr: '根', name: '古代森の残影', effects: [
+      fixed('防御力', 'def', 33), fixed('スタックアイテム', null, 10, '個'), fixed('全ての属性抵抗', ATTR_RESISTS, 15, '%'),
+      fixed('カリスマ', 'chs', 300), interp('健康', 'con', 10, 1300), scale('防御力', 'defPercent', 10, 30, '%'),
+      scale('最大HP', 'hpPercent', 20, 30, '%'), at('魔法ダメージ吸収', ATTR_ABSORBS, 30, 30, '%'),
+    ] },
+    11360: { attr: '茎', name: '古代森の庇護', effects: [
+      fixed('防御力', 'def', 75), fixed('知恵', 'wiz', 600), fixed('防御力', 'defPercent', 50, '%'),
+      interp('最大HP', 'hpPercent', 4, 300, '%'), scale('健康', 'con', 10, 600),
+      scale('全ての属性抵抗', ATTR_RESISTS, 20, 30, '%'), at('魔法クリティカル抵抗', 'magicCritResist', 30, 15, '%'),
+    ] },
+    11361: { attr: '葉', name: '古代森のささやき', effects: [
+      fixed('最大HP', 'hpPercent', 300, '%'), fixed('回避率', 'eva', 15, '%'), fixed('魔法抵抗', 'attrMagicResist', 30, '%'),
+      interp('魔法回避', null, 1, 13, '%'), scale('スキルレベル', 'skillLv', 10, 9),
+      scale('運', 'luc', 20, 100), at('健康', 'con', 30, 600),
+    ] },
+  };
+
+  function clampLv(n) {
+    const v = Math.max(1, Math.min(30, Number(n) | 0));
+    return Number.isFinite(v) ? v : 1;
+  }
+  function isTargetId(id) { return DEFS[Number(id)] != null; }
+  function getDef(id) { return DEFS[Number(id)] || null; }
+  function valueOf(effect, lv) {
+    const l = clampLv(lv);
+    if (effect.mode === 'fixed') return effect.value == null ? 0 : effect.value;
+    if (effect.mode === 'interp') return Math.round(effect.fromValue + (effect.toValue - effect.fromValue) * ((l - 1) / 29));
+    if (effect.mode === 'scale') return l >= effect.from ? Math.round(effect.toValue * l / 30) : null;
+    if (effect.mode === 'at') return l >= effect.from ? effect.value : null;
+    return null;
+  }
+  function addStat(STTemp, stat, value) {
+    if (!stat || value == null || !Number.isFinite(Number(value))) return;
+    STTemp.sum[stat] = (STTemp.sum[stat] || 0) + Number(value);
+  }
+  function subtractLayer(STTemp, layer, stat, value) {
+    if (!STTemp[layer] || value == null || !Number.isFinite(Number(value))) return;
+    STTemp[layer][stat] = (STTemp[layer][stat] || 0) - Number(value);
+  }
+  function subtractNativeItemOps(STTemp, inv, item, LvTemp, character) {
+    const raw = newSTTemp();
+    for (const slot of (item?.opSlots || [])) {
+      if (slot.slotKind !== 'base' && slot.slotKind !== 'op') continue;
+      const source = slot.slotKind === 'base' ? 'item.base' : 'item.option';
+      applyOpToSTTemp(raw, calcOpValue(slot, inv, source, LvTemp || 0, character), item);
+    }
+    for (const layer of Object.keys(raw)) {
+      for (const [stat, value] of Object.entries(raw[layer])) subtractLayer(STTemp, layer, stat, value);
+    }
+  }
+  function applyToSTTemp(STTemp, equipped, LvTemp, character) {
+    if (!STTemp || !STTemp.sum || !Array.isArray(equipped)) return;
+    for (const { inv, item } of equipped) {
+      const def = getDef(inv?.itemId);
+      if (!def || !inv?.equippedSlot || !inv.canEquip) continue;
+      const lv = clampLv(inv.incusedRingLv ?? 1);
+      subtractNativeItemOps(STTemp, inv, item, LvTemp, character);
+      for (const effect of def.effects) {
+        const value = valueOf(effect, lv);
+        if (value == null) continue;
+        for (const stat of effect.stats) addStat(STTemp, stat, value);
+      }
+    }
+  }
+  function describe(id, lv) {
+    const def = getDef(id);
+    if (!def) return [];
+    const out = [];
+    for (const effect of def.effects) {
+      const value = valueOf(effect, lv);
+      if (value == null) continue;
+      if (effect.value == null) out.push(effect.label);
+      else out.push(`${effect.label} ${Number(value) >= 0 ? '+' : ''}${value}${effect.unit || ''}`);
+    }
+    return out;
+  }
+  function desc(id, lv) {
+    const def = getDef(id);
+    if (!def) return '';
+    return [`${def.name} / 刻印属性 [${def.attr}]`, ...describe(id, lv)].join('\n');
+  }
+
+  return { DEFS, isTargetId, getDef, clampLv, applyToSTTemp, describe, desc };
+})();
+
+const AncientIncusedRing = (() => {
+  const ITEM_ID = 13921;
+  const ATTR_RESISTS = ['attrFireResist', 'attrWaterResist', 'attrWindResist', 'attrEarthResist', 'attrLightResist', 'attrDarkResist'];
+
+  function clampLv(n) {
+    const v = Math.max(1, Math.min(30, Number(n) | 0));
+    return Number.isFinite(v) ? v : 1;
+  }
+  function isTargetId(id) { return Number(id) === ITEM_ID; }
+  function isYatikanuFieldActive() {
+    if (!mapMonsterState || mapMonsterState.mapId == null) return false;
+    const meta = getMapMeta(mapMonsterState.mapId);
+    const name = String(meta?.name || '');
+    return /ヤティカヌ|月の出森林|日の出森林|星降る森林|微風の森林|夜影の森林|暁の森林/.test(name);
+  }
+  function addStat(STTemp, stat, value) {
+    if (!stat || value == null || !Number.isFinite(Number(value))) return;
+    STTemp.sum[stat] = (STTemp.sum[stat] || 0) + Number(value);
+  }
+  function subtractLayer(STTemp, layer, stat, value) {
+    if (!STTemp[layer] || value == null || !Number.isFinite(Number(value))) return;
+    STTemp[layer][stat] = (STTemp[layer][stat] || 0) - Number(value);
+  }
+  function subtractNativeItemOps(STTemp, inv, item, LvTemp, character) {
+    const raw = newSTTemp();
+    for (const slot of (item?.opSlots || [])) {
+      if (slot.slotKind !== 'base' && slot.slotKind !== 'op') continue;
+      const source = slot.slotKind === 'base' ? 'item.base' : 'item.option';
+      applyOpToSTTemp(raw, calcOpValue(slot, inv, source, LvTemp || 0, character), item);
+    }
+    for (const layer of Object.keys(raw)) {
+      for (const [stat, value] of Object.entries(raw[layer])) subtractLayer(STTemp, layer, stat, value);
+    }
+  }
+  function effects(lv) {
+    const l = clampLv(lv);
+    const out = [
+      { label: '被ダメージ減少', stats: ['damageReducePercent'], value: 15, unit: '%' },
+      { label: '魔法属性ダメージ吸収', stats: ['attrMagicAbsorb'], value: l, unit: '%' },
+    ];
+    if (l >= 10) out.push({ label: '全ての属性抵抗', stats: ATTR_RESISTS, value: l, unit: '%' });
+    if (l >= 20) out.push({ label: 'フィールドの属性最大値制限に対する抵抗', stats: ['fieldAttrCapResist'], value: l - 19, unit: '%' });
+    if (l >= 30) out.push({ label: '移動速度低下に対する抵抗', stats: [], value: 100, unit: '%' });
+    return out;
+  }
+  function applyToSTTemp(STTemp, equipped, LvTemp, character) {
+    if (!STTemp || !STTemp.sum || !Array.isArray(equipped)) return;
+    const active = isYatikanuFieldActive();
+    for (const { inv, item } of equipped) {
+      if (!isTargetId(inv?.itemId) || !inv?.equippedSlot || !inv.canEquip) continue;
+      subtractNativeItemOps(STTemp, inv, item, LvTemp, character);
+      if (!active) continue;
+      const lv = clampLv(inv.incusedRingLv ?? 1);
+      for (const effect of effects(lv)) {
+        for (const stat of effect.stats) addStat(STTemp, stat, effect.value);
+      }
+    }
+  }
+  function describe(lv) {
+    const lines = effects(lv).map((effect) => `${effect.label} +${effect.value}${effect.unit || ''}`);
+    lines.push('計算反映: ヤティカヌ系フィールド選択時のみ');
+    return lines;
+  }
+  function desc(idOrLv, maybeLv) {
+    const lv = maybeLv == null ? idOrLv : maybeLv;
+    if (maybeLv != null && !isTargetId(idOrLv)) return '';
+    return ['古代刻印の指輪', ...describe(lv)].join('\n');
+  }
+
+  return { ITEM_ID, isTargetId, clampLv, applyToSTTemp, describe, desc };
+})();
+
 
 const TransSkill = (() => {
 
@@ -16316,7 +16589,7 @@ async function loadEditStateFromInv(inv) {
     editState.nxUnlockedOps = [null, null, null, null];
   }
   
-  if (IncusedRing.isIncusedRingId(inv.itemId)) {
+  if (IncusedRing.isIncusedRingId(inv.itemId) || YatikanuIncusedArmor.isTargetId(inv.itemId) || AncientIncusedRing.isTargetId(inv.itemId)) {
     editState.incusedRingLv = IncusedRing.clampLv(inv.incusedRingLv ?? 1);
   } else {
     editState.incusedRingLv = 1;
@@ -16418,7 +16691,7 @@ async function refreshEditUI() {
   
   const irSec = document.getElementById('edit-incused-ring-section');
   if (irSec) {
-    const isIR = IncusedRing.isIncusedRingId(inv.itemId);
+    const isIR = IncusedRing.isIncusedRingId(inv.itemId) || YatikanuIncusedArmor.isTargetId(inv.itemId) || AncientIncusedRing.isTargetId(inv.itemId);
     irSec.style.display = isIR ? '' : 'none';
     if (isIR) refreshEditIncusedRingPanel(rec);
   }
@@ -16437,8 +16710,11 @@ function refreshEditIncusedRingPanel(rec) {
     }
   }
   lvSel.value = String(IncusedRing.clampLv(editState.incusedRingLv));
-  const def = IncusedRing.getDef(rec?.id);
-  effDiv.textContent = def ? def.desc(IncusedRing.clampLv(editState.incusedRingLv)) : '';
+  const lv = IncusedRing.clampLv(editState.incusedRingLv);
+  const ringDef = IncusedRing.getDef(rec?.id);
+  effDiv.textContent = ringDef
+    ? ringDef.desc(lv)
+    : (YatikanuIncusedArmor.isTargetId(rec?.id) ? YatikanuIncusedArmor.desc(rec?.id, lv) : AncientIncusedRing.desc(rec?.id, lv));
 }
 
 async function refreshEditUltPanel() {
@@ -16805,7 +17081,7 @@ async function applyEditToInv() {
     }
   }
   
-  if (IncusedRing.isIncusedRingId(rec?.id)) {
+  if (IncusedRing.isIncusedRingId(rec?.id) || YatikanuIncusedArmor.isTargetId(rec?.id) || AncientIncusedRing.isTargetId(rec?.id)) {
     built.incusedRingLv = IncusedRing.clampLv(editState.incusedRingLv);
   }
 
@@ -16859,6 +17135,13 @@ function bindEditTabEvents() {
       const inv = inventory.get(editTargetSlotIdx);
       if (inv) {
         const rec = await Item.get(inv.itemId);
+        if (IncusedRing.isIncusedRingId(rec?.id) || YatikanuIncusedArmor.isTargetId(rec?.id) || AncientIncusedRing.isTargetId(rec?.id)) {
+          inv.incusedRingLv = editState.incusedRingLv;
+          if (selectedInv && selectedInv.inv.slotIndex === inv.slotIndex) selectedInv.inv.incusedRingLv = editState.incusedRingLv;
+          scheduleAutosave();
+          await recalcAll();
+          await renderEditInventoryGrid();
+        }
         refreshEditIncusedRingPanel(rec);
       }
     }
