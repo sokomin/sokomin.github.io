@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=960">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://sokomin.github.io/material.indigo-pink.min.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+  <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-133658114-1');
+  </script>
+  <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+  <script>
+    function enter() {
+      if (window.event.keyCode == 13) {
+        var last_keyword = $('#search-field').val();
+        window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+      }
+    }
+  </script>
+  <style>
+    #view-source {
+      position: fixed;
+      display: block;
+      right: 0;
+      bottom: 0;
+      margin-right: 40px;
+      margin-bottom: 40px;
+      z-index: 900;
+    }
+    .summary-note {
+      max-width: 920px;
+      margin: 0 auto;
+      line-height: 1.8;
+      text-align: left;
+    }
+    .left-cell td,
+    .left-cell th {
+      text-align: left;
+      vertical-align: top;
+    }
+    .index_table img,
+    .currency-icon {
+      width: 58px;
+      height: 58px;
+    }
+    .item-icon {
+      width: 38px;
+      height: 38px;
+    }
+    .large-shot {
+      max-width: 560px;
+      width: 100%;
+      height: auto;
+      border: 1px solid #555;
+      background: #111;
+      box-sizing: border-box;
+    }
+    .overview-slide {
+      max-width: 1280px;
+      width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+      box-sizing: border-box;
+    }
+    .gold-icon {
+      width: 34px;
+      height: 34px;
+      vertical-align: middle;
+    }
+    .important-link {
+      background: #fff4d6;
+      font-weight: bold;
+    }
+    .important-link a {
+      color: #b00020;
+    }
+    @media (max-width: 768px) {
+      .main-background {
+        padding-left: 8px;
+        padding-right: 8px;
+        box-sizing: border-box;
+      }
+      .main-background table {
+        display: block;
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <title>非規格装備まとめ 赤石の民衆</title>
+  <meta name="description" content="RED STONEの非規格装備について、入手方法、強化素材、分解、非規格装備一覧、接頭語、注意点をまとめた攻略ページです。" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <meta name="keywords" content="RED STONE,レッドストーン,赤石の民衆,非規格装備,非規格オプション,ファザムレスチェスト,アモルファスダスト" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <a name="container"></a>
+    <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+      <div class="mdl-layout__header-row">
+        <span class="android-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <div class="android-header-spacer mdl-layout-spacer"></div>
+        <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text" onkeypress="enter();" id="search-field" />
+          </div>
+        </div>
+        <div class="android-navigation-container">
+          <nav class="android-navigation mdl-navigation">
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/index.html">ホーム</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問い合わせ</a>
+          </nav>
+        </div>
+        <span class="android-mobile-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
+          <i class="material-icons">more_vert</i>
+        </button>
+        <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a></li>
+          <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問い合わせ</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="android-drawer mdl-layout__drawer">
+      <span class="mdl-layout-title"><h2>メニュー</h2></span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html"><strong>モンスター</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html"><strong>ダンジョン</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html"><strong>クエスト</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html"><strong>雑学</strong></a>
+      </nav>
+    </div>
+
+    <div class="android-large-table mdl-layout__content">
+      <div class="main-background mdl-typography--text-center korea-content">
+        <a href="../index.html">トップ</a> &gt;&gt; <a href="../information/information.html">攻略情報</a> &gt;&gt; 非規格装備まとめ<br>
+        <br>
+        <h1>非規格装備まとめ</h1>
+        <div class="summary-note">
+          非規格装備は、1250レベル以上の狩場や一部コンテンツで入手できる特殊な装備です。
+          通常のオプションとは別枠で非規格オプションが付き、専用素材を使って鑑定、等級上昇、オプション追加、再抽選を行います。
+        </div>
+        <br>
+
+        <div class="index_table">
+          <table id="table10" style="max-width:720px">
+            <tbody>
+              <tr>
+                <th colspan="3">目次</th>
+              </tr>
+              <tr>
+                <td class="important-link" colspan="3">
+                  <a href="https://sokomin.github.io/korea/koreaupdate20260429_hikikaku_options.html">
+                    <img src="../korea/37675/hikikaku_enigmatic_node.png" alt="非規格オプション一覧"><br>
+                    非規格オプション一覧
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td><a href="#summary"><img src="../korea/37675/hikikaku_phase_tuner.png" alt="概要"><br>概要</a></td>
+                <td><a href="#drop"><img src="../korea/37675/hikikaku_pasamless_chest.png" alt="入手"><br>入手</a></td>
+                <td><a href="#enhance"><img src="../korea/37675/hikikaku_power_node.png" alt="強化"><br>強化</a></td>
+              </tr>
+              <tr>
+                <td><a href="#materials"><img src="../korea/37675/hikikaku_excel_node.png" alt="素材"><br>素材</a></td>
+                <td><a href="#disassemble"><img src="../korea/37675/hikikaku_amorphous_dust.png" alt="分解"><br>分解</a></td>
+                <td><a href="#equipment"><img src="../item/design/image/item/iconItem_5169.png" alt="装備一覧"><br>装備一覧</a></td>
+              </tr>
+              <tr>
+                <td><a href="#prefix"><img src="../korea/37675/hikikaku_invert_node.png" alt="接頭語"><br>接頭語</a></td>
+                <td><a href="#notice"><img src="../korea/37675/hikikaku_mighty_node.png" alt="注意点"><br>注意点</a></td>
+                <td><a href="#links"><img src="../item/design/image/item/iconItem_5237.png" alt="関連リンク"><br>関連リンク</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <br>
+
+        <a name="summary"></a>
+        <h4>概要</h4>
+        <img class="overview-slide" src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/690ab12f6ccedcfaee11bb3e5f18fe3059433343.10.9.9.3.png" border=0 name="insertImg" alt="非規格装備の概要"><br><br>
+        装備自体は青品扱いで、通常オプションとは別に非規格オプションを持ちます。未鑑定で入手したものは、専用素材で等級と非規格オプションを確認します。<br>
+        非規格装備としての強化段階は一般、DX、ULTの3段階です。これは通常のアイテムグレードとは異なり、DX以上は非規格オプションが付き、ULTでは最大5枠まで扱えます。<br>
+        <br>
+
+        <h4>等級別オプション数</h4>
+        <table id="table10" style="max-width:720px">
+          <tbody>
+            <tr><th>等級</th><th>非規格オプション数</th><th>扱い</th></tr>
+            <tr><td>一般</td><td>0個</td><td>鑑定後、必要に応じてDXへ強化します。</td></tr>
+            <tr><td>DX</td><td>1～2個</td><td>追加素材でオプション数を伸ばせます。</td></tr>
+            <tr><td>ULT</td><td>3～5個</td><td>非規格オプション枠の上限は5です。</td></tr>
+          </tbody>
+        </table>
+        <br>
+
+        <a name="drop"></a>
+        <h4>入手方法</h4>
+        非規格装備は、装備レベルごとにドロップ対象となるモンスターレベルが変わります。<br>
+        1250Lv装備は1250Lv以上、1500Lv装備は1500Lv以上、1750Lv装備は1750Lv以上のモンスターから出現します。<br>
+        この条件は通常狩場だけでなく、精鋭討伐などの討伐系コンテンツでも適用されます。<br><br>
+        <table id="table10" class="left-cell" style="max-width:920px">
+          <tbody>
+            <tr><th style="width:220px">対象</th><th>内容</th></tr>
+            <tr><td>通常狩場・ダンジョン</td><td>対象レベル以上の通常狩場・ダンジョンの全モンスターがドロップ対象です。</td></tr>
+            <tr><td>討伐系コンテンツ</td><td>討伐デイリー、討伐ウィークリー、精鋭討伐、位相ボスも対象です。装備レベルに応じたモンスターレベル条件はここでも適用されます。</td></tr>
+            <tr><td>1500Lv装備</td><td>1500Lv以上のモンスターから出現します。</td></tr>
+            <tr><td>1750Lv装備</td><td>1750Lv以上のモンスターから出現します。</td></tr>
+            <tr><td>その他</td><td>コクーン闇商人などからも入手できます。</td></tr>
+            <tr><td>ドロップ率の目安</td><td>ドロップ率の強補正なしで、補正1時間あたりULT装備が1個、DX装備が複数個、各種ノードが1個程度を目安に見ています。</td></tr>
+          </tbody>
+        </table>
+        <br>
+
+        <a name="enhance"></a>
+        <h4>強化画面と使い方</h4>
+        非規格装備強化画面は8種の強化素材をダブルクリックして使うことで表示されます。<br>
+        各強化段階で消費するノードは1個ずつです。右側に表示される数値は、金のインゴットの必要個数です。<br>
+        強化、オプション追加、再抽選、数値再設定はいずれも100%成功します。<br>
+        <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/3203bec49773597ebf40671f5eca351467e6216d.10.9.9.3.png" border=0 name="insertImg" alt="非規格装備強化画面"><br><br>
+        <table id="table10" class="left-cell" style="max-width:920px">
+          <tbody>
+            <tr><th style="width:120px">手順</th><th>やること</th><th>ポイント</th></tr>
+            <tr><td>1</td><td>非規格装備または専用財貨を入手します。</td><td>装備、ノード、ダスト、チェストを分けて整理しておくと扱いやすいです。</td></tr>
+            <tr><td>2</td><td>フェーズチューナーで未鑑定の非規格装備を鑑定します。</td><td>鑑定後に等級と非規格オプションを確認します。</td></tr>
+            <tr><td>3</td><td>ノードを1個ずつ使って、等級上昇、非規格オプション追加、再抽選を行います。</td><td>各操作は100%成功します。必要なのは対象ノード1個と金のインゴットです。</td></tr>
+            <tr><td>4</td><td>不要な装備は分解してアモルファスダストにします。</td><td>アモルファスダストはファザムレスチェストとの交換に使います。</td></tr>
+          </tbody>
+        </table>
+        <br>
+
+        <a name="materials"></a>
+        <h4>強化素材一覧</h4>
+        各強化段階で消費するノードは1個です。金のインゴット欄の数値は、操作時に追加で必要になる金のインゴットの個数です。<br><br>
+        <table id="table10" class="left-cell" style="max-width:1180px">
+          <tbody>
+            <tr><th style="width:170px">アイテム</th><th>用途</th><th style="width:90px">素材消費</th><th style="width:110px">金のインゴット</th><th style="width:260px">主な入手方法</th></tr>
+            <tr>
+              <td><img class="currency-icon" src="../korea/37675/hikikaku_phase_tuner.png" alt="フェーズチューナー"><br>フェーズチューナー</td>
+              <td>非規格装備の鑑定。</td>
+              <td>1個</td>
+              <td><img class="gold-icon" src="../item/design/image/item/iconItem_1492.png" alt="金のインゴット"><br>1個</td>
+              <td>1250レベル以上フィールドモンスター、ファザムレスチェスト</td>
+            </tr>
+            <tr>
+              <td><img class="currency-icon" src="../korea/37675/hikikaku_power_node.png" alt="パワーノード"><br>パワーノード</td>
+              <td>一般からDXへの等級上昇、非規格オプション1個追加。</td>
+              <td>1個</td>
+              <td><img class="gold-icon" src="../item/design/image/item/iconItem_1492.png" alt="金のインゴット"><br>2個</td>
+              <td>1250レベル以上フィールドモンスター、ファザムレスチェスト</td>
+            </tr>
+            <tr>
+              <td><img class="currency-icon" src="../korea/37675/hikikaku_mighty_node.png" alt="マイティーノード"><br>マイティーノード</td>
+              <td>DXからULTへの等級上昇、非規格オプション1個追加。</td>
+              <td>1個</td>
+              <td><img class="gold-icon" src="../item/design/image/item/iconItem_1492.png" alt="金のインゴット"><br>2個</td>
+              <td>1250レベル以上フィールドモンスター、ファザムレスチェスト</td>
+            </tr>
+            <tr>
+              <td><img class="currency-icon" src="../korea/37675/hikikaku_cajenity_node.png" alt="キャパシティーノード"><br>キャパシティーノード</td>
+              <td>DX等級の非規格オプション枠追加、非規格オプション1個追加。</td>
+              <td>1個</td>
+              <td><img class="gold-icon" src="../item/design/image/item/iconItem_1492.png" alt="金のインゴット"><br>3個</td>
+              <td>1250レベル以上フィールドモンスター、ファザムレスチェスト</td>
+            </tr>
+            <tr>
+              <td><img class="currency-icon" src="../korea/37675/hikikaku_dismolger_node.png" alt="ディスクロージャーノード"><br>ディスクロージャーノード</td>
+              <td>ULT等級の非規格オプション枠追加、非規格オプション1個追加。</td>
+              <td>1個</td>
+              <td><img class="gold-icon" src="../item/design/image/item/iconItem_1492.png" alt="金のインゴット"><br>3個</td>
+              <td>1250レベル以上フィールドモンスター、ファザムレスチェスト</td>
+            </tr>
+            <tr>
+              <td><img class="currency-icon" src="../korea/37675/hikikaku_excel_node.png" alt="エクセルノード"><br>エクセルノード</td>
+              <td>DXからULTへの等級上昇、非規格オプション3個付与。ベースが入手困難な武器を一気に強化したい時に向きます。例として、入手難易度の高い1750Lv～の<a href="https://sokomin.github.io/calculation/item_viewer.html?id=0x37f5&amp;t=63">ファナーリボルバー</a>などに使うことで、他の素材を節約しつつULT化できます。</td>
+              <td>1個</td>
+              <td><img class="gold-icon" src="../item/design/image/item/iconItem_1492.png" alt="金のインゴット"><br>3個</td>
+              <td>1250レベル以上フィールドモンスター、ファザムレスチェスト</td>
+            </tr>
+            <tr>
+              <td><img class="currency-icon" src="../korea/37675/hikikaku_invert_node.png" alt="インバーターノード"><br>インバーターノード</td>
+              <td>非規格オプションのランダム変更。</td>
+              <td>1個</td>
+              <td><img class="gold-icon" src="../item/design/image/item/iconItem_1492.png" alt="金のインゴット"><br>5個</td>
+              <td>1250レベル以上フィールドモンスター</td>
+            </tr>
+            <tr>
+              <td><img class="currency-icon" src="../korea/37675/hikikaku_enigmatic_node.png" alt="エニグマティックノード"><br>エニグマティックノード</td>
+              <td>非規格オプション数値のランダム再設定。</td>
+              <td>1個</td>
+              <td><img class="gold-icon" src="../item/design/image/item/iconItem_1492.png" alt="金のインゴット"><br>5個</td>
+              <td>1250レベル以上フィールドモンスター</td>
+            </tr>
+            <tr>
+              <td><img class="currency-icon" src="../korea/37675/hikikaku_pasamless_chest.png" alt="ファザムレスチェスト"><br>ファザムレスチェスト</td>
+              <td>非規格装備、強化素材、アモルファスダストなどを入手できる箱。</td>
+              <td>-</td>
+              <td>-</td>
+              <td>アモルファスダスト100個と交換</td>
+            </tr>
+            <tr>
+              <td><img class="currency-icon" src="../korea/37675/hikikaku_amorphous_dust.png" alt="アモルファスダスト"><br>アモルファスダスト</td>
+              <td>ファザムレスチェストの交換財貨。</td>
+              <td>-</td>
+              <td>-</td>
+              <td>非規格装備の分解など</td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+
+        <a name="disassemble"></a>
+        <h4>分解とファザムレスチェスト</h4>
+        ファザムレスチェストはアモルファスダスト100個と交換できます。<br>
+        <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/478a7da559f9cd98b93e7ddf8bc5e492de4839cd.10.9.9.3.png" border=0 name="insertImg" alt="ファザムレスチェスト交換"><br><br>
+        <table id="table10" style="max-width:760px">
+          <tbody>
+            <tr><th>分解対象</th><th>アモルファスダスト獲得個数</th></tr>
+            <tr><td>鑑定状態 一般</td><td>1～5個</td></tr>
+            <tr><td>未鑑定状態 一般</td><td>1～5個</td></tr>
+            <tr><td>鑑定状態 DX</td><td>8～12個</td></tr>
+            <tr><td>未鑑定状態 DX</td><td>13～17個</td></tr>
+            <tr><td>鑑定状態 ULT</td><td>20～29個</td></tr>
+            <tr><td>未鑑定状態 ULT</td><td>30～49個</td></tr>
+          </tbody>
+        </table>
+        <br>
+        <table id="table10" style="max-width:760px">
+          <tbody>
+            <tr><th>ファザムレスチェストの中身</th><th>個数</th><th>確率</th></tr>
+            <tr><td>アモルファスダスト</td><td>10個</td><td>50%</td></tr>
+            <tr><td>パワーノード</td><td>1個</td><td>20%</td></tr>
+            <tr><td>マイティーノード</td><td>1個</td><td>20%</td></tr>
+            <tr><td>キャパシティーノード</td><td>1個</td><td>4%</td></tr>
+            <tr><td>ディスクロージャーノード</td><td>1個</td><td>3%</td></tr>
+            <tr><td>エクセルノード</td><td>1個</td><td>3%</td></tr>
+          </tbody>
+        </table>
+        <br>
+
+        <a name="equipment"></a>
+        <h4>非規格装備一覧</h4>
+        アイテム検索に登録されている非規格装備204件を、1250、1500、1750の3段階でまとめています。<br>
+        <a href="../calculation/search_item_text.html">アイテム検索</a>から名前検索もできます。<br>
+        <br>
+        <table id="table10" class="left-cell" style="max-width:1280px">
+          <tbody>
+            <tr>
+              <th style="width:54px">画像</th>
+              <th style="width:110px">種類/部位</th>
+              <th>1250</th>
+              <th>1500</th>
+              <th>1750</th>
+              <th>基本性能</th>
+              <th>錬成オプション</th>
+            </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5169.png" alt="コモンソード"></td>
+                <td>片手剣</td>
+                <td><a href="../calculation/item_viewer.html?id=0x3778&amp;t=18">コモンソード</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x3779&amp;t=18">アンコモンソード</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x377a&amp;t=18">レアソード</a></td>
+                <td>攻撃力 169~203(0.90秒)<br>射程距離 100</td>
+                <td>このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5170.png" alt="ファイターソード"></td>
+                <td style="background:#f6fcfa">片手剣</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x377b&amp;t=18">ファイターソード</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x377c&amp;t=18">ミリタリーソード</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x377d&amp;t=18">ブレイブソード</a></td>
+                <td style="background:#f6fcfa">攻撃力 174~209(1.00秒)<br>射程距離 100<br>物理致命打確率(％) +[1~3]％</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5171.png" alt="ラージブレード"></td>
+                <td>両手剣</td>
+                <td><a href="../calculation/item_viewer.html?id=0x377e&amp;t=20">ラージブレード</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x377f&amp;t=20">グレートブレード</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x3780&amp;t=20">ウォーブレード</a></td>
+                <td>攻撃力 239~335(1.30秒)<br>射程距離 120<br>防御力 +2</td>
+                <td>このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5172.png" alt="スマッシャー"></td>
+                <td style="background:#f6fcfa">両手剣</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3781&amp;t=20">スマッシャー</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3782&amp;t=20">ヘッドスマッシャー</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3783&amp;t=20">シャープスマッシャー</a></td>
+                <td style="background:#f6fcfa">攻撃力 246~345(1.50秒)<br>射程距離 120</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5173.png" alt="ねじれた杖"></td>
+                <td>杖</td>
+                <td><a href="../calculation/item_viewer.html?id=0x3784&amp;t=21">ねじれた杖</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x3785&amp;t=21">硬い杖</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x3786&amp;t=21">ダイアモンドの杖</a></td>
+                <td>攻撃力 163~181(1.20秒)<br>射程距離 90</td>
+                <td>このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5174.png" alt="ブロンズスタッフ"></td>
+                <td style="background:#f6fcfa">杖</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3787&amp;t=21">ブロンズスタッフ</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3788&amp;t=21">アメジストスタッフ</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3789&amp;t=21">ルニックスタッフ</a></td>
+                <td style="background:#f6fcfa">攻撃力 168~186(1.60秒)<br>射程距離 90<br>全スキルレベル +1</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5175.png" alt="ギザギザの牙"></td>
+                <td>牙</td>
+                <td><a href="../calculation/item_viewer.html?id=0x378a&amp;t=22">ギザギザの牙</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x378b&amp;t=22">野性的な牙</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x378c&amp;t=22">野蛮な牙</a></td>
+                <td>攻撃力 171~223(0.90秒)<br>射程距離 75<br>物理致命打確率(％) +[1~3]％</td>
+                <td>このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5176.png" alt="ラスティーファング"></td>
+                <td style="background:#f6fcfa">牙</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x378d&amp;t=22">ラスティーファング</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x378e&amp;t=22">シャープファング</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x378f&amp;t=22">ワイルドファング</a></td>
+                <td style="background:#f6fcfa">攻撃力 176~229(1.00秒)<br>射程距離 75</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5177.png" alt="ストーンハンマー"></td>
+                <td>メイス</td>
+                <td><a href="../calculation/item_viewer.html?id=0x3790&amp;t=23">ストーンハンマー</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x3791&amp;t=23">戦場ハンマー</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x3792&amp;t=23">バトルハンマー</a></td>
+                <td>攻撃力 244~293(1.50秒)<br>射程距離 100<br>vs アンデッド物理ダメージ増加 10％</td>
+                <td>このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5178.png" alt="ブレスドセプター"></td>
+                <td style="background:#f6fcfa">メイス</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3793&amp;t=23">ブレスドセプター</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3794&amp;t=23">ホーリーセプター</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3795&amp;t=23">ディバインセプター</a></td>
+                <td style="background:#f6fcfa">攻撃力 237~285(1.30秒)<br>射程距離 100<br>vs アンデッド魔法ダメージ増加 10％ vs アンデッド型キャラクターの魔法ダメージ 10％ 増加</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5179.png" alt="小さな翼"></td>
+                <td>翼</td>
+                <td><a href="../calculation/item_viewer.html?id=0x3796&amp;t=24">小さな翼</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x3797&amp;t=24">大きな翼</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x3798&amp;t=24">羽毛で覆われた翼</a></td>
+                <td>攻撃力 178~229(1.20秒)<br>射程距離 400<br>攻撃速度増加 3％</td>
+                <td>このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5180.png" alt="エッジウィング"></td>
+                <td style="background:#f6fcfa">翼</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3799&amp;t=24">エッジウィング</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x379a&amp;t=24">レーザーウィング</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x379b&amp;t=24">ブレーデッドウィング</a></td>
+                <td style="background:#f6fcfa">攻撃力 183~236(1.30秒)<br>射程距離 400</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5181.png" alt="ボーンボウ"></td>
+                <td>弓</td>
+                <td><a href="../calculation/item_viewer.html?id=0x379c&amp;t=26">ボーンボウ</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x379d&amp;t=26">プレデターボウ</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x379e&amp;t=26">アペックスボウ</a></td>
+                <td>攻撃力 170~337(1.30秒)<br>射程距離 500<br>vs 動物物理ダメージ増加 10％</td>
+                <td>このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5182.png" alt="レンジャーボウ"></td>
+                <td style="background:#f6fcfa">弓</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x379f&amp;t=26">レンジャーボウ</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37a0&amp;t=26">アサシンボウ</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37a1&amp;t=26">スナイパーボウ</a></td>
+                <td style="background:#f6fcfa">攻撃力 175~347(1.60秒)<br>射程距離 500</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5183.png" alt="ジャベリン"></td>
+                <td>槍</td>
+                <td><a href="../calculation/item_viewer.html?id=0x37a2&amp;t=28">ジャベリン</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37a3&amp;t=28">ウィングジャベリン</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37a4&amp;t=28">スウィフトジャベリン</a></td>
+                <td>攻撃力 179~358(1.40秒)<br>射程距離 170<br>全スキルレベル +1</td>
+                <td>このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5184.png" alt="戦闘槍"></td>
+                <td style="background:#f6fcfa">槍</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37a5&amp;t=28">戦闘槍</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37a6&amp;t=28">軍用の槍</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37a7&amp;t=28">戦争槍</a></td>
+                <td style="background:#f6fcfa">攻撃力 184~368(1.60秒)<br>射程距離 170</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5185.png" alt="パイプ"></td>
+                <td>笛</td>
+                <td><a href="../calculation/item_viewer.html?id=0x37a8&amp;t=29">パイプ</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37a9&amp;t=29">王室のパイプ</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37aa&amp;t=29">帝国のパイプ</a></td>
+                <td>攻撃力 137~137(1.20秒)<br>射程距離 300<br>カリスマ +[10~15]</td>
+                <td>このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5186.png" alt="パンフルート"></td>
+                <td style="background:#f6fcfa">笛</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37ab&amp;t=29">パンフルート</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37ac&amp;t=29">スチールパンフルート</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37ad&amp;t=29">マジックパンフルート</a></td>
+                <td style="background:#f6fcfa">攻撃力 141~141(1.30秒)<br>射程距離 400</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5187.png" alt="アイアンダート"></td>
+                <td>短剣</td>
+                <td><a href="../calculation/item_viewer.html?id=0x37ae&amp;t=25">アイアンダート</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37af&amp;t=25">スチールダート</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37b0&amp;t=25">チタニウムダート</a></td>
+                <td>攻撃力 156~246(1.00秒)<br>射程距離 450<br>無限弾丸</td>
+                <td>このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5188.png" alt="スローイングナイフ"></td>
+                <td style="background:#f6fcfa">短剣</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37b1&amp;t=25">スローイングナイフ</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37b2&amp;t=25">コンバットナイフ</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37b3&amp;t=25">ヒットマンズナイフ</a></td>
+                <td style="background:#f6fcfa">攻撃力 161~253(1.20秒)<br>射程距離 450<br>無限弾丸<br>物理致命打確率(％) +[1~3]％</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5189.png" alt="ブレスナックル"></td>
+                <td>格闘武器</td>
+                <td><a href="../calculation/item_viewer.html?id=0x37b4&amp;t=70">ブレスナックル</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37b5&amp;t=70">スチールナックル</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37b6&amp;t=70">アイノックスナックル</a></td>
+                <td>攻撃力 87~94(0.40秒)<br>射程距離 75<br>物理命中率 +[2~3]％</td>
+                <td>このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5190.png" alt="スチールフィスト"></td>
+                <td style="background:#f6fcfa">格闘武器</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37b7&amp;t=70">スチールフィスト</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37b8&amp;t=70">メタルフィスト</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37b9&amp;t=70">チタニウムフィスト</a></td>
+                <td style="background:#f6fcfa">攻撃力 90~97(0.50秒)<br>射程距離 75</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5191.png" alt="スリムウィップ"></td>
+                <td>鞭</td>
+                <td><a href="../calculation/item_viewer.html?id=0x37ba&amp;t=33">スリムウィップ</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37bb&amp;t=33">スプリットウィップ</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37bc&amp;t=33">テラーウィップ</a></td>
+                <td>攻撃力 217~260(1.20秒)<br>射程距離 180<br>攻撃速度増加 3％</td>
+                <td>このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5192.png" alt="蛇腹剣"></td>
+                <td style="background:#f6fcfa">鞭</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37bd&amp;t=33">蛇腹剣</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37be&amp;t=33">ウィップソード</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37bf&amp;t=33">デーモンウィップソード</a></td>
+                <td style="background:#f6fcfa">攻撃力 223~268(1.30秒)<br>射程距離 180</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5193.png" alt="リボンスリング"></td>
+                <td>スリング</td>
+                <td><a href="../calculation/item_viewer.html?id=0x37c0&amp;t=30">リボンスリング</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37c1&amp;t=30">ロープスリング</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37c2&amp;t=30">ストラップスリング</a></td>
+                <td>攻撃力 204~225(1.30秒)<br>射程距離 550</td>
+                <td>このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5194.png" alt="スリングスティック"></td>
+                <td style="background:#f6fcfa">スリング</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37c3&amp;t=30">スリングスティック</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37c4&amp;t=30">スリングポール</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37c5&amp;t=30">スリングロード</a></td>
+                <td style="background:#f6fcfa">攻撃力 210~232(1.40秒)<br>射程距離 550<br>健康 +[10~15]</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5195.png" alt="バタフライマイク"></td>
+                <td>ワンド</td>
+                <td><a href="../calculation/item_viewer.html?id=0x37c6&amp;t=32">バタフライマイク</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37c7&amp;t=32">ピクシーマイク</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37c8&amp;t=32">フェアリーマイク</a></td>
+                <td>攻撃力 171~194(1.00秒)<br>射程距離 80</td>
+                <td>このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5196.png" alt="ステラワンド"></td>
+                <td style="background:#f6fcfa">ワンド</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37c9&amp;t=32">ステラワンド</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37ca&amp;t=32">ギャラクシーワンド</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37cb&amp;t=32">コスミックワンド</a></td>
+                <td style="background:#f6fcfa">攻撃力 176~200(1.10秒)<br>射程距離 80<br>最大CP増加 [1~3]％</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5197.png" alt="バトルサイズ"></td>
+                <td>鎌</td>
+                <td><a href="../calculation/item_viewer.html?id=0x37cc&amp;t=54">バトルサイズ</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37cd&amp;t=54">ミリタリーサイズ</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37ce&amp;t=54">ウォーサイズ</a></td>
+                <td>攻撃力 193~238(1.60秒)<br>射程距離 105<br>力 +[10~15]</td>
+                <td>このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5198.png" alt="ダブルサイズ"></td>
+                <td style="background:#f6fcfa">鎌</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37cf&amp;t=54">ダブルサイズ</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37d0&amp;t=54">スピナーサイズ</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37d1&amp;t=54">スパイラルサイズ</a></td>
+                <td style="background:#f6fcfa">攻撃力 188~231(1.50秒)<br>射程距離 105</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5199.png" alt="スプリッタークロー"></td>
+                <td>クロー</td>
+                <td><a href="../calculation/item_viewer.html?id=0x37d2&amp;t=55">スプリッタークロー</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37d3&amp;t=55">サベージクロー</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37d4&amp;t=55">クルーアルクロー</a></td>
+                <td>攻撃力 150~181(0.90秒)<br>射程距離 60<br>物理命中率 +[2~3]％</td>
+                <td>このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5200.png" alt="ベアーフットクロー"></td>
+                <td style="background:#f6fcfa">クロー</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37d5&amp;t=55">ベアーフットクロー</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37d6&amp;t=55">ワイルドクロー</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37d7&amp;t=55">プライマルクロー</a></td>
+                <td style="background:#f6fcfa">攻撃力 154~186(1.00秒)<br>射程距離 60</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5201.png" alt="輝く古書"></td>
+                <td>本</td>
+                <td><a href="../calculation/item_viewer.html?id=0x37d8&amp;t=56">輝く古書</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37d9&amp;t=56">荘厳な古書</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37da&amp;t=56">神聖な古書</a></td>
+                <td>攻撃力 170~204(1.00秒)<br>射程距離 400</td>
+                <td>このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5202.png" alt="太陽の記録"></td>
+                <td style="background:#f6fcfa">本</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37db&amp;t=56">太陽の記録</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37dc&amp;t=56">太陽の本</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37dd&amp;t=56">太陽の経典</a></td>
+                <td style="background:#f6fcfa">攻撃力 175~210(1.20秒)<br>射程距離 400<br>魔法攻撃時、光属性の追加ダメージ50~80</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5204.png" alt="ヴィジランテツインソード"></td>
+                <td>双剣</td>
+                <td><a href="../calculation/item_viewer.html?id=0x37de&amp;t=58">ヴィジランテツインソード</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37df&amp;t=58">ヴェンジェンスツインソード</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37e0&amp;t=58">アベンジャーツインソード</a></td>
+                <td>攻撃力 254~302(1.50秒)<br>射程距離 100<br>攻撃速度増加 3％</td>
+                <td>このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5203.png" alt="グラディエーターディアルソード"></td>
+                <td style="background:#f6fcfa">双剣</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37e1&amp;t=58">グラディエーターディアルソード</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37e2&amp;t=58">レブルデュアルソード</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37e3&amp;t=58">リベレーターデュアルソード</a></td>
+                <td style="background:#f6fcfa">攻撃力 261~311(1.60秒)<br>射程距離 100</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5205.png" alt="羊毛のほうき"></td>
+                <td>ほうき</td>
+                <td><a href="../calculation/item_viewer.html?id=0x37e4&amp;t=57">羊毛のほうき</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37e5&amp;t=57">灰色の羊毛のほうき</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37e6&amp;t=57">黒色の羊毛のほうき</a></td>
+                <td>攻撃力 158~205(0.80秒)<br>射程距離 110</td>
+                <td>このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5206.png" alt="フラワースイーパー"></td>
+                <td style="background:#f6fcfa">ほうき</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37e7&amp;t=57">フラワースイーパー</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37e8&amp;t=57">グラウンドスイーパー</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37e9&amp;t=57">ランドスイーパー</a></td>
+                <td style="background:#f6fcfa">攻撃力 163~211(0.90秒)<br>射程距離 110<br>移動速度増加 3％</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5207.png" alt="不透明なコア"></td>
+                <td>ダークコア</td>
+                <td><a href="../calculation/item_viewer.html?id=0x37ea&amp;t=61">不透明なコア</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37eb&amp;t=61">ブラックコア</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37ec&amp;t=61">ベンタブラックコア</a></td>
+                <td>攻撃力 125~136(1.20秒)<br>射程距離 90</td>
+                <td>このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5208.png" alt="ビーストオーブ"></td>
+                <td style="background:#f6fcfa">ダークコア</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37ed&amp;t=61">ビーストオーブ</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37ee&amp;t=61">モンスターオーブ</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37ef&amp;t=61">キメラオーブ</a></td>
+                <td style="background:#f6fcfa">攻撃力 129~140(1.40秒)<br>射程距離 90<br>敏捷 +[10~15]</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5209.png" alt="カービンリボルバー"></td>
+                <td>双拳銃</td>
+                <td><a href="../calculation/item_viewer.html?id=0x37f0&amp;t=63">カービンリボルバー</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37f1&amp;t=63">マグナムリボルバー</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37f2&amp;t=63">大口径リボルバー</a></td>
+                <td>攻撃力 155~187(1.30秒)<br>射程距離 450</td>
+                <td>このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5210.png" alt="スピーディーリボルバー"></td>
+                <td style="background:#f6fcfa">双拳銃</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37f3&amp;t=63">スピーディーリボルバー</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37f4&amp;t=63">スウィフトリボルバー</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37f5&amp;t=63">ファナーリボルバー</a></td>
+                <td style="background:#f6fcfa">攻撃力 151~182(1.20秒)<br>射程距離 450<br>物理回避率(％) +3％</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5211.png" alt="レッドジェム"></td>
+                <td>錬金石</td>
+                <td><a href="../calculation/item_viewer.html?id=0x37f6&amp;t=68">レッドジェム</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37f7&amp;t=68">スカーレットジェム</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37f8&amp;t=68">プロミネンスジェム</a></td>
+                <td>攻撃力 127~146(1.50秒)<br>射程距離 360</td>
+                <td>このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5212.png" alt="ノーザングレイシャー"></td>
+                <td style="background:#f6fcfa">錬金石</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37f9&amp;t=68">ノーザングレイシャー</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37fa&amp;t=68">アンタークティックグレイシャー</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37fb&amp;t=68">インターステラーグレイシャー</a></td>
+                <td style="background:#f6fcfa">攻撃力 131~150(1.60秒)<br>射程距離 360<br>全スキルレベル +1</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5213.png" alt="グラビティアンカー"></td>
+                <td>アンカー</td>
+                <td><a href="../calculation/item_viewer.html?id=0x37fc&amp;t=80">グラビティアンカー</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37fd&amp;t=80">ハイグラビティアンカー</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x37fe&amp;t=80">マッシヴグラビティアンカー</a></td>
+                <td>攻撃力 231~279(1.40秒)<br>射程距離 115</td>
+                <td>このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5214.png" alt="チェーンドハープーン"></td>
+                <td style="background:#f6fcfa">アンカー</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x37ff&amp;t=80">チェーンドハープーン</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3800&amp;t=80">ビッグチェーンドハープーン</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3801&amp;t=80">ジャイアントチェーンドハープーン</a></td>
+                <td style="background:#f6fcfa">攻撃力 238~287(1.50秒)<br>射程距離 115<br>物理致命打確率(％) +[1~3]％</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5215.png" alt="ライトキャノン"></td>
+                <td>大砲</td>
+                <td><a href="../calculation/item_viewer.html?id=0x3802&amp;t=82">ライトキャノン</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x3803&amp;t=82">ニンブルキャノン</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x3804&amp;t=82">フェザリーキャノン</a></td>
+                <td>攻撃力 280~341(1.80秒)<br>射程距離 480</td>
+                <td>このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5216.png" alt="ゲートブレイカー"></td>
+                <td style="background:#f6fcfa">大砲</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3805&amp;t=82">ゲートブレイカー</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3806&amp;t=82">ラムパートブレイカー</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3807&amp;t=82">キャッスルブレイカー</a></td>
+                <td style="background:#f6fcfa">攻撃力 288~351(2.00秒)<br>射程距離 480<br>物理攻撃力増加 [10~20]％ 物理ダメージ [10~20]％ 増加</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>攻撃速度 +10％<br>スキルレベル+5<br>最終攻撃力10％増加</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5217.png" alt="骨の冠"></td>
+                <td>冠</td>
+                <td><a href="../calculation/item_viewer.html?id=0x3808&amp;t=1">骨の冠</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x3809&amp;t=1">呪いの冠</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x380a&amp;t=1">儀式の冠</a></td>
+                <td>防御力 +[8~10]<br>全ての属性攻撃力増加 [5~10]％ 全ての属性ダメージ [5~10]％ 増加</td>
+                <td>このアイテムの着用レベル -200<br>知識 200 増加<br>スキルレベル+2<br>魔法致命打確率(％) +10％ 魔法致命打発動確率 10％ 増加</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5218.png" alt="木の枝の冠"></td>
+                <td style="background:#f6fcfa">冠</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x380b&amp;t=1">木の枝の冠</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x380c&amp;t=1">蔓の冠</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x380d&amp;t=1">棘の冠</a></td>
+                <td style="background:#f6fcfa">防御力 +[8~11]</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>知識 200 増加<br>スキルレベル+2<br>魔法致命打確率(％) +10％ 魔法致命打発動確率 10％ 増加</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5219.png" alt="インプヘルメット"></td>
+                <td>ヘルメット</td>
+                <td><a href="../calculation/item_viewer.html?id=0x380e&amp;t=0">インプヘルメット</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x380f&amp;t=0">デモニックヘルメット</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x3810&amp;t=0">フィンディッシュヘルメット</a></td>
+                <td>防御力 +[18~23]<br>物理攻撃力増加 [10~20]％ 物理ダメージ [10~20]％ 増加</td>
+                <td>このアイテムの着用レベル -200<br>力 200 増加<br>スキルレベル+2<br>被ダメージ時、物理ダブル クリティカルダメージ 10％ 減少</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5220.png" alt="フェザードヘルメット"></td>
+                <td style="background:#f6fcfa">ヘルメット</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3811&amp;t=0">フェザードヘルメット</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3812&amp;t=0">ウィングヘルメット</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3813&amp;t=0">天空のヘルメット</a></td>
+                <td style="background:#f6fcfa">防御力 +[20~25]</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>力 200 増加<br>スキルレベル+2<br>被ダメージ時、物理ダブル クリティカルダメージ 10％ 減少</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5221.png" alt="インプスキン"></td>
+                <td>共用鎧</td>
+                <td><a href="../calculation/item_viewer.html?id=0x3814&amp;t=16">インプスキン</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x3815&amp;t=16">デモニックスキン</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x3816&amp;t=16">フィンディッシュスキン</a></td>
+                <td>防御力 +[36~45]<br>ダメージ リターン [1~3]％</td>
+                <td>このアイテムの着用レベル -200<br>防御力 +80％<br>スキルレベル+2<br>被ダメージ時、物理ダブル クリティカルダメージ 10％ 減少</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5222.png" alt="バトルアーマー"></td>
+                <td style="background:#f6fcfa">共用鎧</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3817&amp;t=16">バトルアーマー</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3818&amp;t=16">グラディエーターアーマー</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3819&amp;t=16">フルメタルアーマー</a></td>
+                <td style="background:#f6fcfa">防御力 +[39~49]</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>防御力 +80％<br>スキルレベル+2<br>被ダメージ時、物理ダブル クリティカルダメージ 10％ 減少</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5223.png" alt="ひび割れたタリスマン"></td>
+                <td>ネックレス</td>
+                <td><a href="../calculation/item_viewer.html?id=0x381a&amp;t=8">ひび割れたタリスマン</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x381b&amp;t=8">タリスマン</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x381c&amp;t=8">完全なるタリスマン</a></td>
+                <td>全スキルレベル +1</td>
+                <td>このアイテムの着用レベル -200<br>運 200 増加<br>スキルレベル+2<br>回避率 +10％</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5224.png" alt="ゴルジェット"></td>
+                <td style="background:#f6fcfa">ネックレス</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x381d&amp;t=8">ゴルジェット</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x381e&amp;t=8">エレガントゴルジェット</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x381f&amp;t=8">ロイヤルゴルジェット</a></td>
+                <td style="background:#f6fcfa">物理決定打確率(％) +[3~5]％</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>運 200 増加<br>スキルレベル+2<br>回避率 +10％</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5225.png" alt="ウォータードロップイヤリング"></td>
+                <td>イヤリング</td>
+                <td><a href="../calculation/item_viewer.html?id=0x3820&amp;t=10">ウォータードロップイヤリング</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x3821&amp;t=10">レインドロップイヤリング</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x3822&amp;t=10">ティアドロップイヤリング</a></td>
+                <td>呪い抵抗(％) +[10~15]％</td>
+                <td>このアイテムの着用レベル -200<br>カリスマ 200 増加<br>スキルレベル+2<br>CP獲得ボーナス 10％ 増加</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5226.png" alt="バタフライイヤリング"></td>
+                <td style="background:#f6fcfa">イヤリング</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3823&amp;t=10">バタフライイヤリング</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3824&amp;t=10">ピクシーイヤリング</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3825&amp;t=10">フェアリーイヤリング</a></td>
+                <td style="background:#f6fcfa">低下抵抗(％) +[10~15]％</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>カリスマ 200 増加<br>スキルレベル+2<br>CP獲得ボーナス 10％ 増加</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5227.png" alt="ぼろぼろのコート"></td>
+                <td>マント</td>
+                <td><a href="../calculation/item_viewer.html?id=0x3826&amp;t=11">ぼろぼろのコート</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x3827&amp;t=11">旅行者のコート</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x3828&amp;t=11">巡礼者のコート</a></td>
+                <td>移動速度増加 3％</td>
+                <td>このアイテムの着用レベル -200<br>カリスマ 200 増加<br>スキルレベル+2<br>CP獲得ボーナス 10％ 増加</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5228.png" alt="高貴なマント"></td>
+                <td style="background:#f6fcfa">マント</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3829&amp;t=11">高貴なマント</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x382a&amp;t=11">高官のマント</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x382b&amp;t=11">王室のマント</a></td>
+                <td style="background:#f6fcfa">全属性抵抗(％) +3％</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>カリスマ 200 増加<br>スキルレベル+2<br>CP獲得ボーナス 10％ 増加</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5229.png" alt="スチールガントレット"></td>
+                <td>グローブ</td>
+                <td><a href="../calculation/item_viewer.html?id=0x382c&amp;t=2">スチールガントレット</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x382d&amp;t=2">メタルガントレット</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x382e&amp;t=2">チタニウムガントレット</a></td>
+                <td>防御力 +[10~12]</td>
+                <td>このアイテムの着用レベル -200<br>命中率 +10％<br>スキルレベル+2<br>攻撃速度 +10％</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5230.png" alt="簡易手錠"></td>
+                <td style="background:#f6fcfa">グローブ</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x382f&amp;t=2">簡易手錠</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3830&amp;t=2">鉄の手錠</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3831&amp;t=2">囚人の手錠</a></td>
+                <td style="background:#f6fcfa">防御力 +[9~11]<br>物理命中率 +[4~6]％</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>命中率 +10％<br>スキルレベル+2<br>攻撃速度 +10％</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5231.png" alt="色褪せたブレスレット"></td>
+                <td>ブレスレット</td>
+                <td><a href="../calculation/item_viewer.html?id=0x3832&amp;t=5">色褪せたブレスレット</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x3833&amp;t=5">金のブレスレット</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x3834&amp;t=5">燦爛なブレスレット</a></td>
+                <td>防御力 +[6~9]<br>変身速度増加 [10~20]％</td>
+                <td>このアイテムの着用レベル -200<br>知恵 200 増加<br>スキルレベル+2<br>攻撃速度 +10％</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5232.png" alt="ドーニックチェーン"></td>
+                <td style="background:#f6fcfa">ブレスレット</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3835&amp;t=5">ドーニックチェーン</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3836&amp;t=5">ビーズチェーン</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3837&amp;t=5">ジュエリーブレスレット</a></td>
+                <td style="background:#f6fcfa">防御力 +[7~10]</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>知恵 200 増加<br>スキルレベル+2<br>攻撃速度 +10％</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5233.png" alt="細いベルト"></td>
+                <td>ベルト</td>
+                <td><a href="../calculation/item_viewer.html?id=0x3838&amp;t=6">細いベルト</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x3839&amp;t=6">厚いベルト</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x383a&amp;t=6">重いベルト</a></td>
+                <td>防御力 +[21~25]<br>スタックアイテム 15個 スタック アイテム 15個</td>
+                <td>このアイテムの着用レベル -200<br>健康 200 増加<br>スキルレベル+2<br>最大HP +500 最大体力 500 増加</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5234.png" alt="ぼろぼろのベルト"></td>
+                <td style="background:#f6fcfa">ベルト</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x383b&amp;t=6">ぼろぼろのベルト</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x383c&amp;t=6">旅行者のベルト</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x383d&amp;t=6">巡礼者のベルト</a></td>
+                <td style="background:#f6fcfa">防御力 +[20~23]<br>スタックアイテム 20個 スタック アイテム 20個</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>健康 200 増加<br>スキルレベル+2<br>最大HP +500 最大体力 500 増加</td>
+              </tr>
+              <tr>
+                <td><img class="item-icon" src="../item/design/image/item/iconItem_5235.png" alt="ぼろぼろの長靴"></td>
+                <td>ブーツ</td>
+                <td><a href="../calculation/item_viewer.html?id=0x383e&amp;t=7">ぼろぼろの長靴</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x383f&amp;t=7">旅行者の長靴</a></td>
+                <td><a href="../calculation/item_viewer.html?id=0x3840&amp;t=7">巡礼者の長靴</a></td>
+                <td>防御力 +[16~20]<br>集中力 +[3~5]</td>
+                <td>このアイテムの着用レベル -200<br>敏捷 200 増加<br>スキルレベル+2<br>移動速度 +10％</td>
+              </tr>
+              <tr>
+                <td style="background:#f6fcfa"><img class="item-icon" src="../item/design/image/item/iconItem_5236.png" alt="従者の靴"></td>
+                <td style="background:#f6fcfa">ブーツ</td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3841&amp;t=7">従者の靴</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3842&amp;t=7">聖戦士の靴</a></td>
+                <td style="background:#f6fcfa"><a href="../calculation/item_viewer.html?id=0x3843&amp;t=7">聖騎士の靴</a></td>
+                <td style="background:#f6fcfa">防御力 +[17~21]</td>
+                <td style="background:#f6fcfa">このアイテムの着用レベル -200<br>敏捷 200 増加<br>スキルレベル+2<br>移動速度 +10％</td>
+              </tr>
+          </tbody>
+        </table>
+        <br>
+
+        <h4>強化済み非規格装備の例</h4>
+        <img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/0877a976632eed9f788d648685da3906287e07b1.10.9.9.3.png" border=0 name="insertImg" alt="強化済み非規格装備の例"><br><br>
+
+        <a name="prefix"></a>
+        <h4>接頭語一覧</h4>
+        鑑定後の非規格装備名に付く接頭語です。接頭語は表示名であり、非規格オプションの抽選内容を直接示すものではありません。<br>
+        <!-- 多分ランダムに付いてるだけ。言葉遊びできそう -->
+        <br>
+        <table id="table10" class="left-cell" style="max-width:920px">
+          <tbody>
+            <tr><th colspan="4">接頭語</th></tr>
+              <tr>
+                <td>灰で覆われた</td>
+                <td>夜を染める</td>
+                <td>崩れ落ちない</td>
+                <td>時間の中に埋もれた</td>
+              </tr>
+              <tr>
+                <td>根深い</td>
+                <td>地下から湧き上がった</td>
+                <td>海を燃やす</td>
+                <td>深淵を眠らせる</td>
+              </tr>
+              <tr>
+                <td>真理に辿り着いた</td>
+                <td>歓喜に満ちた</td>
+                <td>光栄な</td>
+                <td>異界から訪れた</td>
+              </tr>
+              <tr>
+                <td>凍てついた</td>
+                <td>終末を迎える</td>
+                <td>本質を見抜く</td>
+                <td>心を壊す</td>
+              </tr>
+              <tr>
+                <td>静寂に響く</td>
+                <td>位相が転換した</td>
+                <td>時を止める</td>
+                <td>地獄に残った</td>
+              </tr>
+              <tr>
+                <td>朗らかな</td>
+                <td>樹木を抜く</td>
+                <td>うごめく</td>
+                <td>歌を歌う</td>
+              </tr>
+              <tr>
+                <td>咆哮する</td>
+                <td>審判する</td>
+                <td>運命に抗う</td>
+                <td>掴めない</td>
+              </tr>
+              <tr>
+                <td>年季が入った</td>
+                <td>規格に合う</td>
+                <td>吹きすさぶ</td>
+                <td>苦痛な</td>
+              </tr>
+              <tr>
+                <td>岩を誘惑する</td>
+                <td>狂気を宿した</td>
+                <td>仕返しする</td>
+                <td>罪を宣告する</td>
+              </tr>
+              <tr>
+                <td>永劫を見届ける</td>
+                <td>切り裂く</td>
+                <td>万古不易な</td>
+                <td>天を裂く</td>
+              </tr>
+              <tr>
+                <td>筆舌に尽くしがたい</td>
+                <td>神獣が祝福した</td>
+                <td>地軸を揺るがす</td>
+                <td>息の根を断つ</td>
+              </tr>
+              <tr>
+                <td>天を遮る</td>
+                <td>奇怪に歪んだ</td>
+                <td>激烈に憤怒する</td>
+                <td>止まらない</td>
+              </tr>
+              <tr>
+                <td>明滅する</td>
+                <td>完全無欠な</td>
+                <td>定義できない</td>
+                <td>時空を越える</td>
+              </tr>
+              <tr>
+                <td>賛美する</td>
+                <td>描写できない</td>
+                <td>夜明けを開く</td>
+                <td>憎悪で覆われた</td>
+              </tr>
+              <tr>
+                <td>復讐を求める</td>
+                <td>境界を越える</td>
+                <td>山を分かつ</td>
+                <td>永遠に朽ち果てる</td>
+              </tr>
+          </tbody>
+        </table>
+        <br>
+
+        <a name="notice"></a>
+        <h4>注意点</h4>
+        <table id="table10" class="left-cell" style="max-width:920px">
+          <tbody>
+            <tr><th style="width:220px">項目</th><th>内容</th></tr>
+            <tr><td>取引</td><td>アモルファスダストは取引不可です。その他の非規格財貨や非規格装備は取引できます。</td></tr>
+            <tr><td>装備の扱い</td><td>非規格装備は最初からNx扱いです。封印解放などを含め、個別表示はアイテム検索の詳細ページで確認してください。</td></tr>
+            <tr><td>段階強化</td><td>＜非規格＞段階をN->DXやDX-＞ULTにしてもベースは元のままです。<br>
+            上記の装備一覧のベースは1750のベースを入手した場合はULT非規格にしてもベースは1750のまま。<br>
+          従来のアイテム等級と名称が同じであるため、混同しないよう注意。</td></tr>
+            <tr><td>既存強化</td><td>製錬は上級まで付きます。異次元、青再構成、青増幅、お守り、BF強化を行っても、非規格オプションは残ります。</td></tr>
+            <tr><td>エンチャ・修理</td><td>青品の扱いのため、エンチャ・修理の際はエンチャ文書・魔法のボンドを使います。ユニークアイテムではないため、エンチャ水晶や天上は使えません。</td></tr>
+          </tbody>
+        </table>
+        <br>
+
+        <a name="links"></a>
+        <h4>関連リンク</h4>
+        <table id="table10" class="left-cell" style="max-width:920px">
+          <tbody>
+            <tr><th style="width:260px">ページ</th><th>内容</th></tr>
+            <tr><td><a href="https://sokomin.github.io/korea/koreaupdate20260429_hikikaku_options.html">非規格オプション一覧</a></td><td>非規格オプション候補と数値帯を確認するためのメインページです。</td></tr>
+            <tr><td><a href="../calculation/search_item_text.html">アイテム検索</a></td><td>非規格装備やNxアイテムを名前、部位、効果で検索できます。</td></tr>
+            <tr><td><a href="https://sokomin.github.io/korea/koreaupdate20260429_hikikaku.html">韓国アップデート情報</a></td><td>等級、素材、分解、チェスト確率、装備リストの元情報です。</td></tr>
+          </tbody>
+        </table>
+        <br>
+
+        <footer class="android-footer mdl-mega-footer">
+          <font color="red">
+            当サイトで利用している画像及びデータは、L&K Co., Ltd.に帰属します。<br>
+            許可無くご利用又は転載する事は出来ませんので、予めご了承下さい。<br>
+          </font>
+          © L&K Co., Ltd. All Rights Reserved.<br>
+        </footer>
+      </div>
+      <script src="https://sokomin.github.io/material.min.js"></script>
+    </div>
+  </div>
+</body>
+
+</html>
