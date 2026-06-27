@@ -114,6 +114,24 @@ const item_type_text = {
     83: "エネルギーチャージャー",
 }
 
+const monster_drop_type_text = Object.assign({}, item_type_text, {
+    66: "全ての補助武器",
+    500: "全ての武器",
+});
+
+function normalizeMonsterDropTypeId(typeId) {
+    var value = Number(typeId);
+    if (500 <= value && value <= 599) {
+        return 500;
+    }
+    return value;
+}
+
+function getMonsterDropTypeText(typeId) {
+    var normalizedId = normalizeMonsterDropTypeId(typeId);
+    return monster_drop_type_text[normalizedId] ? monster_drop_type_text[normalizedId] : (typeId + "系列");
+}
+
 const sort_item_type_text = {
     1011: "片手剣",
     1012: "両手剣",
