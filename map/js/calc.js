@@ -545,13 +545,14 @@ function appendDropItemText(txt, md, typeField, rarityField) {
     if (Number(typeId) <= 0) {
         return txt;
     }
+    if (!rarityField || md[rarityField] === undefined || md[rarityField] === "" || Number(md[rarityField]) <= 0) {
+        return txt;
+    }
     txt += "- ";
     txt += getMonsterDropTypeText(typeId);
-    if (rarityField && md[rarityField] !== undefined && md[rarityField] !== "") {
-        txt += "(";
-        txt += md[rarityField];
-        txt += ")";
-    }
+    txt += "(";
+    txt += md[rarityField];
+    txt += ")";
     txt += "<br>";
     return txt;
 }
@@ -564,9 +565,6 @@ function createDropItem(mobid) {
     }
     for (var fieldNo = 29; fieldNo <= 65; fieldNo += 4) {
         txt = appendDropItemText(txt, md, "unknown_" + fieldNo, "unknown_" + (fieldNo + 2));
-    }
-    for (var extraFieldNo = 69; extraFieldNo <= 87; extraFieldNo += 2) {
-        txt = appendDropItemText(txt, md, "unknown_" + extraFieldNo, "");
     }
     return txt;
 }

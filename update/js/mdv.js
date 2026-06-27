@@ -703,90 +703,33 @@ function createSkillName(mobid) {
 }
 
 // どろっぷあいてむテキスト（何もドロップしないmobは弾いておく・・・）
+function appendMonsterDropItemText(txt, md, typeField, rarityField) {
+    var typeId = md[typeField];
+    if (Number(typeId) <= 0) {
+        return txt;
+    }
+    if (!rarityField || md[rarityField] === undefined || md[rarityField] === "" || Number(md[rarityField]) <= 0) {
+        return txt;
+    }
+    txt += "- ";
+    txt += typeof getMonsterDropTypeText === "function"
+        ? getMonsterDropTypeText(typeId)
+        : (item_type_text[typeId] ? item_type_text[typeId] : (typeId + "系列"));
+    txt += "(";
+    txt += md[rarityField];
+    txt += ")";
+    txt += "<br>";
+    return txt;
+}
+
 function createDropItem(mobid) {
     var txt = DROP_TEXT_CONST;
     var md = monster_data[mobid];
-    // 0は垂直斬りだけど、多分使うmobいないからわざと弾いてる
-    // これ以上スキル使うmobはいないと信じてる
-    if (Number(md["unknown_29"]) > 0) {
-        txt += "- "
-        txt += item_type_text[md["unknown_29"]] ? item_type_text[md["unknown_29"]] : (md["unknown_29"] + "系列");
-        txt += "("
-        txt += md["unknown_31"];
-        txt += ")"
-        txt += "<br>"
+    if (!md) {
+        return txt;
     }
-    if (Number(md["unknown_33"]) > 0) {
-        txt += "- "
-        txt += item_type_text[md["unknown_33"]] ? item_type_text[md["unknown_33"]] : (md["unknown_33"] + "系列");;
-        txt += "("
-        txt += md["unknown_35"];
-        txt += ")"
-        txt += "<br>"
-    }
-    if (Number(md["unknown_37"]) > 0) {
-        txt += "- "
-        txt += item_type_text[md["unknown_37"]] ? item_type_text[md["unknown_37"]] : (md["unknown_37"] + "系列");;
-        txt += "("
-        txt += md["unknown_39"];
-        txt += ")"
-        txt += "<br>"
-    }
-    if (Number(md["unknown_41"]) > 0) {
-        txt += "- "
-        txt += item_type_text[md["unknown_41"]] ? item_type_text[md["unknown_41"]] : (md["unknown_41"] + "系列");;
-        txt += "("
-        txt += md["unknown_43"];
-        txt += ")"
-        txt += "<br>"
-    }
-    if (Number(md["unknown_45"]) > 0) {
-        txt += "- "
-        txt += item_type_text[md["unknown_45"]] ? item_type_text[md["unknown_45"]] : (md["unknown_45"] + "系列");;
-        txt += "("
-        txt += md["unknown_47"];
-        txt += ")"
-        txt += "<br>"
-    }
-    if (Number(md["unknown_49"]) > 0) {
-        txt += "- "
-        txt += item_type_text[md["unknown_49"]] ? item_type_text[md["unknown_49"]] : (md["unknown_49"] + "系列");;
-        txt += "("
-        txt += md["unknown_51"];
-        txt += ")"
-        txt += "<br>"
-    }
-    if (Number(md["unknown_53"]) > 0) {
-        txt += "- "
-        txt += item_type_text[md["unknown_53"]] ? item_type_text[md["unknown_53"]] : (md["unknown_53"] + "系列");;
-        txt += "("
-        txt += md["unknown_55"];
-        txt += ")"
-        txt += "<br>"
-    }
-    if (Number(md["unknown_57"]) > 0) {
-        txt += "- "
-        txt += item_type_text[md["unknown_57"]] ? item_type_text[md["unknown_57"]] : (md["unknown_57"] + "系列");;
-        txt += "("
-        txt += md["unknown_59"];
-        txt += ")"
-        txt += "<br>"
-    }
-    if (Number(md["unknown_61"]) > 0) {
-        txt += "- "
-        txt += item_type_text[md["unknown_61"]] ? item_type_text[md["unknown_61"]] : (md["unknown_61"] + "系列");
-        txt += "("
-        txt += md["unknown_63"];
-        txt += ")"
-        txt += "<br>"
-    }
-    if (Number(md["unknown_65"]) > 0) {
-        txt += "- "
-        txt += item_type_text[md["unknown_65"]] ? item_type_text[md["unknown_65"]] : (md["unknown_65"] + "系列");;
-        txt += "("
-        txt += md["unknown_67"];
-        txt += ")"
-        txt += "<br>"
+    for (var fieldNo = 29; fieldNo <= 65; fieldNo += 4) {
+        txt = appendMonsterDropItemText(txt, md, "unknown_" + fieldNo, "unknown_" + (fieldNo + 2));
     }
     return txt;
 }

@@ -115,7 +115,8 @@ const item_type_text = {
 }
 
 const monster_drop_type_text = Object.assign({}, item_type_text, {
-    66: "全ての補助武器",
+    // 66: "全ての補助武器",
+    79: "全ての補助武器",
     500: "全ての武器",
 });
 
