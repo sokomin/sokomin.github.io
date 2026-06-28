@@ -54,7 +54,14 @@
         table.hikikaku-matrix { margin: 0 auto; border-collapse: collapse; min-width: 1360px; max-width: 1920px; }
         table.hikikaku-matrix th,
         table.hikikaku-matrix td { padding: 5px 8px; border: 1px solid #ccc; text-align: center; vertical-align: middle; }
+        .hikikaku-filter-panel { margin: 0 auto 14px; max-width: 1080px; text-align: left; }
+        .hikikaku-filter-panel label { display: inline-block; margin-right: 8px; font-weight: bold; }
+        .hikikaku-filter-panel select { min-width: 260px; padding: 4px 8px; }
+        .hikikaku-filter-count { margin-left: 12px; font-weight: bold; color: #12845f; }
         table.hikikaku-matrix thead th { background: #7cd6af; color: #fff; }
+        table.hikikaku-matrix thead th { position: sticky; top: 0; z-index: 3; }
+        table.hikikaku-matrix tfoot th { background: #7cd6af; color: #fff; }
+        table.hikikaku-matrix.is-filtered { min-width: 640px !important; max-width: 960px !important; }
         table.hikikaku-matrix td.opt-name { min-width: 500px; text-align: left; background: #f6fcfa; font-weight: bold; }
         table.hikikaku-matrix th.group-col { min-width: 64px; max-width: 96px; font-size: 0.9em; line-height: 1.35; }
         table.hikikaku-matrix td.mark { color: #b8c1c9; font-weight: bold; }
@@ -187,6 +194,13 @@
   </tr>
 </table>
 <br>
+<div class="hikikaku-filter-panel">
+  <label for="hikikaku-filter-select">表示</label>
+  <select id="hikikaku-filter-select">
+    <option value="">全てのOP</option>
+  </select>
+  <span id="hikikaku-filter-count" class="hikikaku-filter-count"></span>
+</div>
 <div class="hikikaku-matrix-wrap">
 <table id="table10" class="hikikaku-matrix" style="min-width:1360px;max-width:1920px;">
   <colgroup>
@@ -210,6 +224,23 @@
       <th class="group-col">笛<br>鞭<br>錬金石</th>
     </tr>
   </thead>
+  <tfoot>
+    <tr>
+      <th>オプション</th>
+      <th class="group-col">ヘルメット</th>
+      <th class="group-col">冠</th>
+      <th class="group-col">グローブ</th>
+      <th class="group-col">ブレスレット</th>
+      <th class="group-col">ベルト</th>
+      <th class="group-col">ブーツ</th>
+      <th class="group-col">ネックレス</th>
+      <th class="group-col">イヤリング</th>
+      <th class="group-col">マント</th>
+      <th class="group-col">共用鎧</th>
+      <th class="group-col">武器系</th>
+      <th class="group-col">笛<br>鞭<br>錬金石</th>
+    </tr>
+  </tfoot>
   <tbody>
     <tr>
       <td class="opt-name">力 [n] 増加</td>
@@ -1416,6 +1447,52 @@
 </div>
                 <br>
                 <br>
+                <script>
+                    (function () {
+                        var table = document.querySelector("table.hikikaku-matrix");
+                        var select = document.getElementById("hikikaku-filter-select");
+                        var count = document.getElementById("hikikaku-filter-count");
+                        if (!table || !select) { return; }
+
+                        var headerCells = Array.prototype.slice.call(table.tHead.rows[0].cells);
+                        var bodyRows = Array.prototype.slice.call(table.tBodies[0].rows);
+                        var footCells = table.tFoot ? Array.prototype.slice.call(table.tFoot.rows[0].cells) : [];
+
+                        headerCells.slice(1).forEach(function (cell, index) {
+                            var label = cell.textContent.replace(/\s+/g, "");
+                            var option = document.createElement("option");
+                            option.value = String(index + 1);
+                            option.textContent = label === "武器系" || label === "豁ｦ蝎ｨ邉ｻ" ? "武器" : label;
+                            select.appendChild(option);
+                        });
+
+                        function setCellVisibility(cells, selectedIndex) {
+                            Array.prototype.forEach.call(cells, function (cell, index) {
+                                cell.style.display = selectedIndex < 0 || index === 0 || index === selectedIndex ? "" : "none";
+                            });
+                        }
+
+                        function applyFilter() {
+                            var selectedIndex = select.value === "" ? -1 : Number(select.value);
+                            var visibleRows = 0;
+                            table.className = table.className.replace(/\bis-filtered\b/g, "").replace(/\s+$/g, "");
+                            if (selectedIndex >= 0) { table.className += " is-filtered"; }
+                            setCellVisibility(headerCells, selectedIndex);
+                            if (footCells.length) { setCellVisibility(footCells, selectedIndex); }
+                            bodyRows.forEach(function (row) {
+                                var show = selectedIndex < 0 || (row.cells[selectedIndex] && row.cells[selectedIndex].className.indexOf("yes") !== -1);
+                                row.style.display = show ? "" : "none";
+                                if (show) { visibleRows += 1; }
+                                setCellVisibility(row.cells, selectedIndex);
+                            });
+                            if (count) { count.textContent = "表示 " + visibleRows + "件"; }
+                        }
+
+                        select.onchange = applyFilter;
+
+                        applyFilter();
+                    }());
+                </script>
                 <footer class="android-footer mdl-mega-footer">
                     <font color="red">
                         当サイトで利用している画像及びデータは、L&amp;K Co., Ltd.に帰属します。<br>
