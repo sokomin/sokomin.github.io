@@ -2375,11 +2375,13 @@
                 <div class="sim-detail"><span class="sim-detail-name">命中率</span><span class="sim-detail-value" id="dt-hit">+0%</span></div>
                 <div class="sim-detail"><span class="sim-detail-name">回避率</span><span class="sim-detail-value" id="dt-eva">+0%</span></div>
                 <div class="sim-detail"><span class="sim-detail-name">致命抵抗</span><span class="sim-detail-value" id="dt-phys-crit-resist">0%</span></div>
-                <div class="sim-detail"><span class="sim-detail-name">決定抵抗</span><span class="sim-detail-value" id="dt-crit-resist">0%</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">決定打抵抗</span><span class="sim-detail-value" id="dt-crit-resist">0%</span></div>
                 <div class="sim-detail"><span class="sim-detail-name">異常抵抗</span><span class="sim-detail-value" id="dt-status-resist">0%</span></div>
                 <div class="sim-detail"><span class="sim-detail-name">低下抵抗</span><span class="sim-detail-value" id="dt-stat-down-resist">0%</span></div>
                 <div class="sim-detail"><span class="sim-detail-name">呪い抵抗</span><span class="sim-detail-value" id="dt-curse-resist">0%</span></div>
                 <div class="sim-detail"><span class="sim-detail-name">後退抵抗</span><span class="sim-detail-value" id="dt-knockback-resist">0%</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">ステ低下耐性</span><span class="sim-detail-value" id="dt-field-stat-down-resist">+0%</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">属性低下耐性</span><span class="sim-detail-value" id="dt-field-attr-cap-resist">+0%</span></div>
                 <div class="sim-detail"><span class="sim-detail-name">薬回復</span><span class="sim-detail-value" id="dt-potion-heal">+0%</span></div>
                 <div class="sim-detail"><span class="sim-detail-name">スキル</span><span class="sim-detail-value" id="dt-skill">+0</span></div>
                 <div class="sim-detail"><span class="sim-detail-name">物理ダメージ</span><span class="sim-detail-value" id="dt-phys-damage">+0%</span></div>
@@ -2452,6 +2454,13 @@
                 <div class="sim-detail"><span class="sim-detail-name">魔法限界突破＋</span><span class="sim-detail-value" id="dt-magic-limit-flat">+0</span></div>
                 <div class="sim-detail"><span class="sim-detail-name">魔法限界突破％</span><span class="sim-detail-value" id="dt-magic-limit-percent">+0%</span></div>
                 <div class="sim-detail"><span class="sim-detail-name">スキルCT減少</span><span class="sim-detail-value" id="dt-skill-cd">+0%</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">Uドロップ</span><span class="sim-detail-value" id="dt-uni-drop">+0%</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">魔法ドロップ</span><span class="sim-detail-value" id="dt-mf-drop">+0%</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">最小攻撃力＋</span><span class="sim-detail-value" id="dt-atk-min-flat">+0</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">最大攻撃力＋</span><span class="sim-detail-value" id="dt-atk-max-flat">+0</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">CPボーナス</span><span class="sim-detail-value" id="dt-cp-bonus">+0%</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">PVP攻撃</span><span class="sim-detail-value" id="dt-pvp-damage">+0%</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">PVP防御</span><span class="sim-detail-value" id="dt-pvp-defense">+0%</span></div>
                 <div class="sim-detail"><span class="sim-detail-name">位相mobダメ</span><span class="sim-detail-value" id="dt-vs-phase">+0%</span></div>
                 <div class="sim-detail"><span class="sim-detail-name">ボス討伐ダメ</span><span class="sim-detail-value" id="dt-vs-boss">+0%</span></div>
                 <div class="sim-detail"><span class="sim-detail-name">経験値補正</span><span class="sim-detail-value" id="dt-exp-bonus">+0%</span></div>
@@ -2838,6 +2847,95 @@
                     </td>
                   </tr>
                   <tr class="row-sep nx-row" style="display:none"><td colspan="7"></td></tr>
+
+                  <tr id="nonstandard-row-header" class="nonstandard-row" style="display:none">
+                    <td colspan="7" class="tdtext" style="padding-top:6px; color:#e7c56d">
+                      <b>非規格装備</b>
+                      <span id="nonstandard-info" style="color:#9aa68b; font-size:11px; padding-left:6px"></span>
+                    </td>
+                  </tr>
+                  <tr id="nonstandard-row-grade" class="nonstandard-row" style="display:none">
+                    <td colspan="2" class="tdtext">等級 / 枠数</td>
+                    <td style="width:4px"></td>
+                    <td colspan="2">
+                      <select id="nonstandard-grade" class="select" style="width:100%">
+                        <option value="normal">一般</option>
+                        <option value="dx">DX</option>
+                        <option value="ult">ULT</option>
+                      </select>
+                    </td>
+                    <td style="width:4px"></td>
+                    <td>
+                      <select id="nonstandard-count" class="select" style="width:100%"></select>
+                    </td>
+                  </tr>
+                  <tr class="row-sep nonstandard-row" style="display:none"><td colspan="7"></td></tr>
+
+                  <tr class="nonstandard-row nonstandard-slot-row" data-ns-slot="0" style="display:none">
+                    <td colspan="2" class="tdtext">非規格OP1</td>
+                    <td style="width:4px"></td>
+                    <td colspan="4"><select class="select nonstandard-op-select" data-ns-op="0" style="width:100%; font-size:11.5px"></select></td>
+                  </tr>
+                  <tr class="nonstandard-row nonstandard-slot-row" data-ns-slot="1" style="display:none">
+                    <td colspan="2" class="tdtext">非規格OP2</td>
+                    <td style="width:4px"></td>
+                    <td colspan="4"><select class="select nonstandard-op-select" data-ns-op="1" style="width:100%; font-size:11.5px"></select></td>
+                  </tr>
+                  <tr class="nonstandard-row nonstandard-slot-row" data-ns-slot="2" style="display:none">
+                    <td colspan="2" class="tdtext">非規格OP3</td>
+                    <td style="width:4px"></td>
+                    <td colspan="4"><select class="select nonstandard-op-select" data-ns-op="2" style="width:100%; font-size:11.5px"></select></td>
+                  </tr>
+                  <tr class="nonstandard-row nonstandard-slot-row" data-ns-slot="3" style="display:none">
+                    <td colspan="2" class="tdtext">非規格OP4</td>
+                    <td style="width:4px"></td>
+                    <td colspan="4"><select class="select nonstandard-op-select" data-ns-op="3" style="width:100%; font-size:11.5px"></select></td>
+                  </tr>
+                  <tr class="nonstandard-row nonstandard-slot-row" data-ns-slot="4" style="display:none">
+                    <td colspan="2" class="tdtext">非規格OP5</td>
+                    <td style="width:4px"></td>
+                    <td colspan="4"><select class="select nonstandard-op-select" data-ns-op="4" style="width:100%; font-size:11.5px"></select></td>
+                  </tr>
+                  <tr id="nonstandard-open-header" class="nonstandard-row" style="display:none">
+                    <td colspan="7" class="tdtext" style="padding-top:6px; color:#cbe79b">
+                      <b>錬成 解放変換OP</b>
+                      <span id="nonstandard-open-info" style="color:#9aa68b; font-size:11px; padding-left:6px"></span>
+                    </td>
+                  </tr>
+                  <tr id="nonstandard-open-converter-row" class="nonstandard-row" style="display:none">
+                    <td colspan="2" class="tdtext">変換器</td>
+                    <td style="width:4px"></td>
+                    <td colspan="4">
+                      <select id="nonstandard-open-converter" class="select" style="width:100%">
+                        <option value="">(変換なし)</option>
+                        <option value="normal">解放OP変換器(通常)</option>
+                        <option value="improved">解放OP変換器・改</option>
+                        <option value="replica">レプリカ解放OP変換器</option>
+                        <option value="burning">灼熱解放OP変換器</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr class="nonstandard-row nonstandard-open-slot-row" data-ns-open-slot="0" style="display:none">
+                    <td colspan="2" class="tdtext">解放OP1<br><span id="nonstandard-open-default-0" style="color:#9aa68b; font-size:10.5px">(デフォルト)</span></td>
+                    <td style="width:4px"></td>
+                    <td colspan="4"><select class="select nonstandard-open-select" data-ns-open="0" style="width:100%; font-size:11.5px"></select></td>
+                  </tr>
+                  <tr class="nonstandard-row nonstandard-open-slot-row" data-ns-open-slot="1" style="display:none">
+                    <td colspan="2" class="tdtext">解放OP2<br><span id="nonstandard-open-default-1" style="color:#9aa68b; font-size:10.5px">(デフォルト)</span></td>
+                    <td style="width:4px"></td>
+                    <td colspan="4"><select class="select nonstandard-open-select" data-ns-open="1" style="width:100%; font-size:11.5px"></select></td>
+                  </tr>
+                  <tr class="nonstandard-row nonstandard-open-slot-row" data-ns-open-slot="2" style="display:none">
+                    <td colspan="2" class="tdtext">解放OP3<br><span id="nonstandard-open-default-2" style="color:#9aa68b; font-size:10.5px">(デフォルト)</span></td>
+                    <td style="width:4px"></td>
+                    <td colspan="4"><select class="select nonstandard-open-select" data-ns-open="2" style="width:100%; font-size:11.5px"></select></td>
+                  </tr>
+                  <tr class="nonstandard-row nonstandard-open-slot-row" data-ns-open-slot="3" style="display:none">
+                    <td colspan="2" class="tdtext">解放OP4<br><span id="nonstandard-open-default-3" style="color:#9aa68b; font-size:10.5px">(デフォルト)</span></td>
+                    <td style="width:4px"></td>
+                    <td colspan="4"><select class="select nonstandard-open-select" data-ns-open="3" style="width:100%; font-size:11.5px"></select></td>
+                  </tr>
+                  <tr class="row-sep nonstandard-row" style="display:none"><td colspan="7"></td></tr>
 
                   
                   <tr id="seiren-row-header" class="seiren-row" style="display:none">
@@ -3385,6 +3483,48 @@
                   </div>
 
                   
+                  <div class="item-panel" id="edit-nonstandard-open-section" style="display:none">
+                    <h4>非規格 錬成解放変換OP</h4>
+                    <table class="form-table"><tbody>
+                      <tr>
+                        <td colspan="2" class="tdtext">変換器</td>
+                        <td style="width:4px"></td>
+                        <td colspan="4">
+                          <select id="edit-nonstandard-open-converter" class="select" style="width:100%">
+                            <option value="">(変換なし)</option>
+                            <option value="normal">解放OP変換器(通常)</option>
+                            <option value="improved">解放OP変換器・改</option>
+                            <option value="replica">レプリカ解放OP変換器</option>
+                            <option value="burning">灼熱解放OP変換器</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="7" class="tdtext"><span id="edit-nonstandard-open-info" style="color:#9aa68b; font-size:11px"></span></td>
+                      </tr>
+                      <tr class="edit-nonstandard-open-slot-row" data-ens-open="0">
+                        <td colspan="2" class="tdtext">解放OP1<br><span id="edit-nonstandard-open-default-0" style="color:#9aa68b; font-size:10.5px">(デフォルト)</span></td>
+                        <td style="width:4px"></td>
+                        <td colspan="4"><select class="select edit-nonstandard-open-select" data-ens-open="0" style="width:100%; font-size:11.5px"></select></td>
+                      </tr>
+                      <tr class="edit-nonstandard-open-slot-row" data-ens-open="1">
+                        <td colspan="2" class="tdtext">解放OP2<br><span id="edit-nonstandard-open-default-1" style="color:#9aa68b; font-size:10.5px">(デフォルト)</span></td>
+                        <td style="width:4px"></td>
+                        <td colspan="4"><select class="select edit-nonstandard-open-select" data-ens-open="1" style="width:100%; font-size:11.5px"></select></td>
+                      </tr>
+                      <tr class="edit-nonstandard-open-slot-row" data-ens-open="2">
+                        <td colspan="2" class="tdtext">解放OP3<br><span id="edit-nonstandard-open-default-2" style="color:#9aa68b; font-size:10.5px">(デフォルト)</span></td>
+                        <td style="width:4px"></td>
+                        <td colspan="4"><select class="select edit-nonstandard-open-select" data-ens-open="2" style="width:100%; font-size:11.5px"></select></td>
+                      </tr>
+                      <tr class="edit-nonstandard-open-slot-row" data-ens-open="3">
+                        <td colspan="2" class="tdtext">解放OP4<br><span id="edit-nonstandard-open-default-3" style="color:#9aa68b; font-size:10.5px">(デフォルト)</span></td>
+                        <td style="width:4px"></td>
+                        <td colspan="4"><select class="select edit-nonstandard-open-select" data-ens-open="3" style="width:100%; font-size:11.5px"></select></td>
+                      </tr>
+                    </tbody></table>
+                  </div>
+
                   <div class="item-panel" id="edit-seiren-section" style="display:none">
                     <h4>製錬</h4>
                     <table class="form-table"><tbody>
@@ -4450,6 +4590,14 @@ const formState = {
   seirenStage: 0,
   seirenOps: [null, null, null, null, null],
 
+  nonstandard: {
+    grade: 'ult',
+    slotCount: 5,
+    ops: [null, null, null, null, null],
+    openConverter: '',
+    openOps: [null, null, null, null],
+  },
+
   
   bfop: { grade: 'black', id: null, tier: 'top' },
 
@@ -4644,6 +4792,7 @@ async function refreshBfPanel() {
 function isNxFormItem(rec) {
   if (!rec) return false;
   if (!rec.nxAvailable) return false;
+  if (isNonstandardItem(rec)) return false;
   
   if (Relic.isRelic(rec)) return false;
   
@@ -4670,6 +4819,247 @@ const SPECIAL_FAMILY_LABELS = {
   736: { name: 'このアイテムの着用レベル', unit: '', sign: '-' },  
   175: { name: '魔法致命打ダメージ増加',   unit: '%', sign: '+' }, 
 };
+
+const NONSTANDARD_GRADE_LIMITS = {
+  normal: { label: '一般', min: 0, max: 0, def: 0 },
+  dx:     { label: 'DX',   min: 1, max: 2, def: 2 },
+  ult:    { label: 'ULT',  min: 3, max: 5, def: 5 },
+};
+
+function nonstandardData() {
+  return loader.nonstandard || null;
+}
+
+function isNonstandardItem(recOrId) {
+  const data = nonstandardData();
+  if (!data || !data.items) return false;
+  const id = (recOrId && typeof recOrId === 'object') ? recOrId.id : recOrId;
+  return data.items[String(id)] != null;
+}
+
+function getNonstandardItemGroup(rec) {
+  const data = nonstandardData();
+  if (!data || !rec) return null;
+  return data.kindGroups?.[String(rec.kind)] || null;
+}
+
+function getNonstandardAllowedOptions(rec) {
+  const data = nonstandardData();
+  const group = getNonstandardItemGroup(rec);
+  if (!data || !group || !Array.isArray(data.options)) return [];
+  return data.options.filter((op) => {
+    const groups = data.optionItemTypes?.[op.name] || [];
+    return groups.includes(group);
+  });
+}
+
+function nonstandardOptionByKey(key) {
+  const data = nonstandardData();
+  if (!data || !Array.isArray(data.options)) return null;
+  return data.options.find((op) => op.key === key) || null;
+}
+
+function formatNonstandardOptionLabel(op) {
+  if (!op) return '';
+  const range = (op.min != null && op.max != null)
+    ? `${op.min}~${op.max}`
+    : (op.value != null ? String(op.value) : '?');
+  return `${op.name} T${op.tier} (${range})`;
+}
+
+function buildNonstandardSlot(op) {
+  if (!op) return null;
+  const base = {
+    source: 'nonstandard.base',
+    nsName: op.name,
+    nsTier: op.tier,
+    nsMin: op.min ?? null,
+    nsMax: op.max ?? null,
+  };
+  if (op.familyId != null && op.familyId >= 0) {
+    return { ...base, familyId: Number(op.familyId), value: Number(op.value) || 0 };
+  }
+  if (Array.isArray(op.stats) && op.stats.length) {
+    return { ...base, stats: op.stats.map(String), value: Number(op.value) || 0 };
+  }
+  if (op.statId) {
+    return { ...base, statId: String(op.statId), value: Number(op.value) || 0 };
+  }
+  return { ...base, value: Number(op.value) || 0, isDisplayOnly: true };
+}
+
+const NONSTANDARD_OPEN_SOURCE = {
+  normal:   '通常/改良',
+  improved: '通常/改良',
+  replica:  'レプリカ',
+  burning:  '灼熱',
+};
+
+const NONSTANDARD_OPEN_CONVERTER_LABELS = {
+  normal:   '通常',
+  improved: '改',
+  replica:  'レプリカ',
+  burning:  '灼熱',
+};
+
+const _nonstandardOpenOptionsCache = [new Map(), new Map(), new Map(), new Map()];
+
+function getNonstandardOpenPart(rec) {
+  const data = nonstandardData();
+  if (!data || !rec) return null;
+  return data.openPartByKind?.[String(rec.kind)] || null;
+}
+
+function nonstandardOpenOptionByKey(key) {
+  const data = nonstandardData();
+  if (!data || !Array.isArray(data.openOptions)) return null;
+  return data.openOptions.find((op) => op.key === key) || null;
+}
+
+function listNonstandardOpenOptionsForSlot(rec, slotIdx, converterOverride = null) {
+  const data = nonstandardData();
+  const converter = converterOverride ?? formState.nonstandard.openConverter;
+  const source = NONSTANDARD_OPEN_SOURCE[converter];
+  const part = getNonstandardOpenPart(rec);
+  if (!data || !Array.isArray(data.openOptions) || !source || !part) return [];
+  const stage = Number(slotIdx) + 1;
+  return data.openOptions.filter((op) => op.source === source && op.part === part && Number(op.stage) === stage);
+}
+
+function parseNonstandardOpenValue(raw, familyId) {
+  const s = String(raw ?? '').trim();
+  const m = s.match(/([+\-]?\d+(?:\.\d+)?)/);
+  const n = m ? Number(m[1]) : 0;
+  if (Number(familyId) === 736) return Math.abs(n);
+  return n;
+}
+
+function formatNonstandardOpenOptionLabel(op) {
+  if (!op) return '';
+  return `${op.name} ${op.value}`;
+}
+
+function buildNonstandardOpenSlot(op, converter) {
+  if (!op) return null;
+  const value = parseNonstandardOpenValue(op.value, op.familyId);
+  const base = {
+    source: 'nx.unlocked',
+    _nxConverted: true,
+    ocConverter: `nonstandard-${converter || 'normal'}`,
+    ocName: op.name,
+    ocValue: op.value,
+    nsOpenKey: op.key,
+    nsOpenSource: op.source,
+    nsOpenPart: op.part,
+    nsOpenStage: op.stage,
+    nsOpenProbability: op.probability || '',
+  };
+  if (op.familyId != null && op.familyId >= 0) {
+    return { ...base, familyId: Number(op.familyId), value };
+  }
+  if (op.opId != null && op.opId >= 0) {
+    return { ...base, opId: Number(op.opId), vals: [value], value };
+  }
+  if (Array.isArray(op.stats) && op.stats.length) {
+    return { ...base, stats: op.stats.map(String), value };
+  }
+  if (op.statId) {
+    return { ...base, statId: String(op.statId), value };
+  }
+  return { ...base, familyId: -1, value, isDisplayOnly: true };
+}
+
+function formatNonstandardOpenSlotLine(slot, fallbackLine) {
+  if (!slot || !slot.ocName) return fallbackLine || '';
+  return `${slot.ocName} ${slot.ocValue}`;
+}
+
+function setNonstandardOpenCache(slotIdx, list) {
+  const cache = _nonstandardOpenOptionsCache[slotIdx];
+  cache.clear();
+  for (const op of list) cache.set(op.key, op);
+}
+
+function nonstandardGradeLimits() {
+  return NONSTANDARD_GRADE_LIMITS[formState.nonstandard.grade] || NONSTANDARD_GRADE_LIMITS.ult;
+}
+
+async function refreshNonstandardPanel() {
+  const rec = (formState.itemId !== -1) ? await Item.get(formState.itemId) : null;
+  const enabled = !!(rec && isNonstandardItem(rec));
+  document.querySelectorAll('.nonstandard-row').forEach((row) => {
+    row.style.display = enabled ? '' : 'none';
+  });
+  if (!enabled) return;
+
+  const limits = nonstandardGradeLimits();
+  if (formState.nonstandard.slotCount < limits.min || formState.nonstandard.slotCount > limits.max) {
+    formState.nonstandard.slotCount = limits.def;
+  }
+  const gradeSel = $('nonstandard-grade');
+  if (gradeSel) gradeSel.value = formState.nonstandard.grade;
+  const countSel = $('nonstandard-count');
+  if (countSel) {
+    countSel.innerHTML = '';
+    for (let i = limits.min; i <= limits.max; i++) {
+      const opt = document.createElement('option');
+      opt.value = String(i);
+      opt.textContent = `${i}枠`;
+      countSel.appendChild(opt);
+    }
+    countSel.value = String(formState.nonstandard.slotCount);
+  }
+
+  const options = getNonstandardAllowedOptions(rec);
+  const group = getNonstandardItemGroup(rec) || '-';
+  const info = $('nonstandard-info');
+  if (info) info.textContent = `${group} / 候補 ${options.length} 件`;
+  const validKeys = new Set(options.map((op) => op.key));
+  for (let i = 0; i < 5; i++) {
+    const row = document.querySelector(`.nonstandard-slot-row[data-ns-slot="${i}"]`);
+    if (row) row.style.display = i < formState.nonstandard.slotCount ? '' : 'none';
+    const sel = document.querySelector(`.nonstandard-op-select[data-ns-op="${i}"]`);
+    if (!sel) continue;
+    const current = formState.nonstandard.ops[i];
+    if (current && !validKeys.has(current)) formState.nonstandard.ops[i] = null;
+    sel.innerHTML = '<option value="">(未選択)</option>';
+    for (const op of options) {
+      const opt = document.createElement('option');
+      opt.value = op.key;
+      opt.textContent = formatNonstandardOptionLabel(op);
+      sel.appendChild(opt);
+    }
+    sel.value = formState.nonstandard.ops[i] || '';
+  }
+
+  const openPart = getNonstandardOpenPart(rec) || '-';
+  const openInfo = $('nonstandard-open-info');
+  if (openInfo) openInfo.textContent = `${openPart} / 専用テーブル`;
+  const openConverterSel = $('nonstandard-open-converter');
+  if (openConverterSel) openConverterSel.value = formState.nonstandard.openConverter || '';
+  for (let i = 0; i < 4; i++) {
+    const row = document.querySelector(`.nonstandard-open-slot-row[data-ns-open-slot="${i}"]`);
+    if (row) row.style.display = '';
+    const defLabel = $(`nonstandard-open-default-${i}`);
+    if (defLabel) defLabel.textContent = rec.nonstandard?.fixedLines?.[i] || '(デフォルト)';
+    const sel = document.querySelector(`.nonstandard-open-select[data-ns-open="${i}"]`);
+    if (!sel) continue;
+    const list = listNonstandardOpenOptionsForSlot(rec, i);
+    setNonstandardOpenCache(i, list);
+    const validKeys = new Set(list.map((op) => op.key));
+    const current = formState.nonstandard.openOps[i];
+    if (current && !validKeys.has(current)) formState.nonstandard.openOps[i] = null;
+    sel.innerHTML = '<option value="">(デフォルト)</option>';
+    for (const op of list) {
+      const opt = document.createElement('option');
+      opt.value = op.key;
+      opt.textContent = formatNonstandardOpenOptionLabel(op);
+      sel.appendChild(opt);
+    }
+    sel.value = formState.nonstandard.openOps[i] || '';
+    sel.disabled = !formState.nonstandard.openConverter;
+  }
+}
 function resolveOpDisplayInfo(familyId, value) {
   const sp = SPECIAL_FAMILY_LABELS[Number(familyId)];
   if (sp) return { name: sp.name, value, unit: sp.unit, sign: sp.sign };
@@ -5280,7 +5670,7 @@ const ITEM_SEARCH_GROUP_ALIASES = new Map([
 function buildItemSearchText(row) {
   if (!row) return '';
   const alias = ITEM_SEARCH_GROUP_ALIASES.get(Number(row[0])) || '';
-  return normalizeItemSearchText(`${row[2] || ''} ${alias}`);
+  return normalizeItemSearchText(`${row[2] || ''} ${row[8] || ''} ${alias}`);
 }
 
 function renderItemList(filtered, totalShown, totalBeforeFeasibility) {
@@ -5775,6 +6165,35 @@ async function onMake() {
     inv.customBaseOps[2] = null;
   }
   
+  if (isNonstandardItem(rec)) {
+    const limits = nonstandardGradeLimits();
+    const slotCount = Math.max(limits.min, Math.min(limits.max, Number(formState.nonstandard.slotCount) || limits.def));
+    inv.nxActive = true;
+    inv.nonstandard = {
+      grade: formState.nonstandard.grade || 'ult',
+      slotCount,
+      ops: [],
+      openConverter: formState.nonstandard.openConverter || '',
+      openOps: [],
+    };
+    for (let i = 0; i < 5; i++) {
+      if (i >= slotCount) {
+        inv.customBaseOps[i] = null;
+        inv.nonstandard.ops[i] = null;
+        continue;
+      }
+      const op = nonstandardOptionByKey(formState.nonstandard.ops[i]);
+      const slot = buildNonstandardSlot(op);
+      inv.customBaseOps[i] = slot;
+      inv.nonstandard.ops[i] = op ? { key: op.key, name: op.name, tier: op.tier } : null;
+    }
+    for (let i = 0; i < 4; i++) {
+      const op = nonstandardOpenOptionByKey(formState.nonstandard.openOps[i]);
+      const slot = buildNonstandardOpenSlot(op, formState.nonstandard.openConverter);
+      inv.nxUnlockedOps[i] = slot;
+      inv.nonstandard.openOps[i] = op ? { key: op.key, name: op.name, value: op.value, stage: op.stage } : null;
+    }
+  }
   if (isScrollableForItem(rec)) {
     const sc = formState.scroll;
     const def = sc.id ? scrollById(sc.id) : null;
@@ -6174,6 +6593,7 @@ function buildItemDetailHtml(inv, rec, character) {
     if (isSennoKisekiIncusedEquipment) continue;
     if (isIncusedEarring) continue;
     const isNx = slot.slotKind === 'nxop' || slot.slotKind === 'long_nxop';
+    if (isNx && isNonstandardItem(rec)) continue;
     const nxPos = (isNx && slot.pos != null) ? Number(slot.pos) : -1;
     
     if (isNx && nxPos >= 0 && nxPos < unlockedCount && inv && inv.nxUnlockedOps && inv.nxUnlockedOps[nxPos]) {
@@ -6303,6 +6723,32 @@ function buildItemDetailHtml(inv, rec, character) {
   }
 
   
+  if (rec.nonstandard && Array.isArray(rec.nonstandard.fixedLines)) {
+    html += `<div class="idp-section-title" style="color:#cbe79b">&lt;Nonstandard Nx&gt;</div>`;
+    for (let i = 0; i < 4; i++) {
+      const slot = inv?.nxUnlockedOps?.[i] || null;
+      const line = formatNonstandardOpenSlotLine(slot, rec.nonstandard.fixedLines[i]);
+      const conv = slot?.ocConverter ? String(slot.ocConverter).replace(/^nonstandard-/, '') : '';
+      const convLabel = conv ? (NONSTANDARD_OPEN_CONVERTER_LABELS[conv] || conv) : '';
+      const tag = convLabel ? `[Nx変換 ${esc(convLabel)}]` : '[Nx]';
+      html += `<span class="idp-op is-nx">- ${esc(line)} <span class="idp-nx-label">${tag}</span></span>`;
+    }
+  }
+  if (inv && inv.nonstandard && Array.isArray(inv.customBaseOps)) {
+    const nsLimits = NONSTANDARD_GRADE_LIMITS[inv.nonstandard.grade] || NONSTANDARD_GRADE_LIMITS.ult;
+    const nsCount = Math.max(0, Math.min(5, Number(inv.nonstandard.slotCount) || 0));
+    html += `<div class="idp-section-title" style="color:#cdb6e7">&lt;Nonstandard ${esc(nsLimits.label)} / ${nsCount}&gt;</div>`;
+    for (let i = 0; i < nsCount; i++) {
+      const slot = inv.customBaseOps[i];
+      if (!slot || slot.source !== 'nonstandard.base') continue;
+      const label = slot.nsName || (slot.familyId != null ? `family#${slot.familyId}` : (slot.statId || '?'));
+      const tierTxt = (slot.nsTier != null) ? `T${slot.nsTier}` : '';
+      const v = (slot.value != null) ? slot.value : (slot.nsMax != null ? slot.nsMax : null);
+      const valTxt = (v != null) ? `+${v}` : '';
+      html += `<span class="idp-op is-base" style="border-left:2px solid #8f6acf; padding-left:4px">- ${esc(label)} <span style="color:#ffff00">${esc(valTxt)}</span> <span style="color:#a89eb3; font-size:11px">[${esc(tierTxt)}]</span> <span class="idp-ui-label">[NS${i + 1}]</span></span>`;
+    }
+  }
+
   if (inv && inv.ultLv != null && Array.isArray(inv.customBaseOps)) {
     html += `<div class="idp-section-title" style="color:#cbe79b">&lt;ULT 深緑 Lv ${inv.ultLv}&gt;</div>`;
     for (let i = 0; i < 3; i++) {
@@ -7041,6 +7487,8 @@ async function recalcAll() {
   setResistPercentWithBoost('dt-stat-down-resist', f.equipped.statDownResist || 0);   
   setResistPercentWithBoost('dt-curse-resist',     f.equipped.curseResist    || 0);   
   setResistPercent('dt-knockback-resist',          f.equipped.knockbackResist|| 0);   
+  setDetailPercent('dt-field-stat-down-resist',    f.equipped.fieldStatDownResist || 0);
+  setDetailPercent('dt-field-attr-cap-resist',     f.equipped.fieldAttrCapResist  || 0);
   
   setDetailPercent('dt-phys-strong',           f.equipped.physStrongRate || 0);   
   setDetailPercent('dt-phys-crit-resist-down', f.equipped.enemyPhysCritResistReduce || 0);
@@ -7080,6 +7528,13 @@ async function recalcAll() {
   f.equipped.__withTitleLimitBreakMagicPct   = lbMagicPct;
   
   setDetailPercent('dt-skill-cd',     f.equipped.skillCooldownReduce || 0);
+  setDetailPercent('dt-uni-drop',     f.equipped.uniDrop             || 0);
+  setDetailPercent('dt-mf-drop',      f.equipped.mfDrop              || 0);
+  setDetailFlat('dt-atk-min-flat',    f.equipped.atkMinFlat          || 0);
+  setDetailFlat('dt-atk-max-flat',    f.equipped.atkMaxFlat          || 0);
+  setDetailPercent('dt-cp-bonus',     f.equipped.cpBonus             || 0);
+  setDetailPercent('dt-pvp-damage',   f.equipped.pvpDamage           || 0);
+  setDetailPercent('dt-pvp-defense',  f.equipped.pvpDefense          || 0);
   setDetailPercent('dt-vs-phase',     f.equipped.vsPhaseEnemyDamage  || 0);
   setDetailPercent('dt-vs-boss',      f.equipped.vsBossDamage        || 0);
   setDetailPercent('dt-exp-bonus',    f.equipped.expBonus            || 0);
@@ -7466,6 +7921,7 @@ function bindEvents() {
     refreshScrollPanel();
     refreshBfPanel();
     refreshNxPanel();
+    refreshNonstandardPanel();
     refreshSeirenPanel();
   });
   $('sel-item').addEventListener('dblclick', () => { if (formState.itemId !== -1) onMake(); });
@@ -7595,6 +8051,7 @@ function bindEvents() {
     formState.nxUnlockedCount = 4;
     formState.nxConverter = '';
     formState.nxUnlockedOps = [null, null, null, null];
+    formState.nonstandard = { grade: 'ult', slotCount: 5, ops: [null, null, null, null, null], openConverter: '', openOps: [null, null, null, null] };
     $('filter-name').value = '';
     $('chk-daybreak').checked = false;
     for (let i = 0; i < 3; i++) clearOp(i);
@@ -7607,12 +8064,18 @@ function bindEvents() {
     if ($('nx-count'))      $('nx-count').value = '4';
     if ($('nx-converter'))  $('nx-converter').value = '';
     document.querySelectorAll('.nx-op-select').forEach((dd) => { dd.value = ''; });
+    if ($('nonstandard-grade')) $('nonstandard-grade').value = 'ult';
+    if ($('nonstandard-count')) $('nonstandard-count').value = '5';
+    document.querySelectorAll('.nonstandard-op-select').forEach((dd) => { dd.value = ''; });
+    if ($('nonstandard-open-converter')) $('nonstandard-open-converter').value = '';
+    document.querySelectorAll('.nonstandard-open-select').forEach((dd) => { dd.value = ''; });
     refreshUltPanel();
     refreshAbrPanel();
     refreshArcanaPanel();
     refreshScrollPanel();
     refreshBfPanel();
     refreshNxPanel();
+    refreshNonstandardPanel();
     refreshSeirenPanel();
     refreshItemList();
   });
@@ -7681,6 +8144,39 @@ function bindEvents() {
     });
   });
 
+
+  if ($('nonstandard-grade')) {
+    $('nonstandard-grade').addEventListener('change', async (e) => {
+      formState.nonstandard.grade = e.target.value || 'ult';
+      formState.nonstandard.slotCount = nonstandardGradeLimits().def;
+      await refreshNonstandardPanel();
+    });
+  }
+  if ($('nonstandard-count')) {
+    $('nonstandard-count').addEventListener('change', async (e) => {
+      formState.nonstandard.slotCount = Math.max(0, Math.min(5, Number(e.target.value) || 0));
+      await refreshNonstandardPanel();
+    });
+  }
+  document.querySelectorAll('.nonstandard-op-select').forEach((sel) => {
+    sel.addEventListener('change', (e) => {
+      const slotIdx = Number(e.target.dataset.nsOp);
+      formState.nonstandard.ops[slotIdx] = e.target.value || null;
+    });
+  });
+  if ($('nonstandard-open-converter')) {
+    $('nonstandard-open-converter').addEventListener('change', async (e) => {
+      formState.nonstandard.openConverter = e.target.value || '';
+      formState.nonstandard.openOps = [null, null, null, null];
+      await refreshNonstandardPanel();
+    });
+  }
+  document.querySelectorAll('.nonstandard-open-select').forEach((sel) => {
+    sel.addEventListener('change', (e) => {
+      const slotIdx = Number(e.target.dataset.nsOpen);
+      formState.nonstandard.openOps[slotIdx] = e.target.value || null;
+    });
+  });
 
   const chInputs = ['ch-job','ch-lv','ch-rebirth','st-str','st-agi','st-con','st-int','st-wiz','st-chs','st-luc'];
   for (const id of chInputs) {
@@ -7867,10 +8363,26 @@ async function restoreInventoryEntry(entry) {
     };
   }
   if (Array.isArray(entry.customBaseOps)) {
-    for (let k = 0; k < 3; k++) {
+    for (let k = 0; k < 5; k++) {
       const saved = entry.customBaseOps[k];
       if (!saved) { inv.customBaseOps[k] = null; continue; }
-      if (saved.ultKey && inv.ultLv) {
+      if (saved.source === 'nonstandard.base' || saved.nsName) {
+        const slot = {
+          source: 'nonstandard.base',
+          nsName: saved.nsName ?? null,
+          nsTier: saved.nsTier ?? null,
+          nsMin: saved.nsMin ?? null,
+          nsMax: saved.nsMax ?? null,
+          value: saved.value ?? null,
+          isDisplayOnly: !!saved.isDisplayOnly,
+        };
+        if (saved.familyId != null) slot.familyId = saved.familyId;
+        if (saved.statId != null) slot.statId = saved.statId;
+        if (Array.isArray(saved.stats)) slot.stats = saved.stats.map(String);
+        if (saved.addValue != null) slot.addValue = saved.addValue;
+        if (saved.divisor != null) slot.divisor = saved.divisor;
+        inv.customBaseOps[k] = slot;
+      } else if (saved.ultKey && inv.ultLv) {
         const slots = ultBuildBaseOpSlots(inv.ultLv, [saved.ultKey, null, null]);
         inv.customBaseOps[k] = slots[0];
       } else if (saved.abrKey && isAreaBossRing(inv.itemId)) {
@@ -7891,6 +8403,20 @@ async function restoreInventoryEntry(entry) {
         inv.customBaseOps[k] = { opId: saved.opId, vals: saved.vals.slice(), source: 'ult.base' };
       }
     }
+  }
+  if (entry.nonstandard) {
+    inv.nonstandard = {
+      grade: entry.nonstandard.grade || 'ult',
+      slotCount: Math.max(0, Math.min(5, Number(entry.nonstandard.slotCount) || 0)),
+      ops: Array.isArray(entry.nonstandard.ops) ? entry.nonstandard.ops : [],
+      openConverter: entry.nonstandard.openConverter || '',
+      openOps: Array.isArray(entry.nonstandard.openOps) ? entry.nonstandard.openOps : [],
+    };
+    inv.nxActive = true;
+  } else if (Array.isArray(inv.customBaseOps) && inv.customBaseOps.some((s) => s && s.source === 'nonstandard.base')) {
+    const count = inv.customBaseOps.filter((s) => s && s.source === 'nonstandard.base').length;
+    inv.nonstandard = { grade: 'ult', slotCount: count, ops: [] };
+    inv.nxActive = true;
   }
   if (entry.scroll && entry.scroll.id) {
     const stage = Math.max(1, Math.min(5, Number(entry.scroll.stage) || 1));
@@ -7916,6 +8442,25 @@ async function restoreInventoryEntry(entry) {
       const e = entry.nxUnlockedOps[k];
       if (!e) { inv.nxUnlockedOps[k] = null; continue; }
       if (e.name && e.value != null) {
+        if (String(e.converter || '').startsWith('nonstandard-')) {
+          const conv = String(e.converter || '').replace(/^nonstandard-/, '') || 'normal';
+          const op = nonstandardOpenOptionByKey(e.key)
+            || (nonstandardData()?.openOptions || []).find((row) =>
+              row.name === e.name && String(row.value) === String(e.value) && NONSTANDARD_OPEN_SOURCE[conv] === row.source);
+          inv.nxUnlockedOps[k] = buildNonstandardOpenSlot(op || {
+            key: e.key || '',
+            source: NONSTANDARD_OPEN_SOURCE[conv] || '',
+            part: '',
+            stage: k + 1,
+            name: e.name,
+            value: e.value,
+            probability: '',
+            familyId: null,
+            statId: null,
+            isDisplayOnly: true,
+          }, conv);
+          continue;
+        }
         inv.nxUnlockedOps[k] = buildOpConvertSlot(
           { name: e.name, value: e.value },
           e.converter || 'normal',
@@ -17151,6 +17696,7 @@ const editState = {
   nxUnlockedCount: 4,
   nxConverter: '',
   nxUnlockedOps: [null, null, null, null],
+  nonstandard: { openConverter: '', openOps: [null, null, null, null] },
   
   incusedRingLv: 1,
 };
@@ -17359,6 +17905,21 @@ async function loadEditStateFromInv(inv) {
     editState.nxUnlockedOps = [null, null, null, null];
   }
   
+  editState.nonstandard = { openConverter: '', openOps: [null, null, null, null] };
+  if (isNonstandardItem(rec)) {
+    const invNs = inv.nonstandard || {};
+    let converter = invNs.openConverter || '';
+    if (!converter && Array.isArray(inv.nxUnlockedOps)) {
+      const converted = inv.nxUnlockedOps.find((slot) => slot && String(slot.ocConverter || '').startsWith('nonstandard-'));
+      if (converted) converter = String(converted.ocConverter).replace(/^nonstandard-/, '');
+    }
+    editState.nonstandard.openConverter = converter || '';
+    for (let k = 0; k < 4; k++) {
+      const saved = Array.isArray(invNs.openOps) ? invNs.openOps[k] : null;
+      const slot = Array.isArray(inv.nxUnlockedOps) ? inv.nxUnlockedOps[k] : null;
+      editState.nonstandard.openOps[k] = saved?.key || slot?.nsOpenKey || null;
+    }
+  }
   if (IncusedRing.isIncusedRingId(inv.itemId) || YatikanuIncusedArmor.isTargetId(inv.itemId) || AncientIncusedRing.isTargetId(inv.itemId) || ChaosIncusedRing.isTargetId(inv.itemId) || TrialIncusedRing.isTargetId(inv.itemId) || FateIncusedEquipment.isTargetId(inv.itemId) || SennoKisekiIncusedEquipment.isTargetId(inv.itemId) || IncusedEarring.isTargetId(inv.itemId)) {
     editState.incusedRingLv = TrialIncusedRing.isTargetId(inv.itemId)
       ? TrialIncusedRing.effectiveLv(inv.itemId, inv.incusedRingLv ?? 1)
@@ -17447,6 +18008,11 @@ async function refreshEditUI() {
     if (isNxFormItem(rec)) await refreshEditNxPanel(rec);
   }
   
+  const nsOpenSec = document.getElementById('edit-nonstandard-open-section');
+  if (nsOpenSec) {
+    nsOpenSec.style.display = isNonstandardItem(rec) ? '' : 'none';
+    if (isNonstandardItem(rec)) refreshEditNonstandardOpenPanel(rec);
+  }
   const seirenSec = document.getElementById('edit-seiren-section');
   if (seirenSec) {
     if (!SEIREN_DATA) await loadSeirenData();
@@ -17568,6 +18134,7 @@ function refreshEditScrollPanel(rec = null) {
 }
 
 const _editNxSlotOptionsCache = [new Map(), new Map(), new Map(), new Map()];
+const _editNonstandardOpenOptionsCache = [new Map(), new Map(), new Map(), new Map()];
 
 async function refreshEditNxPanel(rec) {
   try { await loadOpConvertData(); } catch (e) {  }
@@ -17607,6 +18174,37 @@ async function refreshEditNxPanel(rec) {
     }
   } finally {
     formState.nxConverter = _backupConverter;
+  }
+}
+
+function refreshEditNonstandardOpenPanel(rec) {
+  const convSel = document.getElementById('edit-nonstandard-open-converter');
+  const info = document.getElementById('edit-nonstandard-open-info');
+  const part = getNonstandardOpenPart(rec) || '-';
+  if (convSel) convSel.value = editState.nonstandard.openConverter || '';
+  if (info) info.textContent = `${part} / 専用テーブル`;
+  for (let k = 0; k < 4; k++) {
+    const def = document.getElementById(`edit-nonstandard-open-default-${k}`);
+    if (def) def.textContent = rec?.nonstandard?.fixedLines?.[k] || '(デフォルト)';
+    const sel = document.querySelector(`.edit-nonstandard-open-select[data-ens-open="${k}"]`);
+    if (!sel) continue;
+    const list = listNonstandardOpenOptionsForSlot(rec, k, editState.nonstandard.openConverter);
+    const cache = _editNonstandardOpenOptionsCache[k];
+    cache.clear();
+    for (const op of list) cache.set(op.key, op);
+    const valid = new Set(list.map((op) => op.key));
+    if (editState.nonstandard.openOps[k] && !valid.has(editState.nonstandard.openOps[k])) {
+      editState.nonstandard.openOps[k] = null;
+    }
+    sel.innerHTML = '<option value="">(デフォルト)</option>';
+    for (const op of list) {
+      const opt = document.createElement('option');
+      opt.value = op.key;
+      opt.textContent = formatNonstandardOpenOptionLabel(op);
+      sel.appendChild(opt);
+    }
+    sel.value = editState.nonstandard.openOps[k] || '';
+    sel.disabled = !editState.nonstandard.openConverter;
   }
 }
 async function refreshEditSeirenPanel(rec) {
@@ -17865,6 +18463,27 @@ async function applyEditToInv() {
       : IncusedRing.clampLv(editState.incusedRingLv);
   }
 
+  if (isNonstandardItem(rec) && inv.nonstandard) {
+    built.nxActive = true;
+    const nsOpenConverter = editState.nonstandard.openConverter || '';
+    built.nonstandard = {
+      grade: inv.nonstandard.grade || 'ult',
+      slotCount: Math.max(0, Math.min(5, Number(inv.nonstandard.slotCount) || 0)),
+      ops: Array.isArray(inv.nonstandard.ops) ? inv.nonstandard.ops.map((op) => op ? { ...op } : null) : [],
+      openConverter: nsOpenConverter,
+      openOps: [],
+    };
+    for (let i = 0; i < 5; i++) {
+      const slot = inv.customBaseOps?.[i];
+      built.customBaseOps[i] = slot && slot.source === 'nonstandard.base' ? { ...slot } : null;
+    }
+    for (let i = 0; i < 4; i++) {
+      const op = nsOpenConverter ? nonstandardOpenOptionByKey(editState.nonstandard.openOps[i]) : null;
+      const slot = buildNonstandardOpenSlot(op, nsOpenConverter);
+      built.nxUnlockedOps[i] = slot;
+      built.nonstandard.openOps[i] = op ? { key: op.key, name: op.name, value: op.value, stage: op.stage } : null;
+    }
+  }
   built.slotIndex = inv.slotIndex;
   built.equippedSlot = inv.equippedSlot;
   
@@ -18004,6 +18623,23 @@ function bindEditTabEvents() {
         value: info.value ?? 0,
         converter: editState.nxConverter || 'normal',
       };
+    });
+  });
+  const nsOpenConv = document.getElementById('edit-nonstandard-open-converter');
+  if (nsOpenConv) nsOpenConv.addEventListener('change', async () => {
+    editState.nonstandard.openConverter = nsOpenConv.value || '';
+    editState.nonstandard.openOps = [null, null, null, null];
+    if (editTargetSlotIdx >= 0) {
+      const inv = inventory.get(editTargetSlotIdx);
+      const rec = inv ? await Item.get(inv.itemId) : null;
+      if (rec) refreshEditNonstandardOpenPanel(rec);
+    }
+  });
+  document.querySelectorAll('.edit-nonstandard-open-select').forEach((sel) => {
+    sel.addEventListener('change', () => {
+      const k = Number(sel.dataset.ensOpen);
+      const key = sel.value || '';
+      editState.nonstandard.openOps[k] = key || null;
     });
   });
   

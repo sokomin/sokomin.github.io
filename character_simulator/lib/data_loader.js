@@ -16,6 +16,7 @@ export class DataLoader {
     this.master   = null;
     this.options  = null;
     this.optionPrefix = null;  
+    this.nonstandard = null;
     this.manifest = null;
     this.itemsSearch = null;
     
@@ -30,28 +31,54 @@ export class DataLoader {
   async init() {
     if (this._initialized) return;
     const t0 = performance.now();
-    const [master, options, manifest, itemsSearch, optionPrefix] = await Promise.all([
+    const [master, options, manifest, itemsSearch, optionPrefix, nonstandard] = await Promise.all([
       this._fetchJson('master.json'),
       this._fetchJson('options.json'),
       this._fetchJson('manifest.json'),
       this._fetchJson('items_search.json'),
       this._fetchJson('option_prefix.json').catch(() => null),
+      this._fetchJson('nonstandard_equipment.json').catch(() => null),
     ]);
     this.master = master;
     this.options = options;
     this.optionPrefix = optionPrefix;
+    this.nonstandard = nonstandard;
     this.manifest = manifest;
     this.itemsSearch = itemsSearch;
+    this._mergeNonstandardSearchRows();
     this._buildItemIdIndex();
     this._initialized = true;
     const elapsed = Math.round(performance.now() - t0);
     const opPrefixInfo = optionPrefix
       ? `, optionPrefix=${Object.keys(optionPrefix.families).length} families`
       : '';
+    const nonstandardInfo = nonstandard
+      ? `, nonstandard=${Object.keys(nonstandard.items || {}).length} items`
+      : '';
     console.info(`[DataLoader] init done in ${elapsed}ms (` +
       `master=${formatBytes(JSON.stringify(master).length)}, ` +
       `options=${Object.keys(options.templates).length} templates, ` +
-      `items_search=${itemsSearch.rows.length} rows${opPrefixInfo})`);
+      `items_search=${itemsSearch.rows.length} rows${opPrefixInfo}${nonstandardInfo})`);
+  }
+
+  _mergeNonstandardSearchRows() {
+    if (!this.nonstandard || !Array.isArray(this.nonstandard.searchRows)) return;
+    const rows = this.itemsSearch && Array.isArray(this.itemsSearch.rows)
+      ? this.itemsSearch.rows
+      : null;
+    if (!rows) return;
+    const byId = new Map(rows.map((row) => [row[0], row]));
+    for (const row of this.nonstandard.searchRows) {
+      if (!Array.isArray(row)) continue;
+      const existing = byId.get(row[0]);
+      if (existing) {
+        const extra = row[8] ? String(row[8]) : '';
+        if (extra) existing[8] = `${existing[8] || ''} ${extra}`.trim();
+        continue;
+      }
+      rows.push(row);
+      byId.set(row[0], row);
+    }
   }
 
   _buildItemIdIndex() {
@@ -80,6 +107,10 @@ export class DataLoader {
     if (!this._initialized) {
       throw new Error('[DataLoader] init() must be called first');
     }
+    const ns = this.nonstandard && this.nonstandard.items
+      ? this.nonstandard.items[String(itemId)]
+      : null;
+    if (ns) return ns;
     const kindId = this._itemIdToKind.get(itemId);
     if (kindId == null) return null;
     const chunk = await this.getItemChunk(kindId);

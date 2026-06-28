@@ -32,8 +32,25 @@ export function getLayerAggregation(layer, statId) {
 
 export function calcOpValue(opOrSlot, inv, source, LvTemp, character) {
 
+  if (Array.isArray(opOrSlot.stats) && opOrSlot.stats.length && opOrSlot.familyId == null && opOrSlot.opId == null) {
+    if (opOrSlot.isDisplayOnly) {
+      return { value: 0, constant: 0, statId: null, stats: opOrSlot.stats, layer: 'sumAll',
+               multiplier: 1, isDisplayOnly: true, source };
+    }
+    return {
+      value:         numOrZero(opOrSlot.value),
+      constant:      0,
+      statId:        null,
+      stats:         opOrSlot.stats,
+      layer:         'sumAll',
+      multiplier:    1,
+      isDisplayOnly: false,
+      source,
+    };
+  }
+
   
-  
+
   if (opOrSlot.statId && opOrSlot.familyId == null && opOrSlot.opId == null) {
     if (opOrSlot.isDisplayOnly) {
       return { value: 0, constant: 0, statId: opOrSlot.statId, layer: 'sum',

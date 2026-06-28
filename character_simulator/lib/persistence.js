@@ -78,6 +78,7 @@ export function serializeSession(character, inventory, opts = {}) {
         
         if (s.ocName != null) {
           return {
+            key:       s.nsOpenKey ?? null,
             name:      String(s.ocName),
             value:     s.ocValue ?? null,
             converter: s.ocConverter || 'normal',
@@ -120,6 +121,28 @@ export function serializeSession(character, inventory, opts = {}) {
         tier:  Math.max(0, Math.min(1, Number(inv.arcana.tier) || 0)),
       };
     }
+    if (inv.nonstandard) {
+      entry.nonstandard = {
+        grade: String(inv.nonstandard.grade || 'ult'),
+        slotCount: Math.max(0, Math.min(5, Number(inv.nonstandard.slotCount) || 0)),
+        ops: Array.isArray(inv.nonstandard.ops)
+          ? inv.nonstandard.ops.map((op) => op ? {
+              key:  op.key  ?? null,
+              name: op.name ?? null,
+              tier: op.tier ?? null,
+            } : null)
+          : [],
+        openConverter: String(inv.nonstandard.openConverter || ''),
+        openOps: Array.isArray(inv.nonstandard.openOps)
+          ? inv.nonstandard.openOps.map((op) => op ? {
+              key:   op.key   ?? null,
+              name:  op.name  ?? null,
+              value: op.value ?? null,
+              stage: op.stage ?? null,
+            } : null)
+          : [],
+      };
+    }
 
     if (inv.scroll && inv.scroll.id) {
       entry.scroll = {
@@ -129,7 +152,12 @@ export function serializeSession(character, inventory, opts = {}) {
       };
     }
     if (Array.isArray(inv.customBaseOps) && inv.customBaseOps.some((s) => s != null)) {
-      entry.customBaseOps = inv.customBaseOps.slice(0, 3).map((s) => s ? {
+      entry.customBaseOps = inv.customBaseOps.slice(0, 5).map((s) => s ? {
+        source:   s.source   ?? null,
+        nsName:   s.nsName   ?? null,
+        nsTier:   s.nsTier   ?? null,
+        nsMin:    s.nsMin    ?? null,
+        nsMax:    s.nsMax    ?? null,
         ultKey:   s.ultKey   ?? null,
         
         abrKey:   s.abrKey   ?? null,
@@ -141,6 +169,7 @@ export function serializeSession(character, inventory, opts = {}) {
         familyId: s.familyId ?? null,
         opId:     s.opId     ?? null,
         statId:   s.statId   ?? null,
+        stats:    Array.isArray(s.stats) ? [...s.stats] : null,
         value:    s.value    ?? null,
         vals:     Array.isArray(s.vals) ? [...s.vals] : null,
         addValue: s.addValue ?? null,
