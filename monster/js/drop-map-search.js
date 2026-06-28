@@ -7,6 +7,7 @@
   var levelInput = document.getElementById("drop-map-level");
   var marginInput = document.getElementById("drop-map-margin");
   var limitInput = document.getElementById("drop-map-limit");
+  var excludeAllInput = document.getElementById("drop-map-exclude-all");
   var status = document.getElementById("drop-map-status");
   var results = document.getElementById("drop-map-result");
   var hiddenItemTypeIds = {
@@ -61,7 +62,7 @@
     types.push(typeId);
   }
 
-  function getQueryTypes(typeId) {
+  function getQueryTypes(typeId, excludeAllTypes) {
     typeId = String(typeId);
     var allWeaponTypeId = String(itemTypeGroups.allWeaponTypeId || "500");
     var allSubWeaponTypeId = String(itemTypeGroups.allSubWeaponTypeId || "79");
@@ -71,12 +72,12 @@
     addQueryType(types, typeId);
     if (typeId === allWeaponTypeId) {
       weaponTypeIds.forEach(function (id) { addQueryType(types, id); });
-    } else if (contains(weaponTypeIds, typeId)) {
+    } else if (contains(weaponTypeIds, typeId) && !excludeAllTypes) {
       addQueryType(types, allWeaponTypeId);
     }
     if (typeId === allSubWeaponTypeId) {
       subWeaponTypeIds.forEach(function (id) { addQueryType(types, id); });
-    } else if (contains(subWeaponTypeIds, typeId)) {
+    } else if (contains(subWeaponTypeIds, typeId) && !excludeAllTypes) {
       addQueryType(types, allSubWeaponTypeId);
     }
     return types;
@@ -124,6 +125,9 @@
       if (["100", "200", "500"].indexOf(params.get("limit")) >= 0) {
         limitInput.value = params.get("limit");
       }
+    }
+    if (params.get("exclude_all") === "1") {
+      excludeAllInput.checked = true;
     }
   }
 
@@ -261,7 +265,7 @@
     var level = numberValue(levelInput, 0);
     var margin = Math.max(0, numberValue(marginInput, 50));
     var limit = Math.min(1000, Math.max(100, numberValue(limitInput, 100)));
-    var queryTypes = getQueryTypes(typeId);
+    var queryTypes = getQueryTypes(typeId, excludeAllInput.checked);
     var rows = getRowsForQueryTypes(queryTypes, typeId)
       .filter(function (row) { return overlapsLevel(row.map, level, margin); })
       .sort(function (a, b) { return scoreMap(b, level) - scoreMap(a, level); });
