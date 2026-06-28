@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=960">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://sokomin.github.io/material.indigo-pink.min.css" />
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32">
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192">
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+    <style>
+        table.hikikaku-tier { margin: 0 auto; border-collapse: collapse; }
+        table.hikikaku-tier th,
+        table.hikikaku-tier td { padding: 4px 12px; border: 1px solid #ccc; text-align: center; }
+        table.hikikaku-tier thead th { background: #7cd6af; color: #fff; }
+        table.hikikaku-tier td.opt-name { text-align: left; background: #f6fcfa; font-weight: bold; vertical-align: middle; }
+        table.hikikaku-tier tr.tier-sep td { border-top: 2px solid #7cd6af; }
+        table.hikikaku-tier th.col-name { min-width: 360px; }
+        table.hikikaku-tier th.col-tier,
+        table.hikikaku-tier th.col-min,
+        table.hikikaku-tier th.col-max { min-width: 90px; }
+
+        table.hikikaku-group-note { margin: 0 auto 14px; border-collapse: collapse; min-width: 760px; max-width: 1080px; }
+        table.hikikaku-group-note th,
+        table.hikikaku-group-note td { padding: 6px 10px; border: 1px solid #ccc; text-align: left; vertical-align: middle; }
+        table.hikikaku-group-note th { background: #7cd6af; color: #fff; text-align: center; }
+        table.hikikaku-group-note td.group-note-label { width: 120px; text-align: center; font-weight: bold; background: #f6fcfa; }
+        .hikikaku-matrix-wrap { overflow-x: auto; margin: 0 auto; max-width: 1920px; }
+        table.hikikaku-matrix { margin: 0 auto; border-collapse: collapse; min-width: 1360px; max-width: 1920px; }
+        table.hikikaku-matrix th,
+        table.hikikaku-matrix td { padding: 5px 8px; border: 1px solid #ccc; text-align: center; vertical-align: middle; }
+        table.hikikaku-matrix thead th { background: #7cd6af; color: #fff; }
+        table.hikikaku-matrix td.opt-name { min-width: 500px; text-align: left; background: #f6fcfa; font-weight: bold; }
+        table.hikikaku-matrix th.group-col { min-width: 64px; max-width: 96px; font-size: 0.9em; line-height: 1.35; }
+        table.hikikaku-matrix td.mark { color: #b8c1c9; font-weight: bold; }
+        table.hikikaku-matrix td.mark.yes { color: #12845f; background: #f2fbf7; }
+        table.hikikaku-matrix .group-count { display: block; color: #f0fff9; font-size: 0.85em; font-weight: normal; }
+        table.hikikaku-matrix tr:hover td { background: #fffbe8; }
+    </style>
+</head>
+<body>
+    <title>韓国アプデ 2026/04 非規格装備 オプション付与可能部位 赤石の民衆</title>
+    <meta name="description" content="韓国 RED STONE 2026/04/29 アップデート 非規格装備のオプション付与可能部位一覧">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,そこらの民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,そこみん,赤石,攻略情報,非規格装備">
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml">
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png">
+                    </a>
+                </span>
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field">
+                    </div>
+                </div>
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png">
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                    </li>
+                    <li class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                    </li>
+                    <li disabled class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                    </li>
+                    <li class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h2>メニュー</h2>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html">
+                    <strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html">
+                    <strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html">
+                    <strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html">
+                    <strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html">
+                    <strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html">
+                    <strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html">
+                    <strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html">
+                    <strong>雑学</strong></a>
+            </nav>
+        </div>
+        <div class="android-large-table mdl-layout__content">
+            <!--main-->
+            <div class="korea-content main-background">
+                <br>
+                <h1>非規格装備 オプション付与可能部位</h1>
+                <h5>
+                    <font color="#ff0000">
+                        <strong>
+                            [重要！] 韓国公式の情報を基にしています。<br>
+                            誤訳や韓国独自仕様の可能性もありますので、予めご了承下さい。
+                        </strong>
+                    </font>
+                    <br>
+                </h5>
+                <br>
+                <p style="text-align:left; max-width:880px; margin:0 auto;">
+                    2026/04/29 韓国アップデート「<a href="koreaupdate20260429_hikikaku.html">非規格装備</a>」の
+                    非規格オプションが、どの装備部位に付与されるかの一覧です。<br>
+                    <br>
+                    同じ付与可能部位設定を持つ装備部位は、1つの列にまとめています。<br>
+                    各オプションの数値幅は「<a href="koreaupdate20260429_hikikaku_options.html">非規格装備 オプション補正値</a>」を参照してください。<br>
+                    <br>
+                </p>
+                <br>
+<table id="table10" class="hikikaku-group-note" style="min-width:760px;max-width:1080px;">
+  <tr>
+    <th>表記</th>
+    <th>含まれる部位</th>
+  </tr>
+  <tr>
+    <td class="group-note-label">武器系</td>
+    <td>片手剣、両手剣、杖、牙、メイス、翼、短剣、弓、槍、スリング、ワンド、鎌、クロー、本、ほうき、双剣、ダークコア、双拳銃、格闘武器、アンカー、大砲</td>
+  </tr>
+</table>
+<br>
+<div class="hikikaku-matrix-wrap">
+<table id="table10" class="hikikaku-matrix" style="min-width:1360px;max-width:1920px;">
+  <colgroup>
+    <col span="1" width="500px">
+    <col span="12" width="68px">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>オプション</th>
+      <th class="group-col">ヘルメット<span class="group-count">1部位</span></th>
+      <th class="group-col">冠<span class="group-count">1部位</span></th>
+      <th class="group-col">グローブ<span class="group-count">1部位</span></th>
+      <th class="group-col">ブレスレット<span class="group-count">1部位</span></th>
+      <th class="group-col">ベルト<span class="group-count">1部位</span></th>
+      <th class="group-col">ブーツ<span class="group-count">1部位</span></th>
+      <th class="group-col">ネックレス<span class="group-count">1部位</span></th>
+      <th class="group-col">イヤリング<span class="group-count">1部位</span></th>
+      <th class="group-col">マント<span class="group-count">1部位</span></th>
+      <th class="group-col">共用鎧<span class="group-count">1部位</span></th>
+      <th class="group-col">武器系<span class="group-count">21部位</span></th>
+      <th class="group-col">笛<br>鞭<br>錬金石<span class="group-count">3部位</span></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="opt-name">力 [n] 増加</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+    </tr>
+    <tr>
+      <td class="opt-name">敏捷 [n] 増加</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">健康 [n] 増加</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">知恵 [n] 増加</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">知識 [n] 増加</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+    </tr>
+    <tr>
+      <td class="opt-name">カリスマ [n] 増加</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">運 [n] 増加</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">最大HP [n%] 増加</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">最大体力 [n] 増加</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">最大CP [n%] 増加</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">最大 CP [+n]</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">物理ダメージ [n%] 増加</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+    </tr>
+    <tr>
+      <td class="opt-name">武器最小攻撃力 [n] 増加</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">武器最大攻撃力 [n] 増加</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">火属性ダメージを [n％] 強化させる。</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">水属性ダメージを [n％] 強化させる。</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">風属性ダメージを [n％] 強化させる。</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">大地属性ダメージを [n％] 強化させる。</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">光属性ダメージを [n％] 強化させる。</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">闇属性ダメージを [n％] 強化させる。</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">魔法ダメージを [n％] 強化させる。</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">ターゲットの火の抵抗を [n％] 弱化させる。</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">ターゲットの水の抵抗を [n％] 弱化させる。</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">ターゲットの風の抵抗を [n％] 弱化させる。</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">ターゲットの大地の抵抗を [n％] 弱化させる。</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">ターゲットの光の抵抗を [n％] 弱化させる。</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">ターゲットの闇の抵抗を [n％] 弱化させる。</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">ターゲットの魔法の抵抗を [n％] 弱化させる。</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">物理致命打発動確率 [n%] 増加</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+    </tr>
+    <tr>
+      <td class="opt-name">物理致命打ダメージ [n%] 増加</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+    </tr>
+    <tr>
+      <td class="opt-name">敵物理致命打抵抗 [n%] 減少</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+    </tr>
+    <tr>
+      <td class="opt-name">ダブルクリティカルダメージ [n%] 増加</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+    </tr>
+    <tr>
+      <td class="opt-name">魔法致命打発動確率 [n%] 増加</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+    </tr>
+    <tr>
+      <td class="opt-name">魔法致命打ダメージ [n%] 増加</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+    </tr>
+    <tr>
+      <td class="opt-name">物理強打発動確率 [n%] 増加</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+    </tr>
+    <tr>
+      <td class="opt-name">物理強打ダメージ [n%] 増加</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+    </tr>
+    <tr>
+      <td class="opt-name">魔法強打発動確率 [n％] 増加</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+    </tr>
+    <tr>
+      <td class="opt-name">魔法強打ダメージ [n%] 増加</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+    </tr>
+    <tr>
+      <td class="opt-name">防御力 [n%] 増加</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">防御力 [n] 増加</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">火属性抵抗 [n％] 増加</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">水属性抵抗 [n％] 増加</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">風属性抵抗 [n％] 増加</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">大地属性抵抗 [n％] 増加</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">光属性抵抗 [n％] 増加</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">闇属性抵抗 [n％] 増加</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">全ての属性抵抗 [n％] 増加</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">異常状態 抵抗 [n％] 増加</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">能力値低下状態 抵抗 [n％] 増加</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">呪い系抵抗 [n％] 増加</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">すべての状態異常 抵抗 [n％] 増加</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">ノックバック 抵抗 [n％] 増加</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">物理致命打抵抗 [n％] 増加</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">決定打 抵抗 [n％] 増加</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">フィールドのステータス低下に対する抵抗 [n%] 増加</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">フィールドの属性最大値制限に対する抵抗 [n%] 増加</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">全てのスキルレベル [n] 増加</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+    </tr>
+    <tr>
+      <td class="opt-name">限界突破称号の物理効果 [n]増加、[n]％増加</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+    </tr>
+    <tr>
+      <td class="opt-name">限界突破称号の物理効果 [+n％]</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+    </tr>
+    <tr>
+      <td class="opt-name">限界突破称号の魔法効果 [n]増加、[n]％増加</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+    </tr>
+    <tr>
+      <td class="opt-name">限界突破称号の魔法効果 [+n％]</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+    </tr>
+    <tr>
+      <td class="opt-name">限界突破称号の物理効果[+n]、魔法効果[+n]</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">限界突破称号の物理効果[+n%]、魔法効果[+n%]</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">移動速度 [n％] 増加</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">攻撃速度 [n%] 増加</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+    </tr>
+    <tr>
+      <td class="opt-name">命中率 [n%] 増加</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">物理回避率 [n%] 増加</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">スキルクールタイム <span class="color-image13">[n%]</span>減少</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">集中力 [+n]</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">ポーション 回復速度 [n%] 増加</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">被ダメージ [n％]減少</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">所持時、魔法アイテムドロップ確率<span class="color-image13">+[n]</span>％増加</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">ユニークアイテムドロップ確率<span class="color-image13">+[n]</span>％増加</td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+    </tr>
+    <tr>
+      <td class="opt-name">(召喚獣、ペット) 物理ダメージ [+n％] 増加</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+    </tr>
+    <tr>
+      <td class="opt-name">(召喚獣、ペット) 魔法攻撃力 [n％] 増加</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+    </tr>
+    <tr>
+      <td class="opt-name">(召喚獣、ペット) 攻撃速度 [n％] 増加</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+    </tr>
+    <tr>
+      <td class="opt-name">(召喚獣、ペット) 最大HP [n％] 増加</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+    </tr>
+    <tr>
+      <td class="opt-name">(召喚獣、ペット) 異常状態抵抗 [n％] 増加</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+    </tr>
+    <tr>
+      <td class="opt-name">(召喚獣、ペット) 全ステータス [n] 増加</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+    </tr>
+    <tr>
+      <td class="opt-name">(召喚獣、ペット) 敵の物理致命打抵抗 [n％] 減少</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+      <td class="mark yes">●</td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark"></td>
+      <td class="mark yes">●</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">
+                        当サイトで利用している画像及びデータは、L&amp;K Co., Ltd.に帰属します。<br>
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    c L&amp;K Co., Ltd. All Rights Reserved.<br>
+                </footer>
+                <!--書き換え禁止
+                    Copyright (c) This site is created by Sokomin. All Rights Reserved.
+                -->
+            </div>
+            <script src="https://sokomin.github.io/material.min.js"></script>
+        </div>
+</body>
+</html>

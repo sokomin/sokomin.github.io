@@ -97,8 +97,38 @@
         overflow-x: auto;
       }
       .drop-search-result table#table10 {
-        min-width: 700px;
-        max-width: 1600px;
+        width: 86%;
+        min-width: 760px;
+        max-width: 1180px;
+        margin: 0 auto;
+        table-layout: fixed;
+      }
+      .drop-search-result table#table10 th:nth-child(1),
+      .drop-search-result table#table10 td:nth-child(1) {
+        width: 34%;
+      }
+      .drop-search-result table#table10 th:nth-child(2),
+      .drop-search-result table#table10 td:nth-child(2) {
+        width: 12%;
+      }
+      .drop-search-result table#table10 th:nth-child(3),
+      .drop-search-result table#table10 td:nth-child(3) {
+        width: 42%;
+      }
+      .drop-search-result table#table10 th:nth-child(4),
+      .drop-search-result table#table10 td:nth-child(4) {
+        width: 12%;
+      }
+      .drop-search-result table#table10 td:nth-child(1),
+      .drop-search-result table#table10 td:nth-child(3) {
+        text-align: left;
+        padding-left: 10px;
+      }
+      .drop-search-result .monster-list {
+        display: inline-block;
+        margin: 0;
+        padding-left: 18px;
+        text-align: left;
       }
       .drop-search-result img {
         width: 120px;
@@ -109,11 +139,11 @@
 </head>
 
 <body>
-    <title>アイテムがドロップする対象のモンスター検索 赤石の民衆</title>
-    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <title>ドロップ狩場検索 赤石の民衆</title>
+    <meta name="description" content="RED STONEのアイテム種別と適正Lvから狩場を検索できます。" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <meta http-equiv="Content-Script-Type" content="text/javascript" />
-    <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,そこらの民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,そこみん,赤石,攻略情報" />
+    <meta name="keywords" content="RED STONE,レッドストーン,赤石の民衆,ドロップ,狩場,モンスター" />
     <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
 
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
@@ -184,51 +214,55 @@
 
             <!--main-->
             <div class="main-background mdl-typography--text-center">
+                                <br>
+                <h1>ドロップ狩場検索</h1>
                 <br>
-                <h1>アイテムがドロップする対象のモンスター検索</h1>
-                <br>
-                アイテム種別・モンスター種族・モンスター名から、該当するドロップ情報を検索できます。<br>
+                アイテム種別と適正Lvから、該当アイテムをドロップする可能性のある狩場を検索できます。<br>
                 検索結果のモンスター名をクリックすると、モンスター詳細ページへ移動できます。<br>
                 <br>
+                <p><a href="monster-drop-item-search.html">アイテム種別・種族・名前でモンスターを検索する</a></p>
                 <p><a href="monster-drop-item-list.html">旧一覧ページへ戻る</a></p>
-                <p><a href="monster-drop-map-search.html">アイテム種別・適正Lvから狩場を検索する</a></p>
                 <br>
 
                 <div class="drop-search-panel">
                     <h4>検索条件</h4>
                     <div class="drop-search-controls">
                         <div class="drop-search-field">
-                            <label for="drop-item-type">アイテム種別</label>
-                            <select id="drop-item-type">
-                                <option value="">指定なし</option>
-                            </select>
+                            <label for="drop-map-item-type">アイテム種別</label>
+                            <select id="drop-map-item-type"></select>
                         </div>
                         <div class="drop-search-field">
-                            <label for="drop-species">モンスター種族</label>
-                            <select id="drop-species">
-                                <option value="">指定なし</option>
-                            </select>
+                            <label for="drop-map-level">適正Lv</label>
+                            <input id="drop-map-level" type="number" min="0" max="2000" step="1" value="1300">
                         </div>
                         <div class="drop-search-field">
-                            <label for="drop-name">モンスター名</label>
-                            <input id="drop-name" type="search" placeholder="例: 骸骨">
+                            <label for="drop-map-margin">Lv幅</label>
+                            <input id="drop-map-margin" type="number" min="0" max="500" step="5" value="50">
                         </div>
-                        <button id="drop-search-submit" class="drop-search-button" type="button">検索</button>
+                        <div class="drop-search-field">
+                            <label for="drop-map-limit">表示件数</label>
+                            <select id="drop-map-limit">
+                                <option value="100">100</option>
+                                <option value="200">200</option>
+                                <option value="500">500</option>
+                            </select>
+                        </div>
+                        <button id="drop-map-search-submit" class="drop-search-button" type="button">検索</button>
                     </div>
-                    <p>条件を1つ以上指定して検索してください。</p>
-                    <p id="drop-search-status"></p>
+                    <p id="drop-map-status"></p>
                 </div>
 
-                <div id="drop-search-result" class="drop-search-result"></div>
+                <div id="drop-map-result" class="drop-search-result"></div>
                 <br>
                 <br>
                 <h4>データの読み方</h4>
-                * 1モンスターにつき複数種類のアイテムをドロップします。<br>
-                * 部位(数値) で、数値は「高いほどレアドロップしやすい」で大体あってます。<br>
+                * 1モンスターに複数種類のアイテムドロップが設定されている場合があります。<br>
+                * モンスター名の後ろの数値は配置数、括弧内の数値はドロップ係数です。<br>
+                * 「全ての武器」「全ての補助武器」は関連する個別種別の検索にも反映されます。<br>
+                <br>
                 <br>
 
-                <br>
-                <br>
+                
 
                 <footer class="android-footer mdl-mega-footer">
                     <font color="red">
@@ -243,9 +277,8 @@
 
             </div>
 
-            <script src="../update/js/itemtype_list.js"></script>
-            <script src="../update/js/mobparam.js"></script>
-            <script src="js/drop-search.js"></script>
+            <script src="js/drop-map-index.js"></script>
+            <script src="js/drop-map-search.js"></script>
             <script src="https://sokomin.github.io/material.min.js"></script>
         </div>
 </body>
