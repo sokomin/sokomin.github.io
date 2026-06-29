@@ -454,6 +454,20 @@
         showScreen('start');
     }
 
+    function sendQuizAnalytics(level, correct, total, rate, pass) {
+        if (typeof window.gtag !== 'function') return;
+        window.gtag('event', 'quiz_finish', {
+            event_category: 'redstone_quiz',
+            event_label: 'Lv' + level,
+            value: correct,
+            quiz_level: String(level),
+            quiz_score: correct,
+            quiz_total: total,
+            quiz_rate: Math.round(rate * 100),
+            quiz_pass: pass ? 1 : 0
+        });
+    }
+
     function finishQuiz() {
         var total = STATE.questions.length;
         var nCorrect = STATE.results.filter(function (r) { return r.ok; }).length;
@@ -499,6 +513,7 @@
         });
         if (STATE.history.length > 100) STATE.history.shift();
         saveHistory();
+        sendQuizAnalytics(STATE.quizLevel, nCorrect, total, rate, pass);
 
         showScreen('result');
     }
