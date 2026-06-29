@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="RED STONEの知識をLv別に確認できるクイズです。" />
+    <meta name="keywords" content="RED STONE,レッドストーン,赤石の民衆,クイズ,シミュレーター" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://sokomin.github.io/material.indigo-pink.min.css" />
+    <link rel="stylesheet" href="https://sokomin.github.io/styles.css" />
+    <link rel="icon" href="https://sokomin.github.io/design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="https://sokomin.github.io/design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="https://sokomin.github.io/design/RedStoneLogo.png" />
+    <script type="text/javascript" src="https://sokomin.github.io/design/jquery-3.4.1.min.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <title>RED STONE クイズ</title>
+
+    <style>
+        .rq-wrap {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 0 12px;
+            text-align: left;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+        .rq-screen.hidden { display: none; }
+        .rq-section {
+            background: #fafafa;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 14px 18px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+        .rq-section h3 {
+            margin: 0 0 12px;
+            font-size: 16px;
+            font-weight: bold;
+            border-bottom: 2px solid #9d896c;
+            padding-bottom: 4px;
+            color: #333;
+        }
+        .rq-level-grid {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 10px;
+        }
+        .rq-level-btn {
+            min-height: 72px;
+            padding: 12px 6px;
+            background: #9d896c;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.15s;
+            white-space: normal;
+            line-height: 1.25;
+        }
+        .rq-level-btn:hover { background: #b6a07f; }
+        .rq-level-btn small {
+            display: block;
+            font-size: 11px;
+            font-weight: normal;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+        .rq-header {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+            font-size: 14px;
+            color: #555;
+            padding: 8px 14px;
+            background: #efe9d9;
+            border-radius: 4px;
+        }
+        .rq-header b { color: #333; }
+        .rq-progress-bar {
+            height: 8px;
+            background: #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 8px 0 14px;
+        }
+        .rq-progress-bar > div {
+            height: 100%;
+            background: #9d896c;
+            width: 0;
+            transition: width 0.2s;
+        }
+        .rq-question-box {
+            background: #2b2113;
+            color: #f1e7d3;
+            border: 2px solid #9d896c;
+            border-radius: 6px;
+            padding: 16px 18px;
+            font-size: 15px;
+            line-height: 1.7;
+            min-height: 80px;
+            box-sizing: border-box;
+        }
+        .rq-qid {
+            font-size: 12px;
+            color: #c8b48b;
+            margin-bottom: 6px;
+        }
+        .rq-debug-inline,
+        .rq-debug-block,
+        .rq-debug-cell {
+            display: none;
+        }
+        body.rq-show-debug-meta .rq-debug-inline { display: inline; }
+        body.rq-show-debug-meta .rq-debug-block { display: block; }
+        body.rq-show-debug-meta .rq-debug-cell { display: table-cell; }
+        .rq-question {
+            overflow-wrap: anywhere;
+            word-break: normal;
+        }
+        .rq-question img {
+            max-width: 100%;
+            height: auto;
+            display: inline-block;
+            vertical-align: middle;
+            margin: 4px 2px;
+            border: 1px solid #5a4625;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+        .rq-question table {
+            border-collapse: collapse;
+            margin: 6px 0;
+            max-width: 100%;
+        }
+        .rq-question table td,
+        .rq-question table th {
+            border: 1px solid #9d896c;
+            padding: 3px 8px;
+            color: #f1e7d3;
+        }
+        .rq-question code {
+            background: #3d2f1a;
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+        }
+        .rq-choices {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 14px;
+        }
+        .rq-choice {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: #fff;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 15px;
+            text-align: left;
+            transition: background 0.15s, border-color 0.15s;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .rq-choice:hover { background: #f4ecdb; border-color: #9d896c; }
+        .rq-choice .rq-num {
+            font-weight: bold;
+            min-width: 24px;
+            color: #9d896c;
+            flex: 0 0 auto;
+        }
+        .rq-choice .rq-choice-body {
+            flex: 1 1 auto;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+            min-width: 0;
+        }
+        .rq-choice .rq-choice-body img {
+            max-width: 100%;
+            max-height: 96px;
+            height: auto;
+            display: inline-block;
+            vertical-align: middle;
+            margin: 2px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+        .rq-choice .rq-choice-body code {
+            background: #efe9d9;
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+        }
+        .rq-choice.correct { background: #d4edda; border-color: #2e7d32; }
+        .rq-choice.wrong { background: #f8d7da; border-color: #c62828; }
+        .rq-choice.fade { opacity: 0.55; }
+        .rq-choice:disabled { cursor: default; }
+        .rq-feedback {
+            margin-top: 14px;
+            padding: 10px 14px;
+            border-radius: 4px;
+            font-size: 15px;
+            display: none;
+            overflow-wrap: anywhere;
+        }
+        .rq-feedback.ok {
+            background: #e8f5e9;
+            border-left: 5px solid #2e7d32;
+            color: #1b5e20;
+            display: block;
+        }
+        .rq-feedback.ng {
+            background: #ffebee;
+            border-left: 5px solid #c62828;
+            color: #b71c1c;
+            display: block;
+        }
+        .rq-actions {
+            text-align: center;
+            margin-top: 14px;
+        }
+        .rq-button {
+            display: inline-block;
+            min-height: 40px;
+            padding: 9px 24px;
+            background: #9d896c;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 4px 6px;
+            box-sizing: border-box;
+        }
+        .rq-button:hover { background: #b6a07f; }
+        .rq-button:disabled { background: #ccc; cursor: default; }
+        .rq-button.secondary { background: #777; }
+        .rq-button.secondary:hover { background: #999; }
+        .rq-result-summary {
+            background: #efe9d9;
+            border-radius: 6px;
+            padding: 16px 20px;
+            font-size: 16px;
+            line-height: 1.9;
+            text-align: center;
+        }
+        .rq-result-summary b {
+            font-size: 22px;
+            color: #5a4625;
+        }
+        .rq-result-badge {
+            margin-top: 10px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .rq-result-badge.pass { color: #2e7d32; }
+        .rq-result-badge.fail { color: #c62828; }
+        .rq-result-detail {
+            margin-top: 16px;
+            overflow-x: auto;
+        }
+        .rq-result-detail table {
+            width: 100%;
+            min-width: 680px;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        .rq-result-detail th,
+        .rq-result-detail td {
+            border-bottom: 1px solid #ddd;
+            padding: 6px;
+            text-align: left;
+            vertical-align: top;
+            overflow-wrap: anywhere;
+        }
+        .rq-result-detail th {
+            background: #efe9d9;
+            font-size: 12px;
+        }
+        .rq-result-detail .res-ok { color: #2e7d32; font-weight: bold; }
+        .rq-result-detail .res-ng { color: #c62828; font-weight: bold; }
+        .rq-result-detail td img {
+            max-width: 60px;
+            max-height: 40px;
+            vertical-align: middle;
+        }
+        .rq-note {
+            font-size: 12px;
+            color: #777;
+            margin-top: 10px;
+            text-align: center;
+            line-height: 1.6;
+        }
+        .rq-error {
+            background: #ffebee;
+            border-left: 5px solid #c62828;
+            color: #b71c1c;
+            padding: 10px 14px;
+            margin: 10px 0;
+            font-size: 14px;
+            white-space: pre-line;
+        }
+        @media (max-width: 720px) {
+            .android-large-table.mdl-layout__content {
+                width: 100%;
+                max-width: 100%;
+                overflow-x: hidden;
+            }
+            .main-background {
+                width: 100% !important;
+                min-width: 0 !important;
+                max-width: 100% !important;
+                padding-left: 4px;
+                padding-right: 4px;
+                box-sizing: border-box;
+                overflow-x: hidden;
+            }
+            .rq-wrap {
+                width: 100%;
+                max-width: 100%;
+                min-width: 0;
+                margin: 12px auto;
+                padding: 0 8px;
+                font-size: 14px;
+                overflow-x: hidden;
+            }
+            .rq-section {
+                padding: 12px;
+                min-width: 0;
+                max-width: 100%;
+                overflow: hidden;
+            }
+            .rq-level-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 8px;
+            }
+            .rq-header {
+                font-size: 13px;
+                gap: 10px;
+            }
+            .rq-question-box {
+                padding: 13px;
+                font-size: 14px;
+            }
+            .rq-choice {
+                padding: 10px;
+                font-size: 14px;
+            }
+            .rq-actions {
+                display: grid;
+                gap: 8px;
+            }
+            .rq-button {
+                width: 100%;
+                margin: 0;
+            }
+            .rq-result-detail {
+                width: 100%;
+                max-width: 100%;
+                overflow-x: auto;
+            }
+            .rq-result-detail table {
+                width: 680px;
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="https://sokomin.github.io/design/logo3.png" />
+                    </a>
+                </span>
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text" onkeypress="enter();" id="search-field" />
+                    </div>
+                </div>
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title"><h2>メニュー</h2></span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="https://sokomin.github.io/item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="https://sokomin.github.io/skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="https://sokomin.github.io/monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="https://sokomin.github.io/secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest" href="https://sokomin.github.io/quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="https://sokomin.github.io/guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend" href="https://sokomin.github.io/korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info" href="https://sokomin.github.io/information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+        <div class="android-large-table mdl-layout__content">
+            <a href="https://sokomin.github.io/index.html">トップ</a> &gt;&gt;
+            <a href="https://sokomin.github.io/calculator.html">計算機</a> &gt;&gt;
+            RED STONE クイズ<br>
+
+            <div class="main-background mdl-typography--text-center">
+                <br>
+                <h1>RED STONE クイズ</h1>
+                <div class="rq-wrap">
+                    <div id="rq-start" class="rq-screen">
+                        <div class="rq-section">
+                            <h3>難易度を選択</h3>
+                            <div class="rq-level-grid" id="rq-level-grid"></div>
+                            <div class="rq-note">
+                                全20問 / 合格ライン60%<br>
+                                各問題と選択肢の並びはランダムです。
+                            </div>
+                            <div id="rq-load-error" class="rq-error" style="display:none;"></div>
+                        </div>
+                    </div>
+
+                    <div id="rq-ex-confirm" class="rq-screen hidden">
+                        <div class="rq-section">
+                            <h3>LvEX 確認</h3>
+                            <div class="rq-result-summary">
+                                EXでは非常に難しい問題が出題されます。<br>
+                                挑戦しますか？
+                            </div>
+                            <div class="rq-actions">
+                                <button class="rq-button" id="rq-ex-yes">はい</button>
+                                <button class="rq-button secondary" id="rq-ex-no">いいえ</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="rq-quiz" class="rq-screen hidden">
+                        <div class="rq-section">
+                            <div class="rq-header">
+                                <span class="rq-debug-inline">クイズLv<b id="rq-quiz-level"></b></span>
+                                <span>進捗: <b id="rq-progress">0 / 20</b></span>
+                                <span>正解: <b id="rq-correct-count">0</b></span>
+                            </div>
+                            <div class="rq-progress-bar"><div id="rq-progress-bar-inner"></div></div>
+                            <div class="rq-question-box">
+                                <div class="rq-qid rq-debug-block" id="rq-qid"></div>
+                                <div class="rq-question" id="rq-question">読み込み中...</div>
+                            </div>
+                            <div class="rq-choices" id="rq-choices"></div>
+                            <div class="rq-feedback" id="rq-feedback"></div>
+                            <div class="rq-actions">
+                                <button class="rq-button" id="rq-next" disabled>次へ</button>
+                                <button class="rq-button secondary" id="rq-abort">中断して戻る</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="rq-result" class="rq-screen hidden">
+                        <div class="rq-section">
+                            <h3>結果</h3>
+                            <div class="rq-result-summary">
+                                <div>クイズLv<b id="rq-result-level"></b></div>
+                                <div>正解: <b id="rq-result-correct"></b> / <b id="rq-result-total"></b> 問</div>
+                                <div>正答率: <b id="rq-result-rate"></b></div>
+                                <div class="rq-result-badge" id="rq-result-badge"></div>
+                            </div>
+                            <div class="rq-result-detail">
+                                <h4>解答内訳</h4>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th style="width:30px;">#</th>
+                                            <th class="rq-debug-cell" style="width:80px;">問ID</th>
+                                            <th>問題</th>
+                                            <th>あなたの解答</th>
+                                            <th>正解</th>
+                                            <th style="width:48px;">判定</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="rq-result-tbody"></tbody>
+                                </table>
+                            </div>
+                            <div class="rq-actions">
+                                <button class="rq-button" id="rq-retry">同じLvでもう一度</button>
+                                <button class="rq-button secondary" id="rq-back">難易度選択へ戻る</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br><br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">
+                        当サイトで利用している画像及びデータは、L&amp;K Co., Ltd.に帰属します。<br>
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    &copy; L&amp;K Co., Ltd. All Rights Reserved.<br>
+                </footer>
+            </div>
+            <script src="https://sokomin.github.io/material.min.js"></script>
+        </div>
+    </div>
+
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+    <script src="redstone_quiz.js?v=20260630"></script>
+</body>
+
+</html>
