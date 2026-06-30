@@ -52,6 +52,23 @@
             padding-bottom: 4px;
             color: #333;
         }
+        .rq-start-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .rq-start-head h3 {
+            flex: 1 1 auto;
+            margin-bottom: 0;
+        }
+        .rq-start-head .rq-button {
+            flex: 0 0 auto;
+            min-width: 180px;
+            padding-left: 18px;
+            padding-right: 18px;
+        }
         .rq-level-grid {
             display: grid;
             grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -255,6 +272,7 @@
         .rq-button:disabled { background: #ccc; cursor: default; }
         .rq-button.secondary { background: #777; }
         .rq-button.secondary:hover { background: #999; }
+        .rq-button.hidden { display: none; }
         .rq-result-summary {
             background: #efe9d9;
             border-radius: 6px;
@@ -274,6 +292,12 @@
         }
         .rq-result-badge.pass { color: #2e7d32; }
         .rq-result-badge.fail { color: #c62828; }
+        .rq-result-recommend {
+            margin-top: 8px;
+        }
+        .rq-result-recommend.hidden {
+            display: none;
+        }
         .rq-result-detail {
             margin-top: 16px;
             overflow-x: auto;
@@ -352,6 +376,16 @@
             .rq-level-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
                 gap: 8px;
+            }
+            .rq-start-head {
+                display: block;
+            }
+            .rq-start-head h3 {
+                margin-bottom: 10px;
+            }
+            .rq-start-head .rq-button {
+                min-width: 0;
+                width: 100%;
             }
             .rq-header {
                 font-size: 13px;
@@ -442,12 +476,11 @@
                 <div class="rq-wrap">
                     <div id="rq-start" class="rq-screen">
                         <div class="rq-section">
-                            <h3>難易度を選択</h3>
-                            <div class="rq-level-grid" id="rq-level-grid"></div>
-                            <div class="rq-note">
-                                全20問 / 合格ライン60%<br>
-                                各問題と選択肢の並びはランダムです。
+                            <div class="rq-start-head">
+                                <h3>難易度を選択</h3>
+                                <div id="rq-diagnosis-slot"></div>
                             </div>
+                            <div class="rq-level-grid" id="rq-level-grid"></div>
                             <div id="rq-load-error" class="rq-error" style="display:none;"></div>
                         </div>
                     </div>
@@ -494,6 +527,7 @@
                                 <div>クイズLv<b id="rq-result-level"></b></div>
                                 <div>正解: <b id="rq-result-correct"></b> / <b id="rq-result-total"></b> 問</div>
                                 <div>正答率: <b id="rq-result-rate"></b></div>
+                                <div class="rq-result-recommend hidden" id="rq-result-recommend">おすすめ: <b id="rq-result-recommend-level"></b></div>
                                 <div class="rq-result-badge" id="rq-result-badge"></div>
                             </div>
                             <div class="rq-result-detail">
@@ -513,6 +547,7 @@
                                 </table>
                             </div>
                             <div class="rq-actions">
+                                <button class="rq-button hidden" id="rq-start-recommend">おすすめLvで始める</button>
                                 <button class="rq-button" id="rq-retry">同じLvでもう一度</button>
                                 <button class="rq-button secondary" id="rq-back">難易度選択へ戻る</button>
                             </div>
