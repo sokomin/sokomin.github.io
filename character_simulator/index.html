@@ -1265,6 +1265,108 @@
     }
 
     
+    .optimizer-layout {
+      display: grid;
+      grid-template-columns: minmax(260px, 340px) 1fr;
+      gap: 10px;
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .optimizer-layout { grid-template-columns: 1fr; }
+    }
+    .optimizer-panel {
+      border: 1px solid #5b3d12;
+      background: #120c04;
+      padding: 8px;
+    }
+    .optimizer-panel h4 {
+      margin: 0 0 6px;
+      color: #ffd070;
+      font-size: 13px;
+      border-bottom: 1px solid #5b3d12;
+      padding-bottom: 3px;
+    }
+    .optimizer-controls {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 6px;
+      align-items: center;
+      font-size: 12px;
+    }
+    .optimizer-controls label { color: #b0944c; }
+    .optimizer-controls select,
+    .optimizer-controls input {
+      width: 100%;
+      box-sizing: border-box;
+      background: #050301;
+      color: #f4e7a2;
+      border: 1px solid #6d4b18;
+      padding: 2px 4px;
+      font-size: 12px;
+    }
+    .optimizer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .optimizer-actions button {
+      background: #2a1a08;
+      color: #ffd070;
+      border: 1px solid #6d4b18;
+      padding: 3px 8px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .optimizer-actions button:disabled {
+      opacity: 0.45;
+      cursor: default;
+    }
+    .optimizer-status {
+      margin-top: 8px;
+      color: #cdb57a;
+      font-size: 12px;
+      min-height: 18px;
+      white-space: pre-wrap;
+    }
+    .optimizer-result-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .optimizer-result-table th,
+    .optimizer-result-table td {
+      border: 1px solid #5b3d12;
+      padding: 3px 5px;
+      vertical-align: top;
+    }
+    .optimizer-result-table th {
+      background: #2a1a08;
+      color: #ffd070;
+      white-space: nowrap;
+    }
+    .optimizer-result-table td {
+      color: #f4e7a2;
+    }
+    .optimizer-result-table .num {
+      text-align: right;
+      font-family: "Consolas", monospace;
+      color: #00ff66;
+      white-space: nowrap;
+    }
+    .optimizer-result-table .diff {
+      color: #cdb57a;
+      line-height: 1.45;
+    }
+    .optimizer-result-table button {
+      background: #2a1a08;
+      color: #ffd070;
+      border: 1px solid #6d4b18;
+      padding: 2px 6px;
+      cursor: pointer;
+      font-size: 11px;
+    }
+
     .mapmon-tab-layout {
       display: grid;
       grid-template-columns: minmax(260px, 320px) 1fr;
@@ -2493,7 +2595,9 @@
             <button type="button" class="sim-tab-btn"           data-tab-btn="trans"    role="tab">超越スキル</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="blood"    role="tab">ブラッドレコード</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="damage"   role="tab">ダメージ計算</button>
+            <button type="button" class="sim-tab-btn"           data-tab-btn="optimizer" role="tab" hidden aria-hidden="true" tabindex="-1">装備探索</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="mapmon"   role="tab">マップ&amp;モンスター</button>
+            <button type="button" class="sim-tab-btn"           data-tab-btn="settings" role="tab">設定</button>
           </nav>
 
           
@@ -3134,6 +3238,7 @@
                       <option value="sho_pet">松・ペット (1250UMU+1個制限指)</option>
                       <option value="bai_pet">梅・ペット (1000UMU+T力ウロボロス)</option>
                       <option value="chiku_pet">竹・ペット (775UMU+T知識太極)</option>
+                      <option value="kago_a_2147">775ULT防具セット</option>
                     </select>
                     <button id="btn-preset-load" title="選択プリセットの装備一式をインベントリに展開 (装着はしない)">📤 読込</button>
                     <button id="btn-preset-save" title="現在のインベントリ全件を選択プリセットに上書き保存">💾 上書き保存</button>
@@ -4238,6 +4343,20 @@
 
                 
                 <table class="damage-input-table" id="damage-input-magic" style="display:none;"><tbody>
+                  <tr class="damage-musket-row" style="display:none;"><th>武器最小攻撃力</th><td><input type="number" id="dmg-in-mWeaponMin" value="0" step="1"></td></tr>
+                  <tr class="damage-musket-row" style="display:none;"><th>武器最大攻撃力</th><td><input type="number" id="dmg-in-mWeaponMax" value="0" step="1"></td></tr>
+                  <tr class="damage-musket-row" style="display:none;"><th>ダメージ%</th><td><input type="number" id="dmg-in-mWeaponDamagePct" value="0" step="1"></td></tr>
+                  <tr class="damage-musket-row" style="display:none;"><th>攻撃力適用倍率%</th><td><input type="number" id="dmg-in-mAtkApplyPct" value="0" step="0.1"></td></tr>
+                  <tr class="damage-musket-row" style="display:none;"><th>本体HIT数</th><td><input type="number" id="dmg-in-mMainHits" value="1" step="0.1"></td></tr>
+                  <tr class="damage-musket-row" style="display:none;"><th>追加HIT数</th><td><input type="number" id="dmg-in-mExtraHits" value="0" step="0.1"></td></tr>
+                  <tr class="damage-musket-row" style="display:none;"><th>追加HIT倍率%</th><td><input type="number" id="dmg-in-mExtraScalePct" value="100" step="0.1"></td></tr>
+                  <tr class="damage-musket-row" style="display:none;"><th>魔力弾数</th><td><input type="number" id="dmg-in-mBulletCount" value="3" step="1"></td></tr>
+                  <tr class="damage-musket-row" style="display:none;"><th>DPS方式</th><td>
+                    <select id="dmg-in-mMusketDpsMode" style="width:100%; background:#120c04; color:#00ff66; border:1px solid #8b6a28; font:inherit; padding:1px 4px;">
+                      <option value="action">単発間隔</option>
+                      <option value="reload">魔力弾リロード</option>
+                    </select>
+                  </td></tr>
                   <tr><th>知識</th><td><input type="number" id="dmg-in-mInt" value="0" step="1"></td></tr>
                   <tr><th>魔法ダメ強化%</th><td><input type="number" id="dmg-in-mDmgPct" value="0" step="1"></td></tr>
                   <tr><th>錬金術 Lv</th><td><input type="number" id="dmg-in-mAlchemy" value="0" step="1"></td></tr>
@@ -4296,6 +4415,38 @@
           </div>
 
           
+          <div class="tab-pane" data-tab="optimizer">
+            <div class="optimizer-layout">
+              <div class="optimizer-panel">
+                <h4>探索条件</h4>
+                <div class="optimizer-controls">
+                  <label for="optimizer-metric">評価</label>
+                  <select id="optimizer-metric">
+                    <option value="dps">DPS</option>
+                    <option value="expected">期待値 1発</option>
+                    <option value="normal">通常 1発</option>
+                  </select>
+                  <label for="optimizer-limit">候補数/部位</label>
+                  <input type="number" id="optimizer-limit" min="1" max="50" step="1" value="8">
+                  <label for="optimizer-passes">探索回数</label>
+                  <input type="number" id="optimizer-passes" min="1" max="5" step="1" value="2">
+                  <label for="optimizer-topn">表示件数</label>
+                  <input type="number" id="optimizer-topn" min="1" max="30" step="1" value="10">
+                </div>
+                <div class="optimizer-actions">
+                  <button type="button" id="optimizer-run">探索開始</button>
+                  <button type="button" id="optimizer-stop" disabled>停止</button>
+                  <button type="button" id="optimizer-restore">元装備に戻す</button>
+                </div>
+                <div id="optimizer-status" class="optimizer-status">ダメージ計算タブで対象スキルを選択してから実行します。</div>
+              </div>
+              <div class="optimizer-panel">
+                <h4>候補</h4>
+                <div id="optimizer-results" class="damage-empty">まだ探索していません。</div>
+              </div>
+            </div>
+          </div>
+
           <div class="tab-pane" data-tab="mapmon">
             <div class="mapmon-tab-layout">
 
@@ -4328,6 +4479,31 @@
                 </div>
               </div>
 
+            </div>
+          </div>
+
+          <div class="tab-pane" data-tab="settings">
+            <div class="item-panel" style="max-width:720px;">
+              <h4>表示設定</h4>
+              <table class="form-table"><tbody>
+                <tr>
+                  <td class="tdtext" style="width:140px;">オプション表記名</td>
+                  <td>
+                    <label class="tdtext" style="display:inline-flex; align-items:center; gap:4px; margin-right:16px; cursor:pointer;">
+                      <input type="radio" name="setting-option-name-mode" value="2020" checked>
+                      2020パターン
+                    </label>
+                    <label class="tdtext" style="display:inline-flex; align-items:center; gap:4px; cursor:pointer;">
+                      <input type="radio" name="setting-option-name-mode" value="2026">
+                      2026パターン
+                    </label>
+                  </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td class="tdtext" id="settings-option-name-status" style="color:#9aa68b; font-size:11px;"></td>
+                </tr>
+              </tbody></table>
             </div>
           </div>
 
@@ -4388,7 +4564,7 @@ const __SK_BUILD = "sokomin/character_simulator@2026-05-25​‌‌‌​​‌�
 import { DataLoader } from './lib/data_loader.js';
 import { setLoader, Item, Op, OpPrefix, iterateAllOps } from './lib/item_api.js';
 import { Inventory, newInventoryItem } from './lib/inventory.js';
-import { resolveEquipSlot } from './lib/slot_resolver.js';
+import { resolveEquipSlot, resolveItemPart } from './lib/slot_resolver.js';
 import { makeItem, seirenUnlockedCount } from './lib/make_item.js';
 import { newCharacter } from './lib/character.js';
 import { newSTTemp, debugSnapshot } from './lib/sttemp.js';
@@ -4501,6 +4677,91 @@ setLoader(loader);
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
+const OPTION_NAME_MODES = new Set(['2020', '2026']);
+const OPTION_NAME_MODE_DEFAULT = '2020';
+const OPTION_NAME_2026_OVERRIDES = new Map([
+  
+]);
+const appSettings = {
+  optionNameMode: OPTION_NAME_MODE_DEFAULT,
+};
+
+function normalizeOptionNameMode(mode) {
+  const v = String(mode || '').trim();
+  return OPTION_NAME_MODES.has(v) ? v : OPTION_NAME_MODE_DEFAULT;
+}
+
+function getSettingsState() {
+  return {
+    optionNameMode: normalizeOptionNameMode(appSettings.optionNameMode),
+  };
+}
+
+function setSettingsState(state) {
+  appSettings.optionNameMode = normalizeOptionNameMode(state && state.optionNameMode);
+  renderSettingsTab();
+}
+
+function optionDisplayName(name, meta = {}) {
+  const baseName = String(name || '');
+  if (appSettings.optionNameMode !== '2026') return baseName;
+  const keys = [];
+  if (meta.familyId != null && meta.rowId != null) keys.push(`${meta.familyId}:${meta.rowId}`);
+  if (meta.familyId != null && meta.sortid != null) keys.push(`${meta.familyId}:sort:${meta.sortid}`);
+  if (baseName) keys.push(`name:${baseName}`);
+  for (const key of keys) {
+    if (OPTION_NAME_2026_OVERRIDES.has(key)) return OPTION_NAME_2026_OVERRIDES.get(key);
+  }
+  return baseName;
+}
+
+function renderSettingsTab() {
+  const mode = normalizeOptionNameMode(appSettings.optionNameMode);
+  document.querySelectorAll('input[name="setting-option-name-mode"]').forEach((el) => {
+    el.checked = (el.value === mode);
+  });
+  const status = $('settings-option-name-status');
+  if (status) {
+    status.textContent = mode === '2026'
+      ? '2026パターンを選択中。未登録の表記は2020パターンで表示します。'
+      : '現在の表記名で表示します。';
+  }
+}
+
+async function applyOptionNameModeChange(mode) {
+  const nextMode = normalizeOptionNameMode(mode);
+  if (appSettings.optionNameMode === nextMode) return;
+  appSettings.optionNameMode = nextMode;
+  renderSettingsTab();
+  buildOpSearchIndex();
+  refreshCurrentOpSearchResults();
+  refreshSelectedOpLabels();
+  await refreshOptionNameDependentControls();
+  hideItemDetailPopup();
+  await renderInventoryGrid();
+  if (typeof renderEditInventoryGrid === 'function') {
+    try { await renderEditInventoryGrid(); } catch (e) {  }
+  }
+  scheduleAutosave();
+}
+
+async function refreshOptionNameDependentControls() {
+  await refreshNxPanel();
+  await refreshNonstandardPanel();
+  await refreshSeirenPanel();
+  if (typeof refreshEditUI === 'function') {
+    await refreshEditUI();
+  }
+}
+
+function bindSettingsEvents() {
+  renderSettingsTab();
+  document.querySelectorAll('input[name="setting-option-name-mode"]').forEach((el) => {
+    el.addEventListener('change', () => {
+      if (el.checked) applyOptionNameModeChange(el.value).catch((e) => console.warn('[settings] apply failed:', e));
+    });
+  });
+}
 
 const JOB_OPTIONS = [
   { id: 0,  name: '剣士' },         { id: 1,  name: '戦士' },
@@ -4864,7 +5125,7 @@ function formatNonstandardOptionLabel(op) {
   const range = (op.min != null && op.max != null)
     ? `${op.min}~${op.max}`
     : (op.value != null ? String(op.value) : '?');
-  return `${op.name} T${op.tier} (${range})`;
+  return `${optionDisplayName(op.name, op)} T${op.tier} (${range})`;
 }
 
 function buildNonstandardSlot(op) {
@@ -4936,7 +5197,7 @@ function parseNonstandardOpenValue(raw, familyId) {
 
 function formatNonstandardOpenOptionLabel(op) {
   if (!op) return '';
-  return `${op.name} ${op.value}`;
+  return `${optionDisplayName(op.name, op)} ${op.value}`;
 }
 
 function buildNonstandardOpenSlot(op, converter) {
@@ -4971,7 +5232,7 @@ function buildNonstandardOpenSlot(op, converter) {
 
 function formatNonstandardOpenSlotLine(slot, fallbackLine) {
   if (!slot || !slot.ocName) return fallbackLine || '';
-  return `${slot.ocName} ${slot.ocValue}`;
+  return `${optionDisplayName(slot.ocName, slot)} ${slot.ocValue}`;
 }
 
 function setNonstandardOpenCache(slotIdx, list) {
@@ -5061,15 +5322,16 @@ async function refreshNonstandardPanel() {
   }
 }
 function resolveOpDisplayInfo(familyId, value) {
-  const sp = SPECIAL_FAMILY_LABELS[Number(familyId)];
-  if (sp) return { name: sp.name, value, unit: sp.unit, sign: sp.sign };
+  const fid = Number(familyId);
+  const sp = SPECIAL_FAMILY_LABELS[fid];
+  if (sp) return { name: optionDisplayName(sp.name, { familyId: fid }), value, unit: sp.unit, sign: sp.sign };
   const family = OpPrefix.getFamily(familyId);
   if (!family) return { name: `family#${familyId}`, value, unit: '', sign: '+' };
   const t0 = family.tiers && family.tiers[0];
   const effect = (t0 && t0.effect) || '';
   const nameMatch = effect.match(/^([^\s\d\[]+)/);
   const name = nameMatch ? nameMatch[1] : `family#${familyId}`;
-  return { name, value, unit: effect.includes('％') ? '%' : '', sign: '+' };
+  return { name: optionDisplayName(name, { familyId: fid, rowId: t0?.id, sortid: t0?.sortid }), value, unit: effect.includes('％') ? '%' : '', sign: '+' };
 }
 
 
@@ -5103,7 +5365,7 @@ function formatConvertOpForDropdown(o) {
   if (/着用.*レベル.*減少|アイテム着用Lv.*減少/.test(m)) {
     return `このアイテムの着用レベル -${o.value}`;
   }
-  return `${o.name} +${o.value}`;
+  return `${optionDisplayName(o.name, o)} +${o.value}`;
 }
 
 function refreshNxSlotSelect(slotIdx, rec) {
@@ -5266,7 +5528,7 @@ function buildSeirenOptionList(pool, stage) {
     if (!entry || !Array.isArray(entry.names)) continue;
     for (let ni = 0; ni < entry.names.length; ni++) {
       const nm = entry.names[ni];
-      const nmStr = (nm && nm.name) ? nm.name : '?';
+      const nmStr = optionDisplayName((nm && nm.name) ? nm.name : '?', nm || {});
       const isUnsupported = !nm || nm.familyId == null || nm.familyId < 0;
       const isPetSummon   = isSeirenPetSummonName(nm);
 
@@ -5714,9 +5976,14 @@ function buildOpSearchIndex() {
     const familyId = Number(fk);
     for (const tier of (family.tiers || [])) {
       const gradeClass = tier.gradeClass || 'normal';
+      const displayName = optionDisplayName(tier.name || '', {
+        familyId,
+        rowId: tier.id,
+        sortid: tier.sortid,
+      });
       const search = (
         tier.id + ' ' + familyId + ' ' + tier.sortid + ' ' +
-        (tier.name || '') + ' ' + (tier.effect || '') + ' ' +
+        (tier.name || '') + ' ' + displayName + ' ' + (tier.effect || '') + ' ' +
         gradeClass + ' ' + opGradeSearchLabel(gradeClass)
       ).toLowerCase();
       opSearchIndex.push({
@@ -5724,6 +5991,7 @@ function buildOpSearchIndex() {
         familyId,
         sortid:    tier.sortid,
         name:      tier.name || '',
+        displayName,
         effect:    tier.effect || '',
         gradeClass,
         equipKinds: tier.equipKinds || [],
@@ -5755,7 +6023,7 @@ function opDisplayLabel(entry) {
     entry.gradeClass === 'college'? ' [協会]' :
     entry.gradeClass === 'set'    ? ' [セット]' :
     entry.gradeClass === 'npc'    ? ' [NPC]' : '';
-  const name = entry.name || '(無名)';
+  const name = optionDisplayName(entry.name || '(無名)', entry);
   const effect = entry.effect || '';
   let label = name;
   if (effect) label += ` — ${effect}`;
@@ -5790,6 +6058,35 @@ function renderOpResults(idx, query) {
   sel.style.display = 'block';
 }
 
+function refreshCurrentOpSearchResults() {
+  document.querySelectorAll('.op-search-input').forEach((input) => {
+    const idx = Number(input.getAttribute('data-op'));
+    renderOpResults(idx, input.value || '');
+  });
+  if (typeof refreshEditCurrentOpSearchResults === 'function') {
+    refreshEditCurrentOpSearchResults();
+  }
+}
+
+function refreshSelectedOpLabels() {
+  for (let i = 0; i < 3; i++) {
+    const label = document.querySelector(`.op-selected-label[data-op="${i}"]`);
+    const op = formState.ops[i];
+    if (!label) continue;
+    if (!op || op.rowId == null || op.rowId < 0) {
+      label.textContent = `OP${i + 1}: (未選択)`;
+      label.style.color = '#9aa68b';
+      continue;
+    }
+    const entry = opSearchIndex.find((e) => e.rowId === op.rowId);
+    const text = entry ? `OP${i + 1}: ${opDisplayLabel(entry)}` : `OP${i + 1}: ${optionDisplayName(op.name || '?', op)}`;
+    label.textContent = text.length > 110 ? text.slice(0, 110) + '...' : text;
+    label.style.color = '#FFE0B0';
+  }
+  if (typeof refreshEditSelectedOpLabels === 'function') {
+    refreshEditSelectedOpLabels();
+  }
+}
 
 function extractEffectRange(effect) {
   if (!effect) return null;
@@ -6609,7 +6906,7 @@ function buildItemDetailHtml(inv, rec, character) {
           continue;
         }
 
-        html += `<span class="idp-op is-nx">- ${esc(ovr.ocName)} <span style="color:#ffff00">+${esc(v)}</span> <span class="idp-nx-label">[Nx変換 ${esc(convLabel)}]</span></span>`;
+        html += `<span class="idp-op is-nx">- ${esc(optionDisplayName(ovr.ocName, ovr))} <span style="color:#ffff00">+${esc(v)}</span> <span class="idp-nx-label">[Nx変換 ${esc(convLabel)}]</span></span>`;
         continue;
       }
       
@@ -6619,7 +6916,7 @@ function buildItemDetailHtml(inv, rec, character) {
         const unit = def.unit || '';
         const valTxt = (v != null) ? `+${v}${unit}` : '';
         const gradeLabel = (ovr.bfGrade === 'white') ? '白' : '黒';
-        html += `<span class="idp-op is-nx">- ${esc(def.name)} <span style="color:#ffff00">${esc(valTxt)}</span> <span class="idp-nx-label">[Nx変換 ${gradeLabel}]</span></span>`;
+        html += `<span class="idp-op is-nx">- ${esc(optionDisplayName(def.name, { source: 'bf', bfId: ovr.bfId }))} <span style="color:#ffff00">${esc(valTxt)}</span> <span class="idp-nx-label">[Nx変換 ${gradeLabel}]</span></span>`;
         continue;
       }
     }
@@ -6693,7 +6990,7 @@ function buildItemDetailHtml(inv, rec, character) {
           const sign = (e.value > 0) ? '+' : '';
           return `${tgt} ${sign}${e.value}${e.displayOnly ? '※' : ''}`;
         }).join(' / '))}`).join('  ');
-        html += `<span class="idp-op" style="margin-left:24px; color:#bcd9ff; font-size:11px">${esc(setDef.name)} — ${tierLines}</span>`;
+        html += `<span class="idp-op" style="margin-left:24px; color:#bcd9ff; font-size:11px">${esc(optionDisplayName(setDef.name, { familyId: op.familyId, rowId: op.rowId }))} — ${tierLines}</span>`;
       }
     }
   }
@@ -6707,7 +7004,7 @@ function buildItemDetailHtml(inv, rec, character) {
       const op = inv.seirenOps[i];
       if (!op) continue;
       const tierTxt = op.seirenTier ? `[${tierLabel[op.seirenTier] || op.seirenTier}] ` : '';
-      const nameTxt = op.seirenName || op.name || '?';
+      const nameTxt = optionDisplayName(op.seirenName || op.name || '?', op);
       let v = (op.value != null) ? op.value
             : (op.addValue != null) ? op.addValue
             : null;
@@ -6802,7 +7099,7 @@ function buildItemDetailHtml(inv, rec, character) {
       const style = suppressed
         ? 'border-left:2px solid #d8884c; padding-left:4px; color:#a89683'
         : 'border-left:2px solid #cbe79b; padding-left:4px';
-      html += `<span class="idp-op is-ui" style="${style}">+ ${esc(def.name)} <span style="color:#ffff00">${esc(valTxt)}</span> ${tierTag}${tag}</span>`;
+      html += `<span class="idp-op is-ui" style="${style}">+ ${esc(optionDisplayName(def.name, { source: 'bf', bfId: def.id }))} <span style="color:#ffff00">${esc(valTxt)}</span> ${tierTag}${tag}</span>`;
     }
   }
 
@@ -8239,6 +8536,7 @@ function buildSnapshot() {
   }
   const character = readCharacter();
   const snap = serializeSession(character, inventory, readGraceRebirth());
+  snap.settings = getSettingsState();
   snap.skills = { ...skillStates };  
   
   snap.creature = {
@@ -8351,6 +8649,7 @@ async function restoreInventoryEntry(entry) {
     }),
   }, rec);
   if (!inv) return null;
+  if (entry.nxActive === true) inv.nxActive = true;
   if (entry.ultLv != null) inv.ultLv = Number(entry.ultLv);
   if (entry.incusedRingLv != null) {
     inv.incusedRingLv = Math.max(1, Math.min(30, Number(entry.incusedRingLv) | 0));
@@ -8489,7 +8788,11 @@ async function loadSnapshot(data, sourceLabel) {
   try { parsed = deserializeSession(data); }
   catch (err) { setSessionStatus('読込失敗: ' + err.message); return; }
 
-  
+  setSettingsState(data.settings);
+  buildOpSearchIndex();
+  refreshCurrentOpSearchResults();
+  refreshSelectedOpLabels();
+
   if (data.skills && typeof data.skills === 'object') {
     skillStates = { ...data.skills };
     
@@ -8635,7 +8938,9 @@ function setSessionStatus(msg) {
 }
 
 let autosaveTimer = null;
+let suppressAutosave = false;
 function scheduleAutosave() {
+  if (suppressAutosave) return;
   clearTimeout(autosaveTimer);
   autosaveTimer = setTimeout(() => {
     const data = buildSnapshot();
@@ -12550,6 +12855,10 @@ function bindSessionEvents() {
     OmniSkill.reset();
     
     resetBadgeState();
+    setSettingsState(null);
+    buildOpSearchIndex();
+    refreshCurrentOpSearchResults();
+    refreshSelectedOpLabels();
     
     mapMonsterState = { mapId: null, selectedMobid: null, selectedRowKey: null, detailLv: null };
     
@@ -12579,6 +12888,25 @@ function bindSessionEvents() {
 
 
 const PRESET_KEY_PREFIX = 'rs-char-preset-';
+const BUILTIN_PRESETS = {
+  kago_a_2147: {
+    saved: '2026-06-11T00:00:00',
+    inventory: [
+      9122, 9124, 9154, 9156, 9158, 9160, 9162, 9164,
+      9166, 9168, 9170, 9172, 9174, 9176, 12153, 13859,
+    ].map((itemId) => ({
+      itemId,
+      revisions: [0, 0, 0],
+      ops: [null, null, null],
+      daybreak: false,
+      nxActive: true,
+    })),
+  },
+};
+
+function loadPresetData(id) {
+  return loadFromLocalStorage(PRESET_KEY_PREFIX + id) || BUILTIN_PRESETS[id] || null;
+}
 
 function setPresetStatus(msg) {
   const el = $('preset-status');
@@ -12593,7 +12921,7 @@ function refreshPresetLabels() {
   const sel = $('preset-select');
   if (!sel) return;
   for (const opt of sel.options) {
-    const data = loadFromLocalStorage(PRESET_KEY_PREFIX + opt.value);
+    const data = loadPresetData(opt.value);
     const count = (data && Array.isArray(data.inventory)) ? data.inventory.length : 0;
     const base = opt.textContent.replace(/\s*\[\d+件\]\s*$|\s*\[空\]\s*$/, '');
     opt.textContent = count > 0 ? `${base} [${count}件]` : `${base} [空]`;
@@ -12625,7 +12953,7 @@ async function loadInventoryPreset(entries) {
 function bindPresetEvents() {
   $('btn-preset-load').addEventListener('click', async () => {
     const id = $('preset-select').value;
-    const data = loadFromLocalStorage(PRESET_KEY_PREFIX + id);
+    const data = loadPresetData(id);
     if (!data || !Array.isArray(data.inventory) || data.inventory.length === 0) {
       setPresetStatus('プリセット未保存');
       return;
@@ -16899,6 +17227,46 @@ const DamageCalc = (() => {
     24: 'beastman',       25: 'canonner',
   };
   const SKILL_DATA_BASE = './data/skills/';
+  const MUSKET_WEAPON_MAGIC_SPECS = {
+    'n_1318': {
+      attr: 'fire',
+      baseRate: 30,
+      ratePerLv: 0.2,
+      mainHits: 1,
+      extraHits: 50,
+      extraScalePct: 100,
+      bulletCount: 3,
+      dpsMode: 'reload'
+    },
+    'a_890': {
+      attr: 'fire',
+      baseRate: 100,
+      ratePerLv: 1,
+      mainHits: 1,
+      extraHits: 10,
+      extraScalePct: 66.7,
+      bulletCount: 1,
+      dpsMode: 'action'
+    },
+    'a_892': {
+      attr: 'fire',
+      baseRate: 100,
+      ratePerLv: 1,
+      mainHits: 4,
+      extraHits: 8,
+      extraScalePct: 66.7,
+      bulletCount: 1,
+      dpsMode: 'action'
+    }
+  };
+
+  function musketSpecForKey(key) {
+    return MUSKET_WEAPON_MAGIC_SPECS[key] || null;
+  }
+
+  function musketSpecForSkill(skill) {
+    return skill ? musketSpecForKey(skill.__damageSelectKey || '') : null;
+  }
 
   function calcIntBonus(intParam) {
     if (!intParam || intParam <= 99) return 1.00;
@@ -16932,6 +17300,8 @@ const DamageCalc = (() => {
 
   let skillDb = null;     
   let currentJobId = null;
+  let lastResult = null;
+  let initialized = false;
   let isSyncing = false;  
   let currentMode = 'phys'; 
   
@@ -16987,9 +17357,11 @@ const DamageCalc = (() => {
     if (!sel || !skillDb) return;
     const parts = ['<option value="">— スキルを選択 —</option>'];
     const renderOpt = (sk, prefix) => {
-      const calculable = sk.hasPhysDmgPct || sk.hasMagicDmgRange;
+      const musketSpec = musketSpecForKey(prefix + '_' + sk.id);
+      const calculable = sk.hasPhysDmgPct || sk.hasMagicDmgRange || !!musketSpec;
       let tag = '';
       if (!calculable) tag = ' [計算対象外]';
+      else if (musketSpec) tag = ' [武器依存火魔法]';
       else if (sk.hasPhysDmgPct && sk.hasMagicDmgRange) tag = ' [物理+魔法]';
       else if (sk.hasMagicDmgRange) tag = ' [魔法' + (sk.magicAttr ? ' / ' + attrLabel(sk.magicAttr) : '') + ']';
       else if (sk.hasPhysDmgPct) tag = ' [物理]';
@@ -17023,7 +17395,9 @@ const DamageCalc = (() => {
     if (!m) return null;
     const list = (m[1] === 'a') ? (skillDb.awake && skillDb.awake.skills) : (skillDb.normal && skillDb.normal.skills);
     if (!list) return null;
-    return list.find((s) => String(s.id) === m[2]) || null;
+    const skill = list.find((s) => String(s.id) === m[2]) || null;
+    if (skill) skill.__damageSelectKey = m[1] + '_' + m[2];
+    return skill;
   }
 
 
@@ -17083,6 +17457,7 @@ const DamageCalc = (() => {
   
   function detectModeFromSkill(skill) {
     if (!skill) return 'phys';
+    if (musketSpecForSkill(skill)) return 'magic';
     
     if (skill.hasPhysDmgPct) return 'phys';
     if (skill.hasMagicDmgRange) return 'magic';
@@ -17097,8 +17472,12 @@ const DamageCalc = (() => {
     const mag  = $('damage-input-magic');
     if (phys) phys.style.display = (mode === 'magic') ? 'none' : '';
     if (mag)  mag.style.display  = (mode === 'magic') ? '' : 'none';
+    const skill = getSelectedSkill();
+    const isMusket = mode === 'magic' && !!musketSpecForSkill(skill);
+    document.querySelectorAll('.damage-musket-row').forEach((row) => {
+      row.style.display = isMusket ? '' : 'none';
+    });
 
-    
     if (mode === 'magic') {
       $('dmg-rlabel-normal').textContent = '通常 (×1)';
       $('dmg-rlabel-crit').textContent   = '魔法致命打 (×2)';
@@ -17137,6 +17516,10 @@ const DamageCalc = (() => {
       const attr = skill.magicAttr ? attrLabel(skill.magicAttr) : '魔法';
       lines.push(`<div class="dsi-row"><span class="dsi-key">${esc(attr)}表記ダメ</span><span class="dsi-val">${fmt(levelRow.magicDmgMin)} 〜 ${fmt(levelRow.magicDmgMax)}</span></div>`);
     }
+    const musketSpec = musketSpecForSkill(skill);
+    if (musketSpec) {
+      lines.push(`<div class="dsi-row"><span class="dsi-key">計算式</span><span class="dsi-val">武器攻撃力依存 火魔法</span></div>`);
+    }
     if (levelRow && typeof levelRow.attackCount === 'number') {
       lines.push(`<div class="dsi-row"><span class="dsi-key">攻撃回数</span><span class="dsi-val">${fmt(levelRow.attackCount)}</span></div>`);
     }
@@ -17146,7 +17529,7 @@ const DamageCalc = (() => {
     if (levelRow && typeof levelRow.consumeCp === 'number') {
       lines.push(`<div class="dsi-row"><span class="dsi-key">消費CP</span><span class="dsi-val">${fmt(levelRow.consumeCp)}</span></div>`);
     }
-    if (!skill.hasPhysDmgPct && !skill.hasMagicDmgRange) {
+    if (!skill.hasPhysDmgPct && !skill.hasMagicDmgRange && !musketSpec) {
       lines.push(`<div class="dsi-row"><span class="dsi-key dsi-na">注意</span><span class="dsi-val dsi-na">物理/魔法どちらのダメ表記も持たないため計算対象外です。</span></div>`);
     }
     box.innerHTML = lines.join('');
@@ -17182,6 +17565,15 @@ const DamageCalc = (() => {
   function readMagicInputs() {
     const num = (id) => Number($(id)?.value || 0) || 0;
     return {
+      weaponMin:     num('dmg-in-mWeaponMin'),
+      weaponMax:     num('dmg-in-mWeaponMax'),
+      weaponDmgPct:  num('dmg-in-mWeaponDamagePct'),
+      atkApplyPct:   num('dmg-in-mAtkApplyPct'),
+      mainHits:      num('dmg-in-mMainHits'),
+      extraHits:     num('dmg-in-mExtraHits'),
+      extraScalePct: num('dmg-in-mExtraScalePct'),
+      bulletCount:   num('dmg-in-mBulletCount'),
+      musketDpsMode: $('dmg-in-mMusketDpsMode')?.value || 'action',
       int:           num('dmg-in-mInt'),
       magicDmgPct:   num('dmg-in-mDmgPct'),
       alchemyLv:     num('dmg-in-mAlchemy'),
@@ -17265,6 +17657,45 @@ const DamageCalc = (() => {
     return base;
   }
 
+  function musketReloadSeconds(attackSpd) {
+    const applied = Math.max(0, Math.min(Number(attackSpd) || 0, 500));
+    return Math.max(1.5, 3 - 0.3 * (applied / 100));
+  }
+
+  function musketWeaponMagicFor(hitType, inputs) {
+    const weapon = inputs.weaponMax || inputs.weaponMin || 0;
+    const baseSkill = weapon * ((inputs.atkApplyPct || 0) / 100) * (1 + (inputs.weaponDmgPct || 0) / 100);
+    const mainHits = Math.max(0, Number(inputs.mainHits) || 0);
+    const extraHits = Math.max(0, Number(inputs.extraHits) || 0);
+    const extraScale = Math.max(0, Number(inputs.extraScalePct) || 0) / 100;
+    const main = mainHits > 0 ? magicDamageFor(hitType, inputs, baseSkill, mainHits) : 0;
+    const extra = extraHits > 0 ? magicDamageFor(hitType, inputs, baseSkill * extraScale, extraHits) : 0;
+    return main + extra;
+  }
+
+  function syncMusketWeaponMagicDefaults(skill, effectiveLv, force) {
+    const spec = musketSpecForSkill(skill);
+    if (!spec) return;
+    const defaults = {
+      'dmg-in-mAtkApplyPct': Math.max(0, spec.baseRate + spec.ratePerLv * effectiveLv),
+      'dmg-in-mMainHits': spec.mainHits,
+      'dmg-in-mExtraHits': spec.extraHits,
+      'dmg-in-mExtraScalePct': spec.extraScalePct,
+      'dmg-in-mBulletCount': spec.bulletCount,
+      'dmg-in-mMusketDpsMode': spec.dpsMode,
+    };
+    for (const [id, value] of Object.entries(defaults)) {
+      const node = $(id);
+      if (!node) continue;
+      if (force || node.classList.contains('is-auto') || node.value === '' || Number(node.value) === 0) {
+        node.value = (typeof value === 'number')
+          ? String(Math.round(Number(value) * 1000) / 1000)
+          : String(value);
+        node.classList.add('is-auto');
+      }
+    }
+  }
+
   function recalc() {
     const skill = getSelectedSkill();
     const lvInput = $('damage-skill-lv');
@@ -17274,7 +17705,8 @@ const DamageCalc = (() => {
       renderResults(null);
       return;
     }
-    const calculable = skill.hasPhysDmgPct || skill.hasMagicDmgRange;
+    const musketSpec = musketSpecForSkill(skill);
+    const calculable = skill.hasPhysDmgPct || skill.hasMagicDmgRange || !!musketSpec;
     if (!calculable) {
       renderSkillInfo(skill, null);
       renderResults({ na: true, msg: '物理/魔法どちらのダメ表記も持たないため計算対象外です。' });
@@ -17286,6 +17718,7 @@ const DamageCalc = (() => {
     const effectiveLv = baseLv + skillBonus;
     const bonusLabel = $('damage-skill-lv-bonus');
     if (bonusLabel) bonusLabel.textContent = skillBonus > 0 ? `+${skillBonus} (= Lv${effectiveLv})` : '+0';
+    syncMusketWeaponMagicDefaults(skill, effectiveLv, false);
 
     const lvRow = interpolateAtLv(skill, effectiveLv);
     if (!lvRow) {
@@ -17322,9 +17755,11 @@ const DamageCalc = (() => {
       });
     } else {
       const inputs = readMagicInputs();
+      const musketSpec2 = musketSpecForSkill(skill);
 
-      const attrPct = (skill.magicAttr && lastEquipped)
-        ? Number(lastEquipped['attr' + capitalize(skill.magicAttr)]) || 0
+      const skillAttr = musketSpec2 ? musketSpec2.attr : skill.magicAttr;
+      const attrPct = (skillAttr && lastEquipped)
+        ? Number(lastEquipped['attr' + capitalize(skillAttr)]) || 0
         : 0;
       const inputsAdj = { ...inputs, magicDmgPct: (inputs.magicDmgPct || 0) + attrPct };
 
@@ -17333,15 +17768,17 @@ const DamageCalc = (() => {
       const base = (inputs.dmgMode === 'min') ? min
                  : (inputs.dmgMode === 'avg') ? (min + max) / 2
                  : max;
-      const dN = magicDamageFor('normal', inputsAdj, base, attackCount);
-      const dC = magicDamageFor('crit',   inputsAdj, base, attackCount);
-      const dS = magicDamageFor('strong', inputsAdj, base, attackCount);
+      const dN = musketSpec2 ? musketWeaponMagicFor('normal', inputsAdj) : magicDamageFor('normal', inputsAdj, base, attackCount);
+      const dC = musketSpec2 ? musketWeaponMagicFor('crit',   inputsAdj) : magicDamageFor('crit',   inputsAdj, base, attackCount);
+      const dS = musketSpec2 ? musketWeaponMagicFor('strong', inputsAdj) : magicDamageFor('strong', inputsAdj, base, attackCount);
       
       const pStrong = clamp01(inputsAdj.strongRate / 100);
       const pCrit   = clamp01(inputsAdj.critRate / 100) * (1 - pStrong);
       const pNormal = Math.max(0, 1 - pStrong - pCrit);
       const expected = pNormal * dN + pCrit * dC + pStrong * dS;
-      const interval = 1 / (1 + (inputsAdj.attackSpd / 100));
+      const interval = musketSpec2 && inputsAdj.musketDpsMode === 'reload'
+        ? musketReloadSeconds(inputsAdj.attackSpd) / Math.max(1, inputsAdj.bulletCount || 1)
+        : 1 / (1 + (inputsAdj.attackSpd / 100));
       const dps = expected / Math.max(0.001, interval);
       renderResults({
         mode: 'magic',
@@ -17350,9 +17787,15 @@ const DamageCalc = (() => {
         inputs: inputsAdj,
         baseSkillDmg: base, dmgRange: { min, max },
         attackCount, lvRow,
-        skillAttr: skill.magicAttr || null,
+        skillAttr: skillAttr || null,
         attrPct,
         baseMagicDmgPct: inputs.magicDmgPct || 0,
+        musketSpec: musketSpec2,
+        musketBaseSkillDmg: musketSpec2
+          ? (inputsAdj.weaponMax || inputsAdj.weaponMin || 0) * ((inputsAdj.atkApplyPct || 0) / 100) * (1 + (inputsAdj.weaponDmgPct || 0) / 100)
+          : null,
+        musketReloadSec: musketSpec2 ? musketReloadSeconds(inputsAdj.attackSpd) : null,
+        musketInterval: interval,
         effectiveLv, baseLv, skillBonus,
       });
     }
@@ -17364,6 +17807,7 @@ const DamageCalc = (() => {
   }
 
   function renderResults(r) {
+    lastResult = (r && !r.na) ? r : null;
     const set = (id, v) => { const n = $(id); if (n) n.textContent = (v == null) ? '-' : fmtInt(v); };
     if (!r) {
       set('dmg-r-normal', null); set('dmg-r-crit', null); set('dmg-r-double', null); set('dmg-r-strong', null);
@@ -17392,7 +17836,9 @@ const DamageCalc = (() => {
     let rows;
     if (r.mode === 'magic') {
       const inp = r.inputs;
-      if (r.dmgRange && (r.dmgRange.min || r.dmgRange.max)) {
+      if (r.musketSpec) {
+        
+      } else if (r.dmgRange && (r.dmgRange.min || r.dmgRange.max)) {
         
       } else {
         warns.push('スキル表記ダメージが 0 のため、固定加算 (限界+) のみで算出されています。');
@@ -17404,7 +17850,15 @@ const DamageCalc = (() => {
         ['実効 Lv', `${r.effectiveLv} (= ベース ${r.baseLv}${r.skillBonus ? ' + スキル+' + r.skillBonus : ''})` +
           (r.effectiveLv > 50 ? ' ★Lv50 超え (ダメ系のみ外挿、攻撃範囲等は Lv50 で打ち止め)' : '')],
         ['スキル属性', attrLabelStr],
-        ['表記ダメ (採用)', fmtInt(r.baseSkillDmg) + ` (range ${fmt(r.dmgRange.min)}〜${fmt(r.dmgRange.max)})`],
+        ['表記ダメ (採用)', r.musketSpec
+          ? `${fmtInt(r.musketBaseSkillDmg)} (= 武器${fmt(inp.weaponMax || inp.weaponMin)} × 適用${fmt(inp.atkApplyPct)}% × ダメージ${(1 + (inp.weaponDmgPct || 0) / 100).toFixed(3)}倍)`
+          : fmtInt(r.baseSkillDmg) + ` (range ${fmt(r.dmgRange.min)}〜${fmt(r.dmgRange.max)})`],
+        ...(r.musketSpec ? [
+          ['マスケHIT構成', `本体 ${fmt(inp.mainHits)} HIT + 追加 ${fmt(inp.extraHits)} HIT × ${fmt(inp.extraScalePct)}%`],
+          ['マスケDPS方式', inp.musketDpsMode === 'reload'
+            ? `魔力弾 ${fmt(inp.bulletCount)} 発 / リロード ${r.musketReloadSec.toFixed(3)} 秒 (= 1発あたり ${r.musketInterval.toFixed(3)} 秒)`
+            : '単発間隔'],
+        ] : []),
         ['知識', fmtInt(inp.int)],
         ['知識補正係数', calcIntBonus(inp.int).toFixed(2) + ' (intBonus)'],
         ['知識ダメ倍率', (1 + calcIntBonus(inp.int) * (inp.int / 200)).toFixed(3) + ' 倍'],
@@ -17497,7 +17951,11 @@ const DamageCalc = (() => {
       setIfAuto('dmg-in-vsTypePct',  Number(eq.vsBossDamage) || 0);
       setIfAuto('dmg-in-skillCdReduce', Number(eq.skillCooldownReduce) || 0);
 
-
+      
+      setIfAuto('dmg-in-mWeaponMin', abilities.atkMin || 0);
+      setIfAuto('dmg-in-mWeaponMax', abilities.atkMax || 0);
+      setIfAuto('dmg-in-mWeaponDamagePct', Number(eq.physDamagePercent) || 0);
+      
       const intVal = Number(eq.int) || Number(ch?.stats?.base?.int) || 0;
       setIfAuto('dmg-in-mInt', intVal);
       setIfAuto('dmg-in-mDmgPct',   Number(eq.attrMagic) || 0); 
@@ -17510,6 +17968,7 @@ const DamageCalc = (() => {
       setIfAuto('dmg-in-mLimitPct', titleMagicPct);
       setIfAuto('dmg-in-mFinalDmg', (Number(eq.finalMagicDamage) || 0) + (Number(eq.finalDamagePercent) || 0));
       setIfAuto('dmg-in-mBloodFieldDmg', Number(eq.bloodFieldFinalDmg) || 0);
+      setIfAuto('dmg-in-mAttackSpd', Number(eq.atkspd) || 0);
       
       setIfAuto('dmg-in-mAlchemy', titleBonus2.alchemyLv || 0);
     } finally {
@@ -17537,6 +17996,10 @@ const DamageCalc = (() => {
 
   function onSkillChange() {
     const skill = getSelectedSkill();
+    if (skill) {
+      const baseLv = Math.max(1, Math.min(50, Number($('damage-skill-lv')?.value || 50) | 0));
+      syncMusketWeaponMagicDefaults(skill, baseLv + (Number(lastSkillBonus) || 0), true);
+    }
     const lvRow = skill ? interpolateAtLv(skill, Number($('damage-skill-lv').value) || 50) : null;
     renderSkillInfo(skill, lvRow);
     recalc();
@@ -17551,6 +18014,8 @@ const DamageCalc = (() => {
   }
 
   function init() {
+    if (initialized) return;
+    initialized = true;
     const inputIds = [
       
       'dmg-in-weaponMin','dmg-in-weaponMax','dmg-in-nonWeapon','dmg-in-str',
@@ -17561,6 +18026,9 @@ const DamageCalc = (() => {
       'dmg-in-limitBreakPct','dmg-in-limitBreakFlat','dmg-in-physCapBase',
       'dmg-in-attackSpd','dmg-in-skillCdReduce','dmg-in-mobDef',
       
+      'dmg-in-mWeaponMin','dmg-in-mWeaponMax','dmg-in-mWeaponDamagePct',
+      'dmg-in-mAtkApplyPct','dmg-in-mMainHits','dmg-in-mExtraHits',
+      'dmg-in-mExtraScalePct','dmg-in-mBulletCount','dmg-in-mMusketDpsMode',
       'dmg-in-mInt','dmg-in-mDmgPct','dmg-in-mAlchemy','dmg-in-mStoneStatue',
       'dmg-in-mMysticWater','dmg-in-mBladeOil',
       'dmg-in-mEnemyResist','dmg-in-mEnemyWeaken',
@@ -17579,11 +18047,377 @@ const DamageCalc = (() => {
     $('damage-skill-lv')?.addEventListener('input', onSkillChange);
     $('damage-auto-sync')?.addEventListener('change', () => {  });
 
-    
-    loadForJob(0);
+    loadForJob(Number($('ch-job')?.value) || 0);
   }
 
-  return { init, syncFromCharacter, loadForJob };
+  function getLastResult() {
+    return lastResult;
+  }
+
+  return { init, syncFromCharacter, loadForJob, getLastResult };
+})();
+
+const EquipmentOptimizer = (() => {
+  const BODY_SLOTS = ['weapon', 'sub_weapon', 'neck', 'head', 'back_ear', 'waist', 'hand', 'body', 'foot'];
+  const RING_SLOTS = Array.from({ length: 10 }, (_, i) => 'ring_' + i);
+  const ALL_SLOTS = [...BODY_SLOTS, ...RING_SLOTS];
+  const SLOT_LABELS = {
+    weapon: 'weapon',
+    sub_weapon: 'sub weapon',
+    neck: 'neck',
+    head: 'head',
+    back_ear: 'back/ear',
+    waist: 'waist',
+    hand: 'hand',
+    body: 'body',
+    foot: 'foot',
+    ring_0: 'ring 1',
+    ring_1: 'ring 2',
+    ring_2: 'ring 3',
+    ring_3: 'ring 4',
+    ring_4: 'ring 5',
+    ring_5: 'ring 6',
+    ring_6: 'ring 7',
+    ring_7: 'ring 8',
+    ring_8: 'ring 9',
+    ring_9: 'ring 10',
+  };
+
+  let initialized = false;
+  let running = false;
+  let stopRequested = false;
+  let originalSnapshot = null;
+  let results = [];
+
+  function html(s) {
+    return String(s ?? '').replace(/[&<>"']/g, (c) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+    })[c]);
+  }
+
+  function num(id, fallback) {
+    const v = Number($(id)?.value);
+    return Number.isFinite(v) ? v : fallback;
+  }
+
+  function setStatus(text) {
+    const el = $('optimizer-status');
+    if (el) el.textContent = text || '';
+  }
+
+  function setRunningState(value) {
+    running = value;
+    const runBtn = $('optimizer-run');
+    const stopBtn = $('optimizer-stop');
+    if (runBtn) runBtn.disabled = value;
+    if (stopBtn) stopBtn.disabled = !value;
+  }
+
+  function snapshotSlots() {
+    const snap = new Map();
+    for (const inv of inventory.items()) snap.set(inv, inv.equippedSlot || null);
+    return snap;
+  }
+
+  function restoreSlots(snap) {
+    if (!snap) return;
+    for (const inv of inventory.items()) inv.equippedSlot = snap.get(inv) || null;
+  }
+
+  function readBuildFromInventory() {
+    const build = Object.create(null);
+    for (const slot of ALL_SLOTS) build[slot] = null;
+    for (const inv of inventory.items()) {
+      if (inv.equippedSlot && ALL_SLOTS.includes(inv.equippedSlot)) {
+        build[inv.equippedSlot] = inv;
+      }
+    }
+    return build;
+  }
+
+  function cloneBuild(build) {
+    const out = Object.create(null);
+    for (const slot of ALL_SLOTS) out[slot] = build?.[slot] || null;
+    return out;
+  }
+
+  function buildSignature(build) {
+    return ALL_SLOTS.map((slot) => build?.[slot]?.slotIndex ?? '-').join('|');
+  }
+
+  function applyBuild(build) {
+    for (const inv of inventory.items()) inv.equippedSlot = null;
+    const used = new Set();
+    for (const slot of ALL_SLOTS) {
+      const inv = build?.[slot] || null;
+      if (!inv || used.has(inv)) continue;
+      if (slot !== 'ring_9' && isAreaBossRing(inv.itemId)) continue;
+      inv.equippedSlot = slot;
+      used.add(inv);
+    }
+  }
+
+  function assignChoice(build, slot, inv) {
+    const next = cloneBuild(build);
+    if (inv) {
+      for (const s of ALL_SLOTS) {
+        if (next[s] === inv) next[s] = null;
+      }
+      if (slot !== 'ring_9' && isAreaBossRing(inv.itemId)) return next;
+    }
+    next[slot] = inv || null;
+    return next;
+  }
+
+  async function itemName(inv) {
+    if (!inv) return '(none)';
+    const item = await Item.get(inv.itemId);
+    return item?.name || `item:${inv.itemId}`;
+  }
+
+  async function buildDiffText(build, baseBuild) {
+    const lines = [];
+    for (const slot of ALL_SLOTS) {
+      const before = baseBuild?.[slot] || null;
+      const after = build?.[slot] || null;
+      if (before === after) continue;
+      const b = await itemName(before);
+      const a = await itemName(after);
+      lines.push(`${SLOT_LABELS[slot] || slot}: ${b} -> ${a}`);
+    }
+    return lines.length ? lines.join('\n') : 'no change';
+  }
+
+  async function collectCandidates(limit) {
+    const bySlot = Object.create(null);
+    for (const slot of BODY_SLOTS) bySlot[slot] = [];
+    bySlot.ring = [];
+
+    const ch = readCharacter();
+    for (const inv of inventory.items()) {
+      const item = await Item.get(inv.itemId);
+      if (!item) continue;
+      updateEquipmentMetadata(inv, item, ch);
+      if (!inv.canEquip && !inv.equippedSlot) continue;
+
+      const slot = resolveEquipSlot(item, ch);
+      if (slot && BODY_SLOTS.includes(slot)) {
+        bySlot[slot].push(inv);
+        continue;
+      }
+      if (resolveItemPart(item) === 9 || isAreaBossRing(inv.itemId)) {
+        bySlot.ring.push(inv);
+      }
+    }
+
+    for (const slot of Object.keys(bySlot)) {
+      const seen = new Set();
+      bySlot[slot] = bySlot[slot].filter((inv) => {
+        const key = inv.slotIndex;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      }).slice(0, limit);
+    }
+    return bySlot;
+  }
+
+  function scoreOf(result, metric) {
+    if (!result) return -Infinity;
+    const v = Number(result[metric]);
+    return Number.isFinite(v) ? v : -Infinity;
+  }
+
+  async function evaluateBuild(build, metric, baseBuild, tag) {
+    if (stopRequested) throw new Error('stopped');
+    applyBuild(build);
+    await recalcAll();
+    const damage = DamageCalc.getLastResult();
+    if (!damage) return null;
+    const actualBuild = readBuildFromInventory();
+    const score = scoreOf(damage, metric);
+    return {
+      tag,
+      score,
+      metric,
+      expected: Number(damage.expected) || 0,
+      dps: Number(damage.dps) || 0,
+      normal: Number(damage.normal) || 0,
+      build: cloneBuild(actualBuild),
+      signature: buildSignature(actualBuild),
+      diffText: await buildDiffText(actualBuild, baseBuild),
+    };
+  }
+
+  function rememberResult(result, seenResults) {
+    if (!result || !Number.isFinite(result.score)) return;
+    if (seenResults.has(result.signature)) return;
+    seenResults.add(result.signature);
+    results.push(result);
+    results.sort((a, b) => b.score - a.score);
+    const topn = Math.max(1, Math.min(30, num('optimizer-topn', 10)));
+    results = results.slice(0, Math.max(topn, 20));
+  }
+
+  async function renderResults() {
+    const root = $('optimizer-results');
+    if (!root) return;
+    const topn = Math.max(1, Math.min(30, num('optimizer-topn', 10)));
+    const rows = results.slice(0, topn);
+    if (!rows.length) {
+      root.className = 'damage-empty';
+      root.textContent = 'No candidates yet.';
+      return;
+    }
+    root.className = '';
+    root.innerHTML =
+      '<table class="optimizer-result-table"><thead><tr>' +
+      '<th>#</th><th>Score</th><th>DPS</th><th>Expected</th><th>Changes</th><th>Action</th>' +
+      '</tr></thead><tbody>' +
+      rows.map((r, i) =>
+        `<tr>` +
+        `<th>${i + 1}</th>` +
+        `<td class="num">${Math.round(r.score).toLocaleString('en-US')}</td>` +
+        `<td class="num">${Math.round(r.dps).toLocaleString('en-US')}</td>` +
+        `<td class="num">${Math.round(r.expected).toLocaleString('en-US')}</td>` +
+        `<td class="diff">${html(r.diffText).replace(/\n/g, '<br>')}</td>` +
+        `<td><button type="button" data-opt-preview="${i}">Preview</button> ` +
+        `<button type="button" data-opt-apply="${i}">Apply</button></td>` +
+        `</tr>`
+      ).join('') +
+      '</tbody></table>';
+  }
+
+  async function previewResult(index, persist) {
+    const r = results[index];
+    if (!r) return;
+    suppressAutosave = !persist;
+    try {
+      applyBuild(r.build);
+      await recalcAll();
+    } finally {
+      suppressAutosave = false;
+    }
+    setStatus(persist ? 'Applied selected candidate.' : 'Previewing selected candidate. Use Apply or Restore when needed.');
+  }
+
+  async function restoreOriginal() {
+    if (!originalSnapshot) {
+      setStatus('No original equipment snapshot.');
+      return;
+    }
+    restoreSlots(originalSnapshot);
+    await recalcAll();
+    setStatus('Restored equipment from before search.');
+  }
+
+  async function runSearch() {
+    if (running) return;
+    setRunningState(true);
+    stopRequested = false;
+    results = [];
+    originalSnapshot = snapshotSlots();
+    const seenBuilds = new Set();
+    const seenResults = new Set();
+    let evaluated = 0;
+
+    suppressAutosave = true;
+    try {
+      DamageCalc.init();
+      const selectedSkillValue = $('damage-skill-select')?.value || '';
+      await DamageCalc.loadForJob(Number($('ch-job')?.value) || 0);
+      if (selectedSkillValue && $('damage-skill-select')) {
+        $('damage-skill-select').value = selectedSkillValue;
+      }
+      await recalcAll();
+      const first = DamageCalc.getLastResult();
+      if (!first) {
+        setStatus('Select a target skill in the damage tab first.');
+        return;
+      }
+
+      const metric = $('optimizer-metric')?.value || 'dps';
+      const limit = Math.max(1, Math.min(50, num('optimizer-limit', 8)));
+      const passes = Math.max(1, Math.min(5, num('optimizer-passes', 2)));
+      const candidates = await collectCandidates(limit);
+      const baseBuild = readBuildFromInventory();
+      let bestBuild = cloneBuild(baseBuild);
+      let bestResult = await evaluateBuild(bestBuild, metric, baseBuild, 'current');
+      rememberResult(bestResult, seenResults);
+      await renderResults();
+
+      const slotOrder = [...BODY_SLOTS, ...RING_SLOTS];
+      for (let pass = 1; pass <= passes; pass++) {
+        for (const slot of slotOrder) {
+          if (stopRequested) throw new Error('stopped');
+          const current = bestBuild[slot] || null;
+          const pool = slot.startsWith('ring_') ? candidates.ring : candidates[slot];
+          const choices = [current, null, ...(pool || [])].filter((v, i, arr) => arr.indexOf(v) === i);
+
+          for (const inv of choices) {
+            if (stopRequested) throw new Error('stopped');
+            if (inv && slot !== 'ring_9' && isAreaBossRing(inv.itemId)) continue;
+            const build = assignChoice(bestBuild, slot, inv);
+            const sig = buildSignature(build);
+            if (seenBuilds.has(sig)) continue;
+            seenBuilds.add(sig);
+            const result = await evaluateBuild(build, metric, baseBuild, `${slot}:${inv?.slotIndex ?? 'none'}`);
+            evaluated++;
+            rememberResult(result, seenResults);
+            if (result && (!bestResult || result.score > bestResult.score)) {
+              bestResult = result;
+              bestBuild = cloneBuild(result.build);
+            }
+            if (evaluated % 10 === 0) {
+              setStatus(`Searching... ${evaluated} builds / pass ${pass}/${passes}`);
+              await renderResults();
+            }
+          }
+        }
+      }
+
+      await renderResults();
+      setStatus(`Search complete: ${evaluated} builds evaluated. Preview or apply the top result.`);
+    } catch (err) {
+      if (err && err.message === 'stopped') {
+        setStatus('Stopped. Showing evaluated candidates.');
+      } else {
+        console.warn('[EquipmentOptimizer] failed:', err);
+        setStatus('Search failed. Check the console.');
+      }
+      await renderResults();
+    } finally {
+      restoreSlots(originalSnapshot);
+      suppressAutosave = false;
+      await recalcAll();
+      setRunningState(false);
+    }
+  }
+
+  function init() {
+    if (initialized) return;
+    initialized = true;
+    $('optimizer-run')?.addEventListener('click', () => {
+      runSearch().catch((err) => console.warn('[EquipmentOptimizer] run failed:', err));
+    });
+    $('optimizer-stop')?.addEventListener('click', () => {
+      stopRequested = true;
+      setStatus('Stop requested. Waiting for the current evaluation to finish.');
+    });
+    $('optimizer-restore')?.addEventListener('click', () => {
+      restoreOriginal().catch((err) => console.warn('[EquipmentOptimizer] restore failed:', err));
+    });
+    $('optimizer-results')?.addEventListener('click', (ev) => {
+      const t = ev.target;
+      if (!t || !t.getAttribute) return;
+      const p = t.getAttribute('data-opt-preview');
+      const a = t.getAttribute('data-opt-apply');
+      if (p != null) previewResult(Number(p), false).catch((err) => console.warn('[EquipmentOptimizer] preview failed:', err));
+      if (a != null) previewResult(Number(a), true).catch((err) => console.warn('[EquipmentOptimizer] apply failed:', err));
+    });
+  }
+
+  return { init };
 })();
 
 async function main() {
@@ -17602,6 +18436,7 @@ async function main() {
   bindEvents();
   bindStatPopups();
   bindSessionEvents();
+  bindSettingsEvents();
   bindPresetEvents();
   bindInventoryGridEvents();
   bindItemDetailHovers();
@@ -17654,6 +18489,10 @@ async function main() {
     });
   };
   deferredTabInits.damage   = () => DamageCalc.init();
+  deferredTabInits.optimizer = () => {
+    DamageCalc.init();
+    EquipmentOptimizer.init();
+  };
   
   const auto = loadFromLocalStorage(SESSION_KEY);
   if (auto) {
@@ -17967,7 +18806,9 @@ async function refreshEditUI() {
     const o = editState.ops[k];
     if (label) {
       if (o && o.familyId != null && o.familyId >= 0) {
-        label.textContent = `OP${k+1}: ${esc(o.name || '?')} ${esc(o.effect || '')}`;
+        const entry = opSearchIndex.find((e) => e.rowId === o.rowId);
+        const labelText = entry ? opDisplayLabel(entry) : `${optionDisplayName(o.name || '?', o)} ${o.effect || ''}`;
+        label.textContent = `OP${k+1}: ${labelText}`;
         label.style.color = '#FFE0B0';
       } else {
         label.textContent = `OP${k+1}: (未選択)`;
@@ -18348,6 +19189,29 @@ function clearEditOp(idx) {
   }
 }
 
+function refreshEditCurrentOpSearchResults() {
+  document.querySelectorAll('.edit-op-search-input').forEach((input) => {
+    const idx = Number(input.getAttribute('data-eop'));
+    renderEditOpResults(idx, input.value || '');
+  });
+}
+
+function refreshEditSelectedOpLabels() {
+  for (let i = 0; i < 3; i++) {
+    const label = document.querySelector(`.edit-op-selected-label[data-eop="${i}"]`);
+    const op = editState.ops[i];
+    if (!label) continue;
+    if (!op || op.familyId == null || op.familyId < 0) {
+      label.textContent = `OP${i + 1}: (未選択)`;
+      label.style.color = '#9aa68b';
+      continue;
+    }
+    const entry = opSearchIndex.find((e) => e.rowId === op.rowId);
+    const text = entry ? `OP${i + 1}: ${opDisplayLabel(entry)}` : `OP${i + 1}: ${optionDisplayName(op.name || '?', op)} ${op.effect || ''}`;
+    label.textContent = text.length > 110 ? text.slice(0, 110) + '...' : text;
+    label.style.color = '#FFE0B0';
+  }
+}
 
 async function applyEditToInv() {
   if (editTargetSlotIdx < 0) return;
