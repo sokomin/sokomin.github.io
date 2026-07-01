@@ -49,7 +49,8 @@
             margin-left: 1em;
             color: #666;
         }
-        #search-limit {
+        #search-limit,
+        #search-type {
             margin-left: 8px;
             padding: 6px;
             font-size: 0.9em;
@@ -130,7 +131,8 @@
                 display: block;
                 margin: 6px 0;
             }
-            #search-limit {
+            #search-limit,
+        #search-type {
                 margin-left: 0;
                 margin-top: 6px;
             }
@@ -241,6 +243,9 @@
                         <option value="500">500件</option>
                         <option value="1000">1000件</option>
                     </select>
+                    <select id="search-type" title="Item type filter">
+                        <option value="">&#20840;&#12479;&#12452;&#12503;</option>
+                    </select>
                     <span id="search-status">データ未読み込み</span>
                     <button class="cache-reload-btn" id="btn-cache-reload" onclick="reloadSearchNoCache()">キャッシュ更新</button>
                 </div>
@@ -332,10 +337,30 @@
     const inputEl = document.getElementById('search-input');
     const statusEl = document.getElementById('search-status');
     const limitEl = document.getElementById('search-limit');
+    const typeEl = document.getElementById('search-type');
     const tableEl = document.getElementById('item-search-results');
     const tbodyEl = document.getElementById('search-tbody');
     const messageEl = document.getElementById('search-message');
 
+
+    function populateTypeFilter() {
+        if (!DATA || !typeEl) return;
+        const selected = typeEl.value;
+        typeEl.innerHTML = '<option value=\"">&#20840;&#12479;&#12452;&#12503;</option>';
+        const types = Object.entries(DATA.types || {})
+            .map(([id, name]) => [Number(id), String(name || '')])
+            .filter(([id, name]) => Number.isFinite(id) && id >= 0 && name)
+            .sort((a, b) => a[1].localeCompare(b[1], 'ja'));
+        for (const [id, name] of types) {
+            const option = document.createElement('option');
+            option.value = String(id);
+            option.textContent = name;
+            typeEl.appendChild(option);
+        }
+        if ([...typeEl.options].some(option => option.value === selected)) {
+            typeEl.value = selected;
+        }
+    }
     function getPageLimit() {
         const limit = parseInt(limitEl.value, 10);
         return Number.isFinite(limit) ? limit : DEFAULT_PAGE_LIMIT;
@@ -350,6 +375,7 @@
             const res = await fetch(DATA_URL);
             if (!res.ok) throw new Error("HTTP " + res.status);
             DATA = await res.json();
+            populateTypeFilter();
             const t1 = performance.now();
             statusEl.textContent = "読み込み完了: " + DATA.rows.length + "件 (" + (t1 - t0).toFixed(0) + "ms)";
         } catch (e) {
@@ -402,9 +428,11 @@
         }
         const t0 = performance.now();
         const pageLimit = getPageLimit();
+        const selectedType = typeEl ? typeEl.value : '';
         const kws = normalizeItemSearchText(kw).split(/\s+/).filter(Boolean);
         const hits = [];
         for (const r of DATA.rows) {
+            if (selectedType && String(r[3]) !== selectedType) continue;
             const blob = getItemSearchBlob(r);
             let ok = true;
             for (const k of kws) {
@@ -454,6 +482,7 @@
         debounceTimer = setTimeout(runSearch, 120);
     });
     limitEl.addEventListener('change', runSearch);
+    typeEl.addEventListener('change', runSearch);
 
     // 初期表示・ブラウザ戻る（bfcache 復元含む）・フォーム自動復元で
     // 入力内容が残っている場合に再検索する。
@@ -472,6 +501,7 @@
             var res = await fetch(url, { cache: 'no-cache' });
             if (!res.ok) throw new Error('HTTP ' + res.status);
             DATA = await res.json();
+            populateTypeFilter();
             statusEl.textContent = '再読み込み完了: ' + DATA.rows.length + '件';
             render(inputEl.value.trim());
             btn.textContent = '更新完了';
