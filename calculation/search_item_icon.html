@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://sokomin.github.io/material.indigo-pink.min.css" />
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32">
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192">
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+        .icon-search-box {
+            margin: 0 auto;
+            width: 95%;
+            max-width: 1180px;
+            background: #fff;
+            border: 1px solid #bbb;
+            padding: 14px;
+            text-align: left;
+            box-sizing: border-box;
+        }
+        .icon-search-main {
+            display: grid;
+            grid-template-columns: minmax(220px, 320px) 1fr;
+            gap: 14px;
+            align-items: stretch;
+        }
+        .icon-dropzone {
+            display: flex;
+            min-height: 176px;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed #9aaec2;
+            background: #f8fbff;
+            color: #555;
+            cursor: pointer;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .icon-dropzone.dragover {
+            border-color: #337ab7;
+            background: #eef7ff;
+        }
+        .icon-dropzone input {
+            display: none;
+        }
+        .icon-preview {
+            display: grid;
+            gap: 8px;
+            justify-items: center;
+        }
+        .icon-preview img,
+        table#item-search-results img.result-icon {
+            width: 48px;
+            height: 48px;
+            image-rendering: pixelated;
+            object-fit: contain;
+            border: 1px solid #888;
+            background: #202020;
+        }
+        .icon-search-controls {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(110px, 1fr));
+            gap: 10px;
+            align-content: start;
+        }
+        .icon-search-controls label {
+            display: block;
+            color: #555;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        .icon-search-controls input[type="text"],
+        .icon-search-controls select {
+            width: 100%;
+            min-height: 34px;
+            border: 1px solid #aaa;
+            padding: 5px 8px;
+            box-sizing: border-box;
+            font-size: 0.95em;
+        }
+        .icon-search-controls button,
+        .cache-reload-btn {
+            width: 100%;
+            min-height: 34px;
+            background: #337ab7;
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 3px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .icon-search-controls button:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+        .cache-reload-btn {
+            background: #607D8B;
+        }
+        .cache-reload-btn:hover {
+            background: #455A64;
+        }
+        #search-status {
+            display: block;
+            margin-top: 10px;
+            color: #666;
+        }
+        #search-message {
+            margin: 12px auto 0;
+            width: 95%;
+            max-width: 1180px;
+            color: #8a5a00;
+            background: #fff8e8;
+            border: 1px solid #e0bf75;
+            padding: 8px 10px;
+            text-align: left;
+            box-sizing: border-box;
+        }
+        #search-message:empty {
+            display: none;
+        }
+        .search-hits {
+            color: #1a4f8b;
+            font-weight: bold;
+        }
+        table#item-search-results {
+            margin: 1em auto;
+            border-collapse: collapse;
+            width: 95%;
+            max-width: 1400px;
+            background: #fff;
+            text-align: left;
+        }
+        table#item-search-results th,
+        table#item-search-results td {
+            border: 1px solid #bbb;
+            padding: 4px 8px;
+            font-size: 0.9em;
+            vertical-align: top;
+        }
+        table#item-search-results th {
+            background: #eee;
+            text-align: center;
+        }
+        table#item-search-results tr:nth-child(even) td {
+            background: #f8f8f8;
+        }
+        table#item-search-results .score {
+            white-space: nowrap;
+            font-variant-numeric: tabular-nums;
+        }
+        table#item-search-results .name a {
+            color: #1a4f8b;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        table#item-search-results .name a:hover {
+            text-decoration: underline;
+        }
+        table#item-search-results .meta {
+            color: #666;
+            font-size: 0.85em;
+        }
+        table#item-search-results .blob {
+            color: #555;
+            font-size: 0.8em;
+            max-width: 560px;
+            word-break: break-all;
+        }
+        @media (max-width: 768px) {
+            .android-large-table .main-background {
+                padding: 0 4px;
+                box-sizing: border-box;
+            }
+            h1 {
+                font-size: 22px;
+                word-break: break-word;
+                overflow-wrap: anywhere;
+            }
+            .icon-search-main,
+            .icon-search-controls {
+                grid-template-columns: 1fr;
+            }
+            .icon-search-box {
+                width: 100%;
+                padding: 8px;
+            }
+            #search-message {
+                width: 100%;
+            }
+            table#item-search-results {
+                width: 100%;
+                max-width: 100%;
+            }
+            table#item-search-results th,
+            table#item-search-results td {
+                padding: 2px 4px;
+                font-size: 11px;
+            }
+            table#item-search-results th:nth-child(6),
+            table#item-search-results td:nth-child(6) {
+                display: none;
+            }
+            table#item-search-results img.result-icon {
+                width: 32px;
+                height: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <title>アイテム検索（画像） 赤石の民衆</title>
+    <meta name="description" content="レッドストーン総合攻略情報ポータルページ">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <meta name="keywords" content="RED STONE,レッドストーン,赤石の民衆,そこらの民衆,ＲＥＤ ＳＴＯＮＥ,そこみん,赤石,攻略情報,アイテム検索,アイコン検索,画像検索">
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml">
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png">
+                    </a>
+                </span>
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+                            onkeypress="enter();" id="search-field">
+                    </div>
+                </div>
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png">
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a></li>
+                    <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a></li>
+                    <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title"><h2>メニュー</h2></span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item"   href="../item/item.html"><strong>アイテム</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-skill"  href="../skill/skill.html"><strong>スキル</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"     href="../monster/monster.html"><strong>モンスター</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-pt"     href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-quest"  href="../quest/quest.html"><strong>クエスト</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-guild"  href="../guild/guild.html"><strong>ギルド</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                <a class="mdl-navigation__link sokomin-layout-info"   href="../information/information.html"><strong>雑学</strong></a>
+            </nav>
+        </div>
+
+        <div class="android-large-table mdl-layout__content">
+            <div class="main-background mdl-typography--text-center">
+                <br>
+                <br>
+                <br>
+                <h1>アイテム検索（画像）</h1>
+                <p>アイコン画像から近いアイテムを検索できます。</p>
+                <div class="icon-search-box">
+                    <div class="icon-search-main">
+                        <label class="icon-dropzone" id="dropzone">
+                            <input id="target-file" type="file" accept="image/*">
+                            <span class="icon-preview" id="preview">
+                                <span>アイコン画像を選択</span>
+                            </span>
+                        </label>
+                        <div>
+                            <div class="icon-search-controls">
+                                <div>
+                                    <label for="filter-text">絞り込み</label>
+                                    <input id="filter-text" type="text" placeholder="名前、タイプ、説明文">
+                                </div>
+                                <div>
+                                    <label for="search-limit">表示件数</label>
+                                    <select id="search-limit">
+                                        <option value="50" selected>50件</option>
+                                        <option value="100">100件</option>
+                                        <option value="200">200件</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label>&nbsp;</label>
+                                    <button id="start-search" disabled>照合開始</button>
+                                </div>
+                                <div>
+                                    <label>&nbsp;</label>
+                                    <button class="cache-reload-btn" id="btn-cache-reload">キャッシュ更新</button>
+                                </div>
+                            </div>
+                            <span id="search-status">データ未読み込み</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="search-message"></div>
+                <table id="item-search-results" style="display:none">
+                    <thead>
+                        <tr>
+                            <th>順位</th>
+                            <th>画像</th>
+                            <th>スコア</th>
+                            <th>名前</th>
+                            <th>タイプ</th>
+                            <th>検索対象テキスト</th>
+                        </tr>
+                    </thead>
+                    <tbody id="search-tbody"></tbody>
+                </table>
+                <br>
+                <p>
+                    ・名前のリンクから個別アイテム表示ページへ移動できます。<br>
+                    ・装備不可時の色味や四隅に表示が重なった画像も、中央部分を重視して照合します。<br>
+                </p>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、L&K Co., Ltd.に帰属します。<br>
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    © L&K Co., Ltd. All Rights Reserved.<br>
+                </footer>
+            </div>
+            <script src="https://sokomin.github.io/material.min.js"></script>
+        </div>
+    </div>
+
+<script>
+(function () {
+    "use strict";
+
+    const INDEX_URL = "data/item_icon_index.json";
+    const VIEWER_URL = "item_viewer.html";
+    const IMG_BASE = "../item/design/image/item/iconItem_";
+
+    const state = {
+        index: null,
+        rowsByIcon: new Map(),
+        atlasFeatures: [],
+        atlasCacheBust: "",
+        targetFeature: null,
+        targetUrl: "",
+        results: [],
+        running: false
+    };
+
+    const fileEl = document.getElementById("target-file");
+    const dropzoneEl = document.getElementById("dropzone");
+    const previewEl = document.getElementById("preview");
+    const statusEl = document.getElementById("search-status");
+    const messageEl = document.getElementById("search-message");
+    const startEl = document.getElementById("start-search");
+    const reloadEl = document.getElementById("btn-cache-reload");
+    const filterEl = document.getElementById("filter-text");
+    const limitEl = document.getElementById("search-limit");
+    const tableEl = document.getElementById("item-search-results");
+    const tbodyEl = document.getElementById("search-tbody");
+
+    function escapeHtml(value) {
+        return String(value == null ? "" : value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+    }
+
+    function setMessage(text, kind) {
+        messageEl.textContent = text || "";
+        messageEl.style.color = kind === "bad" ? "#c00" : "#8a5a00";
+    }
+
+    function appendCacheBust(url, token) {
+        if (!token) return url;
+        return url + (url.indexOf("?") === -1 ? "?" : "&") + "_=" + encodeURIComponent(token);
+    }
+
+    function normalizeIconId(value) {
+        const match = String(value == null ? "" : value).match(/\d{1,6}/);
+        return match ? String(Number(match[0])).padStart(4, "0") : "";
+    }
+
+    function typeName(typeId) {
+        return state.index && state.index.types ? state.index.types[String(typeId)] || "" : "";
+    }
+
+    function gradeName(gradeId) {
+        return state.index && state.index.grades ? state.index.grades[String(gradeId)] || "" : "";
+    }
+
+    function itemUrl(row) {
+        const id = Number(row[0]);
+        const typeId = row[3];
+        const hex = "0x" + id.toString(16).padStart(4, "0");
+        return VIEWER_URL + "?id=" + encodeURIComponent(hex) + "&t=" + encodeURIComponent(typeId);
+    }
+
+    function buildRowsByIcon(index) {
+        const map = new Map();
+        for (const entry of index.icons || []) {
+            const iconId = normalizeIconId(entry[0]);
+            const rows = (entry[3] || []).map(row => [
+                row[0],
+                iconId,
+                row[1],
+                row[2],
+                row[3],
+                row[4],
+                row[5] || ""
+            ]);
+            if (iconId && rows.length) map.set(iconId, rows);
+        }
+        state.rowsByIcon = map;
+    }
+
+    async function loadIndex(noCache) {
+        const token = noCache ? String(Date.now()) : "";
+        statusEl.textContent = noCache ? "更新中..." : "データ取得中...";
+        try {
+            const response = await fetch(appendCacheBust(INDEX_URL, token), noCache ? { cache: "no-cache" } : {});
+            if (!response.ok) throw new Error("HTTP " + response.status);
+            const index = await response.json();
+            if (!Array.isArray(index.icons) || !Array.isArray(index.atlases)) {
+                throw new Error("検索データの形式が正しくありません");
+            }
+            state.index = index;
+            state.atlasCacheBust = token;
+            state.atlasFeatures = [];
+            buildRowsByIcon(index);
+            statusEl.textContent = "読み込み完了: " + state.rowsByIcon.size + "種";
+            setMessage("");
+            refreshStartButton();
+            if (state.targetFeature) runSearch();
+        } catch (error) {
+            statusEl.textContent = "読み込み失敗";
+            setMessage("データを読み込めませんでした: " + error.message, "bad");
+        }
+    }
+
+    function refreshStartButton() {
+        startEl.disabled = state.running || !state.index || !state.targetFeature;
+    }
+
+    function loadImageFromUrl(url, cors) {
+        return new Promise((resolve, reject) => {
+            const image = new Image();
+            if (cors) image.crossOrigin = "anonymous";
+            image.onload = () => resolve(image);
+            image.onerror = () => reject(new Error("画像を読み込めません"));
+            image.src = url;
+        });
+    }
+
+    async function loadImageFromFile(file) {
+        const url = URL.createObjectURL(file);
+        try {
+            const image = await loadImageFromUrl(url, false);
+            return { image, url };
+        } catch (error) {
+            URL.revokeObjectURL(url);
+            throw error;
+        }
+    }
+
+    function drawNormalized(image, size) {
+        const canvas = document.createElement("canvas");
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext("2d", { willReadFrequently: true });
+        ctx.clearRect(0, 0, size, size);
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
+
+        const iw = image.naturalWidth || image.width;
+        const ih = image.naturalHeight || image.height;
+        const scale = Math.min(size / iw, size / ih);
+        const dw = Math.max(1, Math.round(iw * scale));
+        const dh = Math.max(1, Math.round(ih * scale));
+        const dx = Math.floor((size - dw) / 2);
+        const dy = Math.floor((size - dh) / 2);
+        ctx.drawImage(image, dx, dy, dw, dh);
+        return ctx.getImageData(0, 0, size, size);
+    }
+
+    function makeFeature(image) {
+        return makeFeatureFromImageData(drawNormalized(image, 32));
+    }
+
+    function makeFeatureFromImageData(imageData) {
+        const pixels = imageData.data;
+        const gray = new Float32Array(32 * 32);
+        const weights = new Float32Array(32 * 32);
+        const rgb = new Uint8ClampedArray(32 * 32 * 3);
+        const colorSum = [0, 0, 0];
+        let weightSum = 0;
+
+        for (let i = 0, p = 0, g = 0; i < pixels.length; i += 4, p += 3, g++) {
+            const x = g % 32;
+            const y = Math.floor(g / 32);
+            const weight = overlayTolerantWeight(x, y);
+            const alpha = pixels[i + 3] / 255;
+            const r = pixels[i] * alpha;
+            const gg = pixels[i + 1] * alpha;
+            const b = pixels[i + 2] * alpha;
+            rgb[p] = r;
+            rgb[p + 1] = gg;
+            rgb[p + 2] = b;
+            gray[g] = 0.299 * r + 0.587 * gg + 0.114 * b;
+            weights[g] = weight;
+            colorSum[0] += r * weight;
+            colorSum[1] += gg * weight;
+            colorSum[2] += b * weight;
+            weightSum += weight;
+        }
+
+        let grayTotal = 0;
+        let grayWeight = 0;
+        for (let i = 0; i < gray.length; i++) {
+            grayTotal += gray[i] * weights[i];
+            grayWeight += weights[i];
+        }
+        const grayMean = grayTotal / Math.max(1, grayWeight);
+        let grayVariance = 0;
+        for (let i = 0; i < gray.length; i++) {
+            const diff = gray[i] - grayMean;
+            grayVariance += diff * diff * weights[i];
+        }
+        const grayStd = Math.sqrt(grayVariance / Math.max(1, grayWeight)) || 1;
+        const norm = new Float32Array(gray.length);
+        for (let i = 0; i < gray.length; i++) norm[i] = (gray[i] - grayMean) / grayStd;
+
+        const hash = [];
+        for (let y = 0; y < 8; y++) {
+            for (let x = 0; x < 8; x++) {
+                const a = blockAverageWeighted(norm, weights, x * 4, y * 4, 4, 4, 32);
+                const b = blockAverageWeighted(norm, weights, Math.min(28, x * 4 + 1), y * 4, 4, 4, 32);
+                hash.push(a > b ? 1 : 0);
+            }
+        }
+
+        const coarse = new Float32Array(16 * 16);
+        const coarseWeight = new Float32Array(16 * 16);
+        for (let y = 0; y < 16; y++) {
+            for (let x = 0; x < 16; x++) {
+                const i = y * 16 + x;
+                coarse[i] = blockAverageWeighted(norm, weights, x * 2, y * 2, 2, 2, 32);
+                coarseWeight[i] = blockAverage(weights, x * 2, y * 2, 2, 2, 32);
+            }
+        }
+
+        const edge = new Float32Array(16 * 16);
+        for (let y = 0; y < 16; y++) {
+            for (let x = 0; x < 16; x++) {
+                const i = y * 16 + x;
+                const left = x > 0 ? coarse[i - 1] : coarse[i];
+                const up = y > 0 ? coarse[i - 16] : coarse[i];
+                edge[i] = Math.abs(coarse[i] - left) + Math.abs(coarse[i] - up);
+            }
+        }
+
+        return {
+            rgb,
+            hash,
+            color: colorSum.map(value => value / Math.max(1, weightSum)),
+            coarse,
+            edge,
+            weights,
+            coarseWeight
+        };
+    }
+
+    function overlayTolerantWeight(x, y) {
+        let weight = 1;
+        if ((x < 10 && y < 10) ||
+            (x >= 21 && y < 10) ||
+            (x < 8 && y >= 23) ||
+            (x >= 20 && y >= 20)) {
+            weight *= 0.06;
+        } else if (x < 3 || x >= 29 || y < 3 || y >= 29) {
+            weight *= 0.45;
+        }
+        if (x >= 8 && x < 24 && y >= 8 && y < 24) {
+            weight *= 1.25;
+        }
+        return weight;
+    }
+
+    function blockAverage(values, sx, sy, width, height, stride) {
+        let total = 0;
+        let count = 0;
+        for (let y = sy; y < sy + height; y++) {
+            for (let x = sx; x < sx + width; x++) {
+                total += values[y * stride + x];
+                count++;
+            }
+        }
+        return total / count;
+    }
+
+    function blockAverageWeighted(values, weights, sx, sy, width, height, stride) {
+        let total = 0;
+        let weight = 0;
+        for (let y = sy; y < sy + height; y++) {
+            for (let x = sx; x < sx + width; x++) {
+                const i = y * stride + x;
+                const w = weights[i];
+                total += values[i] * w;
+                weight += w;
+            }
+        }
+        return total / Math.max(0.0001, weight);
+    }
+
+    function scoreFeature(a, b) {
+        let pixel = 0;
+        let pixelWeight = 0;
+        for (let i = 0, p = 0; i < a.weights.length; i++, p += 3) {
+            const w = Math.min(a.weights[i], b.weights[i]);
+            const rd = a.rgb[p] - b.rgb[p];
+            const gd = a.rgb[p + 1] - b.rgb[p + 1];
+            const bd = a.rgb[p + 2] - b.rgb[p + 2];
+            pixel += (rd * rd + gd * gd + bd * bd) * w / 3;
+            pixelWeight += w;
+        }
+        pixel = Math.sqrt(pixel / Math.max(1, pixelWeight));
+
+        let hash = 0;
+        for (let i = 0; i < a.hash.length; i++) {
+            if (a.hash[i] !== b.hash[i]) hash++;
+        }
+
+        let color = 0;
+        for (let i = 0; i < 3; i++) {
+            const diff = a.color[i] - b.color[i];
+            color += diff * diff;
+        }
+        color = Math.sqrt(color / 3);
+
+        let coarse = 0;
+        let coarseWeight = 0;
+        for (let i = 0; i < a.coarse.length; i++) {
+            const w = Math.min(a.coarseWeight[i], b.coarseWeight[i]);
+            const diff = a.coarse[i] - b.coarse[i];
+            coarse += diff * diff * w;
+            coarseWeight += w;
+        }
+        coarse = Math.sqrt(coarse / Math.max(1, coarseWeight));
+
+        let edge = 0;
+        let edgeWeight = 0;
+        for (let i = 0; i < a.edge.length; i++) {
+            const w = Math.min(a.coarseWeight[i], b.coarseWeight[i]);
+            const diff = a.edge[i] - b.edge[i];
+            edge += diff * diff * w;
+            edgeWeight += w;
+        }
+        edge = Math.sqrt(edge / Math.max(1, edgeWeight));
+
+        const shape = coarse * 18 + edge * 8 + hash * 1.5;
+        return shape + pixel * 0.08 + color * 0.02;
+    }
+
+    function resolveRelativeUrl(baseUrl, relativeUrl) {
+        try {
+            return new URL(relativeUrl, new URL(baseUrl, window.location.href)).href;
+        } catch (error) {
+            return relativeUrl;
+        }
+    }
+
+    function tileFeatureFromAtlas(image, sx, sy, tileSize) {
+        const canvas = document.createElement("canvas");
+        canvas.width = 32;
+        canvas.height = 32;
+        const ctx = canvas.getContext("2d", { willReadFrequently: true });
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
+        ctx.drawImage(image, sx, sy, tileSize, tileSize, 0, 0, 32, 32);
+        return makeFeatureFromImageData(ctx.getImageData(0, 0, 32, 32));
+    }
+
+    async function ensureAtlasFeatures() {
+        if (state.atlasFeatures.length) return;
+        const tileSize = state.index.tile || 40;
+        const cols = state.index.cols || 32;
+        const atlasImages = [];
+        statusEl.textContent = "画像データ取得中...";
+
+        for (let i = 0; i < state.index.atlases.length; i++) {
+            const atlas = state.index.atlases[i];
+            const url = appendCacheBust(resolveRelativeUrl(INDEX_URL, atlas.file || atlas.src), state.atlasCacheBust);
+            atlasImages[i] = await loadImageFromUrl(url, true);
+        }
+
+        const features = [];
+        const entries = state.index.icons || [];
+        for (let i = 0; i < entries.length; i++) {
+            const entry = entries[i];
+            const iconId = normalizeIconId(entry[0]);
+            const atlasIndex = Number(entry[1]) || 0;
+            const cell = Number(entry[2]) || 0;
+            const image = atlasImages[atlasIndex];
+            if (!image || !state.rowsByIcon.has(iconId)) continue;
+            features.push({
+                iconId,
+                rows: state.rowsByIcon.get(iconId),
+                feature: tileFeatureFromAtlas(image, (cell % cols) * tileSize, Math.floor(cell / cols) * tileSize, tileSize)
+            });
+            if (i % 256 === 0) {
+                statusEl.textContent = "画像データ準備中: " + i + " / " + entries.length;
+                await new Promise(resolve => setTimeout(resolve, 0));
+            }
+        }
+        state.atlasFeatures = features;
+    }
+
+    function rowMatchesFilter(row) {
+        const filter = filterEl.value.trim().toLowerCase();
+        if (!filter) return true;
+        const words = filter.split(/\s+/).filter(Boolean);
+        const haystack = [row[2], typeName(row[3]), gradeName(row[4]), row[6]].join(" ").toLowerCase();
+        return words.every(word => haystack.indexOf(word) !== -1);
+    }
+
+    async function setTarget(file) {
+        if (!file) return;
+        if (state.targetUrl) URL.revokeObjectURL(state.targetUrl);
+        try {
+            const loaded = await loadImageFromFile(file);
+            state.targetUrl = loaded.url;
+            state.targetFeature = makeFeature(loaded.image);
+            previewEl.innerHTML = '<img src="' + escapeHtml(loaded.url) + '" alt=""><span>' + escapeHtml(file.name) + '</span>';
+            setMessage("");
+            refreshStartButton();
+            if (state.index) runSearch();
+        } catch (error) {
+            setMessage("画像を読み込めませんでした: " + error.message, "bad");
+        }
+    }
+
+    async function runSearch() {
+        if (state.running || !state.index || !state.targetFeature) return;
+        state.running = true;
+        refreshStartButton();
+        tbodyEl.innerHTML = "";
+        tableEl.style.display = "none";
+        state.results = [];
+
+        try {
+            await ensureAtlasFeatures();
+            const candidates = state.atlasFeatures.filter(item => item.rows.some(row => rowMatchesFilter(row)));
+            statusEl.textContent = "照合中: 0 / " + candidates.length;
+            for (let i = 0; i < candidates.length; i++) {
+                const item = candidates[i];
+                state.results.push({
+                    iconId: item.iconId,
+                    rows: item.rows,
+                    score: scoreFeature(state.targetFeature, item.feature)
+                });
+                if (i % 256 === 0) {
+                    statusEl.textContent = "照合中: " + i + " / " + candidates.length;
+                    await new Promise(resolve => setTimeout(resolve, 0));
+                }
+            }
+            state.results.sort((a, b) => a.score - b.score);
+            renderResults();
+            statusEl.innerHTML = '<span class="search-hits">' + state.results.length + '件照合</span>';
+            setMessage("近いアイコン順に表示しました。");
+        } catch (error) {
+            setMessage("照合できませんでした: " + error.message, "bad");
+        } finally {
+            state.running = false;
+            refreshStartButton();
+        }
+    }
+
+    function renderResults() {
+        const limit = Math.max(1, Math.min(200, Number(limitEl.value) || 50));
+        const filtered = state.results.filter(result => result.rows.some(row => rowMatchesFilter(row))).slice(0, limit);
+        const fragment = document.createDocumentFragment();
+        tbodyEl.innerHTML = "";
+
+        filtered.forEach((result, index) => {
+            const rows = result.rows.filter(row => rowMatchesFilter(row));
+            const first = rows[0];
+            const hidden = rows.length - 1;
+            const type = typeName(first[3]) || "-";
+            const grade = gradeName(first[4]);
+            const meta = [grade, first[5] ? "Lv" + first[5] : ""].filter(Boolean).join(" / ");
+            const blob = rows.slice(0, 4).map(row => row[6]).join(" / ").slice(0, 240);
+            const tr = document.createElement("tr");
+            tr.innerHTML =
+                '<td>' + (index + 1) + '</td>' +
+                '<td><img class="result-icon" src="' + IMG_BASE + escapeHtml(result.iconId) + '.png" alt="" loading="lazy"></td>' +
+                '<td class="score">' + result.score.toFixed(2) + '</td>' +
+                '<td class="name"><a href="' + escapeHtml(itemUrl(first)) + '">' + escapeHtml(first[2]) + '</a>' +
+                    '<div class="meta">' + escapeHtml(meta) + (hidden > 0 ? ' / ほか ' + hidden + '件' : '') + '</div></td>' +
+                '<td>' + escapeHtml(type) + '</td>' +
+                '<td class="blob">' + escapeHtml(blob) + (blob.length >= 240 ? "…" : "") + '</td>';
+            fragment.appendChild(tr);
+        });
+        tbodyEl.appendChild(fragment);
+        tableEl.style.display = filtered.length ? "" : "none";
+    }
+
+    fileEl.addEventListener("change", event => setTarget(event.target.files[0]));
+    startEl.addEventListener("click", runSearch);
+    reloadEl.addEventListener("click", async function () {
+        reloadEl.disabled = true;
+        reloadEl.textContent = "更新中...";
+        await loadIndex(true);
+        reloadEl.textContent = "更新完了";
+        setTimeout(function () {
+            reloadEl.textContent = "キャッシュ更新";
+            reloadEl.disabled = false;
+        }, 1200);
+    });
+    filterEl.addEventListener("input", function () {
+        if (state.results.length) renderResults();
+    });
+    limitEl.addEventListener("change", renderResults);
+
+    ["dragenter", "dragover"].forEach(name => {
+        dropzoneEl.addEventListener(name, event => {
+            event.preventDefault();
+            dropzoneEl.classList.add("dragover");
+        });
+    });
+    ["dragleave", "drop"].forEach(name => {
+        dropzoneEl.addEventListener(name, event => {
+            event.preventDefault();
+            dropzoneEl.classList.remove("dragover");
+        });
+    });
+    dropzoneEl.addEventListener("drop", event => {
+        setTarget(event.dataTransfer.files && event.dataTransfer.files[0]);
+    });
+
+    loadIndex(false);
+})();
+</script>
+</body>
+</html>
