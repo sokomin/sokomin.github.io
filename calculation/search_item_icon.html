@@ -49,11 +49,20 @@
             text-align: left;
             box-sizing: border-box;
         }
+        .icon-search-box.is-initial {
+            max-width: 640px;
+            background: transparent;
+            border: none;
+            padding: 0;
+        }
         .icon-search-main {
             display: grid;
             grid-template-columns: minmax(220px, 320px) 1fr;
             gap: 14px;
             align-items: stretch;
+        }
+        .icon-search-main.is-initial {
+            display: block;
         }
         .icon-dropzone {
             display: flex;
@@ -66,6 +75,11 @@
             cursor: pointer;
             text-align: center;
             box-sizing: border-box;
+        }
+        .icon-search-main.is-initial .icon-dropzone {
+            min-height: 58px;
+            border: 1px solid #d7d7d7;
+            background: #fff;
         }
         .icon-dropzone.dragover {
             border-color: #337ab7;
@@ -350,15 +364,15 @@
                     <a href="search_item_icon.html" class="active">画像検索</a>
                 </div>
                 <!-- <p>アイコン画像から近いアイテムを検索できます。</p> -->
-                <div class="icon-search-box">
-                    <div class="icon-search-main">
+                <div class="icon-search-box is-initial" id="icon-search-box">
+                    <div class="icon-search-main is-initial" id="icon-search-main">
                         <label class="icon-dropzone" id="dropzone">
                             <input id="target-file" type="file" accept="image/*">
                             <span class="icon-preview" id="preview">
                                 <span>アイコン画像を選択</span>
                             </span>
                         </label>
-                        <div>
+                        <div id="search-refine-controls" style="display:none">
                             <div class="icon-search-controls">
                                 <div>
                                     <label for="filter-text">絞り込み</label>
@@ -458,8 +472,11 @@
     };
 
     const fileEl = document.getElementById("target-file");
+    const boxEl = document.getElementById("icon-search-box");
+    const mainEl = document.getElementById("icon-search-main");
     const dropzoneEl = document.getElementById("dropzone");
     const previewEl = document.getElementById("preview");
+    const refineControlsEl = document.getElementById("search-refine-controls");
     const statusEl = document.getElementById("search-status");
     const messageEl = document.getElementById("search-message");
     const startEl = document.getElementById("start-search");
@@ -526,6 +543,13 @@
         state.rowsByIcon = map;
     }
 
+    function updateRefineControls() {
+        const hasTarget = !!state.targetFeature;
+        if (refineControlsEl) refineControlsEl.style.display = hasTarget ? "" : "none";
+        if (boxEl) boxEl.classList.toggle("is-initial", !hasTarget);
+        if (mainEl) mainEl.classList.toggle("is-initial", !hasTarget);
+    }
+
     async function loadIndex(noCache) {
         const token = noCache ? String(Date.now()) : "";
         statusEl.textContent = noCache ? "更新中..." : "データ取得中...";
@@ -551,6 +575,7 @@
     }
 
     function refreshStartButton() {
+        updateRefineControls();
         startEl.disabled = state.running || !state.index || !state.targetFeature;
     }
 
@@ -781,6 +806,10 @@
         }
     }
 
+    function disabledAtlasFileName(fileName) {
+        return String(fileName || "").replace(/item_icon_atlas_(\d{3})\.png$/, "item_icon_atlas_disabled_$1.png");
+    }
+
     function tileFeatureFromAtlas(image, sx, sy, tileSize) {
         const canvas = document.createElement("canvas");
         canvas.width = 32;
@@ -788,7 +817,9 @@
         const ctx = canvas.getContext("2d", { willReadFrequently: true });
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = "high";
-        ctx.drawImage(image, sx, sy, tileSize, tileSize, 0, 0, 32, 32);
+        const innerSize = tileSize >= 36 ? 32 : tileSize;
+        const inset = Math.max(0, Math.floor((tileSize - innerSize) / 2));
+        ctx.drawImage(image, sx + inset, sy + inset, innerSize, innerSize, 0, 0, 32, 32);
         return makeFeatureFromImageData(ctx.getImageData(0, 0, 32, 32));
     }
 
@@ -796,13 +827,33 @@
         if (state.atlasFeatures.length) return;
         const tileSize = state.index.tile || 40;
         const cols = state.index.cols || 32;
-        const atlasImages = [];
+        const atlasSets = [
+            { name: "normal", atlases: state.index.atlases || [] },
+            {
+                name: "disabled",
+                atlases: state.index.disabledAtlases || (state.index.atlases || []).map(function (atlas) {
+                    return Object.assign({}, atlas, { file: disabledAtlasFileName(atlas.file || atlas.src) });
+                })
+            }
+        ];
+        const atlasImages = {};
         statusEl.textContent = "画像データ取得中...";
 
-        for (let i = 0; i < state.index.atlases.length; i++) {
-            const atlas = state.index.atlases[i];
-            const url = appendCacheBust(resolveRelativeUrl(INDEX_URL, atlas.file || atlas.src), state.atlasCacheBust);
-            atlasImages[i] = await loadImageFromUrl(url, true);
+        for (let setIndex = 0; setIndex < atlasSets.length; setIndex++) {
+            const set = atlasSets[setIndex];
+            atlasImages[set.name] = [];
+            for (let i = 0; i < set.atlases.length; i++) {
+                const atlas = set.atlases[i];
+                const fileName = atlas.file || atlas.src;
+                if (!fileName) continue;
+                const url = appendCacheBust(resolveRelativeUrl(INDEX_URL, fileName), state.atlasCacheBust);
+                try {
+                    atlasImages[set.name][i] = await loadImageFromUrl(url, true);
+                } catch (error) {
+                    if (set.name === "normal") throw error;
+                    atlasImages[set.name][i] = null;
+                }
+            }
         }
 
         const features = [];
@@ -812,13 +863,20 @@
             const iconId = normalizeIconId(entry[0]);
             const atlasIndex = Number(entry[1]) || 0;
             const cell = Number(entry[2]) || 0;
-            const image = atlasImages[atlasIndex];
-            if (!image || !state.rowsByIcon.has(iconId)) continue;
-            features.push({
-                iconId,
-                rows: state.rowsByIcon.get(iconId),
-                feature: tileFeatureFromAtlas(image, (cell % cols) * tileSize, Math.floor(cell / cols) * tileSize, tileSize)
-            });
+            if (!state.rowsByIcon.has(iconId)) continue;
+
+            for (let setIndex = 0; setIndex < atlasSets.length; setIndex++) {
+                const set = atlasSets[setIndex];
+                const image = atlasImages[set.name] && atlasImages[set.name][atlasIndex];
+                if (!image) continue;
+                features.push({
+                    iconId,
+                    rows: state.rowsByIcon.get(iconId),
+                    variant: set.name,
+                    feature: tileFeatureFromAtlas(image, (cell % cols) * tileSize, Math.floor(cell / cols) * tileSize, tileSize)
+                });
+            }
+
             if (i % 256 === 0) {
                 statusEl.textContent = "画像データ準備中: " + i + " / " + entries.length;
                 await new Promise(resolve => setTimeout(resolve, 0));
@@ -862,19 +920,26 @@
         try {
             await ensureAtlasFeatures();
             const candidates = state.atlasFeatures.filter(item => item.rows.some(row => rowMatchesFilter(row)));
+            const bestByIcon = new Map();
             statusEl.textContent = "照合中: 0 / " + candidates.length;
             for (let i = 0; i < candidates.length; i++) {
                 const item = candidates[i];
-                state.results.push({
-                    iconId: item.iconId,
-                    rows: item.rows,
-                    score: scoreFeature(state.targetFeature, item.feature)
-                });
+                const score = scoreFeature(state.targetFeature, item.feature);
+                const current = bestByIcon.get(item.iconId);
+                if (!current || score < current.score) {
+                    bestByIcon.set(item.iconId, {
+                        iconId: item.iconId,
+                        rows: item.rows,
+                        score: score,
+                        variant: item.variant
+                    });
+                }
                 if (i % 256 === 0) {
                     statusEl.textContent = "照合中: " + i + " / " + candidates.length;
                     await new Promise(resolve => setTimeout(resolve, 0));
                 }
             }
+            state.results = Array.from(bestByIcon.values());
             state.results.sort((a, b) => a.score - b.score);
             renderResults();
             statusEl.innerHTML = '<span class="search-hits">' + state.results.length + '件照合</span>';

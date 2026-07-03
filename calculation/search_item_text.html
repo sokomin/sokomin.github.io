@@ -268,16 +268,18 @@
                 <!-- <p>アイテム名・効果・説明文・職業などで検索できます。スペース区切りで AND 検索。</p> -->
                 <div>
                     <input type="text" id="search-input" placeholder="例: 防御力 ヘルメット" autofocus>
-                    <select id="search-limit" title="検索結果の表示件数">
-                        <option value="100" selected>100件</option>
-                        <option value="200">200件</option>
-                        <option value="300">300件</option>
-                        <option value="500">500件</option>
-                        <option value="1000">1000件</option>
-                    </select>
-                    <select id="search-type" title="Item type filter">
-                        <option value="">&#20840;&#12479;&#12452;&#12503;</option>
-                    </select>
+                    <span id="search-refine-controls" style="display:none">
+                        <select id="search-limit" title="検索結果の表示件数">
+                            <option value="100" selected>100件</option>
+                            <option value="200">200件</option>
+                            <option value="300">300件</option>
+                            <option value="500">500件</option>
+                            <option value="1000">1000件</option>
+                        </select>
+                        <select id="search-type" title="Item type filter">
+                            <option value="">&#20840;&#12479;&#12452;&#12503;</option>
+                        </select>
+                    </span>
                     <span id="search-status">データ未読み込み</span>
                     <button class="cache-reload-btn" id="btn-cache-reload" onclick="reloadSearchNoCache()">キャッシュ更新</button>
                 </div>
@@ -368,6 +370,7 @@
 
     const inputEl = document.getElementById('search-input');
     const statusEl = document.getElementById('search-status');
+    const refineControlsEl = document.getElementById('search-refine-controls');
     const limitEl = document.getElementById('search-limit');
     const typeEl = document.getElementById('search-type');
     const tableEl = document.getElementById('item-search-results');
@@ -396,6 +399,11 @@
     function getPageLimit() {
         const limit = parseInt(limitEl.value, 10);
         return Number.isFinite(limit) ? limit : DEFAULT_PAGE_LIMIT;
+    }
+
+    function updateRefineControls(kw) {
+        if (!refineControlsEl) return;
+        refineControlsEl.style.display = kw ? "" : "none";
     }
 
     async function ensureDataLoaded() {
@@ -449,6 +457,7 @@
 
     function render(kw) {
         tbodyEl.innerHTML = "";
+        updateRefineControls(kw);
         if (!DATA) {
             tableEl.style.display = "none";
             return;
@@ -505,6 +514,7 @@
     }
 
     async function runSearch() {
+        updateRefineControls(inputEl.value.trim());
         await ensureDataLoaded();
         render(inputEl.value.trim());
     }
