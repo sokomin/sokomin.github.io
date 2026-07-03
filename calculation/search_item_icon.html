@@ -466,6 +466,7 @@
         atlasFeatures: [],
         atlasCacheBust: "",
         targetFeature: null,
+        targetFeatures: [],
         targetUrl: "",
         results: [],
         running: false
@@ -622,6 +623,62 @@
 
     function makeFeature(image) {
         return makeFeatureFromImageData(drawNormalized(image, 32));
+    }
+
+    function drawBestSquareCrop(image) {
+        const iw = image.naturalWidth || image.width;
+        const ih = image.naturalHeight || image.height;
+        if (iw < 32 || ih < 32 || (iw === 32 && ih === 32)) {
+            return drawNormalized(image, 32);
+        }
+
+        const source = document.createElement("canvas");
+        source.width = iw;
+        source.height = ih;
+        const sourceCtx = source.getContext("2d", { willReadFrequently: true });
+        sourceCtx.drawImage(image, 0, 0);
+        const pixels = sourceCtx.getImageData(0, 0, iw, ih).data;
+
+        let best = { score: Infinity, x: 0, y: 0 };
+        for (let y = 0; y <= ih - 32; y++) {
+            for (let x = 0; x <= iw - 32; x++) {
+                let score = 0;
+                let count = 0;
+                for (let yy = 0; yy < 10; yy++) {
+                    for (let xx = 20; xx < 32; xx++) {
+                        const p = ((y + yy) * iw + (x + xx)) * 4;
+                        const alpha = pixels[p + 3] / 255;
+                        const r = pixels[p] * alpha;
+                        const g = pixels[p + 1] * alpha;
+                        const b = pixels[p + 2] * alpha;
+                        score += Math.max(0, r - b) + Math.max(0, g - b);
+                        count++;
+                    }
+                }
+                score = score / Math.max(1, count);
+                if (score < best.score ||
+                    (score === best.score && (Math.abs(x) + Math.abs(y)) < (Math.abs(best.x) + Math.abs(best.y)))) {
+                    best = { score, x, y };
+                }
+            }
+        }
+
+        const canvas = document.createElement("canvas");
+        canvas.width = 32;
+        canvas.height = 32;
+        const ctx = canvas.getContext("2d", { willReadFrequently: true });
+        ctx.drawImage(image, best.x, best.y, 32, 32, 0, 0, 32, 32);
+        return ctx.getImageData(0, 0, 32, 32);
+    }
+
+    function makeTargetFeatures(image) {
+        const features = [makeFeature(image)];
+        const iw = image.naturalWidth || image.width;
+        const ih = image.naturalHeight || image.height;
+        if (iw >= 32 && ih >= 32 && (iw !== 32 || ih !== 32)) {
+            features.push(makeFeatureFromImageData(drawBestSquareCrop(image)));
+        }
+        return features;
     }
 
     function makeFeatureFromImageData(imageData) {
@@ -798,6 +855,14 @@
         return shape + pixel * 0.08 + color * 0.02;
     }
 
+    function scoreTargetFeatures(targetFeatures, candidateFeature) {
+        let best = Infinity;
+        for (const targetFeature of targetFeatures) {
+            best = Math.min(best, scoreFeature(targetFeature, candidateFeature));
+        }
+        return best;
+    }
+
     function resolveRelativeUrl(baseUrl, relativeUrl) {
         try {
             return new URL(relativeUrl, new URL(baseUrl, window.location.href)).href;
@@ -817,7 +882,7 @@
         const ctx = canvas.getContext("2d", { willReadFrequently: true });
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = "high";
-        const innerSize = tileSize >= 36 ? 32 : tileSize;
+        const innerSize = tileSize >= 36 ? 34 : tileSize;
         const inset = Math.max(0, Math.floor((tileSize - innerSize) / 2));
         ctx.drawImage(image, sx + inset, sy + inset, innerSize, innerSize, 0, 0, 32, 32);
         return makeFeatureFromImageData(ctx.getImageData(0, 0, 32, 32));
@@ -899,7 +964,8 @@
         try {
             const loaded = await loadImageFromFile(file);
             state.targetUrl = loaded.url;
-            state.targetFeature = makeFeature(loaded.image);
+            state.targetFeatures = makeTargetFeatures(loaded.image);
+            state.targetFeature = state.targetFeatures[0] || null;
             previewEl.innerHTML = '<img src="' + escapeHtml(loaded.url) + '" alt=""><span>' + escapeHtml(file.name) + '</span>';
             setMessage("");
             refreshStartButton();
@@ -924,7 +990,7 @@
             statusEl.textContent = "照合中: 0 / " + candidates.length;
             for (let i = 0; i < candidates.length; i++) {
                 const item = candidates[i];
-                const score = scoreFeature(state.targetFeature, item.feature);
+                const score = scoreTargetFeatures(state.targetFeatures, item.feature);
                 const current = bestByIcon.get(item.iconId);
                 if (!current || score < current.score) {
                     bestByIcon.set(item.iconId, {
@@ -959,7 +1025,7 @@
         tbodyEl.innerHTML = "";
 
         filtered.forEach((result, index) => {
-            const rows = result.rows.filter(row => rowMatchesFilter(row));
+            const rows = result.rows.filter(row => rowMatchesFilter(row)).sort(compareDisplayRows);
             const first = rows[0];
             const hidden = rows.length - 1;
             const type = typeName(first[3]) || "-";
@@ -979,6 +1045,12 @@
         });
         tbodyEl.appendChild(fragment);
         tableEl.style.display = filtered.length ? "" : "none";
+    }
+
+    function compareDisplayRows(a, b) {
+        const levelDiff = (Number(b[5]) || 0) - (Number(a[5]) || 0);
+        if (levelDiff) return levelDiff;
+        return (Number(b[0]) || 0) - (Number(a[0]) || 0);
     }
 
     fileEl.addEventListener("change", event => setTarget(event.target.files[0]));
