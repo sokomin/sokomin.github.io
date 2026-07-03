@@ -5,6 +5,7 @@ export const IDENTITY_MODIFIER = Object.freeze({
   atkMul:  1.0,
   defMul:  1.0,
   statMul: 1.0,
+  damageCutPct: 0,
   resAdd:  Object.freeze({ fire: 0, water: 0, wind: 0, earth: 0, light: 0, dark: 0 }),
   extraNotes: '',
 });
@@ -13,15 +14,31 @@ export const MAP_MONSTER_MOD_TABLE = {
   
 };
 
+const MODIFIER_CSV_URL = './lib/data/map_monster_modifiers.csv';
+let csvModifierTable = {};
+let csvLoadPromise = null;
+
+export async function loadMapMonsterModifiers(url = MODIFIER_CSV_URL) {
+  if (csvLoadPromise) return csvLoadPromise;
+  csvLoadPromise = (async () => {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('fetch failed: ' + url + ' status=' + res.status);
+    csvModifierTable = parseModifierCsv(await res.text());
+    return csvModifierTable;
+  })();
+  return csvLoadPromise;
+}
+
 export function getMapMonsterModifier(mapId) {
   const id = Number(mapId);
-  const override = MAP_MONSTER_MOD_TABLE[id];
+  const override = resolveModifier(id);
   if (!override) return IDENTITY_MODIFIER;
   return {
     hpMul:   override.hpMul   ?? 1.0,
     atkMul:  override.atkMul  ?? 1.0,
     defMul:  override.defMul  ?? 1.0,
     statMul: override.statMul ?? 1.0,
+    damageCutPct: override.damageCutPct ?? 0,
     resAdd: {
       fire:  override.resAdd?.fire  ?? 0,
       water: override.resAdd?.water ?? 0,
@@ -70,5 +87,103 @@ export function applyMapMonsterModifier(rawMonster, modifier) {
     earthRes:  rawMonster.earthRes + m.resAdd.earth,
     lightRes:  rawMonster.lightRes + m.resAdd.light,
     darkRes:   rawMonster.darkRes  + m.resAdd.dark,
+    damageCutPct: m.damageCutPct || 0,
   };
+}
+
+function resolveModifier(mapId, seen = new Set()) {
+  if (!Number.isFinite(mapId) || seen.has(mapId)) return null;
+  seen.add(mapId);
+  const tableModifier = MAP_MONSTER_MOD_TABLE[mapId];
+  const csvModifier = csvModifierTable[mapId];
+  const inherited = Number.isFinite(csvModifier?.inheritMapId)
+    ? resolveModifier(csvModifier.inheritMapId, seen)
+    : null;
+  return mergeModifier(inherited, mergeModifier(tableModifier, csvModifier));
+}
+
+function mergeModifier(base, csv) {
+  if (!base) return csv || null;
+  if (!csv) return base;
+  return {
+    hpMul: csv.hpMul ?? base.hpMul,
+    atkMul: csv.atkMul ?? base.atkMul,
+    defMul: csv.defMul ?? base.defMul,
+    statMul: csv.statMul ?? base.statMul,
+    damageCutPct: csv.damageCutPct ?? base.damageCutPct,
+    inheritMapId: csv.inheritMapId ?? base.inheritMapId,
+    resAdd: {
+      fire: csv.resAdd?.fire ?? base.resAdd?.fire,
+      water: csv.resAdd?.water ?? base.resAdd?.water,
+      wind: csv.resAdd?.wind ?? base.resAdd?.wind,
+      earth: csv.resAdd?.earth ?? base.resAdd?.earth,
+      light: csv.resAdd?.light ?? base.resAdd?.light,
+      dark: csv.resAdd?.dark ?? base.resAdd?.dark,
+    },
+    extraNotes: csv.extraNotes || base.extraNotes || '',
+  };
+}
+
+function parseModifierCsv(text) {
+  const out = {};
+  if (text == null) return out;
+  if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
+  const lines = text.split(/\r?\n/).filter((line) => line.trim() !== '');
+  if (lines.length <= 1) return out;
+  const headers = splitCsvLine(lines[0]).map((h) => h.trim());
+  for (let i = 1; i < lines.length; i++) {
+    const cells = splitCsvLine(lines[i]);
+    const row = {};
+    for (let j = 0; j < headers.length; j++) row[headers[j]] = cells[j] != null ? cells[j].trim() : '';
+    const mapId = Number(row.mapId);
+    if (!Number.isFinite(mapId)) continue;
+    out[mapId] = {
+      hpMul: readOptionalNumber(row.hpMul),
+      atkMul: readOptionalNumber(row.atkMul),
+      defMul: readOptionalNumber(row.defMul),
+      statMul: readOptionalNumber(row.statMul),
+      inheritMapId: readOptionalNumber(row.inheritMapId),
+      damageCutPct: readOptionalNumber(row.damageCutPct),
+      resAdd: {
+        fire: readOptionalNumber(row.fireResAdd),
+        water: readOptionalNumber(row.waterResAdd),
+        wind: readOptionalNumber(row.windResAdd),
+        earth: readOptionalNumber(row.earthResAdd),
+        light: readOptionalNumber(row.lightResAdd),
+        dark: readOptionalNumber(row.darkResAdd),
+      },
+      extraNotes: row.extraNotes || '',
+    };
+  }
+  return out;
+}
+
+function readOptionalNumber(v) {
+  if (v == null || v === '') return undefined;
+  const n = Number(v);
+  return Number.isFinite(n) ? n : undefined;
+}
+
+function splitCsvLine(line) {
+  const out = [];
+  let cur = '';
+  let inQuote = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (ch === '"') {
+      if (inQuote && line[i + 1] === '"') {
+        cur += '"';
+        i++;
+      } else {
+        inQuote = !inQuote;
+      }
+    } else if (ch === ',' && !inQuote) {
+      out.push(cur);
+      cur = '';
+    } else {
+      cur += ch;
+    }
+  }
+  out.push(cur);
+  return out;
 }

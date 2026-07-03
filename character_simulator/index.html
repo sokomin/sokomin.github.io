@@ -4339,6 +4339,7 @@
                   <tr><th>攻撃速度%</th><td><input type="number" id="dmg-in-attackSpd" value="0" step="1"></td></tr>
                   <tr><th>スキルCT減少%</th><td><input type="number" id="dmg-in-skillCdReduce" value="0" step="1"></td></tr>
                   <tr><th>Mob防御力</th><td><input type="number" id="dmg-in-mobDef" value="0" step="1"></td></tr>
+                  <tr><th>敵ダメージカット%</th><td><input type="number" id="dmg-in-mobCut" value="0" step="1"></td></tr>
                 </tbody></table>
 
                 
@@ -4665,6 +4666,7 @@ import {
   MOB_SPEC_LABEL, MOB_RANK_LABEL,
 } from './lib/map_monster.js';
 import {
+  loadMapMonsterModifiers,
   getMapMonsterModifier, applyMapMonsterModifier,
   applyMapSubInfoToMonster,
 } from './lib/map_monster_modifiers.js';
@@ -7605,6 +7607,16 @@ function getCurrentMapSubInfo() {
   return meta?.subInfo || null;
 }
 
+function getCurrentMapMonsterModifier() {
+  if (!mapMonsterDataLoaded) return null;
+  if (mapMonsterState.mapId == null) return null;
+  return getMapMonsterModifier(mapMonsterState.mapId);
+}
+
+function getCurrentMapDamageCutPct() {
+  const modifier = getCurrentMapMonsterModifier();
+  return Number(modifier?.damageCutPct) || 0;
+}
 
 function applyMapEffectsToCharacter(f, subInfo) {
   if (!f || !f.equipped) return;
@@ -9450,7 +9462,7 @@ async function initMapMonsterTab() {
   if (!mapMonsterDataLoaded) {
     if (status) status.innerHTML = '<span class="mapmon-empty">マップデータ読込中…</span>';
     try {
-      await loadMapMonsterIndex();
+      await Promise.all([loadMapMonsterIndex(), loadMapMonsterModifiers()]);
       mapMonsterDataLoaded = true;
     } catch (err) {
       if (status) status.innerHTML = '<span class="mapmon-empty" style="color:#d77">読込失敗: ' + esc(err.message || String(err)) + '</span>';
@@ -9458,6 +9470,7 @@ async function initMapMonsterTab() {
     }
   }
   
+  await loadMapMonsterModifiers();
   refreshMapList($('mapmon-map-search')?.value || '');
   if (mapMonsterState.mapId != null) {
     const sel = $('mapmon-map-list');
@@ -9552,6 +9565,12 @@ function renderMapSelection(mapId) {
             + '<td>' + si.st_down + '</td><td>' + (si.lbd || 90) + '%</td></tr>'
             + '</tbody></table>';
       if (si.req_map_lv > 0) html += '<div style="margin-top:2px;">必要マップ製作者Lv ' + si.req_map_lv + '</div>';
+    }
+    const mod = getMapMonsterModifier(mapId);
+    if (mod && (mod.hpMul !== 1 || mod.damageCutPct !== 0 || mod.atkMul !== 1 || mod.defMul !== 1 || mod.statMul !== 1 || mod.extraNotes)) {
+      html += '<div style="margin-top:4px;">MAP補正: HP x' + esc(mod.hpMul)
+        + ' / 敵ダメージカット ' + esc(mod.damageCutPct) + '%</div>';
+      if (mod.extraNotes) html += '<div style="margin-top:2px;color:#b0944c;">' + esc(mod.extraNotes) + '</div>';
     }
     info.innerHTML = html;
   }
@@ -9652,6 +9671,7 @@ function buildMonsterStatTable(_raw, mod, lvCurrent) {
 
   const rows = [
     ['HP',                mod.defaultHp],
+    ['敵ダメージカット%',  mod.damageCutPct || 0],
     ['ATK 最小',           mod.atcMin],
     ['ATK 最大',           mod.atcMax],
     ['防御力',             mod.def],
@@ -17559,6 +17579,7 @@ const DamageCalc = (() => {
       attackSpd: num('dmg-in-attackSpd'),
       skillCdReduce: num('dmg-in-skillCdReduce'),
       mobDef: num('dmg-in-mobDef'),
+      mobCut: num('dmg-in-mobCut'),
     };
   }
 
@@ -17622,6 +17643,7 @@ const DamageCalc = (() => {
     base *= (1 + inputs.finalPhysPct / 100);
 
     base *= (1 + (inputs.bloodFieldDmg || 0) / 100);
+    base *= Math.max(0, 1 - (inputs.mobCut || 0) / 100);
     if (attackCount && attackCount > 1) base *= attackCount;
     return base;
   }
@@ -17907,6 +17929,7 @@ const DamageCalc = (() => {
         ['強打ダメ増 倍率', (1 + inp.strongDmg / 100).toFixed(3) + ' 倍'],
         ['最終物理ダメ% 倍率', (1 + inp.finalPhysPct / 100).toFixed(3) + ' 倍'],
         ['ブラッドレコード最終ダメ% 倍率 (外側)', (1 + (inp.bloodFieldDmg || 0) / 100).toFixed(3) + ' 倍'],
+        ['Mobカット 倍率', (1 - (inp.mobCut || 0) / 100).toFixed(3) + ' 倍'],
         ['攻撃回数', r.attackCount ? fmt(r.attackCount) : '—'],
         ['1発間隔 (1/(1+atkSpd%))', (1 / (1 + inp.attackSpd / 100)).toFixed(3) + ' 秒'],
       ];
@@ -17950,8 +17973,9 @@ const DamageCalc = (() => {
       setIfAuto('dmg-in-bloodFieldDmg', Number(eq.bloodFieldFinalDmg) || 0);
       setIfAuto('dmg-in-vsTypePct',  Number(eq.vsBossDamage) || 0);
       setIfAuto('dmg-in-skillCdReduce', Number(eq.skillCooldownReduce) || 0);
+      const mapDamageCutPct = getCurrentMapDamageCutPct();
+      setIfAuto('dmg-in-mobCut', mapDamageCutPct);
 
-      
       setIfAuto('dmg-in-mWeaponMin', abilities.atkMin || 0);
       setIfAuto('dmg-in-mWeaponMax', abilities.atkMax || 0);
       setIfAuto('dmg-in-mWeaponDamagePct', Number(eq.physDamagePercent) || 0);
@@ -17968,6 +17992,7 @@ const DamageCalc = (() => {
       setIfAuto('dmg-in-mLimitPct', titleMagicPct);
       setIfAuto('dmg-in-mFinalDmg', (Number(eq.finalMagicDamage) || 0) + (Number(eq.finalDamagePercent) || 0));
       setIfAuto('dmg-in-mBloodFieldDmg', Number(eq.bloodFieldFinalDmg) || 0);
+      setIfAuto('dmg-in-mMobCut', mapDamageCutPct);
       setIfAuto('dmg-in-mAttackSpd', Number(eq.atkspd) || 0);
       
       setIfAuto('dmg-in-mAlchemy', titleBonus2.alchemyLv || 0);
@@ -18024,7 +18049,7 @@ const DamageCalc = (() => {
       'dmg-in-critRate','dmg-in-doubleCritRate','dmg-in-strongRate',
       'dmg-in-doubleCritDmg','dmg-in-strongDmg',
       'dmg-in-limitBreakPct','dmg-in-limitBreakFlat','dmg-in-physCapBase',
-      'dmg-in-attackSpd','dmg-in-skillCdReduce','dmg-in-mobDef',
+      'dmg-in-attackSpd','dmg-in-skillCdReduce','dmg-in-mobDef','dmg-in-mobCut',
       
       'dmg-in-mWeaponMin','dmg-in-mWeaponMax','dmg-in-mWeaponDamagePct',
       'dmg-in-mAtkApplyPct','dmg-in-mMainHits','dmg-in-mExtraHits',
@@ -18512,7 +18537,7 @@ async function main() {
     if (creatureBookUIInitialized) renderCreatureBookTab();
   }).catch(() => {  });
 
-  loadMapMonsterIndex().then(async () => {
+  Promise.all([loadMapMonsterIndex(), loadMapMonsterModifiers()]).then(async () => {
     mapMonsterDataLoaded = true;
     if (mapMonsterState.mapId != null) await recalcAll();
   }).catch((e) => console.warn('[MapMonster] preload failed:', e));

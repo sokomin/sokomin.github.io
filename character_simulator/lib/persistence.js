@@ -1,6 +1,5 @@
 
 
-
 const SCHEMA_VERSION = 'rs-character-sim-v1';
 
 function cloneStones(stones) {
@@ -16,7 +15,6 @@ function cloneStones(stones) {
   }
   return out;
 }
-
 
 export function serializeSession(character, inventory, opts = {}) {
   const invArr = [];
@@ -198,7 +196,6 @@ export function serializeSession(character, inventory, opts = {}) {
   };
 }
 
-
 export function deserializeSession(data) {
   if (!data || typeof data !== 'object') {
     throw new Error('persistence: invalid data (not object)');
@@ -213,8 +210,6 @@ export function deserializeSession(data) {
     grace:     data.character?.grace ?? -1,
   };
 }
-
-
 
 export function saveToLocalStorage(key, data) {
   try {
@@ -242,9 +237,6 @@ export function removeFromLocalStorage(key) {
   catch (err) { return false; }
 }
 
-
-
-
 export function downloadJsonFile(filename, data) {
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
@@ -255,7 +247,6 @@ export function downloadJsonFile(filename, data) {
   document.body.removeChild(a);
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
-
 
 export function uploadJsonFile(callback) {
   const input = document.createElement('input');
