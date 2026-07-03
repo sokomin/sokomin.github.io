@@ -441,7 +441,7 @@ function outputInfo() {
                         continue;
                     }
                     var mob_name = mob_data[i].name ? ('<a href="https://sokomin.github.io/monster/monster-list-detail.html?mi=' +
-                                    mob_data[i].mobid +'&dlv=' + mob_data[i].lvmax +'">' + mob_data[i].name + "</a><br>") : "";
+                                    mob_data[i].mobid +'&dlv=' + mob_data[i].lvmax +'&map_id=' + mapid + '">' + mob_data[i].name + "</a><br>") : "";
                     // モンスターDB上の名前を追記
                     var mobdb_name = md.name ? "(" + md.name + ")<br>" : "";
                     mob_name += mobdb_name;

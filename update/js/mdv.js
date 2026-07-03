@@ -26,7 +26,19 @@ function getMapCSV(is_area, monster_str, map2_str) {
     req.open("get", "https://sokomin.github.io/sokomin_repository/db/maplist.csv", true);
     req.send(null);
     req.onload = function () {
-        convertCSVtoArray(is_area, monster_str, map2_str, req.responseText);
+        getMapModifierCSV(is_area, monster_str, map2_str, req.responseText);
+    }
+}
+
+function getMapModifierCSV(is_area, monster_str, map2_str, map_str) {
+    var req = new XMLHttpRequest();
+    req.open("get", "https://sokomin.github.io/character_simulator/lib/data/map_monster_modifiers.csv", true);
+    req.send(null);
+    req.onload = function () {
+        convertCSVtoArray(is_area, monster_str, map2_str, map_str, req.responseText);
+    }
+    req.onerror = function () {
+        convertCSVtoArray(is_area, monster_str, map2_str, map_str, "");
     }
 }
 
@@ -35,14 +47,16 @@ var obj_format = {};
 var monster_data = {};
 var map_mob_data = {};
 var maplist_data = {};
+var map_monster_modifier_data = {};
 
 // 読み込んだCSVデータをオブジェクトに変換
-function convertCSVtoArray(mode, str, map2, map_str) {// 読み込んだCSVデータが文字列として渡される
+function convertCSVtoArray(mode, str, map2, map_str, modifier_str) {// 読み込んだCSVデータが文字列として渡される
     // 初期化
     obj_format = {};
     monster_data = {};
     map_mob_data = {};
     maplist_data = {};
+    map_monster_modifier_data = {};
 
     var result = [];// 最終的な二次元配列を入れるための配列
     var tmp = str.split("\n");// 改行を区切り文字として行を要素とした配列を生成
@@ -134,6 +148,7 @@ function convertCSVtoArray(mode, str, map2, map_str) {// 読み込んだCSVデ�
             maplist_data[result[i][0]] = md;
         }
     }
+    parseMapMonsterModifiers(modifier_str);
 
     // モンスターデータ解析
     if (mode == 2) {
@@ -467,6 +482,111 @@ function createMobTable() {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
+function readOptionalNumber(value) {
+    if (value === undefined || value === null || value === "") {
+        return null;
+    }
+    var parsed = Number(value);
+    return isNaN(parsed) ? null : parsed;
+}
+
+function parseMapMonsterModifiers(csvText) {
+    if (!csvText) {
+        return;
+    }
+    var lines = csvText.split(/\r?\n/);
+    if (lines.length < 2) {
+        return;
+    }
+    var headers = lines[0].split(',');
+    for (var i = 1; i < lines.length; i++) {
+        if (!lines[i]) {
+            continue;
+        }
+        var cols = lines[i].split(',');
+        var row = {};
+        for (var j = 0; j < headers.length; j++) {
+            var key = headers[j].replace(/\"/g, "");
+            var value = cols[j] !== undefined ? cols[j].replace(/\"/g, "") : "";
+            row[key] = value;
+        }
+        var mapId = readOptionalNumber(row.mapId);
+        if (mapId === null) {
+            continue;
+        }
+        map_monster_modifier_data[mapId] = {
+            hpMul: readOptionalNumber(row.hpMul),
+            inheritMapId: readOptionalNumber(row.inheritMapId)
+        };
+    }
+}
+
+function resolveMapMonsterModifier(mapId, seen) {
+    mapId = readOptionalNumber(mapId);
+    if (mapId === null) {
+        return null;
+    }
+    seen = seen || {};
+    if (seen[mapId]) {
+        return null;
+    }
+    seen[mapId] = true;
+
+    var row = map_monster_modifier_data[mapId];
+    if (!row) {
+        return null;
+    }
+    var inherited = row.inheritMapId !== null ? resolveMapMonsterModifier(row.inheritMapId, seen) : null;
+    return {
+        hpMul: row.hpMul !== null ? row.hpMul : (inherited && inherited.hpMul !== null ? inherited.hpMul : 1)
+    };
+}
+
+function inferMonsterHpMultiplier(mobid, mobLv) {
+    var candidates = {};
+    for (var key in map_mob_data) {
+        var mapMob = map_mob_data[key];
+        if (!mapMob || Number(mapMob.mobid) != Number(mobid)) {
+            continue;
+        }
+        var lvMin = readOptionalNumber(mapMob.lvmin);
+        var lvMax = readOptionalNumber(mapMob.lvmax);
+        if (mobLv && lvMin !== null && lvMax !== null && (mobLv < lvMin || mobLv > lvMax)) {
+            continue;
+        }
+        var modifier = resolveMapMonsterModifier(mapMob.mapid);
+        var hpMul = modifier && modifier.hpMul !== null && modifier.hpMul > 0 ? modifier.hpMul : 1;
+        if (hpMul != 1) {
+            candidates[hpMul] = true;
+        }
+    }
+    var keys = Object.keys(candidates);
+    return keys.length == 1 ? readOptionalNumber(keys[0]) : 1;
+}
+
+function getMonsterHpMultiplier(mobid, mobLv) {
+    var direct = readOptionalNumber(getParam('hpmul'));
+    if (direct === null) {
+        direct = readOptionalNumber(getParam('hp_mul'));
+    }
+    if (direct !== null && direct > 0) {
+        return direct;
+    }
+    var mapId = readOptionalNumber(getParam('map_id'));
+    var modifier = resolveMapMonsterModifier(mapId);
+    if (modifier && modifier.hpMul !== null && modifier.hpMul > 0) {
+        return modifier.hpMul;
+    }
+    return inferMonsterHpMultiplier(mobid, mobLv);
+}
+
+function formatMonsterHpText(hp, hpMul) {
+    if (hpMul && hpMul != 1) {
+        return hp + " (x" + hpMul + ")";
+    }
+    return hp;
+}
+
 function validateData(data, spec, rank, debug, drop_txt, skill_txt) {
     if (Number(data["Species"]) != Number(spec)) {
         return true;
@@ -540,6 +660,10 @@ function statusUpdate(tableid, mobid) {
     var MobLUC = Math.floor(((LUCup * (MobLv - 1)) + parseFloat(md["LUC"])) * (MobSTD));//運最終値
 
     var MobHP = Math.floor((Hp2 * MobLv + Hp1) + (Hp3 * MobCON));//HP最終値
+    var MobHpMul = getMonsterHpMultiplier(mobid, MobLv);
+    if (MobHpMul > 0 && MobHpMul != 1) {
+        MobHP = Math.floor(MobHP * MobHpMul);
+    }
     var MobAtcMin = Math.floor((((AtcMinup * (MobLv - 1.0) + parseFloat(md["AtcMinValue"]))) * (1.0 + MobSTR / 200.0)));//最小攻撃力最終値	
     var MobAtcMax = Math.floor((((AtcMaxup * (MobLv - 1.0) + parseFloat(md["AtcMaxValue"]))) * (1.0 + MobSTR / 200.0)));//最大攻撃力最終値
     var MobDef = Math.floor((((Defup * (MobLv - 1.0) + parseFloat(md["DefenseValue"]))) * (1.0 + MobCON / 100.0)));//防御力最終値
@@ -580,7 +704,7 @@ function statusUpdate(tableid, mobid) {
     var MobExp = Math.floor((parseFloat(md["DefaultExp"]) / 10) * (MobLv + 4));//基礎経験値
 
     //表示書き換え
-    $("#" + tableid + "fab1_0").text(MobHP);
+    $("#" + tableid + "fab1_0").text(formatMonsterHpText(MobHP, MobHpMul));
     $("#" + tableid + "fab1_1").text(MobAtcMin + "~" + MobAtcMax);
     $("#" + tableid + "fab1_2").text(MobDef);
 
