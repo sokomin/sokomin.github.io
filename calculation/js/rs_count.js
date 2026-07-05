@@ -7,18 +7,33 @@ function init2() {
 }
 
 
-const server_name = ["strasserad", "vaultish", "bridgehead"];
+const server_name = ["strasserad", "vaultish", "bridgehead", "goldexperience"];
+const rs_count_csv_urls = [
+    "https://sokomin.github.io/sokomin_repository/jpn_data/rs_change_server.csv",
+    "https://sokomin.github.io/sokomin_repository/jpn_data/rs_change_server_g2023.csv",
+];
 
 //CSVファイルを読み込む
 function getCSV(date1, date2, server_name) {
-    url1 = "https://sokomin.github.io/sokomin_repository/jpn_data/rs_change_server.csv";
+    var requests = rs_count_csv_urls.map(function (url) {
+        return new Promise(function (resolve, reject) {
+            var req = new XMLHttpRequest();
+            req.open("get", url, true);
+            req.send(null);
+            req.onload = function () {
+                resolve(req.responseText);
+            };
+            req.onerror = function () {
+                reject(url);
+            };
+        });
+    });
 
-    var req = new XMLHttpRequest();
-    req.open("get", url1, true);
-    req.send(null);
-    req.onload = function () {
-        convertCSVtoArray(req.responseText, date1, date2, server_name);
-    }
+    Promise.all(requests).then(function (csv_data) {
+        convertCSVtoArray(csv_data.join("\n"), date1, date2, server_name);
+    }).catch(function (url) {
+        alert("CSV load failed: " + url);
+    });
 
     // var request = [
     //     { url: url1 },
@@ -182,6 +197,9 @@ function check_server_name(sn, id) {
     if (id == "b" && sn == 2) {
         return true
     }
+    if (id == "g" && sn == 3) {
+        return true
+    }
     return false
 }
 
@@ -195,6 +213,9 @@ function convert_server_name(sn, id) {
     }
     if (sn == 2) {
         return "b"
+    }
+    if (sn == 3) {
+        return "g"
     }
     return ""
 }
