@@ -762,6 +762,66 @@
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: 6px;
     }
+    .creature-inventory-panel { margin-top: 6px; }
+    .creature-inventory-scroll {
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+    .creature-inventory-grid {
+      display: grid;
+      grid-template-columns: repeat(9, 34px);
+      grid-template-rows: repeat(6, 34px);
+      gap: 1px;
+      width: max-content;
+      background: #8b6a28;
+      border: 1px solid #8b6a28;
+    }
+    .creature-inv-cell {
+      position: relative;
+      width: 34px;
+      height: 34px;
+      background: #120c04;
+      cursor: pointer;
+      box-sizing: border-box;
+      transition: filter 0.1s;
+    }
+    .creature-inv-cell:hover { filter: brightness(1.4); }
+    .creature-inv-cell.is-active {
+      outline: 2px solid #ffe066;
+      outline-offset: -2px;
+      z-index: 1;
+    }
+    .creature-inv-cell.is-equipped::after {
+      content: 'E';
+      position: absolute;
+      top: 0;
+      right: 2px;
+      color: #00ff66;
+      font-size: 9px;
+      font-weight: bold;
+      text-shadow: 0 0 2px #000, 1px 1px 0 #000;
+      pointer-events: none;
+    }
+    .creature-inv-cell.is-equipped .creature-inv-icon {
+      opacity: 0.55;
+      filter: grayscale(0.35);
+    }
+    .creature-inv-icon {
+      position: absolute;
+      top: 1px;
+      left: 1px;
+      width: 32px;
+      height: 32px;
+      pointer-events: none;
+      image-rendering: pixelated;
+      object-fit: contain;
+    }
+    .creature-inventory-note {
+      margin-top: 4px;
+      color: #9aa68b;
+      font-size: 11px;
+      line-height: 1.45;
+    }
     .creature-slot-list { display: grid; gap: 3px; }
     .creature-slot {
       display: grid;
@@ -3835,6 +3895,15 @@
                     <div class="creature-stat-empty">メインクリーチャー未選択</div>
                   </div>
                 </div>
+                <div class="item-panel creature-inventory-panel">
+                  <h4>クリーチャーインベントリ</h4>
+                  <div class="creature-inventory-scroll">
+                    <div id="creature-inventory-grid" class="creature-inventory-grid"></div>
+                  </div>
+                  <div class="creature-inventory-note">
+                    クリック = 選択中の編成枠に登録 / Shift+クリック = インベントリから削除
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -6853,7 +6922,7 @@ function buildItemDetailHtml(inv, rec, character) {
   }
   if (isSennoKisekiIncusedEquipment) {
     html += `<div class="idp-section-title" style="color:#cbe79b">&lt;閃の軌跡刻印装備 Lv ${sennoLv}&gt;</div>`;
-    for (const line of SennoKisekiIncusedEquipment.describe(rec.id, sennoLv)) {
+    for (const line of SennoKisekiIncusedEquipment.describe(rec.id, sennoLv, LvTemp)) {
       html += `<span class="idp-op is-base">- ${esc(line)}</span>`;
     }
   }
@@ -8418,6 +8487,7 @@ function bindEvents() {
       recalcDebounce = setTimeout(async () => {
         await recalcAll();
         await refreshItemList();
+        await refreshEditIncusedRingPanelForTarget();
       }, 100);
     });
     if (el.tagName === 'INPUT') {
@@ -8429,6 +8499,7 @@ function bindEvents() {
           invalidateFeasibleCache();
           await recalcAll();
           await refreshItemList();
+          await refreshEditIncusedRingPanelForTarget();
         }, 300);
       });
     }
@@ -8464,29 +8535,14 @@ function buildSnapshot() {
   snap.settings = getSettingsState();
   snap.skills = { ...skillStates };  
   
+  const creatureInventory = creatureState.inventory || [];
   snap.creature = {
-    slots: creatureState.slots.map((s) => ({
-      id: s && s.id ? s.id : null,
-      baseRank: (s && s.baseRank) || null,
-      level: (s && s.level != null) ? Number(s.level) || null : null,
-      statAlloc: (() => {
-        const out = {};
-        for (const def of CREATURE_STAT_KEYS) out[def.key] = Number(s && s.statAlloc && s.statAlloc[def.key]) || 0;
-        return out;
-      })(),
-      transcend: Number(s && s.transcend) || 0,
-      awaken: {
-        main: Number(s && s.awaken && s.awaken.main) || 0,
-        sub1: Number(s && s.awaken && s.awaken.sub1) || 0,
-        sub2: Number(s && s.awaken && s.awaken.sub2) || 0,
-        sub3: Number(s && s.awaken && s.awaken.sub3) || 0,
-      },
-      override: {
-        sub1: (s && s.override && s.override.sub1) || null,
-        sub2: (s && s.override && s.override.sub2) || null,
-        sub3: (s && s.override && s.override.sub3) || null,
-      },
-    })),
+    slots: creatureState.slots.map((s) => serializeCreatureSlot(s)),
+    inventory: Array.from({ length: CREATURE_INVENTORY_MAX }, (_, i) => {
+      const entry = creatureInventory[i];
+      return entry && entry.id ? serializeCreatureSlot(entry) : null;
+    }),
+    equipped: creatureState.slots.map((s) => findCreatureInventoryIndexForSlot(s)),
     book: {
       registered: { ...(creatureState.book && creatureState.book.registered ? creatureState.book.registered : {}) },
     },
@@ -8728,13 +8784,9 @@ async function loadSnapshot(data, sourceLabel) {
     skillStates = {};
   }
 
-  if (data.creature && Array.isArray(data.creature.slots)) {
-    creatureState.slots = [0,1,2,3].map((i) => normalizeCreatureSlot(data.creature.slots[i]));
-    creatureState.book = normalizeCreatureBookState(data.creature.book);
-  } else {
-    creatureState.slots = [newCreatureSlot(), newCreatureSlot(), newCreatureSlot(), newCreatureSlot()];
-    creatureState.book = newCreatureBookState();
-  }
+  creatureState = buildCreatureStateFromSnapshot(data.creature);
+  creatureActiveSlot = 0;
+  creatureActiveInventorySlot = findCreatureInventoryIndexForSlot(creatureState.slots[0]) ?? 0;
   if (creatureUIInitialized) renderCreatureTab();
   if (creatureBookUIInitialized) renderCreatureBookTab();
 
@@ -10818,6 +10870,9 @@ function isSkillTabActive() {
 
 const CREATURE_CSV_BASE   = 'https://sokomin.github.io/sokomin_repository/db/';
 const CREATURE_IMG_BASE   = 'https://sokomin.github.io/information/creature2_files/';
+const CREATURE_INVENTORY_MAX = 54;
+const CREATURE_INV_EMPTY_ICON = 'https://sokomin.github.io/calculation/image//interface2_0767-1.png';
+const CREATURE_INV_MISSING_ICON = 'https://sokomin.github.io/calculation/image//interface2_0767-1.png';
 const CREATURE_OPLIST_URL = 'https://sokomin.github.io/update/js/option-list2022.js';
 const CREATURE_STAT_URL   = 'lib/data/creature_stats.json';
 
@@ -10975,6 +11030,10 @@ function newCreatureSlot() {
   };
 }
 
+function newCreatureInventory() {
+  return Array.from({ length: CREATURE_INVENTORY_MAX }, () => null);
+}
+
 function newCreatureBookState() {
   return { registered: {} };
 }
@@ -11024,14 +11083,100 @@ function normalizeCreatureSlot(raw) {
   return slot;
 }
 
+function serializeCreatureSlot(slot) {
+  return {
+    id: slot && slot.id ? slot.id : null,
+    baseRank: (slot && slot.baseRank) || null,
+    level: (slot && slot.level != null) ? Number(slot.level) || null : null,
+    statAlloc: (() => {
+      const out = {};
+      for (const def of CREATURE_STAT_KEYS) out[def.key] = Number(slot && slot.statAlloc && slot.statAlloc[def.key]) || 0;
+      return out;
+    })(),
+    transcend: Number(slot && slot.transcend) || 0,
+    awaken: {
+      main: Number(slot && slot.awaken && slot.awaken.main) || 0,
+      sub1: Number(slot && slot.awaken && slot.awaken.sub1) || 0,
+      sub2: Number(slot && slot.awaken && slot.awaken.sub2) || 0,
+      sub3: Number(slot && slot.awaken && slot.awaken.sub3) || 0,
+    },
+    override: {
+      sub1: (slot && slot.override && slot.override.sub1) || null,
+      sub2: (slot && slot.override && slot.override.sub2) || null,
+      sub3: (slot && slot.override && slot.override.sub3) || null,
+    },
+  };
+}
+
+function normalizeCreatureInventoryEntry(raw) {
+  const slot = normalizeCreatureSlot(raw);
+  return slot.id ? slot : null;
+}
+
+function findEmptyCreatureInventorySlot() {
+  const inv = creatureState.inventory || [];
+  for (let i = 0; i < CREATURE_INVENTORY_MAX; i++) {
+    if (!inv[i] || !inv[i].id) return i;
+  }
+  return null;
+}
+
+function findCreatureInventoryIndexForSlot(slot) {
+  if (!slot || !slot.id || !creatureState.inventory) return null;
+  const idx = creatureState.inventory.findIndex((entry) => entry === slot);
+  return idx >= 0 ? idx : null;
+}
+
+function findCreatureEquippedSlotForInventoryIndex(invIdx) {
+  const entry = creatureState.inventory && creatureState.inventory[invIdx];
+  if (!entry || !entry.id) return null;
+  const idx = creatureState.slots.findIndex((slot) => slot === entry);
+  return idx >= 0 ? idx : null;
+}
+
+function buildCreatureStateFromSnapshot(raw) {
+  const state = {
+    slots: [newCreatureSlot(), newCreatureSlot(), newCreatureSlot(), newCreatureSlot()],
+    inventory: newCreatureInventory(),
+    book: normalizeCreatureBookState(raw && raw.book),
+  };
+  if (!raw || typeof raw !== 'object') return state;
+
+  if (Array.isArray(raw.inventory)) {
+    for (let i = 0; i < CREATURE_INVENTORY_MAX; i++) {
+      state.inventory[i] = normalizeCreatureInventoryEntry(raw.inventory[i]);
+    }
+    const equipped = Array.isArray(raw.equipped) ? raw.equipped : [];
+    for (let i = 0; i < 4; i++) {
+      const invIdx = Number(equipped[i]);
+      if (Number.isInteger(invIdx) && invIdx >= 0 && invIdx < CREATURE_INVENTORY_MAX && state.inventory[invIdx]) {
+        state.slots[i] = state.inventory[invIdx];
+      }
+    }
+    return state;
+  }
+
+  if (Array.isArray(raw.slots)) {
+    for (let i = 0; i < 4; i++) {
+      const slot = normalizeCreatureSlot(raw.slots[i]);
+      if (!slot.id) continue;
+      state.inventory[i] = slot;
+      state.slots[i] = slot;
+    }
+  }
+  return state;
+}
+
 let creatureState = {
   
   slots: [newCreatureSlot(), newCreatureSlot(), newCreatureSlot(), newCreatureSlot()],
+  inventory: newCreatureInventory(),
   book: newCreatureBookState(),
 };
 let creatureSearchFilter = { text: '', rank: '' };
 let creatureBookFilter = { text: '', rank: '' };
 let creatureActiveSlot   = 0;
+let creatureActiveInventorySlot = 0;
 let creatureUIInitialized = false;
 let creatureBookUIInitialized = false;
 
@@ -11643,7 +11788,10 @@ function buildPassiveOpLines(passiveInfo, slv, optionText, baseOptionText) {
 
 function setActiveCreatureSlot(idx) {
   creatureActiveSlot = idx;
+  const invIdx = findCreatureInventoryIndexForSlot(creatureState.slots[idx]);
+  if (invIdx != null) creatureActiveInventorySlot = invIdx;
   renderCreatureSlots();
+  renderCreatureInventoryGrid();
   renderCreatureSlotDetail();
   
   renderCreatureSearchResults();
@@ -11659,6 +11807,108 @@ function isCreatureDuplicateForSlot(creatureId, slotIdx) {
     if (s && s.id === creatureId) return true;
   }
   return false;
+}
+
+function equipCreatureInventorySlot(invIdx, slotIdx = creatureActiveSlot) {
+  const entry = creatureState.inventory && creatureState.inventory[invIdx];
+  if (!entry || !entry.id) return false;
+  if (isCreatureDuplicateForSlot(entry.id, slotIdx)) return false;
+  for (let i = 0; i < 4; i++) {
+    if (i !== slotIdx && creatureState.slots[i] === entry) {
+      creatureState.slots[i] = newCreatureSlot();
+    }
+  }
+  creatureState.slots[slotIdx] = entry;
+  creatureActiveInventorySlot = invIdx;
+  return true;
+}
+
+function removeCreatureInventorySlot(invIdx) {
+  const entry = creatureState.inventory && creatureState.inventory[invIdx];
+  if (!entry) return;
+  for (let i = 0; i < 4; i++) {
+    if (creatureState.slots[i] === entry) creatureState.slots[i] = newCreatureSlot();
+  }
+  creatureState.inventory[invIdx] = null;
+}
+
+function ensureCreatureInventoryCells() {
+  const grid = $('creature-inventory-grid');
+  if (!grid) return null;
+  if (grid.children.length === 0) {
+    for (let i = 0; i < CREATURE_INVENTORY_MAX; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'creature-inv-cell is-empty';
+      cell.setAttribute('data-creature-inv-index', String(i));
+      cell.innerHTML = `<img class="creature-inv-icon" alt="">`;
+      grid.appendChild(cell);
+    }
+  }
+  return grid;
+}
+
+function renderCreatureInventoryGrid() {
+  const grid = ensureCreatureInventoryCells();
+  if (!grid) return;
+  const inv = creatureState.inventory || [];
+  for (let i = 0; i < CREATURE_INVENTORY_MAX; i++) {
+    const cell = grid.children[i];
+    if (!cell) continue;
+    const entry = inv[i];
+    const equippedSlot = findCreatureEquippedSlotForInventoryIndex(i);
+    const creature = entry && entry.id && creatureDb ? creatureDb.creatures[entry.id] : null;
+    cell.className = 'creature-inv-cell';
+    if (!entry || !entry.id) cell.classList.add('is-empty');
+    if (i === creatureActiveInventorySlot) cell.classList.add('is-active');
+    if (equippedSlot != null) cell.classList.add('is-equipped');
+    cell.title = creature
+      ? `[${i}] ${creature.name} / ${creature.rank} / ${creature.type}`
+      : `[${i}]`;
+    const icon = cell.querySelector('.creature-inv-icon');
+    if (!icon) continue;
+    icon.onerror = null;
+    if (entry && entry.id) {
+      icon.src = `${CREATURE_IMG_BASE}creature_${entry.id}.png`;
+      icon.alt = creature ? creature.name : '';
+      icon.onerror = () => { icon.src = CREATURE_INV_MISSING_ICON; };
+    } else {
+      icon.src = CREATURE_INV_EMPTY_ICON;
+      icon.alt = '';
+    }
+  }
+}
+
+function bindCreatureInventoryEvents() {
+  const grid = ensureCreatureInventoryCells();
+  if (!grid || grid._creatureInventoryBound) return;
+  grid._creatureInventoryBound = true;
+  grid.addEventListener('click', async (e) => {
+    const cell = e.target.closest('.creature-inv-cell');
+    if (!cell) return;
+    const idx = Number(cell.getAttribute('data-creature-inv-index'));
+    if (!Number.isInteger(idx) || idx < 0 || idx >= CREATURE_INVENTORY_MAX) return;
+    creatureActiveInventorySlot = idx;
+    const entry = creatureState.inventory && creatureState.inventory[idx];
+    if (e.shiftKey) {
+      if (entry && entry.id) {
+        removeCreatureInventorySlot(idx);
+        renderCreatureTab();
+        scheduleAutosave();
+        await recalcAll();
+      } else {
+        renderCreatureInventoryGrid();
+      }
+      return;
+    }
+    if (entry && entry.id) {
+      equipCreatureInventorySlot(idx, creatureActiveSlot);
+      renderCreatureTab();
+      scheduleAutosave();
+      await recalcAll();
+      return;
+    }
+    renderCreatureInventoryGrid();
+  });
 }
 
 function renderCreatureSlots() {
@@ -12085,10 +12335,18 @@ async function pickCreatureForSlot(creatureId) {
   if (!creatureDb || !creatureDb.creatures[creatureId]) return;
   
   if (isCreatureDuplicateForSlot(creatureId, creatureActiveSlot)) return;
+  if (!creatureState.inventory) creatureState.inventory = newCreatureInventory();
+  let invIdx = creatureActiveInventorySlot;
+  if (!Number.isInteger(invIdx) || invIdx < 0 || invIdx >= CREATURE_INVENTORY_MAX
+      || (creatureState.inventory[invIdx] && creatureState.inventory[invIdx].id)) {
+    invIdx = findEmptyCreatureInventorySlot();
+  }
+  if (invIdx == null) return;
   const fresh = newCreatureSlot();
   fresh.id = creatureId;
   fresh.level = getCreatureMaxLevel(fresh, creatureDb.creatures[creatureId]);
-  creatureState.slots[creatureActiveSlot] = fresh;
+  creatureState.inventory[invIdx] = fresh;
+  equipCreatureInventorySlot(invIdx, creatureActiveSlot);
   
   let nextSlot = creatureActiveSlot;
   for (let n = 0; n < 4; n++) {
@@ -12223,6 +12481,7 @@ function renderCreatureStatPanel() {
 
 function renderCreatureTab() {
   renderCreatureSlots();
+  renderCreatureInventoryGrid();
   renderCreatureSlotDetail();
   
   renderCreatureSearchResults();
@@ -12429,6 +12688,8 @@ async function initCreatureTab() {
   }
   creatureUIInitialized = true;
   renderCreatureSlots();
+  renderCreatureInventoryGrid();
+  bindCreatureInventoryEvents();
   renderCreatureRankFilter();
   renderCreatureSearchResults();
   bindCreatureSearchInput();
@@ -12644,9 +12905,9 @@ function bindSessionEvents() {
       }
     }
     
-    creatureState.slots = [newCreatureSlot(), newCreatureSlot(), newCreatureSlot(), newCreatureSlot()];
-    creatureState.book = newCreatureBookState();
+    creatureState = buildCreatureStateFromSnapshot(null);
     creatureActiveSlot = 0;
+    creatureActiveInventorySlot = 0;
     if (creatureUIInitialized) renderCreatureTab();
     if (creatureBookUIInitialized) renderCreatureBookTab();
     
@@ -18418,8 +18679,9 @@ async function main() {
   loadCreatureDataOnce().then(async () => {
     
     const hasAny = creatureState.slots.some((s) => s && s.id);
+    const hasInventory = !!(creatureState.inventory && creatureState.inventory.some((s) => s && s.id));
     const hasBook = !!(creatureState.book && creatureState.book.registered && Object.keys(creatureState.book.registered).length);
-    if (hasAny || hasBook) await recalcAll();
+    if (hasAny || hasInventory || hasBook) await recalcAll();
     if (creatureUIInitialized) renderCreatureTab();
     if (creatureBookUIInitialized) renderCreatureBookTab();
   }).catch(() => {  });
@@ -18794,16 +19056,26 @@ function refreshEditIncusedRingPanel(rec) {
   }
   lvSel.value = String(IncusedRing.clampLv(editState.incusedRingLv));
   const lv = IncusedRing.clampLv(editState.incusedRingLv);
+  const LvTemp = getEffectiveLv(readCharacter());
   const ringDef = IncusedRing.getDef(rec?.id);
   if (ringDef) effDiv.textContent = ringDef.desc(lv);
-  else if (YatikanuIncusedArmor.isTargetId(rec?.id)) effDiv.textContent = YatikanuIncusedArmor.desc(rec?.id, lv);
+  else if (YatikanuIncusedArmor.isTargetId(rec?.id)) effDiv.textContent = YatikanuIncusedArmor.desc(rec?.id, lv, LvTemp);
   else if (AncientIncusedRing.isTargetId(rec?.id)) effDiv.textContent = AncientIncusedRing.desc(rec?.id, lv);
   else if (ChaosIncusedRing.isTargetId(rec?.id)) effDiv.textContent = ChaosIncusedRing.desc(rec?.id, lv);
   else if (TrialIncusedRing.isTargetId(rec?.id)) effDiv.textContent = TrialIncusedRing.desc(rec?.id, lv);
   else if (FateIncusedEquipment.isTargetId(rec?.id)) effDiv.textContent = FateIncusedEquipment.desc(rec?.id, lv);
-  else if (SennoKisekiIncusedEquipment.isTargetId(rec?.id)) effDiv.textContent = SennoKisekiIncusedEquipment.desc(rec?.id, lv);
+  else if (SennoKisekiIncusedEquipment.isTargetId(rec?.id)) effDiv.textContent = SennoKisekiIncusedEquipment.desc(rec?.id, lv, LvTemp);
   else if (IncusedEarring.isTargetId(rec?.id)) effDiv.textContent = IncusedEarring.desc(rec?.id, lv);
   else effDiv.textContent = '';
+}
+
+async function refreshEditIncusedRingPanelForTarget() {
+  const inv = editTargetSlotIdx >= 0 ? inventory.get(editTargetSlotIdx) : null;
+  if (!inv) return;
+  const irSec = document.getElementById('edit-incused-ring-section');
+  if (!irSec || irSec.style.display === 'none') return;
+  const rec = await Item.get(inv.itemId);
+  if (rec) refreshEditIncusedRingPanel(rec);
 }
 
 async function refreshEditUltPanel() {
