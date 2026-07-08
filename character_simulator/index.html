@@ -4694,6 +4694,8 @@ function optionDisplayName(name, meta = {}) {
   for (const key of keys) {
     if (OPTION_NAME_2026_OVERRIDES.has(key)) return OPTION_NAME_2026_OVERRIDES.get(key);
   }
+  const entry = loader.opConvertDisplayNameModes?.modes?.['2026']?.[baseName];
+  if (entry?.display) return entry.display;
   return baseName;
 }
 
@@ -4702,6 +4704,39 @@ function opConvertDisplayName(name) {
   const mode = normalizeOptionNameMode(appSettings.optionNameMode);
   const entry = loader.opConvertDisplayNameModes?.modes?.[mode]?.[baseName];
   return entry?.display || baseName;
+}
+
+function optionDisplayEffect(effect, meta = {}) {
+  const raw = String(effect || '');
+  if (appSettings.optionNameMode !== '2026' || !raw) return raw;
+  const modes = loader.opConvertDisplayNameModes?.modes?.['2026'];
+  if (!modes) return raw;
+  const names = [];
+  if (meta.name) names.push(String(meta.name));
+  const compact = raw
+    .replace(/\[[^\]]+\]/g, '')
+    .replace(/[+\-]?\d+(?:\.\d+)?(?:\s*~\s*[+\-]?\d+(?:\.\d+)?)?/g, '')
+    .replace(/[％%]/g, '')
+    .replace(/[()（）［］【】、，,。.:：]/g, '')
+    .replace(/\s+/g, '');
+  if (compact) names.push(compact);
+  for (const name of names) {
+    const entry = modes[name];
+    if (!entry?.display) continue;
+    return buildOptionDisplayEffect(entry.display, raw);
+  }
+  return raw;
+}
+
+function buildOptionDisplayEffect(displayName, rawEffect) {
+  const bracketTokens = rawEffect.match(/\[[^\]]+\]/g) || [];
+  if (bracketTokens.length > 1) return rawEffect;
+  if (bracketTokens.length === 0 && !/[+\-]?\d/.test(rawEffect)) return rawEffect;
+  const hasPercent = /[％%]/.test(rawEffect);
+  const token = `[0${hasPercent ? '％' : ''}]`;
+  const label = String(displayName || '').trim();
+  if (!label) return rawEffect;
+  return /[+＋\-]\s*$/.test(label) ? `${label}${token}` : `${label} ${token}`;
 }
 
 function formatOpConvertNameValue(name, value) {
@@ -5313,7 +5348,7 @@ function resolveOpDisplayInfo(familyId, value) {
   const family = OpPrefix.getFamily(familyId);
   if (!family) return { name: `family#${familyId}`, value, unit: '', sign: '+' };
   const t0 = family.tiers && family.tiers[0];
-  const effect = (t0 && t0.effect) || '';
+  const effect = optionDisplayEffect((t0 && t0.effect) || '', t0 || { familyId: fid });
   const nameMatch = effect.match(/^([^\s\d\[]+)/);
   const name = nameMatch ? nameMatch[1] : `family#${familyId}`;
   return { name: optionDisplayName(name, { familyId: fid, rowId: t0?.id, sortid: t0?.sortid }), value, unit: effect.includes('％') ? '%' : '', sign: '+' };
@@ -5942,9 +5977,15 @@ function buildOpSearchIndex() {
         rowId: tier.id,
         sortid: tier.sortid,
       });
+      const displayEffect = optionDisplayEffect(tier.effect || '', {
+        familyId,
+        rowId: tier.id,
+        sortid: tier.sortid,
+        name: tier.name || '',
+      });
       const search = (
         tier.id + ' ' + familyId + ' ' + tier.sortid + ' ' +
-        (tier.name || '') + ' ' + displayName + ' ' + (tier.effect || '') + ' ' +
+        (tier.name || '') + ' ' + displayName + ' ' + (tier.effect || '') + ' ' + displayEffect + ' ' +
         gradeClass + ' ' + opGradeSearchLabel(gradeClass)
       ).toLowerCase();
       opSearchIndex.push({
@@ -5954,6 +5995,7 @@ function buildOpSearchIndex() {
         name:      tier.name || '',
         displayName,
         effect:    tier.effect || '',
+        displayEffect,
         gradeClass,
         equipKinds: tier.equipKinds || [],
         search,
@@ -5985,7 +6027,7 @@ function opDisplayLabel(entry) {
     entry.gradeClass === 'set'    ? ' [セット]' :
     entry.gradeClass === 'npc'    ? ' [NPC]' : '';
   const name = optionDisplayName(entry.name || '(無名)', entry);
-  const effect = entry.effect || '';
+  const effect = entry.displayEffect || optionDisplayEffect(entry.effect || '', entry);
   let label = name;
   if (effect) label += ` — ${effect}`;
   if (gradeTag) label += gradeTag;
@@ -6077,6 +6119,7 @@ function formatPrefixEffect(effect, value) {
   let out = effect
     .replace(/\[(-?\d+)~(-?\d+)\]/, `<span style="color:#ffff00">${v}</span>`)
     .replace(/\[\+?(-?\d+)\]/, `<span style="color:#ffff00">${v}</span>`)
+    .replace(/\[\+?0([％%])\]/, `<span style="color:#ffff00">${v}</span>$1`)
     .replace(/\[0\]/, `<span style="color:#ffff00">${v}</span>`)
     .replace(/\[0％\]/, `<span style="color:#ffff00">${v}％</span>`);
   return out;
@@ -6780,7 +6823,7 @@ function buildItemDetailHtml(inv, rec, character) {
     : 4;
   if (isYatikanuIncusedArmor) {
     html += `<div class="idp-section-title" style="color:#cbe79b">&lt;ヤティカヌ刻印 Lv ${yatikanuLv}&gt;</div>`;
-    for (const line of YatikanuIncusedArmor.describe(rec.id, yatikanuLv)) {
+    for (const line of YatikanuIncusedArmor.describe(rec.id, yatikanuLv, LvTemp)) {
       html += `<span class="idp-op is-base">- ${esc(line)}</span>`;
     }
   }
@@ -6891,7 +6934,7 @@ function buildItemDetailHtml(inv, rec, character) {
       text = formatPrefixRatioEffect(baseEffect, slot.addValue ?? 0, slot.divisor ?? 1);
     } else {
       tier = resolveOpTier(slot.familyId, family, slot);
-      const effect = (tier && tier.effect) || family.firstTierEffect || '';
+      const effect = optionDisplayEffect((tier && tier.effect) || family.firstTierEffect || '', tier || slot);
       text = formatPrefixEffect(effect, slot.value);
     }
     html += `<span class="idp-op ${isNx ? 'is-nx' : ''}${extraClass}">- ${text}${isNx ? ' <span class="idp-nx-label">[Nx]</span>' : ''}</span>`;
@@ -6918,7 +6961,7 @@ function buildItemDetailHtml(inv, rec, character) {
         text = formatPrefixRatioEffect(baseEffect, op.addValue ?? 0, op.divisor ?? 1);
       } else {
         tier = resolveOpTier(op.familyId, family, op);
-        const effect = (tier && tier.effect) || family.firstTierEffect || '';
+        const effect = optionDisplayEffect((tier && tier.effect) || family.firstTierEffect || '', tier || op);
         text = formatPrefixEffect(effect, op.value);
       }
 
@@ -15258,6 +15301,7 @@ const YatikanuIncusedArmor = (() => {
   function interp(label, stat, fromValue, toValue, unit = '') { return { ...e(label, stat, toValue, unit), mode: 'interp', fromValue, toValue }; }
   function scale(label, stat, from, toValue, unit = '') { return { ...e(label, stat, toValue, unit), mode: 'scale', from, toValue }; }
   function at(label, stat, from, value, unit = '') { return { ...e(label, stat, value, unit), mode: 'at', from }; }
+  function charRatio(label, stat, divisor) { return { ...e(label, stat, null), mode: 'charRatio', divisor }; }
 
   const DEFS = {
     11351: { attr: '野性', name: '鋭い見張り人', effects: [
@@ -15278,7 +15322,7 @@ const YatikanuIncusedArmor = (() => {
       scale('物理強打発動確率', 'physStrongRate', 20, 11, '%'),
     ] },
     11354: { attr: '猛獣', name: 'ラストパイオニア', effects: [
-      fixed('防御力', 'def', 55), fixed('防御力', 'defPercent', 30, '%'), fixed('運', 'luc', 200),
+      fixed('防御力', 'def', 55), charRatio('力', 'str', 4), fixed('防御力', 'defPercent', 30, '%'), fixed('運', 'luc', 200),
       fixed('スキルレベル', 'skillLv', 2), interp('最大HP', 'hpPercent', 4, 300, '%'),
       scale('物理ダメージ', 'physDamagePercent', 10, 120, '%'), scale('物理クリティカル発動確率', 'physCritRate', 20, 30, '%'),
       at('敵の物理クリティカル抵抗減少', 'enemyPhysCritResistReduce', 30, 32, '%'),
@@ -15329,12 +15373,16 @@ const YatikanuIncusedArmor = (() => {
   }
   function isTargetId(id) { return DEFS[Number(id)] != null; }
   function getDef(id) { return DEFS[Number(id)] || null; }
-  function valueOf(effect, lv) {
+  function valueOf(effect, lv, LvTemp) {
     const l = clampLv(lv);
     if (effect.mode === 'fixed') return effect.value == null ? 0 : effect.value;
     if (effect.mode === 'interp') return Math.round(effect.fromValue + (effect.toValue - effect.fromValue) * ((l - 1) / 29));
     if (effect.mode === 'scale') return l >= effect.from ? Math.round(effect.toValue * l / 30) : null;
     if (effect.mode === 'at') return l >= effect.from ? effect.value : null;
+    if (effect.mode === 'charRatio') {
+      const level = Number(LvTemp);
+      return Number.isFinite(level) ? Math.floor(level / Math.max(1, Number(effect.divisor) || 1)) : null;
+    }
     return null;
   }
   function addStat(STTemp, stat, value) {
@@ -15364,28 +15412,36 @@ const YatikanuIncusedArmor = (() => {
       const lv = clampLv(inv.incusedRingLv ?? 1);
       subtractNativeItemOps(STTemp, inv, item, LvTemp, character);
       for (const effect of def.effects) {
-        const value = valueOf(effect, lv);
+        const value = valueOf(effect, lv, LvTemp);
         if (value == null) continue;
         for (const stat of effect.stats) addStat(STTemp, stat, value);
       }
     }
   }
-  function describe(id, lv) {
+  function describe(id, lv, LvTemp) {
     const def = getDef(id);
     if (!def) return [];
     const out = [];
     for (const effect of def.effects) {
-      const value = valueOf(effect, lv);
+      const value = valueOf(effect, lv, LvTemp);
+      if (effect.mode === 'charRatio' && value == null) {
+        out.push(`${effect.label} +1 / レベル ${Math.max(1, Number(effect.divisor) || 1)}`);
+        continue;
+      }
       if (value == null) continue;
+      if (effect.mode === 'charRatio') {
+        out.push(`${effect.label} ${Number(value) >= 0 ? '+' : ''}${value}${effect.unit || ''}`);
+        continue;
+      }
       if (effect.value == null) out.push(effect.label);
       else out.push(`${effect.label} ${Number(value) >= 0 ? '+' : ''}${value}${effect.unit || ''}`);
     }
     return out;
   }
-  function desc(id, lv) {
+  function desc(id, lv, LvTemp) {
     const def = getDef(id);
     if (!def) return '';
-    return [`${def.name} / 刻印属性 [${def.attr}]`, ...describe(id, lv)].join('\n');
+    return [`${def.name} / 刻印属性 [${def.attr}]`, ...describe(id, lv, LvTemp)].join('\n');
   }
 
   return { DEFS, isTargetId, getDef, clampLv, applyToSTTemp, describe, desc };
