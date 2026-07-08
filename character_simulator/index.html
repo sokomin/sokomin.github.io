@@ -7647,18 +7647,39 @@ function getCurrentMapDamageCutPct() {
   return Number(modifier?.damageCutPct) || 0;
 }
 
+function getMapStatDownInfo(f, subInfo) {
+  const rawDown = subInfo ? Math.max(0, Number(subInfo.st_down) || 0) : 0;
+  const resist = Math.max(0, Number(f?.equipped?.fieldStatDownResist) || 0);
+  const appliedResist = Math.min(rawDown, resist);
+  const effectiveDown = Math.max(0, rawDown - appliedResist);
+  return {
+    rawDown,
+    resist,
+    appliedResist,
+    effectiveDown,
+    multiplier: 1.0 - effectiveDown / 100.0,
+  };
+}
+
 function applyMapEffectsToCharacter(f, subInfo) {
   if (!f || !f.equipped) return;
   if (!subInfo) {
     f.equipped.__attrResistCap = 90;
+    f.equipped.__mapStatDownRaw = 0;
+    f.equipped.__mapStatDownResist = Number(f.equipped.fieldStatDownResist) || 0;
+    f.equipped.__mapStatDownAppliedResist = 0;
+    f.equipped.__mapStatDownEffective = 0;
     return;
   }
-  const stDown = Number(subInfo.st_down) || 0;
-  if (stDown > 0) {
-    const mul = 1.0 - stDown / 100.0;
+  const statDownInfo = getMapStatDownInfo(f, subInfo);
+  f.equipped.__mapStatDownRaw = statDownInfo.rawDown;
+  f.equipped.__mapStatDownResist = statDownInfo.resist;
+  f.equipped.__mapStatDownAppliedResist = statDownInfo.appliedResist;
+  f.equipped.__mapStatDownEffective = statDownInfo.effectiveDown;
+  if (statDownInfo.effectiveDown > 0) {
     for (const s of STAT_KEYS) {
       if (typeof f.equipped[s] === 'number') {
-        f.equipped[s] = Math.floor(f.equipped[s] * mul);
+        f.equipped[s] = Math.floor(f.equipped[s] * statDownInfo.multiplier);
       }
     }
   }
@@ -7744,6 +7765,8 @@ async function recalcAll() {
   
   Titles.applyBerserkPostFinalize(f);
 
+  const preMapEquippedStats = Object.create(null);
+  for (const s of STAT_KEYS) preMapEquippedStats[s] = Number(f.equipped[s]) || 0;
   applyMapEffectsToCharacter(f, getCurrentMapSubInfo());
 
   const wisdomVal = Number(f.equipped.wiz || ch.stats.base.wiz) || 0;
@@ -8045,8 +8068,11 @@ async function recalcAll() {
       const cLvV = T.consumableLvMax[s] || 0;
       const fixCap = T.fixedCap[s + 'FixedCap'] || 0;
       const corrTotal = sumV + lvLV + setV + cMxV + cLvV + fixCap;
-      const total = baseV + corrTotal;
-      const lvRatio = (baseV > 0 && ch.realLv > 0) ? ((baseV * 100) / ch.realLv).toFixed(2) + '%' : '-';
+      const mapRawDown = Number(f.equipped.__mapStatDownRaw) || 0;
+      const mapResist = Number(f.equipped.__mapStatDownResist) || 0;
+      const mapAppliedResist = Number(f.equipped.__mapStatDownAppliedResist) || 0;
+      const mapEffectiveDown = Number(f.equipped.__mapStatDownEffective) || 0;
+      const preMapV = preMapEquippedStats[s];
 
       const rows = [
         ['初期 (素値)', baseV],
@@ -8056,8 +8082,16 @@ async function recalcAll() {
         ['消耗品 max', cMxV],
         ['ステータス固定', fixCap],
         ['補正値合計', corrTotal],
-        ['Lv比', lvRatio],
       ];
+      if (mapRawDown > 0 || mapResist > 0) {
+        rows.push(
+          ['フィールド低下前', preMapV],
+          ['フィールド低下率', `-${mapRawDown}%`],
+          ['低下抵抗', `+${mapResist}%`],
+          ['抵抗適用', `-${mapRawDown}% + ${mapAppliedResist}% = -${mapEffectiveDown}%`],
+          ['フィールド低下後', eqV],
+        );
+      }
       const titleValueClass = (delta !== 0) ? 'pop-title-value is-adjusted' : 'pop-title-value';
       let html = `<div class="pop-title">${STAT_LABEL_JA[s]} <span class="${titleValueClass}">${eqV}</span></div>` +
                  `<div class="pop-desc">${STAT_DESC[s] || ''}</div>`;
