@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=960">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://sokomin.github.io/material.indigo-pink.min.css" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+    <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+
+    <style>
+        .omni-page {
+            text-align: left;
+            max-width: 1080px;
+            margin: 0 auto 20px;
+        }
+        .omni-control {
+            background: #fafafa;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px 14px;
+            margin: 0 auto 12px;
+            color: #333;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 18px;
+            align-items: center;
+        }
+        .omni-control label {
+            display: inline-flex;
+            gap: 6px;
+            align-items: center;
+            font-weight: bold;
+        }
+        .omni-control input[type="number"] {
+            width: 90px;
+            padding: 4px 6px;
+            border: 1px solid #aaa;
+            border-radius: 3px;
+            text-align: right;
+        }
+        .omni-note {
+            color: #666;
+            font-size: 12px;
+        }
+        .omni-section {
+            background: #1a1610;
+            border: 1px solid #5b3d12;
+            padding: 8px 10px;
+            color: #f4e7a2;
+            font-size: 12px;
+        }
+        .omni-section h4 {
+            margin: 0 0 6px 0;
+            padding: 0 0 4px 0;
+            color: #ffd070;
+            border-bottom: 1px solid #5b3d12;
+            font-size: 13px;
+        }
+        .omni-header-line {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: baseline;
+            color: #f4e7a2;
+            font-size: 11.5px;
+            margin-bottom: 6px;
+        }
+        .omni-key {
+            color: #ffd070;
+            font-weight: bold;
+            margin-right: 4px;
+        }
+        .omni-val {
+            color: #00ff66;
+            font-family: Consolas, monospace;
+        }
+        .omni-val.is-over {
+            color: #ff6060;
+            font-weight: bold;
+        }
+        .omni-actions {
+            display: flex;
+            gap: 6px;
+            margin-left: auto;
+        }
+        .omni-actions button,
+        .omni-side-lv-ctrl button {
+            background: #2a1f10;
+            color: #f4e7a2;
+            border: 1px solid #8b6a28;
+            font: inherit;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .omni-actions button {
+            padding: 2px 10px;
+        }
+        .omni-actions button:hover,
+        .omni-side-lv-ctrl button:hover:not(:disabled) {
+            filter: brightness(1.3);
+        }
+        .omni-body {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 8px;
+            align-items: stretch;
+        }
+        .omni-graph-wrap {
+            position: relative;
+            background: #0a0a14;
+            border: 1px solid #443823;
+            min-height: 880px;
+            overflow: hidden;
+        }
+        .omni-graph-svg {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .omni-edge {
+            stroke: #333;
+            stroke-width: 1.8;
+            opacity: 0.55;
+        }
+        .omni-edge.is-prereq-active {
+            stroke: #8b6a28;
+            stroke-width: 2.2;
+            opacity: 0.85;
+        }
+        .omni-node {
+            cursor: pointer;
+            transition: filter 0.1s linear;
+        }
+        .omni-node:hover {
+            filter: brightness(1.5);
+        }
+        .omni-node-circle {
+            stroke-width: 1.5;
+        }
+        .omni-node[data-grade-rank="N"] .omni-node-circle { fill: #34383d; stroke: #c5ced8; }
+        .omni-node[data-grade-rank="R"] .omni-node-circle { fill: #174f31; stroke: #62d68b; }
+        .omni-node[data-grade-rank="HR"] .omni-node-circle { fill: #0d4969; stroke: #4fc3f7; }
+        .omni-node[data-grade-rank="SR"] .omni-node-circle { fill: #55306f; stroke: #c084fc; }
+        .omni-node[data-grade-rank="LR"] .omni-node-circle { fill: #6b4d0f; stroke: #ffd166; }
+        .omni-node[data-grade-rank="GR"] .omni-node-circle { fill: #72163a; stroke: #ff6fa6; }
+        .omni-node[data-grade-rank=""] .omni-node-circle { fill: #2a2a2a; stroke: #555; }
+        .omni-node.is-active .omni-node-circle {
+            stroke-width: 2.5;
+            filter: brightness(1.35);
+        }
+        .omni-node.is-maxed .omni-node-circle {
+            stroke: #f4e7a2;
+            stroke-width: 3;
+        }
+        .omni-node:not(.is-takeable):not(.is-active) .omni-node-circle {
+            opacity: 0.35;
+        }
+        .omni-node.is-selected .omni-node-circle {
+            stroke: #00ffff;
+            stroke-width: 3.5;
+        }
+        .omni-node.is-root .omni-node-circle {
+            stroke: #4aa8ff;
+            stroke-width: 2.5;
+        }
+        .omni-node.is-root.is-active .omni-node-circle {
+            stroke: #6fdfff;
+        }
+        .omni-node-lv {
+            fill: #fff;
+            font-size: 9px;
+            font-weight: bold;
+            text-anchor: middle;
+            dominant-baseline: central;
+            pointer-events: none;
+        }
+        .omni-side {
+            background: #120c04;
+            border: 1px solid #443823;
+            padding: 6px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-height: 880px;
+        }
+        .omni-side-empty {
+            color: #6e5a2a;
+        }
+        .omni-side-name {
+            color: #ffd070;
+            font-weight: bold;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 8px;
+        }
+        .omni-side-meta {
+            color: #b0944c;
+            font-size: 11px;
+        }
+        .omni-side-eff {
+            color: #00ff66;
+            font-size: 11px;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .omni-side-eff.is-displayOnly {
+            color: #d8a743;
+        }
+        .omni-side-prereq {
+            color: #b0944c;
+            font-size: 11px;
+            white-space: pre-wrap;
+        }
+        .omni-side-prereq.is-blocked {
+            color: #ff8080;
+        }
+        .omni-side-lv-ctrl {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+        .omni-side-lv-ctrl label {
+            color: #ffd070;
+            font-weight: bold;
+            font-size: 11.5px;
+        }
+        .omni-side-lv-ctrl input[type="number"] {
+            background: #1a1610;
+            color: #f4e7a2;
+            border: 1px solid #8b6a28;
+            font: inherit;
+            padding: 1px 4px;
+            width: 60px;
+            text-align: right;
+        }
+        .omni-side-lv-ctrl button {
+            padding: 1px 8px;
+            min-width: 30px;
+        }
+        .omni-side-lv-ctrl button:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+        .omni-side-cost {
+            color: #b0944c;
+            font-size: 11px;
+            padding-top: 2px;
+        }
+        .omni-summary {
+            background: #120c04;
+            border: 1px solid #443823;
+            padding: 4px 6px;
+            color: #00ff66;
+            font-size: 11px;
+            font-family: Consolas, monospace;
+            white-space: pre-wrap;
+            max-height: 180px;
+            overflow-y: auto;
+        }
+        .omni-summary.is-empty {
+            color: #6e5a2a;
+        }
+        .omni-grade-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            font-size: 11px;
+            color: #b0944c;
+            margin-top: 4px;
+            margin-bottom: 6px;
+        }
+        .omni-grade-legend span {
+            white-space: nowrap;
+        }
+        .omni-grade-legend .swatch {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            vertical-align: middle;
+            margin-right: 3px;
+            border: 1px solid #444;
+        }
+    </style>
+</head>
+
+<body>
+    <title>オムニスキルシミュレーター 赤石の民衆</title>
+    <meta name="description" content="RED STONEのオムニスキル振り分けを試算できるシミュレーターです。" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta name="keywords" content="RED STONE,レッドストーン,赤石の民衆,オムニスキル,シミュレーター" />
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-content mdl-layout__content">
+            <a href="https://sokomin.github.io/index.html">トップ</a> &gt;&gt;
+            <a href="https://sokomin.github.io/calculator.html">計算機</a> &gt;&gt;
+            <a href="omni_skill_sim.html">オムニスキルシミュレーター</a><br>
+            <div class="main-background mdl-typography--text-center">
+                <br>
+                <h1>オムニスキルシミュレーター</h1>
+                レベル2000以降のオムニスキルポイントをもとに、振り分けと累計補正を確認できます。<br>
+                <br>
+
+                <div class="omni-page">
+                    <div class="omni-control">
+                        <label>キャラクターLv
+                            <input type="number" id="character-level" min="2000" max="3000" step="1" value="2000">
+                        </label>
+                        <span>オムニLv: <span class="omni-val" id="omni-level-status">0</span></span>
+                        <span class="omni-note">Lv2000を基準に、超過Lv1ごとに10ptとして計算します。</span>
+                    </div>
+
+                    <div class="omni-section" id="omni-section">
+                        <h4>オムニスキル</h4>
+                        <div class="omni-header-line">
+                            <span><span class="omni-key">オムニスキルポイント:</span><span class="omni-val" id="omni-sp-status">0 / 0</span></span>
+                            <span><span class="omni-key">活性ノード:</span><span class="omni-val" id="omni-active-count">0</span></span>
+                            <span class="omni-actions">
+                                <button type="button" id="omni-reset" title="全ての振り分けを初期化">リセット</button>
+                            </span>
+                        </div>
+                        <div class="omni-grade-legend">
+                            <span><span class="swatch" style="background:#34383d;border-color:#c5ced8"></span>N/一般 (1pt/Lv)</span>
+                            <span><span class="swatch" style="background:#174f31;border-color:#62d68b"></span>R (2pt/Lv)</span>
+                            <span><span class="swatch" style="background:#0d4969;border-color:#4fc3f7"></span>HR (5pt/Lv)</span>
+                            <span><span class="swatch" style="background:#55306f;border-color:#c084fc"></span>SR (10pt/Lv)</span>
+                            <span><span class="swatch" style="background:#6b4d0f;border-color:#ffd166"></span>LR (10pt/Lv)</span>
+                            <span><span class="swatch" style="background:#72163a;border-color:#ff6fa6"></span>GR</span>
+                        </div>
+                        <div class="omni-body">
+                            <div class="omni-side" id="omni-side">
+                                <div class="omni-side-empty">ノードをクリックして選択</div>
+                            </div>
+                            <div class="omni-graph-wrap">
+                                <svg id="omni-graph-svg" class="omni-graph-svg" viewBox="280 280 840 840" preserveAspectRatio="xMidYMid meet"></svg>
+                            </div>
+                        </div>
+                        <div style="margin-top: 6px;">
+                            <div class="omni-key" style="color:#ffd070;font-weight:bold;font-size:11.5px;margin-bottom:3px;">累計補正</div>
+                            <pre class="omni-summary is-empty" id="omni-summary">未振り分け</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                <br>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">
+                        当サイトで利用している画像及びデータは、L&amp;K Co., Ltd.に帰属します。<br>
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                    </font>
+                    © L&amp;K Co., Ltd. All Rights Reserved.<br>
+                </footer>
+            </div>
+            <script src="https://sokomin.github.io/material.min.js"></script>
+        </div>
+    </div>
+
+    <script>
+        const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+        const OmniSkill = (() => {
+            const DATA_URL = './omni_skills.json';
+            const TEMPLATE_URL = './omni_effect_templates.json';
+            const ATTR_KEYS = ['Fire', 'Water', 'Wind', 'Earth', 'Light', 'Dark'];
+            const STAT_NAME_TO_KEY = { '力': 'str', '敏捷': 'agi', '健康': 'con', '知識': 'int', '知恵': 'wiz', 'カリスマ': 'chs', '運': 'luc' };
+            const STAT_NAME_TO_KEY_R = { str: '力', agi: '敏捷', con: '健康', int: '知識', wiz: '知恵', chs: 'カリスマ', luc: '運' };
+            const TEMPLATE_STAT_MAP = {
+                25341895: { stat: 'potionHeal', pct: true },
+                25345095: { stat: 'weaponAtkFlat', pct: false },
+                25345165: { stat: 'physDamagePercent', pct: true },
+                25345225: { stat: 'physCritDamage', pct: true },
+                25345293: { stat: 'doubleCritDamage', pct: true },
+                25345370: { stat: 'physStrongDamage', pct: true },
+                25345436: { stat: 'hit', pct: true },
+                25345492: { stat: 'atkspd', pct: true },
+                25345550: { stat: 'eva', pct: true },
+                25345606: { stat: 'hpPercent', pct: true },
+                25345662: { stat: 'defPercent', pct: true },
+                25345718: { stat: 'blockRate', pct: true },
+                25345778: { stat: 'attrMagic', pct: true },
+                25345838: { expand: ATTR_KEYS.map((k) => 'attr' + k), pct: true },
+                25345904: { stat: 'magicCritDamage', pct: true },
+                25345972: { stat: 'magicStrongDamage', pct: true },
+                25346039: { stat: 'enemyAllAttrResistReduce', pct: true },
+                25346115: { stat: 'cpPercent', pct: true },
+                25346171: { stat: 'skillCooldownReduce', pct: true },
+                25346241: { stat: 'statusResist', pct: true },
+                25346448: { stat: 'shieldValue', pct: false },
+                25346508: { stat: 'potionHealSpeed', pct: true },
+                25346576: { stat: 'finalPhysDamage', pct: true },
+                25346640: { stat: 'finalMagicDamage', pct: true },
+                25346704: { stat: 'limitBreakPhysFlat', pct: false },
+                25346774: { stat: 'limitBreakMagicFlat', pct: false },
+                25346844: { stat: 'defFlat', pct: false },
+                25346902: { stat: 'hpFlat', pct: false },
+                25346956: { kind: 'stat', pct: false },
+                25347037: { stat: 'finalPhysDamage', pct: true },
+                25347103: { stat: 'finalMagicDamage', pct: true },
+                25347169: { stat: 'finalDamagePercent', pct: true },
+                25347298: { stat: 'reducePhysDmg', pct: true },
+                25347362: { stat: 'reduceMagicDmg', pct: true },
+                25347548: { stat: 'reduceStatusDmg', pct: true },
+                25347626: { stat: 'magicResist', pct: true },
+                99000001: { stat: 'petHpPercent', pct: true },
+                99000002: { stat: 'petStatusResist', pct: true },
+                99000003: { stat: 'petKnockbackResist', pct: true },
+                99000004: { expand: ATTR_KEYS.map((k) => 'attr' + k + 'Resist'), pct: true },
+                99000005: { stat: 'bleedBaseDmgPercent', pct: true },
+                99000006: { stat: 'dotDmgPercent', pct: true },
+                99000007: { stat: 'hpMaxCapRaise', pct: false }
+            };
+            const KEY_META = {
+                physDamagePercent: { jp: '物理ダメージ', pct: true },
+                attrMagic: { jp: '魔法ダメージ', pct: true },
+                hpPercent: { jp: '最大HP', pct: true },
+                cpPercent: { jp: '最大CP', pct: true },
+                finalPhysDamage: { jp: '最終物理ダメージ', pct: true },
+                finalMagicDamage: { jp: '最終魔法ダメージ', pct: true },
+                finalDamagePercent: { jp: '最終ダメージ', pct: true },
+                skillCooldownReduce: { jp: 'クールタイム減少', pct: true },
+                physCritDamage: { jp: '物理致命打ダメージ', pct: true },
+                doubleCritDamage: { jp: 'ダブルクリティカルダメージ', pct: true },
+                physStrongDamage: { jp: '物理強打ダメージ', pct: true },
+                magicStrongDamage: { jp: '魔法強打ダメージ', pct: true },
+                magicCritDamage: { jp: '魔法致命打ダメージ', pct: true },
+                hit: { jp: '命中率', pct: true },
+                eva: { jp: '回避率', pct: true },
+                atkspd: { jp: '攻撃速度', pct: true },
+                defPercent: { jp: '防御力', pct: true },
+                blockRate: { jp: 'ブロック率', pct: true },
+                statusResist: { jp: '状態異常抵抗', pct: true },
+                reduceMagicDmg: { jp: '被魔法ダメージ減少', pct: true },
+                reducePhysDmg: { jp: '被物理ダメージ減少', pct: true },
+                reduceStatusDmg: { jp: '異常系の被ダメージ減少', pct: true },
+                magicResist: { jp: '魔法抵抗', pct: true },
+                enemyAllAttrResistReduce: { jp: 'ターゲット全属性抵抗減少', pct: true },
+                potionHeal: { jp: 'ポーション回復量', pct: true },
+                potionHealSpeed: { jp: 'ポーション回復速度', pct: true },
+                weaponAtkFlat: { jp: '武器攻撃力', pct: false },
+                defFlat: { jp: '基本防御力', pct: false },
+                hpFlat: { jp: '最大HP', pct: false },
+                shieldValue: { jp: 'シールド数値', pct: false },
+                limitBreakPhysFlat: { jp: '限界突破称号の物理', pct: false },
+                limitBreakMagicFlat: { jp: '限界突破称号の魔法', pct: false },
+                petHpPercent: { jp: 'ペット・召喚獣 最大HP', pct: true },
+                petStatusResist: { jp: 'ペット・召喚獣 状態異常抵抗', pct: true },
+                petKnockbackResist: { jp: 'ペット・召喚獣 ノックバック/低下抵抗', pct: true },
+                bleedBaseDmgPercent: { jp: '出血ダメージ基本値', pct: true },
+                dotDmgPercent: { jp: '持続ダメージ系効果', pct: true },
+                hpMaxCapRaise: { jp: '最大HP上限引き上げ', pct: false }
+            };
+            for (const k of ATTR_KEYS) {
+                KEY_META['attr' + k] = { jp: k + '属性攻撃力', pct: true };
+                KEY_META['attr' + k + 'Resist'] = { jp: k + '属性抵抗', pct: true };
+            }
+
+            let dataPromise = null;
+            let dataLoaded = null;
+            let templateMap = null;
+            let skillMap = null;
+            let selectedId = null;
+            const state = { levels: {} };
+
+            function loadData() {
+                if (dataPromise) return dataPromise;
+                dataPromise = Promise.all([
+                    fetch(DATA_URL).then((r) => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status))),
+                    fetch(TEMPLATE_URL).then((r) => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)))
+                ]).then(([j, tpl]) => {
+                    dataLoaded = j;
+                    templateMap = new Map((tpl.templates || []).map((t) => [t.id, t]));
+                    skillMap = new Map();
+                    for (const s of j.skills || []) skillMap.set(s.id, s);
+                    return j;
+                }).catch((e) => {
+                    dataLoaded = null;
+                    renderLoadError(e);
+                    throw e;
+                });
+                return dataPromise;
+            }
+
+            function renderLoadError(e) {
+                const side = document.getElementById('omni-side');
+                if (side) side.innerHTML = '<div class="omni-side-prereq is-blocked">データを読み込めませんでした。HTTPサーバー経由で開いてください。</div>';
+                const pre = document.getElementById('omni-summary');
+                if (pre) pre.textContent = String(e && e.message ? e.message : e);
+            }
+
+            function readCharacterLv() {
+                const v = Number(document.getElementById('character-level')?.value) || 2000;
+                return Math.max(2000, Math.floor(v));
+            }
+
+            function readOmniLv() {
+                return Math.max(0, readCharacterLv() - 2000);
+            }
+
+            function spBudget() {
+                return readOmniLv() * 10;
+            }
+
+            function getLv(id) {
+                return Math.max(0, Number(state.levels[id]) || 0);
+            }
+
+            function setLv(id, lv) {
+                const s = skillMap?.get(id);
+                if (!s) return;
+                const v = Math.max(0, Math.min(s.max_lv, Math.floor(Number(lv) || 0)));
+                if (v === 0) delete state.levels[id];
+                else state.levels[id] = v;
+            }
+
+            function skillCost(s) {
+                if (!dataLoaded || !s) return 1;
+                const gc = dataLoaded.meta?.gradeCost || {};
+                return gc[s.grade_official] || gc[s.grade] || 1;
+            }
+
+            function totalSpent() {
+                if (!dataLoaded) return 0;
+                let pts = 0;
+                for (const idStr of Object.keys(state.levels)) {
+                    const s = skillMap.get(Number(idStr));
+                    if (s) pts += getLv(idStr) * skillCost(s);
+                }
+                return pts;
+            }
+
+            function activeCount() {
+                return Object.keys(state.levels).length;
+            }
+
+            function isTakeable(skill) {
+                if (!skill) return false;
+                if (skill.ring === 0) return true;
+                for (const nid of (skill.neighbors || [])) {
+                    const ns = skillMap.get(nid);
+                    if (ns && getLv(nid) >= ns.max_lv && ns.max_lv > 0) return true;
+                }
+                return false;
+            }
+
+            function effectiveValue(s, lv) {
+                const perLv = Number(s.perLv) || 0;
+                const max = (s.maxVal != null) ? Number(s.maxVal) : (perLv * s.max_lv);
+                return Math.min(perLv * lv, max);
+            }
+
+            function resolveTemplate(s, lv) {
+                if (!s.templateId || !templateMap) return null;
+                const tpl = templateMap.get(s.templateId);
+                if (!tpl) return null;
+                let text = String(tpl.text);
+                text = text.replace(/<c:[A-Z_]+>/g, '').replace(/<n>/g, '');
+                const val = effectiveValue(s, lv);
+                const valF = (Number.isInteger(val * 10)) ? (Math.round(val * 10) / 10).toString() : val.toFixed(2);
+                const valI = String(Math.floor(val));
+                text = text.replace(/\[RESULT_F\/\d+\]/g, valF);
+                text = text.replace(/\[RESULT_I\/\d+\]/g, valI);
+                if (s.statName) text = text.replace(/\[STAT\/\d+\]/g, s.statName);
+                return text.trim();
+            }
+
+            function injectByTemplate(T, templateId, val, statName) {
+                const m = TEMPLATE_STAT_MAP[templateId];
+                if (!m || !val) return;
+                if (m.kind === 'stat') {
+                    const key = STAT_NAME_TO_KEY[statName];
+                    if (key) T.sum[key] = (T.sum[key] || 0) + val;
+                    return;
+                }
+                if (m.expand) {
+                    for (const k of m.expand) T.sum[k] = (T.sum[k] || 0) + val;
+                    return;
+                }
+                if (m.stat) T.sum[m.stat] = (T.sum[m.stat] || 0) + val;
+            }
+
+            function injectSkillEffect(T, s, lv) {
+                if (!s.templateId) return;
+                if (s.fixed) {
+                    if (lv <= 0) return;
+                    injectByTemplate(T, s.templateId, Number(s.perLv) || 0, s.statName);
+                    for (const ex of (s.extras || [])) injectByTemplate(T, ex.templateId, Number(ex.perLv) || 0, ex.statName);
+                } else {
+                    injectByTemplate(T, s.templateId, effectiveValue(s, lv), s.statName);
+                }
+            }
+
+            function prereqPath(targetId) {
+                if (!dataLoaded || !skillMap.has(targetId)) return [];
+                const tgt = skillMap.get(targetId);
+                if (tgt.ring === 0) return [];
+                const prev = new Map();
+                const visited = new Set();
+                const queue = [];
+                for (const s of dataLoaded.skills) {
+                    if (s.ring === 0) {
+                        queue.push(s.id);
+                        visited.add(s.id);
+                        prev.set(s.id, null);
+                    }
+                }
+                let found = false;
+                while (queue.length) {
+                    const cur = queue.shift();
+                    if (cur === targetId) {
+                        found = true;
+                        break;
+                    }
+                    const s = skillMap.get(cur);
+                    for (const n of (s.neighbors || [])) {
+                        if (visited.has(n)) continue;
+                        visited.add(n);
+                        prev.set(n, cur);
+                        queue.push(n);
+                    }
+                }
+                if (!found) return [];
+                const path = [];
+                let cur = targetId;
+                while (cur != null) {
+                    path.push(cur);
+                    cur = prev.get(cur);
+                }
+                path.reverse();
+                return path.slice(0, -1).map((id) => {
+                    const s = skillMap.get(id);
+                    return { id, name: s.name, lv: getLv(id), max: s.max_lv, isReady: getLv(id) >= s.max_lv };
+                });
+            }
+
+            function px(coord) {
+                return 700 + coord * 700;
+            }
+
+            function nodeRadius(s) {
+                return { '一般': 16, '希少': 18, '英雄': 22, '伝説': 24, '幻想': 24 }[s.grade] || 14;
+            }
+
+            function nodeRankKey(s) {
+                const official = String(s?.grade_official || '');
+                if (official === '基本' || official.startsWith('一般_')) return 'N';
+                if (['R', 'HR', 'SR', 'LR', 'GR'].includes(official)) return official;
+                return '';
+            }
+
+            function renderGraph() {
+                const svg = document.getElementById('omni-graph-svg');
+                if (!svg || !dataLoaded) return;
+                const edgeSet = new Set();
+                const edgesHtml = [];
+                for (const s of dataLoaded.skills) {
+                    for (const n of (s.neighbors || [])) {
+                        const key = (s.id < n) ? `${s.id}-${n}` : `${n}-${s.id}`;
+                        if (edgeSet.has(key)) continue;
+                        edgeSet.add(key);
+                        const t = skillMap.get(n);
+                        if (!t) continue;
+                        const isPrereqActive = (getLv(s.id) >= s.max_lv && s.max_lv > 0) || (getLv(n) >= t.max_lv && t.max_lv > 0);
+                        edgesHtml.push(`<line class="omni-edge${isPrereqActive ? ' is-prereq-active' : ''}" x1="${px(s.x).toFixed(1)}" y1="${px(s.y).toFixed(1)}" x2="${px(t.x).toFixed(1)}" y2="${px(t.y).toFixed(1)}"/>`);
+                    }
+                }
+                const nodesHtml = [];
+                for (const s of dataLoaded.skills) {
+                    const lv = getLv(s.id);
+                    const cls = [
+                        'omni-node',
+                        s.ring === 0 ? 'is-root' : '',
+                        lv > 0 ? 'is-active' : '',
+                        lv >= s.max_lv && s.max_lv > 0 ? 'is-maxed' : '',
+                        isTakeable(s) ? 'is-takeable' : '',
+                        selectedId === s.id ? 'is-selected' : ''
+                    ].filter(Boolean).join(' ');
+                    const r = nodeRadius(s);
+                    const cx = px(s.x).toFixed(1);
+                    const cy = px(s.y).toFixed(1);
+                    nodesHtml.push(
+                        `<g class="${cls}" data-grade-rank="${nodeRankKey(s)}" data-omni-id="${s.id}">` +
+                        `<circle class="omni-node-circle" cx="${cx}" cy="${cy}" r="${r}"/>` +
+                        (lv > 0 ? `<text class="omni-node-lv" x="${cx}" y="${cy}">${lv}/${s.max_lv}</text>` : '') +
+                        `</g>`
+                    );
+                }
+                svg.innerHTML = edgesHtml.join('') + nodesHtml.join('');
+                svg.querySelectorAll('[data-omni-id]').forEach((g) => {
+                    g.addEventListener('click', () => selectNode(Number(g.getAttribute('data-omni-id'))));
+                });
+            }
+
+            function renderSide() {
+                const side = document.getElementById('omni-side');
+                if (!side) return;
+                if (selectedId == null || !skillMap) {
+                    side.innerHTML = '<div class="omni-side-empty">ノードをクリックして選択</div>';
+                    return;
+                }
+                const s = skillMap.get(selectedId);
+                if (!s) {
+                    side.innerHTML = '<div class="omni-side-empty">ノードが見つかりません</div>';
+                    return;
+                }
+                const lv = getLv(s.id);
+                const cost = skillCost(s);
+                const takeable = isTakeable(s);
+                const isMapped = !!(s.templateId && TEMPLATE_STAT_MAP[s.templateId]);
+                const effLines = [];
+                if (s.templateId) {
+                    const resolved = resolveTemplate(s, lv > 0 ? lv : s.max_lv);
+                    if (s.perLv != null && !s.fixed) {
+                        const max = (s.maxVal != null) ? s.maxVal : (s.perLv * s.max_lv);
+                        const pctMark = s.isPct ? '%' : '';
+                        effLines.push(`${s.statName ? s.statName + ' ステータス' : '効果'} +${s.perLv}${pctMark}/Lv (最大 ${max}${pctMark})`);
+                    }
+                    if (resolved) effLines.push((lv > 0 ? '現在: ' : 'max時: ') + resolved);
+                }
+                if (!effLines.length) effLines.push(s.effect || '(効果情報なし)');
+                const path = prereqPath(s.id);
+                let prereqHtml = '';
+                if (path.length > 0) {
+                    const blockedCount = path.filter((p) => !p.isReady).length;
+                    const lines = path.map((p) => `${p.isReady ? 'OK' : 'NG'} ${p.name} (${p.lv}/${p.max})`).join('\n');
+                    prereqHtml = `<div class="omni-side-prereq${blockedCount ? ' is-blocked' : ''}">前提パス (center → このスキル):\n${esc(lines)}</div>`;
+                }
+                const nameOfficial = (s.name_official && s.name_official !== s.name)
+                    ? `<div class="omni-side-meta">${esc(s.name_official)}</div>`
+                    : '';
+                const gradeLabel = s.grade_official ? `${s.grade} (${s.grade_official})` : (s.grade || '?');
+                side.innerHTML = [
+                    `<div class="omni-side-name"><span>${esc(s.name)}</span><span class="omni-side-meta">${esc(gradeLabel)} / ring ${s.ring}</span></div>`,
+                    nameOfficial,
+                    `<div class="omni-side-meta">最大Lv ${s.max_lv} / コスト ${cost} SP × Lv${!isMapped && s.effect ? ' / 条件付きまたは固有効果' : ''}</div>`,
+                    `<div class="omni-side-eff${isMapped ? '' : ' is-displayOnly'}">${esc(effLines.join('\n'))}</div>`,
+                    `<div class="omni-side-lv-ctrl">`,
+                    `<label>Lv</label>`,
+                    `<button type="button" data-omni-lv="-1" ${lv <= 0 ? 'disabled' : ''}>-</button>`,
+                    `<input type="number" id="omni-side-lv-num" min="0" max="${s.max_lv}" step="1" value="${lv}">`,
+                    `<button type="button" data-omni-lv="+1" ${(lv >= s.max_lv || (lv === 0 && !takeable)) ? 'disabled' : ''}>+</button>`,
+                    `<button type="button" data-omni-lv="max" ${(lv >= s.max_lv || (lv === 0 && !takeable)) ? 'disabled' : ''} title="最大Lvまで振る">最大</button>`,
+                    `<span class="omni-side-cost">/ ${s.max_lv}</span>`,
+                    `</div>`,
+                    !takeable && lv === 0 ? `<div class="omni-side-prereq is-blocked">前提未達 (隣接 max が必要)</div>` : '',
+                    prereqHtml
+                ].join('');
+                side.querySelectorAll('[data-omni-lv]').forEach((btn) => {
+                    btn.addEventListener('click', () => {
+                        const attr = btn.getAttribute('data-omni-lv');
+                        const cur = getLv(s.id);
+                        const next = attr === 'max' ? s.max_lv : Math.max(0, Math.min(s.max_lv, cur + Number(attr)));
+                        if (next > 0 && !isTakeable(s) && cur === 0) return;
+                        setLv(s.id, next);
+                        renderAll();
+                    });
+                });
+                const numInput = side.querySelector('#omni-side-lv-num');
+                if (numInput) {
+                    numInput.addEventListener('change', () => {
+                        const val = Number(numInput.value);
+                        if (val > 0 && !isTakeable(s) && getLv(s.id) === 0) {
+                            numInput.value = String(getLv(s.id));
+                            return;
+                        }
+                        setLv(s.id, val);
+                        renderAll();
+                    });
+                }
+            }
+
+            function renderHeader() {
+                const spEl = document.getElementById('omni-sp-status');
+                const acEl = document.getElementById('omni-active-count');
+                const lvEl = document.getElementById('omni-level-status');
+                const budget = spBudget();
+                const used = totalSpent();
+                if (spEl) {
+                    spEl.textContent = `${used} / ${budget}`;
+                    spEl.classList.toggle('is-over', used > budget);
+                }
+                if (acEl) acEl.textContent = String(activeCount());
+                if (lvEl) lvEl.textContent = String(readOmniLv());
+            }
+
+            function renderSummary() {
+                const pre = document.getElementById('omni-summary');
+                if (!pre) return;
+                const T = { sum: {} };
+                if (dataLoaded) {
+                    for (const idStr of Object.keys(state.levels)) {
+                        const s = skillMap.get(Number(idStr));
+                        if (s) injectSkillEffect(T, s, getLv(idStr));
+                    }
+                }
+                const sum = T.sum;
+                const lines = [];
+                const statOrder = ['str', 'agi', 'con', 'int', 'wiz', 'chs', 'luc'];
+                for (const k of statOrder) {
+                    const v = sum[k];
+                    if (v) lines.push(`${STAT_NAME_TO_KEY_R[k]} ${v >= 0 ? '+' : ''}${formatVal(v, false)}`);
+                }
+                for (const k of Object.keys(sum)) {
+                    if (statOrder.includes(k)) continue;
+                    const v = sum[k];
+                    if (!v) continue;
+                    const meta = KEY_META[k] || { jp: k, pct: false };
+                    lines.push(`${meta.jp} ${v >= 0 ? '+' : ''}${formatVal(v, meta.pct)}`);
+                }
+                if (lines.length === 0) {
+                    pre.textContent = '未振り分け';
+                    pre.classList.add('is-empty');
+                } else {
+                    pre.textContent = lines.join('\n');
+                    pre.classList.remove('is-empty');
+                }
+            }
+
+            function formatVal(v, pct) {
+                const trimmed = Number.isInteger(v) ? String(v) : Number(v.toFixed(2)).toString();
+                return pct ? trimmed + '%' : trimmed;
+            }
+
+            function renderAll() {
+                renderGraph();
+                renderSide();
+                renderHeader();
+                renderSummary();
+            }
+
+            function selectNode(id) {
+                selectedId = id;
+                renderGraph();
+                renderSide();
+            }
+
+            function bind() {
+                document.getElementById('character-level')?.addEventListener('input', renderAll);
+                document.getElementById('omni-reset')?.addEventListener('click', () => {
+                    if (Object.keys(state.levels).length === 0) return;
+                    state.levels = {};
+                    selectedId = null;
+                    renderAll();
+                });
+            }
+
+            async function init() {
+                bind();
+                await loadData();
+                renderAll();
+            }
+
+            return { init };
+        })();
+
+        OmniSkill.init();
+    </script>
+</body>
+
+</html>
