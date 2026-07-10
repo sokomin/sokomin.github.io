@@ -990,12 +990,30 @@
     }
     .creature-stat-line {
       display: grid;
-      grid-template-columns: 36px minmax(0, 1fr) 10px 54px 44px;
+      grid-template-columns: 36px 22px minmax(0, 1fr) 10px 54px 44px;
       gap: 4px; align-items: baseline;
       border-bottom: 1px dotted #2a1a08;
       padding: 1px 0;
     }
     .creature-stat-line .cstat-label { color: #d8a743; }
+    .creature-stat-line .cstat-medal-toggle {
+      width: 20px; height: 20px; padding: 0;
+      display: flex; align-items: center; justify-content: center;
+      align-self: center;
+      background: #120c04; border: 1px solid #5b3d12;
+      cursor: pointer; opacity: 0.35; filter: grayscale(1);
+    }
+    .creature-stat-line .cstat-medal-toggle img {
+      width: 18px; height: 18px; display: block;
+      image-rendering: pixelated; pointer-events: none;
+    }
+    .creature-stat-line .cstat-medal-toggle.is-active {
+      opacity: 1; filter: none;
+      border-color: #f8c000;
+      box-shadow: 0 0 4px #f8c000;
+    }
+    .creature-stat-line .cstat-medal-toggle:hover { opacity: 0.8; }
+    .creature-stat-line .cstat-medal-toggle.is-active:hover { opacity: 1; }
     .creature-stat-line .cstat-value { color: #f4e7a2; text-align: right; }
     .creature-stat-line .cstat-plus { color: #6a5530; text-align: center; }
     .creature-stat-line .cstat-alloc-wrap {
@@ -8880,12 +8898,18 @@ async function buildBonusReportRows(character) {
         const value = Number(slot.statAlloc?.[def.key]) || 0;
         return value ? `${def.label}+${value}` : null;
       }).filter(Boolean);
+      const goldenMedals = CREATURE_STAT_KEYS
+        .filter((def) => slot.goldenMedals?.[def.key])
+        .map((def) => def.label);
       const effectiveRank = getEffectiveCreatureBaseRank(slot, creature);
       const level = slot.level || getCreatureMaxLevel(slot, creature);
       pushReportRow(
         rows, 'クリーチャー', CREATURE_SLOT_LABELS[index], creature.name,
         `Rank ${creature.rank}${effectiveRank !== creature.rank ? `→${effectiveRank}` : ''} / Lv${level} / 超越Lv${Number(slot.transcend) || 0}`,
-        passives.join('\n'), alloc.length ? `能力振分: ${alloc.join(' / ')}` : '',
+        passives.join('\n'), [
+          alloc.length ? `能力振分: ${alloc.join(' / ')}` : '',
+          goldenMedals.length ? `ゴールデンメダル: ${goldenMedals.join(' / ')}` : '',
+        ].filter(Boolean).join('\n'),
       );
     });
     for (const merged of computeMergedPassives(creatureState, creatureDb)) {
@@ -11323,6 +11347,7 @@ const CREATURE_INV_EMPTY_ICON = 'https://sokomin.github.io/calculation/image//in
 const CREATURE_INV_MISSING_ICON = 'https://sokomin.github.io/calculation/image//interface2_0767-1.png';
 const CREATURE_OPLIST_URL = 'https://sokomin.github.io/update/js/option-list2022.js';
 const CREATURE_STAT_URL   = 'lib/data/creature_stats.json';
+const CREATURE_GOLDEN_MEDAL_ICON = 'https://sokomin.github.io//item/design/image/item/iconItem_2832.png';
 
 const CREATURE_RANK_ORDER = ['N', 'R', 'HR', 'SR', 'LR', 'GR'];
 const CREATURE_MAX_LEVEL_BY_RANK = { N: 60, R: 70, HR: 80, SR: 90, LR: 100, GR: 120 };
@@ -11472,6 +11497,7 @@ function newCreatureSlot() {
     baseRank: null,
     level: null,
     statAlloc: { str: 0, int: 0, agi: 0, luc: 0, con: 0 },
+    goldenMedals: { str: false, int: false, agi: false, luc: false, con: false },
     transcend: 0,
     awaken: { main: 0, sub1: 0, sub2: 0, sub3: 0 },
     override: { sub1: null, sub2: null, sub3: null },
@@ -11512,6 +11538,9 @@ function normalizeCreatureSlot(raw) {
       slot.statAlloc[def.key] = (Number.isFinite(v) && v >= 0) ? Math.floor(v) : 0;
     }
   }
+  if (raw.goldenMedals && typeof raw.goldenMedals === 'object') {
+    for (const def of CREATURE_STAT_KEYS) slot.goldenMedals[def.key] = raw.goldenMedals[def.key] === true;
+  }
   if (raw.transcend != null) {
     const v = Number(raw.transcend);
     slot.transcend = (Number.isFinite(v) && v >= 0) ? Math.floor(v) : 0;
@@ -11539,6 +11568,11 @@ function serializeCreatureSlot(slot) {
     statAlloc: (() => {
       const out = {};
       for (const def of CREATURE_STAT_KEYS) out[def.key] = Number(slot && slot.statAlloc && slot.statAlloc[def.key]) || 0;
+      return out;
+    })(),
+    goldenMedals: (() => {
+      const out = {};
+      for (const def of CREATURE_STAT_KEYS) out[def.key] = !!(slot && slot.goldenMedals && slot.goldenMedals[def.key]);
       return out;
     })(),
     transcend: Number(slot && slot.transcend) || 0,
@@ -11870,7 +11904,9 @@ function computeCreatureStatValues(slot, creature) {
     const pair = creature.stats[def.key];
     const base = Number(Array.isArray(pair) ? pair[0] : 0) || 0;
     const growth = Number(Array.isArray(pair) ? pair[1] : 0) || 0;
-    const value = Math.floor(base + growth * Math.max(0, lv - 1));
+    const hasGoldenMedal = !!(slot.goldenMedals && slot.goldenMedals[def.key]);
+    const goldenMedalGrowth = hasGoldenMedal ? 2 : 0;
+    const value = Math.floor(base + (growth + goldenMedalGrowth) * Math.max(0, lv - 1));
     const allocated = Math.max(0, Math.floor(Number(slot.statAlloc && slot.statAlloc[def.key]) || 0));
     const total = value + allocated;
     stats[def.key] = {
@@ -11880,6 +11916,8 @@ function computeCreatureStatValues(slot, creature) {
       bonus: Math.floor(total / 2),
       base,
       growth,
+      hasGoldenMedal,
+      goldenMedalGrowth,
     };
   }
   return {
@@ -12897,12 +12935,22 @@ function renderCreatureStatPanel() {
     const st = computed.stats[def.key];
     const line = document.createElement('div');
     line.className = 'creature-stat-line';
-    line.title = `Lv1 ${st.base} / Lvごと +${st.growth}`;
+    line.title = `Lv1 ${st.base} / Lvごと +${st.growth + st.goldenMedalGrowth}` +
+      (st.hasGoldenMedal ? `（通常 +${st.growth} / ゴールデンメダル +2）` : '');
     line.innerHTML = `<span class="cstat-label">${def.label}</span>` +
+                     `<button type="button" class="cstat-medal-toggle${st.hasGoldenMedal ? ' is-active' : ''}" aria-pressed="${st.hasGoldenMedal}" aria-label="${def.label} ゴールデンメダル ${st.hasGoldenMedal ? 'ON' : 'OFF'}" title="ゴールデンメダル: ${st.hasGoldenMedal ? 'ON' : 'OFF'}（Lvごとの上昇値 +2）"><img src="${CREATURE_GOLDEN_MEDAL_ICON}" alt=""></button>` +
                      `<span class="cstat-value">${st.value}</span>` +
                      `<span class="cstat-plus">+</span>` +
                      `<span class="cstat-alloc-wrap">[<input class="cstat-alloc" type="number" min="0" value="${st.allocated}" aria-label="${def.label}割り振り">]</span>` +
                      `<span class="cstat-bonus">+${st.bonus}</span>`;
+    const medalToggle = line.querySelector('.cstat-medal-toggle');
+    medalToggle.addEventListener('click', async () => {
+      if (!slot.goldenMedals || typeof slot.goldenMedals !== 'object') slot.goldenMedals = {};
+      slot.goldenMedals[def.key] = !slot.goldenMedals[def.key];
+      renderCreatureStatPanel();
+      scheduleAutosave();
+      await recalcAll();
+    });
     const allocInput = line.querySelector('.cstat-alloc');
     allocInput.addEventListener('change', async () => {
       setCreatureStatAllocation(slot, creature, def.key, allocInput.value);
