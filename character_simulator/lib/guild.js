@@ -392,6 +392,58 @@ export function createGuildSystem({ onChange } = {}) {
     return JSON.parse(JSON.stringify(state));
   }
 
+  function getReportRows() {
+    const position = positionFor(state.position);
+    const rows = [{
+      category: 'ギルド',
+      slot: '基本設定',
+      name: 'ギルド設定',
+      setting: `ギルドLv ${state.guildLv} / 天上ボーナス ${state.heavenlyBonus}`,
+      detail: `職位: ${position.label} / GSP使用 ${usedPoints(state)} / ${guildPointCap(state)}`,
+      memo: '',
+    }];
+    for (const skill of GUILD_SKILLS) {
+      const level = Number(state.skills[skill.key]) || 0;
+      if (!level) continue;
+      rows.push({
+        category: 'ギルドスキル',
+        slot: 'スキル',
+        name: skill.name,
+        setting: `Lv ${level} / ${skill.max}`,
+        detail: skill.effect,
+        memo: '',
+      });
+    }
+    for (const statue of STATUES) {
+      const active = statueActive(state, statue);
+      statue.parts.forEach((part, index) => {
+        const level = statueLevel(state, statue.id, index);
+        if (!level) return;
+        rows.push({
+          category: 'ギルド石像',
+          slot: statue.name,
+          name: part[0],
+          setting: `完成Lv ${level}`,
+          detail: part[1],
+          memo: active ? '有効' : '未発動（完成部位3つ以上で有効）',
+        });
+      });
+    }
+    for (const effect of FLAG_EFFECTS) {
+      const level = flagLevel(state, effect);
+      if (!level) continue;
+      rows.push({
+        category: 'ギルド旗',
+        slot: effect.group,
+        name: effect.name,
+        setting: `旗Lv ${level}`,
+        detail: `+${effect.values[level - 1]}${effect.unit}`,
+        memo: '',
+      });
+    }
+    return rows;
+  }
+
   function setState(raw) {
     state = normalizeState(raw);
     pruneSkills(state);
@@ -403,5 +455,5 @@ export function createGuildSystem({ onChange } = {}) {
     if (initialized) render();
   }
 
-  return { init, applyToSTTemp, getState, setState, reset, render };
+  return { init, applyToSTTemp, getState, getReportRows, setState, reset, render };
 }

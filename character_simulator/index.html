@@ -3292,6 +3292,7 @@
                   <h4>セッション (保存/読込)</h4>
                   <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
                     <button id="btn-save-file" title="現在のキャラ + インベントリを .json として保存">📥 ファイル保存</button>
+                    <button id="btn-export-excel" title="現在の装備構成・ステータス・装備外補正を .xlsx レポートとして保存">📊 Excelレポート出力</button>
                     <button id="btn-load-file" title=".json を読み込んで現状に置き換え">📤 ファイル読込</button>
                     <span style="border-left:1px solid #8b6a28; height:14px; margin:0 2px;"></span>
                     <button id="btn-save-local" title="ブラウザ localStorage に保存 (このサイト内のみ)">💾 ブラウザに保存</button>
@@ -4638,6 +4639,7 @@ import { computeItemRequiredLv, computeRequiredLvBreakdown } from './lib/req_lv.
 import { calcOpValue, applyOpToSTTemp, aggregateAllOpsForItem } from './lib/op_calc.js';
 import { getEffectiveLv, PRIMARY_STAT_IDS } from './lib/character.js';
 import { computeAbilities } from './lib/abilities.js';
+import { downloadCharacterReportXlsx } from './lib/excel_report.js';
 import { clampBaseStatsToFloor, computeBaseStatFloor, getAutoStatId, preserveAllocatedStatsForFloorChange, statTotal } from './lib/job_stats.js';
 import {
   serializeSession, deserializeSession,
@@ -8207,6 +8209,7 @@ async function recalcAll() {
   hideItemDetailPopup();
 
   lastFinalStats = f.equipped;
+  lastAbilitySummary = { ...ab };
 
   try { DamageCalc.syncFromCharacter(ch, f, ab); }
   catch (e) { console.warn('[DamageCalc] sync failed:', e); }
@@ -8672,6 +8675,358 @@ function buildSnapshot() {
   };
   snap.guild = Guild.getState();
   return snap;
+}
+
+const REPORT_GRADE_NAMES = {
+  3: 'エクセレント', 4: 'ユニーク', 5: 'DXユニーク', 6: 'ULTユニーク',
+  7: 'ユニークNx', 8: 'DXユニークNx', 9: 'ULTユニークNx',
+};
+
+function reportPlainTextFromHtml(html) {
+  const root = document.createElement('div');
+  root.innerHTML = String(html || '');
+  root.querySelectorAll('br').forEach((br) => br.replaceWith('\n'));
+  return String(root.textContent || '')
+    .replace(/\u00a0/g, ' ')
+    .split(/\r?\n/)
+    .map((line) => line.replace(/[ \t]+/g, ' ').trim())
+    .filter(Boolean)
+    .join('\n');
+}
+
+function extractItemReportSections(html) {
+  const root = document.createElement('div');
+  root.innerHTML = html;
+  const sections = Object.create(null);
+  let current = '基本情報';
+  sections[current] = [];
+  root.querySelectorAll('.idp-section-title, .idp-row, .idp-op, .idp-desc, .idp-status').forEach((node) => {
+    if (node.classList.contains('idp-section-title')) {
+      current = reportPlainTextFromHtml(node.innerHTML).replace(/[＜＞<>]/g, '').trim() || '詳細';
+      if (!sections[current]) sections[current] = [];
+      return;
+    }
+    const text = reportPlainTextFromHtml(node.innerHTML);
+    if (!text) return;
+    let target = current;
+    if (current === '基本情報' && node.classList.contains('is-ui') && /\[OP\d+\]/.test(text)) target = '付与OP';
+    if (current === '基本情報' && node.classList.contains('is-nx')) target = 'Nx・解放OP';
+    if (!sections[target]) sections[target] = [];
+    sections[target].push(text);
+  });
+  return sections;
+}
+
+function reportPrefixName(op) {
+  if (!op || op.familyId == null || op.familyId < 0) return '';
+  const family = OpPrefix.getFamily(op.familyId);
+  let tier = null;
+  if (family && op.rowId != null) tier = (family.tiers || []).find((entry) => Number(entry.id) === Number(op.rowId)) || null;
+  if (!tier) tier = OpPrefix.findTier(op.familyId, Number(op.value) || 0);
+  const raw = op.name || tier?.name || family?.firstTierName || '';
+  const name = stripGameTags(optionDisplayName(raw, tier || op)).trim();
+  if (!name) return '';
+  if (/^[［\[]/.test(name) && /[］\]]$/.test(name)) return name.replace(/^［/, '[').replace(/］$/, ']');
+  return `[${name}]`;
+}
+
+function reportEquippedDisplayName(inv, item) {
+  const prefixes = (inv && Array.isArray(inv.ops) ? inv.ops : []).map(reportPrefixName).filter(Boolean);
+  return prefixes.join('') + stripGameTags(item?.name || '名称取得不可');
+}
+
+function reportEquipmentSlotEntries(character) {
+  const body = [
+    ['weapon', '武器'], ['sub_weapon', '補助武器'], ['neck', '首'], ['head', '頭'],
+    ['back_ear', character.gender === 1 ? '背' : '耳'], ['waist', '腰'], ['hand', '手'],
+    ['body', '鎧'], ['foot', '足'],
+  ];
+  return [...body, ...Array.from({ length: 10 }, (_, index) => [`ring_${index}`, `指${index + 1}`])];
+}
+
+async function buildEquipmentReportRows(character) {
+  const slotEntries = reportEquipmentSlotEntries(character);
+  const bySlot = new Map();
+  for (const inv of inventory.items()) if (inv.equippedSlot) bySlot.set(inv.equippedSlot, inv);
+  const checkCharacter = readCharacterForRequirementChecks();
+  const rows = [];
+  for (const [slotId, slotLabel] of slotEntries) {
+    const inv = bySlot.get(slotId);
+    if (!inv) continue;
+    const item = await Item.get(inv.itemId);
+    if (!item) continue;
+    const sections = extractItemReportSections(buildItemDetailHtml(inv, item, checkCharacter));
+    const optionBlocks = Object.entries(sections)
+      .filter(([name]) => !['基本情報', '説明', '要求能力値'].includes(name))
+      .map(([name, lines]) => `＜${name}＞\n${lines.join('\n')}`)
+      .filter((text) => !/＞\n$/.test(text));
+    const basic = [...(sections['基本情報'] || [])];
+    if ((sections['説明'] || []).length) basic.push(`＜説明＞\n${sections['説明'].join('\n')}`);
+    const requirement = [...(sections['要求能力値'] || [])];
+    requirement.push(inv.canEquip ? '装備可能' : `装着NG: ${inv.mismatchReason || '条件未達'}`);
+    rows.push({
+      slot: slotLabel,
+      displayName: reportEquippedDisplayName(inv, item),
+      typeGrade: [kindName(item.kind), REPORT_GRADE_NAMES[item.grade] || ''].filter(Boolean).join(' / '),
+      baseInfo: basic.join('\n'),
+      options: optionBlocks.join('\n'),
+      requirements: requirement.join('\n'),
+    });
+  }
+  return rows;
+}
+
+function reportDomStat(category, name, id) {
+  const node = $(id);
+  if (!node || !String(node.textContent || '').trim()) return null;
+  return {
+    category,
+    name,
+    base: '',
+    final: String(node.textContent || '').trim(),
+    unit: '',
+    note: String(node.title || '').trim(),
+  };
+}
+
+function buildStatReportRows(character) {
+  const rows = STAT_KEYS.map((key) => ({
+    category: '基本能力',
+    name: STAT_LABEL[key] || key,
+    base: Number(character.stats?.base?.[key]) || 0,
+    final: Number(lastFinalStats?.[key]) || 0,
+    unit: '',
+    note: '',
+  }));
+  const ability = lastAbilitySummary || {};
+  rows.push(
+    { category: '能力値', name: '最大HP', base: '', final: Number(ability.hpMax) || 0, unit: '', note: '' },
+    { category: '能力値', name: '最大CP', base: '', final: Number(ability.cpMax) || 0, unit: '', note: '' },
+    { category: '能力値', name: '攻撃力', base: '', final: (ability.atkMin || ability.atkMax) ? `${ability.atkMin}～${ability.atkMax}` : '0', unit: '', note: '' },
+    { category: '能力値', name: '防御力', base: '', final: Number(ability.def) || 0, unit: '', note: '' },
+  );
+  const domFields = [
+    ['攻撃', '物理ダメージ', 'dt-phys-damage'], ['攻撃', '物理致命打発動確率', 'dt-phys-crit'],
+    ['攻撃', '命中率', 'dt-hit'], ['防御', '回避率', 'dt-eva'],
+    ['攻撃', '攻撃速度', 'dt-atkspd'], ['移動', '移動速度', 'dt-mvspd'],
+    ['攻撃', '魔法ダメージ', 'dt-magic-damage'], ['攻撃', '魔法致命打発動確率', 'dt-magic-crit'],
+    ['攻撃', '物理強打発動確率', 'dt-phys-strong'], ['攻撃', '魔法強打発動確率', 'dt-magic-strong'],
+    ['攻撃', '最終ダメージ', 'dt-final-damage'], ['スキル', '全スキルレベル', 'dt-skill'],
+    ['スキル', 'スキルクールタイム減少', 'dt-skill-cd'], ['回復', 'ポーション回復速度', 'dt-potion-heal'],
+    ['獲得', '経験値獲得ボーナス', 'dt-exp-bonus'], ['獲得', 'ユニークドロップ率', 'dt-uni-drop'],
+    ['獲得', 'アイテムドロップ率', 'dt-mf-drop'], ['戦闘', 'CP獲得ボーナス', 'dt-cp-bonus'],
+    ['PVP', 'PVPダメージ', 'dt-pvp-damage'], ['PVP', 'PVP防御', 'dt-pvp-defense'],
+    ['戦闘', 'ブラッドレコード', 'dt-blood-record'], ['防御', 'シールド値', 'dt-shield-value'],
+  ];
+  for (const args of domFields) {
+    const row = reportDomStat(...args);
+    if (row) rows.push(row);
+  }
+  const attrs = ['火', '水', '風', '大地', '光', '闇'];
+  const attrTables = [
+    ['属性抵抗', 'resist-row'], ['属性吸収', 'absorb-row'], ['属性強化', 'enhance-row'], ['属性弱化', 'weaken-row'],
+  ];
+  for (const [category, rowId] of attrTables) {
+    document.querySelectorAll(`#${rowId} td`).forEach((cell, index) => {
+      const value = String(cell.textContent || '').trim();
+      if (!value) return;
+      rows.push({ category, name: attrs[index] || `属性${index + 1}`, base: '', final: value, unit: '', note: String(cell.title || '').trim() });
+    });
+  }
+  return rows;
+}
+
+function pushReportRow(rows, category, slot, name, setting = '', detail = '', memo = '') {
+  rows.push({ category, slot, name, setting, detail, memo });
+}
+
+function selectedOptionText(id) {
+  const select = $(id);
+  const option = select && select.options ? select.options[select.selectedIndex] : null;
+  return option ? String(option.textContent || '').trim() : '';
+}
+
+async function buildBonusReportRows(character) {
+  const rows = [];
+
+  for (const cat of STONE_CATEGORIES) {
+    const state = stoneState[cat.key];
+    if (!state || (!state.stage && !(state.skills || []).some((lv) => Number(lv) > 0))) continue;
+    const detail = (state.skills || []).map((lv, index) => {
+      if (!lv) return null;
+      const effect = stoneGetSkillEffect(cat.key, index, lv);
+      return effect ? `${effect.name}: Lv${lv} / +${effect.value}${effect.unit || ''}` : null;
+    }).filter(Boolean).join('\n');
+    pushReportRow(rows, 'フェーズストーン', cat.name, cat.name, `段階 ${state.stage}`, detail);
+  }
+
+  if (creatureState.slots.some((slot) => slot && slot.id) && !creatureDb) {
+    try { await loadCreatureDataOnce(); } catch (_) {}
+  }
+  if (creatureDb) {
+    const roleLabels = { main: 'メイン', sub1: 'サブ1', sub2: 'サブ2', sub3: 'サブ3' };
+    creatureState.slots.forEach((slot, index) => {
+      if (!slot || !slot.id) return;
+      const creature = creatureDb.creatures[slot.id];
+      if (!creature) return;
+      const roles = index === 0 ? ['main', 'sub1', 'sub2', 'sub3'] : ['sub1', 'sub2', 'sub3'];
+      const passives = roles.map((role) => {
+        const resolved = resolveSlotPassive(slot, role, creature, creatureDb);
+        if (!resolved) return null;
+        const info = creatureDb.passives[resolved.passiveId];
+        return `${roleLabels[role]}: ${info?.name || '名称取得不可'} Lv${resolved.totalLv}（基本${resolved.baseLv} + 覚醒${resolved.awakenLv} + 超越${resolved.transcendLv}）`;
+      }).filter(Boolean);
+      const alloc = CREATURE_STAT_KEYS.map((def) => {
+        const value = Number(slot.statAlloc?.[def.key]) || 0;
+        return value ? `${def.label}+${value}` : null;
+      }).filter(Boolean);
+      const effectiveRank = getEffectiveCreatureBaseRank(slot, creature);
+      const level = slot.level || getCreatureMaxLevel(slot, creature);
+      pushReportRow(
+        rows, 'クリーチャー', CREATURE_SLOT_LABELS[index], creature.name,
+        `Rank ${creature.rank}${effectiveRank !== creature.rank ? `→${effectiveRank}` : ''} / Lv${level} / 超越Lv${Number(slot.transcend) || 0}`,
+        passives.join('\n'), alloc.length ? `能力振分: ${alloc.join(' / ')}` : '',
+      );
+    });
+    for (const merged of computeMergedPassives(creatureState, creatureDb)) {
+      const info = creatureDb.passives[merged.passiveId];
+      if (!info) continue;
+      const effects = buildPassiveOpLines(info, merged.slv, creatureDb.optionText, creatureDb.baseOptionText)
+        .map(reportPlainTextFromHtml).filter(Boolean).join('\n');
+      pushReportRow(rows, 'クリーチャーパッシブ合計', '合算結果', info.name || '名称取得不可', `Lv ${merged.slv}`, effects, '複数スロットの同名パッシブを合算');
+    }
+    const book = computeCreatureBookBonus(creatureState, creatureDb, getEffectiveLv(character));
+    if (book.count > 0) {
+      const detail = Object.entries(book.stats || {}).filter(([, value]) => Number(value) !== 0)
+        .map(([key, value]) => `${CREATURE_BOOK_STAT_LABELS[key] || key} +${value}`).join('\n');
+      pushReportRow(rows, 'クリーチャー図鑑', '登録ボーナス', 'クリーチャー図鑑', `${book.count} / ${book.max} 登録`, detail);
+    }
+  }
+
+  if (minipetState.slots.some((slot) => slot && slot.petId) && !minipetDb) {
+    try { await loadMinipetDataOnce(); } catch (_) {}
+  }
+  if (minipetDb) {
+    minipetState.slots.forEach((slot, index) => {
+      const pet = slot && slot.petId ? getMinipetById(slot.petId) : null;
+      if (!pet) return;
+      const skills = minipetEffectiveSkills(pet, slot).map((skill) => {
+        const level = Number(slot.skillLevels?.[skill.name]) || 0;
+        return level ? `${skill.name}: Lv${level}` : null;
+      }).filter(Boolean);
+      pushReportRow(rows, 'ミニペット', `スロット${index + 1}`, pet.name, `Lv ${slot.level}`, skills.join('\n'), '');
+    });
+    if (minipetState.compositionId) {
+      const comp = (minipetDb.compositions || []).find((entry) => entry && entry.name === minipetState.compositionId);
+      pushReportRow(rows, 'ミニペット', '合成スキル', minipetState.compositionId, '', (comp?.effects || []).map((effect) => effect.label || '').filter(Boolean).join('\n'));
+    }
+  }
+
+  petState.slots.forEach((slot, index) => {
+    const monster = slot ? getMonsterById(slot.mobid) : null;
+    if (!monster) return;
+    pushReportRow(rows, 'ペット', `スロット${index + 1}`, petDisplayName(monster), `Lv ${slot.customLv || getCharacterLvForPet()}`, '', '');
+  });
+
+  const dragonState = DragonBlessing.getState();
+  const dragonStats = ['力', '敏捷', '健康', '知識', '知恵', 'カリスマ', '運'];
+  const dragonSlots = ['メイン', 'サブⅠ', 'サブⅡ', 'サブⅢ', 'サブⅣ', 'サブⅤ', 'サブⅥ'];
+  (dragonState.slots || []).forEach((slot, index) => {
+    if (!slot || (slot.pureStat < 0 && !(slot.abilities || []).some((ability) => ability && ability.optId))) return;
+    const detail = [];
+    if (slot.pureStat >= 0) detail.push(`純粋能力: ${dragonStats[slot.pureStat]}`);
+    for (const ability of (slot.abilities || [])) {
+      const def = DragonBlessing.OPTIONS.find((entry) => entry.id === ability.optId);
+      if (def) detail.push(`${def.label}: +${ability.value}${def.unit || ''}`);
+    }
+    pushReportRow(rows, '古龍の祝福', dragonSlots[index], `${slot.rank} 古龍`, `製錬 ${slot.refining}`, detail.join('\n'), index === 0 ? '解放能力を含めて反映' : '純粋能力のみ反映');
+  });
+
+  const titleState = Titles.getState();
+  if (titleState.limitBreakPhysLv) pushReportRow(rows, '称号', '限界突破', '物理限界突破', `Lv ${titleState.limitBreakPhysLv}`);
+  if (titleState.limitBreakMagicLv) pushReportRow(rows, '称号', '限界突破', '魔法限界突破', `Lv ${titleState.limitBreakMagicLv}`);
+  if (titleState.fifthRebirthOn) pushReportRow(rows, '称号', '転生', '5次転生者', 'ON', '同一指輪の装備上限 2個');
+  if (titleState.alchemyLv) pushReportRow(rows, '称号', '錬金術', '錬金術', `Lv ${titleState.alchemyLv}`, `属性強化 +${titleState.alchemyLv * 2}%`);
+  if (titleState.berserkOn) pushReportRow(rows, '称号', 'ベルセルク', 'ベルセルク', `Lv ${titleState.berserkLv}`, `全基本能力 +${80 + titleState.berserkLv * 2}%`);
+  if (titleState.mqOn) pushReportRow(rows, '称号', 'メインクエスト', 'メインクエスト補正', 'ON', '力+3 / 敏捷+5 / カリスマ+2');
+  if (titleState.esotericLv) pushReportRow(rows, '称号', '密教', '密教', `Lv ${titleState.esotericLv}`, `状態異常抵抗 +${titleState.esotericLv}%`);
+  if (titleState.skillMasterOn) pushReportRow(rows, '称号', 'マスター', 'スキルマスター', 'ON', '全スキルレベル +5');
+
+  const missionState = MissionBook.getState();
+  for (const key of ['mb1', 'mb2', 'mb3']) {
+    const count = Number(missionState[key]) || 0;
+    if (!count) continue;
+    const book = MissionBook.DATA[key];
+    const chapter = book?.chapters?.[count - 1];
+    pushReportRow(rows, 'ミッションブック', book?.name || 'ミッションブック', chapter?.name || 'クリア章', `${count}章クリア`, '', '');
+  }
+
+  const potential = Potential.getState();
+  if (potential.stage > 0) {
+    const effects = Potential.EFFECTS.filter((effect) => effect.no <= potential.stage).map((effect) => effect.effectText);
+    pushReportRow(rows, '潜在能力', '段階', '潜在能力', `段階 ${potential.stage}`, effects.join('\n'));
+  }
+
+  const costume = Costume.getState();
+  if (costume.enabled || costume.crests.some((id) => id != null)) {
+    const crestNames = [];
+    for (let index = 0; index < costume.crests.length; index++) {
+      const id = costume.crests[index];
+      if (id == null) continue;
+      const item = await Item.get(id);
+      crestNames.push(`スロット${index + 1}: ${stripGameTags(item?.name || '名称取得不可')}`);
+    }
+    pushReportRow(rows, 'コスチューム', '強化', 'コスチューム強化', `${costume.enabled ? '有効' : '無効'} / 段階 ${costume.stage}`, crestNames.join('\n'));
+  }
+
+  rows.push(...TransSkill.getReportRows(character.job));
+
+  const blood = BloodRecord.getState();
+  if (blood.lv > 0 || Object.values(blood.alloc || {}).some((value) => Number(value) > 0) || blood.fieldId) {
+    const alloc = Object.entries(blood.alloc || {}).filter(([, value]) => Number(value) > 0)
+      .map(([key, value]) => `${STAT_LABEL[key] || key}: ${value}`).join('\n');
+    const field = selectedOptionText('blood-field-select');
+    pushReportRow(rows, '血の記録', '記録', '血の記録', `Lv ${blood.lv}`, alloc, field ? `現在のフィールド: ${field}` : '');
+  }
+
+  try { rows.push(...await OmniSkill.getReportRows()); } catch (_) {
+    if (Object.keys(OmniSkill.getState().levels || {}).length) pushReportRow(rows, 'オムニスキル', '読込状態', '名称データ読込失敗', '', '', '再度ページを読み込んでから出力してください');
+  }
+
+  for (const def of BADGE_DEFS) {
+    const value = badgeState[def.id];
+    if (def.type === 'single' && value) pushReportRow(rows, '討伐バッジ', 'バッジ', def.label, '有効');
+    if (def.type === 'tier' && Number(value) > 0) pushReportRow(rows, '討伐バッジ', 'バッジ', def.label, `${value}段階`);
+  }
+
+  rows.push(...Guild.getReportRows());
+
+  if (mapMonsterState.mapId != null) {
+    const map = getMapMeta(mapMonsterState.mapId);
+    const monster = mapMonsterState.selectedMobid != null ? getMonsterById(mapMonsterState.selectedMobid) : null;
+    pushReportRow(rows, 'フィールド', 'マップ', map?.name || '名称取得不可', mapMonsterState.detailLv ? `対象Lv ${mapMonsterState.detailLv}` : '', monster ? `対象モンスター: ${petDisplayName(monster)}` : '');
+  }
+  return rows;
+}
+
+async function buildCharacterExcelReport() {
+  const character = readCharacter();
+  const generatedAt = new Date();
+  return {
+    title: 'RED STONE キャラクター構成レポート',
+    generatedAt: generatedAt.toISOString(),
+    generatedAtLabel: generatedAt.toLocaleString('ja-JP'),
+    character: {
+      job: jobNameById(character.job),
+      level: character.realLv,
+      rebirth: Number($('ch-rebirth')?.value) || 0,
+      gender: character.gender === 1 ? '男性' : '女性',
+      grace: selectedOptionText('ch-grace') || 'なし',
+    },
+    equipment: await buildEquipmentReportRows(character),
+    stats: buildStatReportRows(character),
+    bonuses: await buildBonusReportRows(character),
+  };
 }
 
 async function restoreInventoryEntry(entry) {
@@ -9728,6 +10083,7 @@ let petState = { slots: [null, null, null] };
 let petUIInitialized = false;
 
 let lastFinalStats = null;
+let lastAbilitySummary = null;
 
 function getCharacterLvForPet() {
 
@@ -12954,6 +13310,24 @@ function renderStoneCards() {
 }
 
 function bindSessionEvents() {
+  $('btn-export-excel').addEventListener('click', async () => {
+    const button = $('btn-export-excel');
+    button.disabled = true;
+    setSessionStatus('Excelレポート作成中…');
+    try {
+      await recalcAll();
+      const report = await buildCharacterExcelReport();
+      const ts = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+      const job = String(report.character.job || 'character').replace(/[\\/:*?"<>|]/g, '_');
+      downloadCharacterReportXlsx(`character_report_${job}_Lv${report.character.level}_${ts}.xlsx`, report);
+      setSessionStatus('Excelレポート出力完了');
+    } catch (error) {
+      console.warn('[ExcelReport] export failed:', error);
+      setSessionStatus(`Excelレポート出力失敗: ${error?.message || error}`);
+    } finally {
+      button.disabled = false;
+    }
+  });
   $('btn-save-file').addEventListener('click', () => {
     const data = buildSnapshot();
     const ts = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
@@ -16505,6 +16879,22 @@ const TransSkill = (() => {
   function getState() {
     return { slots: state.slots.map((s) => ({ skillId: s.skillId || '', slv: clampSlv(s.slv), specialLv: clampSpecial(s.specialLv) })) };
   }
+  function getReportRows(jobId = readCurrentJobId()) {
+    return state.slots.map((slot, index) => {
+      const def = findDef(slot && slot.skillId, jobId);
+      if (!def) return null;
+      const info = aggregateSingleSlot(slot, jobId);
+      const meta = SLOT_LABELS[index] || { title: `スロット ${index + 1}`, sub: '' };
+      return {
+        category: '超越スキル',
+        slot: meta.title,
+        name: def.name,
+        setting: `SLv ${clampSlv(slot.slv)} / 特殊強化 ${clampSpecial(slot.specialLv)}`,
+        detail: (info.lines || []).join('\n'),
+        memo: `${CATEGORY_LABELS[def.category] || def.category}${meta.sub ? ` / ${meta.sub}` : ''}`,
+      };
+    }).filter(Boolean);
+  }
   function setState(s) {
     if (!s || !Array.isArray(s.slots)) return;
     for (let i = 0; i < state.slots.length; i++) {
@@ -16527,7 +16917,7 @@ const TransSkill = (() => {
     renderSlots();
   }
 
-  return { init, applyToSTTemp, getState, setState, reset, rerender, DEFS, JOB_RARE_SKILLS };
+  return { init, applyToSTTemp, getState, getReportRows, setState, reset, rerender, DEFS, JOB_RARE_SKILLS };
 })();
 
 const BloodRecord = (() => {
@@ -17312,6 +17702,26 @@ const OmniSkill = (() => {
   }
   function rerender() { if (_initialized) renderAll(); else renderHeader(); }
   function getState() { return { levels: { ...state.levels } }; }
+  async function getReportRows() {
+    if (Object.keys(state.levels).length === 0) return [];
+    if (!dataLoaded) await loadData();
+    const rows = [];
+    for (const idStr of Object.keys(state.levels)) {
+      const id = Number(idStr);
+      const skill = skillMap && skillMap.get(id);
+      if (!skill) continue;
+      const level = getLv(id);
+      rows.push({
+        category: 'オムニスキル',
+        slot: skill.grade || skill.grade_official || '',
+        name: skill.name || '',
+        setting: `Lv ${level} / ${skill.max_lv}`,
+        detail: resolveTemplate(skill, level) || '',
+        memo: '',
+      });
+    }
+    return rows;
+  }
   function setState(s) {
     if (!s || typeof s !== 'object') return;
     state.levels = {};
@@ -17333,7 +17743,7 @@ const OmniSkill = (() => {
   
   function isReady() { return dataLoaded != null; }
 
-  return { init, applyToSTTemp, getState, setState, reset, rerender, isReady };
+  return { init, applyToSTTemp, getState, getReportRows, setState, reset, rerender, isReady };
 })();
 
 const DamageCalc = (() => {
