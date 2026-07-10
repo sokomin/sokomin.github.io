@@ -2292,6 +2292,42 @@
     .dragon-summary-empty {
       color: #b0944c; font-size: 11.5px; padding: 6px 4px; text-align: center;
     }
+    .guild-tab-layout { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 8px; align-items: start; }
+    .guild-side-stack { display: grid; gap: 8px; }
+    .guild-panel { background: #120c04; border: 1px solid #8b6a28; padding: 7px; color: #f4e7a2; }
+    .guild-panel h4 { margin: 0 0 6px; color: #ffe066; font-size: 14px; }
+    .guild-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .guild-heading h4 { margin: 0; }
+    .guild-actions { display: flex; gap: 4px; }
+    .guild-controls { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: end; }
+    .guild-controls label { display: grid; gap: 2px; color: #d8a743; font-size: 11px; }
+    .guild-controls input, .guild-controls select, .guild-table select { background: #24170a; color: #f4e7a2; border: 1px solid #8b6a28; padding: 2px 4px; }
+    .guild-controls input { width: 76px; }
+    .guild-points { margin-top: 6px; color: #d8a743; font-size: 12px; }
+    .guild-points strong { color: #00ff66; font-size: 15px; }
+    .guild-note { margin: 5px 0; color: #a89b7a; font-size: 11px; line-height: 1.4; }
+    .guild-reset, .guild-max-skills, .guild-level-control button { background: linear-gradient(#a66a19, #5e310b); color: #fff; border: 1px solid #170c02; padding: 1px 6px; cursor: pointer; }
+    .guild-reset { font-size: 11px; }
+    .guild-max-skills { font-size: 11px; }
+    .guild-level-control button:disabled, .guild-max-skills:disabled { opacity: .35; cursor: default; }
+    .guild-skill-scroll { max-height: 520px; overflow: auto; }
+    .guild-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .guild-table th, .guild-table td { border: 1px solid #4c2b0a; padding: 3px 5px; text-align: left; vertical-align: middle; }
+    .guild-table th { background: #2a1a08; color: #e7c56d; font-weight: normal; }
+    .guild-effect { color: #a89b7a; font-size: 10px; margin-top: 1px; }
+    .guild-requirement { color: #c99a68; font-size: 10px; margin-top: 2px; }
+    .guild-level-control { white-space: nowrap; text-align: center !important; }
+    .guild-level-control span { display: inline-block; min-width: 64px; color: #f8f000; }
+    .guild-statue-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 7px; }
+    .guild-statue-card { border: 1px solid #4c2b0a; padding: 5px; background: #1a1007; }
+    .guild-statue-card h4 { margin: 0 0 4px; font-size: 12px; }
+    .guild-statue-status { float: right; color: #aa8060; font-size: 10px; font-weight: normal; }
+    .guild-statue-status.is-active { color: #00ff66; }
+    .guild-flag-group + .guild-flag-group { margin-top: 7px; }
+    .guild-flag-group h5 { margin: 0 0 3px; color: #d8a743; font-size: 12px; }
+    .guild-flag-value { color: #00ff66; white-space: nowrap; text-align: right !important; }
+    @media (max-width: 900px) { .guild-tab-layout { grid-template-columns: 1fr; } }
+    @media (max-width: 640px) { .guild-statue-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -2605,6 +2641,7 @@
             <button type="button" class="sim-tab-btn"           data-tab-btn="enhance"  role="tab">アイテム強化</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="stone"    role="tab">フェーズストーン</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="skill"    role="tab">スキル</button>
+            <button type="button" class="sim-tab-btn"           data-tab-btn="guild"    role="tab">ギルド</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="pet"      role="tab">ペット</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="minipet"  role="tab">ミニペット</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="costume"  role="tab">コスチューム</button>
@@ -3743,6 +3780,10 @@
             <iframe class="skill-frame" id="skill-frame" title="スキルシミュレーター" loading="lazy"></iframe>
           </div>
 
+          <div class="tab-pane" data-tab="guild">
+            <div id="guild-tab"></div>
+          </div>
+
           
           <div class="tab-pane" data-tab="pet">
             <div class="pet-tab-layout">
@@ -4692,12 +4733,19 @@ import {
 } from './lib/map_monster_modifiers.js';
 import { applyMonsterLevel } from './lib/monster_level_calc.js';
 import { computePetStats, isPetCapableJob } from './lib/pet_calc.js';
+import { createGuildSystem } from './lib/guild.js';
 
 const loader = new DataLoader({ baseUrl: './lib/data' });
 setLoader(loader);
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const Guild = createGuildSystem({
+  onChange: () => {
+    recalcAll().catch((error) => console.warn('[Guild] recalc failed:', error));
+    scheduleAutosave();
+  },
+});
 
 const OPTION_NAME_MODES = new Set(['2020', '2026']);
 const OPTION_NAME_MODE_DEFAULT = '2020';
@@ -7745,6 +7793,8 @@ async function recalcAll() {
 
   OmniSkill.applyToSTTemp(T);
 
+  Guild.applyToSTTemp(T, ch);
+
   IncusedRing.applyToSTTemp(T, equipped);
   YatikanuIncusedArmor.applyToSTTemp(T, equipped, getEffectiveLv(ch), ch);
   AncientIncusedRing.applyToSTTemp(T, equipped, getEffectiveLv(ch), ch);
@@ -7931,13 +7981,17 @@ async function recalcAll() {
     }
 
     const wkRaw = Math.floor(f.equipped['attr' + k + 'Weaken'] || 0);
-    const wkV   = Math.min(ATTR_WEAKEN_CAP, wkRaw);
+    const wkBase = Math.min(ATTR_WEAKEN_CAP, wkRaw);
+    const guildFlagWeaken = Math.floor(f.equipped.guildFlagAttrWeaken || 0);
+    const wkV = wkBase + guildFlagWeaken;
     if (weakenTds[i]) {
       weakenTds[i].textContent = wkV + '%';
       weakenTds[i].classList.toggle('is-capped', wkRaw >= ATTR_WEAKEN_CAP);
-      weakenTds[i].title = (wkRaw > ATTR_WEAKEN_CAP)
-        ? `生値 ${wkRaw}% → 装備上限 ${ATTR_WEAKEN_CAP}% でクランプ`
-        : `${wkV}%`;
+      weakenTds[i].title = guildFlagWeaken
+        ? `通常弱化 ${wkRaw}% → 上限 ${wkBase}%\nギルド旗別枠 +${guildFlagWeaken}%\n合計 ${wkV}%`
+        : (wkRaw > ATTR_WEAKEN_CAP
+          ? `生値 ${wkRaw}% → 装備上限 ${ATTR_WEAKEN_CAP}% でクランプ`
+          : `${wkV}%`);
     }
   }
 
@@ -8616,6 +8670,7 @@ function buildSnapshot() {
     })),
     compositionId: minipetState.compositionId || '',
   };
+  snap.guild = Guild.getState();
   return snap;
 }
 
@@ -8876,6 +8931,9 @@ async function loadSnapshot(data, sourceLabel) {
   minipetState.compositionId = (data.minipet && typeof data.minipet.compositionId === 'string')
     ? data.minipet.compositionId : '';
   if (minipetUIInitialized) renderMinipetTab();
+
+  if (data.guild) Guild.setState(data.guild);
+  else Guild.reset();
   if (mapMonsterInitialized && mapMonsterDataLoaded) {
     refreshMapList($('mapmon-map-search')?.value || '');
     if (mapMonsterState.mapId != null) {
@@ -18653,6 +18711,7 @@ async function main() {
   renderStoneCards();
   renderFlagList();
   renderBadgeList();
+  Guild.init();
 
   deferredTabInits.title    = () => Titles.init(() => {
     recalcAll().catch((e) => console.warn('[Titles] recalc failed:', e));

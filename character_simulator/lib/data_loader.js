@@ -16,6 +16,8 @@ export class DataLoader {
     this.master   = null;
     this.options  = null;
     this.optionPrefix = null;  
+    this.optionNameModes = null;
+    this.opConvertDisplayNameModes = null;
     this.nonstandard = null;
     this.manifest = null;
     this.itemsSearch = null;
@@ -31,17 +33,21 @@ export class DataLoader {
   async init() {
     if (this._initialized) return;
     const t0 = performance.now();
-    const [master, options, manifest, itemsSearch, optionPrefix, nonstandard] = await Promise.all([
+    const [master, options, manifest, itemsSearch, optionPrefix, optionNameModes, opConvertDisplayNameModes, nonstandard] = await Promise.all([
       this._fetchJson('master.json'),
       this._fetchJson('options.json'),
       this._fetchJson('manifest.json'),
       this._fetchJson('items_search.json'),
       this._fetchJson('option_prefix.json').catch(() => null),
+      this._fetchJson('option_name_modes.json').catch(() => null),
+      this._fetchJson('op_convert/op_display_name_modes.json').catch(() => null),
       this._fetchJson('nonstandard_equipment.json').catch(() => null),
     ]);
     this.master = master;
     this.options = options;
     this.optionPrefix = optionPrefix;
+    this.optionNameModes = optionNameModes;
+    this.opConvertDisplayNameModes = opConvertDisplayNameModes;
     this.nonstandard = nonstandard;
     this.manifest = manifest;
     this.itemsSearch = itemsSearch;
@@ -52,13 +58,19 @@ export class DataLoader {
     const opPrefixInfo = optionPrefix
       ? `, optionPrefix=${Object.keys(optionPrefix.families).length} families`
       : '';
+    const optionNameModeInfo = optionNameModes?.modes?.['2026']
+      ? `, optionNameModes=${Object.keys(optionNameModes.modes['2026'].base_option_text || {}).length + Object.keys(optionNameModes.modes['2026'].option_text || {}).length} mappings`
+      : '';
+    const opConvertDisplayNameInfo = opConvertDisplayNameModes?.summary
+      ? `, opConvertDisplayNames=${opConvertDisplayNameModes.summary.matched}/${opConvertDisplayNameModes.summary.total}`
+      : '';
     const nonstandardInfo = nonstandard
       ? `, nonstandard=${Object.keys(nonstandard.items || {}).length} items`
       : '';
     console.info(`[DataLoader] init done in ${elapsed}ms (` +
       `master=${formatBytes(JSON.stringify(master).length)}, ` +
       `options=${Object.keys(options.templates).length} templates, ` +
-      `items_search=${itemsSearch.rows.length} rows${opPrefixInfo}${nonstandardInfo})`);
+      `items_search=${itemsSearch.rows.length} rows${opPrefixInfo}${optionNameModeInfo}${opConvertDisplayNameInfo}${nonstandardInfo})`);
   }
 
   _mergeNonstandardSearchRows() {
