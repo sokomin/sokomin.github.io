@@ -222,100 +222,91 @@ function convert_server_name(sn, id) {
 
 var chart = '';
 
+function parseRsCountDate(value) {
+    var match = /^(\d{4})\/(\d{1,2})\/(\d{1,2})(?:\s+(\d{1,2}):(\d{2}))?$/.exec(String(value).trim());
+    if (!match) {
+        return null;
+    }
+
+    return new Date(
+        Number(match[1]),
+        Number(match[2]) - 1,
+        Number(match[3]),
+        Number(match[4] || 0),
+        Number(match[5] || 0)
+    ).getTime();
+}
+
+function createGraphSeries(label, color, values) {
+    return {
+        label: label,
+        data: values.sort(function (a, b) { return a.x - b.x; }),
+        backgroundColor: color.background,
+        borderColor: color.border,
+        borderWidth: 1,
+        pointRadius: 2,
+        pointHoverRadius: 5,
+        tension: 0,
+    };
+}
+
 function createGraph(rs_change, date1, date2, sn) {
-    // 鯖でフィルタリングした結果を格納する配列
-    var filteredData = [];
-    targetServer = convert_server_name(sn)
-    // rs_change配列の要素を順番に処理する
-    rs_change.forEach((data) => {
-        // 鯖がtargetServerの場合のみ、filteredDataに追加する
-        if (data[0] === targetServer) {
-            filteredData.push(data);
+    var targetServer = convert_server_name(sn);
+    var values = [[], [], []];
+
+    rs_change.forEach(function (data) {
+        if (data[0] !== targetServer) {
+            return;
+        }
+
+        var x = parseRsCountDate(data[1]);
+        if (x === null || x < date1 || x > date2) {
+            return;
+        }
+
+        for (var i = 0; i < values.length; i++) {
+            var y = Number(data[i + 2]);
+            if (Number.isFinite(y) && y > 0) {
+                values[i].push({ x: x, y: y });
+            }
         }
     });
 
-    // 日時の配列と天上の配列を作成する
-    var dateArray = [];
-    var dateObjArray = [];
-    var tenjouArray = [];
-    var tikaArray = [];
-    var akumaArray = [];
-    for (var i = 0; i < filteredData.length; i++) {
-        var data = filteredData[i];
-        var dateObj = new Date(data[1]);
-        var date_str = data[1];
-        // var dateObj = moment(dateString, "YYYY/MM/DD").toDate();
-        dateArray.push(date_str);
-        dateObjArray.push(date_str);
-        if (data[2] > 0 && data[3] > 0 && data[4] > 0) {
-            tenjouArray.push(data[2]);
-            tikaArray.push(data[3]);
-            akumaArray.push(data[4]);
-        }
-    }
-    // const dateArray = filteredData.map((data) => new Date(data[1]));
-    // const tenjouArray = filteredData.map((data) => data[2]);
-
-    // グラフを描画する
     if (chart) {
         chart.destroy();
     }
     chart = new Chart(document.getElementById("myChart"), {
         type: "line",
         data: {
-            labels: dateArray,
             datasets: [
-                {
-                    label: "天上",
-                    data: tenjouArray,
-                    backgroundColor: "rgba(32, 200, 245, 0.4)",
-                    borderColor: "rgba(32, 200, 245, 2)",
-                    borderWidth: 1,
-                },
-                {
-                    label: "地下",
-                    data: tikaArray,
-                    backgroundColor: "rgba(245, 130, 32, 0.4)",
-                    borderColor: "rgba(245, 130, 32, 2)",
-                    borderWidth: 1,
-                },
-                {
-                    label: "赤い悪魔",
-                    data: akumaArray,
-                    backgroundColor: "rgba(255, 0, 51, 0.4)",
-                    borderColor: "rgba(255, 0, 51, 1)",
-                    borderWidth: 1,
-                },
+                createGraphSeries("天上", { background: "rgba(32, 200, 245, 0.4)", border: "rgba(32, 200, 245, 2)" }, values[0]),
+                createGraphSeries("地下", { background: "rgba(245, 130, 32, 0.4)", border: "rgba(245, 130, 32, 2)" }, values[1]),
+                createGraphSeries("赤い悪魔", { background: "rgba(255, 0, 51, 0.4)", border: "rgba(255, 0, 51, 1)" }, values[2]),
             ],
         },
-        // TODO 軸バグってる
         options: {
+            maintainAspectRatio: false,
             scales: {
-                xAxes: [{
-                    type: 'time', // x軸のタイプを指定
-                    time: {
-                        displayFormats: {
-                            day: 'YYYY/MM/DD' // 日単位の目盛りに表示する日付のフォーマットを指定
-                        }
-                    },
+                x: {
+                    type: 'linear',
                     ticks: {
-                        autoSkip: true, // 目盛りを自動的にスキップするように設定
-                        maxRotation: 0, // 目盛りのラベルを回転させないように設定
-                        minRotation: 0, // 目盛りのラベルを回転させないように設定
-                        callback: function (value, index, values) {
-                            return moment(value).format('YYYY/MM/DD'); // 目盛りの日付の表示形式を設定
+                        maxTicksLimit: 12,
+                        maxRotation: 0,
+                        minRotation: 0,
+                        callback: function (value) {
+                            return new Date(Number(value)).toLocaleDateString('ja-JP');
                         }
                     }
-                }],
-                yAxes: [{
+                },
+                y: {
+                    min: 0,
+                    max: 2000000,
                     ticks: {
-                        min: 0, // 最小値を0に設定
-                        max: 2000000, // 最大値を200万に設定
-                        callback: function (value, index, values) {
-                            return value.toLocaleString(); // 目盛りにカンマ区切りの数値を表示する
+                        callback: function (value) {
+                            return Number(value).toLocaleString();
                         }
                     }
-                }]
+                }
             }
         },
     });
