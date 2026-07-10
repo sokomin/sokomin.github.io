@@ -7,6 +7,9 @@
   <meta name="description" content="レッドストーン総合攻略情報ポータルページ - キャラクターシミュレーター" />
   <meta name="keywords"
     content="RED STONE ,レッドストーン,赤石の民衆,そこらの民衆,ＲＥＤ ＳＴＯＮＥ,そこみん,赤石,攻略情報,キャラクターシミュレーター,装備,ステータス" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://sokomin.github.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://sokomin.github.io; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://sokomin.github.io; frame-src 'self' https://sokomin.github.io; object-src 'none'; base-uri 'self' https://sokomin.github.io; form-action 'self' https://www.google.com" />
   <link rel="icon" href="https://sokomin.github.io/design/RedStoneLogo.png" sizes="32x32" />
   <link rel="icon" href="https://sokomin.github.io/design/RedStoneLogo.png" sizes="192x192" />
   <link rel="apple-touch-icon-precomposed" href="https://sokomin.github.io/design/RedStoneLogo.png" />
@@ -3796,7 +3799,8 @@
 
           
           <div class="tab-pane" data-tab="skill">
-            <iframe class="skill-frame" id="skill-frame" title="スキルシミュレーター" loading="lazy"></iframe>
+            <iframe class="skill-frame" id="skill-frame" title="スキルシミュレーター" loading="lazy"
+              sandbox="allow-scripts" referrerpolicy="strict-origin-when-cross-origin"></iframe>
           </div>
 
           <div class="tab-pane" data-tab="guild">
@@ -8633,12 +8637,6 @@ function readGraceRebirth() {
 }
 
 function buildSnapshot() {
-  
-  const frame = $('skill-frame');
-  if (skillFrameLoaded && frame?.contentDocument) {
-    const captured = captureSkillState(frame.contentDocument);
-    if (captured) skillStates[skillFrameLoaded] = captured;
-  }
   const character = readCharacter();
   const snap = serializeSession(character, inventory, readGraceRebirth());
   snap.settings = getSettingsState();
@@ -9242,11 +9240,10 @@ async function loadSnapshot(data, sourceLabel) {
   refreshSelectedOpLabels();
 
   if (data.skills && typeof data.skills === 'object') {
-    skillStates = { ...data.skills };
-    
+    skillStates = normalizeSkillStatesMap(data.skills);
     const frame = $('skill-frame');
-    if (skillFrameLoaded && skillStates[skillFrameLoaded] && frame?.contentDocument) {
-      restoreSkillState(frame.contentDocument, skillStates[skillFrameLoaded]);
+    if (skillFrameLoaded && skillStates[skillFrameLoaded]) {
+      postSkillRestore(frame, skillFrameLoaded, skillStates[skillFrameLoaded]);
     }
   } else {
     skillStates = {};
@@ -11179,68 +11176,74 @@ function bindTabBar() {
 
 let skillStates = {};       
 let skillFrameLoaded = '';  
+let skillFrameExpected = '';
 let skillFramePending = null;
 
 const SKILL_TRANS_TYPE_IDS  = [900, 1000, 1100, 1200, 1300];
 const SKILL_TRANS_LEVEL_IDS = [901, 1001, 1101, 1201, 1301];
+const SKILL_BRIDGE_CHANNEL = 'rs-character-simulator.skill.v1';
+const SKILL_VALID_FILES = new Set(Object.values(JOB_SKILL_SIMULATOR_MAP).map((m) => m.file));
 
-function captureSkillState(doc) {
-  if (!doc) return null;
+function clampSkillIndex(value) {
+  const n = Math.floor(Number(value) || 0);
+  return Math.max(0, Math.min(200, n));
+}
+
+function normalizeSkillState(raw) {
   const state = { rebirth: 0, mq1: 0, mq2: 0, questBonus: '', ids: {}, trans: {} };
-  const reb = doc.getElementById('Rebirth');
-  const m1  = doc.getElementById('MQ1Skill');
-  const m2  = doc.getElementById('MQ2Skill');
-  if (reb) state.rebirth = reb.selectedIndex;
-  if (m1)  state.mq1     = m1.selectedIndex;
-  if (m2)  state.mq2     = m2.selectedIndex;
-  const a21 = doc.querySelector('input[name="a21"]');
-  if (a21) state.questBonus = a21.value || '';
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return state;
+  state.rebirth = clampSkillIndex(raw.rebirth);
+  state.mq1 = clampSkillIndex(raw.mq1);
+  state.mq2 = clampSkillIndex(raw.mq2);
+  state.questBonus = String(raw.questBonus || '').slice(0, 64);
   for (let n = 1; n <= 68; n++) {
-    const sel = doc.getElementById('id' + n);
-    if (sel) state.ids[n] = sel.selectedIndex;
+    if (raw.ids && raw.ids[n] != null) state.ids[n] = clampSkillIndex(raw.ids[n]);
   }
   for (const t of SKILL_TRANS_TYPE_IDS.concat(SKILL_TRANS_LEVEL_IDS)) {
-    const sel = doc.getElementById('id' + t);
-    if (sel) state.trans[t] = sel.selectedIndex;
+    if (raw.trans && raw.trans[t] != null) state.trans[t] = clampSkillIndex(raw.trans[t]);
   }
   return state;
 }
 
-function restoreSkillState(doc, state) {
-  if (!doc || !state) return;
-  const win = doc.defaultView;
-  const setIdx = (id, idx) => {
-    const el = doc.getElementById(id);
-    if (el) el.selectedIndex = Number(idx) || 0;
-  };
-  setIdx('Rebirth',  state.rebirth);
-  setIdx('MQ1Skill', state.mq1);
-  setIdx('MQ2Skill', state.mq2);
-  const a21 = doc.querySelector('input[name="a21"]');
-  if (a21) a21.value = state.questBonus || '';
-  for (let n = 1; n <= 68; n++) setIdx('id' + n, state.ids?.[n] ?? 0);
-  
-  for (const t of SKILL_TRANS_TYPE_IDS) {
-    setIdx('id' + t, state.trans?.[t] ?? 0);
-    try { if (typeof win.CalcTransType === 'function') win.CalcTransType(t); } catch (e) {}
+function normalizeSkillStatesMap(raw) {
+  const out = {};
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return out;
+  for (const [file, state] of Object.entries(raw)) {
+    if (SKILL_VALID_FILES.has(file)) out[file] = normalizeSkillState(state);
   }
-  for (const t of SKILL_TRANS_LEVEL_IDS) {
-    setIdx('id' + t, state.trans?.[t] ?? 0);
-    try { if (typeof win.CalcTransPoint === 'function') win.CalcTransPoint(t); } catch (e) {}
-  }
-  try { if (typeof win.SkillRefresh === 'function') win.SkillRefresh(); } catch (e) {}
+  return out;
 }
 
-function attachSkillChangeListener(doc, file) {
-  if (!doc) return;
-  const handler = () => {
-    skillStates[file] = captureSkillState(doc);
-    scheduleAutosave();
-  };
-  doc.addEventListener('change', handler);
-  doc.addEventListener('input',  handler);
-  doc.addEventListener('click',  handler);
+function postSkillRestore(frame, file, state) {
+  if (!frame?.contentWindow || !SKILL_VALID_FILES.has(file)) return;
+  frame.contentWindow.postMessage({
+    channel: SKILL_BRIDGE_CHANNEL,
+    type: 'restore',
+    file,
+    state: normalizeSkillState(state),
+  }, '*');
 }
+
+function handleSkillFrameMessage(event) {
+  const frame = $('skill-frame');
+  if (!frame?.contentWindow || event.source !== frame.contentWindow) return;
+  const msg = event.data;
+  if (!msg || msg.channel !== SKILL_BRIDGE_CHANNEL || !SKILL_VALID_FILES.has(msg.file)) return;
+  if (msg.file !== skillFrameLoaded && msg.file !== skillFrameExpected) return;
+  if (msg.type === 'ready') {
+    if (skillStates[msg.file]) postSkillRestore(frame, msg.file, skillStates[msg.file]);
+    else {
+      skillStates[msg.file] = normalizeSkillState(msg.state);
+      scheduleAutosave();
+    }
+    return;
+  }
+  if (msg.type === 'state') {
+    skillStates[msg.file] = normalizeSkillState(msg.state);
+    scheduleAutosave();
+  }
+}
+window.addEventListener('message', handleSkillFrameMessage);
 
 async function refreshSkillFrame() {
   const frame = $('skill-frame');
@@ -11252,15 +11255,8 @@ async function refreshSkillFrame() {
   if (m.file === skillFrameLoaded) return;
   if (skillFramePending) return;
 
-  if (skillFrameLoaded) {
-    const prev = frame.contentDocument;
-    if (prev) {
-      const captured = captureSkillState(prev);
-      if (captured) skillStates[skillFrameLoaded] = captured;
-    }
-  }
-
   const fullUrl = `${SKILL_SIM_BASE}skill_${m.file}2023.html${m.isBack ? '?' : ''}`;
+  skillFrameExpected = m.file;
   skillFramePending = (async () => {
     try {
       const srcdoc = await buildSkillSrcdoc(m);
@@ -11272,8 +11268,7 @@ async function refreshSkillFrame() {
       });
       skillFrameLoaded = m.file;
       const saved = skillStates[m.file];
-      if (saved) restoreSkillState(frame.contentDocument, saved);
-      attachSkillChangeListener(frame.contentDocument, m.file);
+      if (saved) postSkillRestore(frame, m.file, saved);
     } catch (err) {
       console.warn('skill simulator fetch failed, fallback to raw iframe src:', err);
       frame.removeAttribute('srcdoc');
@@ -11308,6 +11303,85 @@ async function buildSkillSrcdoc(m) {
   })();
 <\/script>` : '';
 
+  const skillBridge = `
+<script>
+  (function () {
+    var CHANNEL = ${JSON.stringify(SKILL_BRIDGE_CHANNEL)};
+    var FILE = ${JSON.stringify(m.file)};
+    var TRANS_TYPES = ${JSON.stringify(SKILL_TRANS_TYPE_IDS)};
+    var TRANS_LEVELS = ${JSON.stringify(SKILL_TRANS_LEVEL_IDS)};
+    var sendTimer = null;
+
+    function selectedIndex(id) {
+      var el = document.getElementById(id);
+      return el ? el.selectedIndex : 0;
+    }
+    function capture() {
+      var state = {
+        rebirth: selectedIndex('Rebirth'),
+        mq1: selectedIndex('MQ1Skill'),
+        mq2: selectedIndex('MQ2Skill'),
+        questBonus: '', ids: {}, trans: {}
+      };
+      var a21 = document.querySelector('input[name="a21"]');
+      if (a21) state.questBonus = String(a21.value || '').slice(0, 64);
+      for (var n = 1; n <= 68; n++) {
+        var skill = document.getElementById('id' + n);
+        if (skill) state.ids[n] = skill.selectedIndex;
+      }
+      TRANS_TYPES.concat(TRANS_LEVELS).forEach(function (id) {
+        var el = document.getElementById('id' + id);
+        if (el) state.trans[id] = el.selectedIndex;
+      });
+      return state;
+    }
+    function setIndex(id, value) {
+      var el = document.getElementById(id);
+      if (!el || !el.options || !el.options.length) return;
+      var index = Math.max(0, Math.min(el.options.length - 1, Math.floor(Number(value) || 0)));
+      el.selectedIndex = index;
+    }
+    function restore(state) {
+      state = state && typeof state === 'object' ? state : {};
+      setIndex('Rebirth', state.rebirth);
+      setIndex('MQ1Skill', state.mq1);
+      setIndex('MQ2Skill', state.mq2);
+      var a21 = document.querySelector('input[name="a21"]');
+      if (a21) a21.value = String(state.questBonus || '').slice(0, 64);
+      for (var n = 1; n <= 68; n++) setIndex('id' + n, state.ids && state.ids[n]);
+      TRANS_TYPES.forEach(function (id) {
+        setIndex('id' + id, state.trans && state.trans[id]);
+        try { if (typeof CalcTransType === 'function') CalcTransType(id); } catch (e) {}
+      });
+      TRANS_LEVELS.forEach(function (id) {
+        setIndex('id' + id, state.trans && state.trans[id]);
+        try { if (typeof CalcTransPoint === 'function') CalcTransPoint(id); } catch (e) {}
+      });
+      try { if (typeof SkillRefresh === 'function') SkillRefresh(); } catch (e) {}
+    }
+    function send(type, state) {
+      parent.postMessage({ channel: CHANNEL, type: type, file: FILE, state: state }, '*');
+    }
+    function sendStateSoon() {
+      clearTimeout(sendTimer);
+      sendTimer = setTimeout(function () { send('state', capture()); }, 0);
+    }
+    window.addEventListener('message', function (event) {
+      if (event.source !== parent) return;
+      var msg = event.data;
+      if (!msg || msg.channel !== CHANNEL || msg.type !== 'restore' || msg.file !== FILE) return;
+      restore(msg.state);
+      sendStateSoon();
+    });
+    document.addEventListener('change', sendStateSoon);
+    document.addEventListener('input', sendStateSoon);
+    document.addEventListener('click', sendStateSoon);
+    function ready() { send('ready', capture()); }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready, { once: true });
+    else ready();
+  })();
+<\/script>`;
+
   return `<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -11330,7 +11404,7 @@ async function buildSkillSrcdoc(m) {
 </style>
 </head>
 <body>
-${mb.outerHTML}${backFix}
+${mb.outerHTML}${backFix}${skillBridge}
 </body>
 </html>`;
 }
@@ -11345,7 +11419,7 @@ const CREATURE_IMG_BASE   = 'https://sokomin.github.io/information/creature2_fil
 const CREATURE_INVENTORY_MAX = 54;
 const CREATURE_INV_EMPTY_ICON = 'https://sokomin.github.io/calculation/image//interface2_0767-1.png';
 const CREATURE_INV_MISSING_ICON = 'https://sokomin.github.io/calculation/image//interface2_0767-1.png';
-const CREATURE_OPLIST_URL = 'https://sokomin.github.io/update/js/option-list2022.js';
+const CREATURE_OPLIST_URL = 'lib/data/creature_option_texts.json';
 const CREATURE_STAT_URL   = 'lib/data/creature_stats.json';
 const CREATURE_GOLDEN_MEDAL_ICON = 'https://sokomin.github.io//item/design/image/item/iconItem_2832.png';
 
@@ -11683,12 +11757,14 @@ function parseCreatureCsv(text) {
 
 async function loadCreatureOptionTexts() {
   const res = await fetch(CREATURE_OPLIST_URL);
-  if (!res.ok) throw new Error(`option-list2022.js HTTP ${res.status}`);
-  const src = await res.text();
-  const tail = '\n;return { option_text: typeof option_text !== "undefined" ? option_text : {},' +
-               ' base_option_text: typeof base_option_text !== "undefined" ? base_option_text : {} };';
-  const fn = new Function(src + tail);
-  return fn();
+  if (!res.ok) throw new Error(`creature_option_texts.json HTTP ${res.status}`);
+  const data = await res.json();
+  if (!data || typeof data !== 'object' || Array.isArray(data)
+      || !data.option_text || typeof data.option_text !== 'object'
+      || !data.base_option_text || typeof data.base_option_text !== 'object') {
+    throw new Error('creature_option_texts.json invalid structure');
+  }
+  return { option_text: data.option_text, base_option_text: data.base_option_text };
 }
 
 async function loadCreatureDataOnce() {
@@ -13399,25 +13475,33 @@ function bindSessionEvents() {
     else setSessionStatus('localStorage に保存データ無し');
   });
   $('btn-clear-session').addEventListener('click', async () => {
-    if (!confirm('現在のキャラ設定 + インベントリ全消去、localStorage も削除します。本当によろしいですか?')) return;
-    removeFromLocalStorage(SESSION_KEY);
-    for (const inv of [...inventory.items()]) inventory.remove(inv.slotIndex);
-    selectedInv = null;
-    invalidateFeasibleCache();
-    stoneState = newStones();
-    renderStoneCards();
+    if (!confirm('職業を保持したまま Lv・基礎ステータスを初期化し、インベントリ等の全設定と localStorage を削除します。本当によろしいですか?')) return;
+    clearTimeout(autosaveTimer);
+    autosaveTimer = null;
+    suppressAutosave = true;
+    try {
+      removeFromLocalStorage(SESSION_KEY);
+      $('ch-lv').value = '1250';
+      const resetFloor = computeBaseStatFloor(readSelectedJobId(), 1250, loader);
+      writeBaseStatInputs(resetFloor);
+      currentStatFloor = resetFloor;
+      for (const inv of [...inventory.items()]) inventory.remove(inv.slotIndex);
+      selectedInv = null;
+      invalidateFeasibleCache();
+      stoneState = newStones();
+      renderStoneCards();
     
-    skillStates = {};
-    if (skillFrameLoaded) {
-      const reload = skillFrameLoaded;
-      skillFrameLoaded = '';
-      if (isSkillTabActive()) await refreshSkillFrame();
-      else {
+      skillStates = {};
+      skillFrameExpected = '';
+      if (skillFrameLoaded) {
+        skillFrameLoaded = '';
+        if (isSkillTabActive()) await refreshSkillFrame();
+        else {
         
-        const frame = $('skill-frame');
-        if (frame) { frame.removeAttribute('srcdoc'); frame.removeAttribute('src'); }
+          const frame = $('skill-frame');
+          if (frame) { frame.removeAttribute('srcdoc'); frame.removeAttribute('src'); }
+        }
       }
-    }
     
     creatureState = buildCreatureStateFromSnapshot(null);
     creatureActiveSlot = 0;
@@ -13467,9 +13551,15 @@ function bindSessionEvents() {
       const detail = $('mapmon-detail');
       if (detail) detail.innerHTML = '<div class="mapmon-empty">モンスターを選択してください</div>';
     }
-    await recalcAll();
-    await refreshItemList();
-    setSessionStatus('全消去完了');
+      await recalcAll();
+      await refreshItemList();
+      setSessionStatus('全消去完了');
+    } finally {
+      clearTimeout(autosaveTimer);
+      autosaveTimer = null;
+      removeFromLocalStorage(SESSION_KEY);
+      suppressAutosave = false;
+    }
   });
 }
 

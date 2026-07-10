@@ -1,11 +1,7 @@
-
-
-const BASE_MAP_DB   = 'https://sokomin.github.io/map/database/';
 const BASE_REPO_DB  = 'https://sokomin.github.io/sokomin_repository/db/';
 
-const URL_NAME_LIST       = BASE_MAP_DB  + 'mapdata.js';
-
-const URL_MAP_SUB_INFO    = BASE_MAP_DB  + 'mapdata_sub.js';
+const URL_NAME_LIST       = './lib/data/map_name_list.json';
+const URL_MAP_SUB_INFO    = './lib/data/map_sub_info.json';
 const URL_MAP_MOB_TABLE   = BASE_REPO_DB + 'map2_2023.csv';
 const URL_MONSTER_TABLE   = BASE_REPO_DB + 'monster.csv';
 
@@ -22,14 +18,14 @@ let _mobById     = new Map();
 export async function loadMapMonsterIndex() {
   if (_initPromise) return _initPromise;
   _initPromise = (async () => {
-    const [nameListText, subInfoText, mapMobCsv, monsterCsv] = await Promise.all([
-      fetchText(URL_NAME_LIST),
-      fetchText(URL_MAP_SUB_INFO),
+    const [nameList, subInfo, mapMobCsv, monsterCsv] = await Promise.all([
+      fetchJson(URL_NAME_LIST),
+      fetchJson(URL_MAP_SUB_INFO),
       fetchText(URL_MAP_MOB_TABLE),
       fetchText(URL_MONSTER_TABLE),
     ]);
-    _nameList   = evalAssignedGlobal(nameListText, 'NameList');
-    _mapSubInfo = evalAssignedGlobal(subInfoText, 'MapSubInfoList');
+    _nameList   = nameList;
+    _mapSubInfo = subInfo;
     _mapMobRows = parseCsv(mapMobCsv);
     const monsterRows = parseCsv(monsterCsv);
     for (const row of monsterRows) {
@@ -155,10 +151,14 @@ async function fetchText(url) {
   return res.text();
 }
 
-function evalAssignedGlobal(scriptText, varName) {
-  const fn = new Function(scriptText + ';\nreturn typeof ' + varName + ' !== "undefined" ? ' + varName + ' : null;');
-  const result = fn();
-  return result || {};
+async function fetchJson(url) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('fetch failed: ' + url + ' status=' + res.status);
+  const data = await res.json();
+  if (!data || typeof data !== 'object' || Array.isArray(data)) {
+    throw new Error('invalid JSON object: ' + url);
+  }
+  return data;
 }
 
 function parseCsv(text) {
