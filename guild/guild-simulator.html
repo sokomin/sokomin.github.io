@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://sokomin.github.io/material.indigo-pink.min.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+  <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-133658114-1');
+  </script>
+  <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+  <script>
+    function enter() {
+      if (window.event.keyCode == 13) {
+        var last_keyword = $('#search-field').val();
+        window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+      }
+    }
+  </script>
+  <title>ギルドスキル・石像・旗シミュレーター 赤石の民衆</title>
+  <meta name="description" content="RED STONEのギルドスキル、ギルド石像、ギルド旗を設定し、使用GSPやキャラクターへの反映効果を確認できるシミュレーターです。" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <meta name="keywords" content="RED STONE,レッドストーン,赤石の民衆,ギルドスキル,ギルド石像,ギルド旗,GSP,シミュレーター" />
+  <style>
+    .gs-wrap {
+      width: min(1180px, calc(100% - 24px));
+      margin: 0 auto;
+      text-align: left;
+    }
+    .gs-panel {
+      margin: 0 0 18px;
+      padding: 14px;
+      border: 1px solid #c9c1b4;
+      border-radius: 5px;
+      background: #faf9f6;
+      box-sizing: border-box;
+    }
+    .gs-panel h2,
+    .gs-panel h3 {
+      margin: 0 0 10px;
+      color: #4f4638;
+    }
+    .gs-panel h2 {
+      padding-bottom: 5px;
+      border-bottom: 2px solid #9d896c;
+      font-size: 20px;
+    }
+    .gs-panel h3 { font-size: 16px; }
+    .gs-controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      align-items: end;
+    }
+    .gs-controls label {
+      display: grid;
+      gap: 3px;
+      color: #514737;
+      font-size: 13px;
+      font-weight: bold;
+    }
+    .gs-controls input,
+    .gs-controls select,
+    .gs-select {
+      width: 100%;
+      min-height: 32px;
+      padding: 4px 6px;
+      border: 1px solid #9d896c;
+      border-radius: 3px;
+      background: #fff;
+      box-sizing: border-box;
+      color: #222;
+    }
+    .gs-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 12px;
+    }
+    .gs-button {
+      padding: 7px 14px;
+      border: 1px solid #6f604b;
+      border-radius: 3px;
+      background: #9d896c;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .gs-button:hover { background: #88755b; }
+    .gs-button:disabled { border-color: #aaa; background: #ccc; cursor: default; }
+    .gs-button.gs-secondary { background: #777; }
+    .gs-gsp {
+      margin-top: 12px;
+      padding: 9px 12px;
+      border-left: 5px solid #9d896c;
+      background: #fff;
+      font-size: 14px;
+    }
+    .gs-gsp strong { color: #b54c22; font-size: 19px; }
+    .gs-note {
+      margin: 8px 0 0;
+      color: #665e52;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+    .gs-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      align-items: start;
+    }
+    .gs-statue-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .gs-statue-card {
+      padding: 10px;
+      border: 1px solid #d2cbc0;
+      border-radius: 4px;
+      background: #fff;
+    }
+    .gs-statue-status {
+      float: right;
+      color: #9a5f34;
+      font-size: 12px;
+      font-weight: normal;
+    }
+    .gs-statue-status.is-active { color: #138342; font-weight: bold; }
+    .gs-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .gs-wrap table#table10 {
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      table-layout: auto;
+    }
+    .gs-wrap table#table10 th,
+    .gs-wrap table#table10 td {
+      padding: 6px;
+      vertical-align: middle;
+    }
+    .gs-wrap table#table10 td { background: #fff; }
+    .gs-skill-name { min-width: 210px; text-align: left !important; }
+    .gs-effect {
+      margin-top: 2px;
+      color: #6f675c;
+      font-size: 11px;
+      font-weight: normal;
+    }
+    .gs-requirement {
+      margin-top: 2px;
+      color: #a04e2e;
+      font-size: 11px;
+      font-weight: normal;
+    }
+    .gs-level-control { min-width: 146px; white-space: nowrap; }
+    .gs-level-control button {
+      width: 30px;
+      height: 28px;
+      border: 1px solid #75644e;
+      border-radius: 3px;
+      background: #9d896c;
+      color: #fff;
+      cursor: pointer;
+    }
+    .gs-level-control button:disabled { border-color: #aaa; background: #ccc; cursor: default; }
+    .gs-level-control span { display: inline-block; min-width: 76px; text-align: center; }
+    .gs-summary-empty {
+      padding: 14px;
+      border: 1px dashed #aaa;
+      background: #fff;
+      color: #777;
+      text-align: center;
+    }
+    .gs-summary-value { color: #b54c22; font-weight: bold; }
+    .gs-source-note {
+      margin: 10px 0 0;
+      padding: 8px 10px;
+      border: 1px solid #d7cba9;
+      background: #fff8dc;
+      font-size: 12px;
+    }
+    @media (max-width: 768px) {
+      .main-background { padding-left: 8px; padding-right: 8px; box-sizing: border-box; }
+      .main-background img { max-width: 100%; height: auto; }
+      .main-background table { display: table; }
+      .main-background h1,
+      .main-background h2,
+      .main-background h3,
+      .main-background h4,
+      .main-background h5 { overflow-wrap: anywhere; word-break: break-word; max-width: 100%; }
+      .main-background h1 { font-size: 22px; line-height: 1.3; }
+      .gs-grid,
+      .gs-statue-grid { grid-template-columns: 1fr; }
+      .gs-wrap { width: 100%; }
+      .gs-panel { padding: 10px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <a name="container"></a>
+    <div class="android-content mdl-layout__content">
+      <!--main-->
+      <a href="https://sokomin.github.io/index.html">トップ</a> &gt;&gt;
+      <a href="https://sokomin.github.io/guild/guild.html">ギルド</a> &gt;&gt; ギルドシミュレーター<br>
+      <div class="main-background mdl-typography--text-center korea-content">
+        <br>
+        <h1>ギルドスキル・石像・旗シミュレーター</h1>
+        ギルドLv・職位・スキル振り、石像の完成Lv、ギルド旗の効果をまとめて設定できます。<br>
+        使用GSPと、選択中のキャラクターに反映される効果を確認できます。<br>
+        <br>
+
+        <div class="gs-wrap" id="guild-simulator">
+          <section class="gs-panel" id="gs-settings"></section>
+          <section class="gs-panel" id="gs-summary"></section>
+          <section class="gs-panel" id="gs-skills"></section>
+          <section class="gs-panel" id="gs-flags"></section>
+          <section class="gs-panel" id="gs-statues"></section>
+        </div>
+
+        <a name="related"></a>
+        <font color="#e95388"><h4>関連</h4></font>
+        <h5>
+          <a href="https://sokomin.github.io/guild/guild-flag.html">ギルド旗＆ギルドウィークリークエスト</a><br>
+          <br>
+          <a href="https://sokomin.github.io/guild/guild.html">ギルド情報一覧</a><br>
+        </h5>
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <footer class="android-footer mdl-mega-footer">
+          <font color="red">
+            当サイトで利用している画像及びデータは、L&amp;K Co., Ltd.に帰属します。<br>
+            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+          </font>
+          © L&amp;K Co., Ltd. All Rights Reserved.<br>
+        </footer>
+      </div>
+      <script src="https://sokomin.github.io/material.min.js"></script>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      const POSITIONS = [
+        { id: 'master', label: 'ギルドマスター', statFactor: 18, hpFactor: 100, cpFactor: 80, rateFactor: 2.0, skillDivisor: 1 },
+        { id: 'sub', label: '副ギルドマスター', statFactor: 15, hpFactor: 80, cpFactor: 60, rateFactor: 1.5, skillDivisor: 2 },
+        { id: 'regular', label: '一般・元老', statFactor: 12, hpFactor: 60, cpFactor: 40, rateFactor: 1.0, skillDivisor: 3 },
+        { id: 'new', label: '新入', statFactor: 10, hpFactor: 50, cpFactor: 30, rateFactor: 0.5, skillDivisor: 5 },
+      ];
+
+      const JOBS = [
+        [0, '剣士'], [1, '戦士'], [2, 'アーチャー'], [3, 'ランサー'], [4, 'ウィザード'], [5, 'ウルフマン'],
+        [6, 'ビショップ'], [7, '追放天使'], [8, 'ビーストテイマー'], [9, 'サマナー'], [10, 'シーフ'], [11, '武道家'],
+        [12, 'プリンセス'], [13, 'リトルウィッチ'], [14, 'ネクロマンサー'], [15, '悪魔'], [16, '霊術師'], [17, '闘士'],
+        [18, '光奏師'], [24, '獣人'], [19, 'メイド'], [20, '黒魔術師'], [21, 'マスケッティア'], [22, 'アルケミスト'],
+        [23, 'キャプテン'], [25, 'キャノニア'],
+      ];
+
+      const STAT_SKILLS = [
+        ['str', '力強化', '力'], ['agi', '敏捷強化', '敏捷'], ['con', '健康増加', '健康'],
+        ['int', '知識増加', '知識'], ['wiz', '知恵増加', '知恵'], ['chs', 'カリスマ増加', 'カリスマ'], ['luc', '運増加', '運'],
+      ].map(([stat, name, label]) => ({ key: `stat-${stat}`, name, max: 3, effect: `${label} +[Lv × 職位補正]`, kind: 'ranked', stat, label }));
+
+      const JOB_PREREQUISITES = {
+        0: ['attack-training', 'stat-str'], 1: ['bodybuilding', 'stat-str'], 4: ['mental', 'stat-int'], 5: ['warrior-eye', 'stat-con'],
+        6: ['bodybuilding', 'stat-wiz'], 7: ['mental', 'stat-chs'], 10: ['attack-training', 'stat-luc'], 11: ['attack-training', 'stat-luc'],
+        2: ['attack-training', 'stat-agi'], 3: ['warrior-eye', 'stat-agi'], 9: ['mental', 'stat-wiz'], 8: ['warrior-eye', 'stat-con'],
+        12: ['attack-training', 'stat-chs'], 13: ['mental', 'stat-luc'], 14: ['warrior-eye', 'stat-int'], 15: ['bodybuilding', 'stat-luc'],
+        16: ['mental', 'stat-chs'], 17: ['mental', 'stat-con'], 18: ['stat-str', 'stat-int'], 19: ['stat-str', 'stat-luc'],
+        24: ['stat-str', 'stat-int'], 20: ['stat-chs', 'stat-int'], 21: ['attack-training', 'warrior-eye'], 22: ['mental', 'stat-int'],
+        23: ['stat-luc', 'stat-con'], 25: ['mental', 'bodybuilding'],
+      };
+
+      const JOB_SKILLS = [
+        ['騎士道', 0], ['戦術', 1], ['ウィザードリィ', 4], ['ライカントロフィー', 5], ['狂神', 6], ['天使階級学', 7],
+        ['七つ道具', 10], ['気功術', 11], ['偵察術', 2], ['傭兵術', 3], ['精神学', 9], ['調練学', 8],
+        ['宮廷礼法', 12], ['天文学', 13], ['降神術', 14], ['悪魔学', 15], ['心霊術', 16], ['闘魂学', 17],
+        ['分光学', 18], ['掃除技術', 19], ['双剣術', 24], ['闇魔法学', 20], ['射撃術', 21], ['ポーション調合術', 22],
+        ['航海術', 23], ['砲撃術', 25],
+      ].map(([name, jobId]) => ({ key: `job-${jobId}`, name, max: 3, effect: '対象職業のスキルLv +[Lv ÷ 職位係数]', kind: 'job', jobId, requires: JOB_PREREQUISITES[jobId] }));
+
+      const GUILD_SKILLS = [
+        { key: 'advertising', name: '広告学', max: 19, effect: '最大ギルドメンバー数 +[Lv × 10]', kind: 'display', displayLabel: '最大ギルドメンバー数', displayFactor: 10, unit: '人' },
+        { key: 'management', name: '経営学', max: 9, effect: '最大副ギルドマスター数 +Lv', kind: 'display', displayLabel: '最大副ギルドマスター数', displayFactor: 1, unit: '人' },
+        { key: 'politics', name: '政治学', max: 6, effect: '最大ギルド委員数 +[Lv × 5]', kind: 'display', displayLabel: '最大ギルド委員数', displayFactor: 5, unit: '人' },
+        { key: 'real-estate', name: '不動産', max: 6, effect: '古都以外の縁故地数 +Lv', kind: 'display', displayLabel: '古都以外の縁故地数', displayFactor: 1, unit: 'か所' },
+        { key: 'warehouse', name: '倉庫業', max: 10, effect: 'ギルド倉庫 +[Lv × 20]', kind: 'display', displayLabel: 'ギルド倉庫', displayFactor: 20, unit: '' },
+        { key: 'bodybuilding', name: 'ボディービルディング', max: 5, effect: 'HP +[Lv × 職位補正]', kind: 'hp' },
+        { key: 'mental', name: '精神修養', max: 5, effect: 'CP +[Lv × 職位補正]', kind: 'cp' },
+        { key: 'attack-training', name: '攻撃基礎修練', max: 5, effect: '命中率 +[Lv × 職位補正]%', kind: 'rate', stat: 'hit', label: '命中率' },
+        { key: 'warrior-eye', name: '戦士の目修練', max: 5, effect: '回避率 +[Lv × 職位補正]%', kind: 'rate', stat: 'eva', label: '回避率' },
+        ...[0, 1, 2, 3, 4, 5].map((rebirth) => ({
+          key: `biology-${rebirth}`, name: rebirth === 0 ? '生体学 - 序文' : `生体学 - ${rebirth}章`, max: 5,
+          effect: `転生${rebirth}回時の獲得経験値 +[Lv × ${5 + rebirth}]%`, kind: 'biology', rebirth,
+        })),
+        ...STAT_SKILLS,
+        { key: 'meditation', name: '瞑想術', max: 5, effect: 'フィールドの能力値低下を +[0.5 + Lv × 0.5]%回復', kind: 'field-stat' },
+        { key: 'thought', name: '思想教育', max: 5, effect: 'フィールドの最大属性抵抗低下を +[0.5 + Lv × 0.5]%回復', kind: 'field-attr' },
+        ...JOB_SKILLS,
+      ];
+
+      const STATUES = [
+        { id: 'nar', name: 'ナルの神像', parts: [
+          ['頭部', '火ダメージ吸収 +Lv%', '火ダメージ吸収', 'linear', 1, '%'],
+          ['胴体', '火属性抵抗 +Lv%', '火属性抵抗', 'linear', 1, '%'],
+          ['翼', '防御力 +Lv%', '防御力', 'linear', 1, '%'],
+          ['尻尾', 'ギルドペット・オビティアン数増加', null],
+          ['台座', '決定打抵抗 +[Lv × 2]%', '決定打抵抗', 'linear', 2, '%'],
+        ] },
+        { id: 'nene', name: 'ネーンの杯', parts: [
+          ['蓋', '水ダメージ吸収 +Lv%', '水ダメージ吸収', 'linear', 1, '%'],
+          ['器', '水属性抵抗 +Lv%', '水属性抵抗', 'linear', 1, '%'],
+          ['受け皿', '攻撃速度 +[Lv × 2]%', '攻撃速度', 'linear', 2, '%'],
+          ['取っ手', 'ギルドペット・クリスタルウォーター数増加', null],
+          ['盆', '呪い抵抗 +[Lv × 2]%', '呪い抵抗', 'linear', 2, '%'],
+        ] },
+        { id: 'sur', name: 'スルの杖', parts: [
+          ['グリップ', '風ダメージ吸収 +Lv%', '風ダメージ吸収', 'linear', 1, '%'],
+          ['シャフト', '風属性抵抗 +Lv%', '風属性抵抗', 'linear', 1, '%'],
+          ['杖先', '移動速度 +[Lv × 4]%', '移動速度', 'linear', 4, '%'],
+          ['ストラップ', 'ギルドペット・アストロボウ数増加', null],
+          ['ヘッド飾り', '状態異常抵抗 +[Lv × 2]%', '状態異常抵抗', 'linear', 2, '%'],
+        ] },
+        { id: 'kemen', name: 'ケーメンの冠', parts: [
+          ['中央の宝石', '大地ダメージ吸収 +Lv%', '大地ダメージ吸収', 'linear', 1, '%'],
+          ['本体', '大地属性抵抗 +Lv%', '大地属性抵抗', 'linear', 1, '%'],
+          ['枠飾り', '物理・魔法ダメージ増加 +Lv%', ['物理ダメージ', '魔法ダメージ'], 'linear', 1, '%'],
+          ['冠の装飾', 'ギルドペット・ダッシュブレード数増加', null],
+          ['冠の台', '能力値低下抵抗 +[Lv × 2]%', '能力値低下抵抗', 'linear', 2, '%'],
+        ] },
+        { id: 'lark', name: 'ラークの刀', parts: [
+          ['柄頭', '光ダメージ吸収 +Lv%', '光ダメージ吸収', 'linear', 1, '%'],
+          ['刀身', '光属性抵抗 +Lv%', '光属性抵抗', 'linear', 1, '%'],
+          ['柄', '命中率 +[0 / 0 / 1 / 1 / 2]%', '命中率', 'table', [0, 0, 1, 1, 2], '%'],
+          ['刀紐', 'ギルドガーディアン数増加', null],
+          ['鞘', 'フィールド魔法抵抗力ペナルティー減少', 'フィールド魔法抵抗力ペナルティー減少', 'linear', 5, '%'],
+        ] },
+        { id: 'siroio', name: 'シロイオのホール', parts: [
+          ['先端', '闇ダメージ吸収 +Lv%', '闇ダメージ吸収', 'linear', 1, '%'],
+          ['本体', '闇属性抵抗 +Lv%', '闇属性抵抗', 'linear', 1, '%'],
+          ['先端の宝石', '回避率 +[0 / 1 / 2 / 3 / 4]%', '回避率', 'table', [0, 1, 2, 3, 4], '%'],
+          ['後端', 'ギルドホール販売アイテム価格割引', null],
+          ['紐', '死亡ペナルティー減少', null],
+        ] },
+      ];
+
+      const FLAG_EFFECTS = [
+        { group: '支援バフ', key: 'experience', name: '獲得経験値', values: [5, 10, 15, 20, 25], unit: '%' },
+        { group: '支援バフ', key: 'experience-2000', name: 'レベル2000以降の獲得経験値', values: [5, 10, 15, 20, 25], unit: '%' },
+        { group: '支援バフ', key: 'item-drop', name: 'アイテムドロップ率', values: [5, 10, 15, 20, 25], unit: '%' },
+        { group: '支援バフ', key: 'unique-drop', name: 'ユニークアイテムドロップ率', values: [20, 40, 60, 80, 100], unit: '%' },
+        { group: '支援バフ', key: 'dx-unique-drop', name: 'DXユニークアイテムドロップ率', values: [10, 20, 30, 40, 50], unit: '%' },
+        { group: '支援バフ', key: 'move-speed', name: '移動速度', values: [95, 110, 125, 140, 155], unit: '%' },
+        { group: '攻撃バフ', key: 'physical-damage', name: '物理ダメージ', values: [30, 35, 40, 45, 50], unit: '%' },
+        { group: '攻撃バフ', key: 'magic-damage', name: '魔法ダメージ', values: [25, 29, 33, 37, 41], unit: '%' },
+        { group: '攻撃バフ', key: 'attack-speed', name: '攻撃速度', values: [35, 40, 45, 50, 55], unit: '%' },
+        { group: '攻撃バフ', key: 'all-attr-weaken', name: 'ターゲットの全属性抵抗弱化', values: [20, 23, 26, 29, 32], unit: '%' },
+        { group: '攻撃バフ', key: 'extra-fire-damage', name: '追加火属性ダメージ', values: [700, 800, 900, 1000, 1100], unit: '' },
+        { group: '防御バフ', key: 'defense', name: '防御力', values: [240, 280, 320, 360, 400], unit: '%' },
+        { group: '防御バフ', key: 'hp-recovery', name: 'HP自動回復速度（毎秒）', values: [21, 25, 29, 33, 37], unit: '' },
+        { group: '防御バフ', key: 'evasion', name: '回避率', values: [13, 15, 17, 19, 21], unit: '%' },
+        { group: '防御バフ', key: 'max-hp', name: '最大HP', values: [120, 140, 160, 180, 200], unit: '%' },
+        { group: '防御バフ', key: 'magic-resist', name: '魔法抵抗', values: [5, 10, 15, 20, 25], unit: '%' },
+        { group: 'アイテム補給', key: 'item-supply', name: 'ギルド協力BOX', values: [1, 2, 3], unit: '段階' },
+      ];
+
+      const state = {
+        guildLv: 200,
+        heavenlyBonus: 0,
+        position: 'new',
+        job: 0,
+        rebirth: 0,
+        skills: {},
+        statues: {},
+        flag: {},
+      };
+
+      const $ = (id) => document.getElementById(id);
+      const positionFor = () => POSITIONS.find((position) => position.id === state.position) || POSITIONS[3];
+      const skillByKey = (key) => GUILD_SKILLS.find((skill) => skill.key === key) || null;
+      const guildPointCap = () => Math.max(1, Math.min(200, Number(state.guildLv) || 1)) + Math.max(0, Math.min(40, Number(state.heavenlyBonus) || 0));
+      const usedPoints = () => GUILD_SKILLS.reduce((total, skill) => total + (Number(state.skills[skill.key]) || 0), 0);
+      const maxSkillPoints = () => GUILD_SKILLS.reduce((total, skill) => total + skill.max, 0);
+      const prerequisitesMet = (skill) => !skill.requires || skill.requires.every((key) => (Number(state.skills[key]) || 0) >= 1);
+      const statueLevel = (statueId, partIndex) => Number(state.statues[statueId]?.[partIndex]) || 0;
+      const statueActive = (statue) => statue.parts.filter((_, index) => statueLevel(statue.id, index) > 0).length >= 3;
+
+      function pruneSkills() {
+        let changed = true;
+        while (changed) {
+          changed = false;
+          for (const skill of GUILD_SKILLS) {
+            if ((Number(state.skills[skill.key]) || 0) > 0 && !prerequisitesMet(skill)) {
+              delete state.skills[skill.key];
+              changed = true;
+            }
+          }
+        }
+        let excess = usedPoints() - guildPointCap();
+        if (excess <= 0) return;
+        for (const skill of [...GUILD_SKILLS].reverse()) {
+          if (excess <= 0) break;
+          const current = Number(state.skills[skill.key]) || 0;
+          const removed = Math.min(current, excess);
+          const next = current - removed;
+          if (next) state.skills[skill.key] = next;
+          else delete state.skills[skill.key];
+          excess -= removed;
+        }
+      }
+
+      function addResult(results, key, label, amount, unit, source) {
+        if (!amount) return;
+        if (!results[key]) results[key] = { label, amount: 0, unit, sources: [] };
+        results[key].amount += amount;
+        if (source) results[key].sources.push(source);
+      }
+
+      function buildResults() {
+        const results = {};
+        const position = positionFor();
+        for (const skill of GUILD_SKILLS) {
+          const level = Number(state.skills[skill.key]) || 0;
+          if (!level) continue;
+          if (skill.kind === 'display') addResult(results, `${skill.displayLabel}|${skill.unit}`, skill.displayLabel, level * skill.displayFactor, skill.unit, skill.name);
+          if (skill.kind === 'ranked') addResult(results, `${skill.label}|`, skill.label, level * position.statFactor, '', skill.name);
+          if (skill.kind === 'hp') addResult(results, 'HP|', 'HP', level * position.hpFactor, '', skill.name);
+          if (skill.kind === 'cp') addResult(results, 'CP|', 'CP', level * position.cpFactor, '', skill.name);
+          if (skill.kind === 'rate') addResult(results, `${skill.label}|%`, skill.label, level * position.rateFactor, '%', skill.name);
+          if (skill.kind === 'biology' && state.rebirth === skill.rebirth) addResult(results, `転生${skill.rebirth}回時の獲得経験値|%`, `転生${skill.rebirth}回時の獲得経験値`, level * (5 + skill.rebirth), '%', skill.name);
+          if (skill.kind === 'field-stat') addResult(results, 'フィールド能力値低下の回復|%', 'フィールド能力値低下の回復', 0.5 + level * 0.5, '%', skill.name);
+          if (skill.kind === 'field-attr') addResult(results, 'フィールド最大属性抵抗低下の回復|%', 'フィールド最大属性抵抗低下の回復', 0.5 + level * 0.5, '%', skill.name);
+          if (skill.kind === 'job' && state.job === skill.jobId) {
+            addResult(results, 'job-skill', `${JOBS.find(([id]) => id === state.job)?.[1] || '対象職業'}のスキルLv`, Math.floor(level / position.skillDivisor), '', skill.name);
+          }
+        }
+        for (const statue of STATUES) {
+          if (!statueActive(statue)) continue;
+          statue.parts.forEach((part, index) => {
+            const level = statueLevel(statue.id, index);
+            if (!level || !part[2]) return;
+            const amount = part[3] === 'table' ? part[4][level - 1] : level * part[4];
+            const labels = Array.isArray(part[2]) ? part[2] : [part[2]];
+            labels.forEach((label) => addResult(results, `${label}|${part[5] || ''}`, label, amount, part[5] || '', `${statue.name} ${part[0]}`));
+          });
+        }
+        for (const effect of FLAG_EFFECTS) {
+          const level = Number(state.flag[effect.key]) || 0;
+          if (!level) continue;
+          addResult(results, `${effect.name}|${effect.unit}`, effect.name, effect.values[level - 1], effect.unit, 'ギルド旗');
+        }
+        return Object.values(results);
+      }
+
+      function renderSettings() {
+        const cap = guildPointCap();
+        const used = usedPoints();
+        const left = Math.max(0, cap - used);
+        const maxRequired = maxSkillPoints();
+        const positionOptions = POSITIONS.map((position) => `<option value="${position.id}" ${state.position === position.id ? 'selected' : ''}>${position.label}</option>`).join('');
+        const jobOptions = JOBS.map(([id, name]) => `<option value="${id}" ${state.job === id ? 'selected' : ''}>${name}</option>`).join('');
+        const rebirthOptions = [0, 1, 2, 3, 4, 5].map((value) => `<option value="${value}" ${state.rebirth === value ? 'selected' : ''}>${value}回</option>`).join('');
+        $('gs-settings').innerHTML = `<h2>基本設定</h2><div class="gs-controls">
+          <label>ギルドLv<input id="gs-guild-level" type="number" min="1" max="200" value="${state.guildLv}"></label>
+          <label>天上ボーナス<input id="gs-heavenly-bonus" type="number" min="0" max="40" value="${state.heavenlyBonus}"></label>
+          <label>職位<select id="gs-position">${positionOptions}</select></label>
+          <label>職業<select id="gs-job">${jobOptions}</select></label>
+          <label>転生回数<select id="gs-rebirth">${rebirthOptions}</select></label>
+        </div><div class="gs-gsp">残りGSP <strong>${left}</strong> / ${cap}（使用 ${used}）</div>
+        <div class="gs-actions"><button type="button" class="gs-button" id="gs-max" ${maxRequired <= state.guildLv + 40 ? '' : 'disabled'}>スキル全振り</button><button type="button" class="gs-button gs-secondary" id="gs-reset">すべてリセット</button></div>
+        <p class="gs-note">職位によって能力値・HP/CP・命中/回避・職業別スキルの補正値が変わります。職業と転生回数は、対象となるギルドスキルの効果集計に使います。</p>`;
+      }
+
+      function renderSummary() {
+        const results = buildResults();
+        if (!results.length) {
+          $('gs-summary').innerHTML = '<h2>反映効果</h2><div class="gs-summary-empty">スキル・石像・旗を設定すると、ここに効果が表示されます。</div>';
+          return;
+        }
+        const rows = results.map((result) => `<tr><td>${result.label}</td><td class="gs-summary-value">+${Number.isInteger(result.amount) ? result.amount : result.amount.toFixed(1)}${result.unit}</td><td>${result.sources.join(' / ')}</td></tr>`).join('');
+        $('gs-summary').innerHTML = `<h2>反映効果</h2><div class="gs-table-wrap"><table id="table10"><tbody><tr><th>効果</th><th>反映値</th><th>主な取得元</th></tr>${rows}</tbody></table></div>`;
+      }
+
+      function skillRow(skill, pointsLeft) {
+        const level = Number(state.skills[skill.key]) || 0;
+        const canAdd = level < skill.max && pointsLeft > 0 && prerequisitesMet(skill);
+        const requirement = skill.requires ? `<div class="gs-requirement">必要: ${skill.requires.map((key) => `${skillByKey(key)?.name || key} Lv1`).join(' / ')}</div>` : '';
+        return `<tr><th class="gs-skill-name">${skill.name}<div class="gs-effect">${skill.effect}</div>${requirement}</th><td class="gs-level-control"><button type="button" data-skill="${skill.key}" data-delta="-1" ${level <= 0 ? 'disabled' : ''}>−</button><span>Lv ${level} / ${skill.max}</span><button type="button" data-skill="${skill.key}" data-delta="1" ${canAdd ? '' : 'disabled'}>＋</button></td></tr>`;
+      }
+
+      function renderSkills() {
+        const pointsLeft = Math.max(0, guildPointCap() - usedPoints());
+        const sections = [
+          ['ギルド運営・基礎', GUILD_SKILLS.slice(0, 9)],
+          ['生体学', GUILD_SKILLS.filter((skill) => skill.kind === 'biology')],
+          ['能力値・フィールド補正', GUILD_SKILLS.filter((skill) => ['ranked', 'field-stat', 'field-attr'].includes(skill.kind))],
+          ['職業別スキル', GUILD_SKILLS.filter((skill) => skill.kind === 'job')],
+        ];
+        const html = sections.map(([name, skills]) => `<h3>${name}</h3><div class="gs-table-wrap"><table id="table10"><tbody><tr><th>スキル</th><th>割り振り</th></tr>${skills.map((skill) => skillRow(skill, pointsLeft)).join('')}</tbody></table></div><br>`).join('');
+        $('gs-skills').innerHTML = `<h2>ギルドスキル</h2>${html}`;
+      }
+
+      function renderFlags() {
+        const groups = [...new Set(FLAG_EFFECTS.map((effect) => effect.group))];
+        const html = groups.map((group) => {
+          const rows = FLAG_EFFECTS.filter((effect) => effect.group === group).map((effect) => {
+            const level = Number(state.flag[effect.key]) || 0;
+            const options = [0, ...effect.values.map((_, index) => index + 1)].map((value) => `<option value="${value}" ${level === value ? 'selected' : ''}>${value === 0 ? '未使用' : `Lv ${value}`}</option>`).join('');
+            const amount = level ? `+${effect.values[level - 1]}${effect.unit}` : '—';
+            return `<tr><th>${effect.name}</th><td class="gs-summary-value">${amount}</td><td><select class="gs-select" data-flag="${effect.key}">${options}</select></td></tr>`;
+          }).join('');
+          return `<h3>${group}</h3><div class="gs-table-wrap"><table id="table10"><tbody><tr><th>効果</th><th>反映値</th><th>旗Lv</th></tr>${rows}</tbody></table></div><br>`;
+        }).join('');
+        $('gs-flags').innerHTML = `<h2>ギルド旗</h2><p class="gs-note">全属性抵抗弱化は通常の属性弱化120%上限とは別枠で加算されます。</p>${html}<div class="gs-source-note">「レベル2000以降の獲得経験値」はLv1～5で5 / 10 / 15 / 20 / 25％増加します。必要ギルドポイントは5,000 / 10,000 / 15,000 / 20,000 / 25,000です。<br><a href="https://sokomin.github.io/korea/koreaupdate20240904_level.html">韓国 2024年9月アップデート情報</a></div>`;
+      }
+
+      function renderStatues() {
+        const cards = STATUES.map((statue) => {
+          const active = statueActive(statue);
+          const rows = statue.parts.map((part, index) => {
+            const level = statueLevel(statue.id, index);
+            const options = [0, 1, 2, 3, 4, 5].map((value) => `<option value="${value}" ${level === value ? 'selected' : ''}>${value === 0 ? '未完成' : `Lv ${value}`}</option>`).join('');
+            return `<tr><th>${part[0]}</th><td>${part[1]}</td><td><select class="gs-select" data-statue="${statue.id}" data-part="${index}">${options}</select></td></tr>`;
+          }).join('');
+          return `<section class="gs-statue-card"><h3>${statue.name}<span class="gs-statue-status ${active ? 'is-active' : ''}">${active ? '有効' : '3部位で有効'}</span></h3><div class="gs-table-wrap"><table id="table10"><tbody><tr><th>部位</th><th>効果</th><th>完成Lv</th></tr>${rows}</tbody></table></div></section>`;
+        }).join('');
+        $('gs-statues').innerHTML = `<h2>ギルド石像</h2><p class="gs-note">各石像は完成部位が3つ以上になると、その石像で完成している部位の効果がすべて有効になります。</p><div class="gs-statue-grid">${cards}</div>`;
+      }
+
+      function bindEvents() {
+        $('gs-guild-level').addEventListener('change', (event) => {
+          state.guildLv = Math.max(1, Math.min(200, Math.floor(Number(event.target.value) || 1)));
+          pruneSkills();
+          render();
+        });
+        $('gs-heavenly-bonus').addEventListener('change', (event) => {
+          state.heavenlyBonus = Math.max(0, Math.min(40, Math.floor(Number(event.target.value) || 0)));
+          pruneSkills();
+          render();
+        });
+        $('gs-position').addEventListener('change', (event) => { state.position = event.target.value; render(); });
+        $('gs-job').addEventListener('change', (event) => { state.job = Number(event.target.value); render(); });
+        $('gs-rebirth').addEventListener('change', (event) => { state.rebirth = Number(event.target.value); render(); });
+        $('gs-max').addEventListener('click', () => {
+          const requiredBonus = Math.max(0, maxSkillPoints() - state.guildLv);
+          if (requiredBonus > 40) return;
+          state.skills = Object.fromEntries(GUILD_SKILLS.map((skill) => [skill.key, skill.max]));
+          state.heavenlyBonus = Math.max(state.heavenlyBonus, requiredBonus);
+          render();
+        });
+        $('gs-reset').addEventListener('click', () => {
+          state.guildLv = 200;
+          state.heavenlyBonus = 0;
+          state.position = 'new';
+          state.job = 0;
+          state.rebirth = 0;
+          state.skills = {};
+          state.statues = {};
+          state.flag = {};
+          render();
+        });
+        document.querySelectorAll('[data-skill]').forEach((button) => button.addEventListener('click', () => {
+          const skill = skillByKey(button.dataset.skill);
+          const delta = Number(button.dataset.delta) || 0;
+          if (!skill || !delta) return;
+          const current = Number(state.skills[skill.key]) || 0;
+          if (delta > 0 && (usedPoints() >= guildPointCap() || !prerequisitesMet(skill))) return;
+          const next = Math.max(0, Math.min(skill.max, current + delta));
+          if (next) state.skills[skill.key] = next;
+          else delete state.skills[skill.key];
+          pruneSkills();
+          render();
+        }));
+        document.querySelectorAll('[data-flag]').forEach((select) => select.addEventListener('change', () => {
+          const effect = FLAG_EFFECTS.find((entry) => entry.key === select.dataset.flag);
+          if (!effect) return;
+          const level = Math.max(0, Math.min(effect.values.length, Math.floor(Number(select.value) || 0)));
+          if (level) state.flag[effect.key] = level;
+          else delete state.flag[effect.key];
+          render();
+        }));
+        document.querySelectorAll('[data-statue]').forEach((select) => select.addEventListener('change', () => {
+          const statueId = select.dataset.statue;
+          const partIndex = Number(select.dataset.part);
+          const level = Math.max(0, Math.min(5, Math.floor(Number(select.value) || 0)));
+          if (!state.statues[statueId]) state.statues[statueId] = {};
+          if (level) state.statues[statueId][partIndex] = level;
+          else delete state.statues[statueId][partIndex];
+          if (!Object.keys(state.statues[statueId]).length) delete state.statues[statueId];
+          render();
+        }));
+      }
+
+      function render() {
+        renderSettings();
+        renderSummary();
+        renderSkills();
+        renderFlags();
+        renderStatues();
+        bindEvents();
+      }
+
+      render();
+    })();
+  </script>
+</body>
+
+</html>
