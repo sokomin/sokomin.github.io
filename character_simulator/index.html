@@ -1952,6 +1952,54 @@
       color: #b0944c; font-size: 10.5px; line-height: 1.5;
       padding: 4px 6px; background: #1f1a08; border: 1px solid #443823;
     }
+    .potential-disassembly-panel { grid-column: 1 / -1; }
+    .potential-disassembly-controls {
+      display: grid; grid-template-columns: 110px minmax(220px, 1fr) auto;
+      gap: 6px; align-items: center; margin-bottom: 6px;
+    }
+    .potential-disassembly-controls label { color: #ffd070; font-weight: bold; }
+    .potential-disassembly-controls select,
+    .potential-disassembly-manual select,
+    .potential-disassembly-manual input {
+      background: #120c04; color: #f4e7a2; border: 1px solid #8b6a28;
+      font: inherit; padding: 2px 4px; box-sizing: border-box;
+    }
+    .potential-disassembly-controls button {
+      background: #38280f; color: #ffd070; border: 1px solid #8b6a28;
+      font: inherit; padding: 2px 8px; cursor: pointer;
+    }
+    .potential-disassembly-result {
+      background: #0b0904; border: 1px solid #443823; padding: 6px;
+    }
+    .potential-disassembly-empty { color: #6e5a2a; }
+    .potential-disassembly-item-name { color: #ffd070; font-weight: bold; margin-bottom: 4px; }
+    .potential-disassembly-total {
+      display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: baseline;
+      padding: 5px 7px; margin-bottom: 6px; background: #120c04; border: 1px solid #5b3d12;
+    }
+    .potential-disassembly-total strong { color: #00ff66; font: bold 16px "Consolas", monospace; }
+    .potential-disassembly-total .is-pending { color: #ffd070; }
+    .potential-disassembly-breakdown {
+      width: 100%; border-collapse: collapse; font-size: 11px; color: #f4e7a2;
+    }
+    .potential-disassembly-breakdown th,
+    .potential-disassembly-breakdown td { padding: 3px 5px; border-bottom: 1px dotted #443823; }
+    .potential-disassembly-breakdown th { color: #ffd070; background: #120c04; text-align: left; }
+    .potential-disassembly-breakdown .col-points { width: 70px; text-align: right; font-family: "Consolas", monospace; }
+    .potential-disassembly-breakdown tr.is-pending td { color: #d8a743; }
+    .potential-disassembly-manual {
+      display: grid; grid-template-columns: minmax(180px, 1fr) minmax(160px, 260px);
+      gap: 4px 8px; align-items: center; margin-top: 7px; padding: 6px;
+      background: #1f1a08; border: 1px solid #5b3d12;
+    }
+    .potential-disassembly-manual-title { grid-column: 1 / -1; color: #ffd070; font-weight: bold; }
+    .potential-disassembly-manual small { display: block; color: #b0944c; }
+    .potential-disassembly-note { color: #b0944c; font-size: 10.5px; line-height: 1.5; margin-top: 6px; }
+    @media (max-width: 620px) {
+      .potential-disassembly-controls { grid-template-columns: 1fr; }
+      .potential-disassembly-manual { grid-template-columns: 1fr; }
+      .potential-disassembly-manual-title { grid-column: 1; }
+    }
 
     .trans-tab-layout {
       display: grid; grid-template-columns: 1fr; gap: 8px; padding: 6px 8px;
@@ -3882,16 +3930,16 @@
                 </div>
                 <div class="costume-cap-line" id="costume-cap-line">
                   <span class="costume-cap-chip" data-color="red">
-                    <span class="dot red"></span>赤 <span class="num"><span data-cap-count="red">0</span>/3</span>
+                    <span class="dot red"></span>赤 <span class="num"><span data-cap-count="red">0</span>/5</span>
                   </span>
                   <span class="costume-cap-chip" data-color="blue">
-                    <span class="dot blue"></span>青 <span class="num"><span data-cap-count="blue">0</span>/3</span>
+                    <span class="dot blue"></span>青 <span class="num"><span data-cap-count="blue">0</span>/5</span>
                   </span>
                   <span class="costume-cap-chip" data-color="gold">
-                    <span class="dot gold"></span>金 <span class="num"><span data-cap-count="gold">0</span>/3</span>
+                    <span class="dot gold"></span>黄 <span class="num"><span data-cap-count="gold">0</span>/5</span>
                   </span>
                   <span class="costume-cap-chip" data-color="purple">
-                    <span class="dot purple"></span>紫 <span class="num"><span data-cap-count="purple">0</span>/2</span>
+                    <span class="dot purple"></span>紫共通枠 <span class="num"><span data-cap-count="purple">0</span>/2</span>
                   </span>
                 </div>
                 <div class="costume-actions">
@@ -3908,7 +3956,8 @@
                 <div class="costume-slots" id="costume-slots"></div>
                 <div class="costume-base-effect" style="margin-top:6px; font-size:11px; color:#8b6a28">
                   クレスト本来は色付きソケットに同色のみ装着可ですが、 本シミュは
-                  「クレスト枠変換システム」 を疑似再現し、 全枠 自由選択 + 色キャップ運用です。
+                  「クレスト枠変換システム」 を疑似再現し、 赤・青・黄の基本3枠を超えた分は
+                  紫共通枠2つを消費します。紫共通枠には任意色のクレストを装着できます。
                 </div>
               </div>
             </div>
@@ -4227,6 +4276,19 @@
                 <div class="potential-panel">
                   <h4>累計効果 (<span id="potential-effects-stage">0</span>段階)</h4>
                   <pre class="potential-summary" id="potential-summary"></pre>
+                </div>
+                <div class="potential-panel potential-disassembly-panel">
+                  <h4>装備分解見積もり</h4>
+                  <div class="potential-disassembly-controls">
+                    <label for="potential-disassembly-item">インベントリ</label>
+                    <select id="potential-disassembly-item">
+                      <option value="">（装備を選択）</option>
+                    </select>
+                    <button type="button" id="potential-disassembly-refresh">一覧更新</button>
+                  </div>
+                  <div class="potential-disassembly-result" id="potential-disassembly-result">
+                    <span class="potential-disassembly-empty">インベントリの装備を選択してください。</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -4758,6 +4820,7 @@ import {
 import { applyMonsterLevel } from './lib/monster_level_calc.js';
 import { computePetStats, isPetCapableJob } from './lib/pet_calc.js';
 import { createGuildSystem } from './lib/guild.js';
+import { calculateDisassemblyEstimate } from './lib/potential_disassembly.js';
 
 const loader = new DataLoader({ baseUrl: './lib/data' });
 setLoader(loader);
@@ -7436,6 +7499,9 @@ async function renderInventoryGrid() {
   
   if (typeof renderEditInventoryGrid === 'function') {
     try { await renderEditInventoryGrid(); } catch (e) {  }
+  }
+  if (PotentialDisassembly.isInitialized()) {
+    try { await PotentialDisassembly.refresh(); } catch (e) {  }
   }
 }
 
@@ -11163,6 +11229,7 @@ function bindTabBar() {
       if (tab === 'creature-book') initCreatureBookTab();
       if (tab === 'pet')      initPetTab();
       if (tab === 'minipet')  initMinipetTab();
+      if (tab === 'potential' && !didDeferredInit) PotentialDisassembly.refresh();
       if (tab === 'trans' && !didDeferredInit)   TransSkill.rerender();
       if (tab === 'blood' && !didDeferredInit) {
         BloodRecord.rerender();
@@ -15083,12 +15150,198 @@ const Potential = (() => {
   return { init, applyToSTTemp, computeLimitBreakBonus, getState, setState, reset, EFFECTS, MAX_STAGE, _rerender: () => { renderTable(); renderSummary(); } };
 })();
 
+const PotentialDisassembly = (() => {
+  let initialized = false;
+  let rulesPromise = null;
+  let renderToken = 0;
+  const manualBySlot = new Map();
+
+  function loadRules() {
+    if (!rulesPromise) {
+      rulesPromise = fetch('./lib/data/potential_disassembly.json')
+        .then((response) => {
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          return response.json();
+        });
+    }
+    return rulesPromise;
+  }
+
+  function describeOption(op) {
+    if (!op) return null;
+    let entry = null;
+    if (op.rowId != null) {
+      entry = opSearchIndex.find((candidate) => Number(candidate.rowId) === Number(op.rowId)) || null;
+    }
+    if (!entry && op.familyId != null) {
+      const tier = OpPrefix.findTier(Number(op.familyId), Number(op.value) || 0);
+      if (tier) {
+        entry = {
+          rowId: tier.id,
+          familyId: Number(op.familyId),
+          name: tier.name || '',
+          displayName: optionDisplayName(tier.name || '', {
+            familyId: Number(op.familyId), rowId: tier.id, sortid: tier.sortid,
+          }),
+          gradeClass: tier.gradeClass || 'normal',
+        };
+      }
+    }
+    if (!entry) return null;
+    const gradeLabels = {
+      normal: '一般', set: 'セット', dx: 'DX', ult: 'ULT', npc: 'NPC', college: '協会',
+    };
+    return {
+      name: entry.displayName || entry.name || `OP#${entry.rowId}`,
+      gradeClass: entry.gradeClass || 'normal',
+      gradeLabel: gradeLabels[entry.gradeClass || 'normal'] || entry.gradeClass,
+    };
+  }
+
+  function renderManualControls(unknowns, manual) {
+    if (!unknowns.length) return '';
+    const controls = unknowns.map((unknown) => {
+      let input;
+      if (unknown.input === 'select') {
+        const options = (unknown.options || []).map((option) => {
+          const selected = String(manual[unknown.id] ?? '') === String(option.value) ? ' selected' : '';
+          return `<option value="${esc(option.value)}"${selected}>${esc(option.label)}</option>`;
+        }).join('');
+        input = `<select data-disassembly-manual="${esc(unknown.id)}"><option value="">（等級を選択）</option>${options}</select>`;
+      } else {
+        const value = manual[unknown.id] ?? '';
+        input = `<input type="number" min="${Number(unknown.min) || 0}" step="1" value="${esc(value)}" placeholder="ポイント" data-disassembly-manual="${esc(unknown.id)}">`;
+      }
+      return `<div>${esc(unknown.label)}<small>${esc(unknown.detail || '')}</small></div>${input}`;
+    }).join('');
+    return `<div class="potential-disassembly-manual"><div class="potential-disassembly-manual-title">未確定項目の補完</div>${controls}</div>`;
+  }
+
+  function renderEstimate(item, estimate, manual) {
+    const result = $('potential-disassembly-result');
+    if (!result) return;
+    const itemName = stripGameTags(item.name || `itemId=${item.id}`);
+    if (!estimate.eligible) {
+      result.innerHTML = `
+        <div class="potential-disassembly-item-name">${esc(itemName)}</div>
+        <div class="potential-disassembly-total">
+          <span>分解ポイント: <strong>0</strong> ${esc(estimate.currencyLabel || '潜在能力ポイント')}</span>
+        </div>
+      `;
+      return;
+    }
+
+    const rows = estimate.rows.map((row) => {
+      const points = row.points == null ? '未入力' : `+${row.points}`;
+      const detail = row.detail ? `<small>（${esc(row.detail)}）</small>` : '';
+      return `<tr class="${row.pending ? 'is-pending' : ''}"><td>${esc(row.label)} ${detail}</td><td class="col-points">${esc(points)}</td></tr>`;
+    }).join('');
+
+    result.innerHTML = `
+      <div class="potential-disassembly-item-name">${esc(itemName)}</div>
+      <div class="potential-disassembly-total">
+        <span>分解ポイント: <strong>${estimate.cappedTotal}</strong> ${esc(estimate.currencyLabel)}</span>
+      </div>
+      <table class="potential-disassembly-breakdown">
+        <thead><tr><th>加算項目</th><th class="col-points">ポイント</th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="2">加算項目なし</td></tr>'}</tbody>
+      </table>
+    `;
+  }
+
+  async function renderSelected() {
+    const select = $('potential-disassembly-item');
+    const result = $('potential-disassembly-result');
+    if (!select || !result) return;
+    if (select.value === '') {
+      result.innerHTML = '<span class="potential-disassembly-empty">インベントリの装備を選択してください。</span>';
+      return;
+    }
+    const slotIndex = Number(select.value);
+    if (!Number.isInteger(slotIndex) || slotIndex < 0) {
+      result.innerHTML = '<span class="potential-disassembly-empty">インベントリの装備を選択してください。</span>';
+      return;
+    }
+    const inv = inventory.get(slotIndex);
+    if (!inv) {
+      result.innerHTML = '<span class="potential-disassembly-empty">選択した装備が見つかりません。</span>';
+      return;
+    }
+    const token = ++renderToken;
+    try {
+      const [item, rules] = await Promise.all([Item.get(inv.itemId), loadRules()]);
+      if (token !== renderToken) return;
+      if (!item) throw new Error('アイテムデータが見つかりません');
+      const manual = manualBySlot.get(slotIndex) || {};
+      const estimate = calculateDisassemblyEstimate({
+        inv,
+        item,
+        rules,
+        isRing: resolveItemPart(item) === 9,
+        describeOption,
+        manual,
+      });
+      renderEstimate(item, estimate, manual);
+    } catch (error) {
+      console.warn('[PotentialDisassembly] render failed:', error);
+      result.innerHTML = `<span class="potential-disassembly-empty">分解見積もりを読み込めませんでした: ${esc(error.message || error)}</span>`;
+    }
+  }
+
+  async function refresh({ preferSelected = false } = {}) {
+    if (!initialized) return;
+    const select = $('potential-disassembly-item');
+    if (!select) return;
+    const previous = select.value;
+    const entries = [];
+    for (const inv of inventory.items()) {
+      const item = await Item.get(inv.itemId);
+      entries.push({ inv, item });
+    }
+    select.innerHTML = '<option value="">（装備を選択）</option>';
+    for (const { inv, item } of entries) {
+      const option = document.createElement('option');
+      option.value = String(inv.slotIndex);
+      option.textContent = `[${inv.slotIndex}] ${stripGameTags(item?.name || `itemId=${inv.itemId}`)}${inv.equippedSlot ? '（装備中）' : ''}`;
+      select.appendChild(option);
+    }
+    const preferred = preferSelected && selectedInv?.inv ? String(selectedInv.inv.slotIndex) : previous;
+    if ([...select.options].some((option) => option.value === preferred)) select.value = preferred;
+    else if (entries.length === 1) select.value = String(entries[0].inv.slotIndex);
+    else select.value = '';
+    await renderSelected();
+  }
+
+  async function init() {
+    if (initialized) return;
+    initialized = true;
+    $('potential-disassembly-item')?.addEventListener('change', () => renderSelected());
+    $('potential-disassembly-refresh')?.addEventListener('click', () => refresh());
+    $('potential-disassembly-result')?.addEventListener('change', (event) => {
+      const input = event.target.closest('[data-disassembly-manual]');
+      const slotIndex = Number($('potential-disassembly-item')?.value);
+      if (!input || !Number.isInteger(slotIndex) || slotIndex < 0) return;
+      const manual = manualBySlot.get(slotIndex) || {};
+      manual[input.getAttribute('data-disassembly-manual')] = input.value;
+      manualBySlot.set(slotIndex, manual);
+      renderSelected();
+    });
+    await loadRules();
+    await refresh({ preferSelected: true });
+  }
+
+  return { init, refresh, isInitialized: () => initialized };
+})();
+
 const Costume = (() => {
   const $ = (id) => document.getElementById(id);
 
   const COLOR_MARKER = { 456: 'red', 457: 'gold', 458: 'blue', 790: 'purple' };
-  const COLOR_CAP    = { red: 3, blue: 3, gold: 3, purple: 2 };
-  const COLOR_LABEL  = { red: '赤', blue: '青', gold: '金', purple: '紫' };
+  const PRIMARY_COLORS = ['red', 'blue', 'gold'];
+  const PRIMARY_BASE_CAP = 3;
+  const PURPLE_SHARED_CAP = 2;
+  const COLOR_CAP    = { red: 5, blue: 5, gold: 5, purple: 2 };
+  const COLOR_LABEL  = { red: '赤', blue: '青', gold: '黄', purple: '紫' };
   const MAX_STAGE    = 10;
 
   const STAT_KEYS_7  = ['str', 'agi', 'con', 'int', 'wiz', 'chs', 'luc'];
@@ -15227,13 +15480,31 @@ const Costume = (() => {
     }
     return counts;
   }
-  function isViolated(slotIndex, counts) {
-    const id = state.crests[slotIndex];
-    if (id == null) return false;
-    const rec = crestRecords?.get(id);
-    const color = detectColor(rec);
-    if (!color) return false;
-    return counts[color] > (COLOR_CAP[color] || 99);
+  function allocateCrestSlots() {
+    const counts = countColors();
+    const baseUsed = { red: 0, blue: 0, gold: 0 };
+    const violated = new Set();
+    let sharedUsed = 0;
+    const N = slotCount(state.stage);
+    for (let i = 0; i < N; i++) {
+      const id = state.crests[i];
+      if (id == null) continue;
+      const color = detectColor(crestRecords?.get(id));
+      if (!color) continue;
+      if (PRIMARY_COLORS.includes(color) && baseUsed[color] < PRIMARY_BASE_CAP) {
+        baseUsed[color]++;
+        continue;
+      }
+      if (sharedUsed < PURPLE_SHARED_CAP) sharedUsed++;
+      else violated.add(i);
+    }
+    const sharedRequired = counts.purple + PRIMARY_COLORS.reduce(
+      (sum, color) => sum + Math.max(0, counts[color] - PRIMARY_BASE_CAP), 0
+    );
+    return { counts, sharedRequired, violated };
+  }
+  function isViolated(slotIndex, allocation) {
+    return allocation.violated.has(slotIndex);
   }
 
   function applyToSTTemp(STTemp) {
@@ -15248,12 +15519,12 @@ const Costume = (() => {
     STTemp.sum.expBonus = (STTemp.sum.expBonus || 0) + baseExp;
 
     if (!crestRecords) return;
-    const counts = countColors();
+    const allocation = allocateCrestSlots();
     const N = slotCount(state.stage);
     for (let i = 0; i < N; i++) {
       const id = state.crests[i];
       if (id == null) continue;
-      if (isViolated(i, counts)) continue;
+      if (isViolated(i, allocation)) continue;
       const rec = crestRecords.get(id);
       if (!rec || !rec.opSlots) continue;
       for (const slot of rec.opSlots) {
@@ -15305,19 +15576,21 @@ const Costume = (() => {
     if (msg) msg.style.display = state.enabled ? 'none' : '';
   }
   function renderCapLine() {
-    const counts = countColors();
+    const allocation = allocateCrestSlots();
+    const counts = allocation.counts;
     for (const c of ['red','blue','gold','purple']) {
       const el = document.querySelector(`[data-cap-count="${c}"]`);
-      if (el) el.textContent = String(counts[c] || 0);
+      const displayedCount = c === 'purple' ? allocation.sharedRequired : (counts[c] || 0);
+      if (el) el.textContent = String(displayedCount);
       const chip = document.querySelector(`.costume-cap-chip[data-color="${c}"]`);
-      if (chip) chip.classList.toggle('is-over', (counts[c] || 0) > (COLOR_CAP[c] || 99));
+      if (chip) chip.classList.toggle('is-over', displayedCount > (COLOR_CAP[c] || 99));
     }
   }
   function renderSlots() {
     const host = $('costume-slots');
     if (!host) return;
     const N = slotCount(state.stage);
-    const counts = countColors();
+    const allocation = allocateCrestSlots();
     const html = [];
     for (let i = 0; i < 7; i++) {
       const isLocked = i >= N;
@@ -15327,7 +15600,7 @@ const Costume = (() => {
       const color = detectColor(rec);
       const colorLabel = color ? COLOR_LABEL[color] : (isMulti ? '多色' : '-');
       const colorDot   = color ? color : 'none';
-      const violated   = !isLocked && id != null && counts[color] > (COLOR_CAP[color] || 99);
+      const violated   = !isLocked && id != null && isViolated(i, allocation);
       const slotCls = ['costume-slot'];
       if (isLocked) slotCls.push('is-locked');
       if (violated) slotCls.push('is-violated');
@@ -15426,9 +15699,10 @@ const Costume = (() => {
     const lines = [];
     lines.push(`コスチューム +${state.stage} (${slotCount(state.stage)} 枠)`);
     lines.push(`  全能力値 +${baseStatBonus(state.stage)} / 経験値 +${baseExpBonus(state.stage)}%`);
-    const counts = countColors();
+    const allocation = allocateCrestSlots();
+    const counts = allocation.counts;
     const occupied = Object.values(counts).reduce((a, b) => a + b, 0);
-    lines.push(`  クレスト ${occupied} 個装着 (赤${counts.red}/青${counts.blue}/金${counts.gold}/紫${counts.purple})`);
+    lines.push(`  クレスト ${occupied} 個装着 (赤${counts.red}/青${counts.blue}/黄${counts.gold}/紫${counts.purple} / 紫共通枠${allocation.sharedRequired}/2)`);
     out.textContent = lines.join('\n');
     out.classList.toggle('is-empty', occupied === 0 && state.stage === 0);
   }
@@ -19274,11 +19548,13 @@ async function main() {
     recalcAll().catch((e) => console.warn('[MissionBook] recalc failed:', e));
     scheduleAutosave();
   });
-  deferredTabInits.potential = () => Potential.init(() => {
-    
-    recalcAll().catch((e) => console.warn('[Potential] recalc failed:', e));
-    scheduleAutosave();
-  });
+  deferredTabInits.potential = () => {
+    Potential.init(() => {
+      recalcAll().catch((e) => console.warn('[Potential] recalc failed:', e));
+      scheduleAutosave();
+    });
+    PotentialDisassembly.init().catch((e) => console.warn('[PotentialDisassembly] init failed:', e));
+  };
 
   Costume.init(() => {
     recalcAll().catch((e) => console.warn('[Costume] recalc failed:', e));
