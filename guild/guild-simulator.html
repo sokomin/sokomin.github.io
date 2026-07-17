@@ -102,6 +102,31 @@
     .gs-button:hover { background: #88755b; }
     .gs-button:disabled { border-color: #aaa; background: #ccc; cursor: default; }
     .gs-button.gs-secondary { background: #777; }
+    .gs-tabs {
+      display: flex;
+      gap: 4px;
+      margin: 0 0 12px;
+      padding: 0 6px;
+      border-bottom: 3px solid #9d896c;
+    }
+    .gs-tab {
+      min-width: 150px;
+      padding: 10px 18px 8px;
+      border: 1px solid #b7aa97;
+      border-bottom: 0;
+      border-radius: 5px 5px 0 0;
+      background: #ece7de;
+      color: #514737;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .gs-tab:hover { background: #ded5c8; }
+    .gs-tab[aria-selected="true"] {
+      border-color: #6f604b;
+      background: #9d896c;
+      color: #fff;
+    }
+    .gs-tab-panel[hidden] { display: none; }
     .gs-gsp {
       margin-top: 12px;
       padding: 9px 12px;
@@ -177,6 +202,12 @@
       cursor: pointer;
     }
     .gs-level-control button:disabled { border-color: #aaa; background: #ccc; cursor: default; }
+    .gs-level-control button.gs-skill-max {
+      width: auto;
+      min-width: 48px;
+      margin-left: 4px;
+      padding: 0 8px;
+    }
     .gs-level-control span { display: inline-block; min-width: 76px; text-align: center; }
     .gs-summary-empty {
       padding: 14px;
@@ -207,6 +238,16 @@
       .gs-statue-grid { grid-template-columns: 1fr; }
       .gs-wrap { width: 100%; }
       .gs-panel { padding: 10px; }
+      .gs-tabs {
+        gap: 2px;
+        padding: 0;
+      }
+      .gs-tab {
+        flex: 1 1 0;
+        min-width: 0;
+        padding: 9px 4px 7px;
+        font-size: 12px;
+      }
     }
   </style>
 </head>
@@ -228,14 +269,17 @@
         <div class="gs-wrap" id="guild-simulator">
           <section class="gs-panel" id="gs-settings"></section>
           <section class="gs-panel" id="gs-summary"></section>
-          <section class="gs-panel" id="gs-skills"></section>
-          <section class="gs-panel" id="gs-flags"></section>
-          <section class="gs-panel" id="gs-statues"></section>
+          <div class="gs-tabs" id="gs-tabs" role="tablist" aria-label="シミュレーター項目"></div>
+          <section class="gs-panel gs-tab-panel" id="gs-skills" role="tabpanel" data-tab-panel="skills"></section>
+          <section class="gs-panel gs-tab-panel" id="gs-statues" role="tabpanel" data-tab-panel="statues"></section>
+          <section class="gs-panel gs-tab-panel" id="gs-flags" role="tabpanel" data-tab-panel="flags"></section>
         </div>
 
         <a name="related"></a>
         <font color="#e95388"><h4>関連</h4></font>
         <h5>
+          <a href="https://sokomin.github.io/guild/guild-skill.html">ギルドスキル一覧</a><br>
+          <a href="https://sokomin.github.io/guild/guild-statue.html">ギルド石像一覧</a><br>
           <a href="https://sokomin.github.io/guild/guild-flag.html">ギルド旗＆ギルドウィークリークエスト</a><br>
           <br>
           <a href="https://sokomin.github.io/guild/guild.html">ギルド情報一覧</a><br>
@@ -384,6 +428,12 @@
         { group: 'アイテム補給', key: 'item-supply', name: 'ギルド協力BOX', values: [1, 2, 3], unit: '段階' },
       ];
 
+      const TABS = [
+        { id: 'skills', label: 'ギルドスキル', panelId: 'gs-skills' },
+        { id: 'statues', label: 'ギルド石像', panelId: 'gs-statues' },
+        { id: 'flags', label: 'ギルド旗', panelId: 'gs-flags' },
+      ];
+
       const state = {
         guildLv: 200,
         heavenlyBonus: 0,
@@ -393,6 +443,7 @@
         skills: {},
         statues: {},
         flag: {},
+        activeTab: 'skills',
       };
 
       const $ = (id) => document.getElementById(id);
@@ -400,7 +451,6 @@
       const skillByKey = (key) => GUILD_SKILLS.find((skill) => skill.key === key) || null;
       const guildPointCap = () => Math.max(1, Math.min(200, Number(state.guildLv) || 1)) + Math.max(0, Math.min(40, Number(state.heavenlyBonus) || 0));
       const usedPoints = () => GUILD_SKILLS.reduce((total, skill) => total + (Number(state.skills[skill.key]) || 0), 0);
-      const maxSkillPoints = () => GUILD_SKILLS.reduce((total, skill) => total + skill.max, 0);
       const prerequisitesMet = (skill) => !skill.requires || skill.requires.every((key) => (Number(state.skills[key]) || 0) >= 1);
       const statueLevel = (statueId, partIndex) => Number(state.statues[statueId]?.[partIndex]) || 0;
       const statueActive = (statue) => statue.parts.filter((_, index) => statueLevel(statue.id, index) > 0).length >= 3;
@@ -476,7 +526,6 @@
         const cap = guildPointCap();
         const used = usedPoints();
         const left = Math.max(0, cap - used);
-        const maxRequired = maxSkillPoints();
         const positionOptions = POSITIONS.map((position) => `<option value="${position.id}" ${state.position === position.id ? 'selected' : ''}>${position.label}</option>`).join('');
         const jobOptions = JOBS.map(([id, name]) => `<option value="${id}" ${state.job === id ? 'selected' : ''}>${name}</option>`).join('');
         const rebirthOptions = [0, 1, 2, 3, 4, 5].map((value) => `<option value="${value}" ${state.rebirth === value ? 'selected' : ''}>${value}回</option>`).join('');
@@ -487,7 +536,7 @@
           <label>職業<select id="gs-job">${jobOptions}</select></label>
           <label>転生回数<select id="gs-rebirth">${rebirthOptions}</select></label>
         </div><div class="gs-gsp">残りGSP <strong>${left}</strong> / ${cap}（使用 ${used}）</div>
-        <div class="gs-actions"><button type="button" class="gs-button" id="gs-max" ${maxRequired <= state.guildLv + 40 ? '' : 'disabled'}>スキル全振り</button><button type="button" class="gs-button gs-secondary" id="gs-reset">すべてリセット</button></div>
+        <div class="gs-actions"><button type="button" class="gs-button gs-secondary" id="gs-reset">すべてリセット</button></div>
         <p class="gs-note">職位によって能力値・HP/CP・命中/回避・職業別スキルの補正値が変わります。職業と転生回数は、対象となるギルドスキルの効果集計に使います。</p>`;
       }
 
@@ -504,8 +553,9 @@
       function skillRow(skill, pointsLeft) {
         const level = Number(state.skills[skill.key]) || 0;
         const canAdd = level < skill.max && pointsLeft > 0 && prerequisitesMet(skill);
+        const canMax = level < skill.max && pointsLeft > 0 && prerequisitesMet(skill);
         const requirement = skill.requires ? `<div class="gs-requirement">必要: ${skill.requires.map((key) => `${skillByKey(key)?.name || key} Lv1`).join(' / ')}</div>` : '';
-        return `<tr><th class="gs-skill-name">${skill.name}<div class="gs-effect">${skill.effect}</div>${requirement}</th><td class="gs-level-control"><button type="button" data-skill="${skill.key}" data-delta="-1" ${level <= 0 ? 'disabled' : ''}>−</button><span>Lv ${level} / ${skill.max}</span><button type="button" data-skill="${skill.key}" data-delta="1" ${canAdd ? '' : 'disabled'}>＋</button></td></tr>`;
+        return `<tr><th class="gs-skill-name">${skill.name}<div class="gs-effect">${skill.effect}</div>${requirement}</th><td class="gs-level-control"><button type="button" data-skill="${skill.key}" data-delta="-1" ${level <= 0 ? 'disabled' : ''}>−</button><span>Lv ${level} / ${skill.max}</span><button type="button" data-skill="${skill.key}" data-delta="1" ${canAdd ? '' : 'disabled'}>＋</button><button type="button" class="gs-skill-max" data-skill-max="${skill.key}" title="${skill.name}を最大Lvまで上げる" ${canMax ? '' : 'disabled'}>最大</button></td></tr>`;
       }
 
       function renderSkills() {
@@ -547,6 +597,18 @@
         $('gs-statues').innerHTML = `<h2>ギルド石像</h2><p class="gs-note">各石像は完成部位が3つ以上になると、その石像で完成している部位の効果がすべて有効になります。</p><div class="gs-statue-grid">${cards}</div>`;
       }
 
+      function renderTabs() {
+        $('gs-tabs').innerHTML = TABS.map((tab) => {
+          const selected = state.activeTab === tab.id;
+          return `<button type="button" class="gs-tab" id="gs-tab-${tab.id}" role="tab" aria-selected="${selected}" aria-controls="${tab.panelId}" tabindex="${selected ? '0' : '-1'}" data-tab="${tab.id}">${tab.label}</button>`;
+        }).join('');
+        document.querySelectorAll('[data-tab-panel]').forEach((panel) => {
+          const selected = panel.dataset.tabPanel === state.activeTab;
+          panel.hidden = !selected;
+          panel.setAttribute('aria-labelledby', `gs-tab-${panel.dataset.tabPanel}`);
+        });
+      }
+
       function bindEvents() {
         $('gs-guild-level').addEventListener('change', (event) => {
           state.guildLv = Math.max(1, Math.min(200, Math.floor(Number(event.target.value) || 1)));
@@ -561,13 +623,6 @@
         $('gs-position').addEventListener('change', (event) => { state.position = event.target.value; render(); });
         $('gs-job').addEventListener('change', (event) => { state.job = Number(event.target.value); render(); });
         $('gs-rebirth').addEventListener('change', (event) => { state.rebirth = Number(event.target.value); render(); });
-        $('gs-max').addEventListener('click', () => {
-          const requiredBonus = Math.max(0, maxSkillPoints() - state.guildLv);
-          if (requiredBonus > 40) return;
-          state.skills = Object.fromEntries(GUILD_SKILLS.map((skill) => [skill.key, skill.max]));
-          state.heavenlyBonus = Math.max(state.heavenlyBonus, requiredBonus);
-          render();
-        });
         $('gs-reset').addEventListener('click', () => {
           state.guildLv = 200;
           state.heavenlyBonus = 0;
@@ -579,6 +634,10 @@
           state.flag = {};
           render();
         });
+        document.querySelectorAll('[data-tab]').forEach((button) => button.addEventListener('click', () => {
+          state.activeTab = button.dataset.tab;
+          render();
+        }));
         document.querySelectorAll('[data-skill]').forEach((button) => button.addEventListener('click', () => {
           const skill = skillByKey(button.dataset.skill);
           const delta = Number(button.dataset.delta) || 0;
@@ -589,6 +648,15 @@
           if (next) state.skills[skill.key] = next;
           else delete state.skills[skill.key];
           pruneSkills();
+          render();
+        }));
+        document.querySelectorAll('[data-skill-max]').forEach((button) => button.addEventListener('click', () => {
+          const skill = skillByKey(button.dataset.skillMax);
+          if (!skill || !prerequisitesMet(skill)) return;
+          const current = Number(state.skills[skill.key]) || 0;
+          const available = Math.max(0, guildPointCap() - usedPoints());
+          const next = Math.min(skill.max, current + available);
+          if (next > current) state.skills[skill.key] = next;
           render();
         }));
         document.querySelectorAll('[data-flag]').forEach((select) => select.addEventListener('change', () => {
@@ -615,8 +683,9 @@
         renderSettings();
         renderSummary();
         renderSkills();
-        renderFlags();
         renderStatues();
+        renderFlags();
+        renderTabs();
         bindEvents();
       }
 
