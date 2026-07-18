@@ -6933,18 +6933,23 @@ function buildItemDetailHtml(inv, rec, character) {
   html += `</div>`;
 
   html += `<div class="idp-section-title">&lt;基本情報&gt;</div>`;
-  if (rec.durability != null) {
-    html += `<span class="idp-row"><span class="idp-key">耐久力</span> <span class="idp-val">${rec.durability}</span></span>`;
-  }
-  if (rec.combat && (rec.combat.atkMin || rec.combat.atkMax)) {
-    const spdSec = rec.combat.speed ? (rec.combat.speed / 100).toFixed(2) + '秒' : '';
-    html += `<span class="idp-row"><span class="idp-key">攻撃力</span> <span class="idp-val">${rec.combat.atkMin}~${rec.combat.atkMax}</span>${spdSec ? ` (${spdSec})` : ''}</span>`;
-    if (rec.combat.range != null) {
-      html += `<span class="idp-row"><span class="idp-key">射程距離</span> <span class="idp-val">${rec.combat.range}</span></span>`;
+  const nonstandardBaseLines = rec.nonstandard && Array.isArray(rec.nonstandard.baseLines)
+    ? rec.nonstandard.baseLines.map((line) => String(line || '').trim()).filter(Boolean)
+    : [];
+  if (nonstandardBaseLines.length === 0) {
+    if (rec.durability != null) {
+      html += `<span class="idp-row"><span class="idp-key">耐久力</span> <span class="idp-val">${rec.durability}</span></span>`;
     }
-  }
-  if (rec.combat && rec.combat.def != null) {
-    html += `<span class="idp-row"><span class="idp-key">防御力</span> <span class="idp-val">+${rec.combat.def}</span></span>`;
+    if (rec.combat && (rec.combat.atkMin || rec.combat.atkMax)) {
+      const spdSec = rec.combat.speed ? (rec.combat.speed / 100).toFixed(2) + '秒' : '';
+      html += `<span class="idp-row"><span class="idp-key">攻撃力</span> <span class="idp-val">${rec.combat.atkMin}~${rec.combat.atkMax}</span>${spdSec ? ` (${spdSec})` : ''}</span>`;
+      if (rec.combat.range != null) {
+        html += `<span class="idp-row"><span class="idp-key">射程距離</span> <span class="idp-val">${rec.combat.range}</span></span>`;
+      }
+    }
+    if (rec.combat && rec.combat.def != null) {
+      html += `<span class="idp-row"><span class="idp-key">防御力</span> <span class="idp-val">+${rec.combat.def}</span></span>`;
+    }
   }
   
   const LvTemp = getEffectiveLv(character);
@@ -7027,6 +7032,12 @@ function buildItemDetailHtml(inv, rec, character) {
     }
     const opHtml = formatOpText(tpl, args, [0,0,0,0]);
     html += `<span class="idp-op is-base">- ${opHtml}</span>`;
+  }
+
+  if (nonstandardBaseLines.length > 0) {
+    for (const text of nonstandardBaseLines) {
+      html += `<span class="idp-op is-base">- ${esc(text)}</span>`;
+    }
   }
 
   function resolveOpTier(familyId, family, op) {
@@ -7159,6 +7170,11 @@ function buildItemDetailHtml(inv, rec, character) {
     html += `<span class="idp-op ${isNx ? 'is-nx' : ''}${extraClass}">- ${text}${isNx ? ' <span class="idp-nx-label">[Nx]</span>' : ''}</span>`;
   }
   
+  const hasAppliedOps = inv && Array.isArray(inv.ops)
+    && inv.ops.some((op) => op && op.familyId != null && op.familyId >= 0);
+  if (isNonstandardItem(rec) && hasAppliedOps) {
+    html += `<div class="idp-section-title" style="color:#cbe79b">&lt;付与OP&gt;</div>`;
+  }
   if (inv && Array.isArray(inv.ops)) {
     for (let i = 0; i < inv.ops.length; i++) {
       const op = inv.ops[i];
