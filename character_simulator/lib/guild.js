@@ -95,6 +95,7 @@ const STATUES = [
 
 const FLAG_EFFECTS = [
   { group: '支援バフ', key: 'experience', name: '獲得経験値', values: [5, 10, 15, 20, 25], unit: '%', stat: 'expBonus' },
+  { group: '支援バフ', key: 'experience-2000', name: 'レベル2000以降の獲得経験値', values: [5, 10, 15, 20, 25], unit: '%', stat: 'expBonus2000' },
   { group: '支援バフ', key: 'item-drop', name: 'アイテムドロップ率', values: [5, 10, 15, 20, 25], unit: '%', stat: 'mfDrop' },
   { group: '支援バフ', key: 'unique-drop', name: 'ユニークアイテムドロップ率', values: [20, 40, 60, 80, 100], unit: '%', stat: 'uniDrop' },
   { group: '支援バフ', key: 'dx-unique-drop', name: 'DXユニークアイテムドロップ率', values: [10, 20, 30, 40, 50], unit: '%', stat: 'guildFlagDxUniqueDrop' },

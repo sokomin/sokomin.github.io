@@ -1452,6 +1452,11 @@
       background: #120c04; color: #00ff66; border: 1px solid #8b6a28;
       font: inherit; padding: 2px 4px; box-sizing: border-box;
     }
+    .mapmon-source-select {
+      width: 100%; box-sizing: border-box; margin-bottom: 4px;
+      background: #120c04; color: #f4e7a2; border: 1px solid #8b6a28;
+      font: inherit; padding: 2px 4px;
+    }
     .mapmon-search-row .mapmon-hit-count {
       color: #b0944c; font-size: 11px; min-width: 56px; text-align: right;
     }
@@ -4604,6 +4609,11 @@
 
               <div class="mapmon-panel">
                 <h4>マップ選択</h4>
+                <select id="mapmon-map-source" class="mapmon-source-select">
+                  <option value="mapdb">通常マップ</option>
+                  <option value="gvg">GvG専用フィールド</option>
+                  <option value="secret">秘密ダンジョン</option>
+                </select>
                 <div class="mapmon-search-row">
                   <input type="search" id="mapmon-map-search" placeholder="マップ名で検索 (部分一致)" autocomplete="off">
                   <span class="mapmon-hit-count" id="mapmon-map-hit-count">-</span>
@@ -4616,7 +4626,7 @@
                   <span class="mapmon-empty">マップを選択してください</span>
                 </div>
 
-                <h4 style="margin-top:8px;">モンスター一覧</h4>
+                <h4 id="mapmon-monster-title" style="margin-top:8px;">モンスター一覧</h4>
                 <select id="mapmon-mob-list" class="mapmon-mob-list" size="14">
                   <option value="">マップを選択してください</option>
                 </select>
@@ -4723,6 +4733,7 @@ import { computeItemRequiredLv, computeRequiredLvBreakdown } from './lib/req_lv.
 import { calcOpValue, applyOpToSTTemp, aggregateAllOpsForItem } from './lib/op_calc.js';
 import { getEffectiveLv, PRIMARY_STAT_IDS } from './lib/character.js';
 import { computeAbilities } from './lib/abilities.js';
+import { buildPvpProfile } from './lib/pvp_profile.js';
 import { downloadCharacterReportXlsx } from './lib/excel_report.js';
 import { clampBaseStatsToFloor, computeBaseStatFloor, getAutoStatId, preserveAllocatedStatsForFloorChange, statTotal } from './lib/job_stats.js';
 import {
@@ -4814,9 +4825,13 @@ import {
 } from './lib/map_monster.js';
 import {
   loadMapMonsterModifiers,
-  getMapMonsterModifier, applyMapMonsterModifier,
+  getMapMonsterModifier, getSecretMapMonsterModifier, applyMapMonsterModifier,
   applyMapSubInfoToMonster,
 } from './lib/map_monster_modifiers.js';
+import {
+  loadSecretMapIndex, searchSecretMaps,
+  getSecretMapMeta, getMonstersForSecretMap,
+} from './lib/secret_map.js';
 import { applyMonsterLevel } from './lib/monster_level_calc.js';
 import { computePetStats, isPetCapableJob } from './lib/pet_calc.js';
 import { createGuildSystem } from './lib/guild.js';
@@ -7768,6 +7783,12 @@ function collectUnmappedOps(equippedList) {
 }
 
 function getCurrentMapSubInfo() {
+  if (mapMonsterState.source === 'gvg') {
+    return getGvgMap(mapMonsterState.gvgMapId);
+  }
+  if (mapMonsterState.source === 'secret') {
+    return getSecretMapMeta(mapMonsterState.secretMapId)?.subInfo || null;
+  }
   if (!mapMonsterDataLoaded) return null;
   if (mapMonsterState.mapId == null) return null;
   const meta = getMapMeta(mapMonsterState.mapId);
@@ -7775,6 +7796,11 @@ function getCurrentMapSubInfo() {
 }
 
 function getCurrentMapMonsterModifier() {
+  if (mapMonsterState.source === 'gvg') return null;
+  if (mapMonsterState.source === 'secret') {
+    const map = getSecretMapMeta(mapMonsterState.secretMapId);
+    return map ? getSecretMapMonsterModifier(map.key) : null;
+  }
   if (!mapMonsterDataLoaded) return null;
   if (mapMonsterState.mapId == null) return null;
   return getMapMonsterModifier(mapMonsterState.mapId);
@@ -7905,6 +7931,7 @@ async function recalcAll() {
   
   Titles.applyBerserkPostFinalize(f);
 
+  const preMapFinalStats = { ...f.equipped };
   const preMapEquippedStats = Object.create(null);
   for (const s of STAT_KEYS) preMapEquippedStats[s] = Number(f.equipped[s]) || 0;
   applyMapEffectsToCharacter(f, getCurrentMapSubInfo());
@@ -8298,6 +8325,9 @@ async function recalcAll() {
 
   lastFinalStats = f.equipped;
   lastAbilitySummary = { ...ab };
+  const neutralStats = { ...f.equipped, ...preMapFinalStats };
+  const neutralAbilities = computeAbilities(ch, { ...f, equipped: neutralStats }, equipped, loader);
+  lastPvpProfile = buildPvpProfile({ ...ch, realLv: getEffectiveLv(ch) }, neutralStats, neutralAbilities);
 
   try { DamageCalc.syncFromCharacter(ch, f, ab); }
   catch (e) { console.warn('[DamageCalc] sync failed:', e); }
@@ -8756,6 +8786,7 @@ function buildSnapshot() {
     compositionId: minipetState.compositionId || '',
   };
   snap.guild = Guild.getState();
+  if (lastPvpProfile) snap.pvpProfile = structuredClone(lastPvpProfile);
   return snap;
 }
 
@@ -9089,7 +9120,14 @@ async function buildBonusReportRows(character) {
 
   rows.push(...Guild.getReportRows());
 
-  if (mapMonsterState.mapId != null) {
+  if (mapMonsterState.source === 'gvg' && mapMonsterState.gvgMapId) {
+    const map = getGvgMap(mapMonsterState.gvgMapId);
+    pushReportRow(rows, 'フィールド', 'マップ', map?.name || '名称取得不可', 'GvG専用フィールド', '');
+  } else if (mapMonsterState.source === 'secret' && mapMonsterState.secretMapId) {
+    const map = getSecretMapMeta(mapMonsterState.secretMapId);
+    const monster = mapMonsterState.selectedMobid != null ? getMonsterById(mapMonsterState.selectedMobid) : null;
+    pushReportRow(rows, 'フィールド', 'マップ', map?.name || '名称取得不可', mapMonsterState.detailLv ? `対象Lv ${mapMonsterState.detailLv}` : '秘密ダンジョン', monster ? `対象モンスター: ${petDisplayName(monster)}` : '');
+  } else if (mapMonsterState.mapId != null) {
     const map = getMapMeta(mapMonsterState.mapId);
     const monster = mapMonsterState.selectedMobid != null ? getMonsterById(mapMonsterState.selectedMobid) : null;
     pushReportRow(rows, 'フィールド', 'マップ', map?.name || '名称取得不可', mapMonsterState.detailLv ? `対象Lv ${mapMonsterState.detailLv}` : '', monster ? `対象モンスター: ${petDisplayName(monster)}` : '');
@@ -9348,14 +9386,18 @@ async function loadSnapshot(data, sourceLabel) {
   loadBadgeState(data.badges);
 
   if (data.mapMonster && typeof data.mapMonster === 'object') {
+    const source = ['mapdb', 'gvg', 'secret'].includes(data.mapMonster.source) ? data.mapMonster.source : 'mapdb';
     mapMonsterState = {
+      source,
       mapId:           (data.mapMonster.mapId != null) ? Number(data.mapMonster.mapId) : null,
+      gvgMapId:        (typeof data.mapMonster.gvgMapId === 'string') ? data.mapMonster.gvgMapId : null,
+      secretMapId:     (typeof data.mapMonster.secretMapId === 'string') ? data.mapMonster.secretMapId : null,
       selectedMobid:   (data.mapMonster.selectedMobid != null) ? Number(data.mapMonster.selectedMobid) : null,
       selectedRowKey:  (typeof data.mapMonster.selectedRowKey === 'string') ? data.mapMonster.selectedRowKey : null,
       detailLv:        (data.mapMonster.detailLv != null) ? Number(data.mapMonster.detailLv) : null,
     };
   } else {
-    mapMonsterState = { mapId: null, selectedMobid: null, selectedRowKey: null, detailLv: null };
+    mapMonsterState = newMapMonsterState();
   }
 
   if (data.pet && Array.isArray(data.pet.slots)) {
@@ -9376,9 +9418,19 @@ async function loadSnapshot(data, sourceLabel) {
 
   if (data.guild) Guild.setState(data.guild);
   else Guild.reset();
-  if (mapMonsterInitialized && mapMonsterDataLoaded) {
+  if (mapMonsterInitialized && mapMonsterDataLoaded && gvgMapDataLoaded && secretMapDataLoaded) {
+    const source = $('mapmon-map-source');
+    if (source) source.value = mapMonsterState.source;
     refreshMapList($('mapmon-map-search')?.value || '');
-    if (mapMonsterState.mapId != null) {
+    if (mapMonsterState.source === 'gvg' && mapMonsterState.gvgMapId) {
+      const sel = $('mapmon-map-list');
+      if (sel) sel.value = mapMonsterState.gvgMapId;
+      renderGvgMapSelection(mapMonsterState.gvgMapId);
+    } else if (mapMonsterState.source === 'secret' && mapMonsterState.secretMapId) {
+      const sel = $('mapmon-map-list');
+      if (sel) sel.value = mapMonsterState.secretMapId;
+      renderSecretMapSelection(mapMonsterState.secretMapId);
+    } else if (mapMonsterState.mapId != null) {
       const sel = $('mapmon-map-list');
       if (sel) sel.value = String(mapMonsterState.mapId);
       renderMapSelection(mapMonsterState.mapId);
@@ -9913,10 +9965,32 @@ function resetBadgeState() {
 
 let mapMonsterInitialized = false;
 let mapMonsterDataLoaded  = false;
+let gvgMapDataLoaded      = false;
+let secretMapDataLoaded   = false;
+let gvgMaps               = [];
 
-let mapMonsterState = { mapId: null, selectedMobid: null, selectedRowKey: null, detailLv: null };
+function newMapMonsterState() {
+  return { source: 'mapdb', mapId: null, gvgMapId: null, secretMapId: null, selectedMobid: null, selectedRowKey: null, detailLv: null };
+}
+
+let mapMonsterState = newMapMonsterState();
 
 let currentMapMobs = [];
+
+async function loadGvgMapData() {
+  if (gvgMapDataLoaded) return gvgMaps;
+  const response = await fetch('./lib/data/pvp_maps.json');
+  if (!response.ok) throw new Error('GvGマップデータの読込に失敗しました (' + response.status + ')');
+  const data = await response.json();
+  if (!data || !Array.isArray(data.maps)) throw new Error('GvGマップデータの形式が不正です');
+  gvgMaps = data.maps.filter((map) => map && typeof map.id === 'string' && typeof map.name === 'string');
+  gvgMapDataLoaded = true;
+  return gvgMaps;
+}
+
+function getGvgMap(id) {
+  return gvgMaps.find((map) => map.id === id) || null;
+}
 
 async function initMapMonsterTab() {
   
@@ -9926,11 +10000,12 @@ async function initMapMonsterTab() {
   }
   const status = $('mapmon-map-info');
 
-  if (!mapMonsterDataLoaded) {
+  if (!mapMonsterDataLoaded || !gvgMapDataLoaded || !secretMapDataLoaded) {
     if (status) status.innerHTML = '<span class="mapmon-empty">マップデータ読込中…</span>';
     try {
-      await Promise.all([loadMapMonsterIndex(), loadMapMonsterModifiers()]);
+      await Promise.all([loadMapMonsterIndex(), loadMapMonsterModifiers(), loadGvgMapData(), loadSecretMapIndex()]);
       mapMonsterDataLoaded = true;
+      secretMapDataLoaded = true;
     } catch (err) {
       if (status) status.innerHTML = '<span class="mapmon-empty" style="color:#d77">読込失敗: ' + esc(err.message || String(err)) + '</span>';
       return;
@@ -9938,25 +10013,74 @@ async function initMapMonsterTab() {
   }
   
   await loadMapMonsterModifiers();
+  const source = $('mapmon-map-source');
+  if (source) source.value = mapMonsterState.source;
   refreshMapList($('mapmon-map-search')?.value || '');
-  if (mapMonsterState.mapId != null) {
+  if (mapMonsterState.source === 'gvg' && mapMonsterState.gvgMapId) {
+    const sel = $('mapmon-map-list');
+    if (sel) sel.value = mapMonsterState.gvgMapId;
+    renderGvgMapSelection(mapMonsterState.gvgMapId);
+  } else if (mapMonsterState.source === 'secret' && mapMonsterState.secretMapId) {
+    const sel = $('mapmon-map-list');
+    if (sel) sel.value = mapMonsterState.secretMapId;
+    renderSecretMapSelection(mapMonsterState.secretMapId);
+  } else if (mapMonsterState.mapId != null) {
     const sel = $('mapmon-map-list');
     if (sel) sel.value = String(mapMonsterState.mapId);
     renderMapSelection(mapMonsterState.mapId);
   } else {
-    if (status) status.innerHTML = '<span class="mapmon-empty">マップを選択してください</span>';
+    renderCurrentMapSelection();
   }
 }
 
 function bindMapMonsterControls() {
+  const source   = $('mapmon-map-source');
   const search  = $('mapmon-map-search');
   const mapSel  = $('mapmon-map-list');
   const mobSel  = $('mapmon-mob-list');
+  if (source) {
+    source.addEventListener('change', () => {
+      mapMonsterState.source = ['gvg', 'secret'].includes(source.value) ? source.value : 'mapdb';
+      mapMonsterState.selectedMobid = null;
+      mapMonsterState.selectedRowKey = null;
+      mapMonsterState.detailLv = null;
+      const input = $('mapmon-map-search');
+      if (input) input.value = '';
+      refreshMapList('');
+      renderCurrentMapSelection();
+      recalcAll().catch((e) => console.warn('[MapMonster] recalc failed:', e));
+      scheduleAutosave();
+    });
+  }
   if (search) {
     search.addEventListener('input', () => refreshMapList(search.value));
   }
   if (mapSel) {
     mapSel.addEventListener('change', () => {
+      if (mapMonsterState.source === 'gvg') {
+        const gvgMapId = mapSel.value;
+        if (!getGvgMap(gvgMapId)) return;
+        mapMonsterState.gvgMapId = gvgMapId;
+        mapMonsterState.selectedMobid = null;
+        mapMonsterState.selectedRowKey = null;
+        mapMonsterState.detailLv = null;
+        renderGvgMapSelection(gvgMapId);
+        recalcAll().catch((e) => console.warn('[MapMonster] recalc failed:', e));
+        scheduleAutosave();
+        return;
+      }
+      if (mapMonsterState.source === 'secret') {
+        const secretMapId = mapSel.value;
+        if (!getSecretMapMeta(secretMapId)) return;
+        mapMonsterState.secretMapId = secretMapId;
+        mapMonsterState.selectedMobid = null;
+        mapMonsterState.selectedRowKey = null;
+        mapMonsterState.detailLv = null;
+        renderSecretMapSelection(secretMapId);
+        recalcAll().catch((e) => console.warn('[MapMonster] recalc failed:', e));
+        scheduleAutosave();
+        return;
+      }
       const mapId = Number(mapSel.value);
       if (!Number.isFinite(mapId)) return;
       mapMonsterState.mapId          = mapId;
@@ -9986,10 +10110,33 @@ function bindMapMonsterControls() {
 }
 
 function refreshMapList(query) {
-  if (!mapMonsterDataLoaded) return;
+  if (!mapMonsterDataLoaded || !gvgMapDataLoaded || !secretMapDataLoaded) return;
   const sel = $('mapmon-map-list');
   const count = $('mapmon-map-hit-count');
   if (!sel) return;
+  if (mapMonsterState.source === 'gvg') {
+    const needle = String(query || '').trim().toLowerCase();
+    const hits = gvgMaps.filter((map) => !needle || map.name.toLowerCase().includes(needle));
+    sel.innerHTML = hits.map((map) => '<option value="' + esc(map.id) + '">' + esc(map.name) + '</option>').join('')
+      || '<option value="">該当マップなし</option>';
+    if (count) count.textContent = hits.length + ' 件';
+    if (mapMonsterState.gvgMapId && hits.some((map) => map.id === mapMonsterState.gvgMapId)) {
+      sel.value = mapMonsterState.gvgMapId;
+    }
+    return;
+  }
+  if (mapMonsterState.source === 'secret') {
+    const hits = searchSecretMaps(query);
+    sel.innerHTML = hits.map((map) => {
+      const floor = map.rmdIndex && map.rmdIndex !== '000' ? ` [${map.rmdIndex}]` : '';
+      return '<option value="' + esc(map.id) + '">' + esc(map.name + floor) + '</option>';
+    }).join('') || '<option value="">該当マップなし</option>';
+    if (count) count.textContent = hits.length + ' 件';
+    if (mapMonsterState.secretMapId && hits.some((map) => map.id === mapMonsterState.secretMapId)) {
+      sel.value = mapMonsterState.secretMapId;
+    }
+    return;
+  }
   const hits = searchMaps(query);
 
   let html = '';
@@ -10006,6 +10153,114 @@ function refreshMapList(query) {
   }
 }
 
+function renderCurrentMapSelection() {
+  if (mapMonsterState.source === 'gvg') {
+    if (mapMonsterState.gvgMapId) renderGvgMapSelection(mapMonsterState.gvgMapId);
+    else renderEmptyMapSelection('GvG専用フィールドを選択してください');
+    return;
+  }
+  if (mapMonsterState.source === 'secret') {
+    if (mapMonsterState.secretMapId) renderSecretMapSelection(mapMonsterState.secretMapId);
+    else renderEmptyMapSelection('秘密ダンジョンを選択してください');
+    return;
+  }
+  if (mapMonsterState.mapId != null) renderMapSelection(mapMonsterState.mapId);
+  else renderEmptyMapSelection('マップを選択してください');
+}
+
+function renderEmptyMapSelection(message) {
+  const info = $('mapmon-map-info');
+  if (info) info.innerHTML = '<span class="mapmon-empty">' + esc(message) + '</span>';
+  currentMapMobs = [];
+  const mobSel = $('mapmon-mob-list');
+  if (mobSel) {
+    mobSel.disabled = mapMonsterState.source === 'gvg';
+    mobSel.innerHTML = '<option value="">' + esc(message) + '</option>';
+  }
+  const title = $('mapmon-monster-title');
+  if (title) title.textContent = mapMonsterState.source === 'gvg' ? '対戦相手' : 'モンスター一覧';
+  const detail = $('mapmon-detail');
+  if (detail) detail.innerHTML = '<div class="mapmon-empty">' + esc(message) + '</div>';
+}
+
+function renderGvgMapSelection(gvgMapId) {
+  const map = getGvgMap(gvgMapId);
+  if (!map) {
+    renderEmptyMapSelection('該当するGvG専用フィールドがありません');
+    return;
+  }
+  const info = $('mapmon-map-info');
+  if (info) {
+    info.innerHTML = '<div class="mapmon-mname">' + esc(map.name) + '</div>'
+      + '<div>GvG専用フィールド / マップID ' + esc(map.mapId) + ' / サイズ ' + esc(map.size || '-') + '</div>'
+      + '<table class="mapmon-down-table"><thead>'
+      + '<tr><th>火</th><th>水</th><th>風</th><th>大地</th><th>光</th><th>闇</th><th>ステ低下</th><th>抵抗上限</th></tr>'
+      + '</thead><tbody><tr><td>' + esc(map.dfi) + '</td><td>' + esc(map.dwa) + '</td><td>' + esc(map.dwi)
+      + '</td><td>' + esc(map.dea) + '</td><td>' + esc(map.dli) + '</td><td>' + esc(map.dda)
+      + '</td><td>' + esc(map.st_down) + '</td><td>' + esc(map.lbd || 70) + '%</td></tr></tbody></table>';
+  }
+  currentMapMobs = [];
+  const mobSel = $('mapmon-mob-list');
+  if (mobSel) {
+    mobSel.disabled = true;
+    mobSel.innerHTML = '<option value="">PVPでは対戦相手データを使用します</option>';
+  }
+  const title = $('mapmon-monster-title');
+  if (title) title.textContent = '対戦相手';
+  const detail = $('mapmon-detail');
+  if (detail) detail.innerHTML = '<div class="mapmon-empty">このフィールドではモンスターを選択しません。PVPページで相手キャラクターデータを読み込んでください。</div>';
+}
+
+function renderSecretMapSelection(secretMapId) {
+  const map = getSecretMapMeta(secretMapId);
+  if (!map) {
+    renderEmptyMapSelection('該当する秘密ダンジョンがありません');
+    return;
+  }
+  const si = map.subInfo || {};
+  const modifier = getSecretMapMonsterModifier(map.key);
+  const info = $('mapmon-map-info');
+  if (info) {
+    info.innerHTML = '<div class="mapmon-mname">' + esc(map.name) + '</div>'
+      + '<div>秘密ダンジョン / ID ' + esc(map.secretId) + ' / 最低Lv ' + esc(map.levelMin || '-') + '</div>'
+      + '<table class="mapmon-down-table"><thead>'
+      + '<tr><th>火</th><th>水</th><th>風</th><th>大地</th><th>光</th><th>闇</th><th>ステ低下</th><th>抵抗上限</th></tr>'
+      + '</thead><tbody><tr><td>' + esc(si.dfi || 0) + '</td><td>' + esc(si.dwa || 0) + '</td><td>' + esc(si.dwi || 0)
+      + '</td><td>' + esc(si.dea || 0) + '</td><td>' + esc(si.dli || 0) + '</td><td>' + esc(si.dda || 0)
+      + '</td><td>' + esc(si.st_down || 0) + '</td><td>' + esc(si.lbd || 90) + '%</td></tr></tbody></table>'
+      + '<div style="margin-top:4px;">モンスター補正: HP x' + esc(modifier.hpMul)
+      + ' / ダメージカット ' + esc(modifier.damageCutPct) + '%</div>'
+      + '<div style="margin-top:2px;color:#b0944c;">モンスターLvは配置データから取得できないため、初期値にダンジョン最低Lvを使用します。</div>';
+  }
+
+  const mobs = getMonstersForSecretMap(secretMapId);
+  currentMapMobs = mobs;
+  const title = $('mapmon-monster-title');
+  if (title) title.textContent = 'モンスター一覧';
+  const mobSel = $('mapmon-mob-list');
+  if (mobSel) {
+    mobSel.disabled = false;
+    mobSel.innerHTML = mobs.map((row, index) => {
+      const lv = row.lvMin ? ` [初期Lv${row.lvMin}]` : '';
+      return '<option value="' + index + '">' + esc((row.mapMobName || row.monster.name) + lv) + '</option>';
+    }).join('') || '<option value="">取得可能なモンスター情報なし</option>';
+    let restoreIdx = -1;
+    if (mapMonsterState.selectedRowKey) {
+      restoreIdx = mobs.findIndex((row) => mobRowKey(row) === mapMonsterState.selectedRowKey);
+    }
+    if (restoreIdx < 0 && mapMonsterState.selectedMobid != null) {
+      restoreIdx = mobs.findIndex((row) => row.monster.id === Number(mapMonsterState.selectedMobid));
+    }
+    if (restoreIdx >= 0) {
+      mobSel.selectedIndex = restoreIdx;
+      renderMonsterDetailFromRow(mobs[restoreIdx]);
+      return;
+    }
+  }
+  const detail = $('mapmon-detail');
+  if (detail) detail.innerHTML = '<div class="mapmon-empty">モンスターを選択してください</div>';
+}
+
 function mobRowKey(row) {
   return row.monster.id + ':' + row.lvMin + '-' + row.lvMax + ':' + (row.mapMobName || '');
 }
@@ -10017,6 +10272,8 @@ function renderMapSelection(mapId) {
     if (info) info.innerHTML = '<span class="mapmon-empty">該当マップなし</span>';
     return;
   }
+  const title = $('mapmon-monster-title');
+  if (title) title.textContent = 'モンスター一覧';
   
   if (info) {
     let html = '<div class="mapmon-mname">' + esc(meta.name) + '</div>';
@@ -10045,6 +10302,7 @@ function renderMapSelection(mapId) {
   currentMapMobs = mobs;
   const mobSel = $('mapmon-mob-list');
   if (mobSel) {
+    mobSel.disabled = false;
     if (mobs.length === 0) {
       mobSel.innerHTML = '<option value="">出現モンスターなし</option>';
     } else {
@@ -10085,12 +10343,15 @@ function renderMonsterDetailFromRow(row) {
     return;
   }
   const raw = row.monster;
-  const meta = getMapMeta(mapMonsterState.mapId);
+  const secretMeta = mapMonsterState.source === 'secret' ? getSecretMapMeta(mapMonsterState.secretMapId) : null;
+  const meta = secretMeta || getMapMeta(mapMonsterState.mapId);
   const lvDefault = row.lvMin || row.lvMax || 1;
   const lvCurrent = (mapMonsterState.detailLv != null) ? Number(mapMonsterState.detailLv) : lvDefault;
   const leveled     = applyMonsterLevel(raw, lvCurrent, 0);
   const subAdjusted = applyMapSubInfoToMonster(leveled, meta?.subInfo);
-  const modifier    = getMapMonsterModifier(mapMonsterState.mapId);
+  const modifier    = secretMeta
+    ? getSecretMapMonsterModifier(secretMeta.key)
+    : getMapMonsterModifier(mapMonsterState.mapId);
   const final       = applyMapMonsterModifier(subAdjusted, modifier);
 
   const imgUrl = getMonsterImageUrl(raw);
@@ -10171,6 +10432,7 @@ let petUIInitialized = false;
 
 let lastFinalStats = null;
 let lastAbilitySummary = null;
+let lastPvpProfile = null;
 
 function getCharacterLvForPet() {
 
@@ -13519,7 +13781,8 @@ function bindSessionEvents() {
       button.disabled = false;
     }
   });
-  $('btn-save-file').addEventListener('click', () => {
+  $('btn-save-file').addEventListener('click', async () => {
+    await recalcAll();
     const data = buildSnapshot();
     const ts = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
     downloadJsonFile(`character_session_${ts}.json`, data);
@@ -13598,7 +13861,7 @@ function bindSessionEvents() {
     refreshCurrentOpSearchResults();
     refreshSelectedOpLabels();
     
-    mapMonsterState = { mapId: null, selectedMobid: null, selectedRowKey: null, detailLv: null };
+    mapMonsterState = newMapMonsterState();
     
     petState.slots = [null, null, null];
     if (petUIInitialized) renderPetTab();
@@ -13610,13 +13873,10 @@ function bindSessionEvents() {
     if (mapMonsterInitialized) {
       const search = $('mapmon-map-search');
       if (search) search.value = '';
-      if (mapMonsterDataLoaded) refreshMapList('');
-      const info = $('mapmon-map-info');
-      if (info) info.innerHTML = '<span class="mapmon-empty">マップを選択してください</span>';
-      const mobSel = $('mapmon-mob-list');
-      if (mobSel) mobSel.innerHTML = '<option value="">マップを選択してください</option>';
-      const detail = $('mapmon-detail');
-      if (detail) detail.innerHTML = '<div class="mapmon-empty">モンスターを選択してください</div>';
+      const source = $('mapmon-map-source');
+      if (source) source.value = 'mapdb';
+      if (mapMonsterDataLoaded && gvgMapDataLoaded && secretMapDataLoaded) refreshMapList('');
+      renderEmptyMapSelection('マップを選択してください');
     }
       await recalcAll();
       await refreshItemList();
@@ -19603,9 +19863,14 @@ async function main() {
     if (creatureBookUIInitialized) renderCreatureBookTab();
   }).catch(() => {  });
 
-  Promise.all([loadMapMonsterIndex(), loadMapMonsterModifiers()]).then(async () => {
+  Promise.all([loadMapMonsterIndex(), loadMapMonsterModifiers(), loadGvgMapData(), loadSecretMapIndex()]).then(async () => {
     mapMonsterDataLoaded = true;
-    if (mapMonsterState.mapId != null) await recalcAll();
+    secretMapDataLoaded = true;
+    if ((mapMonsterState.source === 'gvg' && mapMonsterState.gvgMapId)
+      || (mapMonsterState.source === 'secret' && mapMonsterState.secretMapId)
+      || mapMonsterState.mapId != null) {
+      await recalcAll();
+    }
   }).catch((e) => console.warn('[MapMonster] preload failed:', e));
 }
 

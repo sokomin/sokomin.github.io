@@ -15,18 +15,27 @@ export const MAP_MONSTER_MOD_TABLE = {
 };
 
 const MODIFIER_CSV_URL = './lib/data/map_monster_modifiers.csv';
+const SECRET_MODIFIER_CSV_URL = './lib/data/secret_map_monster_modifiers.csv';
 let csvModifierTable = {};
+let secretCsvModifierTable = {};
 let csvLoadPromise = null;
 
 export async function loadMapMonsterModifiers(url = MODIFIER_CSV_URL) {
   if (csvLoadPromise) return csvLoadPromise;
   csvLoadPromise = (async () => {
-    const res = await fetch(url);
+    const [res, secretRes] = await Promise.all([fetch(url), fetch(SECRET_MODIFIER_CSV_URL)]);
     if (!res.ok) throw new Error('fetch failed: ' + url + ' status=' + res.status);
+    if (!secretRes.ok) throw new Error('fetch failed: ' + SECRET_MODIFIER_CSV_URL + ' status=' + secretRes.status);
     csvModifierTable = parseModifierCsv(await res.text());
+    secretCsvModifierTable = parseSecretModifierCsv(await secretRes.text());
     return csvModifierTable;
   })();
   return csvLoadPromise;
+}
+
+export function getSecretMapMonsterModifier(secretKey) {
+  const override = secretCsvModifierTable[String(secretKey || '')];
+  return mergeWithIdentity(override);
 }
 
 export function getMapMonsterModifier(mapId) {
@@ -156,6 +165,62 @@ function parseModifierCsv(text) {
     };
   }
   return out;
+}
+
+function parseSecretModifierCsv(text) {
+  const out = {};
+  if (text == null) return out;
+  if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
+  const lines = text.split(/\r?\n/).filter((line) => line.trim() !== '');
+  if (lines.length <= 1) return out;
+  const headers = splitCsvLine(lines[0]).map((header) => header.trim());
+  for (let i = 1; i < lines.length; i++) {
+    const cells = splitCsvLine(lines[i]);
+    const row = {};
+    for (let j = 0; j < headers.length; j++) row[headers[j]] = cells[j] != null ? cells[j].trim() : '';
+    if (!row.secretKey) continue;
+    out[row.secretKey] = rowToModifier(row);
+  }
+  return out;
+}
+
+function rowToModifier(row) {
+  return {
+    hpMul: readOptionalNumber(row.hpMul),
+    atkMul: readOptionalNumber(row.atkMul),
+    defMul: readOptionalNumber(row.defMul),
+    statMul: readOptionalNumber(row.statMul),
+    damageCutPct: readOptionalNumber(row.damageCutPct),
+    resAdd: {
+      fire: readOptionalNumber(row.fireResAdd),
+      water: readOptionalNumber(row.waterResAdd),
+      wind: readOptionalNumber(row.windResAdd),
+      earth: readOptionalNumber(row.earthResAdd),
+      light: readOptionalNumber(row.lightResAdd),
+      dark: readOptionalNumber(row.darkResAdd),
+    },
+    extraNotes: row.extraNotes || '',
+  };
+}
+
+function mergeWithIdentity(override) {
+  if (!override) return IDENTITY_MODIFIER;
+  return {
+    hpMul: override.hpMul ?? 1.0,
+    atkMul: override.atkMul ?? 1.0,
+    defMul: override.defMul ?? 1.0,
+    statMul: override.statMul ?? 1.0,
+    damageCutPct: override.damageCutPct ?? 0,
+    resAdd: {
+      fire: override.resAdd?.fire ?? 0,
+      water: override.resAdd?.water ?? 0,
+      wind: override.resAdd?.wind ?? 0,
+      earth: override.resAdd?.earth ?? 0,
+      light: override.resAdd?.light ?? 0,
+      dark: override.resAdd?.dark ?? 0,
+    },
+    extraNotes: override.extraNotes || '',
+  };
 }
 
 function readOptionalNumber(v) {

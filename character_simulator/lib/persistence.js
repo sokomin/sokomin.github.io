@@ -24,6 +24,7 @@ const SESSION_TOP_LEVEL_KEYS = new Set([
   'v', 'saved', 'character', 'inventory', 'settings', 'skills', 'creature',
   'titles', 'dragon', 'missionBook', 'potential', 'costume', 'transSkill',
   'bloodRecord', 'omniSkill', 'badges', 'mapMonster', 'pet', 'minipet', 'guild',
+  'pvpProfile',
 ]);
 const DANGEROUS_OBJECT_KEYS = new Set(['__proto__', 'prototype', 'constructor']);
 const SESSION_MAX_DEPTH = 24;
@@ -92,7 +93,7 @@ export function validateSessionData(data) {
     throw new Error(`persistence: inventory exceeds ${SESSION_CAPACITY_MODEL.inventoryEntries} entries`);
   }
   for (const key of ['settings', 'skills', 'creature', 'titles', 'dragon', 'missionBook', 'potential',
-    'costume', 'transSkill', 'bloodRecord', 'omniSkill', 'badges', 'mapMonster', 'pet', 'minipet', 'guild']) {
+    'costume', 'transSkill', 'bloodRecord', 'omniSkill', 'badges', 'mapMonster', 'pet', 'minipet', 'guild', 'pvpProfile']) {
     assertOptionalObject(data, key);
   }
   if (data.skills && Object.keys(data.skills).length > 32) throw new Error('persistence: too many skill job states');
