@@ -66,6 +66,27 @@ export function updateEquipmentMetadata(inv, item, character, opts = {}) {
 }
 
 
+
+export function refreshEquipmentRequirementsFromFinalStats(entries, character, finalStats, opts = {}) {
+  const sourceStats = character?.stats || {};
+  const resolvedFinalStats = finalStats || sourceStats.equipped || {};
+  const checkCharacter = {
+    ...character,
+    stats: {
+      ...sourceStats,
+      base: Object.assign(Object.create(null), sourceStats.base || {}),
+      equipped: Object.assign(Object.create(null), resolvedFinalStats),
+      maxEquipped: Object.assign(Object.create(null), resolvedFinalStats),
+    },
+  };
+
+  for (const entry of entries || []) {
+    if (!entry?.inv || !entry?.item) continue;
+    updateEquipmentMetadata(entry.inv, entry.item, checkCharacter, opts);
+  }
+  return entries;
+}
+
 export function isJobAllowed(item, character) {
   if (!item || !item.req) return true;
   const t = item.req.jobType;

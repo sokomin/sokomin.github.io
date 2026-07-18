@@ -4728,7 +4728,10 @@ import { newSTTemp, debugSnapshot } from './lib/sttemp.js';
 import { aggregateForCharacter } from './lib/stat_aggregator.js';
 import { finalizeStats } from './lib/stat_finalizer.js';
 import { formatOpText, stripOpTags } from './lib/op_text_formatter.js';
-import { updateEquipmentMetadata } from './lib/equipment_meta.js';
+import {
+  refreshEquipmentRequirementsFromFinalStats,
+  updateEquipmentMetadata,
+} from './lib/equipment_meta.js';
 import { computeItemRequiredLv, computeRequiredLvBreakdown } from './lib/req_lv.js';
 import { calcOpValue, applyOpToSTTemp, aggregateAllOpsForItem } from './lib/op_calc.js';
 import { getEffectiveLv, PRIMARY_STAT_IDS } from './lib/character.js';
@@ -6717,7 +6720,7 @@ function mismatchLabel(reason) {
   if (!reason) return '';
   if (reason === 'job') return '職業不適合';
   if (reason === 'kurone') return '朱洛星変身時間不足';
-  if (reason === 'partial') return '循環依存 (装備込みで満たす)';
+  if (reason === 'partial') return '装備可能 (基礎ステータス不足・補正込みで満たす)';
   if (reason.startsWith('lv:')) {
     const [eff, req] = reason.slice(3).split('/');
     return `Lv不足 (${eff}/${req})`;
@@ -7950,6 +7953,7 @@ async function recalcAll() {
   const preMapFinalStats = { ...f.equipped };
   const preMapEquippedStats = Object.create(null);
   for (const s of STAT_KEYS) preMapEquippedStats[s] = Number(f.equipped[s]) || 0;
+  refreshEquipmentRequirementsFromFinalStats(equipped, ch, preMapFinalStats);
   applyMapEffectsToCharacter(f, getCurrentMapSubInfo());
 
   const wisdomVal = Number(f.equipped.wiz || ch.stats.base.wiz) || 0;
