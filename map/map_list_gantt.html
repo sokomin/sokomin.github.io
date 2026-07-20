@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=960">
+  <title>レベル帯から探す マップ一覧　赤石の民衆</title>
+  <meta name="description" content="RED STONEの狩場マップを適正レベル順に並べ、Lv1からLv2060までのレベル帯を横長のバーで比較できる一覧です。" />
+  <meta name="keywords" content="RED STONE,レッドストーン,赤石の民衆,マップ,狩場,適正レベル,レベル帯" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=ja" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://sokomin.github.io/material.indigo-pink.min.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+  <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    if (location.protocol !== 'file:') {
+      gtag('config', 'UA-133658114-1');
+    }
+  </script>
+  <script src="../design/jquery-3.4.1.min.js"></script>
+  <script>
+    function enter(event) {
+      if (event.key === 'Enter') {
+        var keyword = document.getElementById('search-field').value;
+        window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + encodeURIComponent(keyword);
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --name-column: 310px;
+      --level-width: 2px;
+      --timeline-width: 4120px;
+      --row-height: 50px;
+      --line: #d9dde6;
+      --ink: #263238;
+      --muted: #65737e;
+      --red: #c62828;
+      --red-dark: #8e0000;
+      --mirror: #3f51b5;
+      --focus: #ffb300;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    .map-level-content {
+      padding: 28px 18px 56px;
+      color: var(--ink);
+    }
+
+    .map-level-inner {
+      width: min(1180px, calc(100vw - 36px));
+      min-width: 880px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .map-level-heading {
+      margin: 0 0 8px;
+      color: #263238;
+      font-size: 30px;
+      font-weight: 500;
+      letter-spacing: .02em;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .map-level-lead {
+      margin: 0 0 22px;
+      color: #546e7a;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .view-switcher {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid #d7dbe2;
+    }
+
+    .view-switcher a,
+    .view-switcher span {
+      display: inline-block;
+      padding: 10px 16px 9px;
+      color: #546e7a;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    .view-switcher .is-current {
+      margin-bottom: -1px;
+      border-bottom: 3px solid var(--red);
+      color: var(--red);
+      font-weight: 700;
+    }
+
+    .chart-panel {
+      overflow: hidden;
+      border: 1px solid #cdd3dc;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 3px 14px rgba(32, 48, 64, .08);
+    }
+
+    .chart-controls {
+      display: grid;
+      grid-template-columns: minmax(210px, 1fr) minmax(310px, 1.4fr) auto;
+      gap: 16px 22px;
+      align-items: end;
+      padding: 18px 20px 15px;
+      border-bottom: 1px solid var(--line);
+      background: #fafbfc;
+    }
+
+    .control-field {
+      min-width: 0;
+    }
+
+    .control-label {
+      display: block;
+      margin-bottom: 7px;
+      color: #455a64;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .06em;
+    }
+
+    .map-search {
+      width: 100%;
+      height: 38px;
+      padding: 0 12px;
+      border: 1px solid #aeb8c4;
+      border-radius: 4px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+    }
+
+    .map-search:focus,
+    .level-number:focus {
+      border-color: #3f51b5;
+      outline: 2px solid rgba(63, 81, 181, .16);
+      outline-offset: 1px;
+    }
+
+    .level-control-row {
+      display: grid;
+      grid-template-columns: 70px 1fr;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .level-number {
+      height: 38px;
+      padding: 0 8px;
+      border: 1px solid #aeb8c4;
+      border-radius: 4px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      text-align: right;
+    }
+
+    .level-range {
+      width: 100%;
+      accent-color: var(--red);
+      cursor: pointer;
+    }
+
+    .mirror-toggle {
+      display: flex;
+      gap: 9px;
+      align-items: center;
+      min-height: 38px;
+      color: #455a64;
+      font-size: 14px;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .mirror-toggle input {
+      width: 17px;
+      height: 17px;
+      accent-color: var(--mirror);
+    }
+
+    .chart-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      align-items: center;
+      padding: 10px 20px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .summary-count {
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .legend {
+      display: inline-flex;
+      gap: 15px;
+      align-items: center;
+      margin-left: auto;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .legend-swatch {
+      width: 22px;
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--red-dark), #e53935);
+    }
+
+    .legend-swatch.is-mirror {
+      background: linear-gradient(90deg, #283593, #5c6bc0);
+    }
+
+    .scroll-guide {
+      display: grid;
+      grid-template-columns: var(--name-column) minmax(0, 1fr);
+      min-height: 25px;
+      border-bottom: 1px solid var(--line);
+      background: #f4f6f8;
+    }
+
+    .scroll-guide-label {
+      display: flex;
+      align-items: center;
+      padding-left: 14px;
+      border-right: 1px solid var(--line);
+      color: #7b8790;
+      font-size: 11px;
+    }
+
+    .top-scroll {
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-color: #9aa5b1 #e4e8ec;
+      scrollbar-width: auto;
+    }
+
+    .top-scroll-inner {
+      width: var(--timeline-width);
+      height: 1px;
+    }
+
+    .chart-viewport {
+      max-height: 690px;
+      overflow: auto;
+      background: #fff;
+      scrollbar-color: #9aa5b1 #e4e8ec;
+      scrollbar-width: auto;
+    }
+
+    .chart-grid {
+      display: grid;
+      grid-template-columns: var(--name-column) var(--timeline-width);
+      width: calc(var(--name-column) + var(--timeline-width));
+      min-height: 112px;
+    }
+
+    .chart-corner,
+    .level-axis {
+      position: sticky;
+      top: 0;
+      z-index: 4;
+      height: 62px;
+      border-bottom: 1px solid #aeb8c4;
+      background: #f5f7f9;
+    }
+
+    .chart-corner {
+      left: 0;
+      z-index: 6;
+      display: flex;
+      align-items: flex-end;
+      padding: 0 14px 11px;
+      border-right: 1px solid #aeb8c4;
+      color: #455a64;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .level-axis {
+      position: sticky;
+      top: 0;
+      overflow: hidden;
+      background-color: #f5f7f9;
+      background-image:
+        repeating-linear-gradient(to right, rgba(85, 99, 112, .15) 0, rgba(85, 99, 112, .15) 1px, transparent 1px, transparent 100px),
+        repeating-linear-gradient(to right, rgba(85, 99, 112, .24) 0, rgba(85, 99, 112, .24) 1px, transparent 1px, transparent 200px);
+    }
+
+    .axis-title {
+      position: absolute;
+      top: 8px;
+      left: 12px;
+      color: #7b8790;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .12em;
+    }
+
+    .axis-tick {
+      position: absolute;
+      bottom: 9px;
+      transform: translateX(-50%);
+      color: #455a64;
+      font-size: 11px;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .axis-tick.is-first {
+      transform: none;
+    }
+
+    .axis-tick.is-last {
+      transform: translateX(-100%);
+    }
+
+    .map-name-cell,
+    .timeline-cell {
+      min-height: var(--row-height);
+      border-bottom: 1px solid #edf0f3;
+    }
+
+    .map-name-cell {
+      position: sticky;
+      left: 0;
+      z-index: 3;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 7px 12px 7px 14px;
+      border-right: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .map-row-even.map-name-cell,
+    .map-row-even.timeline-cell {
+      background-color: #fafbfc;
+    }
+
+    .map-name-main {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .map-name-link {
+      display: block;
+      overflow: hidden;
+      color: #263238;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.35;
+      text-decoration: none;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .map-name-link:hover,
+    .map-name-link:focus {
+      color: var(--red);
+      text-decoration: underline;
+    }
+
+    .map-level-text {
+      margin-top: 3px;
+      color: #78909c;
+      font-size: 11px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .premium-badge {
+      flex: 0 0 auto;
+      padding: 2px 5px;
+      border: 1px solid #d5a000;
+      border-radius: 3px;
+      background: #fff8d6;
+      color: #8a6300;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .timeline-cell {
+      position: relative;
+      background-image:
+        repeating-linear-gradient(to right, rgba(106, 118, 128, .075) 0, rgba(106, 118, 128, .075) 1px, transparent 1px, transparent 100px),
+        repeating-linear-gradient(to right, rgba(106, 118, 128, .13) 0, rgba(106, 118, 128, .13) 1px, transparent 1px, transparent 200px);
+    }
+
+    .level-bar {
+      position: absolute;
+      top: 12px;
+      height: 26px;
+      min-width: 6px;
+      overflow: visible;
+      border: 1px solid var(--red-dark);
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--red-dark), #e53935);
+      box-shadow: 0 1px 2px rgba(90, 0, 0, .18);
+      color: #fff;
+      text-decoration: none;
+      transition: filter .12s ease, transform .12s ease;
+    }
+
+    .level-bar.is-mirror {
+      border-color: #283593;
+      background: linear-gradient(90deg, #283593, #5c6bc0);
+    }
+
+    .level-bar:hover,
+    .level-bar:focus {
+      z-index: 2;
+      filter: brightness(1.12);
+      outline: 2px solid rgba(255, 179, 0, .85);
+      outline-offset: 2px;
+      transform: translateY(-1px);
+    }
+
+    .level-bar-label {
+      position: absolute;
+      top: 50%;
+      left: 7px;
+      transform: translateY(-50%);
+      font-size: 10px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+      white-space: nowrap;
+      text-shadow: 0 1px 1px rgba(0, 0, 0, .45);
+      pointer-events: none;
+    }
+
+    .map-preview {
+      position: fixed;
+      z-index: 1200;
+      display: none;
+      width: 320px;
+      overflow: hidden;
+      border: 1px solid #aeb8c4;
+      border-radius: 7px;
+      background: #fff;
+      box-shadow: 0 10px 28px rgba(20, 32, 42, .28);
+      pointer-events: none;
+    }
+
+    .map-preview.is-visible {
+      display: block;
+    }
+
+    .map-preview-header {
+      padding: 10px 12px 9px;
+      border-bottom: 1px solid #dfe3e8;
+      background: #f8f9fb;
+    }
+
+    .map-preview-name {
+      display: block;
+      overflow: hidden;
+      color: #263238;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.35;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .map-preview-level {
+      display: block;
+      margin-top: 3px;
+      color: #78909c;
+      font-size: 11px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .map-preview-stage {
+      display: flex;
+      height: 240px;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      background:
+        linear-gradient(45deg, #eceff1 25%, transparent 25%, transparent 75%, #eceff1 75%),
+        linear-gradient(45deg, #eceff1 25%, #f8f9fa 25%, #f8f9fa 75%, #eceff1 75%);
+      background-position: 0 0, 8px 8px;
+      background-size: 16px 16px;
+    }
+
+    .map-preview-image {
+      display: block;
+      max-width: 298px;
+      max-height: 220px;
+      object-fit: contain;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .18));
+    }
+
+    .map-preview-message {
+      margin: 0;
+      color: #607d8b;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .level-cursor {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      z-index: 1;
+      width: 2px;
+      background: rgba(255, 179, 0, .9);
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, .65);
+      pointer-events: none;
+    }
+
+    .level-cursor::before {
+      content: "";
+      position: absolute;
+      top: -1px;
+      left: -3px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--focus);
+    }
+
+    .map-name-cell.is-level-match {
+      background: #fff7db;
+      box-shadow: inset 4px 0 0 var(--focus);
+    }
+
+    .timeline-cell.is-level-match {
+      background-color: #fffdf4;
+    }
+
+    .empty-state {
+      grid-column: 1 / -1;
+      padding: 50px 24px;
+      color: #607d8b;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .chart-note {
+      margin: 14px 3px 0;
+      color: #6d7982;
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    .chart-note strong {
+      color: #455a64;
+    }
+
+    @media (max-width: 980px) {
+      .map-level-inner {
+        width: 920px;
+      }
+
+      .chart-controls {
+        grid-template-columns: 1fr 1.4fr;
+      }
+
+      .mirror-toggle {
+        grid-column: 1 / -1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <a name="container"></a>
+
+    <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+      <div class="mdl-layout__header-row">
+        <span class="android-title mdl-layout-title">
+          <a href="../index.html">
+            <img class="android-logo-image" src="../design/logo3.png" alt="赤石の民衆" />
+          </a>
+        </span>
+        <div class="android-header-spacer mdl-layout-spacer"></div>
+        <div
+          class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+              onkeydown="enter(event);" id="search-field" />
+          </div>
+        </div>
+        <div class="android-navigation-container">
+          <nav class="android-navigation mdl-navigation">
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="../index.html">ホーム</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="../calculator.html">計算機</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="../history.html">赤石史</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="../link.html">リンク</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+          </nav>
+        </div>
+        <span class="android-mobile-title mdl-layout-title">
+          <a href="../index.html">
+            <img class="android-logo-image" src="../design/logo3.png" alt="赤石の民衆" />
+          </a>
+        </span>
+        <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+          id="more-button">
+          <i class="material-icons">more_vert</i>
+        </button>
+        <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="../calculator.html">計算機</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="../history.html">赤石史</a></li>
+          <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="../link.html">リンク</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="android-drawer mdl-layout__drawer">
+      <span class="mdl-layout-title">
+        <h2>メニュー</h2>
+      </span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link sokomin-layout-item"
+          href="../item/item.html"><strong>アイテム</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-skill"
+          href="../skill/skill.html"><strong>スキル</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt"
+          href="../monster/monster.html"><strong>モンスター</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt"
+          href="../secret/secret.html"><strong>ダンジョン</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-quest"
+          href="../quest/quest.html"><strong>クエスト</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-guild"
+          href="../guild/guild.html"><strong>ギルド</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-friend"
+          href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-info"
+          href="../information/information.html"><strong>雑学</strong></a>
+      </nav>
+    </div>
+
+    <div class="android-large-table mdl-layout__content">
+      <main class="main-background mdl-typography--text-center map-level-content">
+        <div class="map-level-inner">
+          <h1 class="map-level-heading">レベル帯から探す マップ一覧</h1>
+          <p class="map-level-lead">
+            適正レベルが登録されている狩場を、開始レベルが低い順に並べています。<br>
+            右側のバーを横に動かして、Lv1からLv2060までの重なりを比較できます。
+          </p>
+
+          <nav class="view-switcher" aria-label="マップ一覧の表示方法">
+            <a href="../map/map_list.html">通常の一覧</a>
+            <span class="is-current" aria-current="page">レベル帯表示</span>
+          </nav>
+
+          <section class="chart-panel" aria-labelledby="chart-heading">
+            <h2 id="chart-heading" class="visually-hidden">狩場レベル帯チャート</h2>
+
+            <div class="chart-controls">
+              <div class="control-field">
+                <label class="control-label" for="map-filter">マップ名で絞り込み</label>
+                <input class="map-search" type="search" id="map-filter" placeholder="例：ヤティカヌ、地下墓地">
+              </div>
+
+              <div class="control-field">
+                <label class="control-label" for="level-range">表示レベル</label>
+                <div class="level-control-row">
+                  <input class="level-number" type="number" id="level-number" min="1" max="2060" value="1"
+                    aria-label="表示レベルを数値で指定">
+                  <input class="level-range" type="range" id="level-range" min="1" max="2060" value="1"
+                    aria-label="表示レベルをスライダーで指定">
+                </div>
+              </div>
+
+              <label class="mirror-toggle">
+                <input type="checkbox" id="mirror-toggle">
+                ミラーマップも表示
+              </label>
+            </div>
+
+            <div class="chart-summary" aria-live="polite">
+              <span><span class="summary-count" id="visible-count">0</span>件を表示</span>
+              <span id="match-count">Lv1に該当する狩場：0件</span>
+              <span class="legend" aria-label="バーの色">
+                <span class="legend-item"><span class="legend-swatch"></span>通常マップ</span>
+                <span class="legend-item"><span class="legend-swatch is-mirror"></span>ミラーマップ</span>
+              </span>
+            </div>
+
+            <div class="scroll-guide" aria-hidden="true">
+              <div class="scroll-guide-label">横スクロール</div>
+              <div class="top-scroll" id="top-scroll">
+                <div class="top-scroll-inner"></div>
+              </div>
+            </div>
+
+            <div class="chart-viewport" id="chart-viewport" tabindex="0"
+              aria-label="マップ名を左列に固定したレベル帯チャート。横方向にLv1からLv2060、縦方向にマップが並びます。">
+              <div class="chart-grid" id="chart-grid">
+                <div class="chart-corner">マップ名 / 適正Lv</div>
+                <div class="level-axis" id="level-axis">
+                  <span class="axis-title">LEVEL</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="map-preview" id="map-preview" role="tooltip" aria-hidden="true">
+              <div class="map-preview-header">
+                <span class="map-preview-name" id="map-preview-name"></span>
+                <span class="map-preview-level" id="map-preview-level"></span>
+              </div>
+              <div class="map-preview-stage">
+                <img class="map-preview-image" id="map-preview-image" alt="" hidden>
+                <p class="map-preview-message" id="map-preview-message">ミニマップ画像がありません。</p>
+              </div>
+            </div>
+          </section>
+
+          <p class="chart-note">
+            <strong>見方：</strong>バーの左端が適正レベルの下限、右端が上限です。バーにカーソルを合わせるとミニマップを表示し、選ぶとマップの詳細を開きます。<br>
+            レベル帯が登録されていない街・イベント用マップなどは、この表示には含まれません。
+          </p>
+        </div>
+      </main>
+
+      <footer class="android-footer mdl-mega-footer">
+        <font color="red">
+          当サイトで利用している画像及びデータは、L&amp;K Co., Ltd.に帰属します。<br>
+          許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+        </font>
+        © L&amp;K Co., Ltd. All Rights Reserved.<br>
+      </footer>
+
+      <script src="../map/database/mapdata.js"></script>
+      <script>
+        (function () {
+          'use strict';
+
+          var LEVEL_MIN = 1;
+          var LEVEL_MAX = 2060;
+          var PIXELS_PER_LEVEL = 2;
+          var hiddenMapIds = new Set([27, 28, 438, 555, 799, 801, 9999]);
+          var chartGrid = document.getElementById('chart-grid');
+          var levelAxis = document.getElementById('level-axis');
+          var viewport = document.getElementById('chart-viewport');
+          var topScroll = document.getElementById('top-scroll');
+          var mapFilter = document.getElementById('map-filter');
+          var mirrorToggle = document.getElementById('mirror-toggle');
+          var levelRange = document.getElementById('level-range');
+          var levelNumber = document.getElementById('level-number');
+          var visibleCount = document.getElementById('visible-count');
+          var matchCount = document.getElementById('match-count');
+          var mapPreview = document.getElementById('map-preview');
+          var previewName = document.getElementById('map-preview-name');
+          var previewLevel = document.getElementById('map-preview-level');
+          var previewImage = document.getElementById('map-preview-image');
+          var previewMessage = document.getElementById('map-preview-message');
+          var maps = [];
+          var renderedRows = [];
+          var previewCandidates = [];
+          var previewCandidateIndex = 0;
+
+          function normalize(value) {
+            return String(value || '').normalize('NFKC').replace(/[\s\u3000]+/g, '').toLowerCase();
+          }
+
+          function clampLevel(value) {
+            var number = Number(value);
+            if (!Number.isFinite(number)) return LEVEL_MIN;
+            return Math.min(LEVEL_MAX, Math.max(LEVEL_MIN, Math.round(number)));
+          }
+
+          function isMirrorMap(map) {
+            return map.name.indexOf('ミラーダンジョン') !== -1;
+          }
+
+          function encodeImageName(filename) {
+            return encodeURIComponent(filename).replace(/%2F/gi, '/');
+          }
+
+          function getMapImageCandidates(map) {
+            var candidates = [];
+
+            if (map.image) {
+              candidates.push('https://sokomin.github.io/sokomin_repository/db/map/' + encodeImageName(map.image));
+            }
+            if (map.blackImage) {
+              candidates.push('https://sokomin.github.io/sokomin_repository/db/map_img/' + encodeImageName(map.blackImage));
+            }
+
+            return candidates;
+          }
+
+          function positionMapPreview(clientX, clientY, anchor) {
+            var gap = 16;
+            var viewportWidth = document.documentElement.clientWidth;
+            var viewportHeight = document.documentElement.clientHeight;
+            var box = mapPreview.getBoundingClientRect();
+            var anchorBox = anchor ? anchor.getBoundingClientRect() : null;
+            var x = Number.isFinite(clientX) ? clientX + gap : anchorBox.right + gap;
+            var y = Number.isFinite(clientY) ? clientY + gap : anchorBox.top;
+
+            if (x + box.width > viewportWidth - 10) {
+              x = (Number.isFinite(clientX) ? clientX : anchorBox.left) - box.width - gap;
+            }
+            if (y + box.height > viewportHeight - 10) {
+              y = viewportHeight - box.height - 10;
+            }
+
+            mapPreview.style.left = Math.max(10, x) + 'px';
+            mapPreview.style.top = Math.max(10, y) + 'px';
+          }
+
+          function loadPreviewCandidate() {
+            if (previewCandidateIndex >= previewCandidates.length) {
+              previewImage.hidden = true;
+              previewImage.removeAttribute('src');
+              previewMessage.hidden = false;
+              previewMessage.textContent = 'ミニマップ画像がありません。';
+              return;
+            }
+
+            previewImage.hidden = false;
+            previewMessage.hidden = true;
+            previewImage.src = previewCandidates[previewCandidateIndex];
+          }
+
+          function showMapPreview(map, anchor, clientX, clientY) {
+            previewName.textContent = map.name;
+            previewLevel.textContent = 'Lv' + map.lvmin + '～' + map.lvmax;
+            previewImage.alt = map.name + 'のミニマップ';
+            previewCandidates = getMapImageCandidates(map);
+            previewCandidateIndex = 0;
+            mapPreview.classList.add('is-visible');
+            mapPreview.setAttribute('aria-hidden', 'false');
+            loadPreviewCandidate();
+            positionMapPreview(clientX, clientY, anchor);
+          }
+
+          function hideMapPreview() {
+            mapPreview.classList.remove('is-visible');
+            mapPreview.setAttribute('aria-hidden', 'true');
+            previewImage.removeAttribute('src');
+            previewCandidates = [];
+          }
+
+          function createAxis() {
+            var levels = [1];
+            for (var level = 100; level <= 2000; level += 100) {
+              levels.push(level);
+            }
+            levels.push(2060);
+
+            levels.forEach(function (level) {
+              var tick = document.createElement('span');
+              tick.className = 'axis-tick';
+              if (level === LEVEL_MIN) tick.classList.add('is-first');
+              if (level === LEVEL_MAX) tick.classList.add('is-last');
+              tick.style.left = ((level - LEVEL_MIN) * PIXELS_PER_LEVEL) + 'px';
+              tick.textContent = level;
+              levelAxis.appendChild(tick);
+            });
+          }
+
+          function readMaps() {
+            if (typeof NameList === 'undefined') return [];
+
+            return Object.keys(NameList)
+              .map(function (key) {
+                var item = NameList[key] || {};
+                return {
+                  id: Number(key),
+                  name: String(item.name || ''),
+                  lvmin: Number(item.lvmin) || 0,
+                  lvmax: Number(item.lvmax) || 0,
+                  premium: Boolean(item.plemiun),
+                  image: String(item.img || ''),
+                  blackImage: String(item.black || '')
+                };
+              })
+              .filter(function (map) {
+                return map.lvmin >= LEVEL_MIN &&
+                  map.lvmax >= map.lvmin &&
+                  map.lvmax <= LEVEL_MAX &&
+                  !hiddenMapIds.has(map.id);
+              })
+              .sort(function (a, b) {
+                return a.lvmin - b.lvmin || a.lvmax - b.lvmax || a.id - b.id;
+              });
+          }
+
+          function mapUrl(map) {
+            return '../map/map_viewer.html?map_id=' + map.id;
+          }
+
+          function createMapRow(map, index, selectedLevel) {
+            var evenClass = index % 2 === 1 ? ' map-row-even' : '';
+            var matchesLevel = map.lvmin <= selectedLevel && map.lvmax >= selectedLevel;
+            var matchClass = matchesLevel ? ' is-level-match' : '';
+
+            var nameCell = document.createElement('div');
+            nameCell.className = 'map-name-cell' + evenClass + matchClass;
+
+            var nameMain = document.createElement('div');
+            nameMain.className = 'map-name-main';
+
+            var nameLink = document.createElement('a');
+            nameLink.className = 'map-name-link';
+            nameLink.href = mapUrl(map);
+            nameLink.textContent = map.name;
+            nameLink.title = map.name;
+
+            var rangeText = document.createElement('div');
+            rangeText.className = 'map-level-text';
+            rangeText.textContent = 'Lv' + map.lvmin + '～' + map.lvmax;
+
+            nameMain.appendChild(nameLink);
+            nameMain.appendChild(rangeText);
+            nameCell.appendChild(nameMain);
+
+            if (map.premium) {
+              var premium = document.createElement('span');
+              premium.className = 'premium-badge';
+              premium.textContent = 'P';
+              premium.title = 'プレミアムマップ';
+              nameCell.appendChild(premium);
+            }
+
+            var timeline = document.createElement('div');
+            timeline.className = 'timeline-cell' + evenClass + matchClass;
+
+            var cursor = document.createElement('span');
+            cursor.className = 'level-cursor';
+            cursor.style.left = ((selectedLevel - LEVEL_MIN) * PIXELS_PER_LEVEL) + 'px';
+            timeline.appendChild(cursor);
+
+            var bar = document.createElement('a');
+            bar.className = 'level-bar' + (isMirrorMap(map) ? ' is-mirror' : '');
+            bar.href = mapUrl(map);
+            bar.style.left = ((map.lvmin - LEVEL_MIN) * PIXELS_PER_LEVEL) + 'px';
+            bar.style.width = ((map.lvmax - map.lvmin + 1) * PIXELS_PER_LEVEL) + 'px';
+            bar.title = map.name + '（Lv' + map.lvmin + '～' + map.lvmax + '）';
+            bar.setAttribute('aria-label', bar.title);
+            bar.setAttribute('aria-describedby', 'map-preview');
+
+            bar.addEventListener('mouseenter', function (event) {
+              showMapPreview(map, bar, event.clientX, event.clientY);
+            });
+            bar.addEventListener('mousemove', function (event) {
+              positionMapPreview(event.clientX, event.clientY, bar);
+            });
+            bar.addEventListener('mouseleave', function () {
+              if (document.activeElement !== bar) hideMapPreview();
+            });
+            bar.addEventListener('focus', function () {
+              showMapPreview(map, bar);
+            });
+            bar.addEventListener('blur', hideMapPreview);
+
+            if (map.lvmax - map.lvmin >= 23) {
+              var barLabel = document.createElement('span');
+              barLabel.className = 'level-bar-label';
+              barLabel.textContent = map.lvmin + '～' + map.lvmax;
+              bar.appendChild(barLabel);
+            }
+
+            timeline.appendChild(bar);
+
+            return {
+              nameCell: nameCell,
+              timeline: timeline,
+              matchesLevel: matchesLevel
+            };
+          }
+
+          function render() {
+            var selectedLevel = clampLevel(levelRange.value);
+            var query = normalize(mapFilter.value);
+            var showMirrors = mirrorToggle.checked;
+            var filteredMaps = maps.filter(function (map) {
+              if (!showMirrors && isMirrorMap(map)) return false;
+              return !query || normalize(map.name).indexOf(query) !== -1;
+            });
+            var matched = 0;
+            var fragment = document.createDocumentFragment();
+            renderedRows = [];
+
+            chartGrid.querySelectorAll('.map-name-cell, .timeline-cell, .empty-state').forEach(function (node) {
+              node.remove();
+            });
+
+            if (filteredMaps.length === 0) {
+              var empty = document.createElement('div');
+              empty.className = 'empty-state';
+              empty.textContent = '条件に一致するマップがありません。';
+              fragment.appendChild(empty);
+            } else {
+              filteredMaps.forEach(function (map, index) {
+                var row = createMapRow(map, index, selectedLevel);
+                if (row.matchesLevel) matched += 1;
+                row.map = map;
+                renderedRows.push(row);
+                fragment.appendChild(row.nameCell);
+                fragment.appendChild(row.timeline);
+              });
+            }
+
+            chartGrid.appendChild(fragment);
+            visibleCount.textContent = filteredMaps.length;
+            matchCount.textContent = 'Lv' + selectedLevel + 'に該当する狩場：' + matched + '件';
+          }
+
+          function updateLevelState(level) {
+            var matched = 0;
+            var cursorLeft = ((level - LEVEL_MIN) * PIXELS_PER_LEVEL) + 'px';
+
+            renderedRows.forEach(function (row) {
+              var isMatch = row.map.lvmin <= level && row.map.lvmax >= level;
+              row.nameCell.classList.toggle('is-level-match', isMatch);
+              row.timeline.classList.toggle('is-level-match', isMatch);
+              row.timeline.querySelector('.level-cursor').style.left = cursorLeft;
+              if (isMatch) matched += 1;
+            });
+
+            matchCount.textContent = 'Lv' + level + 'に該当する狩場：' + matched + '件';
+          }
+
+          function setLevel(value, shouldScroll) {
+            var level = clampLevel(value);
+            levelRange.value = level;
+            levelNumber.value = level;
+            updateLevelState(level);
+
+            if (shouldScroll) {
+              var desired = Math.max(0, (level - LEVEL_MIN) * PIXELS_PER_LEVEL - viewport.clientWidth * 0.35);
+              viewport.scrollLeft = desired;
+              topScroll.scrollLeft = desired;
+            }
+          }
+
+          function syncHorizontal(source, target) {
+            if (Math.abs(target.scrollLeft - source.scrollLeft) > 1) {
+              target.scrollLeft = source.scrollLeft;
+            }
+          }
+
+          createAxis();
+          maps = readMaps();
+
+          if (maps.length === 0) {
+            var error = document.createElement('div');
+            error.className = 'empty-state';
+            error.textContent = 'マップデータを読み込めませんでした。通信状態を確認して、ページを再読み込みしてください。';
+            chartGrid.appendChild(error);
+          } else {
+            render();
+          }
+
+          mapFilter.addEventListener('input', render);
+          mirrorToggle.addEventListener('change', render);
+          levelRange.addEventListener('input', function () {
+            setLevel(levelRange.value, true);
+          });
+          levelNumber.addEventListener('change', function () {
+            setLevel(levelNumber.value, true);
+          });
+          levelNumber.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+              setLevel(levelNumber.value, true);
+              levelNumber.select();
+            }
+          });
+          topScroll.addEventListener('scroll', function () {
+            syncHorizontal(topScroll, viewport);
+          }, { passive: true });
+          viewport.addEventListener('scroll', function () {
+            syncHorizontal(viewport, topScroll);
+          }, { passive: true });
+          previewImage.addEventListener('load', function () {
+            previewImage.hidden = false;
+            previewMessage.hidden = true;
+          });
+          previewImage.addEventListener('error', function () {
+            previewCandidateIndex += 1;
+            loadPreviewCandidate();
+          });
+        }());
+      </script>
+      <script src="https://sokomin.github.io/material.min.js"></script>
+    </div>
+  </div>
+</body>
+
+</html>
