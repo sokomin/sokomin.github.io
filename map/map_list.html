@@ -183,16 +183,18 @@
                 <a href="../map/map_list.html?map_c3=5">[5]のみ表示</a> / <a
                     href="../map/map_list.html?map_c3=6">[6]のみ表示</a><br>
                 <br>
-                レベル範囲フィルタ<br>
+                マップ名・レベル範囲フィルタ<br>
                 <!-- レベル範囲フィルタフォーム -->
                 <form id="level-filter-form" method="get" action="" style="margin:10px 0;">
+                    <label for="map_name">マップ名:</label>
+                    <input type="search" id="map_name" name="map_name" placeholder="マップ名の一部" style="width:220px;">
                     <label for="level_min">レベル最小:</label>
                     <input type="number" id="level_min" name="level_min" value="0" min="0" style="width:60px;">
                     <label for="level_max">レベル最大:</label>
                     <input type="number" id="level_max" name="level_max" value="9999" min="0" style="width:60px;">
-                    <button type="submit">フィルタ</button>
+                    <button type="submit">検索・フィルタ</button>
                     <button type="button"
-                        onclick="window.location.href=window.location.pathname + window.location.search.replace(/(&?level_min=\\d*)|(&?level_max=\\d*)/g, '')">
+                        onclick="var url = new URL(window.location.href); ['map_name', 'level_min', 'level_max'].forEach(function (p) { url.searchParams.delete(p); }); window.location.href = url.pathname + url.search;">
                         クリア
                     </button>
                 </form>
@@ -208,6 +210,10 @@
                             document.getElementById('level-filter-form').appendChild(input);
                         }
                     });
+                    var mapName = getParam('map_name');
+                    if (mapName !== null) {
+                        document.getElementById('map_name').value = mapName;
+                    }
                 </script>
 
                 <br>

@@ -14,9 +14,20 @@ map_c3 = getParam('map_c3') ? getParam('map_c3') : "";
 var levelMin = getParam('level_min') ? Number(getParam('level_min')) : 0;
 var levelMax = getParam('level_max') ? Number(getParam('level_max')) : 9999;
 
+function normalizeMapName(value) {
+    return String(value || "").normalize("NFKC").replace(/[\s\u3000]+/g, "").toLowerCase();
+}
+
+var mapName = normalizeMapName(getParam('map_name'));
+
 for (key in NameList) {
     var Obj = NameList[key];
     var SubInfoObj = MapSubInfoList[key];
+
+    // マップ名の部分一致検索（全角・半角、空白、大文字・小文字の違いは無視）
+    if (mapName && normalizeMapName(Obj.name).indexOf(mapName) === -1) {
+        continue;
+    }
 
     // —— ここでレベル帯フィルタ —— 
     var LvMin = Obj.lvmin || 0;
