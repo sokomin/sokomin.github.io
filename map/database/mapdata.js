@@ -990,6 +990,13 @@ NameList = {
     840:{ name: "ミラーダンジョン オロイン森 1-2", img: "[840]G28.rmd.png",black:"[000]T01.rmd.png",lvmin:0,lvmax:762},
     841:{ name: "ミラーダンジョン テンドペンド平原 / トワイライト滝付近 1-1", img: "[841]G31.rmd.png",black:"[000]T01.rmd.png",lvmin:0,lvmax:763},
     842:{ name: "ミラーダンジョン テンドペンド平原 / トワイライト滝付近 1-2", img: "[842]G31.rmd.png",black:"[000]T01.rmd.png",lvmin:0,lvmax:764},
+    888: { name: "ハノブ / 地下決闘場", img: "[888]Guild_vs_10.rmd.png", black: "[000]T01.rmd.png", lvmin: 0, lvmax: 0 },
+    890: { name: "バベル大河 / 2粒の涙", img: "[890]Guild_vs_00.rmd.png", black: "[000]T01.rmd.png", lvmin: 0, lvmax: 0 },
+    891: { name: "デフヒルズ / 砂漠の遺跡", img: "[891]Guild_vs_01.rmd.png", black: "[000]T01.rmd.png", lvmin: 0, lvmax: 0 },
+    892: { name: "エルベルク山脈 / 岩の谷", img: "[892]Guild_vs_02.rmd.png", black: "[000]T01.rmd.png", lvmin: 0, lvmax: 0 },
+    893: { name: "ソゴム山脈 / 赤い丘", img: "[893]Guild_vs_03.rmd.png", black: "[000]T01.rmd.png", lvmin: 0, lvmax: 0 },
+    894: { name: "ナダラ平原 / 2つの丘", img: "[894]Guild_vs_04.rmd.png", black: "[000]T01.rmd.png", lvmin: 0, lvmax: 0 },
+    899: { name: "廃墟スバイン要塞", img: "[899]Guild_vs_09.rmd.png", black: "[000]T01.rmd.png", lvmin: 0, lvmax: 0 },
     // 残りはGvマップとか秘密なのでここでは触れないよ
     //ここからデバッグ用途(10000～は番号ふられてないダンジョン用)
     9999: { name: "そこみん王国", img: "[000]T01_old.rmd.png", black: "[000]T01_old.rmd.png", width: 400, height: 200 },

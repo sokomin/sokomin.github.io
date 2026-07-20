@@ -783,6 +783,13 @@ var MapSubInfoList = {
     "884": {"name": "捨てられた実験室", "req_map_lv": 99, "dfi": 0, "dwa": 0, "dwi": 0, "dea": 0, "dli": 0, "dda": 0, "st_down": 0, "lbd": 0, "non_resume": true, "mc": "-", "mc2": 4, "mc3": 1},
     "885": {"name": "生命の森外郭", "req_map_lv": 7, "dfi": 60, "dwa": 40, "dwi": 40, "dea": 40, "dli": 40, "dda": 40, "st_down": 25, "lbd": 70, "non_resume": false, "mc": "B", "mc2": 2, "mc3": 1},
     "886": {"name": "干からびた影の砂漠", "req_map_lv": 7, "dfi": 40, "dwa": 40, "dwi": 40, "dea": 40, "dli": 40, "dda": 40, "st_down": 25, "lbd": 70, "non_resume": false, "mc": "B", "mc2": 2, "mc3": 1},
+    "888": {"name": "ハノブ / 地下決闘場", "req_map_lv": 0, "dfi": 0, "dwa": 0, "dwi": 0, "dea": 0, "dli": 0, "dda": 0, "st_down": 0, "lbd": 70, "non_resume": false, "mc": "-", "mc2": "-", "mc3": "-"},
+    "890": {"name": "バベル大河 / 2粒の涙", "req_map_lv": 0, "dfi": 85, "dwa": 85, "dwi": 55, "dea": 35, "dli": 60, "dda": 60, "st_down": 0, "lbd": 70, "non_resume": false, "mc": "-", "mc2": "-", "mc3": "-"},
+    "891": {"name": "デフヒルズ / 砂漠の遺跡", "req_map_lv": 0, "dfi": 50, "dwa": 90, "dwi": 80, "dea": 55, "dli": 50, "dda": 50, "st_down": 0, "lbd": 70, "non_resume": false, "mc": "-", "mc2": "-", "mc3": "-"},
+    "892": {"name": "エルベルク山脈 / 岩の谷", "req_map_lv": 0, "dfi": 75, "dwa": 75, "dwi": 75, "dea": 35, "dli": 80, "dda": 40, "st_down": 0, "lbd": 70, "non_resume": false, "mc": "-", "mc2": "-", "mc3": "-"},
+    "893": {"name": "ソゴム山脈 / 赤い丘", "req_map_lv": 0, "dfi": 0, "dwa": 0, "dwi": 0, "dea": 0, "dli": 0, "dda": 0, "st_down": 0, "lbd": 70, "non_resume": false, "mc": "-", "mc2": "-", "mc3": "-"},
+    "894": {"name": "ナダラ平原 / 2つの丘", "req_map_lv": 0, "dfi": 50, "dwa": 60, "dwi": 70, "dea": 70, "dli": 50, "dda": 50, "st_down": 0, "lbd": 70, "non_resume": false, "mc": "-", "mc2": "-", "mc3": "-"},
+    "899": {"name": "廃墟スバイン要塞", "req_map_lv": 0, "dfi": 45, "dwa": 45, "dwi": 45, "dea": 45, "dli": 45, "dda": 45, "st_down": 0, "lbd": 70, "non_resume": false, "mc": "-", "mc2": "-", "mc3": "-"},
     "909": {"name": "ミラーダンジョン 静寂の砂丘 / 月の谷 1-1", "req_map_lv": 7, "dfi": 40, "dwa": 40, "dwi": 40, "dea": 40, "dli": 40, "dda": 40, "st_down": 30, "lbd": 70, "non_resume": false, "mc": "C", "mc2": 12, "mc3": 5},
     "910": {"name": "ミラーダンジョン 静寂の砂丘 / 月の谷 1-2", "req_map_lv": 7, "dfi": 40, "dwa": 40, "dwi": 40, "dea": 40, "dli": 40, "dda": 40, "st_down": 30, "lbd": 70, "non_resume": false, "mc": "C", "mc2": 12, "mc3": 5},
     "911": {"name": "ミラーダンジョン 静寂の砂丘 / 月の谷 1-3", "req_map_lv": 7, "dfi": 40, "dwa": 40, "dwi": 40, "dea": 40, "dli": 40, "dda": 40, "st_down": 30, "lbd": 70, "non_resume": false, "mc": "C", "mc2": 12, "mc3": 5},
@@ -941,7 +948,7 @@ function datasublist(num) {
     Rendou2 = MapSubInfoList[num].mc2 ? MapSubInfoList[num].mc2 : 0;
     if (Rendou2 > 0) {
 
-    } else {
+    } else if (SubInfoBase[num]) {
         Rendou2 = SubInfoBase[num].mc2 ? SubInfoBase[num].mc2 : 0;
     }
     SubInfo = MapSubInfoList[num];
