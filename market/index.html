@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=960">
+  <!-- Page styles -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://sokomin.github.io/material.indigo-pink.min.css" />
+  <link rel="stylesheet" href="https://sokomin.github.io/styles.css" />
+  <link rel="icon" href="https://sokomin.github.io/design/RedStoneLogo.png" sizes="32x32" />
+  <link rel="icon" href="https://sokomin.github.io/design/RedStoneLogo.png" sizes="192x192" />
+  <link rel="apple-touch-icon-precomposed" href="https://sokomin.github.io/design/RedStoneLogo.png" />
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-133658114-1');
+  </script>
+  <script type="text/javascript" src="https://sokomin.github.io/design/jquery-3.4.1.min.js"></script>
+  <script>
+    function enter() {
+      if (window.event.keyCode == 13) {
+        var last_keyword = $('#search-field').val();
+        window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+      }
+    }
+  </script>
+  <style>
+    .main-background.korea-content {
+      box-sizing: border-box;
+      padding-right: 8%;
+    }
+
+    .market-app {
+      width: min(1180px, calc(100% - 24px));
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .market-lead {
+      max-width: 860px;
+      margin: 0 auto 14px;
+      color: #333;
+      line-height: 1.8;
+      text-align: left;
+    }
+
+    .market-controls {
+      display: grid;
+      grid-template-columns: 1.8fr 1fr 1fr;
+      gap: 8px;
+      margin: 14px auto;
+      max-width: 820px;
+    }
+
+    .market-controls label {
+      display: grid;
+      gap: 4px;
+      color: #555;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .market-controls input,
+    .market-controls select {
+      min-width: 0;
+      height: 36px;
+      border: 1px solid #b7b7b7;
+      border-radius: 4px;
+      padding: 0 10px;
+      background: #fff;
+      font-size: 14px;
+      letter-spacing: 0;
+    }
+
+    .market-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.8fr);
+      gap: 14px;
+      align-items: start;
+    }
+
+    .market-panel {
+      min-width: 0;
+      border: 1px solid #c8c8c8;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 6px;
+      padding: 10px;
+    }
+
+    .market-panel h2 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      line-height: 1.35;
+      color: #333;
+    }
+
+    .market-count {
+      float: right;
+      color: #666;
+      font-size: 12px;
+      font-weight: normal;
+    }
+
+    .market-table-wrap {
+      max-height: 620px;
+      overflow: auto;
+      border: 1px solid #ddd;
+      background: #fff;
+    }
+
+    .market-daily-table-wrap {
+      max-height: 320px;
+      overflow: auto;
+      margin-top: 12px;
+    }
+
+    .market-app table#table10 {
+      width: 100%;
+      max-width: none;
+      margin-left: 0;
+      table-layout: auto;
+      background: #fff;
+    }
+
+    .market-app table#table10 th,
+    .market-app table#table10 td {
+      padding: 6px 7px;
+      font-size: 13px;
+      line-height: 1.35;
+      vertical-align: middle;
+    }
+
+    .market-app table#table10 td {
+      text-align: left;
+    }
+
+    .market-app table#table10 td.num,
+    .market-app table#table10 th.num {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .market-app table#table10 tr.is-selected td {
+      background: #e4f2ee;
+    }
+
+    .market-app table#table10 tr.is-muted td {
+      color: #666;
+      background: #fafafa;
+    }
+
+    .market-badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 22px;
+      padding: 0 7px;
+      border-radius: 999px;
+      background: #f2df9c;
+      color: #5c4a00;
+      font-size: 12px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .market-badge.is-old {
+      background: #e6e6e6;
+      color: #555;
+    }
+
+    .market-badge.is-manual {
+      margin-left: 4px;
+      background: #d9ecff;
+      color: #174f78;
+    }
+
+    .market-kv {
+      display: grid;
+      grid-template-columns: 110px minmax(0, 1fr);
+      gap: 7px 10px;
+      margin: 8px 0 12px;
+      color: #333;
+      font-size: 13px;
+    }
+
+    .market-kv dt {
+      color: #666;
+    }
+
+    .market-kv dd {
+      margin: 0;
+      font-weight: bold;
+      overflow-wrap: anywhere;
+    }
+
+    .market-chart {
+      border: 1px solid #ddd;
+      background: #fff;
+      border-radius: 6px;
+      padding: 8px;
+      margin-top: 10px;
+    }
+
+    .market-chart svg {
+      width: 100%;
+      height: 180px;
+      display: block;
+    }
+
+    .market-line {
+      fill: none;
+      stroke-width: 2.4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .market-line.ref {
+      stroke: #138a56;
+    }
+
+    .market-line.sell {
+      stroke: #c7362f;
+      stroke-dasharray: 6 4;
+    }
+
+    .market-line.buy {
+      stroke: #2368b5;
+      stroke-dasharray: 3 4;
+    }
+
+    .market-point {
+      fill: #fff;
+      stroke-width: 2;
+    }
+
+    .market-point.ref {
+      stroke: #138a56;
+    }
+
+    .market-point.sell {
+      stroke: #c7362f;
+    }
+
+    .market-point.buy {
+      stroke: #2368b5;
+    }
+
+    .market-ref-price {
+      font-weight: 700;
+      color: #0f5f42;
+    }
+
+    .market-ref-price.is-trend-only {
+      font-weight: 400;
+      color: #777;
+    }
+
+    .market-legend {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+      color: #555;
+      font-size: 12px;
+    }
+
+    .market-legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .market-legend i {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #138a56;
+    }
+
+    .market-legend .sell i {
+      background: #c7362f;
+    }
+
+    .market-legend .buy i {
+      background: #2368b5;
+    }
+
+    .market-note,
+    .market-source {
+      color: #666;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .market-source {
+      margin-top: 8px;
+      text-align: right;
+    }
+
+    .market-empty {
+      padding: 28px 10px;
+      color: #666;
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .market-controls {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .market-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .main-background.korea-content {
+        padding-left: 8px;
+        padding-right: 8px;
+        box-sizing: border-box;
+      }
+
+      .market-app {
+        width: 100%;
+      }
+
+      .market-controls {
+        grid-template-columns: 1fr;
+      }
+
+      .market-table-wrap {
+        max-height: 460px;
+      }
+
+      .market-kv {
+        grid-template-columns: 92px minmax(0, 1fr);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <title>RED STONE 相場情報 赤石の民衆</title>
+  <meta name="description" content="RED STONE の露店と叫びから、アイテム相場と価格推移を確認するページです。" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <meta name="keywords" content="RED STONE,レッドストーン,赤石の民衆,相場,露店,叫び" />
+
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <a name="container"></a>
+
+    <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+      <div class="mdl-layout__header-row">
+        <span class="android-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="https://sokomin.github.io/design/logo3.png" />
+          </a>
+        </span>
+        <!-- Add spacer, to align navigation to the right in desktop -->
+        <div class="android-header-spacer mdl-layout-spacer"></div>
+        <div
+          class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+              onkeypress="enter();" id="search-field" />
+          </div>
+        </div>
+        <!-- Navigation -->
+        <div class="android-navigation-container">
+          <nav class="android-navigation mdl-navigation">
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/index.html">ホーム</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/calculator.html">計算機</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/history.html">赤石史</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/link.html">リンク</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+          </nav>
+        </div>
+        <span class="android-mobile-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="https://sokomin.github.io/design/logo3.png" />
+          </a>
+        </span>
+        <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+          id="more-button">
+          <i class="material-icons">more_vert</i>
+        </button>
+        <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/calculator.html">計算機</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/history.html">赤石史</a></li>
+          <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/link.html">リンク</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="android-drawer mdl-layout__drawer">
+      <span class="mdl-layout-title">
+        <h2>メニュー</h2>
+      </span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link sokomin-layout-item"
+          href="https://sokomin.github.io/item/item.html"><strong>アイテム</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-skill"
+          href="https://sokomin.github.io/skill/skill.html"><strong>スキル</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt"
+          href="https://sokomin.github.io/monster/monster.html"><strong>モンスター</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt"
+          href="https://sokomin.github.io/secret/secret.html"><strong>ダンジョン</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-quest"
+          href="https://sokomin.github.io/quest/quest.html"><strong>クエスト</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-guild"
+          href="https://sokomin.github.io/guild/guild.html"><strong>ギルド</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-friend"
+          href="https://sokomin.github.io/korea/korea-update.html"><strong>韓国情報</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-info"
+          href="https://sokomin.github.io/information/information.html"><strong>雑学</strong></a>
+      </nav>
+    </div>
+
+    <div class="android-large-table mdl-layout__content">
+      <!--main-->
+      <div class="main-background mdl-typography--text-center korea-content">
+        <br>
+        <h1>RED STONE 相場情報</h1>
+        <div class="market-lead">
+          露店と叫びから確認できた価格を集計しています。現在の相場欄は直近半年の情報を元にし、それ以前の情報は詳細の推移として扱います。<br>
+          叫びは露店より安めに出ることがあるため、露店・売り叫び・買い叫びを分けて表示しています。
+        </div>
+
+        <div class="index_table">
+          <table id="table10" style="max-width:520px">
+            <tbody>
+              <tr><th colspan="3">目次</th></tr>
+              <tr>
+                <td><a href="#market-list">◆相場一覧</a></td>
+                <td><a href="#market-detail">◆価格推移</a></td>
+                <td><a href="#market-note">◆見方</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <br>
+
+        <div class="market-app">
+          <a name="market-list"></a>
+          <div class="market-controls">
+            <label>検索
+              <input id="marketSearch" type="search" placeholder="アイテム名で検索">
+            </label>
+            <label>サーバ
+              <select id="marketServer"></select>
+            </label>
+            <label>カテゴリ
+              <select id="marketCategory">
+                <option value="all">すべて</option>
+                <option value="equipment">武器・防具（装備品）</option>
+                <option value="other">その他</option>
+              </select>
+            </label>
+            <label>並び
+              <select id="marketSort">
+                <option value="count">集計件数が多い順</option>
+                <option value="priceDesc">高い順</option>
+                <option value="priceAsc">安い順</option>
+                <option value="name">名前順</option>
+              </select>
+            </label>
+            <label>価格推移
+              <select id="marketPeriodMode">
+                <option value="daily">直近半年（日次）</option>
+                <option value="long">長期（月次・週次）</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="market-layout">
+            <section class="market-panel">
+              <h2>相場一覧 <span class="market-count" id="marketCount"></span></h2>
+              <div class="market-table-wrap">
+                <table id="table10">
+                  <tbody id="marketRows"></tbody>
+                </table>
+              </div>
+              <div class="market-source" id="marketSource"></div>
+            </section>
+
+            <aside class="market-panel">
+              <a name="market-detail"></a>
+              <h2 id="detailTitle">価格推移</h2>
+              <div id="detailBody" class="market-empty">一覧からアイテムを選択してください。</div>
+            </aside>
+          </div>
+
+          <a name="market-note"></a>
+          <section class="market-panel" style="margin-top:14px;">
+            <h2>見方</h2>
+            <div class="market-note">
+              <span class="color-image1">※叫び・露店価格をベースとした相場のため、実際の売買成立価格と異なる可能性があります。<br>
+              最新の情報はゲーム内で収集していただくようお願いします。</span><br>
+              <br>
+              「参考相場」は露店、売り叫び、買い叫びの中央値から計算しています。<br>
+              スタック可能アイテムは、露店の出品総額を個数で割った1個あたりの価格を参考相場にしています。<br>
+              叫び価格は発言上の取引単位が一定でないため、スタック可能アイテムの参考相場には混ぜていません。<br>
+              相場から著しく離れた集計結果は、参考相場のみを手動で補正する場合があります。<br>
+              Gold Experience は週ごと、その他のサーバは月ごとに推移をまとめています。<br>
+              長期推移では、前後の価格帯から孤立した極端値を除外しています。<br>
+              「集計件数」は相場計算に使った露店価格と叫び価格の件数です。<br>
+              1万Gold未満、10万本以上の価格と、前後の相場から大きく外れた単発の価格は集計から除外しています。<br>
+              古い価格は現在の相場とは差が出ることがあるため、長期変化を見るための値として確認してください。<br>
+            </div>
+          </section>
+        </div>
+
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <footer class="android-footer mdl-mega-footer">
+          <font color="red">
+            当サイトで利用している画像及びデータは、L&amp;K Co., Ltd.に帰属します。<br>
+            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+          </font>
+          © L&amp;K Co., Ltd. All Rights Reserved.<br>
+        </footer>
+
+      </div>
+
+      <script src="public/market_public_data.js"></script>
+      <script>
+        const publicData = window.MARKET_PUBLIC_DATA || { meta: {}, servers: [], items: [], trends: [], daily_trends: [] };
+        const state = {
+          query: "",
+          server: publicData.servers.includes("Bridgehead") ? "Bridgehead" : (publicData.servers[0] || "all"),
+          category: "all",
+          sort: "count",
+          periodMode: "daily",
+          selectedKey: ""
+        };
+        const yen = new Intl.NumberFormat("ja-JP");
+        const byId = (name) => document.getElementById(name);
+        const trendsByServerItem = new Map();
+        const dailyTrendsByServerItem = new Map();
+
+        for (const row of publicData.trends || []) {
+          const key = `${row.server}|${row.item_key}`;
+          if (!trendsByServerItem.has(key)) trendsByServerItem.set(key, []);
+          trendsByServerItem.get(key).push(row);
+        }
+        for (const rows of trendsByServerItem.values()) {
+          rows.sort((a, b) => String(a.period_order).localeCompare(String(b.period_order)));
+        }
+        for (const row of publicData.daily_trends || []) {
+          const key = `${row.server}|${row.item_key}`;
+          if (!dailyTrendsByServerItem.has(key)) dailyTrendsByServerItem.set(key, []);
+          dailyTrendsByServerItem.get(key).push(row);
+        }
+        for (const rows of dailyTrendsByServerItem.values()) {
+          rows.sort((a, b) => String(a.period_order).localeCompare(String(b.period_order)));
+        }
+
+        function escapeHtml(value) {
+          return String(value ?? "").replace(/[&<>"']/g, (ch) => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+          }[ch]));
+        }
+
+        function priceText(gold, fallback) {
+          if (fallback) return fallback;
+          const n = Number(gold || 0);
+          if (!Number.isFinite(n) || n <= 0) return "";
+          if (n >= 100000000) {
+            const ingot = n / 100000000;
+            return `${yen.format(Math.round(ingot * 10) / 10)}本`;
+          }
+          return `${yen.format(Math.round(n))}G`;
+        }
+
+        function rowMatches(row) {
+          const text = `${row.item_name}`.toLowerCase();
+          return (!state.query || text.includes(state.query)) &&
+            (state.server === "all" || row.server === state.server) &&
+            (state.category === "all" || row.category === state.category);
+        }
+
+        function sortedRows() {
+          const rows = (publicData.items || []).filter(rowMatches);
+          if (state.sort === "priceDesc") rows.sort((a, b) => Number(b.reference_gold || 0) - Number(a.reference_gold || 0));
+          else if (state.sort === "priceAsc") rows.sort((a, b) => Number(a.reference_gold || 0) - Number(b.reference_gold || 0));
+          else if (state.sort === "name") rows.sort((a, b) => String(a.item_name).localeCompare(String(b.item_name), "ja"));
+          else rows.sort((a, b) => Number(Boolean(b.has_recent)) - Number(Boolean(a.has_recent)) || Number(b.recent_count || b.trend_count || 0) - Number(a.recent_count || a.trend_count || 0));
+          return rows;
+        }
+
+        function renderOptions() {
+          byId("marketServer").innerHTML = publicData.servers.map((server) => `<option value="${escapeHtml(server)}">${escapeHtml(server)}</option>`).join("");
+          byId("marketServer").value = state.server;
+        }
+
+        function renderTable() {
+          const rows = sortedRows();
+          byId("marketCount").textContent = `${yen.format(rows.length)}件`;
+          byId("marketSource").textContent = `直近半年: ${publicData.meta.recent_cutoff || ""} 以降 / 更新: ${publicData.meta.latest_signal_date || ""}`;
+          byId("marketRows").innerHTML = `
+            <tr>
+              <th>アイテム</th><th class="num">参考相場</th><th class="num">露店</th><th class="num">売り叫び</th><th class="num">買い叫び</th><th class="num">集計件数</th><th>扱い</th>
+            </tr>
+            ${rows.map((row) => {
+              const selected = state.selectedKey === `${row.server}|${row.item_key}` ? " is-selected" : "";
+              const muted = row.has_recent ? "" : " is-muted";
+              const periodStatus = row.has_recent ? `<span class="market-badge">直近半年</span>` : `<span class="market-badge is-old">推移のみ</span>`;
+              const manualStatus = row.reference_is_manual ? `<span class="market-badge is-manual">手動補正</span>` : "";
+              const status = periodStatus + manualStatus;
+              const count = row.has_recent ? row.recent_count : row.trend_count;
+              const trendOnlyPrice = row.reference_is_trend_only ? " is-trend-only" : "";
+              return `<tr class="market-row${selected}${muted}" data-key="${escapeHtml(row.server)}|${escapeHtml(row.item_key)}">
+                <td>${escapeHtml(row.item_name)}</td>
+                <td class="num market-ref-price${trendOnlyPrice}">${escapeHtml(priceText(row.reference_gold, row.reference_text))}</td>
+                <td class="num">${escapeHtml(priceText(row.market_gold, row.market_text))}</td>
+                <td class="num">${escapeHtml(priceText(row.sell_gold, row.sell_text))}</td>
+                <td class="num">${escapeHtml(priceText(row.buy_gold, row.buy_text))}</td>
+                <td class="num">${yen.format(count || 0)}</td>
+                <td>${status}</td>
+              </tr>`;
+            }).join("")}`;
+          document.querySelectorAll(".market-row").forEach((tr) => {
+            tr.addEventListener("click", () => {
+              state.selectedKey = tr.dataset.key;
+              const row = rows.find((item) => `${item.server}|${item.item_key}` === state.selectedKey);
+              renderTable();
+              renderDetail(row);
+            });
+          });
+          if (!rows.length) {
+            byId("marketRows").innerHTML = `<tr><th>相場一覧</th></tr><tr><td><div class="market-empty">該当するアイテムがありません。</div></td></tr>`;
+          }
+          const selected = rows.find((row) => `${row.server}|${row.item_key}` === state.selectedKey);
+          if (!selected && rows[0]) {
+            state.selectedKey = `${rows[0].server}|${rows[0].item_key}`;
+            renderDetail(rows[0]);
+          } else if (selected) {
+            renderDetail(selected);
+          } else {
+            renderDetail(null);
+          }
+        }
+
+        function pointLine(points, className, width, height, pad, minY, spanY) {
+          if (points.length < 1) return "";
+          const spanX = Math.max(1, points.length - 1);
+          const coords = points.map((point, index) => {
+            const x = pad + ((width - pad * 2) * index) / spanX;
+            const clamped = Math.max(minY, Math.min(minY + spanY, Number(point.value || 0)));
+            const y = height - pad - ((height - pad * 2) * (clamped - minY)) / spanY;
+            return { ...point, x, y };
+          });
+          const path = coords.length >= 2 ? `<path class="market-line ${className}" d="${coords.map((point, index) => `${index ? "L" : "M"}${point.x.toFixed(1)},${point.y.toFixed(1)}`).join(" ")}"></path>` : "";
+          const circles = coords.map((point) => `<circle class="market-point ${className}" cx="${point.x.toFixed(1)}" cy="${point.y.toFixed(1)}" r="3"></circle>`).join("");
+          const hitPoints = coords.map((point) => `<circle cx="${point.x.toFixed(1)}" cy="${point.y.toFixed(1)}" r="8" fill="transparent" pointer-events="all"><title>${escapeHtml(point.label)}</title></circle>`).join("");
+          return path + circles + hitPoints;
+        }
+
+        function renderChart(rows) {
+          const values = [];
+          for (const row of rows) {
+            for (const key of ["reference_gold", "sell_gold", "buy_gold"]) {
+              const value = Number(row[key] || 0);
+              if (Number.isFinite(value) && value > 0) values.push(value);
+            }
+          }
+          if (!values.length) return `<div class="market-empty">推移を表示できる価格がありません。</div>`;
+          values.sort((a, b) => a - b);
+          const minY = values[0] === values[values.length - 1] ? values[0] * 0.95 : values[0];
+          const maxY = values[0] === values[values.length - 1] ? values[0] * 1.05 : values[values.length - 1];
+          const spanY = Math.max(1, maxY - minY);
+          const width = 420;
+          const height = 180;
+          const pad = 24;
+          const ref = rows.filter((row) => row.reference_gold).map((row) => ({ value: row.reference_gold, label: `${row.period} 参考 ${row.reference_text}` }));
+          const sell = rows.filter((row) => row.sell_gold).map((row) => ({ value: row.sell_gold, label: `${row.period} 売り ${row.sell_text}` }));
+          const buy = rows.filter((row) => row.buy_gold).map((row) => ({ value: row.buy_gold, label: `${row.period} 買い ${row.buy_text}` }));
+          return `<div class="market-chart">
+            <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="価格推移">
+              <line x1="${pad}" y1="${height - pad}" x2="${width - pad}" y2="${height - pad}" stroke="#d8d8d8"></line>
+              <line x1="${pad}" y1="${pad}" x2="${pad}" y2="${height - pad}" stroke="#d8d8d8"></line>
+              ${pointLine(ref, "ref", width, height, pad, minY, spanY)}
+              ${pointLine(sell, "sell", width, height, pad, minY, spanY)}
+              ${pointLine(buy, "buy", width, height, pad, minY, spanY)}
+            </svg>
+            <div class="market-legend"><span><i></i>緑: 参考相場</span><span class="sell"><i></i>赤: 売り叫び</span><span class="buy"><i></i>青: 買い叫び</span></div>
+          </div>`;
+        }
+
+        function renderDailyTable(rows) {
+          if (!rows.length) return `<div class="market-empty">直近半年の日次データがありません。</div>`;
+          return `<div class="market-daily-table-wrap"><table id="table10"><tbody>
+            <tr><th>日付</th><th class="num">参考相場</th><th class="num">露店</th><th class="num">売り叫び</th><th class="num">買い叫び</th><th class="num">件数</th></tr>
+            ${rows.slice().reverse().map((daily) => `<tr>
+              <td>${escapeHtml(daily.period)}</td>
+              <td class="num market-ref-price">${escapeHtml(priceText(daily.reference_gold, daily.reference_text) || "-")}</td>
+              <td class="num">${escapeHtml(priceText(daily.market_gold, daily.market_text) || "-")}</td>
+              <td class="num">${escapeHtml(priceText(daily.sell_gold, daily.sell_text) || "-")}</td>
+              <td class="num">${escapeHtml(priceText(daily.buy_gold, daily.buy_text) || "-")}</td>
+              <td class="num">${yen.format(daily.count || 0)}</td>
+            </tr>`).join("")}
+          </tbody></table></div>`;
+        }
+
+        function renderDetail(row) {
+          if (!row) {
+            byId("detailTitle").textContent = "価格推移";
+            byId("detailBody").innerHTML = `<div class="market-empty">一覧からアイテムを選択してください。</div>`;
+            return;
+          }
+          const key = `${row.server}|${row.item_key}`;
+          const longTrends = trendsByServerItem.get(key) || [];
+          const dailyTrends = dailyTrendsByServerItem.get(key) || [];
+          const trends = state.periodMode === "daily" ? dailyTrends : longTrends;
+          const trendOnlyPrice = row.reference_is_trend_only ? " is-trend-only" : "";
+          const referenceFallback = Number(row.stack_max || 1) > 1 ? "露店データなし" : "推移のみ";
+          const shoutUnitNote = row.shout_unit_uncertain
+            ? `<div class="market-note" style="margin-top:8px;">このアイテムの叫び価格は発言上の取引単位です。1個あたりの参考相場には含めていません。</div>`
+            : "";
+          const manualReferenceNote = row.reference_is_manual
+            ? `<div class="market-note" style="margin-top:8px;">参考相場のみ手動補正しています。露店・叫び・価格推移は集計値のままです。</div>`
+            : "";
+          byId("detailTitle").textContent = row.item_name;
+          byId("detailBody").innerHTML = `
+            <dl class="market-kv">
+              <dt>サーバ</dt><dd>${escapeHtml(row.server)}</dd>
+              <dt>参考相場</dt><dd class="market-ref-price${trendOnlyPrice}">${escapeHtml(priceText(row.reference_gold, row.reference_text) || referenceFallback)}</dd>
+              <dt>露店</dt><dd>${escapeHtml(priceText(row.market_gold, row.market_text) || "-")}</dd>
+              <dt>売り叫び</dt><dd>${escapeHtml(priceText(row.sell_gold, row.sell_text) || "-")}</dd>
+              <dt>買い叫び</dt><dd>${escapeHtml(priceText(row.buy_gold, row.buy_text) || "-")}</dd>
+              <dt>集計件数</dt><dd>${yen.format(row.has_recent ? row.recent_count : row.trend_count)}件</dd>
+            </dl>
+            ${renderChart(trends)}
+            ${state.periodMode === "daily" ? renderDailyTable(dailyTrends) : ""}
+            ${shoutUnitNote}
+            ${manualReferenceNote}
+            <div class="market-note" style="margin-top:8px;">${escapeHtml(state.periodMode === "daily" ? `直近${publicData.meta.recent_window_days || 183}日を日ごとにまとめています。` : (row.server === "Gold Experience" ? "このサーバは週ごとに推移をまとめています。" : "このサーバは月ごとに推移をまとめています。"))}</div>
+          `;
+        }
+
+        function render() {
+          renderTable();
+        }
+
+        function init() {
+          renderOptions();
+          byId("marketSearch").addEventListener("input", (event) => {
+            state.query = event.target.value.trim().toLowerCase();
+            state.selectedKey = "";
+            render();
+          });
+          byId("marketServer").addEventListener("change", (event) => {
+            state.server = event.target.value;
+            state.selectedKey = "";
+            render();
+          });
+          byId("marketCategory").addEventListener("change", (event) => {
+            state.category = event.target.value;
+            state.selectedKey = "";
+            render();
+          });
+          byId("marketSort").addEventListener("change", (event) => {
+            state.sort = event.target.value;
+            render();
+          });
+          byId("marketPeriodMode").addEventListener("change", (event) => {
+            state.periodMode = event.target.value;
+            render();
+          });
+          render();
+        }
+
+        init();
+      </script>
+      <script src="https://sokomin.github.io/material.min.js"></script>
+    </div>
+  </div>
+</body>
+
+</html>
