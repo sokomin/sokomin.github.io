@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=960">
+  <!-- Page styles -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://sokomin.github.io/material.indigo-pink.min.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="guildmark-simulator/styles.css?v=20260722-1" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+  <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-133658114-1');
+  </script>
+  <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+  <script>
+    function enter() {
+      if (window.event.keyCode == 13) {
+        var last_keyword = $('#search-field').val();
+        window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+      }
+    }
+  </script>
+  <script data-ad-client="ca-pub-2122309953813422" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <title>ギルド紋章作成シミュレーター　赤石の民衆</title>
+  <meta name="description" content="RED STONEのギルド紋章を6つの手順で作成できるシミュレーター。シンボル、配色、ベース、分割、ベース配色、ライン配色を選択して確認できます。" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <meta name="keywords" content="RED STONE,レッドストーン,赤石の民衆,ギルド紋章,ギルド紋章作成,シミュレーター" />
+</head>
+
+<body>
+
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <a name="container"></a>
+    <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+      <div class="mdl-layout__header-row">
+        <span class="android-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <!-- Add spacer, to align navigation to the right in desktop -->
+        <div class="android-header-spacer mdl-layout-spacer"></div>
+        <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text" onkeypress="enter();" id="search-field" />
+          </div>
+        </div>
+        <!-- Navigation -->
+        <div class="android-navigation-container">
+          <nav class="android-navigation mdl-navigation">
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/index.html">ホーム</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+          </nav>
+        </div>
+        <span class="android-mobile-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
+          <i class="material-icons">more_vert</i>
+        </button>
+        <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a></li>
+          <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+        </ul>
+
+      </div>
+    </div>
+
+    <div class="android-drawer mdl-layout__drawer">
+      <span class="mdl-layout-title">
+        <h2>メニュー</h2>
+      </span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html"><strong>モンスター</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html"><strong>ダンジョン</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html"><strong>クエスト</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html"><strong>雑学</strong></a>
+      </nav>
+    </div>
+
+    <div class="android-large-table mdl-layout__content">
+      <!--main-->
+      <div class="main-background mdl-typography--text-center korea-content">
+        <br>
+<div class="guild-crest-simulator">
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <h1>ギルド紋章作成シミュレーター</h1>
+        <p class="lead">6つの手順を順番に選び、オリジナルのギルド紋章を作成できます。</p>
+      </div>
+    </div>
+  </header>
+
+  <p class="public-backlink"><a href="guildmark.html">ギルド紋章パッケージ一覧へ戻る</a></p>
+
+  <p id="serverNotice" class="server-notice" hidden>画像を合成するため、HTTPサーバー経由で開いてください。</p>
+
+  <nav class="step-progress" aria-label="作成手順">
+    <a href="#step-symbol"><span>1</span>シンボル</a>
+    <a href="#step-symbol-color"><span>2</span>シンボル配色</a>
+    <a href="#step-base"><span>3</span>ベース</a>
+    <a href="#step-partition"><span>4</span>分割</a>
+    <a href="#step-base-color"><span>5</span>ベース配色</a>
+    <a href="#step-line-color"><span>6</span>ライン配色</a>
+  </nav>
+
+  <div class="layout">
+    <aside class="preview-panel" aria-label="完成プレビュー">
+      <div class="preview-card">
+        <div class="preview-heading">
+          <div>
+            <span class="step-label">LIVE PREVIEW</span>
+            <h2>完成イメージ</h2>
+          </div>
+          <button id="randomize" class="secondary-button" type="button">
+            <span aria-hidden="true">↻</span> おまかせ
+          </button>
+        </div>
+
+        <div class="preview-stage checker">
+          <canvas id="preview" width="40" height="40" aria-label="ギルド紋章プレビュー"></canvas>
+          <span class="preview-resolution">ゲームデータ準拠</span>
+        </div>
+        <p id="renderStatus" class="render-status" role="status" aria-live="polite">データを読み込んでいます…</p>
+
+        <div class="mini-preview-row">
+          <div><canvas id="preview30" width="30" height="30" aria-label="30ピクセルプレビュー"></canvas><span>30 px</span></div>
+          <div><canvas id="preview60" width="60" height="60" aria-label="60ピクセルプレビュー"></canvas><span>60 px</span></div>
+          <div><canvas id="preview120" width="120" height="120" aria-label="120ピクセルプレビュー"></canvas><span>120 px</span></div>
+        </div>
+
+        <div class="export-row">
+          <label>保存サイズ
+            <select id="exportSize">
+              <option selected>30</option>
+              <option>40</option>
+              <option>60</option>
+              <option>120</option>
+            </select>
+          </label>
+          <button id="download" class="primary-button" type="button">PNGを保存</button>
+        </div>
+        <label class="background-option"><input id="transparentBackground" type="checkbox"> 背景を透明にする</label>
+
+        <div class="selection-summary" aria-label="現在の選択">
+          <h3>現在の選択</h3>
+          <dl>
+            <div><dt>シンボル</dt><dd id="summarySymbol">—</dd></div>
+            <div><dt>シンボル配色</dt><dd id="summarySymbolColor">—</dd></div>
+            <div><dt>ベース</dt><dd id="summaryBase">—</dd></div>
+            <div><dt>分割</dt><dd id="summaryPartition">—</dd></div>
+            <div><dt>ベース配色</dt><dd id="summaryBaseColors">—</dd></div>
+            <div><dt>ライン配色</dt><dd id="summaryLineColor">—</dd></div>
+          </dl>
+        </div>
+      </div>
+    </aside>
+
+    <section class="controls" aria-label="紋章作成">
+      <header class="controls-heading">
+        <h2>紋章を組み立てる</h2>
+        <p>番号順に選ぶと、完成イメージへ即時反映されます。</p>
+      </header>
+
+      <section id="step-symbol" class="control-card wide-card">
+        <div class="section-title"><span>01</span><h2>シンボルの形態</h2></div>
+        <p class="instruction">カテゴリを選び、一覧から使用する文字や絵柄を選択します。</p>
+        <div id="symbolCategories" class="category-tabs" role="tablist" aria-label="シンボルカテゴリ"></div>
+        <div id="symbolPicker" class="symbol-choice-grid" role="listbox" aria-label="シンボル一覧"></div>
+      </section>
+
+      <section id="step-symbol-color" class="control-card">
+        <div class="section-title"><span>02</span><h2>シンボルの配色</h2></div>
+        <p id="symbolColorHelp" class="instruction">30種類の配色から選択します。</p>
+        <div id="symbolColorPicker" class="palette-grid" role="listbox" aria-label="シンボル配色"></div>
+      </section>
+
+      <section id="step-base" class="control-card">
+        <div class="section-title"><span>03</span><h2>ベースの形態</h2></div>
+        <p class="instruction">紋章の外形を10種類から選択します。</p>
+        <div id="basePicker" class="choice-grid base-choice-grid" role="listbox" aria-label="ベース形態"></div>
+      </section>
+
+      <section id="step-partition" class="control-card">
+        <div class="section-title"><span>04</span><h2>ベースの分割</h2></div>
+        <p class="instruction">色1と色2を配置する分割模様を40種類から選択します。</p>
+        <div id="partitionPicker" class="choice-grid partition-choice-grid" role="listbox" aria-label="ベース分割"></div>
+      </section>
+
+      <section id="step-base-color" class="control-card wide-card">
+        <div class="section-title"><span>05</span><h2>ベースの配色</h2></div>
+        <p class="instruction">分割模様に使用する色1と色2をそれぞれ選択します。</p>
+        <div class="base-color-groups">
+          <fieldset>
+            <legend><i id="baseColor1Chip" aria-hidden="true"></i> 色1</legend>
+            <div id="baseColor1Picker" class="palette-grid base-palette-grid" role="listbox" aria-label="ベース色1"></div>
+          </fieldset>
+          <fieldset>
+            <legend><i id="baseColor2Chip" aria-hidden="true"></i> 色2</legend>
+            <div id="baseColor2Picker" class="palette-grid base-palette-grid" role="listbox" aria-label="ベース色2"></div>
+          </fieldset>
+        </div>
+      </section>
+
+      <section id="step-line-color" class="control-card">
+        <div class="section-title"><span>06</span><h2>ベースのライン配色</h2></div>
+        <p class="instruction">ベースの縁取りと装飾線に使用する配色を選択します。</p>
+        <div id="lineColorPicker" class="palette-grid" role="listbox" aria-label="ベースのライン配色"></div>
+      </section>
+
+      <section class="completion-card">
+        <div>
+          <h2>紋章が完成しました</h2>
+          <p>左の完成イメージを確認し、必要に応じて各手順へ戻って調整してください。</p>
+        </div>
+        <button id="downloadBottom" class="primary-button" type="button">完成PNGを保存</button>
+      </section>
+    </section>
+  </div>
+
+  
+</div>
+        <footer class="android-footer mdl-mega-footer">
+          <font color="red">
+                            当サイトで利用している画像及びデータは、L&K Co., Ltd.に帰属します。<br>
+            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+          </font>
+          © L&K Co., Ltd. All Rights Reserved.<br>
+        </footer>
+        <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+
+      </div>
+
+      <script src="guildmark-simulator/app.js?v=20260720-2"></script>
+      <script src="https://sokomin.github.io/material.min.js"></script>
+    </div>
+  </div>
+</body>
+
+</html>

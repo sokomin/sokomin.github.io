@@ -1,872 +1,707 @@
-:root {
-  color-scheme: dark;
-  --bg: #090d14;
-  --panel: #111827;
-  --panel-2: #182235;
-  --panel-3: #202c42;
-  --line: #334155;
-  --muted: #94a3b8;
-  --text: #f8fafc;
-  --accent: #38bdf8;
-  --accent-2: #fbbf24;
-  --success: #34d399;
-  --danger: #fb7185;
-  --shadow: 0 20px 55px rgba(0, 0, 0, .35);
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
 .guild-crest-simulator {
-  min-width: 320px;
-  margin: 0;
-  color: var(--text);
-  background:
-    radial-gradient(circle at 12% -10%, rgba(56, 189, 248, .16), transparent 30rem),
-    radial-gradient(circle at 90% 5%, rgba(251, 191, 36, .12), transparent 28rem),
-    var(--bg);
-  font-family:
-    "Noto Sans JP", "Yu Gothic UI", "Yu Gothic", Meiryo, system-ui, sans-serif;
+  width: min(1200px, calc(100% - 40px));
+  min-width: 880px;
+  margin: 0 auto;
+  padding: 0 0 48px;
+  color: #333;
+  background: transparent;
+  text-align: left;
   line-height: 1.65;
 }
 
-button,
-select,
-input {
+.guild-crest-simulator,
+.guild-crest-simulator * {
+  box-sizing: border-box;
+}
+
+.guild-crest-simulator button,
+.guild-crest-simulator select,
+.guild-crest-simulator input {
   font: inherit;
 }
 
-button,
-a,
-select,
-input {
-  -webkit-tap-highlight-color: transparent;
+.guild-crest-simulator button:focus-visible,
+.guild-crest-simulator a:focus-visible,
+.guild-crest-simulator select:focus-visible,
+.guild-crest-simulator input:focus-visible {
+  outline: 3px solid rgba(157, 137, 108, .45);
+  outline-offset: 2px;
 }
 
-button:focus-visible,
-a:focus-visible,
-select:focus-visible,
-input:focus-visible {
-  outline: 3px solid rgba(56, 189, 248, .7);
-  outline-offset: 3px;
-}
-
-button {
-  color: inherit;
-}
-
-.hero {
-  position: relative;
-  overflow: hidden;
-  border-bottom: 1px solid rgba(148, 163, 184, .18);
-  background:
-    linear-gradient(110deg, rgba(10, 15, 25, .92), rgba(15, 23, 42, .78)),
-    repeating-linear-gradient(
-      135deg,
-      rgba(255, 255, 255, .025) 0,
-      rgba(255, 255, 255, .025) 1px,
-      transparent 1px,
-      transparent 12px
-    );
-}
-
-.hero::after {
-  position: absolute;
-  inset: auto -8rem -11rem auto;
-  width: 28rem;
-  height: 28rem;
-  border: 1px solid rgba(56, 189, 248, .16);
-  border-radius: 50%;
-  box-shadow:
-    0 0 0 2.5rem rgba(56, 189, 248, .03),
-    0 0 0 6rem rgba(56, 189, 248, .025);
-  content: "";
-}
-
-.hero-inner {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  width: min(1400px, calc(100% - 40px));
-  min-height: 220px;
-  margin: 0 auto;
-  padding: 38px 0;
-  gap: 28px;
-}
-
-.hero-mark {
-  display: grid;
-  flex: 0 0 auto;
-  width: 96px;
-  height: 96px;
-  place-items: center;
-  border: 2px solid rgba(56, 189, 248, .72);
-  border-radius: 28px 28px 35px 35px;
-  color: #082f49;
-  background:
-    linear-gradient(145deg, rgba(255, 255, 255, .8), transparent 38%),
-    linear-gradient(180deg, #7dd3fc, #0284c7);
-  box-shadow:
-    inset 0 0 0 6px rgba(3, 7, 18, .62),
-    0 16px 45px rgba(2, 132, 199, .24);
-  font-family: Georgia, serif;
-  font-size: 52px;
-  font-weight: 900;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, .7);
-}
-
-.hero-copy {
-  max-width: 800px;
-}
-
-.eyebrow,
-.step-label,
-.section-title p {
+.guild-crest-simulator .hero {
   margin: 0;
-  color: var(--accent);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: .18em;
+  padding: 0;
+  text-align: center;
 }
 
-.hero h1,
-.controls-heading h2,
-.section-title h2,
-.preview-heading h2,
-.completion-card h2 {
+.guild-crest-simulator .hero-inner {
+  display: block;
+  min-height: 0;
   margin: 0;
-  line-height: 1.25;
+  padding: 0;
 }
 
-.hero h1 {
-  margin-top: 4px;
-  font-size: clamp(34px, 5vw, 62px);
-  letter-spacing: -.045em;
+.guild-crest-simulator .hero-copy {
+  max-width: none;
 }
 
-.hero h1 span {
-  color: var(--accent);
+.guild-crest-simulator .hero h1 {
+  margin: 0 0 8px;
+  color: #333;
+  font-size: 30px;
+  line-height: 1.4;
+  letter-spacing: normal;
 }
 
-.lead {
-  max-width: 680px;
-  margin: 12px 0 0;
-  color: #cbd5e1;
-  font-size: 17px;
+.guild-crest-simulator .lead {
+  margin: 0;
+  color: #555;
+  font-size: 14px;
+  text-align: center;
 }
 
-.server-notice {
-  width: min(1400px, calc(100% - 40px));
-  margin: 18px auto 0;
-  padding: 12px 16px;
-  border: 1px solid rgba(251, 113, 133, .45);
-  border-radius: 10px;
-  color: #fecdd3;
-  background: rgba(159, 18, 57, .22);
+.guild-crest-simulator .public-backlink {
+  margin: 8px 0 20px;
+  text-align: center;
 }
 
-.step-progress {
+.guild-crest-simulator .server-notice {
+  margin: 0 0 16px;
+  padding: 10px 14px;
+  border: 1px solid #d7a4a4;
+  border-radius: 4px;
+  color: #8b3030;
+  background: #fff3f3;
+  text-align: center;
+}
+
+.guild-crest-simulator .step-progress {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  width: min(1400px, calc(100% - 40px));
-  margin: 24px auto 0;
+  margin: 0 auto 20px;
   overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: rgba(17, 24, 39, .88);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, .2);
+  border: 1px solid #b8aa95;
+  border-radius: 4px;
+  background: #f7f3e8;
 }
 
-.step-progress a {
+.guild-crest-simulator .step-progress a {
   display: flex;
   min-width: 0;
+  min-height: 46px;
   align-items: center;
   justify-content: center;
-  padding: 11px 8px;
-  gap: 8px;
-  color: #cbd5e1;
+  padding: 7px 6px;
+  gap: 6px;
+  color: #554a3b;
   text-align: center;
   text-decoration: none;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: bold;
 }
 
-.step-progress a + a {
-  border-left: 1px solid var(--line);
+.guild-crest-simulator .step-progress a + a {
+  border-left: 1px solid #d2c8b8;
 }
 
-.step-progress a:hover {
+.guild-crest-simulator .step-progress a:hover {
   color: #fff;
-  background: rgba(56, 189, 248, .1);
+  background: #9d896c;
 }
 
-.step-progress span {
-  display: grid;
+.guild-crest-simulator .step-progress span {
+  display: inline-grid;
+  flex: 0 0 auto;
   width: 24px;
   height: 24px;
   place-items: center;
   border-radius: 50%;
-  color: #082f49;
-  background: var(--accent);
+  color: #fff;
+  background: #9d896c;
   font-size: 12px;
-  font-weight: 900;
 }
 
-.layout {
+.guild-crest-simulator .step-progress a:hover span {
+  color: #9d896c;
+  background: #fff;
+}
+
+.guild-crest-simulator .layout {
   display: grid;
-  grid-template-columns: 360px minmax(0, 1fr);
-  width: min(1400px, calc(100% - 40px));
-  margin: 24px auto 70px;
+  grid-template-columns: 330px minmax(0, 1fr);
   align-items: start;
-  gap: 24px;
+  gap: 20px;
 }
 
-.preview-panel {
+.guild-crest-simulator .preview-panel {
   position: sticky;
-  top: 18px;
+  top: 16px;
 }
 
-.preview-card,
-.control-card,
-.completion-card {
-  border: 1px solid rgba(148, 163, 184, .2);
-  border-radius: 18px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, .025), transparent 30%),
-    var(--panel);
-  box-shadow: var(--shadow);
+.guild-crest-simulator .preview-card,
+.guild-crest-simulator .control-card,
+.guild-crest-simulator .completion-card {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fafafa;
 }
 
-.preview-card {
-  padding: 20px;
+.guild-crest-simulator .preview-card {
+  padding: 16px;
 }
 
-.preview-heading,
-.export-row,
-.controls-heading,
-.completion-card {
+.guild-crest-simulator .preview-heading,
+.guild-crest-simulator .export-row,
+.guild-crest-simulator .controls-heading,
+.guild-crest-simulator .completion-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
 }
 
-.preview-heading h2 {
-  margin-top: 3px;
-  font-size: 24px;
+.guild-crest-simulator .preview-heading h2,
+.guild-crest-simulator .controls-heading h2,
+.guild-crest-simulator .section-title h2,
+.guild-crest-simulator .completion-card h2 {
+  margin: 0;
+  color: #333;
+  line-height: 1.4;
 }
 
-.secondary-button,
-.primary-button {
-  min-height: 42px;
-  border-radius: 10px;
-  padding: 9px 15px;
+.guild-crest-simulator .preview-heading h2 {
+  font-size: 18px;
+}
+
+.guild-crest-simulator .step-label {
+  display: block;
+  margin: 0 0 2px;
+  color: #75644f;
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: .08em;
+}
+
+.guild-crest-simulator .primary-button,
+.guild-crest-simulator .secondary-button {
+  min-height: 38px;
+  border-radius: 4px;
+  padding: 7px 13px;
   cursor: pointer;
-  font-weight: 800;
-  transition: transform .15s ease, border-color .15s ease, background .15s ease;
+  font-weight: bold;
 }
 
-.secondary-button {
-  border: 1px solid var(--line);
-  color: #dbeafe;
-  background: var(--panel-2);
+.guild-crest-simulator .primary-button {
+  border: 1px solid #89775d;
+  color: #fff;
+  background: #9d896c;
 }
 
-.secondary-button:hover {
-  border-color: var(--accent);
-  background: rgba(56, 189, 248, .12);
+.guild-crest-simulator .primary-button:hover {
+  background: #b6a07f;
 }
 
-.primary-button {
-  border: 1px solid #7dd3fc;
-  color: #082f49;
-  background: linear-gradient(180deg, #7dd3fc, #38bdf8);
-  box-shadow: 0 9px 26px rgba(14, 165, 233, .2);
+.guild-crest-simulator .secondary-button {
+  border: 1px solid #aaa;
+  color: #444;
+  background: #eee;
 }
 
-.primary-button:hover {
-  background: linear-gradient(180deg, #bae6fd, #38bdf8);
+.guild-crest-simulator .secondary-button:hover {
+  border-color: #9d896c;
+  color: #6a5842;
+  background: #f7f3e8;
 }
 
-.primary-button:active,
-.secondary-button:active,
-.choice-button:active,
-.category-button:active {
-  transform: translateY(1px);
-}
-
-.preview-stage {
+.guild-crest-simulator .preview-stage {
   position: relative;
   display: grid;
   width: 100%;
   aspect-ratio: 1;
-  margin-top: 18px;
+  margin-top: 14px;
   place-items: center;
   overflow: hidden;
-  border: 1px solid #475569;
-  border-radius: 16px;
-  background-color: #293548;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  background-color: #fff;
   background-image:
-    linear-gradient(45deg, #1b2535 25%, transparent 25%),
-    linear-gradient(-45deg, #1b2535 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, #1b2535 75%),
-    linear-gradient(-45deg, transparent 75%, #1b2535 75%);
+    linear-gradient(45deg, #eee 25%, transparent 25%),
+    linear-gradient(-45deg, #eee 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #eee 75%),
+    linear-gradient(-45deg, transparent 75%, #eee 75%);
   background-position: 0 0, 0 10px, 10px -10px, -10px 0;
   background-size: 20px 20px;
 }
 
-.preview-stage canvas {
-  width: min(74%, 240px);
-  height: min(74%, 240px);
+.guild-crest-simulator .preview-stage canvas {
+  width: min(74%, 220px);
+  height: min(74%, 220px);
   image-rendering: pixelated;
-  filter: drop-shadow(0 10px 16px rgba(0, 0, 0, .38));
 }
 
-.preview-resolution {
+.guild-crest-simulator .preview-resolution {
   position: absolute;
-  right: 10px;
-  bottom: 9px;
-  padding: 3px 8px;
-  border-radius: 999px;
-  color: #cbd5e1;
-  background: rgba(3, 7, 18, .7);
+  right: 8px;
+  bottom: 8px;
+  padding: 2px 7px;
+  border-radius: 10px;
+  color: #fff;
+  background: rgba(70, 60, 48, .75);
   font-size: 10px;
-  font-weight: 700;
 }
 
-.render-status {
+.guild-crest-simulator .render-status {
   min-height: 1.5em;
-  margin: 10px 0 0;
-  color: #a7f3d0;
+  margin: 8px 0 0;
+  color: #356b48;
   font-size: 12px;
 }
 
-.render-status.is-error {
-  color: #fecdd3;
+.guild-crest-simulator .render-status.is-error {
+  color: #a33;
 }
 
-.mini-preview-row {
+.guild-crest-simulator .mini-preview-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  margin-top: 12px;
-  gap: 8px;
+  margin-top: 10px;
+  gap: 7px;
 }
 
-.mini-preview-row div {
+.guild-crest-simulator .mini-preview-row div {
   display: grid;
-  min-height: 92px;
+  min-height: 84px;
   place-items: center;
   align-content: center;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  gap: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  gap: 3px;
   background:
-    linear-gradient(45deg, #fff 25%, #e2e8f0 25%, #e2e8f0 50%, #fff 50%, #fff 75%, #e2e8f0 75%);
+    linear-gradient(45deg, #fff 25%, #eee 25%, #eee 50%, #fff 50%, #fff 75%, #eee 75%);
   background-size: 12px 12px;
 }
 
-.mini-preview-row canvas {
-  max-width: 64px;
-  max-height: 64px;
+.guild-crest-simulator .mini-preview-row canvas {
+  max-width: 60px;
+  max-height: 60px;
   image-rendering: pixelated;
 }
 
-.mini-preview-row span {
-  padding: 1px 6px;
-  border-radius: 999px;
-  color: #e2e8f0;
-  background: rgba(15, 23, 42, .86);
+.guild-crest-simulator .mini-preview-row span {
+  padding: 1px 5px;
+  border-radius: 8px;
+  color: #fff;
+  background: rgba(70, 60, 48, .78);
   font-size: 10px;
 }
 
-.export-row {
-  margin-top: 14px;
+.guild-crest-simulator .export-row {
+  margin-top: 12px;
 }
 
-.export-row label {
+.guild-crest-simulator .export-row label {
   display: grid;
-  color: var(--muted);
+  color: #666;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: bold;
+  gap: 3px;
+}
+
+.guild-crest-simulator select {
+  min-width: 84px;
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  padding: 6px 8px;
+  color: #333;
+  background: #fff;
+}
+
+.guild-crest-simulator .background-option {
+  display: flex;
+  margin-top: 10px;
+  align-items: center;
+  gap: 7px;
+  color: #555;
+  font-size: 12px;
+}
+
+.guild-crest-simulator .selection-summary {
+  margin-top: 14px;
+  border-top: 1px solid #d5d5d5;
+  padding-top: 12px;
+}
+
+.guild-crest-simulator .selection-summary h3 {
+  margin: 0 0 7px;
+  color: #5b4d3a;
+  font-size: 13px;
+}
+
+.guild-crest-simulator .selection-summary dl {
+  display: grid;
+  margin: 0;
   gap: 4px;
 }
 
-select {
-  min-width: 88px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 8px 10px;
-  color: var(--text);
-  background: #0f172a;
-}
-
-.background-option {
-  display: flex;
-  margin-top: 11px;
-  align-items: center;
-  gap: 8px;
-  color: #cbd5e1;
-  font-size: 12px;
-}
-
-.selection-summary {
-  margin-top: 18px;
-  border-top: 1px solid var(--line);
-  padding-top: 14px;
-}
-
-.selection-summary h3 {
-  margin: 0 0 9px;
-  font-size: 13px;
-}
-
-.selection-summary dl {
+.guild-crest-simulator .selection-summary dl div {
   display: grid;
-  margin: 0;
-  gap: 5px;
+  grid-template-columns: 104px minmax(0, 1fr);
+  gap: 7px;
 }
 
-.selection-summary dl div {
-  display: grid;
-  grid-template-columns: 112px minmax(0, 1fr);
-  gap: 8px;
-}
-
-.selection-summary dt {
-  color: var(--muted);
+.guild-crest-simulator .selection-summary dt {
+  color: #777;
   font-size: 11px;
 }
 
-.selection-summary dd {
+.guild-crest-simulator .selection-summary dd {
   margin: 0;
   overflow-wrap: anywhere;
+  color: #333;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: bold;
 }
 
-.controls {
+.guild-crest-simulator .controls {
   display: grid;
   min-width: 0;
-  gap: 18px;
+  gap: 14px;
 }
 
-.controls-heading {
-  min-height: 76px;
-  padding: 0 4px;
+.guild-crest-simulator .controls-heading {
+  min-height: 50px;
+  padding: 0 2px;
+  border-bottom: 2px solid #9d896c;
 }
 
-.controls-heading h2 {
-  font-size: 30px;
-}
-
-.controls-heading > p {
-  max-width: 390px;
-  margin: 0;
-  color: var(--muted);
-  text-align: right;
-  font-size: 13px;
-}
-
-.control-card {
-  scroll-margin-top: 18px;
-  padding: 22px;
-}
-
-.section-title {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-}
-
-.section-title > span {
-  display: grid;
-  flex: 0 0 auto;
-  width: 44px;
-  height: 44px;
-  place-items: center;
-  border: 1px solid rgba(56, 189, 248, .42);
-  border-radius: 13px;
-  color: var(--accent);
-  background: rgba(56, 189, 248, .08);
-  font-weight: 900;
-}
-
-.section-title h2 {
+.guild-crest-simulator .controls-heading h2 {
   font-size: 22px;
 }
 
-.instruction {
-  margin: 12px 0 15px;
-  color: var(--muted);
-  font-size: 13px;
+.guild-crest-simulator .controls-heading > p {
+  margin: 0;
+  color: #666;
+  text-align: right;
+  font-size: 12px;
 }
 
-.category-tabs {
+.guild-crest-simulator .control-card {
+  scroll-margin-top: 16px;
+  padding: 16px;
+}
+
+.guild-crest-simulator .section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 2px solid #9d896c;
+  padding-bottom: 6px;
+}
+
+.guild-crest-simulator .section-title > span {
+  display: inline-grid;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 28px;
+  place-items: center;
+  border-radius: 3px;
+  color: #fff;
+  background: #9d896c;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.guild-crest-simulator .section-title h2 {
+  font-size: 17px;
+}
+
+.guild-crest-simulator .instruction {
+  margin: 9px 0 12px;
+  color: #666;
+  font-size: 12px;
+}
+
+.guild-crest-simulator .category-tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
 }
 
-.category-button {
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 7px 12px;
+.guild-crest-simulator .category-button {
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  padding: 6px 11px;
   cursor: pointer;
-  color: #cbd5e1;
-  background: var(--panel-2);
+  color: #555;
+  background: #eee;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: bold;
 }
 
-.category-button:hover,
-.category-button.selected {
-  border-color: var(--accent);
-  color: #e0f2fe;
-  background: rgba(14, 165, 233, .16);
+.guild-crest-simulator .category-button:hover,
+.guild-crest-simulator .category-button.selected {
+  border-color: #9d896c;
+  color: #fff;
+  background: #9d896c;
 }
 
-.symbol-choice-grid,
-.choice-grid,
-.palette-grid {
+.guild-crest-simulator .symbol-choice-grid,
+.guild-crest-simulator .choice-grid,
+.guild-crest-simulator .palette-grid {
   display: grid;
-  gap: 8px;
+  gap: 7px;
 }
 
-.symbol-choice-grid {
-  grid-template-columns: repeat(10, minmax(54px, 1fr));
-  max-height: 590px;
-  margin-top: 14px;
+.guild-crest-simulator .symbol-choice-grid {
+  grid-template-columns: repeat(9, minmax(52px, 1fr));
+  max-height: 560px;
+  margin-top: 12px;
   overflow: auto;
-  padding: 3px 7px 3px 3px;
-  scrollbar-color: #475569 #111827;
+  padding: 3px 6px 3px 3px;
 }
 
-.choice-grid {
-  grid-template-columns: repeat(auto-fill, minmax(66px, 1fr));
+.guild-crest-simulator .choice-grid {
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
 }
 
-.partition-choice-grid {
-  grid-template-columns: repeat(auto-fill, minmax(58px, 1fr));
+.guild-crest-simulator .partition-choice-grid {
+  grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
 }
 
-.choice-button {
+.guild-crest-simulator .choice-button {
   position: relative;
   display: grid;
   min-width: 0;
-  min-height: 66px;
+  min-height: 64px;
   place-items: center;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 6px;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  padding: 5px;
   cursor: pointer;
-  color: #cbd5e1;
-  background: #0f172a;
+  color: #555;
+  background: #fff;
   gap: 3px;
-  transition: border-color .15s ease, background .15s ease, transform .15s ease;
 }
 
-.choice-button:hover {
-  border-color: #64748b;
-  background: #172033;
+.guild-crest-simulator .choice-button:hover {
+  border-color: #9d896c;
+  background: #f7f3e8;
 }
 
-.choice-button.selected {
-  border-color: var(--accent);
-  background: rgba(14, 165, 233, .13);
-  box-shadow: inset 0 0 0 1px rgba(56, 189, 248, .4);
+.guild-crest-simulator .choice-button.selected {
+  border-color: #7c684c;
+  background: #efe9d9;
+  box-shadow: inset 0 0 0 1px #9d896c;
 }
 
-.choice-button.selected::after {
+.guild-crest-simulator .choice-button.selected::after {
   position: absolute;
-  top: 4px;
-  right: 4px;
+  top: 3px;
+  right: 3px;
   display: grid;
   width: 16px;
   height: 16px;
   place-items: center;
   border-radius: 50%;
-  color: #082f49;
-  background: var(--accent);
+  color: #fff;
+  background: #9d896c;
   content: "✓";
   font-size: 10px;
-  font-weight: 900;
+  font-weight: bold;
 }
 
-.choice-button canvas {
+.guild-crest-simulator .choice-button canvas {
   width: 44px;
   height: 44px;
-  border-radius: 3px;
+  border-radius: 2px;
   image-rendering: pixelated;
 }
 
-.choice-button small {
-  color: var(--muted);
+.guild-crest-simulator .choice-button small {
+  color: #777;
   font-size: 9px;
   line-height: 1;
 }
 
-.palette-grid {
-  grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
+.guild-crest-simulator .palette-grid {
+  grid-template-columns: repeat(auto-fill, minmax(46px, 1fr));
 }
 
-.palette-button {
-  min-height: 58px;
-  background: #0f172a;
+.guild-crest-simulator .palette-button {
+  min-height: 56px;
+  background: #fff;
 }
 
-.palette-button i {
+.guild-crest-simulator .palette-button i {
   display: block;
-  width: 32px;
-  height: 32px;
-  border: 2px solid rgba(255, 255, 255, .75);
+  width: 31px;
+  height: 31px;
+  border: 2px solid rgba(255, 255, 255, .85);
   border-radius: 50%;
   background:
     radial-gradient(circle at 34% 28%, var(--swatch-light), var(--swatch-main) 52%, var(--swatch-dark));
   box-shadow:
-    inset 0 0 0 1px rgba(0, 0, 0, .28),
-    0 3px 8px rgba(0, 0, 0, .28);
+    0 0 0 1px #aaa,
+    inset 0 0 0 1px rgba(0, 0, 0, .2);
 }
 
-.palette-grid.is-disabled {
+.guild-crest-simulator .palette-grid.is-disabled {
   position: relative;
-  opacity: .3;
+  opacity: .35;
   pointer-events: none;
-  filter: grayscale(.45);
+  filter: grayscale(.4);
 }
 
-.base-color-groups {
+.guild-crest-simulator .base-color-groups {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  gap: 12px;
 }
 
-.base-color-groups fieldset {
+.guild-crest-simulator .base-color-groups fieldset {
   min-width: 0;
   margin: 0;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 13px;
-  background: rgba(15, 23, 42, .55);
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 11px;
+  background: #fff;
 }
 
-.base-color-groups legend {
+.guild-crest-simulator .base-color-groups legend {
   display: flex;
-  padding: 0 8px;
+  padding: 0 6px;
   align-items: center;
-  gap: 7px;
-  font-size: 13px;
-  font-weight: 800;
+  gap: 6px;
+  color: #555;
+  font-size: 12px;
+  font-weight: bold;
 }
 
-.base-color-groups legend i {
+.guild-crest-simulator .base-color-groups legend i {
   display: inline-block;
   width: 15px;
   height: 15px;
-  border: 1px solid rgba(255, 255, 255, .65);
+  border: 1px solid #999;
   border-radius: 50%;
 }
 
-.base-palette-grid {
-  grid-template-columns: repeat(8, minmax(38px, 1fr));
-  gap: 6px;
+.guild-crest-simulator .base-palette-grid {
+  grid-template-columns: repeat(6, minmax(38px, 1fr));
+  gap: 5px;
 }
 
-.base-palette-grid .palette-button {
-  min-height: 52px;
+.guild-crest-simulator .base-palette-grid .palette-button {
+  min-height: 50px;
   padding: 4px;
 }
 
-.base-palette-grid .palette-button i {
+.guild-crest-simulator .base-palette-grid .palette-button i {
   width: 27px;
   height: 27px;
 }
 
-.completion-card {
-  padding: 24px;
-  border-color: rgba(52, 211, 153, .3);
-  background:
-    linear-gradient(120deg, rgba(52, 211, 153, .08), transparent 42%),
-    var(--panel);
+.guild-crest-simulator .completion-card {
+  padding: 18px;
+  border-color: #b8aa95;
+  background: #f7f3e8;
 }
 
-.completion-card p {
-  margin: 7px 0 0;
-  color: var(--muted);
-  font-size: 13px;
+.guild-crest-simulator .completion-card h2 {
+  font-size: 18px;
 }
 
-footer {
-  padding: 28px 20px 45px;
-  border-top: 1px solid rgba(148, 163, 184, .16);
-  color: var(--muted);
-  text-align: center;
+.guild-crest-simulator .completion-card p {
+  margin: 5px 0 0;
+  color: #666;
   font-size: 12px;
 }
 
-footer p {
-  margin: 3px 0;
-}
-
-footer a {
-  color: #7dd3fc;
-}
-
 @media (max-width: 1050px) {
-  .layout {
-    grid-template-columns: 310px minmax(0, 1fr);
+  .guild-crest-simulator .layout {
+    grid-template-columns: 300px minmax(0, 1fr);
   }
 
-  .symbol-choice-grid {
+  .guild-crest-simulator .symbol-choice-grid {
     grid-template-columns: repeat(7, minmax(50px, 1fr));
   }
 
-  .base-palette-grid {
+  .guild-crest-simulator .base-palette-grid {
     grid-template-columns: repeat(4, 1fr);
   }
 }
 
-@media (max-width: 820px) {
-  .hero-inner {
-    min-height: 190px;
+@media (max-width: 860px) {
+  .guild-crest-simulator {
+    min-width: 0;
+    width: calc(100% - 24px);
   }
 
-  .hero-mark {
-    width: 76px;
-    height: 76px;
-    border-radius: 22px;
-    font-size: 42px;
-  }
-
-  .step-progress {
+  .guild-crest-simulator .step-progress {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .step-progress a:nth-child(4) {
+  .guild-crest-simulator .step-progress a:nth-child(4) {
     border-left: 0;
   }
 
-  .step-progress a:nth-child(n + 4) {
-    border-top: 1px solid var(--line);
+  .guild-crest-simulator .step-progress a:nth-child(n + 4) {
+    border-top: 1px solid #d2c8b8;
   }
 
-  .layout {
+  .guild-crest-simulator .layout {
     grid-template-columns: 1fr;
   }
 
-  .preview-panel {
+  .guild-crest-simulator .preview-panel {
     position: static;
   }
 
-  .preview-card {
+  .guild-crest-simulator .preview-card {
     display: grid;
-    grid-template-columns: minmax(230px, .9fr) minmax(260px, 1.1fr);
-    gap: 0 18px;
+    grid-template-columns: minmax(240px, .9fr) minmax(280px, 1.1fr);
+    gap: 0 16px;
   }
 
-  .preview-heading,
-  .preview-stage,
-  .render-status {
+  .guild-crest-simulator .preview-heading,
+  .guild-crest-simulator .preview-stage,
+  .guild-crest-simulator .render-status {
     grid-column: 1;
   }
 
-  .mini-preview-row,
-  .export-row,
-  .background-option,
-  .selection-summary {
+  .guild-crest-simulator .mini-preview-row,
+  .guild-crest-simulator .export-row,
+  .guild-crest-simulator .background-option,
+  .guild-crest-simulator .selection-summary {
     grid-column: 2;
-  }
-
-  .preview-stage {
-    margin-top: 10px;
   }
 }
 
 @media (max-width: 620px) {
-  .hero-inner,
-  .layout,
-  .step-progress,
-  .server-notice {
-    width: min(100% - 24px, 1400px);
-  }
-
-  .hero-inner {
-    align-items: flex-start;
-    padding: 28px 0;
-  }
-
-  .hero-mark {
-    width: 58px;
-    height: 58px;
-    border-radius: 17px;
-    font-size: 32px;
-  }
-
-  .hero h1 {
-    font-size: 31px;
-  }
-
-  .lead {
-    font-size: 14px;
-  }
-
-  .step-progress a {
-    flex-direction: column;
-    padding: 8px 4px;
-    gap: 3px;
-    font-size: 10px;
-  }
-
-  .layout {
-    margin-top: 14px;
-  }
-
-  .preview-card {
+  .guild-crest-simulator .preview-card {
     display: block;
   }
 
-  .controls-heading {
+  .guild-crest-simulator .controls-heading {
     display: block;
+    padding-bottom: 8px;
   }
 
-  .controls-heading > p {
-    margin-top: 6px;
+  .guild-crest-simulator .controls-heading > p {
+    margin-top: 4px;
     text-align: left;
   }
 
-  .control-card,
-  .preview-card,
-  .completion-card {
-    padding: 16px;
-    border-radius: 14px;
-  }
-
-  .symbol-choice-grid {
+  .guild-crest-simulator .symbol-choice-grid {
     grid-template-columns: repeat(5, minmax(48px, 1fr));
-    max-height: 520px;
+    max-height: 500px;
   }
 
-  .base-color-groups {
+  .guild-crest-simulator .base-color-groups {
     grid-template-columns: 1fr;
   }
 
-  .completion-card {
+  .guild-crest-simulator .completion-card {
     display: grid;
     justify-items: stretch;
   }
-}
-
-.guild-crest-simulator {
-  text-align: left;
-}
-
-.guild-crest-simulator .public-backlink {
-  width: min(1400px, calc(100% - 40px));
-  margin: 0 auto 12px;
-  text-align: left;
 }
