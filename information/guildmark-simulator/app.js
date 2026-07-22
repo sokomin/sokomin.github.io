@@ -116,60 +116,103 @@
     }
   }
 
+  function offsetImageData(source, offsetX = 0, offsetY = 0) {
+    const xOffset = Number(offsetX) || 0;
+    const yOffset = Number(offsetY) || 0;
+    if (xOffset === 0 && yOffset === 0) return source;
+
+    const output = new ImageData(source.width, source.height);
+    for (let y = 0; y < source.height; y++) {
+      const targetY = y + yOffset;
+      if (targetY < 0 || targetY >= source.height) continue;
+      for (let x = 0; x < source.width; x++) {
+        const targetX = x + xOffset;
+        if (targetX < 0 || targetX >= source.width) continue;
+        const sourceOffset = (y * source.width + x) * 4;
+        if (source.data[sourceOffset + 3] === 0) continue;
+        const targetOffset = (targetY * source.width + targetX) * 4;
+        output.data.set(
+          source.data.subarray(sourceOffset, sourceOffset + 4),
+          targetOffset,
+        );
+      }
+    }
+    return output;
+  }
+
   function composeMaster(overrides = {}, includeSymbol = true) {
     const config = { ...state, ...overrides };
     const size = manifest.cellSize;
     const output = new ImageData(size, size);
-    const baseFill = cellData(resources.baseFill, manifest.base.count, config.baseIndex, size, size);
-    const baseLine = cellData(resources.baseLine, manifest.base.count, config.baseIndex, size, size);
-    const partition = cellData(
-      resources.partitions,
-      manifest.partitions.columns,
-      config.partitionIndex,
-      manifest.partitions.cellWidth,
-      manifest.partitions.cellHeight,
-    );
-    const bounds = manifest.base.bounds[config.baseIndex];
-    const firstPalette = manifest.palettes.base[config.baseColor1];
-    const secondPalette = manifest.palettes.base[config.baseColor2];
 
-    for (let y = 0; y < size; y++) {
-      for (let x = 0; x < size; x++) {
-        const offset = (y * size + x) * 4;
-        if (baseFill.data[offset + 3] === 0) continue;
-        const localX = Math.max(0, Math.min(bounds.width - 1, x - bounds.x));
-        const localY = Math.max(0, Math.min(bounds.height - 1, y - bounds.y));
-        const patternX = Math.min(
-          manifest.partitions.cellWidth - 1,
-          Math.floor(localX * manifest.partitions.cellWidth / bounds.width),
-        );
-        const patternY = Math.min(
-          manifest.partitions.cellHeight - 1,
-          Math.floor(localY * manifest.partitions.cellHeight / bounds.height),
-        );
-        const patternOffset =
-          (patternY * manifest.partitions.cellWidth + patternX) * 4;
-        const selectedPalette =
-          partition.data[patternOffset] < 2 ? firstPalette : secondPalette;
-        const shade = Math.min(
-          7,
-          Math.round(localY * 7 / Math.max(1, bounds.height - 1)),
-        );
-        setPixel(output, offset, parseColor(selectedPalette[shade]));
+    if (config.baseIndex >= 0) {
+      const baseFill = cellData(
+        resources.baseFill,
+        manifest.base.count,
+        config.baseIndex,
+        size,
+        size,
+      );
+      const baseLine = cellData(
+        resources.baseLine,
+        manifest.base.count,
+        config.baseIndex,
+        size,
+        size,
+      );
+      const partition = cellData(
+        resources.partitions,
+        manifest.partitions.columns,
+        config.partitionIndex,
+        manifest.partitions.cellWidth,
+        manifest.partitions.cellHeight,
+      );
+      const bounds = manifest.base.bounds[config.baseIndex];
+      const firstPalette = manifest.palettes.base[config.baseColor1];
+      const secondPalette = manifest.palettes.base[config.baseColor2];
+
+      for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+          const offset = (y * size + x) * 4;
+          if (baseFill.data[offset + 3] === 0) continue;
+          const localX = Math.max(0, Math.min(bounds.width - 1, x - bounds.x));
+          const localY = Math.max(0, Math.min(bounds.height - 1, y - bounds.y));
+          const patternX = Math.min(
+            manifest.partitions.cellWidth - 1,
+            Math.floor(localX * manifest.partitions.cellWidth / bounds.width),
+          );
+          const patternY = Math.min(
+            manifest.partitions.cellHeight - 1,
+            Math.floor(localY * manifest.partitions.cellHeight / bounds.height),
+          );
+          const patternOffset =
+            (patternY * manifest.partitions.cellWidth + patternX) * 4;
+          const selectedPalette =
+            partition.data[patternOffset] < 2 ? firstPalette : secondPalette;
+          const shade = Math.min(
+            7,
+            Math.round(localY * 7 / Math.max(1, bounds.height - 1)),
+          );
+          setPixel(output, offset, parseColor(selectedPalette[shade]));
+        }
       }
-    }
 
-    drawEncodedLayer(output, baseLine, manifest.palettes.mark[config.lineColor]);
+      drawEncodedLayer(output, baseLine, manifest.palettes.mark[config.lineColor]);
+    }
 
     if (includeSymbol) {
       const group = currentSymbolGroup(config);
       const symbolImage = resources.symbols.get(group.key);
-      const symbol = cellData(
-        symbolImage,
-        group.columns,
-        config.symbolIndex,
-        size,
-        size,
+      const symbol = offsetImageData(
+        cellData(
+          symbolImage,
+          group.columns,
+          config.symbolIndex,
+          size,
+          size,
+        ),
+        group.offsetX,
+        group.offsetY,
       );
       if (group.fixedColor) {
         drawFixedLayer(output, symbol);
@@ -318,10 +361,15 @@
       manifest.cellSize,
     );
     const output = new ImageData(manifest.cellSize, manifest.cellSize);
+    const positionedSource = offsetImageData(source, group.offsetX, group.offsetY);
     if (group.fixedColor) {
-      drawFixedLayer(output, source);
+      drawFixedLayer(output, positionedSource);
     } else {
-      drawEncodedLayer(output, source, manifest.palettes.mark[state.symbolColor]);
+      drawEncodedLayer(
+        output,
+        positionedSource,
+        manifest.palettes.mark[state.symbolColor],
+      );
     }
     return output;
   }
@@ -358,6 +406,31 @@
   function renderBasePicker() {
     const container = $('basePicker');
     container.innerHTML = '';
+
+    const noBaseButton = createChoiceButton(
+      -1,
+      'ベースの形態を選択しない',
+      state.baseIndex,
+      () => {
+        state.baseIndex = -1;
+        selectedClass(container, -1);
+        renderPreview();
+      },
+    );
+    const noBaseCanvas = document.createElement('canvas');
+    noBaseCanvas.width = manifest.cellSize;
+    noBaseCanvas.height = manifest.cellSize;
+    const noBaseContext = noBaseCanvas.getContext('2d');
+    noBaseContext.strokeStyle = '#9d896c';
+    noBaseContext.lineWidth = 3;
+    noBaseContext.beginPath();
+    noBaseContext.moveTo(10, 10);
+    noBaseContext.lineTo(30, 30);
+    noBaseContext.stroke();
+    noBaseButton.appendChild(noBaseCanvas);
+    fragmentLabel(noBaseButton, '選択しない');
+    container.appendChild(noBaseButton);
+
     for (let index = 0; index < manifest.base.count; index++) {
       const button = createChoiceButton(
         index,
@@ -517,11 +590,19 @@
     $('summarySymbolColor').textContent = group.fixedColor
       ? '専用配色'
       : `色 ${state.symbolColor + 1}`;
-    $('summaryBase').textContent = `ベース形 ${state.baseIndex + 1}`;
-    $('summaryPartition').textContent = `分割パターン ${state.partitionIndex + 1}`;
-    $('summaryBaseColors').textContent =
-      `色 ${state.baseColor1 + 1}・色 ${state.baseColor2 + 1}`;
-    $('summaryLineColor').textContent = `色 ${state.lineColor + 1}`;
+    const hasBase = state.baseIndex >= 0;
+    $('summaryBase').textContent = hasBase
+      ? `ベース形 ${state.baseIndex + 1}`
+      : '選択しない';
+    $('summaryPartition').textContent = hasBase
+      ? `分割パターン ${state.partitionIndex + 1}`
+      : '適用なし';
+    $('summaryBaseColors').textContent = hasBase
+      ? `色 ${state.baseColor1 + 1}・色 ${state.baseColor2 + 1}`
+      : '適用なし';
+    $('summaryLineColor').textContent = hasBase
+      ? `色 ${state.lineColor + 1}`
+      : '適用なし';
   }
 
   function renderAllControls() {
@@ -544,7 +625,7 @@
     state.symbolGroup = group.key;
     state.symbolIndex = randomIndex(group.count);
     state.symbolColor = randomIndex(manifest.palettes.mark.length);
-    state.baseIndex = randomIndex(manifest.base.count);
+    state.baseIndex = randomIndex(manifest.base.count + 1) - 1;
     state.partitionIndex = randomIndex(manifest.partitions.count);
     state.baseColor1 = randomIndex(manifest.palettes.base.length);
     do {
