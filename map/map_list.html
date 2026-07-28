@@ -156,6 +156,7 @@
         <script language="JavaScript" src="../map/database/mapdata.js"></script>
         <script language="JavaScript" src="../map/database/mapdata_sub.js"></script>
         <script language="JavaScript" src="../map/database/mapdata_extra.js"></script>
+        <script language="JavaScript" src="../map/database/map_search_index.js"></script>
         <script language="JavaScript" src="../map/js/common.js"></script>
         <div class="android-large-table mdl-layout__content">
 
@@ -185,18 +186,25 @@
                 <a href="../map/map_list.html?map_c3=5">[5]のみ表示</a> / <a
                     href="../map/map_list.html?map_c3=6">[6]のみ表示</a><br>
                 <br>
-                マップ名・レベル範囲フィルタ<br>
-                <!-- レベル範囲フィルタフォーム -->
+                マップ検索・レベル範囲フィルタ<br>
+                <a href="../map/map_list.html?normal_monsters=1">一般モンスターが出現するマップ一覧</a><br>
+                <!-- マップ検索・レベル範囲フィルタフォーム -->
                 <form id="level-filter-form" method="get" action="" style="margin:10px 0;">
-                    <label for="map_name">マップ名:</label>
-                    <input type="search" id="map_name" name="map_name" placeholder="マップ名の一部" style="width:220px;">
+                    <label for="map_name">キーワード:</label>
+                    <input type="search" id="map_name" name="map_name" placeholder="マップ名・モンスター名・NPC名など"
+                        style="width:300px;">
                     <label for="level_min">レベル最小:</label>
                     <input type="number" id="level_min" name="level_min" value="0" min="0" style="width:60px;">
                     <label for="level_max">レベル最大:</label>
                     <input type="number" id="level_max" name="level_max" value="9999" min="0" style="width:60px;">
+                    <br>
+                    <label>
+                        <input type="checkbox" id="normal_monsters" name="normal_monsters" value="1">
+                        一般モンスターが出現するマップのみ
+                    </label>
                     <button type="submit">検索・フィルタ</button>
                     <button type="button"
-                        onclick="var url = new URL(window.location.href); ['map_name', 'level_min', 'level_max'].forEach(function (p) { url.searchParams.delete(p); }); window.location.href = url.pathname + url.search;">
+                        onclick="var url = new URL(window.location.href); ['map_name', 'level_min', 'level_max', 'normal_monsters'].forEach(function (p) { url.searchParams.delete(p); }); window.location.href = url.pathname + url.search;">
                         クリア
                     </button>
                 </form>
@@ -216,9 +224,13 @@
                     if (mapName !== null) {
                         document.getElementById('map_name').value = mapName;
                     }
+                    if (getParam('normal_monsters') === '1') {
+                        document.getElementById('normal_monsters').checked = true;
+                    }
                 </script>
 
                 <br>
+                <div id="map_result_count"></div>
                 <!-- 動的にテーブル作るよ -->
                 <div class="cn" id="map_index">
                 </div>

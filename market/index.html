@@ -493,6 +493,12 @@
                 <option value="other">その他</option>
               </select>
             </label>
+            <label>対象期間
+              <select id="marketRecent">
+                <option value="all">すべて</option>
+                <option value="recent">直近半年のみ</option>
+              </select>
+            </label>
             <label>並び
               <select id="marketSort">
                 <option value="count">集計件数が多い順</option>
@@ -566,10 +572,16 @@
       <script src="public/market_public_data.js"></script>
       <script>
         const publicData = window.MARKET_PUBLIC_DATA || { meta: {}, servers: [], items: [], trends: [], daily_trends: [] };
+        const serverOrder = ["Strasserad", "Valutish", "Bridgehead", "Gold Experience"];
+        const orderedServers = [
+          ...serverOrder.filter((server) => publicData.servers.includes(server)),
+          ...publicData.servers.filter((server) => !serverOrder.includes(server))
+        ];
         const state = {
           query: "",
           server: publicData.servers.includes("Bridgehead") ? "Bridgehead" : (publicData.servers[0] || "all"),
           category: "all",
+          recent: "all",
           sort: "count",
           periodMode: "daily",
           selectedKey: ""
@@ -621,7 +633,8 @@
           const text = `${row.item_name}`.toLowerCase();
           return (!state.query || text.includes(state.query)) &&
             (state.server === "all" || row.server === state.server) &&
-            (state.category === "all" || row.category === state.category);
+            (state.category === "all" || row.category === state.category) &&
+            (state.recent === "all" || row.has_recent);
         }
 
         function sortedRows() {
@@ -634,7 +647,7 @@
         }
 
         function renderOptions() {
-          byId("marketServer").innerHTML = publicData.servers.map((server) => `<option value="${escapeHtml(server)}">${escapeHtml(server)}</option>`).join("");
+          byId("marketServer").innerHTML = orderedServers.map((server) => `<option value="${escapeHtml(server)}">${escapeHtml(server)}</option>`).join("");
           byId("marketServer").value = state.server;
         }
 
@@ -801,6 +814,11 @@
           });
           byId("marketCategory").addEventListener("change", (event) => {
             state.category = event.target.value;
+            state.selectedKey = "";
+            render();
+          });
+          byId("marketRecent").addEventListener("change", (event) => {
+            state.recent = event.target.value;
             state.selectedKey = "";
             render();
           });

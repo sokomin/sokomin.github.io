@@ -1,4 +1,4 @@
-﻿
+
 // テーブルを頑張って作る係
 var npc_doc = '<table id="table10" style="max-width: 860px;">';
 npc_doc = npc_doc + '<colgroup><col span="1" width="5%" /><col span="1" width="56%" /><col span="1" width="24%" />'
@@ -13,19 +13,77 @@ map_c3 = getParam('map_c3') ? getParam('map_c3') : "";
 // 既存の map_c, map_c2, map_c3 を取得するあたりの直後に追加
 var levelMin = getParam('level_min') ? Number(getParam('level_min')) : 0;
 var levelMax = getParam('level_max') ? Number(getParam('level_max')) : 9999;
+var normalMonstersOnly = getParam('normal_monsters') === '1';
 
-function normalizeMapName(value) {
+function normalizeSearchText(value) {
     return String(value || "").normalize("NFKC").replace(/[\s\u3000]+/g, "").toLowerCase();
 }
 
-var mapName = normalizeMapName(getParam('map_name'));
+function stripHtml(value) {
+    return String(value || "").replace(/<[^>]*>/g, "");
+}
+
+function escapeHtml(value) {
+    return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+}
+
+function createMapConditionTerms(SubInfoObj) {
+    var terms = [];
+    if (!SubInfoObj) {
+        return terms;
+    }
+    if (SubInfoObj.req_map_lv > 0) {
+        terms.push("必要 マップ製作者Lv " + SubInfoObj.req_map_lv);
+    }
+    [
+        ["dfi", "火属性抵抗低下"],
+        ["dwa", "水属性抵抗低下"],
+        ["dwi", "風属性抵抗低下"],
+        ["dea", "大地属性抵抗低下"],
+        ["dli", "光属性抵抗低下"],
+        ["dda", "闇属性抵抗低下"],
+        ["st_down", "ステータス低下"],
+        ["lbd", "抵抗上限"]
+    ].forEach(function (item) {
+        if (SubInfoObj[item[0]] > 0) {
+            terms.push(item[1] + " " + SubInfoObj[item[0]] + "％");
+        }
+    });
+    return terms;
+}
+
+function createMapDetailTerms(key, SubInfoObj) {
+    var terms = MapSearchIndex[key] ? MapSearchIndex[key].slice() : [];
+    var extraInfo = MapExtraInfoList[key];
+    if (extraInfo && extraInfo.length) {
+        extraInfo.forEach(function (value) {
+            terms.push(stripHtml(value));
+        });
+    }
+    return terms.concat(createMapConditionTerms(SubInfoObj));
+}
+
+var mapKeywords = String(getParam('map_name') || "")
+    .normalize("NFKC")
+    .trim()
+    .split(/[\s\u3000]+/)
+    .filter(function (value) { return value; })
+    .map(normalizeSearchText);
+var resultCount = 0;
 
 for (key in NameList) {
     var Obj = NameList[key];
     var SubInfoObj = MapSubInfoList[key];
+    var detailTerms = createMapDetailTerms(key, SubInfoObj);
+    var normalizedSearchTarget = [Obj.name].concat(detailTerms).map(normalizeSearchText).join(" ");
 
-    // マップ名の部分一致検索（全角・半角、空白、大文字・小文字の違いは無視）
-    if (mapName && normalizeMapName(Obj.name).indexOf(mapName) === -1) {
+    // マップ名と詳細情報を対象に、複数キーワードのAND検索を行う
+    if (mapKeywords.some(function (keyword) { return normalizedSearchTarget.indexOf(keyword) === -1; })) {
         continue;
     }
 
@@ -38,6 +96,10 @@ for (key in NameList) {
     }
     // 最小レベルが0のマップはレベル帯が表示されないのでレベルフィルタ発動時には確定で非表示
     if (LvMin == 0 && levelMin > 0) {
+        continue;
+    }
+    // 適正レベルと出現情報が登録されているマップを一般モンスター出現マップとして扱う
+    if (normalMonstersOnly && (!(LvMin > 0 && LvMax > 0) || !MapSearchIndex[key] || !MapSearchIndex[key].length)) {
         continue;
     }
 
@@ -72,12 +134,25 @@ for (key in NameList) {
         // デバッグ用マップはリストには出さない
         continue;
     } else {
+        resultCount++;
         var plemiun = Obj.plemiun ? "[P]" : "-";
         var rendou = SubInfoObj && SubInfoObj.mc ? SubInfoObj.mc : "?";
         var rendou2 = SubInfoObj && SubInfoObj.mc2 ? SubInfoObj.mc2 : "?";
         var rendou3 = SubInfoObj && SubInfoObj.mc3 ? SubInfoObj.mc3 : "?";
+        var matchedDetails = [];
+        if (mapKeywords.length) {
+            matchedDetails = detailTerms.filter(function (term) {
+                var normalizedTerm = normalizeSearchText(term);
+                return mapKeywords.some(function (keyword) { return normalizedTerm.indexOf(keyword) !== -1; });
+            }).slice(0, 3);
+        }
         npc_doc = npc_doc + '<tr><td>' + plemiun + '</td>';
-        npc_doc = npc_doc + '<td><a href="../map/map_viewer.html?map_id=' + key_num + '">' + Obj.name + '</a></td>';
+        npc_doc = npc_doc + '<td><a href="../map/map_viewer.html?map_id=' + key_num + '">' + Obj.name + '</a>';
+        if (matchedDetails.length) {
+            npc_doc = npc_doc + '<br><span style="font-size:12px;">一致: ' +
+                matchedDetails.map(escapeHtml).join(" / ") + '</span>';
+        }
+        npc_doc = npc_doc + '</td>';
         // レベル帯
         if (LvMin && LvMax) {
             npc_doc = npc_doc + '<td>' + LvMin + '～' + LvMax + ' </td>';
@@ -95,6 +170,10 @@ npc_doc = npc_doc + '</tbody></table>';
 //NPCやモンスター名全部かくよ
 var npc_table = document.getElementById('map_index');
 npc_table.innerHTML = npc_doc;
+var resultCountElement = document.getElementById('map_result_count');
+if (resultCountElement) {
+    resultCountElement.textContent = "該当 " + resultCount + " 件";
+}
 
 //map_listの方で表示用なので番号とアルファベットだけ
 function createRendouColor(rendou) {
