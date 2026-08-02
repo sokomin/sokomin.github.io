@@ -193,6 +193,16 @@ MapExtraInfoList = {
     9999: ["test<font color='red'>aaa</font>", "test2"], //HTMLにも対応してるテスト
 };
 
+var MirrorTeleporterMapIdList = [
+    1, 16, 29, 30, 31, 46, 126, 127, 128, 130, 131, 151, 154, 156, 160, 163, 165, 167, 169,
+    209, 210, 242, 259, 270, 273, 280, 281, 286, 294, 295, 299, 300, 317, 323, 328, 329, 330,
+    336, 337, 341, 344, 345, 346, 355, 356, 357, 358, 365, 366, 369, 371, 372, 383, 385, 405,
+    426, 429, 430, 434, 436, 437, 439, 444, 472, 473, 474, 494, 495, 504, 510, 515, 519, 737,
+    740, 741, 742, 773, 779, 780, 781, 782, 792, 794, 795, 796, 824, 825, 826, 828, 829, 874,
+    875, 878, 879, 880, 881, 885, 886, 1015, 1016, 1021, 1024
+];
+var MirrorTeleporterInfo = "このマップにはミラーマップがあります。<a href='../secret/mirror-teleporter2025.html#ptboss-list'>ミラーテレポーター移動先一覧</a>";
+
 function dataextralist(num) {
     // そのマップねぇから！！
     if (num == void 0) {
@@ -203,4 +213,8 @@ function dataextralist(num) {
         return;
     }
     ExtraInfo = MapExtraInfoList[num];
+    if (MirrorTeleporterMapIdList.indexOf(num) !== -1) {
+        ExtraInfo = ExtraInfo ? ExtraInfo.slice() : [];
+        ExtraInfo.push(MirrorTeleporterInfo);
+    }
 }
