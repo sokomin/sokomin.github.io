@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://sokomin.github.io/material.indigo-pink.min.css">
+        <link rel="stylesheet" href="../styles.css">
+        <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32">
+        <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192">
+        <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png">
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+            gtag('config', 'UA-133658114-1');
+        </script>
+        <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+        <script>
+            function enter() {
+                if (window.event.keyCode == 13) {
+                    var last_keyword = $('#search-field').val();
+                    window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+                }
+            }
+        </script>
+        <title>武道家のレベル別基礎攻撃性能 赤石の民衆</title>
+        <meta name="description" content="RED STONE（レッドストーン）の武道家について、レベル帯ごとの基礎ダメージ、基礎攻撃フレーム、基礎命中率を掲載しています。">
+        <meta http-equiv="Content-Style-Type" content="text/css">
+        <meta http-equiv="Content-Script-Type" content="text/javascript">
+        <meta name="keywords" content="RED STONE,レッドストーン,赤石の民衆,そこみん,武道家,基礎ダメージ,攻撃フレーム,命中率,レベル">
+    </head>
+    <body>
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <a name="container"></a>
+            <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+                <div class="mdl-layout__header-row">
+                    <span class="android-title mdl-layout-title">
+                        <a href="https://sokomin.github.io/index.html">
+                            <img class="android-logo-image" src="../design/logo3.png">
+                        </a>
+                    </span>
+                    <div class="android-header-spacer mdl-layout-spacer"></div>
+                    <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                        <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                            <i class="material-icons">search</i>
+                        </label>
+                        <div class="mdl-textfield__expandable-holder">
+                            <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text" onkeypress="enter();" id="search-field">
+                        </div>
+                    </div>
+                    <div class="android-navigation-container">
+                        <nav class="android-navigation mdl-navigation">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/index.html">ホーム</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                        </nav>
+                    </div>
+                    <span class="android-mobile-title mdl-layout-title">
+                        <a href="https://sokomin.github.io/index.html">
+                            <img class="android-logo-image" src="../design/logo3.png">
+                        </a>
+                    </span>
+                    <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
+                        <i class="material-icons">more_vert</i>
+                    </button>
+                    <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                        <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a></li>
+                        <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a></li>
+                        <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a></li>
+                        <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="android-drawer mdl-layout__drawer">
+                <span class="mdl-layout-title"><h2>メニュー</h2></span>
+                <nav class="mdl-navigation">
+                    <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+                    <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+                    <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html"><strong>モンスター</strong></a>
+                    <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html"><strong>ダンジョン</strong></a>
+                    <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html"><strong>クエスト</strong></a>
+                    <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+                    <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+                    <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html"><strong>雑学</strong></a>
+                </nav>
+            </div>
+            <div class="android-large-table mdl-layout__content">
+                <a href="../index.html">トップ</a> &gt;&gt; <a href="../information/information.html">雑学</a>
+                <div class="main-background mdl-typography--text-center korea-content">
+                    <br>
+                    <h1>武道家のレベル別基礎攻撃性能</h1>
+                    武道家が武器を装備せずに攻撃する際の、レベル帯ごとの基礎性能をまとめています。<br>
+                    <br>
+                    <br>
+                    <table id="table10" style="max-width:900px">
+                        <thead>
+                            <tr>
+                                <th style="width:180px">項目</th>
+                                <th>推定内容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>最小・最大基礎ダメージ</td>
+                                <td style="text-align:left">武道家の拳に設定される、装備・ステータス・スキル補正前の基礎攻撃力。最大値はほぼ最小値の1.2倍です。</td>
+                            </tr>
+                            <tr>
+                                <td>基礎攻撃フレーム</td>
+                                <td style="text-align:left">実際の攻撃速度はスキル固有動作や攻撃速度補正の影響を受けます。</td>
+                            </tr>
+                            <tr>
+                                <td>基礎命中率</td>
+                                <td style="text-align:left">実際の命中判定は敏捷、運、相手の回避率などの影響を受けます。</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <font color="#e95388"><h4>レベル別一覧</h4></font>
+                    <table id="table10" style="max-width:900px">
+                        <thead>
+                            <tr>
+                                <th>レベル帯</th>
+                                <th>最小基礎<br>ダメージ</th>
+                                <th>最大基礎<br>ダメージ</th>
+                                <th>基礎攻撃<br>フレーム</th>
+                                <th>基礎命中率</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1～2</td><td>2.50</td><td>3.00</td><td>11.0</td><td>65%</td></tr>
+                            <tr><td>3～5</td><td>3.00</td><td>3.60</td><td>11.0</td><td>68%</td></tr>
+                            <tr><td>6～10</td><td>4.00</td><td>4.80</td><td>10.0</td><td>70%</td></tr>
+                            <tr><td>11～15</td><td>5.00</td><td>6.00</td><td>10.0</td><td>70%</td></tr>
+                            <tr><td>16～20</td><td>6.00</td><td>7.20</td><td>10.0</td><td>70%</td></tr>
+                            <tr><td>21～25</td><td>7.00</td><td>8.40</td><td>10.0</td><td>70%</td></tr>
+                            <tr><td>26～30</td><td>8.00</td><td>9.60</td><td>10.0</td><td>70%</td></tr>
+                            <tr><td>31～35</td><td>9.00</td><td>10.80</td><td>10.0</td><td>75%</td></tr>
+                            <tr><td>36～40</td><td>10.00</td><td>12.00</td><td>10.0</td><td>75%</td></tr>
+                            <tr><td>41～45</td><td>12.00</td><td>14.40</td><td>10.0</td><td>75%</td></tr>
+                            <tr><td>46～50</td><td>13.00</td><td>15.60</td><td>10.0</td><td>75%</td></tr>
+                            <tr><td>51～55</td><td>14.00</td><td>16.80</td><td>9.5</td><td>75%</td></tr>
+                            <tr><td>56～60</td><td>15.00</td><td>18.00</td><td>9.5</td><td>75%</td></tr>
+                            <tr><td>61～65</td><td>16.00</td><td>19.20</td><td>9.5</td><td>75%</td></tr>
+                            <tr><td>66～70</td><td>17.00</td><td>20.40</td><td>9.5</td><td>75%</td></tr>
+                            <tr><td>71～75</td><td>19.00</td><td>22.80</td><td>9.5</td><td>75%</td></tr>
+                            <tr><td>76～80</td><td>20.00</td><td>24.00</td><td>9.5</td><td>75%</td></tr>
+                            <tr><td>81～85</td><td>21.00</td><td>25.20</td><td>9.5</td><td>75%</td></tr>
+                            <tr><td>86～90</td><td>22.00</td><td>26.40</td><td>9.5</td><td>75%</td></tr>
+                            <tr><td>91～95</td><td>23.00</td><td>27.60</td><td>9.5</td><td>75%</td></tr>
+                            <tr><td>96～100</td><td>24.00</td><td>28.80</td><td>9.5</td><td>80%</td></tr>
+                            <tr><td>101～110</td><td>24.50</td><td>29.40</td><td>9.0</td><td>80%</td></tr>
+                            <tr><td>111～120</td><td>25.00</td><td>30.00</td><td>9.0</td><td>80%</td></tr>
+                            <tr><td>121～130</td><td>25.50</td><td>30.60</td><td>9.0</td><td>80%</td></tr>
+                            <tr><td>131～140</td><td>26.00</td><td>31.20</td><td>9.0</td><td>80%</td></tr>
+                            <tr><td>141～150</td><td>26.70</td><td>32.00</td><td>9.0</td><td>82%</td></tr>
+                            <tr><td>151～160</td><td>27.00</td><td>32.40</td><td>9.0</td><td>82%</td></tr>
+                            <tr><td>161～170</td><td>27.50</td><td>33.00</td><td>9.0</td><td>82%</td></tr>
+                            <tr><td>171～180</td><td>28.00</td><td>33.60</td><td>9.0</td><td>82%</td></tr>
+                            <tr><td>181～190</td><td>29.00</td><td>34.80</td><td>9.0</td><td>82%</td></tr>
+                            <tr><td>191～200</td><td>30.00</td><td>36.00</td><td>9.0</td><td>84%</td></tr>
+                            <tr><td>201～215</td><td>30.50</td><td>36.60</td><td>8.5</td><td>84%</td></tr>
+                            <tr><td>216～230</td><td>31.00</td><td>37.20</td><td>8.5</td><td>84%</td></tr>
+                            <tr><td>231～245</td><td>31.50</td><td>37.80</td><td>8.5</td><td>84%</td></tr>
+                            <tr><td>246～260</td><td>32.00</td><td>38.40</td><td>8.5</td><td>84%</td></tr>
+                            <tr><td>261～275</td><td>32.50</td><td>39.00</td><td>8.5</td><td>86%</td></tr>
+                            <tr><td>276～290</td><td>33.00</td><td>39.60</td><td>8.5</td><td>86%</td></tr>
+                            <tr><td>291～305</td><td>34.00</td><td>40.80</td><td>8.5</td><td>86%</td></tr>
+                            <tr><td>306～320</td><td>34.50</td><td>41.40</td><td>8.0</td><td>86%</td></tr>
+                            <tr><td>321～335</td><td>35.00</td><td>42.00</td><td>8.0</td><td>86%</td></tr>
+                            <tr><td>336～350</td><td>35.50</td><td>42.60</td><td>8.0</td><td>88%</td></tr>
+                            <tr><td>351～365</td><td>36.00</td><td>43.20</td><td>8.0</td><td>88%</td></tr>
+                            <tr><td>366～380</td><td>36.50</td><td>43.80</td><td>8.0</td><td>88%</td></tr>
+                            <tr><td>381～395</td><td>37.00</td><td>44.40</td><td>8.0</td><td>88%</td></tr>
+                            <tr><td>396～410</td><td>37.50</td><td>45.00</td><td>8.0</td><td>88%</td></tr>
+                            <tr><td>411～425</td><td>38.00</td><td>45.60</td><td>7.5</td><td>90%</td></tr>
+                            <tr><td>426～440</td><td>38.50</td><td>46.20</td><td>7.5</td><td>90%</td></tr>
+                            <tr><td>441～455</td><td>39.00</td><td>46.80</td><td>7.5</td><td>90%</td></tr>
+                            <tr><td>456～470</td><td>39.50</td><td>47.40</td><td>7.5</td><td>90%</td></tr>
+                            <tr><td>471～485</td><td>40.00</td><td>48.00</td><td>7.5</td><td>90%</td></tr>
+                            <tr><td>486～500</td><td>40.50</td><td>48.60</td><td>7.5</td><td>92%</td></tr>
+                            <tr><td>501～520</td><td>41.00</td><td>49.20</td><td>7.0</td><td>92%</td></tr>
+                            <tr><td>521～540</td><td>41.30</td><td>49.60</td><td>7.0</td><td>92%</td></tr>
+                            <tr><td>541～560</td><td>41.60</td><td>49.90</td><td>7.0</td><td>92%</td></tr>
+                            <tr><td>561～580</td><td>41.90</td><td>50.30</td><td>7.0</td><td>92%</td></tr>
+                            <tr><td>581～600</td><td>42.20</td><td>50.60</td><td>7.0</td><td>94%</td></tr>
+                            <tr><td>601～620</td><td>42.50</td><td>51.00</td><td>7.0</td><td>94%</td></tr>
+                            <tr><td>621～640</td><td>42.80</td><td>51.40</td><td>7.0</td><td>94%</td></tr>
+                            <tr><td>641～660</td><td>43.10</td><td>51.70</td><td>7.0</td><td>94%</td></tr>
+                            <tr><td>661～680</td><td>43.40</td><td>52.10</td><td>7.0</td><td>94%</td></tr>
+                            <tr><td>681～700</td><td>43.70</td><td>52.40</td><td>7.0</td><td>95%</td></tr>
+                            <tr><td>701～730</td><td>44.00</td><td>52.80</td><td>6.5</td><td>95%</td></tr>
+                            <tr><td>731～760</td><td>44.20</td><td>53.00</td><td>6.5</td><td>95%</td></tr>
+                            <tr><td>761～790</td><td>44.40</td><td>53.30</td><td>6.5</td><td>95%</td></tr>
+                            <tr><td>791～820</td><td>44.60</td><td>53.50</td><td>6.5</td><td>95%</td></tr>
+                            <tr><td>821～850</td><td>44.80</td><td>53.80</td><td>6.5</td><td>95%</td></tr>
+                            <tr><td>851～880</td><td>45.00</td><td>54.00</td><td>6.0</td><td>95%</td></tr>
+                            <tr><td>881～910</td><td>45.20</td><td>54.20</td><td>6.0</td><td>95%</td></tr>
+                            <tr><td>911～940</td><td>45.40</td><td>54.50</td><td>6.0</td><td>95%</td></tr>
+                            <tr><td>941～970</td><td>45.60</td><td>54.70</td><td>5.5</td><td>95%</td></tr>
+                            <tr><td>971～1000</td><td>45.80</td><td>55.00</td><td>5.0</td><td>95%</td></tr>
+                            <tr><td>1001～</td><td>45.80</td><td>55.00</td><td>5.0</td><td>95%</td></tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    基礎ダメージはレベルとともに上昇し、基礎攻撃フレームは短縮されます。<br>
+                    基礎命中率は681～700レベル帯で95%に到達し、それ以降は同じ値です。<br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <footer class="android-footer mdl-mega-footer">
+                        <font color="red">
+                            当サイトで利用している画像及びデータは、L&amp;K Co., Ltd.に帰属します。<br>
+                            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+                        </font>
+                        © L&amp;K Co., Ltd. All Rights Reserved.<br>
+                    </footer>
+                </div>
+                <script src="https://sokomin.github.io/material.min.js"></script>
+            </div>
+        </div>
+    </body>
+</html>
