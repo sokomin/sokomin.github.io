@@ -3,6 +3,7 @@
 
   var index = window.MONSTER_DROP_MAP_INDEX || { itemTypes: {}, itemTypeGroups: {}, maps: [] };
   var itemTypeGroups = index.itemTypeGroups || {};
+  var collapsedMirror = index.collapsedMirror || { levelMin: 1250, levelMax: 1600 };
   var itemSelect = document.getElementById("drop-map-item-type");
   var levelInput = document.getElementById("drop-map-level");
   var marginInput = document.getElementById("drop-map-margin");
@@ -140,6 +141,12 @@
     return max >= level - margin && min <= level + margin;
   }
 
+  function isCollapsedMirrorLevel(level) {
+    var min = Number(collapsedMirror.levelMin) || 1250;
+    var max = Number(collapsedMirror.levelMax) || 1600;
+    return level >= min && level <= max;
+  }
+
   function rarityToken(rarity, sourceTypeId, selectedTypeId) {
     var allWeaponTypeId = String(itemTypeGroups.allWeaponTypeId || "500");
     var allSubWeaponTypeId = String(itemTypeGroups.allSubWeaponTypeId || "79");
@@ -239,6 +246,23 @@
     return min + " - " + max;
   }
 
+  function resultLevelHtml(row) {
+    if (row.resultKind !== "collapsedMirror") {
+      return escapeHtml(levelText(row.map));
+    }
+    var min = Number(collapsedMirror.levelMin) || 1250;
+    var max = Number(collapsedMirror.levelMax) || 1600;
+    return "崩壊時 " + escapeHtml(min) + " - " + escapeHtml(max)
+      + '<br><span class="drop-map-muted">通常 ' + escapeHtml(levelText(row.map)) + "</span>";
+  }
+
+  function collapsedMirrorTag(map) {
+    if (map.collapsedMirrorExpClass === "high") {
+      return '<span class="collapsed-mirror-tag">崩壊時候補・高経験値</span>';
+    }
+    return '<span class="collapsed-mirror-tag">崩壊時候補</span>';
+  }
+
   function monsterLink(monster) {
     return "monster-list-detail.html?mi=" + encodeURIComponent(monster.monsterId) + "&dlv=2000";
   }
@@ -250,10 +274,12 @@
         return "<li><a href=\"" + monsterLink(monster) + "\">" + escapeHtml(monster.monsterName) + "</a>"
           + " x" + escapeHtml(monster.spawnCount) + escapeHtml(rarityText(monster.rarities)) + "</li>";
       }).join("");
-      return "<tr>"
+      var rowClass = row.resultKind === "collapsedMirror" ? ' class="collapsed-mirror-row"' : "";
+      var mirrorTag = row.resultKind === "collapsedMirror" ? collapsedMirrorTag(row.map) : "";
+      return "<tr" + rowClass + ">"
         + '<td><a class="map-link" href="../map/map_viewer.html?map_id=' + encodeURIComponent(row.map.mapId) + '">'
-        + escapeHtml(row.map.mapName) + "</a></td>"
-        + "<td>" + escapeHtml(levelText(row.map)) + "</td>"
+        + escapeHtml(row.map.mapName) + "</a>" + mirrorTag + "</td>"
+        + "<td>" + resultLevelHtml(row) + "</td>"
         + '<td><ul class="monster-list">' + monsterHtml + "</ul></td>"
         + "<td>" + escapeHtml(row.spawnCount) + "</td>"
         + "</tr>";
@@ -267,12 +293,31 @@
     var limit = Math.min(1000, Math.max(100, numberValue(limitInput, 100)));
     var queryTypes = getQueryTypes(typeId, excludeAllInput.checked);
     var rows = getRowsForQueryTypes(queryTypes, typeId)
-      .filter(function (row) { return overlapsLevel(row.map, level, margin); })
-      .sort(function (a, b) { return scoreMap(b, level) - scoreMap(a, level); });
+      .map(function (row) {
+        if (overlapsLevel(row.map, level, margin)) {
+          row.resultKind = "confirmed";
+          return row;
+        }
+        if (isCollapsedMirrorLevel(level) && row.map.isCollapsedMirrorTarget) {
+          row.resultKind = "collapsedMirror";
+          return row;
+        }
+        return null;
+      })
+      .filter(function (row) { return row !== null; })
+      .sort(function (a, b) {
+        if (a.resultKind !== b.resultKind) {
+          return a.resultKind === "confirmed" ? -1 : 1;
+        }
+        return scoreMap(b, level) - scoreMap(a, level);
+      });
 
     var limited = rows.slice(0, limit);
     var itemName = index.itemTypes[typeId] || typeId;
-    status.textContent = itemName + " / Lv" + level + "±" + margin + " の検索結果 " + rows.length + " 件";
+    var confirmedCount = rows.filter(function (row) { return row.resultKind === "confirmed"; }).length;
+    var collapsedCount = rows.length - confirmedCount;
+    status.textContent = itemName + " / Lv" + level + "±" + margin + " の検索結果 " + rows.length
+      + " 件（確定狩場 " + confirmedCount + "、崩壊時候補 " + collapsedCount + "）";
 
     if (!limited.length) {
       results.innerHTML = "<p>条件に合う狩場が見つかりませんでした。</p>";
