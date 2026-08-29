@@ -624,7 +624,7 @@
         }
 
         function rowMatches(row) {
-          const text = `${row.item_name}`.toLowerCase();
+          const text = `${row.display_name || row.item_name} ${row.option_effects || ""}`.toLowerCase();
           return (!state.query || text.includes(state.query)) &&
             (state.server === "all" || row.server === state.server) &&
             (state.category === "all" || row.category === state.category) &&
@@ -635,7 +635,7 @@
           const rows = (publicData.items || []).filter(rowMatches);
           if (state.sort === "priceDesc") rows.sort((a, b) => Number(b.reference_gold || 0) - Number(a.reference_gold || 0));
           else if (state.sort === "priceAsc") rows.sort((a, b) => Number(a.reference_gold || 0) - Number(b.reference_gold || 0));
-          else if (state.sort === "name") rows.sort((a, b) => String(a.item_name).localeCompare(String(b.item_name), "ja"));
+          else if (state.sort === "name") rows.sort((a, b) => String(a.display_name || a.item_name).localeCompare(String(b.display_name || b.item_name), "ja"));
           else rows.sort((a, b) => Number(Boolean(b.has_recent)) - Number(Boolean(a.has_recent)) || Number(b.recent_count || b.trend_count || 0) - Number(a.recent_count || a.trend_count || 0));
           return rows;
         }
@@ -659,7 +659,7 @@
               const count = row.has_recent ? row.recent_count : row.trend_count;
               const trendOnlyPrice = row.reference_is_trend_only ? " is-trend-only" : "";
               return `<tr class="market-row${selected}${muted}" data-key="${escapeHtml(row.server)}|${escapeHtml(row.item_key)}">
-                <td>${escapeHtml(row.item_name)}</td>
+                <td>${escapeHtml(row.display_name || row.item_name)}</td>
                 <td class="num market-ref-price${trendOnlyPrice}">${escapeHtml(priceText(row.reference_gold, row.reference_text))}</td>
                 <td class="num">${escapeHtml(priceText(row.market_gold, row.market_text))}</td>
                 <td class="num">${escapeHtml(priceText(row.sell_gold, row.sell_text))}</td>
@@ -766,7 +766,7 @@
           const shoutUnitNote = row.shout_unit_uncertain
             ? `<div class="market-note" style="margin-top:8px;">このアイテムの叫び価格は発言上の取引単位です。1個あたりの参考相場には含めていません。</div>`
             : "";
-          byId("detailTitle").textContent = row.item_name;
+          byId("detailTitle").textContent = row.display_name || row.item_name;
           byId("detailBody").innerHTML = `
             <dl class="market-kv">
               <dt>サーバ</dt><dd>${escapeHtml(row.server)}</dd>
