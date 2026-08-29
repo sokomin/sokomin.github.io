@@ -191,12 +191,6 @@
       color: #555;
     }
 
-    .market-badge.is-manual {
-      margin-left: 4px;
-      background: #d9ecff;
-      color: #174f78;
-    }
-
     .market-kv {
       display: grid;
       grid-template-columns: 110px minmax(0, 1fr);
@@ -543,7 +537,7 @@
               「参考相場」は露店、売り叫び、買い叫びの中央値から計算しています。<br>
               スタック可能アイテムは、露店の出品総額を個数で割った1個あたりの価格を参考相場にしています。<br>
               叫び価格は発言上の取引単位が一定でないため、スタック可能アイテムの参考相場には混ぜていません。<br>
-              相場から著しく離れた集計結果は、参考相場のみを手動で補正する場合があります。<br>
+              相場から著しく離れた露店情報は、参考相場を手動で補正する場合があります。<br>
               Gold Experience は週ごと、その他のサーバは月ごとに推移をまとめています。<br>
               長期推移では、前後の価格帯から孤立した極端値を除外しています。<br>
               「集計件数」は相場計算に使った露店価格と叫び価格の件数です。<br>
@@ -662,9 +656,6 @@
             ${rows.map((row) => {
               const selected = state.selectedKey === `${row.server}|${row.item_key}` ? " is-selected" : "";
               const muted = row.has_recent ? "" : " is-muted";
-              const periodStatus = row.has_recent ? `<span class="market-badge">直近半年</span>` : `<span class="market-badge is-old">推移のみ</span>`;
-              const manualStatus = row.reference_is_manual ? `<span class="market-badge is-manual">手動補正</span>` : "";
-              const status = periodStatus + manualStatus;
               const count = row.has_recent ? row.recent_count : row.trend_count;
               const trendOnlyPrice = row.reference_is_trend_only ? " is-trend-only" : "";
               return `<tr class="market-row${selected}${muted}" data-key="${escapeHtml(row.server)}|${escapeHtml(row.item_key)}">
@@ -775,9 +766,6 @@
           const shoutUnitNote = row.shout_unit_uncertain
             ? `<div class="market-note" style="margin-top:8px;">このアイテムの叫び価格は発言上の取引単位です。1個あたりの参考相場には含めていません。</div>`
             : "";
-          const manualReferenceNote = row.reference_is_manual
-            ? `<div class="market-note" style="margin-top:8px;">参考相場のみ手動補正しています。露店・叫び・価格推移は集計値のままです。</div>`
-            : "";
           byId("detailTitle").textContent = row.item_name;
           byId("detailBody").innerHTML = `
             <dl class="market-kv">
@@ -791,7 +779,6 @@
             ${renderChart(trends)}
             ${state.periodMode === "daily" ? renderDailyTable(dailyTrends) : ""}
             ${shoutUnitNote}
-            ${manualReferenceNote}
             <div class="market-note" style="margin-top:8px;">${escapeHtml(state.periodMode === "daily" ? `直近${publicData.meta.recent_window_days || 183}日を日ごとにまとめています。` : (row.server === "Gold Experience" ? "このサーバは週ごとに推移をまとめています。" : "このサーバは月ごとに推移をまとめています。"))}</div>
           `;
         }
