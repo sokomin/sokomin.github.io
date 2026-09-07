@@ -192,138 +192,53 @@ function calc_2005exp(lv) {
 }
 
 function calc2() {
-    var r1 = 0;
-    var a1 = parseInt(document.f.a21.value) ? parseInt(document.f.a21.value) : 0;
-    var a2 = parseInt(document.f.a22.value) ? parseInt(document.f.a22.value) : 0;
-    var b1 = parseInt(document.f.b2.value) ? parseInt(document.f.b2.value) : 0;
-
-    if (a2 - a1 <= 0) {
-        alert("計算できません。");
-        document.f.r21.value = Math.floor(r1);
+    var form = document.f;
+    form.r21.value = "";
+    var startText = form.a21.value.trim();
+    var endText = form.a22.value.trim();
+    var start = Number(startText);
+    var end = Number(endText);
+    var version = Number(form.b2.value);
+    if (!/^\d+$/.test(startText) || !/^\d+$/.test(endText) ||
+        !Number.isSafeInteger(start) || !Number.isSafeInteger(end) || start < 1 || end < 1) {
+        form.r21.value = "レベルは1以上の整数で入力してください。";
         return;
     }
-    if (a2 <= 1) {
-        document.f.r21.value = 0;
+    var limits = {1: 119299, 2: 1000, 3: 1000, 4: 1500, 5: 1500, 6: 2000, 7: 2000};
+    if (!Object.prototype.hasOwnProperty.call(limits, version)) {
+        form.r21.value = "計算式バージョンを選択してください。";
         return;
     }
-    if (b1 === 4) {
-        if (a1 > 1500 || a2 > 1500) {
-            //1500までで計算するならこれ
-            // r1 = exp_sum_2017array[1499] - exp_sum_2017array[a1 - 2];
-            document.f.r21.value = "最高レベルは1500です。";
-            return;
-        }
-        var a1_4 = a1 >= 2 ? exp_sum_2017array[a1 - 2] : 0;
-        r1 = exp_sum_2017array[a2 - 2] - a1_4;
-    } else if (b1 === 1) {
-        if (a1 >= 119300) {
-            document.f.r21.value = "ループしました。";
-            return;
-        }
-        var r2x = 0;
-        for (var i = a1; i <= a2 - 1; i++) {
-            r2x += calc_2005exp(i);
-        }
-        document.f.r21.value = r2x;
+    if (start > limits[version] || end > limits[version]) {
+        form.r21.value = version === 1 ? "119300Lv以降は計算できません。" :
+            "最高レベルは" + limits[version] + "です。";
         return;
-    } else if (b1 === 2) {
-        //2011～2015
-        if (a1 > 1000 || a2 > 1000) {
-            document.f.r21.value = "最高レベルは1000です。";
-            return;
-        }
-        var a1_2 = 0;
-        var a2_2 = 0;
-        if (a1 <= 909) {
-            a1_2 = a1 >= 2 ? exp_sum_2017array[a1 - 2] : 0;
-        } else if (a1 <= 1000) {
-            a1_2 = exp_sum_2011array[a1 - 910];
-        }
-        if (a2 <= 909) {
-            a2_2 = a2 >= 2 ? exp_sum_2017array[a2 - 2] : 0;
-        } else if (a2 <= 1000) {
-            a2_2 = exp_sum_2011array[a2 - 910];
-        }
-        r1 = a2_2 - a1_2;
-    } else if (b1 === 3) {
-        //2015～2016
-        if (a1 > 1000 || a2 > 1000) {
-            document.f.r21.value = "最高レベルは1000です。";
-            return;
-        }
-        var a1_2 = 0;
-        var a2_2 = 0;
-        if (a1 <= 909) {
-            a1_2 = a1 >= 2 ? exp_sum_2017array[a1 - 2] : 0;
-        } else if (a1 <= 1000) {
-            a1_2 = exp_sum_2015array[a1 - 910];
-        }
-        if (a2 <= 909) {
-            a2_2 = a2 >= 2 ? exp_sum_2017array[a2 - 2] : 0;
-        } else if (a2 <= 1000) {
-            a2_2 = exp_sum_2015array[a2 - 910];
-        }
-        r1 = a2_2 - a1_2;
-    } else if (b1 === 5) {
-        if (a1 >= 1500 || a2 > 1500) {
-            document.f.r21.value = "最高レベルは1500です。";
-            return;
-        }
-        var a1_2 = 0;
-        var a2_2 = 0;
-        if (a1 <= 850) {
-            a1_2 = a1 >= 2 ? exp_sum_2017array[a1 - 2] : 0;
-        } else {
-            a1_2 = exp_sum_2019array[a1 - 851];
-        }
-        if (a2 <= 850) {
-            a2_2 = a2 >= 2 ? exp_sum_2017array[a2 - 2] : 0;
-        } else {
-            a2_2 = exp_sum_2019array[a2 - 851];
-        }
-        r1 = a2_2 - a1_2;
-    } else if (b1 === 6) {
-        if (a1 >= 2000 || a2 > 2000) {
-            document.f.r21.value = "最高レベルは2000です。";
-            return;
-        }
-        var a1_2 = 0;
-        var a2_2 = 0;
-        if (a1 <= 850) {
-            a1_2 = a1 >= 2 ? exp_sum_2017array[a1 - 2] : 0;
-        } else {
-            a1_2 = exp_sum_2019array[a1 - 851];
-        }
-        if (a2 <= 850) {
-            a2_2 = a2 >= 2 ? exp_sum_2017array[a2 - 2] : 0;
-        } else {
-            a2_2 = exp_sum_2019array[a2 - 851];
-        }
-        r1 = a2_2 - a1_2;
-    } else if (b1 === 7) {
-        if (a1 >= 2000 || a2 > 2000) {
-            document.f.r21.value = "最高レベルは2000です。";
-            return;
-        }
-        var a1_2 = 0;
-        var a2_2 = 0;
-        if (a1 <= 850) {
-            a1_2 = a1 >= 2 ? exp_sum_2023array[a1 - 2] : 0;
-        } else {
-            a1_2 = exp_sum_2023array[a1 - 2];
-        }
-        if (a2 <= 850) {
-            a2_2 = a2 >= 2 ? exp_sum_2023array[a2 - 2] : 0;
-        } else {
-            a2_2 = exp_sum_2023array[a2 - 2];
-        }
-        r1 = a2_2 - a1_2;
-    } else {
-        //ここ通らないはずです。
-        console.log("ｚｚｚ");
     }
-
-    document.f.r21.value = formatLargeNumber(Math.floor(r1));
+    if (start > end) {
+        form.r21.value = "終了レベルは開始レベル以上で入力してください。";
+        return;
+    }
+    var total = 0;
+    for (var level = start; level < end; level++) {
+        var next;
+        if (version === 1) {
+            next = calc_2005exp(level);
+        } else if (version === 2 && level >= 909) {
+            next = exp_2011array[level - 909];
+        } else if (version === 3 && level >= 909) {
+            next = exp_2015array[level - 909];
+        } else if (version >= 5 && level >= 850 && level <= 1000) {
+            next = exp_2019array[level - 850];
+        } else {
+            next = (version === 7 ? exp_2023array : exp_2017array)[level - 1];
+        }
+        if (!Number.isFinite(next) || next < 0) {
+            form.r21.value = "指定範囲の経験値データを確認できません。";
+            return;
+        }
+        total += next;
+    }
+    form.r21.value = version === 1 ? total : formatLargeNumber(Math.floor(total));
 }
 
 function calc3() {
