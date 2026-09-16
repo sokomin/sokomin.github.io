@@ -2,7 +2,30 @@
   "use strict";
 
   const DISPLAY_LIMIT = 500;
+  const GOLD_SERVER = "Gold Experience";
   const SERVER_ORDER = ["Strasserad", "Valutish", "Bridgehead", "Gold Experience"];
+
+  function rowSeason(row) {
+    return row.server === GOLD_SERVER ? String(row.season_year || "") : "";
+  }
+
+  function rowKey(row) {
+    return `${row.server}|${rowSeason(row)}|${row.item_key}`;
+  }
+
+  function goldSeasonOptions(meta) {
+    return [...new Set((meta.gold_seasons || []).map((row) => String(row.year || "")).filter(Boolean))]
+      .sort((a, b) => b.localeCompare(a));
+  }
+
+  function activeWindowMeta(meta, state) {
+    if (state.server !== GOLD_SERVER || !state.goldSeason) return meta;
+    return (meta.gold_seasons || []).find((row) => String(row.year) === state.goldSeason) || meta;
+  }
+
+  function shouldShowGoldSeason(server, meta) {
+    return server === GOLD_SERVER && goldSeasonOptions(meta).length > 0;
+  }
 
   function itemSearchText(row) {
     return `${row.display_name || row.item_name || ""} ${row.option_effects || ""}`.toLowerCase();
@@ -14,10 +37,11 @@
 
   function sortedRows(data, state, searchIndex = null) {
     const rows = (data.items || []).filter((row) => {
-      const key = `${row.server}|${row.item_key}`;
+      const key = rowKey(row);
       const text = searchIndex && searchIndex.has(key) ? searchIndex.get(key) : itemSearchText(row);
       return (!state.query || text.includes(state.query)) &&
         (state.server === "all" || row.server === state.server) &&
+        (state.server !== GOLD_SERVER || !state.goldSeason || rowSeason(row) === state.goldSeason) &&
         (state.category === "all" || row.category === state.category) &&
         (state.recent === "all" || row.has_recent);
     });
@@ -38,6 +62,7 @@
       sort: "count",
       periodMode: "daily",
       selectedKey: "",
+      goldSeason: "",
     };
     const yen = new Intl.NumberFormat("ja-JP");
     const byId = (name) => root.document.getElementById(name);
@@ -69,7 +94,7 @@
     }
 
     function interactiveMode() {
-      return Boolean(state.query) || state.category !== "all" || state.recent !== "all" || state.sort !== "count";
+      return Boolean(state.query) || state.category !== "all" || state.recent !== "all" || state.sort !== "count" || state.server === GOLD_SERVER;
     }
 
     function currentListData() {
@@ -87,10 +112,10 @@
       dailyTrendsByServerItem.clear();
       searchIndex.clear();
       for (const row of data.items || []) {
-        searchIndex.set(`${row.server}|${row.item_key}`, itemSearchText(row));
+        searchIndex.set(rowKey(row), itemSearchText(row));
       }
       for (const row of data.trends || []) {
-        const key = `${row.server}|${row.item_key}`;
+        const key = rowKey(row);
         if (!trendsByServerItem.has(key)) trendsByServerItem.set(key, []);
         trendsByServerItem.get(key).push(row);
       }
@@ -98,7 +123,7 @@
         rows.sort((a, b) => String(a.period_order).localeCompare(String(b.period_order)));
       }
       for (const row of data.daily_trends || []) {
-        const key = `${row.server}|${row.item_key}`;
+        const key = rowKey(row);
         if (!dailyTrendsByServerItem.has(key)) dailyTrendsByServerItem.set(key, []);
         dailyTrendsByServerItem.get(key).push(row);
       }
@@ -121,6 +146,31 @@
         .map((server) => `<option value="${escapeHtml(server)}">${escapeHtml(server)}</option>`)
         .join("");
       byId("marketServer").value = state.server;
+    }
+
+    function ensureGoldSeasonControl() {
+      let label = byId("marketGoldSeasonControl");
+      if (label) return byId("marketGoldSeason");
+      label = root.document.createElement("label");
+      label.id = "marketGoldSeasonControl";
+      label.append("金鯖年次");
+      const select = root.document.createElement("select");
+      select.id = "marketGoldSeason";
+      label.appendChild(select);
+      byId("marketServer").closest("label").insertAdjacentElement("afterend", label);
+      return select;
+    }
+
+    const goldSeasonSelect = ensureGoldSeasonControl();
+
+    function renderGoldSeasonOptions() {
+      const seasons = goldSeasonOptions((store.bootstrap && store.bootstrap.meta) || {});
+      if (!seasons.includes(state.goldSeason)) state.goldSeason = seasons[0] || "";
+      goldSeasonSelect.innerHTML = seasons
+        .map((year) => `<option value="${escapeHtml(year)}">${escapeHtml(year)}</option>`)
+        .join("");
+      goldSeasonSelect.value = state.goldSeason;
+      byId("marketGoldSeasonControl").hidden = !shouldShowGoldSeason(state.server, (store.bootstrap && store.bootstrap.meta) || {});
     }
 
     function pointLine(points, className, width, height, pad, minY, spanY) {
@@ -192,7 +242,7 @@
         byId("detailBody").innerHTML = `<div class="market-empty">一覧からアイテムを選択してください。</div>`;
         return;
       }
-      const key = `${row.server}|${row.item_key}`;
+      const key = rowKey(row);
       const longTrends = trendsByServerItem.get(key) || [];
       const dailyTrends = dailyTrendsByServerItem.get(key) || [];
       const trends = state.periodMode === "daily" ? dailyTrends : longTrends;
@@ -201,7 +251,7 @@
       const shoutUnitNote = row.shout_unit_uncertain
         ? `<div class="market-note" style="margin-top:8px;">このアイテムの叫び価格は発言上の取引単位です。1個あたりの参考相場には含めていません。</div>`
         : "";
-      const meta = store.bootstrap.meta || {};
+      const meta = activeWindowMeta(store.bootstrap.meta || {}, state);
       byId("detailTitle").textContent = row.display_name || row.item_name;
       byId("detailBody").innerHTML = `
         <dl class="market-kv">
@@ -227,17 +277,18 @@
         ? `${yen.format(rows.length)}件中 ${yen.format(DISPLAY_LIMIT)}件表示`
         : `${yen.format(rows.length)}件`;
       const meta = store.bootstrap.meta || {};
-      byId("marketSource").textContent = `直近半年: ${meta.recent_cutoff || ""} 以降 / 更新: ${meta.latest_signal_date || ""}`;
+      const windowMeta = activeWindowMeta(meta, state);
+      byId("marketSource").textContent = `直近半年: ${windowMeta.recent_cutoff || ""} 以降 / 更新: ${windowMeta.latest_signal_date || ""}`;
       byId("marketRows").innerHTML = `
         <tr>
           <th>アイテム</th><th class="num">参考相場</th><th class="num">露店</th><th class="num">売り叫び</th><th class="num">買い叫び</th><th class="num">集計件数</th><th>扱い</th>
         </tr>
         ${shown.map((row) => {
-          const selected = state.selectedKey === `${row.server}|${row.item_key}` ? " is-selected" : "";
+          const selected = state.selectedKey === rowKey(row) ? " is-selected" : "";
           const muted = row.has_recent ? "" : " is-muted";
           const count = rowActivity(row);
           const trendOnlyPrice = row.reference_is_trend_only ? " is-trend-only" : "";
-          return `<tr class="market-row${selected}${muted}" data-key="${escapeHtml(row.server)}|${escapeHtml(row.item_key)}">
+          return `<tr class="market-row${selected}${muted}" data-key="${escapeHtml(rowKey(row))}">
             <td>${escapeHtml(row.display_name || row.item_name)}</td>
             <td class="num market-ref-price${trendOnlyPrice}">${escapeHtml(priceText(row.reference_gold, row.reference_text))}</td>
             <td class="num">${escapeHtml(priceText(row.market_gold, row.market_text))}</td>
@@ -251,13 +302,13 @@
         byId("marketRows").innerHTML = `<tr><th>相場一覧</th></tr><tr><td><div class="market-empty">該当するアイテムがありません。</div></td></tr>`;
       }
 
-      let selected = rows.find((row) => `${row.server}|${row.item_key}` === state.selectedKey);
+      let selected = rows.find((row) => rowKey(row) === state.selectedKey);
       if (!selected && rows[0]) {
-        state.selectedKey = `${rows[0].server}|${rows[0].item_key}`;
+        state.selectedKey = rowKey(rows[0]);
         selected = rows[0];
       }
       const detailData = currentDetailData();
-      const detailRow = detailData.items.find((row) => `${row.server}|${row.item_key}` === state.selectedKey) || selected;
+      const detailRow = detailData.items.find((row) => rowKey(row) === state.selectedKey) || selected;
       renderDetail(detailRow || null);
     }
 
@@ -305,6 +356,7 @@
       await store.initialize();
       state.server = store.bootstrap.servers.includes("Bridgehead") ? "Bridgehead" : store.bootstrap.servers[0];
       renderOptions();
+      renderGoldSeasonOptions();
       byId("marketLoadStatus").textContent = `各サーバ上位${store.bootstrap.top_limit}件を表示`;
       renderTable();
       idle(() => warmServer(state.server));
@@ -333,8 +385,14 @@
       searchIndex.clear();
       trendsByServerItem.clear();
       dailyTrendsByServerItem.clear();
+      renderGoldSeasonOptions();
       renderTable();
       idle(() => warmServer(state.server));
+    });
+    goldSeasonSelect.addEventListener("change", (event) => {
+      state.goldSeason = event.target.value;
+      state.selectedKey = "";
+      renderTable();
     });
     for (const [id, key] of [["marketCategory", "category"], ["marketRecent", "recent"], ["marketSort", "sort"]]) {
       byId(id).addEventListener("change", (event) => {
@@ -357,6 +415,7 @@
         state.server = store.bootstrap.servers.includes(requestedServer) ? requestedServer : store.bootstrap.servers[0];
         indexFullData(data);
         renderOptions();
+        renderGoldSeasonOptions();
         byId("marketLoadStatus").textContent = "キャッシュ強制更新完了";
         renderTable();
         idle(() => store.prefetchRemaining(state.server).catch(showError));
@@ -370,7 +429,7 @@
     initialize().catch(showError);
   }
 
-  const api = { DISPLAY_LIMIT, itemSearchText, rowActivity, sortedRows, start };
+  const api = { DISPLAY_LIMIT, GOLD_SERVER, activeWindowMeta, goldSeasonOptions, itemSearchText, rowActivity, rowKey, shouldShowGoldSeason, sortedRows, start };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   if (root.document && root.ProgressiveMarketDataStore) start();
 })(typeof globalThis !== "undefined" ? globalThis : this);
