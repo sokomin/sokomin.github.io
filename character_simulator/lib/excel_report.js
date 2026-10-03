@@ -316,15 +316,10 @@ export function buildCharacterReportXlsx(report) {
   return buildStoredZip(workbookFiles(normalized, sheets), normalized.generatedAt);
 }
 
+import { requestBlobDownload } from './file_download.js';
+
 export function downloadCharacterReportXlsx(filename, report) {
   const bytes = buildCharacterReportXlsx(report);
   const blob = new Blob([bytes], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-  const url = URL.createObjectURL(blob);
-  const anchor = document.createElement('a');
-  anchor.href = url;
-  anchor.download = filename;
-  document.body.appendChild(anchor);
-  anchor.click();
-  anchor.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  requestBlobDownload(filename, blob);
 }

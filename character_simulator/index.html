@@ -3423,6 +3423,7 @@
                   <h4>セッション (保存/読込)</h4>
                   <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
                     <button id="btn-save-file" title="現在のキャラ + インベントリを .json として保存">📥 ファイル保存</button>
+                    <button id="btn-json-text" title="保存用JSONの本文を表示">JSON本文を表示</button>
                     <button id="btn-export-excel" title="現在の装備構成・ステータス・装備外補正を .xlsx レポートとして保存">📊 Excelレポート出力</button>
                     <button id="btn-load-file" title=".json を読み込んで現状に置き換え">📤 ファイル読込</button>
                     <span style="border-left:1px solid #8b6a28; height:14px; margin:0 2px;"></span>
@@ -3430,6 +3431,12 @@
                     <button id="btn-load-local" title="ブラウザ localStorage から読込">💿 ブラウザから読込</button>
                     <button id="btn-clear-session" style="background:linear-gradient(#a02020,#5e0808)" title="現状の全データを破棄">🗑 全消去</button>
                     <span id="session-status" style="margin-left:auto; font-size:11px; color:#a08858"></span>
+                  </div>
+                  <div id="json-text-panel" hidden>
+                    <label for="session-json-text">現在の構成の保存用JSON（読み取り専用）</label>
+                    <textarea id="session-json-text" readonly style="width:100%;height:180px"></textarea>
+                    <button id="btn-copy-json">JSONをコピー</button>
+                    <small>ファイル保存はダウンロードを要求します。端末への保存状況はブラウザで確認してください。</small>
                   </div>
                   
                 </div>
@@ -4573,7 +4580,7 @@
                   <tr><th>魔法致命打率%</th><td><input type="number" id="dmg-in-mCritRate" value="0" step="0.1"></td></tr>
                   <tr><th>魔法強打率%</th><td><input type="number" id="dmg-in-mStrongRate" value="0" step="0.1"></td></tr>
                   <tr><th>魔法ダメ制限 (ベース)</th><td><input type="number" id="dmg-in-mCapBase" value="20000" step="1"></td></tr>
-                  <tr><th>限界突破魔法 超過%</th><td><input type="number" id="dmg-in-mLimitPct" value="0" step="0.1" title="制限を超えた分のうち何%を通すか。Lv1=8% / Lv2=16% / Lv3=24% / Lv4=32% / Lv5=36%。称号タブで Lv を選ぶと自動セット。"></td></tr>
+                  <tr><th>称号の魔法超過率%</th><td><input type="number" id="dmg-in-mLimitPct" value="0" step="0.1" title="制限超過分に適用する称号の率。Lv1=8% / Lv2=16% / Lv3=24% / Lv4=32% / Lv5=36%。装備による称号効果補正は適用式が未検証のため未反映。手入力は自動取得OFFで保持。"><small>自動取得は称号のみ。装備補正の適用式は未検証・未反映。</small></td></tr>
                   <tr style="display:none;"><th>魔法上限+ (旧)</th><td><input type="number" id="dmg-in-mLimitFlat" value="0" step="1"></td></tr>
                   <tr><th>攻撃速度%</th><td><input type="number" id="dmg-in-mAttackSpd" value="0" step="1"></td></tr>
                   <tr><th>使用ダメ (最大/最小/平均)</th><td>
@@ -4591,7 +4598,7 @@
                 <h4>予測ダメージ</h4>
                 <table class="damage-result-table">
                   <thead>
-                    <tr><th>種別</th><th>1発ダメージ</th></tr>
+                    <tr><th>種別</th><th>1回の使用ダメージ（全HIT）</th></tr>
                   </thead>
                   <tbody id="damage-result-tbody">
                     <tr><th id="dmg-rlabel-normal">通常 (×1)</th><td id="dmg-r-normal">-</td></tr>
@@ -4601,7 +4608,7 @@
                   </tbody>
                 </table>
                 <div class="damage-expected">
-                  期待値 1発 <span id="damage-expected-value">-</span>
+                  期待値 1回 <span id="damage-expected-value">-</span>
                 </div>
                 <div class="damage-dps">
                   DPS (1秒あたり) <span id="damage-dps-value">-</span>
@@ -4681,8 +4688,8 @@
                   <label for="optimizer-metric">評価</label>
                   <select id="optimizer-metric">
                     <option value="dps">DPS</option>
-                    <option value="expected">期待値 1発</option>
-                    <option value="normal">通常 1発</option>
+                    <option value="expected">期待値 1回</option>
+                    <option value="normal">通常 1回</option>
                   </select>
                   <label for="optimizer-limit">候補数/部位</label>
                   <input type="number" id="optimizer-limit" min="1" max="50" step="1" value="8">
@@ -4845,11 +4852,12 @@ import { getEffectiveLv, PRIMARY_STAT_IDS } from './lib/character.js';
 import { computeAbilities } from './lib/abilities.js';
 import { buildPvpProfile } from './lib/pvp_profile.js';
 import { downloadCharacterReportXlsx } from './lib/excel_report.js';
+import { compatibleSeirenSelection, skillDamageIssue, readSkillAttackCount, serialTaskQueue } from './lib/ui_state_safety.js';
 import { clampBaseStatsToFloor, computeBaseStatFloor, getAutoStatId, preserveAllocatedStatsForFloorChange, statTotal } from './lib/job_stats.js';
 import {
   serializeSession, deserializeSession,
   saveToLocalStorage, loadFromLocalStorage, removeFromLocalStorage,
-  downloadJsonFile, uploadJsonFile,
+  downloadJsonFile, uploadJsonFile, sessionJsonText,
 } from './lib/persistence.js';
 import {
   CATEGORIES as STONE_CATEGORIES,
@@ -4946,6 +4954,11 @@ import { applyMonsterLevel } from './lib/monster_level_calc.js';
 import { computePetStats, isPetCapableJob } from './lib/pet_calc.js';
 import { createGuildSystem } from './lib/guild.js';
 import { calculateDisassemblyEstimate } from './lib/potential_disassembly.js';
+import {
+  allocateCostumeCrestSlots,
+  PRIMARY_BASE_CAP,
+  PURPLE_SHARED_CAP,
+} from './lib/costume_slots.js';
 
 const loader = new DataLoader({ baseUrl: './lib/data' });
 setLoader(loader);
@@ -5432,7 +5445,15 @@ function getNxDefaultOpInfo(rec, pos) {
     if (!isNx) continue;
     const slotPos = (slot.pos != null) ? Number(slot.pos) : -1;
     if (slotPos !== pos) continue;
-    return resolveOpDisplayInfo(slot.familyId, slot.value);
+    if (slot.opId != null) {
+      const tpl = optionTemplateDisplayText(slot.opId, 'item.nxoption');
+      if (!tpl || !Array.isArray(slot.vals) || !slot.vals.length
+          || slot.vals.some((v) => typeof v !== 'number' || !Number.isFinite(v))) return null;
+      return { text: stripOpTags(formatOpText(tpl, slot.vals), 'plain') };
+    }
+    if (slot.familyId == null || typeof slot.value !== 'number' || !Number.isFinite(slot.value)) return null;
+    const info = resolveOpDisplayInfo(slot.familyId, slot.value);
+    return { text: `${info.name} ${info.sign || '+'}${info.value}${info.unit || ''}` };
   }
   return null;
 }
@@ -5789,7 +5810,7 @@ async function refreshNxPanel() {
     const defLabel = $(`nx-default-${k}`);
     if (defLabel) {
       defLabel.textContent = info
-        ? `デフォルト: ${info.name} ${info.sign || '+'}${info.value}${info.unit || ''}`
+        ? `デフォルト: ${info.text}`
         : '(デフォルト OP 未定義)';
     }
     refreshNxSlotSelect(k, rec);
@@ -5960,7 +5981,7 @@ function refreshSeirenSlots(partKey) {
     
     const cur = formState.seirenOps[k];
     if (cur && cur.seirenSel) {
-      const v = cur.seirenSel;
+      const v = compatibleSeirenSelection(cur, pool);
       if (Array.from(dd.options).some((o) => o.value === v)) {
         dd.value = v;
         
@@ -7012,16 +7033,19 @@ async function equipInvItem(inv) {
   await recalcAll();
 }
 
-function unequipInvItem(inv) {
+async function unequipInvItem(inv) {
   if (!inv) return;
   if (!inv.equippedSlot) return;
   inv.equippedSlot = null;
-  recalcAll();
+  await recalcAll();
 }
 
 async function renderEquipSlots() {
 
   const ch = readCharacter();
+
+  const entries = [...inventory.items()];
+  const records = new Map(await Promise.all(entries.map(async (inv) => [inv, await Item.get(inv.itemId)])));
   const backEarEl = document.querySelector('.equip-slot[data-slot="back_ear"]');
   if (backEarEl) {
     backEarEl.title = (ch.gender === 1) ? '背' : '耳';
@@ -7037,7 +7061,7 @@ async function renderEquipSlots() {
     if (icon) { icon.src = ''; icon.style.display = 'none'; icon.onerror = null; }
   }
   
-  for (const inv of inventory.items()) {
+  for (const inv of entries) {
     if (!inv.equippedSlot) continue;
     const slotEl = document.querySelector(`.equip-slot[data-slot="${inv.equippedSlot}"]`);
     if (!slotEl) {
@@ -7046,8 +7070,8 @@ async function renderEquipSlots() {
     }
     
     if (!slotEl.classList.contains('is-empty')) {
-      console.warn(`[renderEquipSlots] slot collision at "${inv.equippedSlot}": item slot=${inv.slotIndex} reverted to inv`);
-      inv.equippedSlot = null;
+      console.warn(`[renderEquipSlots] duplicate slot "${inv.equippedSlot}" (inv slot=${inv.slotIndex})`);
+      setSessionStatus(`装備スロット重複: ${inv.equippedSlot}。保存データの装着位置を確認してください。`);
       continue;
     }
     slotEl.classList.remove('is-empty');
@@ -7055,7 +7079,7 @@ async function renderEquipSlots() {
     
     if (!inv.canEquip) slotEl.classList.add('is-ng');
     slotEl.setAttribute('data-inv-slot', String(inv.slotIndex));
-    const rec = await Item.get(inv.itemId);
+    const rec = records.get(inv);
     const iconUrl = rec ? getItemIconUrl(rec.imgId) : null;
     const icon = slotEl.querySelector('.slot-icon');
     if (icon && iconUrl) {
@@ -7733,8 +7757,7 @@ function bindInventoryGridEvents() {
     }
 
     if (inv.equippedSlot) {
-      unequipInvItem(inv);
-      await recalcAll();
+      await unequipInvItem(inv);
     } else {
       await equipInvItem(inv);
     }
@@ -7884,7 +7907,9 @@ function sumOpsByCode(equippedList, LvTemp, character) {
     const vals = Array.isArray(op.vals) ? op.vals : (Array.isArray(op.revisions) ? op.revisions : []);
     const raw = vals[idx];
     if (Array.isArray(raw)) return Number(raw[0]) || 0;
-    return Number(raw) || 0;
+    const template = Op.getDisplayTemplate(op.opId, 'item.option') || '';
+    const divided = template.includes(`[${idx}.1%]`) || template.includes(`[${idx}.1％]`);
+    return (Number(raw) || 0) / (divided ? 10 : 1);
   };
   const addLimitBreak = (op) => {
 
@@ -8070,7 +8095,8 @@ function applyMapEffectsToCharacter(f, subInfo) {
   f.equipped.__attrResistCap = Number(subInfo.lbd) || 90;
 }
 
-async function recalcAll() {
+const recalcAll = serialTaskQueue(recalcAllNow);
+async function recalcAllNow() {
   const ch = readCharacter();
 
   enforceSoloRingLimit();
@@ -8257,6 +8283,9 @@ async function recalcAll() {
   setDetailPercent('dt-phys-limit-percent',    lbPhysPct);
   setDetailFlat('dt-magic-limit-flat',         lbMagicFlat);
   setDetailPercent('dt-magic-limit-percent',   lbMagicPct);
+  if ($('dt-magic-limit-percent')) $('dt-magic-limit-percent').title =
+    `称号の超過率 ${titleBonus.magicPct || 0}% + 装備等の表示補正 ${lbMagicPct - (titleBonus.magicPct || 0)}%。` +
+    'ダメージ計算の自動取得は称号の超過率のみ。装備補正の適用式は未検証のため加算していません。';
   
   f.equipped.__withTitleLimitBreakPhysFlat   = lbPhysFlat;
   f.equipped.__withTitleLimitBreakPhysPct    = lbPhysPct;
@@ -8654,7 +8683,7 @@ function bindEvents() {
         return;
       }
       
-      unequipInvItem(inv);
+      await unequipInvItem(inv);
     });
   });
 
@@ -8991,6 +9020,7 @@ function buildSnapshot() {
   const character = readCharacter();
   const snap = serializeSession(character, inventory, readGraceRebirth());
   snap.settings = getSettingsState();
+  snap.damageCalc = DamageCalc.getState();
   snap.skills = { ...skillStates };  
   
   const creatureInventory = creatureState.inventory || [];
@@ -9618,6 +9648,20 @@ async function loadSnapshot(data, sourceLabel) {
 
   const calculationDataFailures = await loadSnapshotCalculationData(data);
 
+  
+  const restoredInventory = new Inventory(INVENTORY_MAX);
+  try {
+    for (const entry of (parsed.inventory || [])) {
+      const inv = await restoreInventoryEntry(entry);
+      if (!inv) throw new Error(`アイテム ${entry.itemId} を復元できません`);
+      const added = entry.slotIndex == null ? restoredInventory.add(inv) : restoredInventory.addAt(inv, entry.slotIndex);
+      if (!added) throw new Error('インベントリの個体位置が重複または範囲外です');
+      if (entry.equippedSlot === 'job_armor') {
+        inv.equippedSlot = [...restoredInventory.items()].some((other) => other !== inv && other.equippedSlot === 'body') ? null : 'body';
+      } else inv.equippedSlot = entry.equippedSlot || null;
+    }
+  } catch (err) { setSessionStatus('読込失敗: ' + err.message); return; }
+
   setSettingsState(data.settings);
   buildOpSearchIndex();
   refreshCurrentOpSearchResults();
@@ -9750,21 +9794,9 @@ async function loadSnapshot(data, sourceLabel) {
 
   for (const inv of [...inventory.items()]) inventory.remove(inv.slotIndex);
   selectedInv = null;
-  for (const entry of (parsed.inventory || [])) {
-    const inv = await restoreInventoryEntry(entry);
-    if (!inv) continue;
-    inventory.add(inv);
-
-    if (entry.equippedSlot) {
-      let restoredSlot = entry.equippedSlot;
-      if (restoredSlot === 'job_armor') {
-        const bodyTaken = [...inventory.items()].some((other) => other !== inv && other.equippedSlot === 'body');
-        restoredSlot = bodyTaken ? null : 'body';
-      }
-      if (restoredSlot) inv.equippedSlot = restoredSlot;
-    }
-  }
+  for (const inv of restoredInventory.items()) inventory.addAt(inv, inv.slotIndex);
   invalidateFeasibleCache();
+  if (data.damageCalc) await DamageCalc.setState(data.damageCalc);
   await recalcAll();
   await refreshItemList();
   setSessionStatus(calculationDataFailures.length ? `${sourceLabel || ''} 読込: ${calculationDataFailures.join('・')}の効果を取得できません。再読込してください。` : `${sourceLabel || ''} 読込完了: inv=${parsed.inventory?.length || 0} 件`);
@@ -14359,7 +14391,7 @@ function bindSessionEvents() {
       const ts = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
       const job = String(report.character.job || 'character').replace(/[\\/:*?"<>|]/g, '_');
       downloadCharacterReportXlsx(`character_report_${job}_Lv${report.character.level}_${ts}.xlsx`, report);
-      setSessionStatus('Excelレポート出力完了');
+      setSessionStatus('Excelレポートのダウンロードを要求しました。保存状況はブラウザで確認してください。');
     } catch (error) {
       console.warn('[ExcelReport] export failed:', error);
       setSessionStatus(`Excelレポート出力失敗: ${error?.message || error}`);
@@ -14367,12 +14399,39 @@ function bindSessionEvents() {
       button.disabled = false;
     }
   });
+  const showJsonText = (text) => {
+    $('session-json-text').value = text;
+    $('json-text-panel').hidden = false;
+  };
   $('btn-save-file').addEventListener('click', async () => {
-    await recalcAll();
-    const data = buildSnapshot();
-    const ts = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-    downloadJsonFile(`character_session_${ts}.json`, data);
-    setSessionStatus('ファイル保存完了');
+    const button = $('btn-save-file');
+    button.disabled = true;
+    try {
+      await recalcAll();
+      const data = buildSnapshot();
+      showJsonText(sessionJsonText(data));
+      const ts = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+      downloadJsonFile(`character_session_${ts}.json`, data);
+      setSessionStatus('JSONのダウンロードを要求しました。保存状況はブラウザで確認してください。');
+    } catch (error) {
+      setSessionStatus(`JSON出力失敗: ${error?.message || error}`);
+    } finally {
+      button.disabled = false;
+    }
+  });
+  $('btn-json-text').addEventListener('click', async () => {
+    try { await recalcAll(); showJsonText(sessionJsonText(buildSnapshot())); }
+    catch (error) { setSessionStatus(`JSON生成失敗: ${error?.message || error}`); }
+  });
+  $('btn-copy-json').addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText($('session-json-text').value);
+      setSessionStatus('JSON本文をコピーしました');
+    } catch (error) {
+      $('session-json-text').focus();
+      $('session-json-text').select();
+      setSessionStatus('自動コピーできません。選択した本文をコピーしてください。');
+    }
   });
   $('btn-load-file').addEventListener('click', () => {
     uploadJsonFile(async (data) => { await loadSnapshot(data, 'ファイル'); });
@@ -16232,10 +16291,12 @@ const Costume = (() => {
 
   
   const COLOR_MARKER = { 456: 'red', 457: 'gold', 458: 'blue', 790: 'purple' };
-  const PRIMARY_COLORS = ['red', 'blue', 'gold'];
-  const PRIMARY_BASE_CAP = 3;
-  const PURPLE_SHARED_CAP = 2;
-  const COLOR_CAP    = { red: 5, blue: 5, gold: 5, purple: 2 };
+  const COLOR_CAP    = {
+    red: PRIMARY_BASE_CAP + PURPLE_SHARED_CAP,
+    blue: PRIMARY_BASE_CAP + PURPLE_SHARED_CAP,
+    gold: PRIMARY_BASE_CAP + PURPLE_SHARED_CAP,
+    purple: PURPLE_SHARED_CAP,
+  };
   const COLOR_LABEL  = { red: '赤', blue: '青', gold: '黄', purple: '紫' };
   const MAX_STAGE    = 10;
 
@@ -16374,43 +16435,17 @@ const Costume = (() => {
   }
 
   
-  function countColors() {
-    const counts = { red: 0, blue: 0, gold: 0, purple: 0 };
-    const N = slotCount(state.stage);
-    for (let i = 0; i < N; i++) {
-      const id = state.crests[i];
-      if (id == null) continue;
-      const rec = crestRecords?.get(id);
-      const color = detectColor(rec);
-      if (color && counts[color] != null) counts[color]++;
-    }
-    return counts;
-  }
   function allocateCrestSlots() {
-    const counts = countColors();
-    const baseUsed = { red: 0, blue: 0, gold: 0 };
-    const violated = new Set();
-    let sharedUsed = 0;
     const N = slotCount(state.stage);
+    const slotColors = new Array(N);
     for (let i = 0; i < N; i++) {
       const id = state.crests[i];
-      if (id == null) continue;
-      const color = detectColor(crestRecords?.get(id));
-      if (!color) continue;
-      if (PRIMARY_COLORS.includes(color) && baseUsed[color] < PRIMARY_BASE_CAP) {
-        baseUsed[color]++;
-        continue;
-      }
-      if (sharedUsed < PURPLE_SHARED_CAP) sharedUsed++;
-      else violated.add(i);
+      slotColors[i] = id == null ? null : detectColor(crestRecords?.get(id));
     }
-    const sharedRequired = counts.purple + PRIMARY_COLORS.reduce(
-      (sum, color) => sum + Math.max(0, counts[color] - PRIMARY_BASE_CAP), 0
-    );
-    return { counts, sharedRequired, violated };
+    return allocateCostumeCrestSlots(slotColors);
   }
   function isViolated(slotIndex, allocation) {
-    return allocation.violated.has(slotIndex);
+    return allocation.violatedIndexes.includes(slotIndex);
   }
 
 
@@ -16487,8 +16522,7 @@ const Costume = (() => {
     const msg = $('costume-disabled-msg');
     if (msg) msg.style.display = state.enabled ? 'none' : '';
   }
-  function renderCapLine() {
-    const allocation = allocateCrestSlots();
+  function renderCapLine(allocation = allocateCrestSlots()) {
     const counts = allocation.counts;
     for (const c of ['red','blue','gold','purple']) {
       const el = document.querySelector(`[data-cap-count="${c}"]`);
@@ -16498,11 +16532,10 @@ const Costume = (() => {
       if (chip) chip.classList.toggle('is-over', displayedCount > (COLOR_CAP[c] || 99));
     }
   }
-  function renderSlots() {
+  function renderSlots(allocation = allocateCrestSlots()) {
     const host = $('costume-slots');
     if (!host) return;
     const N = slotCount(state.stage);
-    const allocation = allocateCrestSlots();
     const html = [];
     for (let i = 0; i < 7; i++) {
       const isLocked = i >= N;
@@ -16601,7 +16634,7 @@ const Costume = (() => {
       });
     });
   }
-  function renderSummary() {
+  function renderSummary(allocation = allocateCrestSlots()) {
     const out = $('costume-summary');
     if (!out) return;
     if (!state.enabled) {
@@ -16612,18 +16645,18 @@ const Costume = (() => {
     const lines = [];
     lines.push(`コスチューム +${state.stage} (${slotCount(state.stage)} 枠)`);
     lines.push(`  全能力値 +${baseStatBonus(state.stage)} / 経験値 +${baseExpBonus(state.stage)}%`);
-    const allocation = allocateCrestSlots();
     const counts = allocation.counts;
     const occupied = Object.values(counts).reduce((a, b) => a + b, 0);
-    lines.push(`  クレスト ${occupied} 個装着 (赤${counts.red}/青${counts.blue}/黄${counts.gold}/紫${counts.purple} / 紫共通枠${allocation.sharedRequired}/2)`);
+    lines.push(`  クレスト ${occupied} 個装着 (赤${counts.red}/青${counts.blue}/黄${counts.gold}/紫${counts.purple} / 紫共通枠${allocation.sharedRequired}/${PURPLE_SHARED_CAP})`);
     out.textContent = lines.join('\n');
     out.classList.toggle('is-empty', occupied === 0 && state.stage === 0);
   }
   function renderAll() {
+    const allocation = allocateCrestSlots();
     renderBase();
-    renderCapLine();
-    renderSlots();
-    renderSummary();
+    renderCapLine(allocation);
+    renderSlots(allocation);
+    renderSummary(allocation);
   }
 
   
@@ -19150,10 +19183,14 @@ const DamageCalc = (() => {
   };
   const SKILL_DATA_BASE = './data/skills/';
   const MUSKET_WEAPON_MAGIC_SPECS = {
+    'n_1306': {
+      attr: 'fire', baseRate: 90, ratePerLv: 0.2,
+      mainHits: 1, extraHits: 0, extraScalePct: 100, bulletCount: 1, dpsMode: 'action'
+    },
     'n_1318': {
       attr: 'fire',
-      baseRate: 30,
-      ratePerLv: 0.2,
+      baseRate: 54.7,
+      ratePerLv: 0.3,
       mainHits: 1,
       extraHits: 50,
       extraScalePct: 100,
@@ -19162,8 +19199,8 @@ const DamageCalc = (() => {
     },
     'a_890': {
       attr: 'fire',
-      baseRate: 100,
-      ratePerLv: 1,
+      baseRate: 99.7,
+      ratePerLv: 0.3,
       mainHits: 1,
       extraHits: 10,
       extraScalePct: 66.7,
@@ -19172,8 +19209,8 @@ const DamageCalc = (() => {
     },
     'a_892': {
       attr: 'fire',
-      baseRate: 100,
-      ratePerLv: 1,
+      baseRate: 119.7,
+      ratePerLv: 0.3,
       mainHits: 4,
       extraHits: 8,
       extraScalePct: 66.7,
@@ -19232,8 +19269,10 @@ const DamageCalc = (() => {
 
 
   async function loadForJob(jobId) {
+    const revision = ++skillLoadRevision;
     const prefix = JOB_SKILL_DB[Number(jobId)];
     currentJobId = Number(jobId);
+    skillDb = null;
     if (!prefix) {
       skillDb = null;
 
@@ -19253,6 +19292,7 @@ const DamageCalc = (() => {
       fetchJson(prefix),
       fetchJson(prefix + '_awake'),
     ]);
+    if (revision !== skillLoadRevision) return;
     if (!normal && !awake) {
       skillDb = null;
       populateSkillSelectEmpty(`スキルDBの読込に失敗しました。`);
@@ -19281,14 +19321,15 @@ const DamageCalc = (() => {
     const renderOpt = (sk, prefix) => {
       const musketSpec = musketSpecForKey(prefix + '_' + sk.id);
       const calculable = sk.hasPhysDmgPct || sk.hasMagicDmgRange || !!musketSpec;
+      const formulaOnly = !calculable && (sk.damageRows || []).some((r) => r.formula && r.kind !== 'modifier');
       let tag = '';
-      if (!calculable) tag = ' [計算対象外]';
+      if (!calculable) tag = formulaOnly ? ' [数式参照]' : ' [計算対象外]';
       else if (musketSpec) tag = ' [武器依存火魔法]';
       else if (sk.hasPhysDmgPct && sk.hasMagicDmgRange) tag = ' [物理+魔法]';
       else if (sk.hasMagicDmgRange) tag = ' [魔法' + (sk.magicAttr ? ' / ' + attrLabel(sk.magicAttr) : '') + ']';
       else if (sk.hasPhysDmgPct) tag = ' [物理]';
       const val = prefix + '_' + sk.id;
-      return `<option value="${val}"${calculable ? '' : ' disabled'}>${esc(sk.name)}${tag}</option>`;
+      return `<option value="${val}"${calculable || formulaOnly ? '' : ' disabled'}>${esc(sk.name)}${tag}</option>`;
     };
     if (skillDb.normal && skillDb.normal.skills && skillDb.normal.skills.length) {
       parts.push('<optgroup label="通常スキル">');
@@ -19327,6 +19368,19 @@ const DamageCalc = (() => {
   const EXTRAPOLATE_KEYS = new Set(['physDmgPct', 'magicDmgMin', 'magicDmgMax']);
 
   function interpolateAtLv(skill, lv) {
+    if (skill.damageFormula) {
+      const base = interpolateAtLv({ ...skill, damageFormula: null }, lv);
+      const out = base ? { ...base } : null;
+      if (!out) return null;
+      const target = Math.max(skill.levelKeys[0], Math.round(lv));
+      for (const [key, formula] of Object.entries(skill.damageFormula)) {
+        if (Number.isFinite(formula.intercept) && Number.isFinite(formula.perLevel)) {
+          if ((formula.minLv != null && target < formula.minLv) || (formula.maxLv != null && target > formula.maxLv)) delete out[key];
+          else out[key] = Math.min(formula.maxValue ?? Infinity, formula.intercept + formula.perLevel * target);
+        }
+      }
+      return out;
+    }
     const keys = (skill.levelKeys || []).slice().sort((a, b) => a - b);
     if (!keys.length) return null;
     const minKey = keys[0];
@@ -19450,6 +19504,21 @@ const DamageCalc = (() => {
     }
     if (levelRow && typeof levelRow.consumeCp === 'number') {
       lines.push(`<div class="dsi-row"><span class="dsi-key">消費CP</span><span class="dsi-val">${fmt(levelRow.consumeCp)}</span></div>`);
+    }
+    const effectiveLv = Math.max(1, Number($('damage-skill-lv')?.value) || 50) + (Number(lastSkillBonus) || 0);
+    const formulaLines = (skill.damageRows || []).map((row) => {
+      const terms = Object.entries(row.formula || {}).map(([edge, formula]) => {
+        const linear = `${formula.intercept} ${formula.perLevel < 0 ? '−' : '+'} ${Math.abs(formula.perLevel)} × Lv`;
+        const expression = formula.maxValue != null ? `min(${formula.maxValue}, ${linear})` : linear;
+        const inDomain = (formula.minLv == null || effectiveLv >= formula.minLv) && (formula.maxLv == null || effectiveLv <= formula.maxLv);
+        const value = inDomain ? fmt(Math.min(formula.maxValue ?? Infinity, formula.intercept + formula.perLevel * effectiveLv)) : '表の確認範囲外';
+        const suffix = formula.displayRounding ? '（表の表示丸め前）' : '';
+        return `${({ min: '最小 ', max: '最大 ', value: '' })[edge] || ''}${expression} = ${value}${suffix}`;
+      });
+      return `<tr><th>${esc(row.label)}</th><td>${esc(terms.length ? terms.join(' / ') : row.status === 'conditional' ? row.points[0]?.text || '条件依存' : '表の整合確認が必要')}</td></tr>`;
+    });
+    if (formulaLines.length) {
+      lines.push(`<details><summary>スキル表の数式（Lv${effectiveLv}）</summary><p>Lvは装備補正込み。定数は増分0。追加・支援効果の式も表示します。総ダメージへの適用範囲は計算内訳を確認してください。</p><table><tbody>${formulaLines.join('')}</tbody></table></details>`);
     }
     if (!skill.hasPhysDmgPct && !skill.hasMagicDmgRange && !musketSpec) {
       lines.push(`<div class="dsi-row"><span class="dsi-key dsi-na">注意</span><span class="dsi-val dsi-na">物理/魔法どちらのダメ表記も持たないため計算対象外です。</span></div>`);
@@ -19601,7 +19670,7 @@ const DamageCalc = (() => {
     const spec = musketSpecForSkill(skill);
     if (!spec) return;
     const defaults = {
-      'dmg-in-mAtkApplyPct': Math.max(0, spec.baseRate + spec.ratePerLv * effectiveLv),
+      'dmg-in-mAtkApplyPct': Math.max(0, interpolateAtLv(skill, effectiveLv)?.weaponMagicPct ?? (spec.baseRate + spec.ratePerLv * effectiveLv)),
       'dmg-in-mMainHits': spec.mainHits,
       'dmg-in-mExtraHits': spec.extraHits,
       'dmg-in-mExtraScalePct': spec.extraScalePct,
@@ -19652,8 +19721,13 @@ const DamageCalc = (() => {
     const mode = detectModeFromSkill(skill);
     applyModeUI(mode);
     renderSkillInfo(skill, lvRow);
+    const dataIssue = skillDamageIssue(skill, lvRow, mode, !!musketSpec);
+    if (dataIssue) {
+      renderResults({ na: true, msg: dataIssue });
+      return;
+    }
 
-    const attackCount = (typeof lvRow.attackCount === 'number') ? lvRow.attackCount : null;
+    const attackCount = readSkillAttackCount(lvRow.attackCount);
 
     if (mode === 'phys') {
       const inputs = readPhysInputs();
@@ -19700,9 +19774,12 @@ const DamageCalc = (() => {
       const pCrit   = clamp01(inputsAdj.critRate / 100) * (1 - pStrong);
       const pNormal = Math.max(0, 1 - pStrong - pCrit);
       const expected = pNormal * dN + pCrit * dC + pStrong * dS;
-      const interval = musketSpec2 && inputsAdj.musketDpsMode === 'reload'
+      const attackInterval = musketSpec2 && inputsAdj.musketDpsMode === 'reload'
         ? musketReloadSeconds(inputsAdj.attackSpd) / Math.max(1, inputsAdj.bulletCount || 1)
         : 1 / (1 + (inputsAdj.attackSpd / 100));
+      const cooldown = Number(lvRow.cooldownSec) || 0;
+      const cdReduce = Math.max(0, Math.min(100, Number($('dmg-in-skillCdReduce')?.value) || 0));
+      const interval = Math.max(attackInterval, cooldown * (1 - cdReduce / 100));
       const dps = expected / Math.max(0.001, interval);
       renderResults({
         mode: 'magic',
@@ -19711,6 +19788,8 @@ const DamageCalc = (() => {
         inputs: inputsAdj,
         baseSkillDmg: base, dmgRange: { min, max },
         attackCount, lvRow,
+        skillId: skill.id,
+        cooldown, interval,
         skillAttr: skillAttr || null,
         attrPct,
         baseMagicDmgPct: inputs.magicDmgPct || 0,
@@ -19759,22 +19838,30 @@ const DamageCalc = (() => {
     $('damage-dps-value').textContent = fmtInt(r.dps);
 
     const warns = [];
+    const selectedSkill = getSelectedSkill();
+    const unresolved = (selectedSkill?.damageRows || []).filter((row) => row.kind === 'attack' && ['table', 'partial'].includes(row.status));
+    if (unresolved.length) warns.push('表の整合確認が必要なダメージ項目があります。確定した軸には数式を使い、残りは表の補間・外挿を使っています。');
+    if (selectedSkill?.hasPhysDmgPct && selectedSkill?.hasMagicDmgRange) warns.push('現在の結果は物理成分です。魔法成分は合算していません。各成分の式は「スキル表の数式」で確認できます。');
     let rows;
     if (r.mode === 'magic') {
       const inp = r.inputs;
+      if (r.skillId === 54 || r.skillId === 1221) {
+        warns.push('各HITを同じ表記ダメージで計算しています。スキル表の段階別補正85～125%は未反映です。');
+      }
       if (r.musketSpec) {
         
       } else if (r.dmgRange && (r.dmgRange.min || r.dmgRange.max)) {
         
       } else {
-        warns.push('スキル表記ダメージが 0 のため、固定加算 (限界+) のみで算出されています。');
+        warns.push('定義済みのスキル表記ダメージは 0 です。');
       }
       if (inp.critRate > 100) warns.push('魔法致命打率% が 100 を超えています。');
       if ((100 - inp.enemyResist + inp.enemyWeaken) <= 0) warns.push('属性抵抗 - 弱化 が 100% 以上のため、ダメージは 0 に張り付いています。');
       const attrLabelStr = r.skillAttr ? attrLabel(r.skillAttr) : '無';
       rows = [
         ['実効 Lv', `${r.effectiveLv} (= ベース ${r.baseLv}${r.skillBonus ? ' + スキル+' + r.skillBonus : ''})` +
-          (r.effectiveLv > 50 ? ' ★Lv50 超え (ダメ系のみ外挿、攻撃範囲等は Lv50 で打ち止め)' : '')],
+          (r.effectiveLv > 50 ? ' ★Lv50 超え (ダメージは等差式／外挿)' : '')],
+        ['HIT数 / 使用間隔', `${r.attackCount || 1} HIT / ${fmt(r.interval)} 秒 (表のCT ${r.cooldown || 0} 秒)`],
         ['スキル属性', attrLabelStr],
         ['表記ダメ (採用)', r.musketSpec
           ? `${fmtInt(r.musketBaseSkillDmg)} (= 武器${fmt(inp.weaponMax || inp.weaponMin)} × 適用${fmt(inp.atkApplyPct)}% × ダメージ${(1 + (inp.weaponDmgPct || 0) / 100).toFixed(3)}倍)`
@@ -19926,6 +20013,7 @@ const DamageCalc = (() => {
     const t = ev.target;
     if (t && t.classList) t.classList.remove('is-auto');
     if (!isSyncing) recalc();
+    if (!isSyncing) scheduleAutosave();
   }
 
   function onSkillChange() {
@@ -19937,6 +20025,7 @@ const DamageCalc = (() => {
     const lvRow = skill ? interpolateAtLv(skill, Number($('damage-skill-lv').value) || 50) : null;
     renderSkillInfo(skill, lvRow);
     recalc();
+    scheduleAutosave();
   }
 
   function clamp01(v) { return Math.max(0, Math.min(1, v)); }
@@ -19979,7 +20068,7 @@ const DamageCalc = (() => {
     }
     $('damage-skill-select')?.addEventListener('change', onSkillChange);
     $('damage-skill-lv')?.addEventListener('input', onSkillChange);
-    $('damage-auto-sync')?.addEventListener('change', () => {  });
+    $('damage-auto-sync')?.addEventListener('change', () => { recalcAll(); scheduleAutosave(); });
 
     loadForJob(Number($('ch-job')?.value) || 0);
   }
@@ -19993,7 +20082,33 @@ const DamageCalc = (() => {
     return lastResult;
   }
 
-  return { init, syncFromCharacter, loadForJob, getLastResult, refresh };
+  function getState() {
+    const inputs = {};
+    for (const node of document.querySelectorAll('[id^="dmg-in-"]')) inputs[node.id] = node.value;
+    return { auto: !!$('damage-auto-sync')?.checked, skill: $('damage-skill-select')?.value || '',
+      baseLv: Number($('damage-skill-lv')?.value) || 50, inputs };
+  }
+
+  async function setState(state) {
+    if (!state) return; 
+    init();
+    await loadForJob(Number($('ch-job')?.value) || 0);
+    if (typeof state.auto === 'boolean') $('damage-auto-sync').checked = state.auto;
+    $('damage-skill-lv').value = Math.max(1, Math.min(50, Number(state.baseLv) || 50));
+    const select = $('damage-skill-select');
+    if ([...select.options].some((option) => option.value === state.skill)) select.value = state.skill;
+    for (const node of document.querySelectorAll('[id^="dmg-in-"]')) {
+      const value = state.inputs?.[node.id];
+      if (value == null) continue;
+      if (node.tagName === 'SELECT') {
+        if ([...node.options].some((option) => option.value === String(value))) node.value = String(value);
+      } else if (Number.isFinite(Number(value))) node.value = String(value);
+    }
+    recalc();
+  }
+
+  let skillLoadRevision = 0;
+  return { init, syncFromCharacter, loadForJob, getLastResult, refresh, getState, setState };
 })();
 
 const EquipmentOptimizer = (() => {

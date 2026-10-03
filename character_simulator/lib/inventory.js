@@ -65,6 +65,15 @@ export class Inventory {
   }
 
   
+  addAt(inv, idx) {
+    if (!Number.isInteger(idx) || idx < 0 || (this._maxSlots != null && idx >= this._maxSlots)) return null;
+    if (this._slots[idx] != null) return null;
+    inv.slotIndex = idx;
+    this._slots[idx] = inv;
+    return inv;
+  }
+
+  
   findEmptySlot() {
     for (let i = 0; i < this._slots.length; i++) {
       if (this._slots[i] == null) return i;

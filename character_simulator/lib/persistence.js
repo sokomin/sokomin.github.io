@@ -1,5 +1,8 @@
 
 
+
+import { requestBlobDownload } from './file_download.js';
+
 const SCHEMA_VERSION = 'rs-character-sim-v1';
 
 const MIB = 1024 * 1024;
@@ -24,7 +27,7 @@ const SESSION_TOP_LEVEL_KEYS = new Set([
   'v', 'saved', 'character', 'inventory', 'settings', 'skills', 'creature',
   'titles', 'dragon', 'missionBook', 'potential', 'costume', 'transSkill',
   'bloodRecord', 'omniSkill', 'badges', 'mapMonster', 'pet', 'minipet', 'guild',
-  'pvpProfile',
+  'pvpProfile', 'damageCalc',
 ]);
 const DANGEROUS_OBJECT_KEYS = new Set(['__proto__', 'prototype', 'constructor']);
 const SESSION_MAX_DEPTH = 24;
@@ -93,7 +96,7 @@ export function validateSessionData(data) {
     throw new Error(`persistence: inventory exceeds ${SESSION_CAPACITY_MODEL.inventoryEntries} entries`);
   }
   for (const key of ['settings', 'skills', 'creature', 'titles', 'dragon', 'missionBook', 'potential',
-    'costume', 'transSkill', 'bloodRecord', 'omniSkill', 'badges', 'mapMonster', 'pet', 'minipet', 'guild', 'pvpProfile']) {
+    'costume', 'transSkill', 'bloodRecord', 'omniSkill', 'badges', 'mapMonster', 'pet', 'minipet', 'guild', 'pvpProfile', 'damageCalc']) {
     assertOptionalObject(data, key);
   }
   if (data.skills && Object.keys(data.skills).length > 32) throw new Error('persistence: too many skill job states');
@@ -127,6 +130,7 @@ function cloneStones(stones) {
   }
   return out;
 }
+
 
 export function serializeSession(character, inventory, opts = {}) {
   const invArr = [];
@@ -308,6 +312,7 @@ export function serializeSession(character, inventory, opts = {}) {
   };
 }
 
+
 export function deserializeSession(data) {
   validateSessionData(data);
   if (typeof data.v === 'string' && data.v !== SCHEMA_VERSION && !data.v.startsWith('2026-')) {
@@ -320,6 +325,8 @@ export function deserializeSession(data) {
     grace:     data.character?.grace ?? -1,
   };
 }
+
+
 
 export function saveToLocalStorage(key, data) {
   try {
@@ -350,16 +357,20 @@ export function removeFromLocalStorage(key) {
   catch (err) { return false; }
 }
 
+
+
+
 export function downloadJsonFile(filename, data) {
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  const text = sessionJsonText(data);
+  requestBlobDownload(filename, new Blob([text], { type: 'application/json' }));
+  return text;
 }
+
+export function sessionJsonText(data) {
+  validateSessionData(data);
+  return JSON.stringify(data, null, 2);
+}
+
 
 export function uploadJsonFile(callback) {
   const input = document.createElement('input');
