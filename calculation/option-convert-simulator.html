@@ -289,6 +289,7 @@
                     解放オプション変換器関連のシミュレーターです。<br>
                     変換後は <b>変換前 / 変換後 の2案から1つを選んで採用</b> します。<br>
                     各スロットに <b>🔒 固定</b> をかけると、そのスロットは再抽選されません。<br>
+                    解放数を減らして再変換し、変換後を採用すると、未解放の枠は元OPに戻ります。<br>
                     <span style="font-size:12px;color:#777;">※ 確率データは
                         <a href="../option/openoption_convert_replica.html">レプリカ</a>・
                         <a href="../option/openoption_convert_normal.html">通常/改良</a>・
@@ -323,6 +324,20 @@
                         </label>
                         <span class="ocs-status" id="ocs-status">データ読込中…</span>
                     </div>
+                </div>
+
+                <div class="ocs-section">
+                    <details>
+                        <summary>装備本来の解放OP（元OP）を設定</summary>
+                        <p>初期表示は抽選候補の最頻OPです。装備本来のOPに合わせて名称と数値を入力してください。<br>
+                            設定を適用すると、現在のOPと変換回数を初期化します。</p>
+                        <table class="ocs-slots">
+                            <thead><tr><th>解放順</th><th>元OPの名称</th><th>元OPの数値</th></tr></thead>
+                            <tbody id="ocs-defaults-body"></tbody>
+                        </table>
+                        <button class="ocs-button secondary" id="ocs-defaults-apply">元OPを適用して初期化</button>
+                        <span id="ocs-defaults-status" role="status"></span>
+                    </details>
                 </div>
 
                 <!-- 現在のOP -->
@@ -416,6 +431,7 @@
             grade: null,         // 'normalU' | 'DXU' | 'ULT' | null
             slotCount: 4,        // 1..4 (表示・抽選対象のスロット数)
             current: [null, null, null, null],   // 4 スロットの採用 OP (常に長さ4)
+            defaults: [null, null, null, null],
             locked: -1,           // -1 or 0..(slotCount-1)
             cache: {},            // url -> data
             convertCount: 0,
@@ -543,7 +559,7 @@
         }
 
         function reseedCurrent(data) {
-            // 各スロットを最頻 OP で初期化（汎用 OP 相当）
+            // 元OP入力の初期表示は抽選候補の最頻OP
             const probKey = PROB_KEY[state.converter];
             const out = [null, null, null, null];
             for (let s = 1; s <= 4; s++) {
@@ -554,10 +570,53 @@
                     out[s-1] = bestOption(tbl.options, probKey);
                 }
             }
-            state.current = out;
+            state.defaults = out.map(cloneOpt);
+            state.current = out.map(cloneOpt);
+            renderDefaultInputs();
             state.locked = -1;
             state.convertCount = 0;
             state.pending = null;
+        }
+
+        function renderDefaultInputs() {
+            const tbody = document.getElementById('ocs-defaults-body');
+            tbody.innerHTML = '';
+            for (let s = 0; s < 4; s++) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${s+1}解放目</td>
+                    <td><input type="text" id="ocs-default-name-${s}" aria-label="${s+1}解放目の元OP名称" style="width:95%;box-sizing:border-box;"></td>
+                    <td><input type="text" id="ocs-default-value-${s}" aria-label="${s+1}解放目の元OP数値" style="width:95%;box-sizing:border-box;"></td>`;
+                tbody.appendChild(tr);
+                document.getElementById('ocs-default-name-' + s).value = state.defaults[s].name;
+                document.getElementById('ocs-default-value-' + s).value = state.defaults[s].value;
+            }
+            document.getElementById('ocs-defaults-status').textContent = '';
+        }
+
+        function resetToDefaults() {
+            state.current = state.defaults.map(cloneOpt);
+            state.locked = -1;
+            state.convertCount = 0;
+            state.pending = null;
+            renderCompare();
+            renderSlots();
+            document.getElementById('ocs-convert-btn').disabled = false;
+        }
+
+        function applyDefaultInputs() {
+            const defaults = [];
+            for (let s = 0; s < 4; s++) {
+                const name = document.getElementById('ocs-default-name-' + s).value.trim();
+                const value = document.getElementById('ocs-default-value-' + s).value.trim();
+                if (!name || !value) {
+                    document.getElementById('ocs-defaults-status').textContent = '元OPの名称と数値を4枠とも入力してください。';
+                    return;
+                }
+                defaults.push({ name, value });
+            }
+            state.defaults = defaults;
+            resetToDefaults();
+            document.getElementById('ocs-defaults-status').textContent = '元OPを適用しました。';
         }
 
         function renderSlots() {
@@ -634,6 +693,9 @@
                 if (!tbl || !tbl.options.length) continue;
                 after[s - 1] = sampleOption(tbl.options, probKey);
             }
+            for (let s = state.slotCount; s < 4; s++) {
+                after[s] = cloneOpt(state.defaults[s]);
+            }
             state.pending = { before, after };
             renderCompare();
             // 変換中は変換ボタンを抑制
@@ -709,7 +771,8 @@
             document.getElementById('ocs-convert-btn').addEventListener('click', doConvert);
             document.getElementById('ocs-adopt-before').addEventListener('click', () => adopt('before'));
             document.getElementById('ocs-adopt-after').addEventListener('click', () => adopt('after'));
-            document.getElementById('ocs-reset-btn').addEventListener('click', applySelection);
+            document.getElementById('ocs-reset-btn').addEventListener('click', resetToDefaults);
+            document.getElementById('ocs-defaults-apply').addEventListener('click', applyDefaultInputs);
         }
 
         // ----- 起動 -----
