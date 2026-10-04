@@ -2661,6 +2661,7 @@
                 <div class="sim-detail"><span class="sim-detail-name">物理強打</span><span class="sim-detail-value" id="dt-phys-strong">+0%</span></div>
                 <div class="sim-detail"><span class="sim-detail-name">物理致命抵抗低下</span><span class="sim-detail-value" id="dt-phys-crit-resist-down">+0%</span></div>
                 <div class="sim-detail"><span class="sim-detail-name">強打ダメ増加</span><span class="sim-detail-value" id="dt-phys-strong-damage">+0%</span></div>
+                <div class="sim-detail"><span class="sim-detail-name">強打時限界ダメ増幅</span><span class="sim-detail-value" id="dt-phys-strong-cap-amplify">+0%</span></div>
                 <div class="sim-detail"><span class="sim-detail-name">ダブクリダメ増加</span><span class="sim-detail-value" id="dt-double-crit-damage">+0%</span></div>
                 <div class="sim-detail"><span class="sim-detail-name">魔法ダメージ</span><span class="sim-detail-value" id="dt-magic-damage">+0%</span></div>
                 <div class="sim-detail"><span class="sim-detail-name">魔法致命打</span><span class="sim-detail-value" id="dt-magic-crit">+0%</span></div>
@@ -4842,6 +4843,7 @@ import { newSTTemp, debugSnapshot } from './lib/sttemp.js';
 import { aggregateForCharacter } from './lib/stat_aggregator.js';
 import { finalizeStats } from './lib/stat_finalizer.js';
 import { formatOpText, stripOpTags } from './lib/op_text_formatter.js';
+import { nativeOptionExtra } from './lib/native_option_defs.js';
 import {
   refreshEquipmentRequirementsFromFinalStats,
   updateEquipmentMetadata,
@@ -4852,7 +4854,7 @@ import { getEffectiveLv, PRIMARY_STAT_IDS } from './lib/character.js';
 import { computeAbilities } from './lib/abilities.js';
 import { buildPvpProfile } from './lib/pvp_profile.js';
 import { downloadCharacterReportXlsx } from './lib/excel_report.js';
-import { compatibleSeirenSelection, skillDamageIssue, readSkillAttackCount, serialTaskQueue } from './lib/ui_state_safety.js';
+import { compatibleSeirenSelection, skillDamageIssue, readSkillAttackCount, effectiveSkillAttackCount, serialTaskQueue } from './lib/ui_state_safety.js';
 import { clampBaseStatsToFloor, computeBaseStatFloor, getAutoStatId, preserveAllocatedStatsForFloorChange, statTotal } from './lib/job_stats.js';
 import {
   serializeSession, deserializeSession,
@@ -5449,7 +5451,7 @@ function getNxDefaultOpInfo(rec, pos) {
       const tpl = optionTemplateDisplayText(slot.opId, 'item.nxoption');
       if (!tpl || !Array.isArray(slot.vals) || !slot.vals.length
           || slot.vals.some((v) => typeof v !== 'number' || !Number.isFinite(v))) return null;
-      return { text: stripOpTags(formatOpText(tpl, slot.vals), 'plain') };
+      return { text: stripOpTags(formatOpText(tpl, slot.vals, nativeOptionExtra(slot.opId)), 'plain') };
     }
     if (slot.familyId == null || typeof slot.value !== 'number' || !Number.isFinite(slot.value)) return null;
     const info = resolveOpDisplayInfo(slot.familyId, slot.value);
@@ -7215,7 +7217,7 @@ function buildItemDetailHtml(inv, rec, character) {
     if (calc && (calc.layer === 'lvLinked' || calc.layer === 'consumableLvMax')) {
       args = [calc.displayValue || 0, ...(Array.isArray(args) ? args.slice(1) : [])];
     }
-    const opHtml = formatOpText(tpl, args, [0,0,0,0]);
+    const opHtml = formatOpText(tpl, args, nativeOptionExtra(slot.opId));
     html += `<span class="idp-op is-base">- ${opHtml}</span>`;
   }
 
@@ -8254,7 +8256,8 @@ async function recalcAllNow() {
   
   setDetailPercent('dt-phys-strong',           f.equipped.physStrongRate || 0);   
   setDetailPercent('dt-phys-crit-resist-down', f.equipped.enemyPhysCritResistReduce || 0);
-  setDetailPercent('dt-phys-strong-damage',    f.equipped.physStrongDamage || 0); 
+  setDetailPercent('dt-phys-strong-damage',    f.equipped.physStrongDamage || 0);
+  setDetailPercent('dt-phys-strong-cap-amplify', f.equipped.physStrongCapAmplify || 0); 
   setDetailPercent('dt-double-crit-damage',    f.equipped.doubleCritDamage || 0); 
   setDetailPercent('dt-magic-damage',          f.equipped.attrMagic || 0);        
   setDetailPercent('dt-magic-crit',            f.equipped.magicCritRate || 0);    
@@ -9256,7 +9259,8 @@ async function buildBonusReportRows(character) {
       const effect = stoneGetSkillEffect(cat.key, index, lv);
       return effect ? `${effect.name}: Lv${lv} / +${effect.value}${effect.unit || ''}` : null;
     }).filter(Boolean).join('\n');
-    pushReportRow(rows, 'フェーズストーン', categoryName, categoryName, `段階 ${state.stage}`, detail);
+    const status = stoneIsUnlocked(stoneState, cat) ? '' : ' / 前提未達のため無効（設定保持）';
+    pushReportRow(rows, 'フェーズストーン', categoryName, categoryName, `段階 ${state.stage}${status}`, detail);
   }
 
   if (creatureState.slots.some((slot) => slot && slot.id) && !creatureDb) {
@@ -14329,6 +14333,13 @@ function renderStoneCards() {
       `<span>段階 ${state.stage}</span>`;
     body.appendChild(pts);
 
+    if (!isOpen) {
+      const notice = document.createElement('div');
+      notice.className = 'stone-points';
+      notice.textContent = '前提未達のため効果は無効です。設定値は保持しています。';
+      body.appendChild(notice);
+    }
+
     
     const effList = document.createElement('div');
     effList.className = 'stone-effect-list';
@@ -16308,6 +16319,7 @@ const Costume = (() => {
 
   
   const MANUAL_STAT_MAP = {
+    74: { id: 'atkspd' },
     188: { id: 'attrFireWeaken' },
     189: { id: 'attrWaterWeaken' },
     190: { id: 'attrWindWeaken' },
@@ -16559,6 +16571,7 @@ const Costume = (() => {
       let optsHtml = '<option value="">(空)</option>';
       if (crestList) {
         const filtered = crestList.filter(c => {
+          if (c.id === id) return true;
           if (tierFilter !== 'all' && c.tier !== tierFilter) return false;
           return true;
         });
@@ -16570,7 +16583,8 @@ const Costume = (() => {
           optsHtml += `<optgroup label="${COLOR_LABEL[c]}クレスト (${groups[c].length})">`;
           for (const item of groups[c]) {
             const sel = (item.id === id) ? 'selected' : '';
-            optsHtml += `<option value="${item.id}" ${sel}>${esc(item.name)}</option>`;
+            const equippedLabel = item.id === id && tierFilter !== 'all' && item.tier !== tierFilter ? '（装着中）' : '';
+            optsHtml += `<option value="${item.id}" ${sel}>${esc(item.name)}${equippedLabel}</option>`;
           }
           optsHtml += '</optgroup>';
         }
@@ -19727,10 +19741,12 @@ const DamageCalc = (() => {
       return;
     }
 
-    const attackCount = readSkillAttackCount(lvRow.attackCount);
+    const attackCount = effectiveSkillAttackCount(skill, lvRow, Number($('dmg-in-attackSpd')?.value));
+    if (attackCount != null) renderSkillInfo(skill, { ...lvRow, attackCount });
 
     if (mode === 'phys') {
       const inputs = readPhysInputs();
+      if (lastEquipped?.disablePhysCrit && $('damage-auto-sync')?.checked) inputs.critRate = 0;
       const skillPct = Number(lvRow.physDmgPct) || 0;
       const dN = physDamageFor('normal', inputs, skillPct, attackCount);
       const dC = physDamageFor('crit',   inputs, skillPct, attackCount);
@@ -19839,6 +19855,10 @@ const DamageCalc = (() => {
 
     const warns = [];
     const selectedSkill = getSelectedSkill();
+    if (selectedSkill?.damageScopeNote) warns.push(selectedSkill.damageScopeNote);
+    if (selectedSkill?.attackCountBySpeed) warns.push('攻撃回数は追加攻撃速度75%ごとに1回増加、最大12回です。');
+    if (lastEquipped?.physStrongCapAmplify && r.mode === 'phys') warns.push('物理強打時の限界ダメージ増幅は、この結果に含まれていません。');
+    if (lastEquipped?.disablePhysCrit && r.mode === 'phys' && $('damage-auto-sync')?.checked) warns.push('装備効果により物理クリティカルは発動しません。');
     const unresolved = (selectedSkill?.damageRows || []).filter((row) => row.kind === 'attack' && ['table', 'partial'].includes(row.status));
     if (unresolved.length) warns.push('表の整合確認が必要なダメージ項目があります。確定した軸には数式を使い、残りは表の補間・外挿を使っています。');
     if (selectedSkill?.hasPhysDmgPct && selectedSkill?.hasMagicDmgRange) warns.push('現在の結果は物理成分です。魔法成分は合算していません。各成分の式は「スキル表の数式」で確認できます。');
@@ -19947,9 +19967,11 @@ const DamageCalc = (() => {
       
       setIfAuto('dmg-in-weaponMin', abilities.atkMin || 0);
       setIfAuto('dmg-in-weaponMax', abilities.atkMax || 0);
+    setIfAuto('dmg-in-attackSpd', 20 + (Number(eq.atkspd) || 0));
       setIfAuto('dmg-in-str',       Number(eq.str) || Number(ch?.stats?.base?.str) || 0);
       setIfAuto('dmg-in-physDmgPct', Number(eq.physDamagePercent) || 0);
-      setIfAuto('dmg-in-critRate',   Number(eq.physCritRate) || 0);
+      setIfAuto('dmg-in-critRate',   eq.disablePhysCrit ? 0 : (Number(eq.physCritRate) || 0));
+      setIfAuto('dmg-in-finalAtkPct', Number(eq.finalAttackPercent) || 0);
       setIfAuto('dmg-in-strongRate', Number(eq.physStrongRate) || 0);
       setIfAuto('dmg-in-strongDmg',  Number(eq.physStrongDamage) || 0);
       setIfAuto('dmg-in-doubleCritDmg', Number(eq.doubleCritDamage) || 0);

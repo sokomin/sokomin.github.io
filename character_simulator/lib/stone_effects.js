@@ -184,7 +184,9 @@ export function skillPointUsed(stones, catKey) {
 
 export function isUnlocked(stones, cat) {
   if (!cat.unlockBy) return true;
-  return (stones[cat.unlockBy]?.stage || 0) >= 10;
+  const prerequisite = CATEGORIES.find((entry) => entry.key === cat.unlockBy);
+  return !!prerequisite && (stones[cat.unlockBy]?.stage || 0) >= 10
+    && isUnlocked(stones, prerequisite);
 }
 
 export function getSkillEffect(catKey, idx, lv) {

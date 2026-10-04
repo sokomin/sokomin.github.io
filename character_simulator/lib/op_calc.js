@@ -2,6 +2,7 @@
 
 
 import { Op, OpPrefix, iterateAllOps, getLoader } from './item_api.js';
+import { NATIVE_BASE_STATS, NATIVE_OPTION_STATS, NATIVE_STAT_DEPENDENT } from './native_option_defs.js';
 
 
 
@@ -31,6 +32,33 @@ export function getLayerAggregation(layer, statId) {
 
 
 export function calcOpValue(opOrSlot, inv, source, LvTemp, character) {
+  
+  if ((source === 'item.option' || source === 'item.nxoption') && opOrSlot.familyId == null) {
+    const id = Number(opOrSlot.opId);
+    const vals = opOrSlot.vals || [];
+    const result = (stat, value, layer = 'sum') => ({ value, constant: 0, statId: stat.id || null,
+      stats: stat.stats, layer: stat.stats ? 'sumAll' : layer, multiplier: 1,
+      isDisplayOnly: false, source, displayValue: value });
+    
+    if ([342, 922, 703, 704, 705, 706, 983, 1045, 1060, 1061].includes(id)) {
+      return { value: 0, constant: 0, statId: null, layer: 'displayOnly', multiplier: 1, isDisplayOnly: true, source };
+    }
+    if (id === 942) {
+      const attr = Number(vals[0]);
+      if (attr === 0 || attr === 1) return result({ id: attr === 0 ? 'disablePhysCrit' : 'disableMagicCrit' }, 1);
+    }
+    const stat = NATIVE_OPTION_STATS[id] || OpPrefix.getFamily(id)?.stat;
+    if (stat && (stat.id || stat.stats?.length)) {
+      if (stat.layer === 'lvLinked') {
+        const divisor = Number(vals[0]);
+        const add = numOrZero(vals[1]);
+        return result(stat, divisor > 0 ? Math.floor((LvTemp || 0) / divisor) * add : 0, 'lvLinked');
+      }
+      return result(stat, numOrZero(vals[0]) * (stat.mul ?? 1), stat.layer || 'sum');
+    }
+    
+    return { value: 0, constant: 0, statId: null, layer: 'displayOnly', multiplier: 1, isDisplayOnly: true, source };
+  }
 
   if (Array.isArray(opOrSlot.stats) && opOrSlot.stats.length && opOrSlot.familyId == null && opOrSlot.opId == null) {
     if (opOrSlot.isDisplayOnly) {
@@ -130,7 +158,11 @@ export function calcOpValue(opOrSlot, inv, source, LvTemp, character) {
     
   }
 
-  const base = Op.resolveBase(opOrSlot.opId);
+  const rawBase = source === 'item.base' ? Op.get(opOrSlot.opId) : Op.resolveBase(opOrSlot.opId);
+  const base = rawBase && source === 'item.base' ? { ...rawBase,
+    baseStat: rawBase.baseStat || NATIVE_BASE_STATS[opOrSlot.opId],
+    statDependent: rawBase.statDependent || NATIVE_STAT_DEPENDENT[opOrSlot.opId],
+  } : rawBase;
   if (!base) {
     return { value: 0, constant: 0, statId: null, layer: 'displayOnly',
              multiplier: 1, isDisplayOnly: true, source };

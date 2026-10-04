@@ -30,6 +30,15 @@ export function readSkillAttackCount(value) {
   return typeof value === 'number' && Number.isFinite(value) && value > 0 ? value : null;
 }
 
+export function effectiveSkillAttackCount(skill, row, attackSpeedPercent) {
+  const speed = skill.attackCountBySpeed;
+  if (speed) {
+    const bonus = Math.max(0, Number(attackSpeedPercent) || 0);
+    return Math.min(speed.max, speed.base + Math.floor(bonus / speed.stepPercent));
+  }
+  return skill.calculationHitCount || readSkillAttackCount(row?.attackCount);
+}
+
 
 export function serialTaskQueue(task) {
   let tail = Promise.resolve();

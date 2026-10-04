@@ -376,8 +376,13 @@ export function uploadJsonFile(callback) {
   const input = document.createElement('input');
   input.type = 'file';
   input.accept = '.json,application/json';
+  input.hidden = true;
+  document.body.appendChild(input);
+  const cleanup = () => input.remove();
+  input.addEventListener('cancel', cleanup, { once: true });
   input.addEventListener('change', (e) => {
     const f = e.target.files && e.target.files[0];
+    cleanup();
     if (!f) return;
     if (f.size > SESSION_UPLOAD_MAX_BYTES) {
       alert(`ファイルが大きすぎます。上限は ${SESSION_UPLOAD_MAX_BYTES / MIB} MiB です。`);
@@ -398,6 +403,5 @@ export function uploadJsonFile(callback) {
     reader.onerror = () => alert('セッションファイルを読み込めませんでした。');
     reader.readAsText(f);
   });
-  
-  input.click();
+  try { input.click(); } catch (error) { cleanup(); throw error; }
 }
