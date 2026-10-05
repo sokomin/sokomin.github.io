@@ -3,6 +3,34 @@
 
   const MANIFEST_FILE = "market_public_manifest.js";
 
+  function decodeMarketColumns(value) {
+    if (Array.isArray(value)) return value;
+    if (!value || value.encoding !== "columns_v1" || !Number.isInteger(value.count) || value.count < 0) throw new Error("invalid columns");
+    const rows = Array.from({ length: value.count }, () => ({}));
+    const names = new Set();
+    for (const column of value.columns) {
+      if (names.has(column.name)) throw new Error("duplicate column");
+      names.add(column.name);
+      const indexes = column.indexes;
+      if ((indexes && indexes.length !== rows.length) || (!indexes && column.values.length !== rows.length)) throw new Error("column count mismatch");
+      const missing = new Set(column.missing || []);
+      for (let i = 0; i < rows.length; i++) {
+        if (missing.has(i)) continue;
+        const index = indexes ? indexes[i] : i;
+        if (!Number.isInteger(index) || index < 0 || index >= column.values.length) throw new Error("invalid dictionary index");
+        rows[i][column.name] = column.values[index];
+      }
+    }
+    return rows;
+  }
+
+  function decodeDataset(data) {
+    for (const key of Object.keys(data)) {
+      if (data[key] && data[key].encoding === "columns_v1") data[key] = decodeMarketColumns(data[key]);
+    }
+    return data;
+  }
+
   function now() {
     return root.performance && typeof root.performance.now === "function"
       ? root.performance.now()
@@ -18,13 +46,18 @@
     return `${url}${url.includes("?") ? "&" : "?"}reload=${stamp}`;
   }
 
+  function versionUrl(url, revision) {
+    if (!revision || (root.location && root.location.protocol === "file:")) return url;
+    return `${url}${url.includes("?") ? "&" : "?"}v=${encodeURIComponent(revision)}`;
+  }
+
   class ProgressiveMarketDataStore {
     constructor(options = {}) {
       this.baseUrl = options.baseUrl || "public";
       this.document = options.document || root.document;
       this.fetchFn = options.fetchFn || (typeof root.fetch === "function" ? root.fetch.bind(root) : null);
       this.stampFn = options.stampFn || Date.now;
-      this.scriptLoader = options.scriptLoader || ((fileName, force) => this.loadScript(fileName, force));
+      this.scriptLoader = options.scriptLoader || ((fileName, force, revision) => this.loadScript(fileName, force, revision));
       this.manifest = null;
       this.bootstrap = null;
       this.serverData = new Map();
@@ -32,9 +65,9 @@
       this.metrics = {};
     }
 
-    loadScript(fileName, force) {
+    loadScript(fileName, force, revision) {
       if (!this.document) throw new Error("document is required to load market data scripts");
-      const source = cacheUrl(joinUrl(this.baseUrl, fileName), force, this.stampFn());
+      const source = cacheUrl(versionUrl(joinUrl(this.baseUrl, fileName), revision), force, this.stampFn());
       return new Promise((resolve, reject) => {
         const script = this.document.createElement("script");
         script.async = true;
@@ -63,8 +96,8 @@
       if (!manifest || !manifest.bootstrap || !manifest.servers) {
         throw new Error("market data manifest is invalid");
       }
-      await this.scriptLoader(manifest.bootstrap.file, force);
-      const bootstrap = root.MARKET_PUBLIC_BOOTSTRAP;
+      await this.scriptLoader(manifest.bootstrap.file, force, manifest.bootstrap.sha256 || manifest.version);
+      const bootstrap = decodeDataset(root.MARKET_PUBLIC_BOOTSTRAP || {});
       if (!bootstrap || !bootstrap.meta || bootstrap.meta.progressive_version !== manifest.version) {
         if (!force) return this.initialize({ force: true });
         throw new Error("bootstrap version does not match manifest");
@@ -105,9 +138,10 @@
         if (options.force && root.MARKET_PUBLIC_SERVER_DATA) {
           delete root.MARKET_PUBLIC_SERVER_DATA[server];
         }
-        await this.scriptLoader(record.file, Boolean(options.force));
-        const value = root.MARKET_PUBLIC_SERVER_DATA && root.MARKET_PUBLIC_SERVER_DATA[server];
-        if (!value || !value.meta || value.meta.progressive_version !== this.manifest.version) {
+        await this.scriptLoader(record.file, Boolean(options.force), record.sha256 || record.version || this.manifest.version);
+        const encoded = root.MARKET_PUBLIC_SERVER_DATA && root.MARKET_PUBLIC_SERVER_DATA[server];
+        const value = encoded && decodeDataset(encoded);
+        if (!value || !value.meta || value.meta.progressive_version !== (record.version || this.manifest.version)) {
           throw new Error(`server data version does not match manifest: ${server}`);
         }
         if (value.servers.length !== 1 || value.servers[0] !== server) {
@@ -128,7 +162,7 @@
     async prefetchServer(server) {
       if (!this.manifest || !this.manifest.servers[server] || this.serverData.has(server)) return;
       const record = this.manifest.servers[server];
-      const url = joinUrl(this.baseUrl, record.file);
+      const url = versionUrl(joinUrl(this.baseUrl, record.file), record.sha256 || record.version || this.manifest.version);
       const started = now();
       if (this.fetchFn && (!root.location || root.location.protocol !== "file:")) {
         const response = await this.fetchFn(url, { cache: "force-cache" });
@@ -160,7 +194,9 @@
   }
 
   root.ProgressiveMarketDataStore = ProgressiveMarketDataStore;
+  root.decodeMarketColumns = decodeMarketColumns;
+  root.decodeMarketDataset = decodeDataset;
   if (typeof module !== "undefined" && module.exports) {
-    module.exports = { ProgressiveMarketDataStore, joinUrl, cacheUrl };
+    module.exports = { ProgressiveMarketDataStore, joinUrl, cacheUrl, versionUrl, decodeMarketColumns, decodeDataset };
   }
 })(typeof globalThis !== "undefined" ? globalThis : this);

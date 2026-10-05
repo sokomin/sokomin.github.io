@@ -162,9 +162,28 @@
             </div>
             <div class="android-large-table mdl-layout__content">
                 <!--main-->
-                <div class="main-background mdl-typography--text-center korea-content">
+                <div class="main-background mdl-typography--text-center korea-content" data-first-view>
                     <br>
                     <h1>テンプレート2021.7</h1>
+                    <form id="template-calculator" novalidate style="max-width:640px;margin:20px auto">
+                        <fieldset>
+                            <legend>計算機</legend>
+                            <label for="calc-left">数値1</label>
+                            <input id="calc-left" type="number" step="any" value="150" style="width:110px">
+                            <label for="calc-operation">演算</label>
+                            <select id="calc-operation">
+                                <option value="add">＋</option>
+                                <option value="subtract">−</option>
+                                <option value="multiply">×</option>
+                                <option value="divide">÷</option>
+                            </select>
+                            <label for="calc-right">数値2</label>
+                            <input id="calc-right" type="number" step="any" value="50" style="width:110px">
+                            <button type="submit">計算</button>
+                            <button type="reset">リセット</button>
+                            <p>結果：<output id="calc-result" aria-live="polite">—</output></p>
+                        </fieldset>
+                    </form>
                     <br>
                     <br>
                     <span class="color-image1">１</span><br>
@@ -755,6 +774,38 @@
               Copyright (c) This site is created by Sokomin. All Rights Reserved.
          -->
                 </div>
+                <script>
+                $(function () {
+                    $('#template-calculator').on('submit', function (event) {
+                        event.preventDefault();
+                        var leftText = $('#calc-left').val();
+                        var rightText = $('#calc-right').val();
+                        var left = Number(leftText);
+                        var right = Number(rightText);
+                        var operation = $('#calc-operation').val();
+                        if (leftText === '' || rightText === '' || !Number.isFinite(left) || !Number.isFinite(right)) {
+                            $('#calc-result').text('数値を入力してください');
+                            return;
+                        }
+                        if (operation === 'divide' && right === 0) {
+                            $('#calc-result').text('0では割れません');
+                            return;
+                        }
+                        var result;
+                        if (operation === 'add') result = left + right;
+                        else if (operation === 'subtract') result = left - right;
+                        else if (operation === 'multiply') result = left * right;
+                        else if (operation === 'divide') result = left / right;
+                        else {
+                            $('#calc-result').text('演算を選択してください');
+                            return;
+                        }
+                        $('#calc-result').text(Number.isFinite(result) ? String(Number(result.toPrecision(12))) : '計算できる範囲を超えています');
+                    }).on('reset', function () {
+                        $('#calc-result').text('—');
+                    });
+                });
+                </script>
                 <script src="https://sokomin.github.io/material.min.js"></script>
             </div>
         </body>

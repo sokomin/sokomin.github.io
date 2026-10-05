@@ -237,6 +237,11 @@
     }
 
     function renderDetail(row) {
+      if (row && !store.loadedFor(state.server)) {
+        byId("detailTitle").textContent = row.display_name || row.item_name;
+        byId("detailBody").textContent = "一覧を選択すると価格推移を表示します。";
+        return;
+      }
       if (!row) {
         byId("detailTitle").textContent = "価格推移";
         byId("detailBody").innerHTML = `<div class="market-empty">一覧からアイテムを選択してください。</div>`;
@@ -346,7 +351,6 @@
       try {
         await ensureFullData("検索データを裏で準備中", server);
         if (server === state.server) renderTable();
-        idle(() => store.prefetchRemaining(server).catch(showError));
       } catch (error) {
         showError(error);
       }
@@ -359,7 +363,6 @@
       renderGoldSeasonOptions();
       byId("marketLoadStatus").textContent = `各サーバ上位${store.bootstrap.top_limit}件を表示`;
       renderTable();
-      idle(() => warmServer(state.server));
     }
 
     byId("marketRows").addEventListener("click", (event) => {
@@ -418,7 +421,6 @@
         renderGoldSeasonOptions();
         byId("marketLoadStatus").textContent = "キャッシュ強制更新完了";
         renderTable();
-        idle(() => store.prefetchRemaining(state.server).catch(showError));
       } catch (error) {
         showError(error);
       } finally {
