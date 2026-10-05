@@ -3401,24 +3401,25 @@
                 <div class="light-panel">
                   <h4>プリセット (装備セット)</h4>
                   <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
-                    <select id="preset-select" style="font-size:11px;">
+                    <select id="preset-select" aria-label="装備プリセット" style="font-size:11px; max-width:100%;">
                       <option value="sho_phys">松・物理 (1250UMU+1個制限指)</option>
-                      <option value="bai_phys">梅・物理 (1000UMU+T力ウロボロス)</option>
+                      <option value="bai_phys">旧梅・物理 (1000UMU+T力ウロボロス)</option>
                       <option value="chiku_phys">竹・物理 (775UMU+T知識太極)</option>
                       <option value="sho_mag">松・魔法 (1250UMU+1個制限指)</option>
-                      <option value="bai_mag">梅・魔法 (1000UMU+T力ウロボロス)</option>
+                      <option value="bai_mag">旧梅・魔法 (保存枠)</option>
                       <option value="chiku_mag">竹・魔法 (775UMU+T知識太極)</option>
                       <option value="sho_pet">松・ペット (1250UMU+1個制限指)</option>
-                      <option value="bai_pet">梅・ペット (1000UMU+T力ウロボロス)</option>
+                      <option value="bai_pet">旧梅・ペット (保存枠)</option>
                       <option value="chiku_pet">竹・ペット (775UMU+T知識太極)</option>
                       <option value="kago_a_2147">775ULT防具セット</option>
                     </select>
-                    <button id="btn-preset-load" title="選択プリセットの装備一式をインベントリに展開 (装着はしない)">📤 読込</button>
+                    <button id="btn-preset-load" title="装備一式をインベントリへ配布。同じ装備は既存の個体を利用します">📤 装備を配布</button>
+                    <button id="btn-preset-equip" title="梅セットを配布し、現在の装備を外して要求を満たす装備を装着。元の装備はインベントリに残ります">⚔ 配布＋装着</button>
                     <button id="btn-preset-save" title="現在のインベントリ全件を選択プリセットに上書き保存">💾 上書き保存</button>
                     <button id="btn-preset-delete" style="background:linear-gradient(#a02020,#5e0808)" title="選択プリセットを削除">🗑</button>
-                    <span id="preset-status" style="margin-left:auto; font-size:11px; color:#a08858"></span>
+                    <span id="preset-status" role="status" aria-live="polite" style="margin-left:auto; font-size:11px; color:#a08858"></span>
                   </div>
-                  
+                  <div id="preset-description" style="font-size:11px; margin-top:6px; color:#a08858;"></div>
                 </div>
                 <div class="light-panel">
                   <h4>セッション (保存/読込)</h4>
@@ -4836,6 +4837,7 @@ const __SK_BUILD = "sokomin/character_simulator@2026-05-25​‌‌‌​​‌�
 import { DataLoader } from './lib/data_loader.js';
 import { setLoader, Item, Op, OpPrefix, iterateAllOps } from './lib/item_api.js';
 import { Inventory, newInventoryItem } from './lib/inventory.js';
+import { presetsForJob, defaultPresetForJob, validateEquipmentPresets, distributeEquipmentPreset, equipEquipmentPreset } from './lib/equipment_presets.js';
 import { resolveEquipSlot, resolveItemPart } from './lib/slot_resolver.js';
 import { makeItem, seirenUnlockedCount } from './lib/make_item.js';
 import { newCharacter } from './lib/character.js';
@@ -8976,7 +8978,10 @@ function bindEvents() {
 
       if (id === 'ch-job' && isSkillTabActive()) refreshSkillFrame();
 
-      if (id === 'ch-job') TransSkill.rerender();
+      if (id === 'ch-job') {
+        TransSkill.rerender();
+        refreshJobPresets({ selectDefault: true });
+      }
       clearTimeout(recalcDebounce);
       recalcDebounce = setTimeout(async () => {
         await recalcAll();
@@ -9781,7 +9786,10 @@ async function loadSnapshot(data, sourceLabel) {
   
   const c = parsed.character || {};
   if (c.realLv != null) $('ch-lv').value = Math.min(MAX_INTERNAL_LV, Math.max(1, Number(c.realLv) || 1));
-  if (c.job != null)    $('ch-job').value = c.job;
+  if (c.job != null) {
+    $('ch-job').value = c.job;
+    refreshJobPresets({ selectDefault: true });
+  }
   if (c.rebirth != null && $('ch-rebirth')) $('ch-rebirth').value = c.rebirth;
   if (c.grace != null && $('ch-grace'))     $('ch-grace').value = c.grace;
   if (c.base) {
@@ -14605,12 +14613,31 @@ const BUILTIN_PRESETS = {
   },
 };
 
+let jobPresetData = null;
+let jobPresetLoad = null;
+let presetBusy = false;
+
+async function ensureJobPresetData() {
+  if (jobPresetData) return jobPresetData;
+  if (!jobPresetLoad) {
+    jobPresetLoad = (async () => {
+      const response = await fetch('./lib/data/equipment_presets.json');
+      if (!response.ok) throw Error('職業別の梅セットを取得できません');
+      jobPresetData = validateEquipmentPresets(await response.json());
+      return jobPresetData;
+    })().finally(() => { jobPresetLoad = null; });
+  }
+  return jobPresetLoad;
+}
+
 function loadPresetData(id) {
-  return BUILTIN_PRESETS[id] || loadFromLocalStorage(PRESET_KEY_PREFIX + id) || null;
+  return jobPresetData?.presets.find((preset) => preset.id === id)
+    || BUILTIN_PRESETS[id] || loadFromLocalStorage(PRESET_KEY_PREFIX + id) || null;
 }
 
 function isBuiltinPreset(id) {
-  return Object.prototype.hasOwnProperty.call(BUILTIN_PRESETS, id);
+  return !!jobPresetData?.presets.some((preset) => preset.id === id)
+    || Object.prototype.hasOwnProperty.call(BUILTIN_PRESETS, id);
 }
 
 function setPresetStatus(msg) {
@@ -14618,9 +14645,30 @@ function setPresetStatus(msg) {
   if (!el) return;
   el.textContent = msg;
   clearTimeout(setPresetStatus._t);
-  setPresetStatus._t = setTimeout(() => { el.textContent = ''; }, 4000);
+  setPresetStatus._t = setTimeout(() => { el.textContent = ''; }, 8000);
 }
 
+function refreshJobPresets({ selectDefault = false } = {}) {
+  const sel = $('preset-select');
+  if (!sel || !jobPresetData) return;
+  const previous = sel.value;
+  sel.querySelector('[data-job-presets]')?.remove();
+  const group = document.createElement('optgroup');
+  group.dataset.jobPresets = 'true';
+  group.label = jobNameById(readSelectedJobId()) + 'の梅セット';
+  for (const preset of presetsForJob(jobPresetData, readSelectedJobId())) {
+    const option = document.createElement('option');
+    option.value = preset.id;
+    option.textContent = '梅・' + preset.label;
+    group.appendChild(option);
+  }
+  sel.prepend(group);
+  const choices = [...sel.options];
+  const hadJobPreset = previous.startsWith('bai_job');
+  sel.value = (selectDefault || hadJobPreset && !choices.some((option) => option.value === previous))
+    ? defaultPresetForJob(jobPresetData, readSelectedJobId())?.id || previous : previous;
+  refreshPresetLabels();
+}
 
 function refreshPresetLabels() {
   const sel = $('preset-select');
@@ -14640,75 +14688,88 @@ function refreshPresetControls() {
   const del = $('btn-preset-delete');
   if (!sel || !save || !del) return;
   const locked = isBuiltinPreset(sel.value);
-  save.disabled = locked;
-  del.disabled = locked;
-  save.title = locked
-    ? '固定プリセットは上書きできません'
-    : '現在のインベントリ全件を選択プリセットに上書き保存';
-  del.title = locked
-    ? '固定プリセットは削除できません'
-    : '選択プリセットを削除';
+  const data = loadPresetData(sel.value);
+  const jobSet = data?.rank === 'bai' && data?.job != null;
+  save.disabled = presetBusy || locked;
+  del.disabled = presetBusy || locked;
+  sel.disabled = presetBusy;
+  $('btn-preset-load').disabled = presetBusy;
+  $('btn-preset-equip').disabled = presetBusy || !jobSet;
+  save.title = locked ? '固定プリセットは上書きできません' : '現在のインベントリ全件を選択プリセットに上書き保存';
+  del.title = locked ? '固定プリセットは削除できません' : '選択プリセットを削除';
+  $('preset-description').textContent = jobSet
+    ? data.jobName + '：' + data.label + '。19枠の比較用装備。追加OP・Nx化・解放・製錬なし。Lv・素ステータス・スキルは変更しません。'
+    : '松・竹と旧梅の保存済みセットも利用できます。';
 }
 
-async function loadInventoryPreset(entries) {
-  let added = 0, skipped = 0;
-  for (const entry of (entries || [])) {
-    const inv = await restoreInventoryEntry(entry);
-    if (!inv) { skipped++; continue; }
-    const result = inventory.add(inv);
-    if (!result) {
-      setPresetStatus(`インベントリ満杯 (+${added}件で打ち切り)`);
-      break;
-    }
-    added++;
+async function loadInventoryPreset(entries, { equip = false } = {}) {
+  const result = await distributeEquipmentPreset({
+    entries, inventory, restore: restoreInventoryEntry, maxSlots: INVENTORY_MAX,
+    serialize: (inv) => serializeSession({}, { items: () => [inv] }).inventory[0],
+  });
+  let equipped = null;
+  if (equip) {
+    equipped = await equipEquipmentPreset({
+      prepared: result.prepared, inventory, recalculate: recalcAll,
+      canEquip: async (inv, slot) => {
+        const rec = await Item.get(inv.itemId);
+        const character = readCharacterForRequirementChecks();
+        updateEquipmentMetadata(inv, rec, character);
+        const matchingSlot = slot.startsWith('ring_') ? resolveItemPart(rec) === 9 : resolveEquipSlot(rec, character) === slot;
+        return inv.canEquip && matchingSlot;
+      },
+    });
   }
   invalidateFeasibleCache();
   await recalcAll();
   await refreshItemList();
-  const msg = skipped > 0
-    ? `読込完了: +${added}件 (スキップ ${skipped})`
-    : `読込完了: +${added}件`;
-  setPresetStatus(msg);
+  const suffix = equip ? ` / 装着${equipped}/${result.prepared.length}件${equipped < result.prepared.length ? '（要求不足の装備はインベントリ内）' : ''}` : '';
+  setPresetStatus(`配布完了: +${result.added}件 / 既存${result.reused}件を利用${suffix}`);
   scheduleAutosave();
 }
 
-function bindPresetEvents() {
-  $('preset-select').addEventListener('change', refreshPresetControls);
-  $('btn-preset-load').addEventListener('click', async () => {
+async function runSelectedPreset(equip = false) {
+  if (presetBusy) return;
+  presetBusy = true;
+  const jobSelect = $('ch-job');
+  const jobDisabled = jobSelect.disabled;
+  jobSelect.disabled = true;
+  refreshPresetControls();
+  try {
     const id = $('preset-select').value;
     const data = loadPresetData(id);
-    if (!data || !Array.isArray(data.inventory) || data.inventory.length === 0) {
-      setPresetStatus('プリセット未保存');
-      return;
-    }
-    await loadInventoryPreset(data.inventory);
-  });
+    if (!data?.inventory?.length) { setPresetStatus('プリセット未保存'); return; }
+    if (data.job != null && data.job !== readSelectedJobId()) throw Error('現在の職業に合うセットを選択してください');
+    await loadInventoryPreset(data.inventory, { equip });
+  } catch (error) {
+    setPresetStatus('配布失敗: ' + error.message);
+    console.error('[Preset]', error);
+  } finally {
+    presetBusy = false;
+    jobSelect.disabled = jobDisabled;
+    refreshPresetControls();
+  }
+}
+
+async function bindPresetEvents() {
+  $('preset-select').addEventListener('change', refreshPresetControls);
+  $('btn-preset-load').addEventListener('click', () => runSelectedPreset());
+  $('btn-preset-equip').addEventListener('click', () => runSelectedPreset(true));
   $('btn-preset-save').addEventListener('click', () => {
     const id = $('preset-select').value;
-    if (isBuiltinPreset(id)) {
-      setPresetStatus('固定プリセットは上書き不可');
-      return;
-    }
+    if (isBuiltinPreset(id)) { setPresetStatus('固定プリセットは上書き不可'); return; }
     const label = $('preset-select').selectedOptions[0]?.textContent || id;
-    
     const snap = serializeSession(readCharacter(), inventory, readGraceRebirth());
     const data = { saved: snap.saved, inventory: snap.inventory };
-    if (data.inventory.length === 0) {
-      if (!confirm('インベントリが空です。空のプリセットで上書きしますか?')) return;
-    }
+    if (data.inventory.length === 0 && !confirm('インベントリが空です。空のプリセットで上書きしますか?')) return;
     if (saveToLocalStorage(PRESET_KEY_PREFIX + id, data)) {
       setPresetStatus(`「${label.replace(/\s*\[.*$/, '')}」 保存 (${data.inventory.length}件)`);
       refreshPresetLabels();
-    } else {
-      setPresetStatus('保存失敗 (localStorage)');
-    }
+    } else setPresetStatus('保存失敗 (localStorage)');
   });
   $('btn-preset-delete').addEventListener('click', () => {
     const id = $('preset-select').value;
-    if (isBuiltinPreset(id)) {
-      setPresetStatus('固定プリセットは削除不可');
-      return;
-    }
+    if (isBuiltinPreset(id)) { setPresetStatus('固定プリセットは削除不可'); return; }
     const label = $('preset-select').selectedOptions[0]?.textContent || id;
     if (!confirm(`プリセット「${label}」を削除します。よろしいですか?`)) return;
     removeFromLocalStorage(PRESET_KEY_PREFIX + id);
@@ -14716,6 +14777,13 @@ function bindPresetEvents() {
     refreshPresetLabels();
   });
   refreshPresetLabels();
+  try {
+    await ensureJobPresetData();
+    refreshJobPresets({ selectDefault: true });
+  } catch (error) {
+    setPresetStatus('梅セットの読込失敗: ' + error.message);
+    console.error('[Preset]', error);
+  }
 }
 
 
@@ -20658,7 +20726,7 @@ async function main() {
   bindStatPopups();
   bindSessionEvents();
   bindSettingsEvents();
-  bindPresetEvents();
+  await bindPresetEvents();
   bindInventoryGridEvents();
   bindItemDetailHovers();
   bindTabBar();

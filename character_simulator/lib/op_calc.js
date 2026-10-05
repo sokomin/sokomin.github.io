@@ -77,8 +77,9 @@ export function calcOpValue(opOrSlot, inv, source, LvTemp, character) {
     };
   }
 
-  
 
+  
+  
   if (opOrSlot.statId && opOrSlot.familyId == null && opOrSlot.opId == null) {
     if (opOrSlot.isDisplayOnly) {
       return { value: 0, constant: 0, statId: opOrSlot.statId, layer: 'sum',

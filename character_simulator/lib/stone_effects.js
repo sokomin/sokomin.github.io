@@ -2,6 +2,7 @@
 
 import { getLayerAggregation } from './op_calc.js';
 
+
 export const CATEGORIES = [
   { key: 'neural', name: 'ニューラルストーン', unlockBy: null },
   { key: 'plane',  name: 'プレーンストーン',   unlockBy: 'neural' },
@@ -67,6 +68,8 @@ export const SKILL_EFFECTS = {
     { name: 'PVP状態時のダメージ増加+防御力%増加 (10%/Lv + 10%/Lv)',                 maxLv: 5, perLv:  10, unit: '%' },
   ],
 };
+
+
 
 export const STONE_OP_MAP = {
   neural: {
@@ -150,6 +153,8 @@ export const STONE_OP_MAP = {
   },
 };
 
+
+
 export function getSkillCount(catKey) {
   const list = SKILL_EFFECTS[catKey];
   return list ? list.length : 0;
@@ -195,6 +200,9 @@ export function getSkillEffect(catKey, idx, lv) {
   return { name: def.name, value: def.perLv * lv, unit: def.unit };
 }
 
+
+
+
 export function applyStonesToSTTemp(STTemp, stones) {
   if (!stones) return;
   if (!STTemp.sum) STTemp.sum = Object.create(null);
@@ -220,6 +228,7 @@ export function applyStonesToSTTemp(STTemp, stones) {
   }
 }
 
+
 function accumulateStone(STTemp, statId, v) {
   const agg = getLayerAggregation('sum', statId);
   if (agg === 'skip') return;
@@ -230,6 +239,9 @@ function accumulateStone(STTemp, statId, v) {
     STTemp.sum[statId] = (cur || 0) + v;
   }
 }
+
+
+
 
 export function normalizeStones(input) {
   const out = newStones();
