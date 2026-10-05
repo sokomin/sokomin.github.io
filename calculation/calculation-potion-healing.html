@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="base-uri 'self'; object-src 'none'">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=960">
+        <!-- Page styles -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://sokomin.github.io/material.indigo-pink.min.css" />
+        <link rel="stylesheet" href="../styles.css">
+        <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32">
+        <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192">
+        <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png">
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+        </script>
+        <script type="text/javascript" src="../design/jquery-3.7.1.min.js" integrity="sha256-eqaw4I9IoPldjffqieTL/h7z0ejA9zc/fyXt+05KMl4=" crossorigin="anonymous"></script>
+        <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + encodeURIComponent(last_keyword);
+            }
+        }
+        </script>
+<style>
+  .potion-wrap { max-width: 960px; padding: 0 0 40px; text-align: left; }
+  .potion-lead { line-height: 1.9; }
+  .icon-navigation { margin: 24px 0; }
+  .icon-navigation-table a { display: block; padding: 12px 6px; line-height: 1.6; }
+  .icon-navigation-table img { object-fit: contain; margin-bottom: 6px; }
+  .icon-navigation-table a:hover { background: #f3ecde; }
+  .icon-navigation-table a:focus-visible { outline: 2px solid #705f45; outline-offset: -2px; }
+  #potion-form, #skill-healing, #holy-level { scroll-margin-top: 80px; }
+  .potion-card { margin: 24px 20px; padding: 16px 0; }
+  .healing-input-group { min-width: 0; margin: 0; padding: 20px; border: 2px solid #9d896c; }
+  .healing-input-group legend { padding: 0 8px; font-weight: bold; }
+  .healing-input-hint { margin: 0 0 20px; }
+  .healing-input-end { margin: 20px 0 0; font-weight: bold; }
+  .potion-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 24px; }
+  .potion-field label { display: block; font-weight: bold; margin-bottom: 6px; }
+  .potion-field input, .potion-field select { box-sizing: border-box; width: 100%; min-height: 36px; padding: 6px 8px; border: 1px solid #555; background: white; font: inherit; color: #030303; }
+  .potion-field small { display: block; margin-top: 5px; line-height: 1.5; }
+  .potion-actions { display: flex; gap: 16px; margin-top: 24px; }
+  .potion-actions button { min-height: 36px; padding: 6px 20px; border: 1px solid #555; font: inherit; cursor: pointer; }
+  .potion-actions button[type=submit] { background: #9d896c; color: white; font-weight: bold; }
+  #potion-error, #skill-healing-error { color: #b00020; }
+  .potion-table { margin-top: 16px; margin-bottom: 16px; }
+  .potion-table td { font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+  .potion-key-result { font-weight: bold; }
+  .potion-formula { line-height: 1.9; overflow-wrap: anywhere; margin: 16px 20px; }
+  .potion-notes li { margin-bottom: 10px; line-height: 1.7; }
+  .potion-wrap p { line-height: 1.8; }
+  @media (max-width: 640px) { .potion-inputs { grid-template-columns: 1fr; } }
+</style>
+    <link rel="canonical" href="https://sokomin.github.io/calculation/calculation-potion-healing.html">
+</head>
+    <body>
+        <title>回復速度計算機（薬回復・フルヒ・スキル回復） 赤石の民衆</title>
+        <meta name="description" content="RED STONEの回復速度計算機。薬回復とリゼネレイション・ホーリークロスの秒間HP回復量、フルヒの持続時間、指定時間や30分回復を続けるための必要本数・200個セット数をまとめて計算できます。">
+        <meta http-equiv="Content-Style-Type" content="text/css">
+        <meta http-equiv="Content-Script-Type" content="text/javascript">
+        <meta name="keywords" content="RED STONE,レッドストーン,赤石の民衆,薬回復,秒間回復量,フルヒ必要量,Gv,薬師,生命の息吹">
+        
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <a name="container"></a>
+            <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+                <div class="mdl-layout__header-row">
+                    <span class="android-title mdl-layout-title">
+                        <a href="https://sokomin.github.io/index.html">
+                            <img class="android-logo-image" src="../design/logo3.png">
+                        </a>
+                    </span>
+                    <!-- Add spacer, to align navigation to the right in desktop -->
+                    <div class="android-header-spacer mdl-layout-spacer"></div>
+                    <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                        <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                            <i class="material-icons">search</i>
+                        </label>
+                        <div class="mdl-textfield__expandable-holder">
+                            <input
+                                placeholder="サイト内検索(Enterで実行)"
+                                class="mdl-textfield__input"
+                                type="text"
+                                onkeypress="enter();"
+                                id="search-field"
+                            >
+                        </div>
+                    </div>
+                    <!-- Navigation -->
+                    <div class="android-navigation-container">
+                        <nav class="android-navigation mdl-navigation">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/index.html">ホーム</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                        </nav>
+                    </div>
+                    <span class="android-mobile-title mdl-layout-title">
+                        <a href="https://sokomin.github.io/index.html">
+                            <img class="android-logo-image" src="../design/logo3.png">
+                        </a>
+                    </span>
+                    <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
+                        <i class="material-icons">more_vert</i>
+                    </button>
+                    <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                        <li class="mdl-menu__item">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+                        </li>
+                        <li class="mdl-menu__item">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+                        </li>
+                        <li disabled class="mdl-menu__item">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+                        </li>
+                        <li class="mdl-menu__item">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="android-drawer mdl-layout__drawer">
+                <span class="mdl-layout-title">
+                    <h2>メニュー</h2>
+                </span>
+                <nav class="mdl-navigation">
+                    <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html">
+                        <strong>アイテム</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html">
+                        <strong>スキル</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html">
+                        <strong>モンスター</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html">
+                        <strong>ダンジョン</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html">
+                        <strong>クエスト</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html">
+                        <strong>ギルド</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html">
+                        <strong>韓国情報</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html">
+                        <strong>雑学</strong>
+                    </a>
+                </nav>
+            </div>
+            <div class="android-large-table mdl-layout__content">
+                <!--main-->
+                <div class="main-background mdl-typography--text-center korea-content">
+                    
+<article class="potion-wrap" data-first-view>
+  <br>
+  <h1>回復速度計算機</h1>
+  <!-- <p class="potion-lead">RED STONEの<strong>薬回復とスキル回復をまとめて計算</strong>できます。<br> -->
+    <!-- 秒間HP回復量、指定時間分のフルヒ必要量、リゼネレイション・ホーリークロスの回復量に対応。<br>
+    各計算欄に数値を入力し、計算ボタンを押してください。 <a href="#formula">計算式と回復の仕組み</a></p> -->
+  <nav class="index_table icon-navigation" aria-label="ページ内目次">
+    <table id="table10" class="icon-navigation-table" style="max-width:640px">
+      <tbody>
+        <tr><th colspan="3">目次</th></tr>
+        <tr>
+          <td><a href="#potion-form"><img src="../item/design/image/item/iconItem_0003.png" width="45" height="45" alt=""><br><span>▼秒間薬回復計算機</span></a></td>
+          <td><a href="#skill-healing"><img src="../skill/design/image/skill/iconSkill_0118.png" width="45" height="45" alt=""><br><span>▼リゼネレイション</span></a></td>
+          <td><a href="#holy-level"><img src="../skill/design/image/skill/iconSkill_0144.png" width="45" height="45" alt=""><br><span>▼ホーリークロス</span></a></td>
+        </tr>
+      </tbody>
+    </table>
+  </nav>
+  <form id="potion-form" class="potion-card">
+    <fieldset class="healing-input-group" aria-describedby="potion-input-guide">
+      <legend>秒間薬回復計算機</legend>
+      <!-- <p id="potion-input-guide" class="healing-input-hint">枠内の6項目を入力してください。計算結果はこの枠の下に表示されます。</p> -->
+    <div class="potion-inputs">
+      <div class="potion-field">
+        <label for="potion-hp">最大HP</label>
+        <input id="potion-hp" name="maxHp" type="number" min="1" step="1" value="200000" required aria-describedby="potion-hp-help">
+        <small id="potion-hp-help">最大HPを入力</small>
+      </div>
+      <div class="potion-field">
+        <label for="potion-health">健康の数値</label>
+        <input id="potion-health" name="health" type="number" min="0" step="1" value="9950" required>
+        <small>支援や装備の補正を含めた健康値</small>
+      </div>
+      <div class="potion-field">
+        <label for="potion-speed">薬回復の合計（％）</label>
+        <input id="potion-speed" name="potionPercent" type="number" min="0" step="any" value="200" required>
+        <small>装備・ミッションブックなどの合計。255％を超えた分は計算に含めません。</small>
+      </div>
+      <div class="potion-field">
+        <label for="potion-pharmacist">薬師の称号Lv</label>
+        <select id="potion-pharmacist" name="pharmacistLevel">
+          <option value="0">未取得（100％）</option>
+          <option value="1">Lv1（110％）</option>
+          <option value="2">Lv2（120％）</option>
+          <option value="3">Lv3（130％）</option>
+          <option value="4">Lv4（140％）</option>
+          <option value="5">Lv5（150％）</option>
+          <option value="6">Lv6（160％）</option>
+          <option value="7">Lv7（170％）</option>
+          <option value="8">Lv8（180％）</option>
+          <option value="9">Lv9（190％）</option>
+          <option value="10" selected>Lv10（200％）</option>
+        </select>
+        <small>フルヒ1個の回復総量に適用</small>
+      </div>
+      <div class="potion-field">
+        <label for="potion-life">超越スキル「生命の息吹」補正（％）</label>
+        <input id="potion-life" name="lifePercent" type="number" min="0" step="any" value="100" required>
+        <small>超越「生命の息吹」の通常効果。未取得は0％、通常Lv10は100％。<br>
+              <!-- 特殊強化の数値は加えません。 -->
+            </small>
+      </div>
+      <div class="potion-field">
+        <label for="potion-seconds">回復を持続させたい時間（秒）</label>
+        <input id="potion-seconds" name="seconds" type="number" min="0" step="any" value="1800" required>
+        <small>例：60秒＝1分、1800秒＝30分。</small>
+      </div>
+    </div>
+    <div class="potion-actions">
+      <button type="submit">計算</button>
+    </div>
+    <p id="potion-error" role="alert" hidden></p>
+    </fieldset>
+  </form>
+  <section id="potion-results" aria-live="polite" aria-atomic="true" aria-labelledby="potion-result-heading">
+    <h2 id="potion-result-heading">計算結果</h2>
+    <table id="table10" class="potion-table">
+      <tbody>
+        <tr><th scope="row">1秒あたりのHP回復量</th><td><output id="potion-rate">—</output> HP/秒</td></tr>
+        <tr><th scope="row">1フレームあたりのHP回復量（1秒16フレーム）</th><td><output id="potion-frame">—</output></td></tr>
+        <tr><th scope="row">フルヒ1個の回復総量（薬師補正込み）</th><td><output id="potion-total">—</output></td></tr>
+        <tr><th scope="row">フルヒ1個の回復持続時間</th><td><output id="potion-single-seconds">—</output> 秒</td></tr>
+        <tr><th scope="row">改良フルヒ1セット（200個）の回復持続時間</th><td><output id="potion-set-minutes">—</output> 分</td></tr>
+        <tr class="potion-key-result"><th scope="row"><span id="potion-target-label">指定時間</span>に必要なフルヒ</th><td><output id="potion-bottles">—</output> 本</td></tr>
+        <tr class="potion-key-result"><th scope="row">指定時間分を用意するための200個セット数</th><td><output id="potion-sets">—</output> セット</td></tr>
+      </tbody>
+    </table>
+    <!-- <p>本数とセット数は不足しないよう<strong>切り上げ</strong>ます。セット数は用意する量です。回復予定量を確保するために飲む本数は「必要なフルヒ」の値を使ってください。</p> -->
+  </section>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <section id="formula">
+    <h2>計算式補足</h2>
+    <p>薬回復は、<strong>1秒に回復するHPの量</strong>と<strong>フルヒで蓄える回復総量</strong>を分けて計算します。</p>
+    <div class="potion-formula">
+      丸める前の秒間HP回復量 ＝（1 ＋ 生命の息吹補正％ ÷ 100）×（1 ＋ min(薬回復合計％, 255) ÷ 100）×（健康 ＋ 50）÷ 5<br>
+      1フレームのHP回復量 F ＝ 丸める前の秒間HP回復量 ÷ 16 の小数部分を切り捨て<br>
+      秒間HP回復量 R ＝ F × 16<br>
+      フルヒ1個の回復総量 Q ＝ 使用時の最大HP ×（1 ＋ 薬師Lv ÷ 10）<br>
+      フルヒ1個の持続時間 ＝ Q ÷ F を整数に切り捨て ÷ 16（秒）<br>
+      200個セットの持続時間 ＝ Q × 200 ÷ F を整数に切り捨て ÷ 16 ÷ 60（分）<br>
+      指定時間 T 秒に必要なフレーム数 ＝ T × 16 を整数に切り上げ<br>
+      指定時間に必要な本数 ＝ F × 必要フレーム数 ÷ Q を整数に切り上げ<br>
+      必要セット数 ＝ 必要本数 ÷ 200 を整数に切り上げ
+    </div>
+    <p>薬師の称号による回復総量の補正は、未取得で100％、Lv1で110％、Lv10で200％です。<br>
+      薬師Lvを上げると1個あたりの持続時間が延びます。秒間HP回復量は変わりません。</p>
+    <p class="potion-example-title"><strong>計算例：最大HP20万で30分続けたい場合</strong></p>
+    <p>健康9,950、薬回復200％、生命の息吹補正100％、薬師Lv10なら、秒間HP回復量は12,000 HP/秒です。<br>
+      1フレームの回復量は750 HP。フルヒ1個は400,000 HP分、持続時間は約33.31秒。200個で約111.11分です。<br>
+      30分（1,800秒）分は<strong>54本、200個セットで用意すると1セット</strong>です。</p>
+    <h2>回復予定量の仕組み</h2>
+    <ul class="potion-notes">
+      <li>フルヒの連打で蓄えるのは回復予定量です。連打しても秒間HP回復量は増えません。</li>
+      <li>毎フレーム（1秒16フレーム）一定量のHPを回復し続けます。<br>
+        各フレームの回復量は小数第一位以下を切り捨てた整数です。HP満タン時も、敵から攻撃を受けたときも、この回復処理は続きます。</li>
+      <li>持続時間は、1フレーム分のHPを満額で回復できるフレーム数をもとに計算できます。<br>
+        指定秒数がフレームの境界に合わない場合は、次のフレームまで必要量を用意します。</li>
+      <li>フルヒ使用時の最大HPと、回復中の健康・薬回復・生命の息吹補正を使います。使用後に装備を変えてもHP回復はそのままの値で持続。</li>
+      <!-- <li>アルケミストの<a href="../skill/alchemist_n_skill2020.html#1334">プロモートリフォーム</a>には、ポーションの回復量と回復速度を増やす効果がありますが、ここでの薬回復・フルヒ必要量の計算には含めていません。</li> -->
+    </ul>
+  </section>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <section id="skill-healing" aria-labelledby="skill-healing-heading">
+    <h2 id="skill-healing-heading">スキルによるHP回復量計算機</h2>
+    <!-- <p>ビショップのリゼネレイションと、追放天使のホーリークロスを計算します。<br>
+      スキル補正を含むSLvと、使用者の知識を入力してください。</p> -->
+    <form id="skill-healing-form" class="potion-card">
+      <fieldset class="healing-input-group" aria-describedby="skill-input-guide">
+        <legend>スキルによるHP回復量計算機</legend>
+        <!-- <p id="skill-input-guide" class="healing-input-hint">知識補正倍率は任意です。それ以外の項目を入力し、枠内のボタンで計算してください。結果はこの枠の下に表示されます。</p> -->
+      <h3>リゼネレイション</h3>
+      <div class="potion-inputs">
+        <div class="potion-field"><label for="regen-level">リゼネレイションSLv</label>
+          <input id="regen-level" type="number" min="1" step="1" value="50" required></div>
+        <div class="potion-field"><label for="regen-knowledge">ビショップの知識</label>
+          <input id="regen-knowledge" type="number" min="0" step="1" value="10000" required></div>
+        <div class="potion-field"><label for="regen-battle">リゼネレイションの使用環境</label>
+          <select id="regen-battle"><option value="pve">PvE</option><option value="pvp">PvP・Gv</option></select>
+          <small>PvP時の基礎回復量は半分。回復周期は5秒です。</small></div>
+        <div class="potion-field"><label for="regen-multiplier">知識補正倍率（任意）</label>
+          <input id="regen-multiplier" type="number" min="0" step="any" placeholder="未入力なら知識から暫定式で計算">
+          <small>実測などで倍率が分かる場合に入力。例：2なら基礎回復量の2倍。</small></div>
+      </div>
+      <h3>ホーリークロス</h3>
+      <div class="potion-inputs">
+        <div class="potion-field"><label for="holy-level">ホーリークロスSLv</label>
+          <input id="holy-level" type="number" min="1" step="1" value="50" required></div>
+        <div class="potion-field"><label for="holy-knowledge">追放天使の知識</label>
+          <input id="holy-knowledge" type="number" min="0" step="1" value="10000" required></div>
+        <div class="potion-field"><label for="holy-frames">ホーリークロスの使用間隔（フレーム）</label>
+          <input id="holy-frames" type="number" min="1" step="1" value="16" required>
+          <small>1秒16フレーム。16フレームなら1秒に1回使用する場合の換算です。</small></div>
+        <div class="potion-field"><label for="holy-multiplier">知識補正倍率（任意）</label>
+          <input id="holy-multiplier" type="number" min="0" step="any" placeholder="未入力なら知識から暫定式で計算">
+          <small>入力した場合は、この倍率で1回分と秒間換算を計算します。</small></div>
+      </div>
+      <div class="potion-actions"><button type="submit">計算</button></div>
+      <p id="skill-healing-error" role="alert" hidden></p>
+      </fieldset>
+    </form>
+    <div id="skill-healing-results" aria-live="polite" aria-atomic="true">
+      <!-- <p class="healing-result-label"><strong>計算結果</strong></p> -->
+      <!-- <p id="skill-healing-summary">入力後に「スキル回復を計算！」を押してください。</p> -->
+      <table id="table10" class="potion-table"><tbody>
+        <tr><th colspan="2" scope="row">リゼネレイション</th></tr>
+        <tr><th scope="row">5秒ごとのHP回復量</th><td><output id="regen-cycle">—</output> HP</td></tr>
+        <tr class="potion-key-result"><th scope="row">平均秒間回復量（5秒分を換算）</th><td><output id="regen-rate">—</output> HP/秒</td></tr>
+        <tr><th scope="row">効果の持続時間</th><td><output id="regen-duration">—</output> 秒</td></tr>
+        <tr><th colspan="2" scope="row">ホーリークロス</th></tr>
+        <tr><th scope="row">1回あたりのHP回復量</th><td><output id="holy-cast">—</output> HP</td></tr>
+        <tr class="potion-key-result"><th scope="row">指定使用間隔での秒間換算</th><td><output id="holy-rate">—</output> HP/秒</td></tr>
+        <tr><th scope="row">使用間隔</th><td><output id="holy-interval">—</output> 秒</td></tr>
+      </tbody></table>
+    </div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+    <div id="skill-healing-explanation">
+      <h3>スキル回復の計算式</h3>
+      <p><strong>知識補正は暫定値</strong>です。<br>
+        参照ページの概算範囲の中間値として、リゼネレイションは知識÷250、ホーリークロスは（知識÷125）％増加を採用しています。</p>
+      <div class="potion-formula">
+        リゼネレイションの5秒ごとの基礎回復量 ＝ 2 × SLv ＋ 5（PvP時は半分）<br>
+        リゼネレイションの知識補正倍率 ＝ 1 ＋ 知識 ÷ 250<br>
+        5秒ごとの回復量 ＝ 基礎回復量 × 知識補正倍率<br>
+        平均秒間回復量 ＝ 5秒ごとの回復量 ÷ 5<br>
+        リゼネレイションの持続時間 ＝ 75 ＋ SLv（秒）<br><br>
+        ホーリークロスの1回あたりの基礎回復量 ＝ 20 × SLv ＋ 50<br>
+        ホーリークロスの知識補正倍率 ＝ 1 ＋（知識 ÷ 125）÷ 100<br>
+        1回あたりの回復量 ＝ 基礎回復量 × 知識補正倍率<br>
+        使用間隔 ＝ 入力フレーム数 ÷ 16（秒）<br>
+        秒間換算の回復量 ＝ 1回あたりの回復量 ÷ 使用間隔
+      </div>
+      <p>例：SLv50・知識10,000の場合、リゼネレイションはPvEで5秒ごとに4,305 HP、平均861 HP/秒、持続125秒です。<br>
+        PvPでは5秒ごとに2,152.5 HP、平均430.5 HP/秒です。<br>
+        ホーリークロスは知識補正80％増加（1.8倍）で1回1,890 HP。16フレームごとに使用するなら1,890 HP/秒、8フレームごとなら3,780 HP/秒に相当。</p>
+      <ul class="potion-notes">
+        <li>リゼネレイションは5秒周期の回復です。平均秒間回復量は比較用の換算値で、毎秒この量が回復することを意味しません。</li>
+        <li>任意の知識補正倍率を入力すると、知識から求めた暫定倍率に代えて、その倍率を使用します。</li>
+        <li>薬回復の欄とは独立して、スキル表の基礎回復量と知識補正から計算します。</li>
+        <li>SLv50を超える値は表の増加量を延長して計算します。途中で整数に切り捨てず、小数第2位まで表示しています。</li>
+      </ul>
+      <p>参照：<a href="../skill/bis_n_skill2020.html#118">ビショップ「リゼネレイション」</a>、<a href="../skill/angel_n_skill2020.html#144">追放天使「ホーリークロス」</a></p>
+    </div>
+  </section>
+  <!-- <section aria-labelledby="potion-related">
+    <h4 id="potion-related" style="color:#e95388">関連</h4>
+    <h5><a href="../calculator.html">計算機一覧</a><br><br>
+      <a href="../character_simulator/index.html">キャラクターシミュレーター</a><br><br>
+      <a href="../information/player_status.html">ステータス解説</a></h5>
+  </section> -->
+</article>
+<script id="potion-calculator-script">
+'use strict';
+function calculatePotionHealing(values) {
+  const { maxHp, health, potionPercent, pharmacistLevel, lifePercent, seconds } = values;
+  for (const value of [maxHp, health, potionPercent, pharmacistLevel, lifePercent, seconds]) {
+    if (typeof value !== 'number' || !Number.isFinite(value)) throw new RangeError('各項目に数値を入力してください。');
+  }
+  if (!Number.isSafeInteger(maxHp) || maxHp <= 0) throw new RangeError('最大HPは1以上の整数を入力してください。');
+  if (!Number.isSafeInteger(health) || health < 0) throw new RangeError('健康は0以上の整数を入力してください。');
+  if (!Number.isInteger(pharmacistLevel) || pharmacistLevel < 0 || pharmacistLevel > 10) throw new RangeError('薬師の称号Lvは0～10を選んでください。');
+  if (potionPercent < 0 || lifePercent < 0 || seconds < 0) throw new RangeError('薬回復・生命の息吹補正・持続時間は0以上を入力してください。');
+  const setSize = 200;
+  const appliedPotionPercent = Math.min(potionPercent, 255);
+  const rawRate = (1 + lifePercent / 100) * (1 + appliedPotionPercent / 100) * (health + 50) / 5;
+  const perFrame = Math.floor(rawRate / 16);
+  const rate = perFrame * 16;
+  const total = maxHp * (100 + pharmacistLevel * 10) / 100;
+  const requiredFrames = Math.ceil(seconds * 16);
+  const singleFrames = perFrame > 0 ? Math.floor(total / perFrame) : null;
+  const setFrames = perFrame > 0 ? Math.floor(total * setSize / perFrame) : null;
+  const singleSeconds = singleFrames === null ? null : singleFrames / 16;
+  const setMinutes = setFrames === null ? null : setFrames / 16 / 60;
+  const bottles = perFrame > 0 ? Math.ceil(perFrame * requiredFrames / total) : (seconds === 0 ? 0 : null);
+  const sets = bottles === null ? null : Math.ceil(bottles / setSize);
+  const spare = bottles === null ? null : sets * setSize - bottles;
+  const thirtyBottles = perFrame > 0 ? Math.ceil(perFrame * 28800 / total) : null;
+  const thirtySets = thirtyBottles === null ? null : Math.ceil(thirtyBottles / setSize);
+  if (![rawRate, rate, total].every(Number.isFinite) ||
+      ![perFrame, requiredFrames, singleFrames, setFrames, bottles, sets, spare, thirtyBottles, thirtySets, sets === null ? null : sets * setSize, thirtySets === null ? null : thirtySets * setSize].filter(value => value !== null).every(Number.isSafeInteger)) {
+    throw new RangeError('入力値が大きすぎます。値を小さくして計算してください。');
+  }
+  return { setSize, appliedPotionPercent, rawRate, perFrame, rate, total, requiredFrames, singleFrames, setFrames, singleSeconds, setMinutes, bottles, sets, spare, thirtyBottles, thirtySets };
+}
+(function () {
+  const form = document.getElementById('potion-form');
+  const error = document.getElementById('potion-error');
+  const fieldIds = { maxHp: 'potion-hp', health: 'potion-health', potionPercent: 'potion-speed', pharmacistLevel: 'potion-pharmacist', lifePercent: 'potion-life', seconds: 'potion-seconds' };
+  const outputIds = { perFrame: 'potion-frame', rate: 'potion-rate', total: 'potion-total', singleSeconds: 'potion-single-seconds', setMinutes: 'potion-set-minutes', bottles: 'potion-bottles', sets: 'potion-sets' };
+  function clearResults() {
+    for (const id of Object.values(outputIds)) document.getElementById(id).textContent = '—';
+    document.getElementById('potion-target-label').textContent = '指定時間';
+  }
+  form.addEventListener('input', function () {
+    clearResults();
+    error.hidden = true;
+    document.getElementById('potion-input-summary').textContent = '入力を変更しました。「計算！」を押してください。';
+  });
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    clearResults();
+    try {
+      const values = {};
+      for (const [key, id] of Object.entries(fieldIds)) {
+        const raw = document.getElementById(id).value.trim();
+        values[key] = raw === '' ? NaN : Number(raw);
+      }
+      const result = calculatePotionHealing(values);
+      for (const [key, id] of Object.entries(outputIds)) {
+        document.getElementById(id).textContent = result[key] === null ? '—' : result[key].toLocaleString('ja-JP', { maximumFractionDigits: 2 });
+      }
+      const format = value => value.toLocaleString('ja-JP', { maximumFractionDigits: 2 });
+      document.getElementById('potion-target-label').textContent = format(values.seconds) + '秒';
+      document.getElementById('potion-input-summary').textContent = '最大HP ' + format(values.maxHp) + '／健康 ' + format(values.health) + '／薬回復 ' + format(result.appliedPotionPercent) + '％' + (values.potionPercent > 255 ? '（入力 ' + format(values.potionPercent) + '％、上限適用）' : '') + '／薬師Lv' + values.pharmacistLevel + '／生命の息吹補正 ' + format(values.lifePercent) + '％。持続時間の表示は小数第2位まで、必要本数は表示を丸める前のフレーム数から計算しています。' + (result.rate === 0 ? ' 1フレームの回復量が0 HPとなるため、回復持続時間と正の指定時間の必要量は算出できません。' : '');
+      error.hidden = true;
+    } catch (cause) {
+      if (!(cause instanceof RangeError)) throw cause;
+      error.textContent = cause.message;
+      error.hidden = false;
+      document.getElementById('potion-input-summary').textContent = '入力値を確認してください。';
+    }
+  });
+})();
+</script>
+<script id="skill-healing-calculator-script">
+'use strict';
+function calculateSkillHealing(values) {
+  const { regenLevel, regenKnowledge, regenBattle, regenMultiplier, holyLevel, holyKnowledge, holyFrames, holyMultiplier } = values;
+  for (const value of [regenLevel, holyLevel, holyFrames]) {
+    if (!Number.isSafeInteger(value) || value < 1) throw new RangeError('SLvと使用間隔は1以上の整数を入力してください。');
+  }
+  for (const value of [regenKnowledge, holyKnowledge]) {
+    if (!Number.isSafeInteger(value) || value < 0) throw new RangeError('知識は0以上の整数を入力してください。');
+  }
+  for (const value of [regenMultiplier, holyMultiplier]) {
+    if (value !== null && (typeof value !== 'number' || !Number.isFinite(value) || value < 0)) throw new RangeError('任意の倍率は0以上の数値を入力するか、空欄にしてください。');
+  }
+  if (!['pve', 'pvp'].includes(regenBattle)) throw new RangeError('リゼネレイションの使用環境を選んでください。');
+  const regenBase = (2 * regenLevel + 5) * (regenBattle === 'pvp' ? 0.5 : 1);
+  const regenFactor = regenMultiplier === null ? 1 + regenKnowledge / 250 : regenMultiplier;
+  const regenCycle = regenBase * regenFactor;
+  const regenRate = regenCycle / 5;
+  const regenDuration = 75 + regenLevel;
+  const holyBase = 20 * holyLevel + 50;
+  const holyFactor = holyMultiplier === null ? 1 + (holyKnowledge / 125) / 100 : holyMultiplier;
+  const holyCast = holyBase * holyFactor;
+  const holyInterval = holyFrames / 16;
+  const holyRate = holyCast / holyInterval;
+  const result = { regenBase, regenFactor, regenCycle, regenRate, regenDuration, holyBase, holyFactor, holyCast, holyInterval, holyRate };
+  if (Object.values(result).some(value => !Number.isFinite(value) || value > Number.MAX_SAFE_INTEGER)) throw new RangeError('入力値が大きすぎます。値を小さくして計算してください。');
+  return result;
+}
+(function () {
+  const form = document.getElementById('skill-healing-form');
+  const error = document.getElementById('skill-healing-error');
+  const summary = document.getElementById('skill-healing-summary');
+  const fields = { regenLevel: 'regen-level', regenKnowledge: 'regen-knowledge', regenBattle: 'regen-battle', regenMultiplier: 'regen-multiplier', holyLevel: 'holy-level', holyKnowledge: 'holy-knowledge', holyFrames: 'holy-frames', holyMultiplier: 'holy-multiplier' };
+  const outputs = { regenCycle: 'regen-cycle', regenRate: 'regen-rate', regenDuration: 'regen-duration', holyCast: 'holy-cast', holyRate: 'holy-rate', holyInterval: 'holy-interval' };
+  const format = value => value.toLocaleString('ja-JP', { maximumFractionDigits: 2 });
+  function clearResults() {
+    for (const id of Object.values(outputs)) document.getElementById(id).textContent = '—';
+  }
+  form.addEventListener('input', function () {
+    clearResults();
+    error.hidden = true;
+    summary.textContent = '入力を変更しました。「スキル回復を計算！」を押してください。';
+  });
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    clearResults();
+    try {
+      const values = {};
+      for (const [key, id] of Object.entries(fields)) {
+        const raw = document.getElementById(id).value.trim();
+        values[key] = key === 'regenBattle' ? raw : raw === '' ? (key.endsWith('Multiplier') ? null : NaN) : Number(raw);
+      }
+      const result = calculateSkillHealing(values);
+      for (const [key, id] of Object.entries(outputs)) document.getElementById(id).textContent = format(result[key]);
+      summary.textContent = 'リゼネレイション：' + (values.regenBattle === 'pvp' ? 'PvP・Gv' : 'PvE') + '、知識補正 ' + format(result.regenFactor) + '倍（' + (values.regenMultiplier === null ? '知識÷250の暫定式' : '入力倍率') + '）。ホーリークロス：知識補正 ' + format(result.holyFactor) + '倍（' + (values.holyMultiplier === null ? '（知識÷125）％増加の暫定式' : '入力倍率') + '）、' + values.holyFrames + 'フレームごとの使用。小数第2位までの換算値です。';
+      error.hidden = true;
+    } catch (cause) {
+      if (!(cause instanceof RangeError)) throw cause;
+      error.textContent = cause.message;
+      error.hidden = false;
+      summary.textContent = '入力値を確認してください。';
+    }
+  });
+})();
+</script>
+<footer class="android-footer mdl-mega-footer">
+                        <font color="red">当サイトで利用している画像及びデータは、L&K Co., Ltd.に帰属します。
+                            <br>
+                            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。
+                            <br>
+                        </font>
+                        © L&K Co., Ltd. All Rights Reserved.<br>
+                    </footer>
+                    <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+              Copyright (c) This site is created by Sokomin. All Rights Reserved.
+         -->
+                </div>
+                <script src="https://sokomin.github.io/material.min.js"></script>
+            </div>
+          </div>
+        </body>
+    </html>

@@ -237,7 +237,7 @@
 
     function calcSkillDamageMultiplier(inputs) {
         var pct =
-              normalizePercent(inputs.skillDamagePercent)
+              toNumber(inputs.skillDamagePercent, 0)
             + normalizePercent(inputs.damageOpPercent)
             + normalizePercent(inputs.skillCorrectionPercent)
             + normalizePercent(inputs.guildItemCorrectionPercent);
@@ -297,8 +297,7 @@
 
     function calcVsTypeMultiplier(inputs) {
         var pct = normalizePercent(inputs.vsTypePhysicalDamagePercent);
-        var cap = normalizePercent(inputs.vsTypeCapPercent);
-        if (cap <= 0) cap = 300;
+        var cap = normalizePercent(toNumber(inputs.vsTypeCapPercent, DEFAULT_INPUTS.vsTypeCapPercent));
         var capped = Math.min(pct, cap);
         return {
             vsTypePercentAfterCap: capped,
@@ -427,7 +426,7 @@
 
         // 4. 種族型別
         var vs = calcVsTypeMultiplier(inputs);
-        steps.push({ key: 'vsTypePercentAfterCap', label: '種族型別物理ダメージ%（上限適用後）', value: vs.vsTypePercentAfterCap, note: '上限: ' + normalizePercent(inputs.vsTypeCapPercent) + '%' });
+        steps.push({ key: 'vsTypePercentAfterCap', label: '種族型別物理ダメージ%（上限適用後）', value: vs.vsTypePercentAfterCap, note: '上限: ' + normalizePercent(toNumber(inputs.vsTypeCapPercent, DEFAULT_INPUTS.vsTypeCapPercent)) + '%' });
         steps.push({ key: 'vsTypeMultiplier',      label: '種族型別倍率',                       value: vs.vsTypeMultiplier });
         current = current * vs.vsTypeMultiplier;
         steps.push({ key: 'afterVsType', label: '種族型別倍率 適用後', value: current });
@@ -438,19 +437,13 @@
         current = current * efr;
         steps.push({ key: 'afterEnemyReduction', label: '敵最終ダメージ補正減少 適用後', value: current });
 
-        // 6. Mobダメージカット
-        var mc = calcMobDamageCutMultiplier(inputs);
-        steps.push({ key: 'mobDamageCutMultiplier', label: 'Mobダメージカット倍率', value: mc });
-        current = current * mc;
-        steps.push({ key: 'afterMobCut', label: 'Mobダメージカット 適用後', value: current });
-
-        // 7. 限界突破称号物理効果 (倍率)
+        // 6. 限界突破称号物理効果 (倍率)
         var lb = calcLimitBreakMultiplier(inputs);
         steps.push({ key: 'limitBreakMultiplier', label: '限界突破称号物理効果倍率', value: lb });
         current = current * lb;
         steps.push({ key: 'afterLimitBreak', label: '限界突破称号物理効果 適用後', value: current });
 
-        // 8. 物理ダメージ上限キャップ
+        // 7. 物理ダメージ上限キャップ
         //   cap = ベース上限 (default 20,000) + 称号 Lv 由来 flat + その他 flat
         //   通常ヒット相当のダメ部分を min(value, cap) でクリップ → そのあとクリ倍率等を乗せる。
         var capBase  = toNumber(inputs.physicalDamageCapBase, 20000);
@@ -468,6 +461,12 @@
         } else {
             steps.push({ key: 'capNotApplied', label: 'キャップ未到達 (素通り)', value: current });
         }
+
+        // 8. Mobダメージカット
+        var mc = calcMobDamageCutMultiplier(inputs);
+        steps.push({ key: 'mobDamageCutMultiplier', label: 'Mobダメージカット倍率', value: mc });
+        current = current * mc;
+        steps.push({ key: 'afterMobCut', label: 'Mobダメージカット 適用後', value: current });
 
         // カンスト差し引き：主要倍率後
         var afterCap3 = applyCapSubtract(inputs, 'afterMain', current);
@@ -543,7 +542,7 @@
         if (toNumber(inputs.mobDefense, 0) >= 1000000) {
             warnings.push('Mob防御力が高い値です。位相Mob 想定の場合、防御補正方式は要検証です。');
         }
-        if (normalizePercent(inputs.vsTypePhysicalDamagePercent) > normalizePercent(inputs.vsTypeCapPercent)) {
+        if (normalizePercent(inputs.vsTypePhysicalDamagePercent) > normalizePercent(toNumber(inputs.vsTypeCapPercent, DEFAULT_INPUTS.vsTypeCapPercent))) {
             warnings.push('VS型別物理ダメージ% が上限値を超えています。上限値で丸めて計算しています。');
         }
 
@@ -579,7 +578,7 @@
         for (var i = 0; i < result.steps.length; i++) {
             var s = result.steps[i];
 
-            var isMul = /Multiplier$/.test(s.key) || /倍率/.test(s.label);
+            var isMul = /Multiplier$/.test(s.key);
             var isPercent = /PercentAfterCap$/.test(s.key) || /Percent/.test(s.key);
             var formatted;
             if (isMul) {
@@ -740,6 +739,27 @@
         for (var k in DEFAULT_INPUTS) {
             if (Object.prototype.hasOwnProperty.call(DEFAULT_INPUTS, k)) {
                 out[k] = (values && k in values) ? values[k] : DEFAULT_INPUTS[k];
+            }
+        }
+        // 旧保存値・プリセットは、既定の Lv を補う前に称号上限から Lv を復元する。
+        if (values && !('limitBreakLevel' in values)) {
+            var flat = toNumber(out.physicalLimitDamageFlat, 0);
+            for (var i = 0; i < LIMIT_BREAK_PHYS_LEVELS.length; i++) {
+                if (LIMIT_BREAK_PHYS_LEVELS[i].flat === flat) {
+                    out.limitBreakLevel = LIMIT_BREAK_PHYS_LEVELS[i].lv;
+                    break;
+                }
+            }
+        }
+        // Lv だけ指定された入力は称号効果を補う。手入力の合計値は保持する。
+        var level = toNumber(out.limitBreakLevel, 0);
+        var row = LIMIT_BREAK_PHYS_LEVELS[level];
+        if (row) {
+            if (!values || !('physicalLimitDamageFlat' in values)) {
+                out.physicalLimitDamageFlat = row.flat;
+            }
+            if (!values || !('limitBreakPhysicalEffectPercent' in values)) {
+                out.limitBreakPhysicalEffectPercent = row.pct;
             }
         }
         return out;
@@ -953,3 +973,5 @@
     };
 
 })(window);
+
+

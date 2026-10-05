@@ -2655,6 +2655,7 @@
                 <div class="sim-detail"><span class="sim-detail-name">ステ低下耐性</span><span class="sim-detail-value" id="dt-field-stat-down-resist">+0%</span></div>
                 <div class="sim-detail"><span class="sim-detail-name">属性低下耐性</span><span class="sim-detail-value" id="dt-field-attr-cap-resist">+0%</span></div>
                 <div class="sim-detail"><span class="sim-detail-name">薬回復</span><span class="sim-detail-value" id="dt-potion-heal">+0%</span></div>
+                <div class="sim-detail" title="薬によるHP回復速度。1秒16フレーム・各フレームの回復量は整数に切り捨て。薬回復速度は255%が上限。生命の息吹は通常効果のみ反映。"><span class="sim-detail-name">秒間回復量</span><span class="sim-detail-value" id="dt-potion-heal-per-second">0 HP/秒</span></div>
                 <div class="sim-detail"><span class="sim-detail-name">スキル</span><span class="sim-detail-value" id="dt-skill">+0</span></div>
                 <div class="sim-detail"><span class="sim-detail-name">物理ダメージ</span><span class="sim-detail-value" id="dt-phys-damage">+0%</span></div>
                 <div class="sim-detail"><span class="sim-detail-name">物理致命打</span><span class="sim-detail-value" id="dt-phys-crit">+0%</span></div>
@@ -8100,6 +8101,27 @@ function applyMapEffectsToCharacter(f, subInfo) {
 }
 
 const recalcAll = serialTaskQueue(recalcAllNow);
+function calcPotionHealingPerSecond(health, potionSpeedPercent, lifeSpeedPercent = 0) {
+  const con = Math.max(0, Number(health) || 0);
+  const potionSpeed = Math.min(255, Math.max(0, Number(potionSpeedPercent) || 0));
+  const lifeSpeed = Math.max(0, Number(lifeSpeedPercent) || 0);
+  const perFrame = Math.floor((1 + lifeSpeed / 100) * (1 + potionSpeed / 100) * (con + 50) / 5 / 16);
+  return perFrame * 16;
+}
+
+function renderPotionRecovery(equipped, lifeSpeedPercent) {
+  const potionSpeed = (Number(equipped.potionHeal) || 0) + (Number(equipped.potionHealSpeed) || 0);
+  const el = $('dt-potion-heal-per-second');
+  if (el) {
+    const rate = calcPotionHealingPerSecond(equipped.con, potionSpeed, lifeSpeedPercent);
+    el.textContent = rate.toLocaleString('ja-JP', { maximumFractionDigits: 2 }) + ' HP/秒';
+    el.classList.toggle('is-zero', rate === 0);
+    el.classList.toggle('is-minus', rate < 0);
+    el.title = `健康 ${equipped.con || 0} / 薬回復速度 ${Math.min(255, Math.max(0, potionSpeed))}%（合計 ${potionSpeed}%） / 生命回復速度 ${lifeSpeedPercent}%`;
+  }
+  return potionSpeed;
+}
+
 async function recalcAllNow() {
   const ch = readCharacter();
 
@@ -8223,7 +8245,7 @@ async function recalcAllNow() {
   
   setDetailPercent('dt-hit', f.equipped.hit || 0);
   setDetailPercent('dt-eva', f.equipped.eva || 0);
-  setDetailPercent('dt-potion-heal', f.equipped.potionHeal || 0);
+  setDetailPercent('dt-potion-heal', renderPotionRecovery(f.equipped, TransSkill.getLifeRecoverySpeedPercent()));
 
 
   
@@ -9219,6 +9241,7 @@ function buildStatReportRows(character) {
     ['攻撃', '物理強打発動確率', 'dt-phys-strong'], ['攻撃', '魔法強打発動確率', 'dt-magic-strong'],
     ['攻撃', '最終ダメージ', 'dt-final-damage'], ['スキル', '全スキルレベル', 'dt-skill'],
     ['スキル', 'スキルクールタイム減少', 'dt-skill-cd'], ['回復', 'ポーション回復速度', 'dt-potion-heal'],
+    ['回復', '秒間回復量', 'dt-potion-heal-per-second'],
     ['獲得', '経験値獲得ボーナス', 'dt-exp-bonus'], ['獲得', 'ユニークドロップ率', 'dt-uni-drop'],
     ['獲得', 'アイテムドロップ率', 'dt-mf-drop'], ['戦闘', 'CP獲得ボーナス', 'dt-cp-bonus'],
     ['PVP', 'PVPダメージ', 'dt-pvp-damage'], ['PVP', 'PVP防御', 'dt-pvp-defense'],
@@ -18137,6 +18160,13 @@ const TransSkill = (() => {
     }
   }
 
+  function getLifeRecoverySpeedPercent() {
+    const slot = state.slots.find((s) => s?.skillId === 'r_breath');
+    if (!slot) return 0;
+    const def = findDef('r_breath');
+    return evalEntry(def.displayOnly[0], clampSlv(slot.slv), 0);
+  }
+
   
   const state = {
     slots: [
@@ -18382,7 +18412,7 @@ const TransSkill = (() => {
     renderSlots();
   }
 
-  return { init, applyToSTTemp, getState, getReportRows, setState, reset, rerender, DEFS, JOB_RARE_SKILLS };
+  return { init, applyToSTTemp, getLifeRecoverySpeedPercent, getState, getReportRows, setState, reset, rerender, DEFS, JOB_RARE_SKILLS };
 })();
 
 
