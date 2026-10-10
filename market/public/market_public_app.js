@@ -52,6 +52,36 @@
     return rows;
   }
 
+  function periodTime(period) {
+    const match = /^(\d{4})-(\d{2})(?:-(\d{2})|-W(\d{2}))?$/.exec(String(period || ""));
+    if (!match) return NaN;
+    const year = Number(match[1]);
+    const month = Number(match[2]);
+    if (month < 1 || month > 12) return NaN;
+    const first = new Date(Date.UTC(year, month - 1, 1));
+    let day = Number(match[3] || 1);
+    if (match[4]) {
+      const week = Number(match[4]);
+      const lastDay = new Date(Date.UTC(year, month, 0)).getUTCDate();
+      const lastWeek = Math.floor((lastDay + first.getUTCDay() - 1) / 7) + 1;
+      if (week < 1 || week > lastWeek) return NaN;
+      day = Math.max(1, 1 + (week - 1) * 7 - first.getUTCDay());
+    }
+    const date = new Date(Date.UTC(year, month - 1, day));
+    return date.getUTCMonth() === month - 1 && date.getUTCDate() === day ? date.getTime() : NaN;
+  }
+
+  function chartRows(rows) {
+    return rows.map((row) => ({ ...row, time: periodTime(row.period_order) }))
+      .filter((row) => Number.isFinite(row.time))
+      .sort((a, b) => a.time - b.time);
+  }
+
+  function chartX(time, minTime, maxTime, width, pad) {
+    if (minTime === maxTime) return width / 2;
+    return pad + (width - pad * 2) * (time - minTime) / (maxTime - minTime);
+  }
+
   function start() {
     const store = new root.ProgressiveMarketDataStore({ baseUrl: "public" });
     const state = {
@@ -173,11 +203,10 @@
       byId("marketGoldSeasonControl").hidden = !shouldShowGoldSeason(state.server, (store.bootstrap && store.bootstrap.meta) || {});
     }
 
-    function pointLine(points, className, width, height, pad, minY, spanY) {
+    function pointLine(points, className, width, height, pad, minY, spanY, minTime, maxTime) {
       if (points.length < 1) return "";
-      const spanX = Math.max(1, points.length - 1);
-      const coords = points.map((point, index) => {
-        const x = pad + ((width - pad * 2) * index) / spanX;
+      const coords = points.map((point) => {
+        const x = chartX(point.time, minTime, maxTime, width, pad);
         const clamped = Math.max(minY, Math.min(minY + spanY, Number(point.value || 0)));
         const y = height - pad - ((height - pad * 2) * (clamped - minY)) / spanY;
         return { ...point, x, y };
@@ -191,6 +220,7 @@
     }
 
     function renderChart(rows) {
+      rows = chartRows(rows);
       const values = [];
       for (const row of rows) {
         for (const key of ["reference_gold", "sell_gold", "buy_gold"]) {
@@ -206,16 +236,22 @@
       const width = 420;
       const height = 180;
       const pad = 24;
-      const ref = rows.filter((row) => row.reference_gold).map((row) => ({ value: row.reference_gold, label: `${row.period} 参考 ${row.reference_text}` }));
-      const sell = rows.filter((row) => row.sell_gold).map((row) => ({ value: row.sell_gold, label: `${row.period} 売り ${row.sell_text}` }));
-      const buy = rows.filter((row) => row.buy_gold).map((row) => ({ value: row.buy_gold, label: `${row.period} 買い ${row.buy_text}` }));
+      const minTime = rows[0].time;
+      const maxTime = rows[rows.length - 1].time;
+      const ref = rows.filter((row) => row.reference_gold).map((row) => ({ time: row.time, value: row.reference_gold, label: `${row.period} 参考 ${row.reference_text}` }));
+      const sell = rows.filter((row) => row.sell_gold).map((row) => ({ time: row.time, value: row.sell_gold, label: `${row.period} 売り ${row.sell_text}` }));
+      const buy = rows.filter((row) => row.buy_gold).map((row) => ({ time: row.time, value: row.buy_gold, label: `${row.period} 買い ${row.buy_text}` }));
+      const dateLabels = minTime === maxTime
+        ? `<text x="${width / 2}" y="${height - 4}" text-anchor="middle" font-size="10" fill="#666">${escapeHtml(rows[0].period)}</text>`
+        : `<text x="${pad}" y="${height - 4}" font-size="10" fill="#666">${escapeHtml(rows[0].period)}</text><text x="${width - pad}" y="${height - 4}" text-anchor="end" font-size="10" fill="#666">${escapeHtml(rows[rows.length - 1].period)}</text>`;
       return `<div class="market-chart">
         <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="価格推移">
           <line x1="${pad}" y1="${height - pad}" x2="${width - pad}" y2="${height - pad}" stroke="#d8d8d8"></line>
           <line x1="${pad}" y1="${pad}" x2="${pad}" y2="${height - pad}" stroke="#d8d8d8"></line>
-          ${pointLine(ref, "ref", width, height, pad, minY, spanY)}
-          ${pointLine(sell, "sell", width, height, pad, minY, spanY)}
-          ${pointLine(buy, "buy", width, height, pad, minY, spanY)}
+          ${pointLine(ref, "ref", width, height, pad, minY, spanY, minTime, maxTime)}
+          ${pointLine(sell, "sell", width, height, pad, minY, spanY, minTime, maxTime)}
+          ${pointLine(buy, "buy", width, height, pad, minY, spanY, minTime, maxTime)}
+          ${dateLabels}
         </svg>
         <div class="market-legend"><span><i></i>緑: 参考相場</span><span class="sell"><i></i>赤: 売り叫び</span><span class="buy"><i></i>青: 買い叫び</span></div>
       </div>`;
@@ -431,7 +467,7 @@
     initialize().catch(showError);
   }
 
-  const api = { DISPLAY_LIMIT, GOLD_SERVER, activeWindowMeta, goldSeasonOptions, itemSearchText, rowActivity, rowKey, shouldShowGoldSeason, sortedRows, start };
+  const api = { DISPLAY_LIMIT, GOLD_SERVER, activeWindowMeta, chartRows, chartX, periodTime, goldSeasonOptions, itemSearchText, rowActivity, rowKey, shouldShowGoldSeason, sortedRows, start };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   if (root.document && root.ProgressiveMarketDataStore) start();
 })(typeof globalThis !== "undefined" ? globalThis : this);
