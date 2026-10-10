@@ -35,7 +35,7 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
     <script data-ad-client="ca-pub-2122309953813422" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <script language="JavaScript" src="https://sokomin.github.io/update/js/common.js"></script>
-    <script language="JavaScript" src="js/rs_count.js"></script>
+    <script language="JavaScript" src="js/rs_count.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
             window.dataLayer = window.dataLayer || [];
@@ -71,6 +71,19 @@
             overflow: hidden;
             margin: 40px auto;
         }
+        #rs_gold_summary {
+            border-collapse: collapse;
+            margin: 16px auto;
+            max-width: 920px;
+            font-size: 14px;
+        }
+        #rs_gold_summary th, #rs_gold_summary td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+        }
+        #rs_gold_summary th {
+            background: #f5f5f5;
+        }
     </style>
     <link rel="canonical" href="https://sokomin.github.io/calculation/rs_counting.html" />
     <script>const __SK_BUILD = "sokomin/calculation~rs_counting@2026-09-13​‌‌‌​​‌‌​‌‌​‌‌‌‌​‌‌​‌​‌‌​‌‌​‌‌‌‌​‌‌​‌‌​‌​‌‌​‌​​‌​‌‌​‌‌‌​";</script>
@@ -80,7 +93,7 @@
 <body leftmargin="0" topmargin="0" crossriderapp0002258="true" marginheight="0"
     marginwidth="0">
     <title>天上・地下・赤い悪魔　RS個数比較 赤石の民衆</title>
-    <meta name="description" content="レッドストーン総合攻略情報ポータルページ" />
+    <meta name="description" content="RED STONEの天上・地下・赤い悪魔への交換個数を鯖別に比較。金鯖は年度別の観測累計と観測間の増加を確認できます。" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
     <meta http-equiv="Content-Script-Type" content="text/javascript" />
     <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,そこらの民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,そこみん,赤石,攻略情報" />
@@ -169,7 +182,7 @@
         <div class="android-large-table mdl-layout__content">
 
             <!--main-->
-            <div class="main-background mdl-typography--text-center">
+            <div class="main-background mdl-typography--text-center" data-first-view>
                 <br>
                 <br>
                 <h1>天上・地下・赤い悪魔　RS個数比較 </h1>
@@ -188,13 +201,13 @@
                     <option value="1">Vaultish</option>
                     <option value="2">Bridgehead</option>
                     <option value="3">GoldExperience</option>
-                    </select>
                 </select><br>
                 <br>
                 <input type="date" class="memorize" name="a1" size="20" min="2008-05-01">から<input type="date" class="memorize" name="a2" size="20" min="2008-05-01">を
                 <input type="button" value="取得" onclick="calc1()"><br>
                 <br>
                 <h4>取得結果</h4>
+                <p id="rs_count_status" role="status" aria-live="polite"></p>
                 <div style="padding-left: 20px;" id="preview_html"></div>
                 <div class="canvas-container">
                     <canvas id="myChart" width="240" height="180"></canvas>
@@ -217,10 +230,11 @@
                 <p class="sokomin-style">
                     - <a href="https://sokomin.github.io/quest/mainquest5.html">メインクエ Chaper5</a>が実装されたのは2008/5のため、それ以前のデータは存在しません。<br>
                     - B鯖のベースになったBlackOpalワールドについてはデータがあったため最初期の2008/6辺りまで遡れます<br>
-                    - データが無い部分は等速直線で補完します。<br>
+                    - 取得できていない部分のデータは線形補完したグラフとなります。<br>
                     - 鯖によってはデータ不足していることがあり、十分にデータを提供できない可能性があります。<br>
-                    - 金鯖については対応しません。<br>
-                    - 日時単位でデータ持ってる方、募集。<br>
+                    - 金鯖の個数は毎年1から始まります。取得可能な範囲でプロットします。<br>
+                    <!-- - 金鯖の未取得年度や観測期間外は補間しません。表示する個数は観測時点の累計です。<br> -->
+                    <!-- - 日時単位でデータ持ってる方、募集。<br> -->
                 </p>
                 <br>
                 <br>
