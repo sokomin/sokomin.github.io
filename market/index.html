@@ -379,6 +379,16 @@
       }
     }
   </style>
+<style>
+    [hidden] { display: none !important; }
+    .market-controls label:has(#marketFavoritesOnly) { display: flex; align-items: center; gap: 6px; align-self: center; }
+    .market-controls #marketFavoritesOnly { width: auto; height: auto; margin: 0; padding: 0; }
+    .market-app button[data-market-favorite] { border: 1px solid #b7b7b7; border-radius: 4px; background: #fff; color: #176b4a; cursor: pointer; min-width: 30px; min-height: 28px; font: inherit; }
+    .market-app button[data-market-favorite][aria-pressed="true"] { background: #e4f2ee; }
+    .market-table-wrap table#table10 th:first-child, .market-table-wrap table#table10 td:first-child { min-width: 220px; max-width: 280px; overflow-wrap: anywhere; }
+    .market-app button:focus-visible, .market-controls input:focus-visible, .market-controls select:focus-visible { outline: 2px solid #176b4a; outline-offset: 2px; }
+    .market-row { cursor: pointer; }
+  </style>
 </head>
 
 <body>
@@ -473,7 +483,7 @@
 
     <div class="android-large-table mdl-layout__content">
       <!--main-->
-      <div class="main-background mdl-typography--text-center korea-content">
+      <div class="main-background mdl-typography--text-center korea-content" data-first-view>
         <br>
         <h1>RED STONE 相場情報</h1>
         <!-- <div class="market-lead">
@@ -498,44 +508,20 @@
         <div class="market-app">
           <a name="market-list"></a>
           <div class="market-controls">
-            <label>検索
-              <input id="marketSearch" type="search" placeholder="アイテム名で検索">
-            </label>
-            <label>サーバ
-              <select id="marketServer"></select>
-            </label>
-            <label>カテゴリ
-              <select id="marketCategory">
-                <option value="all">すべて</option>
-                <option value="equipment">武器・防具（装備品）</option>
-                <option value="other">その他</option>
-              </select>
-            </label>
-            <label>対象期間
-              <select id="marketRecent">
-                <option value="all">すべて</option>
-                <option value="recent">直近半年のみ</option>
-              </select>
-            </label>
-            <label>並び
-              <select id="marketSort">
-                <option value="count">集計件数が多い順</option>
-                <option value="priceDesc">高い順</option>
-                <option value="priceAsc">安い順</option>
-                <option value="name">名前順</option>
-              </select>
-            </label>
-            <label>価格推移
-              <select id="marketPeriodMode">
-                <option value="daily">直近半年（日次）</option>
-                <option value="long">長期（月次・週次）</option>
-              </select>
-            </label>
-            <button id="marketForceReload" type="button">キャッシュを強制更新</button>
-          </div>
-          <div class="market-load-status" aria-live="polite">
-            <span id="marketLoadStatus">初期データ読込中</span>
-          </div>
+<label>アイテム<input id="marketSearch" type="search" placeholder="名前・オプションで検索"></label>
+<label>サーバー<select id="marketServer"></select></label>
+<label id="marketGoldSeasonControl" hidden>金鯖年<select id="marketGoldSeason"></select></label>
+<label>カテゴリ<select id="marketCategory"><option value="all">すべて</option><option value="equipment">武器・防具</option><option value="other">その他</option></select></label>
+<label>期間<select id="marketRecent"><option value="all">すべて</option><option value="recent">直近半年</option></select></label>
+<label>並び<select id="marketSort"><option value="count">件数順</option><option value="priceDesc">高い順</option><option value="priceAsc">安い順</option><option value="name">名前順</option><option value="change7Desc">7日 値上がり順</option><option value="change7Asc">7日 値下がり順</option></select></label>
+<label>変動率<select id="marketChangeMetric"><option value="">非表示</option><option value="reference_gold">参考（日次）</option><option value="market_gold">露店</option><option value="sell_gold">売り叫び</option><option value="buy_gold">買い叫び</option></select></label>
+<label>推移<select id="marketPeriodMode"><option value="daily">日次</option><option value="long">長期</option></select></label>
+<label>グラフ期間<select id="marketChartRange"><option value="7">7日</option><option value="30">30日</option><option value="183">半年</option><option value="all" selected>全期間</option></select></label>
+<button id="marketForceReload">再読込</button>
+<label style="display:inline-flex;align-items:center;gap:6px"><input id="marketFavoritesOnly" type="checkbox" style="min-width:0;width:auto;padding:0">お気に入りだけ</label>
+</div>
+<p id="marketLoadStatus" aria-live="polite"></p>
+<p id="marketFavoritesStatus" class="market-note" aria-live="polite"></p>
 
           <div class="market-layout">
             <section class="market-panel">
