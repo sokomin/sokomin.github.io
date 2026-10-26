@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<!-- Terms of use for original articles and guides on Redstone Sokomin: https://sokomin.github.io/information/p.html -->
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8" />
+  <!--
+    Rights notice:
+    This article's original text, layout, tables, arrangement, and HTML markup are copyrighted by Sokomin.
+    Unauthorized wholesale copying, automated scraping, redistribution, or republication is prohibited.
+    RED STONE game assets and data remain the property of L&K Co., Ltd.
+  -->
+  <meta name="rights" content="This article's original text, layout, tables, arrangement, and HTML markup are copyrighted by Sokomin. Unauthorized wholesale copying, automated scraping, redistribution, or republication is prohibited. RED STONE game assets and data remain the property of L&K Co., Ltd." />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=960">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="../material.indigo-pink.min.css" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32" />
+  <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192" />
+  <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-133658114-1');
+  </script>
+  <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+  <script>
+    function enter() {
+      if (window.event.keyCode == 13) {
+        var last_keyword = $('#search-field').val();
+        window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+      }
+    }
+  </script>
+  <style>
+    .android-large-table > .main-background.korea-content { width: 100%; min-width: 0; box-sizing: border-box; padding: 0 4% 32px; }
+    .probability-note { max-width: 1100px; margin: 16px auto; text-align: left; line-height: 1.8; }
+    .probability-scroll { width: 100%; overflow-x: auto; margin: 16px auto 28px; }
+    .probability-scroll #table10 { width: 100%; max-width: 1100px; margin: 0 auto; table-layout: auto; }
+    .probability-scroll #table10.op-distribution { min-width: 840px; table-layout: fixed; font-size: 13px; }
+    .probability-scroll #table10.lv1500 { min-width: 920px; }
+    .probability-scroll #table10.lv1750 { min-width: 1060px; }
+    .op-distribution th:first-child { width: 220px; }
+    .probability-scroll .op-distribution td:first-child { text-align: left; white-space: normal; overflow-wrap: anywhere; }
+    .op-distribution td { white-space: nowrap; }
+    .lv1250 th { background: #fff4d6 !important; color: #333 !important; }
+    .lv1500 th { background: #e6f4ff !important; color: #333 !important; }
+    .lv1750 th { background: #f2e8ff !important; color: #333 !important; }
+    .icon-navigation { margin: 24px auto; }
+    .icon-navigation a { display: block; padding: 10px; }
+    .icon-navigation a:hover, .icon-navigation a:focus-visible { background: #fff4d6; }
+    .icon-navigation img { width: 45px; height: 45px; }
+    .korea-content h2 { margin-top: 48px; font-size: 26px; scroll-margin-top: 80px; }
+    .korea-content h3 { margin-top: 30px; font-size: 22px; }
+  </style>
+  <title>インバーダーノードの変換確率 赤石の民衆</title>
+  <meta name="description" content="非規格装備のインバーターノード変換を実測。1250Lv・1500Lv・1750LvのTier出現率とOP別の出現率を、234回・279回・369回の結果から比較します。" />
+  <link rel="canonical" href="https://sokomin.github.io/information/nonstandard-inverter-probability.html" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <meta name="keywords" content="RED STONE,レッドストーン,赤石の民衆,非規格装備,インバーダーノード,インバーターノード,変換確率,Tier" />
+</head>
+
+<body>
+
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <a name="container"></a>
+    <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+      <div class="mdl-layout__header-row">
+        <span class="android-title mdl-layout-title">
+          <a href="../index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <div class="android-header-spacer mdl-layout-spacer"></div>
+        <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text" onkeypress="enter();" id="search-field" />
+          </div>
+        </div>
+        <div class="android-navigation-container">
+          <nav class="android-navigation mdl-navigation">
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="../index.html">ホーム</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="../calculator.html">計算機</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="../history.html">赤石史</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="../link.html">リンク</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問い合わせ</a>
+          </nav>
+        </div>
+        <span class="android-mobile-title mdl-layout-title">
+          <a href="../index.html">
+            <img class="android-logo-image" src="../design/logo3.png" />
+          </a>
+        </span>
+        <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
+          <i class="material-icons">more_vert</i>
+        </button>
+        <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="../calculator.html">計算機</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="../history.html">赤石史</a></li>
+          <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="../link.html">リンク</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問い合わせ</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="android-drawer mdl-layout__drawer">
+      <span class="mdl-layout-title"><h2>メニュー</h2></span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html"><strong>アイテム</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html"><strong>スキル</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html"><strong>モンスター</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html"><strong>ダンジョン</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html"><strong>クエスト</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html"><strong>ギルド</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html"><strong>韓国情報</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html"><strong>雑学</strong></a>
+      </nav>
+    </div>
+
+    <div class="android-large-table mdl-layout__content">
+      <div class="main-background mdl-typography--text-center korea-content">
+<div data-first-view>
+<a href="../index.html">トップ</a> &gt;&gt; <a href="information.html">攻略情報</a> &gt;&gt; <a href="nonstandard-equipment.html">非規格装備</a><br>
+<h1>インバーダーノードの変換確率</h1>
+<p class="probability-note">インバーターノードを使った非規格オプションの変換結果を、1250Lv・1500Lv・1750Lv装備で調べました。<br>2026/10/26時点の実測値です。公式に公開された確率ではありません。</p>
+</div>
+<nav class="index_table icon-navigation" aria-label="ページ内目次"><table id="table10" class="icon-navigation-table" style="max-width:720px">
+  <tbody><tr><th colspan="3">目次</th></tr><tr><td><a href="#lv1250"><img src="../item/design/image/item/iconItem_5232.png" width="45" height="45" alt=""><br><span>▼1250Lv装備</span></a></td><td><a href="#lv1500"><img src="../item/design/image/item/iconItem_5232.png" width="45" height="45" alt=""><br><span>▼1500Lv装備</span></a></td></tr><tr><td><a href="#lv1750"><img src="../item/design/image/item/iconItem_5223.png" width="45" height="45" alt=""><br><span>▼1750Lv装備</span></a></td></tr></tbody></table></nav>
+<h2 id="tier-distribution">Tier出現率</h2>
+<p class="probability-note">OPの種類によって最大Tierが異なるため、<a href="../korea/koreaupdate20260429_hikikaku_options.html">Tier・補正値一覧</a>の最大Tierごとに分けています。</p>
+<h3>最大Tier9のOP</h3>
+<div class="probability-scroll"><table id="table10" data-table="max-tier-9"><tbody>
+<tr><th>Tier</th><th>1250Lv<br>n=1,170</th><th>1500Lv<br>n=1,176</th><th>1750Lv<br>n=1,738</th></tr>
+<tr><td>Tier0</td><td>73.50%</td><td>54.08%</td><td>29.98%</td></tr>
+<tr><td>Tier1</td><td>17.86%</td><td>27.55%</td><td>30.67%</td></tr>
+<tr><td>Tier2</td><td>8.63%</td><td>14.03%</td><td>17.20%</td></tr>
+<tr><td>Tier3</td><td>0.00%</td><td>2.47%</td><td>7.94%</td></tr>
+<tr><td>Tier4</td><td>0.00%</td><td>1.87%</td><td>6.96%</td></tr>
+<tr><td>Tier5</td><td>0.00%</td><td>0.00%</td><td>4.55%</td></tr>
+<tr><td>Tier6</td><td>0.00%</td><td>0.00%</td><td>2.70%</td></tr>
+<tr><td>Tier7</td><td>0.00%</td><td>0.00%</td><td>0.00%</td></tr>
+<tr><td>Tier8</td><td>0.00%</td><td>0.00%</td><td>0.00%</td></tr>
+<tr><td>Tier9</td><td>0.00%</td><td>0.00%</td><td>0.00%</td></tr>
+</tbody></table></div>
+<h3>最大Tier6のOP</h3>
+<div class="probability-scroll"><table id="table10" data-table="max-tier-6"><tbody>
+<tr><th>Tier</th><th>1250Lv<br>n=0</th><th>1500Lv<br>n=219</th><th>1750Lv<br>n=54</th></tr>
+<tr><td>Tier0</td><td>―</td><td>97.26%</td><td>94.44%</td></tr>
+<tr><td>Tier1</td><td>―</td><td>2.74%</td><td>3.70%</td></tr>
+<tr><td>Tier2</td><td>―</td><td>0.00%</td><td>0.00%</td></tr>
+<tr><td>Tier3</td><td>―</td><td>0.00%</td><td>1.85%</td></tr>
+<tr><td>Tier4</td><td>―</td><td>0.00%</td><td>0.00%</td></tr>
+<tr><td>Tier5</td><td>―</td><td>0.00%</td><td>0.00%</td></tr>
+<tr><td>Tier6</td><td>―</td><td>0.00%</td><td>0.00%</td></tr>
+</tbody></table></div>
+<h3>最大Tier3のOP</h3>
+<div class="probability-scroll"><table id="table10" data-table="max-tier-3"><tbody>
+<tr><th>Tier</th><th>1250Lv<br>n=0</th><th>1500Lv<br>n=0</th><th>1750Lv<br>n=53</th></tr>
+<tr><td>Tier0</td><td>―</td><td>―</td><td>49.06%</td></tr>
+<tr><td>Tier1</td><td>―</td><td>―</td><td>37.74%</td></tr>
+<tr><td>Tier2</td><td>―</td><td>―</td><td>7.55%</td></tr>
+<tr><td>Tier3</td><td>―</td><td>―</td><td>5.66%</td></tr>
+</tbody></table></div>
+<h3>Tier7～9の推定出現率</h3>
+<div class="probability-scroll"><table id="table10" ><tbody>
+<tr><th>Tier</th><th>推定出現率</th><th>今回の実測</th></tr>
+<tr><td>Tier7</td><td>0.05%未満</td><td>0件</td></tr>
+<tr><td>Tier8</td><td>0.05%未満</td><td>0件</td></tr>
+<tr><td>Tier9</td><td>0.05%未満</td><td>0件</td></tr>
+</tbody></table></div>
+<h2 id="lv1250">1250Lv装備：ドーニングチェーン</h2>
+<div class="probability-scroll"><table id="table10" class="op-distribution lv1250" data-table="options-1250"><tbody>
+<tr><th>OP</th><th>最大Tier</th><th>1枠あたり</th><th>Tier0</th><th>Tier1</th><th>Tier2</th></tr>
+<tr><td>大地属性攻撃力増加</td><td>Tier9</td><td>6.92%</td><td>70.37%</td><td>20.99%</td><td>8.64%</td></tr>
+<tr><td>最大CP増加</td><td>Tier9</td><td>6.67%</td><td>70.51%</td><td>23.08%</td><td>6.41%</td></tr>
+<tr><td>全スキルレベル</td><td>Tier9</td><td>6.67%</td><td>80.77%</td><td>14.10%</td><td>5.13%</td></tr>
+<tr><td>魔法致命打確率</td><td>Tier9</td><td>6.41%</td><td>68.00%</td><td>22.67%</td><td>9.33%</td></tr>
+<tr><td>知恵</td><td>Tier9</td><td>6.32%</td><td>83.78%</td><td>5.41%</td><td>10.81%</td></tr>
+<tr><td>最大HP増加</td><td>Tier9</td><td>6.24%</td><td>75.34%</td><td>19.18%</td><td>5.48%</td></tr>
+<tr><td>風属性攻撃力増加</td><td>Tier9</td><td>6.07%</td><td>74.65%</td><td>15.49%</td><td>9.86%</td></tr>
+<tr><td>最大CP</td><td>Tier9</td><td>5.98%</td><td>74.29%</td><td>17.14%</td><td>8.57%</td></tr>
+<tr><td>最大HP</td><td>Tier9</td><td>5.90%</td><td>72.46%</td><td>18.84%</td><td>8.70%</td></tr>
+<tr><td>闇属性攻撃力増加</td><td>Tier9</td><td>5.81%</td><td>75.00%</td><td>16.18%</td><td>8.82%</td></tr>
+<tr><td>光属性攻撃力増加</td><td>Tier9</td><td>5.73%</td><td>70.15%</td><td>20.90%</td><td>8.96%</td></tr>
+<tr><td>防御力</td><td>Tier9</td><td>5.47%</td><td>71.88%</td><td>21.88%</td><td>6.25%</td></tr>
+<tr><td>攻撃速度増加</td><td>Tier9</td><td>5.38%</td><td>65.08%</td><td>28.57%</td><td>6.35%</td></tr>
+<tr><td>火属性攻撃力増加</td><td>Tier9</td><td>5.13%</td><td>71.67%</td><td>16.67%</td><td>11.67%</td></tr>
+<tr><td>水属性攻撃力増加</td><td>Tier9</td><td>5.13%</td><td>66.67%</td><td>16.67%</td><td>16.67%</td></tr>
+<tr><td>魔法攻撃力増加</td><td>Tier9</td><td>5.13%</td><td>78.33%</td><td>15.00%</td><td>6.67%</td></tr>
+<tr><td>防御力増加</td><td>Tier9</td><td>5.04%</td><td>79.66%</td><td>10.17%</td><td>10.17%</td></tr>
+</tbody></table></div>
+<h2 id="lv1500">1500Lv装備：ビーズチェーン</h2>
+<div class="probability-scroll"><table id="table10" class="op-distribution lv1500" data-table="options-1500"><tbody>
+<tr><th>OP</th><th>最大Tier</th><th>1枠あたり</th><th>Tier0</th><th>Tier1</th><th>Tier2</th><th>Tier3</th><th>Tier4</th></tr>
+<tr><td>風属性攻撃力増加</td><td>Tier9</td><td>6.16%</td><td>47.67%</td><td>39.53%</td><td>9.30%</td><td>0.00%</td><td>3.49%</td></tr>
+<tr><td>魔法攻撃力増加</td><td>Tier9</td><td>5.59%</td><td>61.54%</td><td>24.36%</td><td>14.10%</td><td>0.00%</td><td>0.00%</td></tr>
+<tr><td>最大HP増加</td><td>Tier9</td><td>5.52%</td><td>59.74%</td><td>20.78%</td><td>14.29%</td><td>3.90%</td><td>1.30%</td></tr>
+<tr><td>闇属性攻撃力増加</td><td>Tier9</td><td>5.30%</td><td>47.30%</td><td>21.62%</td><td>21.62%</td><td>8.11%</td><td>1.35%</td></tr>
+<tr><td>最大HP</td><td>Tier9</td><td>5.23%</td><td>56.16%</td><td>20.55%</td><td>17.81%</td><td>4.11%</td><td>1.37%</td></tr>
+<tr><td>防御力増加</td><td>Tier9</td><td>5.16%</td><td>61.11%</td><td>20.83%</td><td>13.89%</td><td>2.78%</td><td>1.39%</td></tr>
+<tr><td>火属性攻撃力増加</td><td>Tier9</td><td>5.09%</td><td>53.52%</td><td>26.76%</td><td>15.49%</td><td>0.00%</td><td>4.23%</td></tr>
+<tr><td>大地属性攻撃力増加</td><td>Tier9</td><td>5.09%</td><td>61.97%</td><td>22.54%</td><td>15.49%</td><td>0.00%</td><td>0.00%</td></tr>
+<tr><td>光属性攻撃力増加</td><td>Tier9</td><td>4.95%</td><td>44.93%</td><td>31.88%</td><td>18.84%</td><td>1.45%</td><td>2.90%</td></tr>
+<tr><td>最大CP</td><td>Tier9</td><td>4.95%</td><td>59.42%</td><td>27.54%</td><td>7.25%</td><td>1.45%</td><td>4.35%</td></tr>
+<tr><td>最大CP増加</td><td>Tier9</td><td>4.95%</td><td>46.38%</td><td>36.23%</td><td>15.94%</td><td>1.45%</td><td>0.00%</td></tr>
+<tr><td>知恵</td><td>Tier9</td><td>4.87%</td><td>57.35%</td><td>25.00%</td><td>14.71%</td><td>1.47%</td><td>1.47%</td></tr>
+<tr><td>防御力</td><td>Tier9</td><td>4.59%</td><td>50.00%</td><td>31.25%</td><td>12.50%</td><td>3.13%</td><td>3.13%</td></tr>
+<tr><td>攻撃速度増加</td><td>Tier9</td><td>4.52%</td><td>52.38%</td><td>28.57%</td><td>12.70%</td><td>4.76%</td><td>1.59%</td></tr>
+<tr><td>全スキルレベル</td><td>Tier9</td><td>4.23%</td><td>54.24%</td><td>32.20%</td><td>10.17%</td><td>1.69%</td><td>1.69%</td></tr>
+<tr><td>水属性攻撃力増加</td><td>Tier9</td><td>4.09%</td><td>47.37%</td><td>35.09%</td><td>10.53%</td><td>5.26%</td><td>1.75%</td></tr>
+<tr><td>魔法致命打確率</td><td>Tier9</td><td>4.01%</td><td>57.14%</td><td>25.00%</td><td>12.50%</td><td>3.57%</td><td>1.79%</td></tr>
+<tr><td>魔法致命打ダメージ増加</td><td>Tier6</td><td>5.30%</td><td>97.30%</td><td>2.70%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td></tr>
+<tr><td>魔法強打ダメージ増加</td><td>Tier6</td><td>5.23%</td><td>97.26%</td><td>2.74%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td></tr>
+<tr><td>魔法強打確率</td><td>Tier6</td><td>5.16%</td><td>97.22%</td><td>2.78%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td></tr>
+</tbody></table></div>
+<h2 id="lv1750">1750Lv装備：完全なるタリスマン</h2>
+<div class="probability-scroll"><table id="table10" class="op-distribution lv1750" data-table="options-1750"><tbody>
+<tr><th>OP</th><th>最大Tier</th><th>1枠あたり</th><th>Tier0</th><th>Tier1</th><th>Tier2</th><th>Tier3</th><th>Tier4</th><th>Tier5</th><th>Tier6</th></tr>
+<tr><td>運</td><td>Tier9</td><td>4.55%</td><td>22.62%</td><td>28.57%</td><td>22.62%</td><td>10.71%</td><td>7.14%</td><td>4.76%</td><td>3.57%</td></tr>
+<tr><td>最大CP</td><td>Tier9</td><td>4.39%</td><td>35.80%</td><td>27.16%</td><td>13.58%</td><td>7.41%</td><td>6.17%</td><td>7.41%</td><td>2.47%</td></tr>
+<tr><td>集中力</td><td>Tier9</td><td>4.23%</td><td>30.77%</td><td>24.36%</td><td>19.23%</td><td>10.26%</td><td>8.97%</td><td>3.85%</td><td>2.56%</td></tr>
+<tr><td>物理致命打抵抗増加</td><td>Tier9</td><td>4.17%</td><td>27.27%</td><td>37.66%</td><td>15.58%</td><td>9.09%</td><td>5.19%</td><td>2.60%</td><td>2.60%</td></tr>
+<tr><td>全状態異常抵抗</td><td>Tier9</td><td>4.07%</td><td>33.33%</td><td>33.33%</td><td>16.00%</td><td>5.33%</td><td>6.67%</td><td>2.67%</td><td>2.67%</td></tr>
+<tr><td>被ダメージ減少</td><td>Tier9</td><td>3.90%</td><td>33.33%</td><td>27.78%</td><td>11.11%</td><td>8.33%</td><td>4.17%</td><td>9.72%</td><td>5.56%</td></tr>
+<tr><td>敵物理致命打抵抗減少</td><td>Tier9</td><td>3.85%</td><td>22.54%</td><td>32.39%</td><td>19.72%</td><td>7.04%</td><td>9.86%</td><td>2.82%</td><td>5.63%</td></tr>
+<tr><td>フィールドのステータス低下抵抗</td><td>Tier9</td><td>3.79%</td><td>34.29%</td><td>31.43%</td><td>10.00%</td><td>10.00%</td><td>7.14%</td><td>4.29%</td><td>2.86%</td></tr>
+<tr><td>物理決定打抵抗</td><td>Tier9</td><td>3.79%</td><td>27.14%</td><td>32.86%</td><td>15.71%</td><td>10.00%</td><td>10.00%</td><td>1.43%</td><td>2.86%</td></tr>
+<tr><td>ポーション回復速度増加</td><td>Tier9</td><td>3.74%</td><td>39.13%</td><td>23.19%</td><td>18.84%</td><td>7.25%</td><td>7.25%</td><td>4.35%</td><td>0.00%</td></tr>
+<tr><td>最大CP増加</td><td>Tier9</td><td>3.69%</td><td>22.06%</td><td>32.35%</td><td>22.06%</td><td>8.82%</td><td>13.24%</td><td>0.00%</td><td>1.47%</td></tr>
+<tr><td>物理強打確率</td><td>Tier9</td><td>3.69%</td><td>33.82%</td><td>29.41%</td><td>13.24%</td><td>11.76%</td><td>4.41%</td><td>5.88%</td><td>1.47%</td></tr>
+<tr><td>ユニークアイテムドロップ確率</td><td>Tier9</td><td>3.63%</td><td>26.87%</td><td>26.87%</td><td>17.91%</td><td>10.45%</td><td>13.43%</td><td>2.99%</td><td>1.49%</td></tr>
+<tr><td>異常系抵抗</td><td>Tier9</td><td>3.63%</td><td>29.85%</td><td>32.84%</td><td>8.96%</td><td>7.46%</td><td>7.46%</td><td>10.45%</td><td>2.99%</td></tr>
+<tr><td>最大HP</td><td>Tier9</td><td>3.63%</td><td>20.90%</td><td>31.34%</td><td>34.33%</td><td>2.99%</td><td>5.97%</td><td>2.99%</td><td>1.49%</td></tr>
+<tr><td>呪い抵抗</td><td>Tier9</td><td>3.63%</td><td>46.27%</td><td>28.36%</td><td>5.97%</td><td>5.97%</td><td>5.97%</td><td>5.97%</td><td>1.49%</td></tr>
+<tr><td>物理命中率</td><td>Tier9</td><td>3.63%</td><td>25.37%</td><td>41.79%</td><td>14.93%</td><td>8.96%</td><td>5.97%</td><td>1.49%</td><td>1.49%</td></tr>
+<tr><td>全スキルレベル</td><td>Tier9</td><td>3.52%</td><td>40.00%</td><td>24.62%</td><td>13.85%</td><td>10.77%</td><td>3.08%</td><td>3.08%</td><td>4.62%</td></tr>
+<tr><td>攻撃速度増加</td><td>Tier9</td><td>3.31%</td><td>32.79%</td><td>29.51%</td><td>21.31%</td><td>6.56%</td><td>1.64%</td><td>4.92%</td><td>3.28%</td></tr>
+<tr><td>物理致命打確率</td><td>Tier9</td><td>3.31%</td><td>21.31%</td><td>22.95%</td><td>27.87%</td><td>6.56%</td><td>9.84%</td><td>9.84%</td><td>1.64%</td></tr>
+<tr><td>フィールドの属性抵抗力制限無視</td><td>Tier9</td><td>3.25%</td><td>20.00%</td><td>31.67%</td><td>16.67%</td><td>11.67%</td><td>11.67%</td><td>1.67%</td><td>6.67%</td></tr>
+<tr><td>魔法アイテムドロップ確率</td><td>Tier9</td><td>3.20%</td><td>38.98%</td><td>30.51%</td><td>13.56%</td><td>5.08%</td><td>6.78%</td><td>5.08%</td><td>0.00%</td></tr>
+<tr><td>低下抵抗</td><td>Tier9</td><td>3.14%</td><td>31.03%</td><td>31.03%</td><td>13.79%</td><td>8.62%</td><td>6.90%</td><td>8.62%</td><td>0.00%</td></tr>
+<tr><td>魔法致命打確率</td><td>Tier9</td><td>3.04%</td><td>28.57%</td><td>32.14%</td><td>25.00%</td><td>1.79%</td><td>3.57%</td><td>3.57%</td><td>5.36%</td></tr>
+<tr><td>最大HP増加</td><td>Tier9</td><td>2.93%</td><td>25.93%</td><td>40.74%</td><td>22.22%</td><td>3.70%</td><td>3.70%</td><td>1.85%</td><td>1.85%</td></tr>
+<tr><td>物理回避率</td><td>Tier9</td><td>2.49%</td><td>28.26%</td><td>36.96%</td><td>15.22%</td><td>6.52%</td><td>2.17%</td><td>6.52%</td><td>4.35%</td></tr>
+<tr><td>魔法強打確率</td><td>Tier6</td><td>2.93%</td><td>94.44%</td><td>3.70%</td><td>0.00%</td><td>1.85%</td><td>0.00%</td><td>0.00%</td><td>0.00%</td></tr>
+<tr><td>スキルクールタイム減少</td><td>Tier3</td><td>2.87%</td><td>49.06%</td><td>37.74%</td><td>7.55%</td><td>5.66%</td><td>―</td><td>―</td><td>―</td></tr>
+</tbody></table></div>
+<h2 id="reroll">変換前後のTier合計とドロップ品</h2>
+<p class="probability-note">インバーターノードによる変換では、前のTier合計を引き継ぐのではなく、毎回ランダムにOPとTierが抽選されます。<br>そのため、変換前後でTierの合計が同じになることもあります。Tierごとの出現率には、上の表のような偏りがあります。</p>
+<p class="probability-note">ドロップ品の非規格オプションにも、同様の抽選テーブルが適用されている可能性が高いと考えています。<br>今回調べたのはインバーターノードの変換結果で、ドロップ品との一致は未検証です。</p>
+<h2 id="links">関連ページ</h2>
+<div class="probability-scroll"><table id="table10" ><tbody>
+<tr><th>ページ</th><th>内容</th></tr>
+<tr><td><a href="nonstandard-equipment.html">非規格装備まとめ</a></td><td>入手方法・強化素材・装備一覧</td></tr>
+<tr><td><a href="../korea/koreaupdate20260429_hikikaku_options.html">非規格オプション Tier・補正値一覧</a></td><td>OPごとのTierと補正値</td></tr>
+<tr><td><a href="../korea/koreaupdate20260429_hikikaku_option_item_types.html">非規格オプションの付与可能部位</a></td><td>装備部位ごとのOP候補</td></tr>
+<tr><td><a href="nonstandard-openoption.html">解放変換オプションまとめ</a></td><td>錬成オプションの解放変換</td></tr>
+</tbody></table></div>
+<br>
+<h2 id="notes">補足</h2>
+<p class="probability-note">「1枠あたり」は全OP枠に占める割合、「Tier別」はそのOPが出た回数に占める割合です。</p>
+        <footer class="android-footer mdl-mega-footer">
+          <font color="red">
+            当サイトで利用している画像及びデータは、L&K Co., Ltd.に帰属します。<br>
+            許可無くご利用又は転載する事は出来ませんので、予めご了承下さい。<br>
+          </font>
+          © L&K Co., Ltd. All Rights Reserved.<br>
+        </footer>
+      </div>
+      <script src="https://sokomin.github.io/material.min.js"></script>
+    </div>
+  </div>
+</body>
+
+</html>
