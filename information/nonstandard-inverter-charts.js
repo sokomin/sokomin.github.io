@@ -94,50 +94,50 @@
     update();
     return view;
   }
-  function opChart(data, name) {
-    const view = el('div', 'prob-op-chart');
-    const tiers = data.headers.slice(3);
-    const colorFor = tier => colors[Number(tier.replace('Tier', '')) % colors.length];
-    const legend = el('div', 'prob-op-legend');
-    tiers.forEach(tier => {
+  function opChart(sokomin_opData, name) {
+    const sokomin_view = el('div', 'prob-op-chart');
+    const min_tiers = sokomin_opData.headers.slice(3);
+    const tierColor_min = tier => colors[Number(tier.replace('Tier', '')) % colors.length];
+    const sokomin_legend = el('div', 'prob-op-legend');
+    min_tiers.forEach(tier => {
       const key = el('span', 'prob-op-key', tier);
-      key.style.setProperty('--tier-color', colorFor(tier));
-      legend.append(key);
+      key.style.setProperty('--tier-color', tierColor_min(tier));
+      sokomin_legend.append(key);
     });
     const header = el('div', 'prob-op-heading');
-    header.append(el('span', '', 'OP'), el('span', '', 'OP内のTier分布'), el('span', 'prob-op-rate-heading', data.headers[2]));
+    header.append(el('span', '', 'OP'), el('span', '', 'OP内のTier分布'), el('span', 'prob-op-rate-heading', sokomin_opData.headers[2]));
     const axis = el('div', 'prob-op-axis');
     ['0%', '25%', '50%', '75%', '100%'].forEach(tick => axis.append(el('span', '', tick)));
-    const rows = el('div', 'prob-op-rows');
-    data.rows.forEach(cells => {
-      const row = el('div', 'prob-op-row');
-      const track = el('div', 'prob-op-track');
-      const distribution = tiers.map((tier, index) => tier + ' ' + cells[index + 3]).join('、');
-      track.setAttribute('role', 'img');
-      track.setAttribute('aria-label', cells[0] + '：' + distribution);
-      track.tabIndex = 0;
-      track.title = cells[0] + '：' + distribution;
-      tiers.forEach((tier, index) => {
+    const min_rows = el('div', 'prob-op-rows');
+    sokomin_opData.rows.forEach(cells => {
+      const sokomin_row = el('div', 'prob-op-row');
+      const min_track = el('div', 'prob-op-track');
+      const sokomin_distribution = min_tiers.map((tier, index) => tier + ' ' + cells[index + 3]).join('、');
+      min_track.setAttribute('role', 'img');
+      min_track.setAttribute('aria-label', cells[0] + '：' + sokomin_distribution);
+      min_track.tabIndex = 0;
+      min_track.title = cells[0] + '：' + sokomin_distribution;
+      min_tiers.forEach((tier, index) => {
         const value = percent(cells[index + 3]);
         if (value === null || value === 0) return;
-        const segment = el('span', 'prob-op-segment', value >= 8 ? cells[index + 3] : '');
-        segment.dataset.tier = tier;
-        segment.dataset.value = String(value);
-        segment.style.width = value + '%';
-        segment.style.backgroundColor = colorFor(tier);
-        segment.title = cells[0] + ' · ' + tier + ' · ' + cells[index + 3];
-        track.append(segment);
+        const segment_sokomin = el('span', 'prob-op-segment', value >= 8 ? cells[index + 3] : '');
+        segment_sokomin.dataset.tier = tier;
+        segment_sokomin.dataset.value = String(value);
+        segment_sokomin.style.width = value + '%';
+        segment_sokomin.style.backgroundColor = tierColor_min(tier);
+        segment_sokomin.title = cells[0] + ' · ' + tier + ' · ' + cells[index + 3];
+        min_track.append(segment_sokomin);
       });
       if (cells.slice(3).every(value => percent(value) === null)) {
-        track.classList.add('prob-no-sample');
-        track.append(el('span', '', '実測なし'));
+        min_track.classList.add('prob-no-sample');
+        min_track.append(el('span', '', '実測なし'));
       }
-      row.dataset.op = cells[0];
-      row.append(el('span', 'prob-op-name', cells[0]), track, el('strong', 'prob-op-value', cells[2]));
-      rows.append(row);
+      sokomin_row.dataset.op = cells[0];
+      sokomin_row.append(el('span', 'prob-op-name', cells[0]), min_track, el('strong', 'prob-op-value', cells[2]));
+      min_rows.append(sokomin_row);
     });
-    view.append(legend, header, axis, rows);
-    return view;
+    sokomin_view.append(sokomin_legend, header, axis, min_rows);
+    return sokomin_view;
   }
   const tables = new Map(Array.from(document.querySelectorAll('.probability-scroll table[data-table]'), table => [table.dataset.table, table]));
   document.querySelectorAll('[data-probability-chart-for]').forEach(mount => {
