@@ -139,21 +139,50 @@
     sokomin_view.append(sokomin_legend, header, axis, min_rows);
     return sokomin_view;
   }
+  function opRateChart(sokomin_data, name, ceiling) {
+    const sokomin_view = el('div', 'prob-op-rate-chart');
+    const header = el('div', 'prob-rate-heading');
+    header.append(el('span', '', 'OP'), el('span', '', '1枠あたりの出現率'), el('span', 'prob-op-rate-heading', '確率'));
+    const axis = el('div', 'prob-rate-axis');
+    for (let i = 0; i <= 4; i++) axis.append(el('span', '', (ceiling * i / 4) + '%'));
+    const min_rows = el('div', 'prob-rate-rows');
+    sokomin_data.rows.forEach(cells => {
+      const row = el('div', 'prob-rate-row');
+      row.dataset.op = cells[0];
+      const track = el('div', 'prob-rate-track');
+      track.setAttribute('role', 'img');
+      track.setAttribute('aria-label', cells[0] + '：1枠あたり ' + cells[1]);
+      track.title = name + ' · ' + cells[0] + ' · ' + cells[1];
+      track.tabIndex = 0;
+      const bar = el('span', 'prob-rate-bar');
+      bar.dataset.value = String(percent(cells[1]));
+      bar.style.width = (percent(cells[1]) / ceiling * 100) + '%';
+      track.append(bar);
+      row.append(el('span', 'prob-op-name', cells[0]), track, el('strong', 'prob-op-value', cells[1]));
+      min_rows.append(row);
+    });
+    sokomin_view.dataset.ceiling = String(ceiling);
+    sokomin_view.append(header, axis, min_rows);
+    return sokomin_view;
+  }
   const tables = new Map(Array.from(document.querySelectorAll('.probability-scroll table[data-table]'), table => [table.dataset.table, table]));
+  const poolRates = Array.from(tables.values()).filter(table => table.classList.contains('op-pool')).flatMap(table => read(table).rows.map(row => percent(row[1])));
+  const rateCeiling = poolRates.length ? Math.ceil(Math.max(...poolRates) / 5) * 5 : 10;
   document.querySelectorAll('[data-probability-chart-for]').forEach(mount => {
     const id = mount.dataset.probabilityChartFor;
     const table = tables.get(id);
     if (!table) return;
     const data = read(table);
     const isOp = table.classList.contains('op-distribution');
-    const heading = mount.previousElementSibling;
+    const isPool = table.classList.contains('op-pool');
+    const heading = isPool ? mount.closest('.prob-pool-section').querySelector('h3') : mount.previousElementSibling;
     const name = heading && /^H[2-4]$/.test(heading.tagName) ? heading.textContent.trim() : 'Tier分布';
-    const chart = isOp ? opChart(data, name) : tierChart(data, name);
+    const chart = isPool ? opRateChart(data, name, rateCeiling) : isOp ? opChart(data, name) : tierChart(data, name);
     const card = el('section', 'prob-chart-card');
     card.setAttribute('aria-label', name + ' 確率グラフ');
     card.dataset.chart = id;
     const toolbar = el('div', 'prob-chart-toolbar');
-    const title = el('strong', 'prob-chart-title', isOp ? 'OPの出現率' : 'Tier分布');
+    const title = el('strong', 'prob-chart-title', isOp || isPool ? 'OPの出現率' : 'Tier分布');
     chart.id = 'prob-chart-' + id;
     toolbar.append(title);
     card.append(toolbar, chart);
