@@ -1,0 +1,2108 @@
+<!DOCTYPE html>
+
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<!-- Terms of use for original articles and guides on Redstone Sokomin: https://sokomin.github.io/information/p.html -->
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta content="width=960" name="viewport" />
+    <!-- Page styles -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link href="https://sokomin.github.io/material.indigo-pink.min.css" rel="stylesheet" />
+    <link href="../styles.css" rel="stylesheet" />
+    <link href="../design/RedStoneLogo.png" rel="icon" sizes="32x32" />
+    <link href="../design/RedStoneLogo.png" rel="icon" sizes="192x192">
+    <link href="../design/RedStoneLogo.png" rel="apple-touch-icon-precomposed" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+    </script>
+    <script src="../design/jquery-3.4.1.min.js" type="text/javascript"></script>
+    <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+    </script>
+    <link href="npcop.css" rel="stylesheet" />
+    <title>宿命OP（NPCOP）の仕様・付与可能部位・強化 赤石の民衆</title>
+    <meta content="宿命OP（NPCOP）32種の効果、何OP目に付くか、武器・鎧などの付与可能部位を一覧化。NPCOPの制約、増幅・強化増幅・再構成、玲瓏な異次元ボックスとの関係も紹介。"
+        name="description" />
+    <link href="https://sokomin.github.io/option/npcop.html" rel="canonical" />
+
+    </link>
+    <script defer src="npcop-diagrams.js"></script>
+</head>
+
+<body>
+    <meta content="text/css" http-equiv="Content-Style-Type" />
+    <meta content="text/javascript" http-equiv="Content-Script-Type" />
+    <meta content="RED STONE ,レッドストーン,赤石の民衆,そこらの民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,そこみん,赤石,攻略情報" name="keywords" />
+    <link href="/rss.xml" rel="alternate" title="RSS" type="application/rss+xml" />
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <a name="container"></a>
+        <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+            <div class="mdl-layout__header-row">
+                <span class="android-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <!-- Add spacer, to align navigation to the right in desktop -->
+                <div class="android-header-spacer mdl-layout-spacer"></div>
+                <div
+                    class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input class="mdl-textfield__input" id="search-field" onkeypress="enter();"
+                            placeholder="サイト内検索(Enterで実行)" type="text" />
+                    </div>
+                </div>
+                <!-- Navigation -->
+                <div class="android-navigation-container">
+                    <nav class="android-navigation mdl-navigation">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/index.html">ホーム</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </nav>
+                </div>
+                <span class="android-mobile-title mdl-layout-title">
+                    <a href="https://sokomin.github.io/index.html">
+                        <img class="android-logo-image" src="../design/logo3.png" />
+                    </a>
+                </span>
+                <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+                    id="more-button">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                    <li class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/calculator.html">計算機</a>
+                    </li>
+                    <li class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/history.html">赤石史</a>
+                    </li>
+                    <li class="mdl-menu__item" disabled="">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://sokomin.github.io/link.html">リンク</a>
+                    </li>
+                    <li class="mdl-menu__item">
+                        <a class="mdl-navigation__link mdl-typography--text-uppercase"
+                            href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="android-drawer mdl-layout__drawer">
+            <span class="mdl-layout-title">
+                <h2>メニュー</h2>
+            </span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html">
+                    <strong>アイテム</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html">
+                    <strong>スキル</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html">
+                    <strong>モンスター</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html">
+                    <strong>ダンジョン</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html">
+                    <strong>クエスト</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html">
+                    <strong>ギルド</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html">
+                    <strong>韓国情報</strong>
+                </a>
+                <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html">
+                    <strong>雑学</strong>
+                </a>
+            </nav>
+        </div>
+        <div class="android-large-table mdl-layout__content">
+            <!--main-->
+            <div class="main-background mdl-typography--text-center npc-op-content" data-first-view="">
+                <h1>宿命OP（NPCOP）の仕様・付与可能部位</h1>
+                <p>NPC名を冠した特別なオプション「宿命OP（NPCOP）」の効果・付与枠・装備部位・制約と、増幅・再構成の仕様について紹介します。⁠​‌‌‌​​‌‌​‌‌​‌‌‌‌​‌‌​‌​‌‌​‌‌​‌‌‌‌​‌‌​‌‌​‌​‌‌​‌​​‌​‌‌​‌‌‌​⁠
+                </p>
+                <nav aria-label="ページ内目次" class="index_table icon-navigation">
+                    <table class="icon-navigation-table" id="table10" style="max-width:720px">
+                        <tbody>
+                            <tr>
+                                <th colspan="2">目次</th>
+                            </tr>
+                            <tr>
+                                <td><a href="#npc-list"><img alt="" height="45"
+                                            src="../item/design/image/item/iconItem_3589.png"
+                                            width="45" /><br /><span>▼NPCOP一覧</span></a></td>
+                                <td><a href="#restrictions"><img alt="" height="45"
+                                            src="../item/design/image/item/iconItem_3592.png"
+                                            width="45" /><br /><span>▼付与・制約</span></a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#amplification"><img alt="" height="45"
+                                            src="../item/design/image/item/iconItem_1492.png"
+                                            width="45" /><br /><span>▼強化・再構成</span></a></td>
+                                <td><a href="#reirou"><img alt="" height="45"
+                                            src="../item/design/image/item/iconItem_4407.png"
+                                            width="45" /><br /><span>▼玲瓏な異次元</span></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </nav>
+                <section id="npc-list">
+                    <h2>NPCOP一覧：何OP目・どの部位に付くか</h2>
+                    <p>付与枠は装備に並ぶ1～3番目のOP位置です。お守りで付与すると、指定枠の既存OPを上書きします。部位欄は<a
+                            href="itemoptionadd2022.html">付与可能部位一覧</a>の対象です。</p>
+                    <h3>ステータス固定値</h3>
+                    <div class="npcop-scroll">
+                        <table class="npcop-options" data-table="fixed-npc" id="table10">
+                            <colgroup>
+                                <col style="width:12%" />
+                                <col style="width:18%" />
+                                <col style="width:9%" />
+                                <col style="width:37%" />
+                                <col style="width:24%" />
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <th>NPCOP名</th>
+                                    <th>効果</th>
+                                    <th>付与枠</th>
+                                    <th>主武器</th>
+                                    <th>防具・補助武器</th>
+                                </tr>
+                                <tr data-npc-name="ジェーソン">
+                                    <td>ジェーソン</td>
+                                    <td class="op-effect e-str">力 +250</td>
+                                    <td class="op-slot-cell"><span aria-label="1OP目" class="op-slots" role="img"><i
+                                                class="o1 yes">①</i><i class="o2">②</i><i class="o3">③</i></span></td>
+                                    <td><span aria-label="主武器" class="npc-weapons" role="img"><i class="w0 on"
+                                                title="剣士／片手剣：可"></i><i class="w1 off" title="戦士／両手剣：不可"></i><i
+                                                class="w2 on" title="ランサー／槍：可"></i><i class="w3 off"
+                                                title="アーチャー／弓：不可"></i><i class="w4 off" title="ウィザード／杖：不可"></i><i
+                                                class="w5 on" title="ウルフマン／牙：可"></i><i class="w6 on"
+                                                title="ビショップ／メイス：可"></i><i class="w7 off" title="追放天使／翼：不可"></i><i
+                                                class="w8 off" title="ビーストテイマー・サマナー／笛：不可"></i><i class="w9 off"
+                                                title="シーフ／ダガー：不可"></i><i class="w10 off" title="武道家／爪(足)：不可"></i><i
+                                                class="w11 on" title="武道家／ナックル：可"></i><i class="w12 off"
+                                                title="プリンセス／スリング：不可"></i><i class="w13 off"
+                                                title="リトルウィッチ／ステッキ：不可"></i><i class="w14 off" title="悪魔／鞭：不可"></i><i
+                                                class="w15 off" title="霊術師／鎌：不可"></i><i class="w16 on"
+                                                title="闘士／クロー：可"></i><i class="w17 off" title="光奏師／本：不可"></i><i
+                                                class="w18 off" title="獣人／双剣：不可"></i><i class="w19 off"
+                                                title="メイド／ほうき：不可"></i><i class="w20 on" title="黒魔術師／ダークコア：可"></i><i
+                                                class="w21 off" title="マスケッティア／銃：不可"></i><i class="w22 on"
+                                                title="アルケミスト／錬金石：可"></i><i class="w23 off" title="キャプテン／アンカー：不可"></i><i
+                                                class="w24 on"
+                                                title="キャノニア／大砲：可"></i></span>片手剣、槍、牙、メイス、ナックル、クロー、ダークコア、錬金石、大砲</td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-off"
+                                                title="首には付与不可"><i class="s1 off"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-off"
+                                                title="頭には付与不可"><i class="s2 off"></i><span
+                                                    class="slot-label">頭</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-off"
+                                                title="腰には付与不可"><i class="s4 off"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-on"
+                                                title="グローブに付与可能"><i class="s5 on"></i><span
+                                                    class="slot-label">手袋</span></span><span class="npc-slot slot-off"
+                                                title="体には付与不可"><i class="s6 off"></i><span
+                                                    class="slot-label">体</span></span><span class="npc-slot slot-off"
+                                                title="足には付与不可"><i class="s7 off"></i><span
+                                                    class="slot-label">足</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>グローブ</td>
+                                </tr>
+                                <tr data-npc-name="セリー">
+                                    <td>セリー</td>
+                                    <td class="op-effect e-agi">敏捷 +250</td>
+                                    <td class="op-slot-cell"><span aria-label="1OP目" class="op-slots" role="img"><i
+                                                class="o1 yes">①</i><i class="o2">②</i><i class="o3">③</i></span></td>
+                                    <td><span aria-label="主武器" class="npc-weapons" role="img"><i class="w0 off"
+                                                title="剣士／片手剣：不可"></i><i class="w1 off" title="戦士／両手剣：不可"></i><i
+                                                class="w2 on" title="ランサー／槍：可"></i><i class="w3 on"
+                                                title="アーチャー／弓：可"></i><i class="w4 off" title="ウィザード／杖：不可"></i><i
+                                                class="w5 off" title="ウルフマン／牙：不可"></i><i class="w6 off"
+                                                title="ビショップ／メイス：不可"></i><i class="w7 off" title="追放天使／翼：不可"></i><i
+                                                class="w8 off" title="ビーストテイマー・サマナー／笛：不可"></i><i class="w9 on"
+                                                title="シーフ／ダガー：可"></i><i class="w10 off" title="武道家／爪(足)：不可"></i><i
+                                                class="w11 on" title="武道家／ナックル：可"></i><i class="w12 on"
+                                                title="プリンセス／スリング：可"></i><i class="w13 off"
+                                                title="リトルウィッチ／ステッキ：不可"></i><i class="w14 off" title="悪魔／鞭：不可"></i><i
+                                                class="w15 off" title="霊術師／鎌：不可"></i><i class="w16 off"
+                                                title="闘士／クロー：不可"></i><i class="w17 off" title="光奏師／本：不可"></i><i
+                                                class="w18 off" title="獣人／双剣：不可"></i><i class="w19 off"
+                                                title="メイド／ほうき：不可"></i><i class="w20 off" title="黒魔術師／ダークコア：不可"></i><i
+                                                class="w21 on" title="マスケッティア／銃：可"></i><i class="w22 off"
+                                                title="アルケミスト／錬金石：不可"></i><i class="w23 off"
+                                                title="キャプテン／アンカー：不可"></i><i class="w24 off"
+                                                title="キャノニア／大砲：不可"></i></span>槍、弓、ダガー、ナックル、スリング、銃</td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-off"
+                                                title="首には付与不可"><i class="s1 off"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-off"
+                                                title="頭には付与不可"><i class="s2 off"></i><span
+                                                    class="slot-label">頭</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-off"
+                                                title="腰には付与不可"><i class="s4 off"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-on"
+                                                title="ブレスレットに付与可能"><i class="s5 on"></i><span
+                                                    class="slot-label">腕輪</span></span><span class="npc-slot slot-off"
+                                                title="体には付与不可"><i class="s6 off"></i><span
+                                                    class="slot-label">体</span></span><span class="npc-slot slot-off"
+                                                title="足には付与不可"><i class="s7 off"></i><span
+                                                    class="slot-label">足</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>ブレスレット</td>
+                                </tr>
+                                <tr data-npc-name="トゥンガ">
+                                    <td>トゥンガ</td>
+                                    <td class="op-effect e-con">健康 +250</td>
+                                    <td class="op-slot-cell"><span aria-label="1OP目" class="op-slots" role="img"><i
+                                                class="o1 yes">①</i><i class="o2">②</i><i class="o3">③</i></span></td>
+                                    <td><span aria-label="主武器" class="npc-weapons" role="img"><i class="w0 off"
+                                                title="剣士／片手剣：不可"></i><i class="w1 off" title="戦士／両手剣：不可"></i><i
+                                                class="w2 off" title="ランサー／槍：不可"></i><i class="w3 on"
+                                                title="アーチャー／弓：可"></i><i class="w4 off" title="ウィザード／杖：不可"></i><i
+                                                class="w5 on" title="ウルフマン／牙：可"></i><i class="w6 on"
+                                                title="ビショップ／メイス：可"></i><i class="w7 off" title="追放天使／翼：不可"></i><i
+                                                class="w8 off" title="ビーストテイマー・サマナー／笛：不可"></i><i class="w9 off"
+                                                title="シーフ／ダガー：不可"></i><i class="w10 off" title="武道家／爪(足)：不可"></i><i
+                                                class="w11 off" title="武道家／ナックル：不可"></i><i class="w12 on"
+                                                title="プリンセス／スリング：可"></i><i class="w13 off"
+                                                title="リトルウィッチ／ステッキ：不可"></i><i class="w14 off" title="悪魔／鞭：不可"></i><i
+                                                class="w15 off" title="霊術師／鎌：不可"></i><i class="w16 off"
+                                                title="闘士／クロー：不可"></i><i class="w17 off" title="光奏師／本：不可"></i><i
+                                                class="w18 off" title="獣人／双剣：不可"></i><i class="w19 off"
+                                                title="メイド／ほうき：不可"></i><i class="w20 on" title="黒魔術師／ダークコア：可"></i><i
+                                                class="w21 on" title="マスケッティア／銃：可"></i><i class="w22 on"
+                                                title="アルケミスト／錬金石：可"></i><i class="w23 off" title="キャプテン／アンカー：不可"></i><i
+                                                class="w24 off" title="キャノニア／大砲：不可"></i></span>弓、牙、メイス、スリング、ダークコア、銃、錬金石
+                                    </td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-off"
+                                                title="首には付与不可"><i class="s1 off"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-off"
+                                                title="頭には付与不可"><i class="s2 off"></i><span
+                                                    class="slot-label">頭</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-on"
+                                                title="ベルトに付与可能"><i class="s4 on"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-off"
+                                                title="手には付与不可"><i class="s5 off"></i><span
+                                                    class="slot-label">手</span></span><span class="npc-slot slot-off"
+                                                title="体には付与不可"><i class="s6 off"></i><span
+                                                    class="slot-label">体</span></span><span class="npc-slot slot-off"
+                                                title="足には付与不可"><i class="s7 off"></i><span
+                                                    class="slot-label">足</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>ベルト</td>
+                                </tr>
+                                <tr data-npc-name="マファス">
+                                    <td>マファス</td>
+                                    <td class="op-effect e-wis">知恵 +250</td>
+                                    <td class="op-slot-cell"><span aria-label="2OP目" class="op-slots" role="img"><i
+                                                class="o1">①</i><i class="o2 yes">②</i><i class="o3">③</i></span></td>
+                                    <td><span aria-label="主武器" class="npc-weapons" role="img"><i class="w0 off"
+                                                title="剣士／片手剣：不可"></i><i class="w1 off" title="戦士／両手剣：不可"></i><i
+                                                class="w2 off" title="ランサー／槍：不可"></i><i class="w3 off"
+                                                title="アーチャー／弓：不可"></i><i class="w4 off" title="ウィザード／杖：不可"></i><i
+                                                class="w5 off" title="ウルフマン／牙：不可"></i><i class="w6 off"
+                                                title="ビショップ／メイス：不可"></i><i class="w7 on" title="追放天使／翼：可"></i><i
+                                                class="w8 on" title="ビーストテイマー・サマナー／笛：可"></i><i class="w9 off"
+                                                title="シーフ／ダガー：不可"></i><i class="w10 off" title="武道家／爪(足)：不可"></i><i
+                                                class="w11 off" title="武道家／ナックル：不可"></i><i class="w12 off"
+                                                title="プリンセス／スリング：不可"></i><i class="w13 on"
+                                                title="リトルウィッチ／ステッキ：可"></i><i class="w14 on" title="悪魔／鞭：可"></i><i
+                                                class="w15 off" title="霊術師／鎌：不可"></i><i class="w16 off"
+                                                title="闘士／クロー：不可"></i><i class="w17 off" title="光奏師／本：不可"></i><i
+                                                class="w18 on" title="獣人／双剣：可"></i><i class="w19 on"
+                                                title="メイド／ほうき：可"></i><i class="w20 off" title="黒魔術師／ダークコア：不可"></i><i
+                                                class="w21 off" title="マスケッティア／銃：不可"></i><i class="w22 off"
+                                                title="アルケミスト／錬金石：不可"></i><i class="w23 off"
+                                                title="キャプテン／アンカー：不可"></i><i class="w24 off"
+                                                title="キャノニア／大砲：不可"></i></span>翼、笛、ステッキ、鞭、双剣、ほうき</td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-on"
+                                                title="ネックレスに付与可能"><i class="s1 on"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-off"
+                                                title="頭には付与不可"><i class="s2 off"></i><span
+                                                    class="slot-label">頭</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-off"
+                                                title="腰には付与不可"><i class="s4 off"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-off"
+                                                title="手には付与不可"><i class="s5 off"></i><span
+                                                    class="slot-label">手</span></span><span class="npc-slot slot-off"
+                                                title="体には付与不可"><i class="s6 off"></i><span
+                                                    class="slot-label">体</span></span><span class="npc-slot slot-off"
+                                                title="足には付与不可"><i class="s7 off"></i><span
+                                                    class="slot-label">足</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>ネックレス</td>
+                                </tr>
+                                <tr data-npc-name="ティレン">
+                                    <td>ティレン</td>
+                                    <td class="op-effect e-int">知識 +250</td>
+                                    <td class="op-slot-cell"><span aria-label="2OP目" class="op-slots" role="img"><i
+                                                class="o1">①</i><i class="o2 yes">②</i><i class="o3">③</i></span></td>
+                                    <td><span aria-label="主武器" class="npc-weapons" role="img"><i class="w0 off"
+                                                title="剣士／片手剣：不可"></i><i class="w1 off" title="戦士／両手剣：不可"></i><i
+                                                class="w2 off" title="ランサー／槍：不可"></i><i class="w3 off"
+                                                title="アーチャー／弓：不可"></i><i class="w4 on" title="ウィザード／杖：可"></i><i
+                                                class="w5 off" title="ウルフマン／牙：不可"></i><i class="w6 off"
+                                                title="ビショップ／メイス：不可"></i><i class="w7 on" title="追放天使／翼：可"></i><i
+                                                class="w8 on" title="ビーストテイマー・サマナー／笛：可"></i><i class="w9 off"
+                                                title="シーフ／ダガー：不可"></i><i class="w10 off" title="武道家／爪(足)：不可"></i><i
+                                                class="w11 off" title="武道家／ナックル：不可"></i><i class="w12 off"
+                                                title="プリンセス／スリング：不可"></i><i class="w13 on"
+                                                title="リトルウィッチ／ステッキ：可"></i><i class="w14 off" title="悪魔／鞭：不可"></i><i
+                                                class="w15 off" title="霊術師／鎌：不可"></i><i class="w16 off"
+                                                title="闘士／クロー：不可"></i><i class="w17 on" title="光奏師／本：可"></i><i
+                                                class="w18 off" title="獣人／双剣：不可"></i><i class="w19 off"
+                                                title="メイド／ほうき：不可"></i><i class="w20 off" title="黒魔術師／ダークコア：不可"></i><i
+                                                class="w21 off" title="マスケッティア／銃：不可"></i><i class="w22 off"
+                                                title="アルケミスト／錬金石：不可"></i><i class="w23 off"
+                                                title="キャプテン／アンカー：不可"></i><i class="w24 on"
+                                                title="キャノニア／大砲：可"></i></span>杖、翼、笛、ステッキ、本、大砲</td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-off"
+                                                title="首には付与不可"><i class="s1 off"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-on"
+                                                title="冠に付与可能"><i class="s2 on"></i><span
+                                                    class="slot-label">冠</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-off"
+                                                title="腰には付与不可"><i class="s4 off"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-off"
+                                                title="手には付与不可"><i class="s5 off"></i><span
+                                                    class="slot-label">手</span></span><span class="npc-slot slot-off"
+                                                title="体には付与不可"><i class="s6 off"></i><span
+                                                    class="slot-label">体</span></span><span class="npc-slot slot-off"
+                                                title="足には付与不可"><i class="s7 off"></i><span
+                                                    class="slot-label">足</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>冠</td>
+                                </tr>
+                                <tr data-npc-name="ジム・モリ">
+                                    <td>ジム・モリ</td>
+                                    <td class="op-effect e-cha">カリスマ +250</td>
+                                    <td class="op-slot-cell"><span aria-label="2OP目" class="op-slots" role="img"><i
+                                                class="o1">①</i><i class="o2 yes">②</i><i class="o3">③</i></span></td>
+                                    <td><span aria-label="主武器" class="npc-weapons" role="img"><i class="w0 off"
+                                                title="剣士／片手剣：不可"></i><i class="w1 off" title="戦士／両手剣：不可"></i><i
+                                                class="w2 off" title="ランサー／槍：不可"></i><i class="w3 off"
+                                                title="アーチャー／弓：不可"></i><i class="w4 on" title="ウィザード／杖：可"></i><i
+                                                class="w5 off" title="ウルフマン／牙：不可"></i><i class="w6 off"
+                                                title="ビショップ／メイス：不可"></i><i class="w7 on" title="追放天使／翼：可"></i><i
+                                                class="w8 off" title="ビーストテイマー・サマナー／笛：不可"></i><i class="w9 off"
+                                                title="シーフ／ダガー：不可"></i><i class="w10 off" title="武道家／爪(足)：不可"></i><i
+                                                class="w11 off" title="武道家／ナックル：不可"></i><i class="w12 off"
+                                                title="プリンセス／スリング：不可"></i><i class="w13 on"
+                                                title="リトルウィッチ／ステッキ：可"></i><i class="w14 on" title="悪魔／鞭：可"></i><i
+                                                class="w15 off" title="霊術師／鎌：不可"></i><i class="w16 off"
+                                                title="闘士／クロー：不可"></i><i class="w17 on" title="光奏師／本：可"></i><i
+                                                class="w18 on" title="獣人／双剣：可"></i><i class="w19 on"
+                                                title="メイド／ほうき：可"></i><i class="w20 on" title="黒魔術師／ダークコア：可"></i><i
+                                                class="w21 off" title="マスケッティア／銃：不可"></i><i class="w22 on"
+                                                title="アルケミスト／錬金石：可"></i><i class="w23 off" title="キャプテン／アンカー：不可"></i><i
+                                                class="w24 off"
+                                                title="キャノニア／大砲：不可"></i></span>杖、翼、ステッキ、鞭、本、双剣、ほうき、ダークコア、錬金石</td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-off"
+                                                title="首には付与不可"><i class="s1 off"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-on"
+                                                title="冠に付与可能"><i class="s2 on"></i><span
+                                                    class="slot-label">冠</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-off"
+                                                title="腰には付与不可"><i class="s4 off"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-off"
+                                                title="手には付与不可"><i class="s5 off"></i><span
+                                                    class="slot-label">手</span></span><span class="npc-slot slot-off"
+                                                title="体には付与不可"><i class="s6 off"></i><span
+                                                    class="slot-label">体</span></span><span class="npc-slot slot-off"
+                                                title="足には付与不可"><i class="s7 off"></i><span
+                                                    class="slot-label">足</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>冠</td>
+                                </tr>
+                                <tr data-npc-name="ハーソン">
+                                    <td>ハーソン</td>
+                                    <td class="op-effect e-luck">運 +250</td>
+                                    <td class="op-slot-cell"><span aria-label="3OP目" class="op-slots" role="img"><i
+                                                class="o1">①</i><i class="o2">②</i><i class="o3 yes">③</i></span></td>
+                                    <td><span aria-label="主武器" class="npc-weapons" role="img"><i class="w0 off"
+                                                title="剣士／片手剣：不可"></i><i class="w1 off" title="戦士／両手剣：不可"></i><i
+                                                class="w2 off" title="ランサー／槍：不可"></i><i class="w3 off"
+                                                title="アーチャー／弓：不可"></i><i class="w4 off" title="ウィザード／杖：不可"></i><i
+                                                class="w5 off" title="ウルフマン／牙：不可"></i><i class="w6 off"
+                                                title="ビショップ／メイス：不可"></i><i class="w7 off" title="追放天使／翼：不可"></i><i
+                                                class="w8 off" title="ビーストテイマー・サマナー／笛：不可"></i><i class="w9 off"
+                                                title="シーフ／ダガー：不可"></i><i class="w10 on" title="武道家／爪(足)：可"></i><i
+                                                class="w11 off" title="武道家／ナックル：不可"></i><i class="w12 off"
+                                                title="プリンセス／スリング：不可"></i><i class="w13 off"
+                                                title="リトルウィッチ／ステッキ：不可"></i><i class="w14 off" title="悪魔／鞭：不可"></i><i
+                                                class="w15 off" title="霊術師／鎌：不可"></i><i class="w16 off"
+                                                title="闘士／クロー：不可"></i><i class="w17 off" title="光奏師／本：不可"></i><i
+                                                class="w18 off" title="獣人／双剣：不可"></i><i class="w19 off"
+                                                title="メイド／ほうき：不可"></i><i class="w20 off" title="黒魔術師／ダークコア：不可"></i><i
+                                                class="w21 off" title="マスケッティア／銃：不可"></i><i class="w22 off"
+                                                title="アルケミスト／錬金石：不可"></i><i class="w23 off"
+                                                title="キャプテン／アンカー：不可"></i><i class="w24 off"
+                                                title="キャノニア／大砲：不可"></i></span>爪（武道家）</td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-on"
+                                                title="ネックレスに付与可能"><i class="s1 on"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-on"
+                                                title="ヘルメット、冠に付与可能"><i class="s2 on"></i><span
+                                                    class="slot-label">兜・冠</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-off"
+                                                title="腰には付与不可"><i class="s4 off"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-on"
+                                                title="グローブ、ブレスレット、槍投擲機に付与可能"><i class="s5 on"></i><span
+                                                    class="slot-label">手・腕</span></span><span class="npc-slot slot-off"
+                                                title="体には付与不可"><i class="s6 off"></i><span
+                                                    class="slot-label">体</span></span><span class="npc-slot slot-on"
+                                                title="爪に付与可能"><i class="s7 on"></i><span
+                                                    class="slot-label">爪</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>槍投擲機、ヘルメット、冠、ネックレス、グローブ、ブレスレット
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <h3>ステータス比率</h3>
+                    <div class="npcop-scroll">
+                        <table class="npcop-options" data-table="ratio-npc" id="table10">
+                            <colgroup>
+                                <col style="width:12%" />
+                                <col style="width:18%" />
+                                <col style="width:9%" />
+                                <col style="width:37%" />
+                                <col style="width:24%" />
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <th>NPCOP名</th>
+                                    <th>効果</th>
+                                    <th>付与枠</th>
+                                    <th>主武器</th>
+                                    <th>防具・補助武器</th>
+                                </tr>
+                                <tr data-npc-name="ガイルート">
+                                    <td>ガイルート</td>
+                                    <td class="op-effect e-str">力 +2 /レベル 3</td>
+                                    <td class="op-slot-cell"><span aria-label="1・2OP目" class="op-slots" role="img"><i
+                                                class="o1 yes">①</i><i class="o2 yes">②</i><i class="o3">③</i></span>
+                                    </td>
+                                    <td><span id="npcop-weapons-shared-0" aria-label="主武器" class="npc-weapons"
+                                            role="img"><i class="w0 on" title="剣士／片手剣：可"></i><i class="w1 on"
+                                                title="戦士／両手剣：可"></i><i class="w2 on" title="ランサー／槍：可"></i><i
+                                                class="w3 on" title="アーチャー／弓：可"></i><i class="w4 on"
+                                                title="ウィザード／杖：可"></i><i class="w5 on" title="ウルフマン／牙：可"></i><i
+                                                class="w6 on" title="ビショップ／メイス：可"></i><i class="w7 on"
+                                                title="追放天使／翼：可"></i><i class="w8 on" title="ビーストテイマー・サマナー／笛：可"></i><i
+                                                class="w9 on" title="シーフ／ダガー：可"></i><i class="w10 on"
+                                                title="武道家／爪(足)：可"></i><i class="w11 on" title="武道家／ナックル：可"></i><i
+                                                class="w12 on" title="プリンセス／スリング：可"></i><i class="w13 on"
+                                                title="リトルウィッチ／ステッキ：可"></i><i class="w14 on" title="悪魔／鞭：可"></i><i
+                                                class="w15 on" title="霊術師／鎌：可"></i><i class="w16 on"
+                                                title="闘士／クロー：可"></i><i class="w17 on" title="光奏師／本：可"></i><i
+                                                class="w18 on" title="獣人／双剣：可"></i><i class="w19 on"
+                                                title="メイド／ほうき：可"></i><i class="w20 on" title="黒魔術師／ダークコア：可"></i><i
+                                                class="w21 on" title="マスケッティア／銃：可"></i><i class="w22 on"
+                                                title="アルケミスト／錬金石：可"></i><i class="w23 on" title="キャプテン／アンカー：可"></i><i
+                                                class="w24 on" title="キャノニア／大砲：可"></i></span><a
+                                            href="#weapon-types">全24種</a>、爪（武道家）</td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-off"
+                                                title="首には付与不可"><i class="s1 off"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-off"
+                                                title="頭には付与不可"><i class="s2 off"></i><span
+                                                    class="slot-label">頭</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-off"
+                                                title="腰には付与不可"><i class="s4 off"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-on"
+                                                title="グローブに付与可能"><i class="s5 on"></i><span
+                                                    class="slot-label">手袋</span></span><span class="npc-slot slot-off"
+                                                title="体には付与不可"><i class="s6 off"></i><span
+                                                    class="slot-label">体</span></span><span class="npc-slot slot-on"
+                                                title="爪に付与可能"><i class="s7 on"></i><span
+                                                    class="slot-label">爪</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>グローブ</td>
+                                </tr>
+                                <tr data-npc-name="バルラレル">
+                                    <td>バルラレル</td>
+                                    <td class="op-effect e-agi">敏捷 +2 /レベル 3</td>
+                                    <td class="op-slot-cell"><span aria-label="1・2OP目" class="op-slots" role="img"><i
+                                                class="o1 yes">①</i><i class="o2 yes">②</i><i class="o3">③</i></span>
+                                    </td>
+                                    <td><span aria-label="主武器" class="npc-weapons"
+                                            data-npcop-weapons-ref="npcop-weapons-shared-0" role="img"></span><a
+                                            href="#weapon-types">全24種</a>、爪（武道家）</td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-off"
+                                                title="首には付与不可"><i class="s1 off"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-off"
+                                                title="頭には付与不可"><i class="s2 off"></i><span
+                                                    class="slot-label">頭</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-off"
+                                                title="腰には付与不可"><i class="s4 off"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-off"
+                                                title="手には付与不可"><i class="s5 off"></i><span
+                                                    class="slot-label">手</span></span><span class="npc-slot slot-off"
+                                                title="体には付与不可"><i class="s6 off"></i><span
+                                                    class="slot-label">体</span></span><span class="npc-slot slot-on"
+                                                title="爪、ブーツに付与可能"><i class="s7 on"></i><span
+                                                    class="slot-label">靴・爪</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>シューズ</td>
+                                </tr>
+                                <tr data-npc-name="ロシペル">
+                                    <td>ロシペル</td>
+                                    <td class="op-effect e-con">健康 +2 /レベル 3</td>
+                                    <td class="op-slot-cell"><span aria-label="1・2OP目" class="op-slots" role="img"><i
+                                                class="o1 yes">①</i><i class="o2 yes">②</i><i class="o3">③</i></span>
+                                    </td>
+                                    <td><span aria-label="主武器" class="npc-weapons"
+                                            data-npcop-weapons-ref="npcop-weapons-shared-0" role="img"></span><a
+                                            href="#weapon-types">全24種</a>、爪（武道家）</td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-off"
+                                                title="首には付与不可"><i class="s1 off"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-off"
+                                                title="頭には付与不可"><i class="s2 off"></i><span
+                                                    class="slot-label">頭</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-on"
+                                                title="ベルトに付与可能"><i class="s4 on"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-off"
+                                                title="手には付与不可"><i class="s5 off"></i><span
+                                                    class="slot-label">手</span></span><span class="npc-slot slot-off"
+                                                title="体には付与不可"><i class="s6 off"></i><span
+                                                    class="slot-label">体</span></span><span class="npc-slot slot-on"
+                                                title="爪に付与可能"><i class="s7 on"></i><span
+                                                    class="slot-label">爪</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>ベルト</td>
+                                </tr>
+                                <tr data-npc-name="テマヌエル">
+                                    <td>テマヌエル</td>
+                                    <td class="op-effect e-wis">知恵 +2 /レベル 3</td>
+                                    <td class="op-slot-cell"><span aria-label="2・3OP目" class="op-slots" role="img"><i
+                                                class="o1">①</i><i class="o2 yes">②</i><i class="o3 yes">③</i></span>
+                                    </td>
+                                    <td><span id="npcop-weapons-shared-1" aria-label="主武器" class="npc-weapons"
+                                            role="img"><i class="w0 on" title="剣士／片手剣：可"></i><i class="w1 on"
+                                                title="戦士／両手剣：可"></i><i class="w2 on" title="ランサー／槍：可"></i><i
+                                                class="w3 on" title="アーチャー／弓：可"></i><i class="w4 on"
+                                                title="ウィザード／杖：可"></i><i class="w5 on" title="ウルフマン／牙：可"></i><i
+                                                class="w6 on" title="ビショップ／メイス：可"></i><i class="w7 on"
+                                                title="追放天使／翼：可"></i><i class="w8 on" title="ビーストテイマー・サマナー／笛：可"></i><i
+                                                class="w9 on" title="シーフ／ダガー：可"></i><i class="w10 off"
+                                                title="武道家／爪(足)：不可"></i><i class="w11 on" title="武道家／ナックル：可"></i><i
+                                                class="w12 on" title="プリンセス／スリング：可"></i><i class="w13 on"
+                                                title="リトルウィッチ／ステッキ：可"></i><i class="w14 on" title="悪魔／鞭：可"></i><i
+                                                class="w15 on" title="霊術師／鎌：可"></i><i class="w16 on"
+                                                title="闘士／クロー：可"></i><i class="w17 on" title="光奏師／本：可"></i><i
+                                                class="w18 on" title="獣人／双剣：可"></i><i class="w19 on"
+                                                title="メイド／ほうき：可"></i><i class="w20 on" title="黒魔術師／ダークコア：可"></i><i
+                                                class="w21 on" title="マスケッティア／銃：可"></i><i class="w22 on"
+                                                title="アルケミスト／錬金石：可"></i><i class="w23 on" title="キャプテン／アンカー：可"></i><i
+                                                class="w24 on" title="キャノニア／大砲：可"></i></span><a
+                                            href="#weapon-types">全24種</a></td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-off"
+                                                title="首には付与不可"><i class="s1 off"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-off"
+                                                title="頭には付与不可"><i class="s2 off"></i><span
+                                                    class="slot-label">頭</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-off"
+                                                title="腰には付与不可"><i class="s4 off"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-on"
+                                                title="ブレスレットに付与可能"><i class="s5 on"></i><span
+                                                    class="slot-label">腕輪</span></span><span class="npc-slot slot-off"
+                                                title="体には付与不可"><i class="s6 off"></i><span
+                                                    class="slot-label">体</span></span><span class="npc-slot slot-off"
+                                                title="足には付与不可"><i class="s7 off"></i><span
+                                                    class="slot-label">足</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>ブレスレット</td>
+                                </tr>
+                                <tr data-npc-name="オニトルロ">
+                                    <td>オニトルロ</td>
+                                    <td class="op-effect e-int">知識 +2 /レベル 3</td>
+                                    <td class="op-slot-cell"><span aria-label="2・3OP目" class="op-slots" role="img"><i
+                                                class="o1">①</i><i class="o2 yes">②</i><i class="o3 yes">③</i></span>
+                                    </td>
+                                    <td><span aria-label="主武器" class="npc-weapons"
+                                            data-npcop-weapons-ref="npcop-weapons-shared-1" role="img"></span><a
+                                            href="#weapon-types">全24種</a></td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-off"
+                                                title="首には付与不可"><i class="s1 off"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-on"
+                                                title="冠に付与可能"><i class="s2 on"></i><span
+                                                    class="slot-label">冠</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-off"
+                                                title="腰には付与不可"><i class="s4 off"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-off"
+                                                title="手には付与不可"><i class="s5 off"></i><span
+                                                    class="slot-label">手</span></span><span class="npc-slot slot-off"
+                                                title="体には付与不可"><i class="s6 off"></i><span
+                                                    class="slot-label">体</span></span><span class="npc-slot slot-off"
+                                                title="足には付与不可"><i class="s7 off"></i><span
+                                                    class="slot-label">足</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>冠</td>
+                                </tr>
+                                <tr data-npc-name="タニア">
+                                    <td>タニア</td>
+                                    <td class="op-effect e-cha">カリスマ +2 /レベル 3</td>
+                                    <td class="op-slot-cell"><span aria-label="2・3OP目" class="op-slots" role="img"><i
+                                                class="o1">①</i><i class="o2 yes">②</i><i class="o3 yes">③</i></span>
+                                    </td>
+                                    <td><span aria-label="主武器" class="npc-weapons"
+                                            data-npcop-weapons-ref="npcop-weapons-shared-1" role="img"></span><a
+                                            href="#weapon-types">全24種</a></td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-on"
+                                                title="ネックレスに付与可能"><i class="s1 on"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-off"
+                                                title="頭には付与不可"><i class="s2 off"></i><span
+                                                    class="slot-label">頭</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-off"
+                                                title="腰には付与不可"><i class="s4 off"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-off"
+                                                title="手には付与不可"><i class="s5 off"></i><span
+                                                    class="slot-label">手</span></span><span class="npc-slot slot-off"
+                                                title="体には付与不可"><i class="s6 off"></i><span
+                                                    class="slot-label">体</span></span><span class="npc-slot slot-off"
+                                                title="足には付与不可"><i class="s7 off"></i><span
+                                                    class="slot-label">足</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>ネックレス</td>
+                                </tr>
+                                <tr data-npc-name="ランディス">
+                                    <td>ランディス</td>
+                                    <td class="op-effect e-luck">運 +2 /レベル 3</td>
+                                    <td class="op-slot-cell"><span aria-label="1・3OP目" class="op-slots" role="img"><i
+                                                class="o1 yes">①</i><i class="o2">②</i><i class="o3 yes">③</i></span>
+                                    </td>
+                                    <td><span aria-label="主武器" class="npc-weapons"
+                                            data-npcop-weapons-ref="npcop-weapons-shared-0" role="img"></span><a
+                                            href="#weapon-types">全24種</a>、爪（武道家）</td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-on"
+                                                title="ネックレスに付与可能"><i class="s1 on"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-on"
+                                                title="冠に付与可能"><i class="s2 on"></i><span
+                                                    class="slot-label">冠</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-on"
+                                                title="ベルトに付与可能"><i class="s4 on"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-on"
+                                                title="グローブ、ブレスレットに付与可能"><i class="s5 on"></i><span
+                                                    class="slot-label">手・腕</span></span><span class="npc-slot slot-off"
+                                                title="体には付与不可"><i class="s6 off"></i><span
+                                                    class="slot-label">体</span></span><span class="npc-slot slot-on"
+                                                title="爪、ブーツに付与可能"><i class="s7 on"></i><span
+                                                    class="slot-label">靴・爪</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>冠、ネックレス、ベルト、グローブ、ブレスレット、シューズ
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <h3>その他の効果</h3>
+                    <div class="npcop-scroll">
+                        <table class="npcop-options" data-table="other-npc" id="table10">
+                            <colgroup>
+                                <col style="width:12%" />
+                                <col style="width:18%" />
+                                <col style="width:9%" />
+                                <col style="width:37%" />
+                                <col style="width:24%" />
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <th>NPCOP名</th>
+                                    <th>効果</th>
+                                    <th>付与枠</th>
+                                    <th>主武器</th>
+                                    <th>防具・補助武器</th>
+                                </tr>
+                                <tr data-npc-name="サナ">
+                                    <td>サナ</td>
+                                    <td class="op-effect e-physical">ダメージ +300 %</td>
+                                    <td class="op-slot-cell"><span aria-label="1OP目" class="op-slots" role="img"><i
+                                                class="o1 yes">①</i><i class="o2">②</i><i class="o3">③</i></span></td>
+                                    <td><span aria-label="主武器" class="npc-weapons"
+                                            data-npcop-weapons-ref="npcop-weapons-shared-1" role="img"></span><a
+                                            href="#weapon-types">全24種</a></td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-off"
+                                                title="首には付与不可"><i class="s1 off"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-off"
+                                                title="頭には付与不可"><i class="s2 off"></i><span
+                                                    class="slot-label">頭</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-off"
+                                                title="腰には付与不可"><i class="s4 off"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-off"
+                                                title="手には付与不可"><i class="s5 off"></i><span
+                                                    class="slot-label">手</span></span><span class="npc-slot slot-off"
+                                                title="体には付与不可"><i class="s6 off"></i><span
+                                                    class="slot-label">体</span></span><span class="npc-slot slot-off"
+                                                title="足には付与不可"><i class="s7 off"></i><span
+                                                    class="slot-label">足</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>—</td>
+                                </tr>
+                                <tr data-npc-name="シュルト">
+                                    <td>シュルト</td>
+                                    <td class="op-effect e-defence">防御力 +300 %</td>
+                                    <td class="op-slot-cell"><span aria-label="1OP目" class="op-slots" role="img"><i
+                                                class="o1 yes">①</i><i class="o2">②</i><i class="o3">③</i></span></td>
+                                    <td><span id="npcop-weapons-shared-2" aria-label="主武器" class="npc-weapons"
+                                            role="img"><i class="w0 off" title="剣士／片手剣：不可"></i><i class="w1 off"
+                                                title="戦士／両手剣：不可"></i><i class="w2 off" title="ランサー／槍：不可"></i><i
+                                                class="w3 off" title="アーチャー／弓：不可"></i><i class="w4 off"
+                                                title="ウィザード／杖：不可"></i><i class="w5 off" title="ウルフマン／牙：不可"></i><i
+                                                class="w6 off" title="ビショップ／メイス：不可"></i><i class="w7 off"
+                                                title="追放天使／翼：不可"></i><i class="w8 off"
+                                                title="ビーストテイマー・サマナー／笛：不可"></i><i class="w9 off"
+                                                title="シーフ／ダガー：不可"></i><i class="w10 off" title="武道家／爪(足)：不可"></i><i
+                                                class="w11 off" title="武道家／ナックル：不可"></i><i class="w12 off"
+                                                title="プリンセス／スリング：不可"></i><i class="w13 off"
+                                                title="リトルウィッチ／ステッキ：不可"></i><i class="w14 off" title="悪魔／鞭：不可"></i><i
+                                                class="w15 off" title="霊術師／鎌：不可"></i><i class="w16 off"
+                                                title="闘士／クロー：不可"></i><i class="w17 off" title="光奏師／本：不可"></i><i
+                                                class="w18 off" title="獣人／双剣：不可"></i><i class="w19 off"
+                                                title="メイド／ほうき：不可"></i><i class="w20 off" title="黒魔術師／ダークコア：不可"></i><i
+                                                class="w21 off" title="マスケッティア／銃：不可"></i><i class="w22 off"
+                                                title="アルケミスト／錬金石：不可"></i><i class="w23 off"
+                                                title="キャプテン／アンカー：不可"></i><i class="w24 off"
+                                                title="キャノニア／大砲：不可"></i></span>—</td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-off"
+                                                title="首には付与不可"><i class="s1 off"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-off"
+                                                title="頭には付与不可"><i class="s2 off"></i><span
+                                                    class="slot-label">頭</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-off"
+                                                title="腰には付与不可"><i class="s4 off"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-off"
+                                                title="手には付与不可"><i class="s5 off"></i><span
+                                                    class="slot-label">手</span></span><span class="npc-slot slot-on"
+                                                title="共用鎧に付与可能"><i class="s6 on"></i><span
+                                                    class="slot-label">共通鎧</span></span><span class="npc-slot slot-off"
+                                                title="足には付与不可"><i class="s7 off"></i><span
+                                                    class="slot-label">足</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>共通鎧</td>
+                                </tr>
+                                <tr data-npc-name="タポ">
+                                    <td>タポ</td>
+                                    <td class="op-effect e-hp">最大HP +200 %</td>
+                                    <td class="op-slot-cell"><span aria-label="1OP目" class="op-slots" role="img"><i
+                                                class="o1 yes">①</i><i class="o2">②</i><i class="o3">③</i></span></td>
+                                    <td><span aria-label="主武器" class="npc-weapons"
+                                            data-npcop-weapons-ref="npcop-weapons-shared-2" role="img"></span>—</td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-on"
+                                                title="ネックレスに付与可能"><i class="s1 on"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-off"
+                                                title="頭には付与不可"><i class="s2 off"></i><span
+                                                    class="slot-label">頭</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-off"
+                                                title="腰には付与不可"><i class="s4 off"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-off"
+                                                title="手には付与不可"><i class="s5 off"></i><span
+                                                    class="slot-label">手</span></span><span class="npc-slot slot-on"
+                                                title="共用鎧に付与可能"><i class="s6 on"></i><span
+                                                    class="slot-label">共通鎧</span></span><span class="npc-slot slot-off"
+                                                title="足には付与不可"><i class="s7 off"></i><span
+                                                    class="slot-label">足</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>ネックレス、共通鎧</td>
+                                </tr>
+                                <tr data-npc-name="ケイルン">
+                                    <td>ケイルン</td>
+                                    <td class="op-effect e-cp">最大CP +200 %</td>
+                                    <td class="op-slot-cell"><span aria-label="2OP目" class="op-slots" role="img"><i
+                                                class="o1">①</i><i class="o2 yes">②</i><i class="o3">③</i></span></td>
+                                    <td><span aria-label="主武器" class="npc-weapons"
+                                            data-npcop-weapons-ref="npcop-weapons-shared-2" role="img"></span>—</td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-off"
+                                                title="首には付与不可"><i class="s1 off"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-on"
+                                                title="冠に付与可能"><i class="s2 on"></i><span
+                                                    class="slot-label">冠</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-off"
+                                                title="腰には付与不可"><i class="s4 off"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-off"
+                                                title="手には付与不可"><i class="s5 off"></i><span
+                                                    class="slot-label">手</span></span><span class="npc-slot slot-on"
+                                                title="専用鎧に付与可能"><i class="s6 on"></i><span
+                                                    class="slot-label">専用鎧</span></span><span class="npc-slot slot-off"
+                                                title="足には付与不可"><i class="s7 off"></i><span
+                                                    class="slot-label">足</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>冠、専用鎧</td>
+                                </tr>
+                                <tr data-npc-name="バイル">
+                                    <td>バイル</td>
+                                    <td class="op-effect e-utility">命中率 +20 %</td>
+                                    <td class="op-slot-cell"><span aria-label="3OP目" class="op-slots" role="img"><i
+                                                class="o1">①</i><i class="o2">②</i><i class="o3 yes">③</i></span></td>
+                                    <td><span aria-label="主武器" class="npc-weapons" role="img"><i class="w0 on"
+                                                title="剣士／片手剣：可"></i><i class="w1 off" title="戦士／両手剣：不可"></i><i
+                                                class="w2 off" title="ランサー／槍：不可"></i><i class="w3 on"
+                                                title="アーチャー／弓：可"></i><i class="w4 on" title="ウィザード／杖：可"></i><i
+                                                class="w5 on" title="ウルフマン／牙：可"></i><i class="w6 off"
+                                                title="ビショップ／メイス：不可"></i><i class="w7 off" title="追放天使／翼：不可"></i><i
+                                                class="w8 on" title="ビーストテイマー・サマナー／笛：可"></i><i class="w9 on"
+                                                title="シーフ／ダガー：可"></i><i class="w10 off" title="武道家／爪(足)：不可"></i><i
+                                                class="w11 on" title="武道家／ナックル：可"></i><i class="w12 on"
+                                                title="プリンセス／スリング：可"></i><i class="w13 on" title="リトルウィッチ／ステッキ：可"></i><i
+                                                class="w14 on" title="悪魔／鞭：可"></i><i class="w15 off"
+                                                title="霊術師／鎌：不可"></i><i class="w16 on" title="闘士／クロー：可"></i><i
+                                                class="w17 on" title="光奏師／本：可"></i><i class="w18 on"
+                                                title="獣人／双剣：可"></i><i class="w19 on" title="メイド／ほうき：可"></i><i
+                                                class="w20 on" title="黒魔術師／ダークコア：可"></i><i class="w21 on"
+                                                title="マスケッティア／銃：可"></i><i class="w22 on" title="アルケミスト／錬金石：可"></i><i
+                                                class="w23 off" title="キャプテン／アンカー：不可"></i><i class="w24 on"
+                                                title="キャノニア／大砲：可"></i></span>片手剣、弓、杖、牙、笛、ダガー、ナックル、スリング、ステッキ、鞭、クロー、本、双剣、ほうき、ダークコア、銃、錬金石、大砲
+                                    </td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-off"
+                                                title="首には付与不可"><i class="s1 off"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-off"
+                                                title="頭には付与不可"><i class="s2 off"></i><span
+                                                    class="slot-label">頭</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-off"
+                                                title="腰には付与不可"><i class="s4 off"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-off"
+                                                title="手には付与不可"><i class="s5 off"></i><span
+                                                    class="slot-label">手</span></span><span class="npc-slot slot-off"
+                                                title="体には付与不可"><i class="s6 off"></i><span
+                                                    class="slot-label">体</span></span><span class="npc-slot slot-off"
+                                                title="足には付与不可"><i class="s7 off"></i><span
+                                                    class="slot-label">足</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>—</td>
+                                </tr>
+                                <tr data-npc-name="アリエル">
+                                    <td>アリエル</td>
+                                    <td class="op-effect e-utility">回避率 +20 %</td>
+                                    <td class="op-slot-cell"><span aria-label="3OP目" class="op-slots" role="img"><i
+                                                class="o1">①</i><i class="o2">②</i><i class="o3 yes">③</i></span></td>
+                                    <td><span aria-label="主武器" class="npc-weapons"
+                                            data-npcop-weapons-ref="npcop-weapons-shared-2" role="img"></span>—</td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-off"
+                                                title="首には付与不可"><i class="s1 off"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-off"
+                                                title="頭には付与不可"><i class="s2 off"></i><span
+                                                    class="slot-label">頭</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-off"
+                                                title="腰には付与不可"><i class="s4 off"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-off"
+                                                title="手には付与不可"><i class="s5 off"></i><span
+                                                    class="slot-label">手</span></span><span class="npc-slot slot-on"
+                                                title="専用鎧に付与可能"><i class="s6 on"></i><span
+                                                    class="slot-label">専用鎧</span></span><span class="npc-slot slot-off"
+                                                title="足には付与不可"><i class="s7 off"></i><span
+                                                    class="slot-label">足</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>専用鎧</td>
+                                </tr>
+                                <tr data-npc-name="オベ">
+                                    <td>オベ</td>
+                                    <td class="op-effect e-physical">致命打発動確率 +25 %</td>
+                                    <td class="op-slot-cell"><span aria-label="3OP目" class="op-slots" role="img"><i
+                                                class="o1">①</i><i class="o2">②</i><i class="o3 yes">③</i></span></td>
+                                    <td><span id="npcop-weapons-shared-3" aria-label="主武器" class="npc-weapons"
+                                            role="img"><i class="w0 on" title="剣士／片手剣：可"></i><i class="w1 on"
+                                                title="戦士／両手剣：可"></i><i class="w2 on" title="ランサー／槍：可"></i><i
+                                                class="w3 off" title="アーチャー／弓：不可"></i><i class="w4 on"
+                                                title="ウィザード／杖：可"></i><i class="w5 on" title="ウルフマン／牙：可"></i><i
+                                                class="w6 on" title="ビショップ／メイス：可"></i><i class="w7 off"
+                                                title="追放天使／翼：不可"></i><i class="w8 off"
+                                                title="ビーストテイマー・サマナー／笛：不可"></i><i class="w9 off"
+                                                title="シーフ／ダガー：不可"></i><i class="w10 off" title="武道家／爪(足)：不可"></i><i
+                                                class="w11 on" title="武道家／ナックル：可"></i><i class="w12 off"
+                                                title="プリンセス／スリング：不可"></i><i class="w13 on"
+                                                title="リトルウィッチ／ステッキ：可"></i><i class="w14 off" title="悪魔／鞭：不可"></i><i
+                                                class="w15 on" title="霊術師／鎌：可"></i><i class="w16 on"
+                                                title="闘士／クロー：可"></i><i class="w17 on" title="光奏師／本：可"></i><i
+                                                class="w18 off" title="獣人／双剣：不可"></i><i class="w19 off"
+                                                title="メイド／ほうき：不可"></i><i class="w20 on" title="黒魔術師／ダークコア：可"></i><i
+                                                class="w21 off" title="マスケッティア／銃：不可"></i><i class="w22 on"
+                                                title="アルケミスト／錬金石：可"></i><i class="w23 on" title="キャプテン／アンカー：可"></i><i
+                                                class="w24 on"
+                                                title="キャノニア／大砲：可"></i></span>片手剣、両手剣、槍、杖、牙、メイス、ナックル、ステッキ、鎌、クロー、本、ダークコア、錬金石、アンカー、大砲
+                                    </td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-off"
+                                                title="首には付与不可"><i class="s1 off"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-off"
+                                                title="頭には付与不可"><i class="s2 off"></i><span
+                                                    class="slot-label">頭</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-off"
+                                                title="腰には付与不可"><i class="s4 off"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-on"
+                                                title="槍投擲機に付与可能"><i class="s5 on"></i><span
+                                                    class="slot-label">投擲機</span></span><span class="npc-slot slot-off"
+                                                title="体には付与不可"><i class="s6 off"></i><span
+                                                    class="slot-label">体</span></span><span class="npc-slot slot-off"
+                                                title="足には付与不可"><i class="s7 off"></i><span
+                                                    class="slot-label">足</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>槍投擲機</td>
+                                </tr>
+                                <tr data-npc-name="ニケ">
+                                    <td>ニケ</td>
+                                    <td class="op-effect e-speed">移動速度 +50 %</td>
+                                    <td class="op-slot-cell"><span aria-label="2OP目" class="op-slots" role="img"><i
+                                                class="o1">①</i><i class="o2 yes">②</i><i class="o3">③</i></span></td>
+                                    <td><span aria-label="主武器" class="npc-weapons"
+                                            data-npcop-weapons-ref="npcop-weapons-shared-2" role="img"></span>—</td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-off"
+                                                title="首には付与不可"><i class="s1 off"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-off"
+                                                title="頭には付与不可"><i class="s2 off"></i><span
+                                                    class="slot-label">頭</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-off"
+                                                title="腰には付与不可"><i class="s4 off"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-off"
+                                                title="手には付与不可"><i class="s5 off"></i><span
+                                                    class="slot-label">手</span></span><span class="npc-slot slot-off"
+                                                title="体には付与不可"><i class="s6 off"></i><span
+                                                    class="slot-label">体</span></span><span class="npc-slot slot-on"
+                                                title="ブーツに付与可能"><i class="s7 on"></i><span
+                                                    class="slot-label">靴</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>シューズ</td>
+                                </tr>
+                                <tr data-npc-name="ペル">
+                                    <td>ペル</td>
+                                    <td class="op-effect e-speed">攻撃速度 +65 %</td>
+                                    <td class="op-slot-cell"><span aria-label="1OP目" class="op-slots" role="img"><i
+                                                class="o1 yes">①</i><i class="o2">②</i><i class="o3">③</i></span></td>
+                                    <td><span aria-label="主武器" class="npc-weapons"
+                                            data-npcop-weapons-ref="npcop-weapons-shared-3"
+                                            role="img"></span>片手剣、両手剣、槍、杖、牙、メイス、ナックル、ステッキ、鎌、クロー、本、ダークコア、錬金石、アンカー、大砲</td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-off"
+                                                title="首には付与不可"><i class="s1 off"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-off"
+                                                title="頭には付与不可"><i class="s2 off"></i><span
+                                                    class="slot-label">頭</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-off"
+                                                title="腰には付与不可"><i class="s4 off"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-on"
+                                                title="槍投擲機に付与可能"><i class="s5 on"></i><span
+                                                    class="slot-label">投擲機</span></span><span class="npc-slot slot-off"
+                                                title="体には付与不可"><i class="s6 off"></i><span
+                                                    class="slot-label">体</span></span><span class="npc-slot slot-off"
+                                                title="足には付与不可"><i class="s7 off"></i><span
+                                                    class="slot-label">足</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>槍投擲機</td>
+                                </tr>
+                                <tr data-npc-name="ソラ">
+                                    <td>ソラ</td>
+                                    <td class="op-effect e-resist">魔法抵抗 +60 %</td>
+                                    <td class="op-slot-cell"><span aria-label="2OP目" class="op-slots" role="img"><i
+                                                class="o1">①</i><i class="o2 yes">②</i><i class="o3">③</i></span></td>
+                                    <td><span aria-label="主武器" class="npc-weapons"
+                                            data-npcop-weapons-ref="npcop-weapons-shared-2" role="img"></span>—</td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-on" title="盾、獣毛装飾、契約霊、ウォーペイント、宝石に付与可能"><i
+                                                    class="s0 on"></i><span class="slot-label">補助</span></span><span
+                                                class="npc-slot slot-off" title="首には付与不可"><i class="s1 off"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-off"
+                                                title="頭には付与不可"><i class="s2 off"></i><span
+                                                    class="slot-label">頭</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-off"
+                                                title="腰には付与不可"><i class="s4 off"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-off"
+                                                title="手には付与不可"><i class="s5 off"></i><span
+                                                    class="slot-label">手</span></span><span class="npc-slot slot-on"
+                                                title="専用鎧に付与可能"><i class="s6 on"></i><span
+                                                    class="slot-label">専用鎧</span></span><span class="npc-slot slot-off"
+                                                title="足には付与不可"><i class="s7 off"></i><span
+                                                    class="slot-label">足</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>盾、獣毛装飾、契約霊、ウォーペイント、宝石、専用鎧
+                                    </td>
+                                </tr>
+                                <tr data-npc-name="リラ">
+                                    <td>リラ</td>
+                                    <td class="op-effect e-resist">状態異常抵抗 +80 %</td>
+                                    <td class="op-slot-cell"><span aria-label="1・3OP目" class="op-slots" role="img"><i
+                                                class="o1 yes">①</i><i class="o2">②</i><i class="o3 yes">③</i></span>
+                                    </td>
+                                    <td><span aria-label="主武器" class="npc-weapons"
+                                            data-npcop-weapons-ref="npcop-weapons-shared-0" role="img"></span><a
+                                            href="#weapon-types">全24種</a>、爪（武道家）</td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-on"
+                                                title="盾、腕刺青、ブローチ、獣毛装飾、十字架、肩刺青、星群、契約霊、ウォーペイント、コサージュ、触媒石、宝石に付与可能"><i
+                                                    class="s0 on"></i><span class="slot-label">補助</span></span><span
+                                                class="npc-slot slot-on" title="ネックレスに付与可能"><i class="s1 on"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-on"
+                                                title="ヘルメット、冠に付与可能"><i class="s2 on"></i><span
+                                                    class="slot-label">兜・冠</span></span><span class="npc-slot slot-on"
+                                                title="イヤリング、マントに付与可能"><i class="s3 on"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-on"
+                                                title="ベルトに付与可能"><i class="s4 on"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-on"
+                                                title="グローブ、ブレスレット、槍投擲機に付与可能"><i class="s5 on"></i><span
+                                                    class="slot-label">手・腕</span></span><span class="npc-slot slot-on"
+                                                title="共用鎧、専用鎧に付与可能"><i class="s6 on"></i><span
+                                                    class="slot-label">共・専</span></span><span class="npc-slot slot-on"
+                                                title="爪、ブーツに付与可能"><i class="s7 on"></i><span
+                                                    class="slot-label">靴・爪</span></span><span class="npc-slot slot-on"
+                                                title="リングに付与可能"><i class="s8 on"></i><span
+                                                    class="slot-label">指</span></span></span>盾、槍投擲機、腕刺青、ブローチ、獣毛装飾、十字架、肩刺青、星群、契約霊、ウォーペイント、コサージュ、触媒石、宝石、ヘルメット、冠、イヤリング、マント、ネックレス、ベルト、グローブ、ブレスレット、共通鎧、専用鎧、シューズ、指輪
+                                    </td>
+                                </tr>
+                                <tr data-npc-name="ガスピル">
+                                    <td>ガスピル</td>
+                                    <td class="op-effect e-skill">スキルレベル +8</td>
+                                    <td class="op-slot-cell"><span aria-label="3OP目" class="op-slots" role="img"><i
+                                                class="o1">①</i><i class="o2">②</i><i class="o3 yes">③</i></span></td>
+                                    <td><span aria-label="主武器" class="npc-weapons"
+                                            data-npcop-weapons-ref="npcop-weapons-shared-2" role="img"></span>—</td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-on"
+                                                title="ネックレスに付与可能"><i class="s1 on"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-off"
+                                                title="頭には付与不可"><i class="s2 off"></i><span
+                                                    class="slot-label">頭</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-off"
+                                                title="腰には付与不可"><i class="s4 off"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-off"
+                                                title="手には付与不可"><i class="s5 off"></i><span
+                                                    class="slot-label">手</span></span><span class="npc-slot slot-on"
+                                                title="専用鎧に付与可能"><i class="s6 on"></i><span
+                                                    class="slot-label">専用鎧</span></span><span class="npc-slot slot-off"
+                                                title="足には付与不可"><i class="s7 off"></i><span
+                                                    class="slot-label">足</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>ネックレス、専用鎧</td>
+                                </tr>
+                                <tr data-npc-name="ロングッシュ">
+                                    <td>ロングッシュ</td>
+                                    <td class="op-effect e-drop">魔法アイテムドロップ確率 +40 %</td>
+                                    <td class="op-slot-cell"><span aria-label="3OP目" class="op-slots" role="img"><i
+                                                class="o1">①</i><i class="o2">②</i><i class="o3 yes">③</i></span></td>
+                                    <td><span aria-label="主武器" class="npc-weapons" role="img"><i class="w0 off"
+                                                title="剣士／片手剣：不可"></i><i class="w1 off" title="戦士／両手剣：不可"></i><i
+                                                class="w2 off" title="ランサー／槍：不可"></i><i class="w3 off"
+                                                title="アーチャー／弓：不可"></i><i class="w4 off" title="ウィザード／杖：不可"></i><i
+                                                class="w5 off" title="ウルフマン／牙：不可"></i><i class="w6 off"
+                                                title="ビショップ／メイス：不可"></i><i class="w7 off" title="追放天使／翼：不可"></i><i
+                                                class="w8 off" title="ビーストテイマー・サマナー／笛：不可"></i><i class="w9 on"
+                                                title="シーフ／ダガー：可"></i><i class="w10 on" title="武道家／爪(足)：可"></i><i
+                                                class="w11 off" title="武道家／ナックル：不可"></i><i class="w12 off"
+                                                title="プリンセス／スリング：不可"></i><i class="w13 off"
+                                                title="リトルウィッチ／ステッキ：不可"></i><i class="w14 off" title="悪魔／鞭：不可"></i><i
+                                                class="w15 off" title="霊術師／鎌：不可"></i><i class="w16 off"
+                                                title="闘士／クロー：不可"></i><i class="w17 off" title="光奏師／本：不可"></i><i
+                                                class="w18 off" title="獣人／双剣：不可"></i><i class="w19 off"
+                                                title="メイド／ほうき：不可"></i><i class="w20 off" title="黒魔術師／ダークコア：不可"></i><i
+                                                class="w21 off" title="マスケッティア／銃：不可"></i><i class="w22 off"
+                                                title="アルケミスト／錬金石：不可"></i><i class="w23 off"
+                                                title="キャプテン／アンカー：不可"></i><i class="w24 off"
+                                                title="キャノニア／大砲：不可"></i></span>ダガー、爪（武道家）</td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-on"
+                                                title="ネックレスに付与可能"><i class="s1 on"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-on"
+                                                title="ヘルメット、冠に付与可能"><i class="s2 on"></i><span
+                                                    class="slot-label">兜・冠</span></span><span class="npc-slot slot-on"
+                                                title="イヤリング、マントに付与可能"><i class="s3 on"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-on"
+                                                title="ベルトに付与可能"><i class="s4 on"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-on"
+                                                title="グローブ、ブレスレット、槍投擲機に付与可能"><i class="s5 on"></i><span
+                                                    class="slot-label">手・腕</span></span><span class="npc-slot slot-on"
+                                                title="共用鎧に付与可能"><i class="s6 on"></i><span
+                                                    class="slot-label">共通鎧</span></span><span class="npc-slot slot-on"
+                                                title="爪、ブーツに付与可能"><i class="s7 on"></i><span
+                                                    class="slot-label">靴・爪</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>槍投擲機、ヘルメット、冠、イヤリング、マント、ネックレス、ベルト、グローブ、ブレスレット、共通鎧、シューズ
+                                    </td>
+                                </tr>
+                                <tr data-npc-name="ジョン・マルコ">
+                                    <td>ジョン・マルコ</td>
+                                    <td class="op-effect e-drop">ユニークアイテムドロップ確率 +30 %</td>
+                                    <td class="op-slot-cell"><span aria-label="3OP目" class="op-slots" role="img"><i
+                                                class="o1">①</i><i class="o2">②</i><i class="o3 yes">③</i></span></td>
+                                    <td><span aria-label="主武器" class="npc-weapons" role="img"><i class="w0 off"
+                                                title="剣士／片手剣：不可"></i><i class="w1 off" title="戦士／両手剣：不可"></i><i
+                                                class="w2 off" title="ランサー／槍：不可"></i><i class="w3 off"
+                                                title="アーチャー／弓：不可"></i><i class="w4 off" title="ウィザード／杖：不可"></i><i
+                                                class="w5 off" title="ウルフマン／牙：不可"></i><i class="w6 off"
+                                                title="ビショップ／メイス：不可"></i><i class="w7 off" title="追放天使／翼：不可"></i><i
+                                                class="w8 off" title="ビーストテイマー・サマナー／笛：不可"></i><i class="w9 on"
+                                                title="シーフ／ダガー：可"></i><i class="w10 on" title="武道家／爪(足)：可"></i><i
+                                                class="w11 off" title="武道家／ナックル：不可"></i><i class="w12 on"
+                                                title="プリンセス／スリング：可"></i><i class="w13 on" title="リトルウィッチ／ステッキ：可"></i><i
+                                                class="w14 off" title="悪魔／鞭：不可"></i><i class="w15 off"
+                                                title="霊術師／鎌：不可"></i><i class="w16 off" title="闘士／クロー：不可"></i><i
+                                                class="w17 off" title="光奏師／本：不可"></i><i class="w18 off"
+                                                title="獣人／双剣：不可"></i><i class="w19 off" title="メイド／ほうき：不可"></i><i
+                                                class="w20 off" title="黒魔術師／ダークコア：不可"></i><i class="w21 off"
+                                                title="マスケッティア／銃：不可"></i><i class="w22 off" title="アルケミスト／錬金石：不可"></i><i
+                                                class="w23 off" title="キャプテン／アンカー：不可"></i><i class="w24 off"
+                                                title="キャノニア／大砲：不可"></i></span>ダガー、爪（武道家）、スリング、ステッキ</td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-on"
+                                                title="ネックレスに付与可能"><i class="s1 on"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-on"
+                                                title="ヘルメット、冠に付与可能"><i class="s2 on"></i><span
+                                                    class="slot-label">兜・冠</span></span><span class="npc-slot slot-on"
+                                                title="イヤリング、マントに付与可能"><i class="s3 on"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-on"
+                                                title="ベルトに付与可能"><i class="s4 on"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-on"
+                                                title="グローブ、ブレスレット、槍投擲機に付与可能"><i class="s5 on"></i><span
+                                                    class="slot-label">手・腕</span></span><span class="npc-slot slot-on"
+                                                title="共用鎧に付与可能"><i class="s6 on"></i><span
+                                                    class="slot-label">共通鎧</span></span><span class="npc-slot slot-on"
+                                                title="爪、ブーツに付与可能"><i class="s7 on"></i><span
+                                                    class="slot-label">靴・爪</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>槍投擲機、ヘルメット、冠、イヤリング、マント、ネックレス、ベルト、グローブ、ブレスレット、共通鎧、シューズ
+                                    </td>
+                                </tr>
+                                <tr data-npc-name="ネルバ">
+                                    <td>ネルバ</td>
+                                    <td class="op-effect e-magic">魔法ダメージを 70 ％ 強化させる。</td>
+                                    <td class="op-slot-cell"><span aria-label="2OP目" class="op-slots" role="img"><i
+                                                class="o1">①</i><i class="o2 yes">②</i><i class="o3">③</i></span></td>
+                                    <td><span aria-label="主武器" class="npc-weapons"
+                                            data-npcop-weapons-ref="npcop-weapons-shared-1" role="img"></span><a
+                                            href="#weapon-types">全24種</a></td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-off"
+                                                title="首には付与不可"><i class="s1 off"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-off"
+                                                title="頭には付与不可"><i class="s2 off"></i><span
+                                                    class="slot-label">頭</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-off"
+                                                title="腰には付与不可"><i class="s4 off"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-off"
+                                                title="手には付与不可"><i class="s5 off"></i><span
+                                                    class="slot-label">手</span></span><span class="npc-slot slot-off"
+                                                title="体には付与不可"><i class="s6 off"></i><span
+                                                    class="slot-label">体</span></span><span class="npc-slot slot-off"
+                                                title="足には付与不可"><i class="s7 off"></i><span
+                                                    class="slot-label">足</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>—</td>
+                                </tr>
+                                <tr data-npc-name="ホーク">
+                                    <td>ホーク</td>
+                                    <td class="op-effect e-physical">物理致命打ダメージ 40 ％ 増加</td>
+                                    <td class="op-slot-cell"><span aria-label="1OP目" class="op-slots" role="img"><i
+                                                class="o1 yes">①</i><i class="o2">②</i><i class="o3">③</i></span></td>
+                                    <td><span aria-label="主武器" class="npc-weapons"
+                                            data-npcop-weapons-ref="npcop-weapons-shared-1" role="img"></span><a
+                                            href="#weapon-types">全24種</a></td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-off"
+                                                title="首には付与不可"><i class="s1 off"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-off"
+                                                title="頭には付与不可"><i class="s2 off"></i><span
+                                                    class="slot-label">頭</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-off"
+                                                title="腰には付与不可"><i class="s4 off"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-on"
+                                                title="グローブに付与可能"><i class="s5 on"></i><span
+                                                    class="slot-label">手袋</span></span><span class="npc-slot slot-off"
+                                                title="体には付与不可"><i class="s6 off"></i><span
+                                                    class="slot-label">体</span></span><span class="npc-slot slot-off"
+                                                title="足には付与不可"><i class="s7 off"></i><span
+                                                    class="slot-label">足</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>グローブ</td>
+                                </tr>
+                                <tr data-npc-name="エステル">
+                                    <td>エステル</td>
+                                    <td class="op-effect e-resist">フィールドのステータス低下に対する抵抗 15 ％ 増加</td>
+                                    <td class="op-slot-cell"><span aria-label="3OP目" class="op-slots" role="img"><i
+                                                class="o1">①</i><i class="o2">②</i><i class="o3 yes">③</i></span></td>
+                                    <td><span aria-label="主武器" class="npc-weapons"
+                                            data-npcop-weapons-ref="npcop-weapons-shared-2" role="img"></span>—</td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-off"
+                                                title="首には付与不可"><i class="s1 off"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-on"
+                                                title="ヘルメット、冠に付与可能"><i class="s2 on"></i><span
+                                                    class="slot-label">兜・冠</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-off"
+                                                title="腰には付与不可"><i class="s4 off"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-off"
+                                                title="手には付与不可"><i class="s5 off"></i><span
+                                                    class="slot-label">手</span></span><span class="npc-slot slot-off"
+                                                title="体には付与不可"><i class="s6 off"></i><span
+                                                    class="slot-label">体</span></span><span class="npc-slot slot-on"
+                                                title="ブーツに付与可能"><i class="s7 on"></i><span
+                                                    class="slot-label">靴</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>ヘルメット、冠、シューズ</td>
+                                </tr>
+                                <tr data-npc-name="ベリータ">
+                                    <td>ベリータ</td>
+                                    <td class="op-effect e-resist">フィールドの属性最大値制限に対する抵抗 15 ％ 増加</td>
+                                    <td class="op-slot-cell"><span aria-label="3OP目" class="op-slots" role="img"><i
+                                                class="o1">①</i><i class="o2">②</i><i class="o3 yes">③</i></span></td>
+                                    <td><span aria-label="主武器" class="npc-weapons"
+                                            data-npcop-weapons-ref="npcop-weapons-shared-2" role="img"></span>—</td>
+                                    <td><span aria-label="防具・補助武器" class="npc-slots" role="img"><span
+                                                class="npc-slot slot-off" title="補助には付与不可"><i class="s0 off"></i><span
+                                                    class="slot-label">補助</span></span><span class="npc-slot slot-off"
+                                                title="首には付与不可"><i class="s1 off"></i><span
+                                                    class="slot-label">首</span></span><span class="npc-slot slot-on"
+                                                title="ヘルメット、冠に付与可能"><i class="s2 on"></i><span
+                                                    class="slot-label">兜・冠</span></span><span class="npc-slot slot-off"
+                                                title="背・耳には付与不可"><i class="s3 off"></i><span
+                                                    class="slot-label">背・耳</span></span><span class="npc-slot slot-off"
+                                                title="腰には付与不可"><i class="s4 off"></i><span
+                                                    class="slot-label">腰</span></span><span class="npc-slot slot-off"
+                                                title="手には付与不可"><i class="s5 off"></i><span
+                                                    class="slot-label">手</span></span><span class="npc-slot slot-off"
+                                                title="体には付与不可"><i class="s6 off"></i><span
+                                                    class="slot-label">体</span></span><span class="npc-slot slot-on"
+                                                title="ブーツに付与可能"><i class="s7 on"></i><span
+                                                    class="slot-label">靴</span></span><span class="npc-slot slot-off"
+                                                title="指には付与不可"><i class="s8 off"></i><span
+                                                    class="slot-label">指</span></span></span>ヘルメット、冠、シューズ</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p id="weapon-types">
+                        主武器の「全24種」：片手剣、両手剣、槍、弓、杖、牙、メイス、翼、笛、ダガー、ナックル、スリング、ステッキ、鞭、鎌、クロー、本、双剣、ほうき、ダークコア、銃、錬金石、アンカー、大砲。<br />鎧は共通鎧と専用鎧を区別しています。武道家の爪・ナックルと闘士のクローも別の装備種です。
+                    </p>
+                </section>
+                <section id="restrictions">
+                    <h2>付与方法とNPCOPの制約</h2>
+                    <div class="npcop-scroll">
+                        <table data-table="restrictions" id="table10">
+                            <tbody>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>仕様</th>
+                                </tr>
+                                <tr>
+                                    <td>入手</td>
+                                    <td><a href="../secret/eliteboss.html">精鋭討伐</a>・ロトボックスなど。宿命のOP魔法のお守り箱からNPCOPのお守りを入手
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>お守りの成功率</td>
+                                    <td>宿命のOP魔法のお守り箱から出るお守りは100%</td>
+                                </tr>
+                                <tr>
+                                    <td>付与する位置</td>
+                                    <td>NPCOPごとに指定。3OP目など後ろの枠へ付ける際は、手前の1・2OP目が必要になる場合があります</td>
+                                </tr>
+                                <tr>
+                                    <td>同名OPの複数付与</td>
+                                    <td>可能。2か所に付与できるOPを追加する場合は、もう一方の対象枠を空けてから付与</td>
+                                </tr>
+                                <tr>
+                                    <td>要求レベル上昇</td>
+                                    <td>NPCOP分は+0</td>
+                                </tr>
+                                <tr>
+                                    <td>削除</td>
+                                    <td>消滅の魔法書などによるNPCOPの選択削除は不可。<a href="#remove-npcop">付加OPを全て消す方法</a></td>
+                                </tr>
+                                <tr>
+                                    <td>複製・抽出</td>
+                                    <td>鏡の魔法書・神秘鏡・魔力抽出は使用不可</td>
+                                </tr>
+                                <tr>
+                                    <td>OP増強</td>
+                                    <td>通常のNPCOPは黄金の人形などによるOP増強の対象外</td>
+                                </tr>
+                                <tr>
+                                    <td>装備の再構成・通常異次元</td>
+                                    <td>2022年11月9日からNPCOP付き装備にも使用可能</td>
+                                </tr>
+                                <tr>
+                                    <td>取引・銀行</td>
+                                    <td>NPCOP付き装備は基本的に取引・銀行保管が可能。お守り自体の取引可否はアイテムごとの制限に従います</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>例：[ランディス][運比][運比]に2つ目の[ランディス]を付ける場合は、3OP目の[運比]を削除して対象枠を空けます。既に付いているNPCOPを選んで削除することはできません。</p>
+                    <p>付与と制約の詳細：<a href="itemoption2022.html#npcop_alert">NPCオプション利用時の注意点</a></p>
+                </section>
+                <section id="remove-npcop">
+                    <h2>不要になったNPCOPを消す方法</h2>
+                    <p>地獄の鉄床・超強力ボンドは、壊れた装備の付加OPを全て消して修理します。この修理効果を使えば、NPCOPも含めて全消去できると考えられます。</p>
+                    <p style="color:#b00020">
+                        <strong>NPCOP以外の付加OPも全て消えます。ユニーク指輪はエンチャント失敗で装備自体が消滅するため、この手順には使わないでください。</strong></p>
+                    <div class="npcop-scroll">
+                        <table id="table10" data-table="op-removal" style="max-width:800px">
+                            <colgroup>
+                                <col style="width:44%" />
+                                <col style="width:28%" />
+                                <col style="width:28%" />
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <th>修理アイテム</th>
+                                    <th>対象の装備</th>
+                                    <th>付加OP</th>
+                                </tr>
+                                <tr>
+                                    <td><a class="npc-item"
+                                            href="../calculation/item_viewer.html?id=0x02f6&amp;t=51"><img alt=""
+                                                src="../item/design/image/item/iconItem_0553.png" width="40" height="40"
+                                                loading="lazy" />地獄の鉄床</a></td>
+                                    <td>ユニーク系</td>
+                                    <td class="op-effect" style="--tone:#ac342d;--wash:#fff0ed">全て消える</td>
+                                </tr>
+                                <tr>
+                                    <td><a class="npc-item"
+                                            href="../calculation/item_viewer.html?id=0x02f7&amp;t=51"><img alt=""
+                                                src="../item/design/image/item/iconItem_0554.png" width="40" height="40"
+                                                loading="lazy" />超強力ボンド</a></td>
+                                    <td>ユニーク以外</td>
+                                    <td class="op-effect" style="--tone:#ac342d;--wash:#fff0ed">全て消える</td>
+                                </tr>
+                                <tr>
+                                    <td><a class="npc-item"
+                                            href="../calculation/item_viewer.html?id=0x032a&amp;t=50"><img alt=""
+                                                src="../item/design/image/item/iconItem_0603.png" width="40" height="40"
+                                                loading="lazy" />天上の鉄床</a></td>
+                                    <td>ユニーク系</td>
+                                    <td class="op-effect" style="--tone:#16734b;--wash:#edf8f0">保持する</td>
+                                </tr>
+                                <tr>
+                                    <td><a class="npc-item"
+                                            href="../calculation/item_viewer.html?id=0x0329&amp;t=50"><img alt=""
+                                                src="../item/design/image/item/iconItem_0602.png" width="40" height="40"
+                                                loading="lazy" />魔法のボンド</a></td>
+                                    <td>ユニーク以外</td>
+                                    <td class="op-effect" style="--tone:#16734b;--wash:#edf8f0">保持する</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <ol>
+                        <li>エンチャント可能な装備に通常のエンチャントを行い、失敗による「壊れた状態」にします。増幅の破壊判定などで既に壊れている場合は、次へ進めます。</li>
+                        <li>ユニーク系は地獄の鉄床、それ以外は超強力ボンドで修理します。</li>
+                        <li>付加OPが全て消えたことを確認し、新しいOPを付け直します。</li>
+                    </ol>
+                    <p>「普通のボンド」で全消去に使うのは超強力ボンドです。魔法のボンドと天上の鉄床は、OPを残して修理するときに使います。</p>
+                    <p>エンチャントの手順：<a href="../information/enchant_unique.html#1">ユニーク装備</a> ／ <a
+                            href="../information/enchant_normal.html">一般装備</a></p>
+                </section>
+                <section id="amplification">
+                    <h2>宿命OPの強化・再構成</h2>
+                    <p>2026年10月22日のアップデート（ver0.0896）で実装されました。「栄誉の祭典」の「演舞場」にいるNPC「マグニス」で、対象の宿命OPが付いた装備を増幅できます。</p>
+                    <div class="npcop-scroll">
+                        <table data-table="amp-targets" id="table10">
+                            <tbody>
+                                <tr>
+                                    <th>対象</th>
+                                    <th>増幅前の効果</th>
+                                    <th>最大段階</th>
+                                    <th>増幅後に選ばれる能力値</th>
+                                </tr>
+                                <tr>
+                                    <td>能力値数値増加</td>
+                                    <td>力・健康・敏捷・知識・知恵・カリスマ・運の固定値増加</td>
+                                    <td>7</td>
+                                    <td>力・健康・敏捷・知識・知恵・カリスマ・運</td>
+                                </tr>
+                                <tr>
+                                    <td>レベル比例能力値増加</td>
+                                    <td>力・健康・敏捷・知識・知恵・カリスマ・運のレベル比例増加</td>
+                                    <td>7</td>
+                                    <td>力・健康・敏捷・知識・知恵・カリスマ・運</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>元のNPCOPから初めて増幅に成功すると、上がるステータスがランダムで決まります。例えばジェーソン（力+250）から、ケルベロス（知識+500）になることがあります。以降の増幅ではステータスの種類は変わらず、数値のみ上がります。レベル比例の効果はLv2000を上限として計算されます。
+                    </p>
+                    <h3>増幅後のオプション名・効果</h3>
+                    <div class="npcop-scroll">
+                        <table data-table="amp-effects" id="table10">
+                            <tbody>
+                                <tr>
+                                    <th>段階</th>
+                                    <th>固定値のオプション名</th>
+                                    <th>固定値</th>
+                                    <th>段階</th>
+                                    <th>比率のオプション名</th>
+                                    <th>比率</th>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>ケルベロス</td>
+                                    <td>+500</td>
+                                    <td>—</td>
+                                    <td>—</td>
+                                    <td>—</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>ドラゴート</td>
+                                    <td>+700</td>
+                                    <td>—</td>
+                                    <td>—</td>
+                                    <td>—</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>骸骨王</td>
+                                    <td>+1000</td>
+                                    <td>—</td>
+                                    <td>—</td>
+                                    <td>—</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>ハシュラム</td>
+                                    <td>+1250</td>
+                                    <td>4</td>
+                                    <td>神々しい太陽</td>
+                                    <td>+3 / レベル4</td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>タビアクート</td>
+                                    <td>+1500</td>
+                                    <td>5</td>
+                                    <td>かき回す神龍</td>
+                                    <td>+5 / レベル6</td>
+                                </tr>
+                                <tr>
+                                    <td>6</td>
+                                    <td>スザルアンギール</td>
+                                    <td>+1750</td>
+                                    <td>6</td>
+                                    <td>深い静寂</td>
+                                    <td>+11 / レベル12</td>
+                                </tr>
+                                <tr>
+                                    <td>7</td>
+                                    <td>シュミット</td>
+                                    <td>+2000</td>
+                                    <td>7</td>
+                                    <td>偉大な者</td>
+                                    <td>+1 / レベル1</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <h3>増幅・強化増幅の違いと結果</h3>
+                    <div class="npcop-scroll">
+                        <table data-table="amp-results" id="table10">
+                            <tbody>
+                                <tr>
+                                    <th>方法・結果</th>
+                                    <th>仕様</th>
+                                </tr>
+                                <tr>
+                                    <td>増幅</td>
+                                    <td>金のインゴットを使用</td>
+                                </tr>
+                                <tr>
+                                    <td>強化増幅</td>
+                                    <td>金のインゴットと宿命のオプションのお守りを使用。通常の増幅より成功率が高い</td>
+                                </tr>
+                                <tr>
+                                    <td>失敗</td>
+                                    <td>装備は破壊されず、既存の段階を維持</td>
+                                </tr>
+                                <tr>
+                                    <td>破壊</td>
+                                    <td>装備が「壊れた」状態になる。既存の段階は維持され、鉄床・ボンドで修理可能</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <h3>固定値：1～7段階の確率・必要素材</h3>
+                    <div class="npcop-scroll">
+                        <table class="npcop-probability" data-table="amp-fixed-probability" id="table10">
+                            <colgroup>
+                                <col style="width:8%" />
+                                <col style="width:10%" />
+                                <col style="width:10%" />
+                                <col style="width:10%" />
+                                <col style="width:11%" />
+                                <col style="width:10%" />
+                                <col style="width:10%" />
+                                <col style="width:10%" />
+                                <col style="width:11%" />
+                                <col style="width:10%" />
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <th rowspan="2">到達<br />段階</th>
+                                    <th colspan="4">増幅</th>
+                                    <th colspan="5">強化増幅</th>
+                                </tr>
+                                <tr>
+                                    <th>成功</th>
+                                    <th>失敗</th>
+                                    <th>破壊</th>
+                                    <th>金の<br />インゴット</th>
+                                    <th>成功</th>
+                                    <th>失敗</th>
+                                    <th>破壊</th>
+                                    <th>金の<br />インゴット</th>
+                                    <th>宿命の<br />お守り</th>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>50%</td>
+                                    <td>50%</td>
+                                    <td>0%</td>
+                                    <td>5個</td>
+                                    <td>100%</td>
+                                    <td>0%</td>
+                                    <td>0%</td>
+                                    <td>5個</td>
+                                    <td>1個</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>45%</td>
+                                    <td>45%</td>
+                                    <td>10%</td>
+                                    <td>5個</td>
+                                    <td>90%</td>
+                                    <td>10%</td>
+                                    <td>0%</td>
+                                    <td>5個</td>
+                                    <td>1個</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>40%</td>
+                                    <td>40%</td>
+                                    <td>20%</td>
+                                    <td>5個</td>
+                                    <td>80%</td>
+                                    <td>15%</td>
+                                    <td>5%</td>
+                                    <td>5個</td>
+                                    <td>1個</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>25%</td>
+                                    <td>55%</td>
+                                    <td>20%</td>
+                                    <td>10個</td>
+                                    <td>50%</td>
+                                    <td>35%</td>
+                                    <td>15%</td>
+                                    <td>10個</td>
+                                    <td>3個</td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>15%</td>
+                                    <td>50%</td>
+                                    <td>35%</td>
+                                    <td>10個</td>
+                                    <td>30%</td>
+                                    <td>50%</td>
+                                    <td>20%</td>
+                                    <td>10個</td>
+                                    <td>3個</td>
+                                </tr>
+                                <tr>
+                                    <td>6</td>
+                                    <td>10%</td>
+                                    <td>40%</td>
+                                    <td>50%</td>
+                                    <td>15個</td>
+                                    <td>20%</td>
+                                    <td>55%</td>
+                                    <td>25%</td>
+                                    <td>15個</td>
+                                    <td>5個</td>
+                                </tr>
+                                <tr>
+                                    <td>7</td>
+                                    <td>5%</td>
+                                    <td>30%</td>
+                                    <td>65%</td>
+                                    <td>30個</td>
+                                    <td>10%</td>
+                                    <td>60%</td>
+                                    <td>30%</td>
+                                    <td>30個</td>
+                                    <td>10個</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <h3>比率：4～7段階の確率・必要素材</h3>
+                    <div class="npcop-scroll">
+                        <table class="npcop-probability" data-table="amp-ratio-probability" id="table10">
+                            <colgroup>
+                                <col style="width:8%" />
+                                <col style="width:10%" />
+                                <col style="width:10%" />
+                                <col style="width:10%" />
+                                <col style="width:11%" />
+                                <col style="width:10%" />
+                                <col style="width:10%" />
+                                <col style="width:10%" />
+                                <col style="width:11%" />
+                                <col style="width:10%" />
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <th rowspan="2">到達<br />段階</th>
+                                    <th colspan="4">増幅</th>
+                                    <th colspan="5">強化増幅</th>
+                                </tr>
+                                <tr>
+                                    <th>成功</th>
+                                    <th>失敗</th>
+                                    <th>破壊</th>
+                                    <th>金の<br />インゴット</th>
+                                    <th>成功</th>
+                                    <th>失敗</th>
+                                    <th>破壊</th>
+                                    <th>金の<br />インゴット</th>
+                                    <th>宿命の<br />お守り</th>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>25%</td>
+                                    <td>55%</td>
+                                    <td>20%</td>
+                                    <td>10個</td>
+                                    <td>50%</td>
+                                    <td>35%</td>
+                                    <td>15%</td>
+                                    <td>10個</td>
+                                    <td>3個</td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>15%</td>
+                                    <td>50%</td>
+                                    <td>35%</td>
+                                    <td>10個</td>
+                                    <td>30%</td>
+                                    <td>50%</td>
+                                    <td>20%</td>
+                                    <td>10個</td>
+                                    <td>3個</td>
+                                </tr>
+                                <tr>
+                                    <td>6</td>
+                                    <td>10%</td>
+                                    <td>40%</td>
+                                    <td>50%</td>
+                                    <td>15個</td>
+                                    <td>20%</td>
+                                    <td>55%</td>
+                                    <td>25%</td>
+                                    <td>15個</td>
+                                    <td>5個</td>
+                                </tr>
+                                <tr>
+                                    <td>7</td>
+                                    <td>5%</td>
+                                    <td>30%</td>
+                                    <td>65%</td>
+                                    <td>30個</td>
+                                    <td>10%</td>
+                                    <td>60%</td>
+                                    <td>30%</td>
+                                    <td>30個</td>
+                                    <td>10個</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <h3>再構成</h3>
+                    <p class="npcop-warning" style="color:#b00020">
+                        <strong>固定値OPは3段階目（骸骨王）以降、再構成できません。2段階目までに希望するステータスへ再構成してから増幅してください。</strong></p>
+                    <p>再構成では、金のインゴットを使って上がるステータスの種類をランダムに変更します。例えば、ケルベロス（力+500）からケルベロス（知識+500）になることがあります。変更先は指定できません。
+                    </p>
+                    <p>増幅済みステータスOPに各種ステータス増強OPが適用されない問題は、2026年10月23日（ver0.0897）に修正されました。</p>
+                    <p>関連：<a href="../history/update2026.html">日本版のアップデート履歴</a></p>
+                </section>
+                <section id="reirou">
+                    <h2>玲瓏な異次元ボックスとNPCOP</h2>
+                    <div class="npcop-scroll">
+                        <table data-table="reirou" id="table10">
+                            <tbody>
+                                <tr>
+                                    <th>項目</th>
+                                    <th>仕様</th>
+                                </tr>
+                                <tr>
+                                    <td>合成する箇所</td>
+                                    <td>1～3OP目から、混ぜたいOP位置を選択</td>
+                                </tr>
+                                <tr>
+                                    <td>残りのOP</td>
+                                    <td>選択していない2枠は、合成後に残る装備側のOPを維持</td>
+                                </tr>
+                                <tr>
+                                    <td>装備ベース</td>
+                                    <td>装備も合成対象。目的の装備が必ず残る方式ではありません</td>
+                                </tr>
+                                <tr>
+                                    <td>破壊リスク</td>
+                                    <td>装備が完全に破壊される場合があります。増幅の「壊れた状態」とは別のリスクです</td>
+                                </tr>
+                                <tr>
+                                    <td>対象等級</td>
+                                    <td>ULT等級以外にも使用可能</td>
+                                </tr>
+                                <tr>
+                                    <td>入手</td>
+                                    <td>メインクエスト1のNPC「バイル」で交換。性向値-100のキャラクターが、20億Goldまたは金のインゴット20本で交換できます。交換後の性向値は0</td>
+                                </tr>
+                                <tr>
+                                    <td>NPCOP付き装備の合成</td>
+                                    <td>「魔法細工ギア［高レベル］」を使うと、宿命OPの付いた装備にも使用可能。両方の装備にNPCOPが付いていても使用可能</td>
+                                </tr>
+                                <tr>
+                                    <td>補助剤の枠数</td>
+                                    <td>1回に登録できる補助剤は1個</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <h3>魔法細工ギア</h3>
+                    <div class="npcop-scroll">
+                        <table data-table="reirou-gears" id="table10">
+                            <tbody>
+                                <tr>
+                                    <th>補助剤</th>
+                                    <th>効果</th>
+                                </tr>
+                                <tr>
+                                    <td><a class="npc-item"
+                                            href="../calculation/item_viewer.html?id=0x30d2&amp;t=50"><img alt=""
+                                                height="40" loading="lazy"
+                                                src="../item/design/image/item/iconItem_4441.png"
+                                                width="40" />魔法細工ギア［高レベル］</a></td>
+                                    <td>NPCOP付き装備を対象にできる。装備破壊の可能性あり</td>
+                                </tr>
+                                <tr>
+                                    <td><a class="npc-item"
+                                            href="../calculation/item_viewer.html?id=0x30d1&amp;t=50"><img alt=""
+                                                height="40" loading="lazy"
+                                                src="../item/design/image/item/iconItem_4440.png"
+                                                width="40" />魔法細工ギア［保護］</a></td>
+                                    <td>装備の完全破壊を防ぐ</td>
+                                </tr>
+                                <tr>
+                                    <td><a class="npc-item"
+                                            href="../calculation/item_viewer.html?id=0x30d3&amp;t=50"><img alt=""
+                                                height="40" loading="lazy"
+                                                src="../item/design/image/item/iconItem_4442.png"
+                                                width="40" />魔法細工ギア［装備選択］</a></td>
+                                    <td>左側に登録した装備をベースにする。装備破壊の可能性あり</td>
+                                </tr>
+                                <tr>
+                                    <td><a class="npc-item"
+                                            href="../calculation/item_viewer.html?id=0x30d4&amp;t=50"><img alt=""
+                                                height="40" loading="lazy"
+                                                src="../item/design/image/item/iconItem_4443.png"
+                                                width="40" />魔法細工ギア［OP選択］</a></td>
+                                    <td>移動するOPを選択。装備破壊の可能性あり</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>詳細：<a href="../information/interdimensional%20box.html#10">玲瓏な異次元ボックス</a></p>
+                </section>
+                <section id="practical-upgrades">
+                    <h2>実際の装備強化</h2>
+                    <h3>力＋を2部位に付ける例</h3>
+                    <p>例えば、グローブとネックレスに力＋を付けるなら、次の組み合わせがあります。ネックレスは元が知恵上昇のマファスでも、増幅・再構成で力上昇にできます。</p>
+                    <div class="npcop-scroll">
+                        <table id="table10" data-table="practical-parts" style="max-width:1000px">
+                            <colgroup>
+                                <col style="width:15%" />
+                                <col style="width:18%" />
+                                <col style="width:21%" />
+                                <col style="width:12%" />
+                                <col style="width:34%" />
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <th>付ける部位</th>
+                                    <th>元のNPCOP</th>
+                                    <th>元の効果</th>
+                                    <th>付与枠</th>
+                                    <th>力に再構成して6段階まで増幅</th>
+                                </tr>
+                                <tr>
+                                    <td>グローブ</td>
+                                    <td>ジェーソン</td>
+                                    <td class="op-effect e-str">力 +250</td>
+                                    <td class="op-slot-cell"><span class="op-slots" role="img" aria-label="1OP目"><i
+                                                class="o1 yes">①</i><i class="o2">②</i><i class="o3">③</i></span></td>
+                                    <td class="op-effect e-str">スザルアンギール（力+1750）</td>
+                                </tr>
+                                <tr>
+                                    <td>ネックレス</td>
+                                    <td>マファス</td>
+                                    <td class="op-effect e-wis">知恵 +250</td>
+                                    <td class="op-slot-cell"><span class="op-slots" role="img" aria-label="2OP目"><i
+                                                class="o1">①</i><i class="o2 yes">②</i><i class="o3">③</i></span></td>
+                                    <td class="op-effect e-str">スザルアンギール（力+1750）</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <ol>
+                        <li>グローブの1OP目にジェーソン、ネックレスの2OP目にマファスを付与します。指定枠の既存OPは上書きされるので、残すOPの位置を先に決めます。</li>
+                        <li>NPC「マグニス」で、それぞれ初回の増幅を行います。</li>
+                        <li>力以外になった場合は、1～2段階目のうちに再構成を繰り返し、力上昇にします。</li>
+                        <li>力になったことを確認してから、6段階の+1750まで増幅します。2部位で力+3500、両方を7段階の+2000まで上げると合計+4000です。</li>
+                    </ol>
+                    <h3>力比率と力＋が逆転するレベル</h3>
+                    <p>通常の力比率1/2は「Lv÷2（端数切り捨て）」、宿命OPの最終比率は「Lvごとに+1、Lv2000まで」です。1OP分の増加量を、ステータス増強の補正を加えずに比べます。</p>
+                    <div class="npcop-scroll">
+                        <table id="table10" data-table="practical-crossover" style="max-width:1000px">
+                            <colgroup>
+                                <col style="width:31%" />
+                                <col style="width:23%" />
+                                <col style="width:20%" />
+                                <col style="width:26%" />
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <th>比較する力比率</th>
+                                    <th>比較する固定値</th>
+                                    <th>同じ増加量になるLv</th>
+                                    <th>比率の方が上回るLv</th>
+                                </tr>
+                                <tr>
+                                    <td>通常の力比率1/2</td>
+                                    <td class="op-effect e-str">力+1750（6段階）</td>
+                                    <td>3500～3501</td>
+                                    <td>3502から</td>
+                                </tr>
+                                <tr>
+                                    <td>通常の力比率1/2</td>
+                                    <td class="op-effect e-str">力+2000（7段階）</td>
+                                    <td>4000～4001</td>
+                                    <td>4002から</td>
+                                </tr>
+                                <tr>
+                                    <td>偉大な者（力+1/レベル1）</td>
+                                    <td class="op-effect e-str">力+1750（6段階）</td>
+                                    <td>1750</td>
+                                    <td>1751から</td>
+                                </tr>
+                                <tr>
+                                    <td>偉大な者（力+1/レベル1）</td>
+                                    <td class="op-effect e-str">力+2000（7段階）</td>
+                                    <td>2000以上</td>
+                                    <td>上回らず、Lv2000以降は同じ</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>Lv2000の例では、通常の力比率1/2は+1000、固定値6段階は+1750、固定値7段階と宿命の最終比率はどちらも+2000です。例えば通常の力比率1/2を、上の例の力+1750へ1つ交換すると、力は+750増えます。
+                    </p>
+                    <h3>6段階から7段階に上げる費用の計算例</h3>
+                    <p>力+1750から+2000へ、あと+250を狙う例です。単価の例として、修理1回をインゴット60本、お守り1個を5本と仮定します。すでに6段階になっている装備を使い、7段階に成功するまでの平均費用を比較します。
+                    </p>
+                    <div class="npcop-scroll">
+                        <table id="table10" data-table="practical-cost" style="max-width:1100px;min-width:1000px">
+                            <colgroup>
+                                <col style="width:12%" />
+                                <col style="width:12%" />
+                                <col style="width:19%" />
+                                <col style="width:19%" />
+                                <col style="width:23%" />
+                                <col style="width:15%" />
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <th>方法</th>
+                                    <th>平均試行回数</th>
+                                    <th>増幅のインゴット</th>
+                                    <th>お守り代</th>
+                                    <th>OPを残す修理代</th>
+                                    <th>平均合計</th>
+                                </tr>
+                                <tr>
+                                    <td>通常の増幅</td>
+                                    <td>20回</td>
+                                    <td>30本×20回<br />＝600本</td>
+                                    <td>0本</td>
+                                    <td>13回×60本<br />＝780本</td>
+                                    <td>1380本</td>
+                                </tr>
+                                <tr>
+                                    <td>強化増幅</td>
+                                    <td>10回</td>
+                                    <td>30本×10回<br />＝300本</td>
+                                    <td>10個×10回×5本<br />＝500本</td>
+                                    <td>3回×60本<br />＝180本</td>
+                                    <td>980本</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>この単価なら強化増幅の方が平均400本少なくなります。修理代60本の条件では、お守り1個9本で両者が同額になり、9本を超えると通常の増幅の方が安くなります。実際の回数・費用は前後します。</p>
+                    <h3>増幅画面内で修理を続ける手順</h3>
+                    <ol>
+                        <li>ユニーク系なら天上の鉄床、それ以外なら魔法のボンドを用意します。</li>
+                        <li>増幅で装備が壊れたら、増幅画面を開いたまま、登録されている装備を修理アイテムで修理します。</li>
+                        <li>壊れた状態が解除され、OPと段階が残っていることを確認します。</li>
+                        <li>同じ装備・OP枠で増幅を再開します。</li>
+                    </ol>
+                </section>
+                <section id="references">
+                    <h2>関連情報</h2>
+                    <ul>
+                        <li><a href="itemoption2022.html#npcop">NPCオプションと効果一覧</a></li>
+                        <li><a href="itemoptionadd_weapon2022.html">主武器の付与可能部位</a> ／ <a
+                                href="itemoptionadd_protector2022.html">防具の付与可能部位</a> ／ <a
+                                href="itemoptionadd_subweapon2022.html">補助武器の付与可能部位</a></li>
+                    </ul>
+                </section>
+                <footer class="android-footer mdl-mega-footer">
+                    <font color="red">当サイトで利用している画像及びデータは、L&amp;K Co., Ltd.に帰属します。
+                        <br />
+                        許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。
+                        <br />
+                    </font>
+                    © L&amp;K Co., Ltd. All Rights Reserved.<br />
+                </footer>
+                <!--書き換え禁止(書かなくてもおｋだが、習慣として書いとく)
+ Copyright (c) This site is created by Sokomin. All Rights Reserved.
+-->
+            </div>
+            <script src="https://sokomin.github.io/material.min.js"></script>
+        </div>
+    </div>
+</body>
+
+</html>
