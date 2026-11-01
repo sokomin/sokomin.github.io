@@ -26,10 +26,14 @@
   }
 
   function itemDetailHref(row, links) {
-    if (!/^[0-9a-f]{12}$/.test(row.item_key || "")) return "";
-    const detail = links[`${row.server}|${row.item_key}`];
+    if (!row || !links || typeof links !== "object" || !/^[0-9a-f]{12}$/.test(row.item_key || "")) return "";
+    const identity = `${row.server}|${row.item_key}`;
+    const detail = Object.hasOwn(links, identity) ? links[identity] : null;
     const servers = { Bridgehead: "b", Strasserad: "s", Valutish: "v", "Gold Experience": "g" };
     if (!detail || !servers[row.server] || detail.server !== servers[row.server] || detail.key !== row.item_key || typeof detail.date !== "string" || !/^\d{8}$/.test(detail.date)) return "";
+    const day = `${detail.date.slice(0, 4)}-${detail.date.slice(4, 6)}-${detail.date.slice(6, 8)}`;
+    const time = Date.parse(day + "T00:00:00Z");
+    if (!Number.isFinite(time) || new Date(time).toISOString().slice(0, 10) !== day) return "";
     if (row.server === GOLD_SERVER && rowSeason(row) !== detail.date.slice(0, 4)) return "";
     return "item-detail.html?" + new URLSearchParams({ server: detail.server, date: detail.date, key: detail.key });
   }
@@ -798,7 +802,16 @@
       state.server = store.bootstrap.servers.includes("Bridgehead") ? "Bridgehead" : store.bootstrap.servers[0];
       byId("marketLoadStatus").textContent = "";
       await restoreLocation();
-      loadItemDetailLinks(root.fetch?.bind(root)).then((links) => { itemDetailLinks = links; renderTable(); });
+      refreshItemDetailLinks();
+    }
+
+    let detailLinkRevision = 0;
+    async function refreshItemDetailLinks() {
+      const ticket = ++detailLinkRevision;
+      const links = await loadItemDetailLinks(root.fetch?.bind(root));
+      if (ticket !== detailLinkRevision) return;
+      itemDetailLinks = links;
+      renderTable();
     }
 
     root.addEventListener?.("popstate", () => { if (store.bootstrap) restoreLocation(); });
@@ -875,6 +888,7 @@
         .catch((error) => { if (ticket === revision) showError(error); });
     });
     byId("marketForceReload").addEventListener("click", async () => {
+      refreshItemDetailLinks();
       const button = byId("marketForceReload");
       button.disabled = true;
       byId("marketLoadStatus").textContent = "更新中";
