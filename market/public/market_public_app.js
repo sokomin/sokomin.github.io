@@ -13,6 +13,33 @@
     return `${row.server}|${rowSeason(row)}|${row.item_key}`;
   }
 
+  const ITEM_DETAIL_ROOT = "https://raw.githubusercontent.com/sokomin/sokomin_repository2026/main/market_info/";
+
+  async function loadItemDetailLinks(fetcher) {
+    if (typeof fetcher !== "function") return {};
+    try {
+      const response = await fetcher(ITEM_DETAIL_ROOT + "links.json", { cache: "no-cache" });
+      if (!response.ok) return {};
+      const data = await response.json();
+      return data?.schema === 1 && data.links && typeof data.links === "object" && !Array.isArray(data.links) ? data.links : {};
+    } catch (error) { return {}; }
+  }
+
+  function itemDetailHref(row, links) {
+    if (!/^[0-9a-f]{12}$/.test(row.item_key || "")) return "";
+    const detail = links[`${row.server}|${row.item_key}`];
+    const servers = { Bridgehead: "b", Strasserad: "s", Valutish: "v", "Gold Experience": "g" };
+    if (!detail || !servers[row.server] || detail.server !== servers[row.server] || detail.key !== row.item_key || typeof detail.date !== "string" || !/^\d{8}$/.test(detail.date)) return "";
+    if (row.server === GOLD_SERVER && rowSeason(row) !== detail.date.slice(0, 4)) return "";
+    return "item-detail.html?" + new URLSearchParams({ server: detail.server, date: detail.date, key: detail.key });
+  }
+
+  function itemNameHtml(row, links, escapeHtml) {
+    const name = escapeHtml(row.display_name || row.item_name);
+    const href = itemDetailHref(row, links);
+    return href ? `<a href="${escapeHtml(href)}" data-item-detail title="オプション詳細">${name}</a>` : name;
+  }
+
   const FAVORITES_STORAGE_KEY = "redstone.market.favorites";
 
   function createFavorites() {
@@ -455,6 +482,7 @@
     let indexedServer = "";
     let searchTimer = 0;
     let revision = 0;
+    let itemDetailLinks = {};
     const urlState = createUrlState(state, () => store.bootstrap?.servers || [], true);
 
     function escapeHtml(value) {
@@ -678,7 +706,7 @@
           const count = rowActivity(row);
           const trendOnlyPrice = row.reference_is_trend_only ? " is-trend-only" : "";
           return `<tr class="market-row${selected}${muted}" data-key="${escapeHtml(rowKey(row))}">
-            <td>${favoriteButton(row, state.favorites, escapeHtml)} ${escapeHtml(row.display_name || row.item_name)}</td>
+            <td>${favoriteButton(row, state.favorites, escapeHtml)} ${itemNameHtml(row, itemDetailLinks, escapeHtml)}</td>
             <td class="num market-ref-price${trendOnlyPrice}">${escapeHtml(priceText(row.reference_gold, row.reference_text))}</td>
             <td class="num">${escapeHtml(priceText(row.market_gold, row.market_text))}</td>
             <td class="num">${escapeHtml(priceText(row.sell_gold, row.sell_text))}</td>
@@ -770,11 +798,13 @@
       state.server = store.bootstrap.servers.includes("Bridgehead") ? "Bridgehead" : store.bootstrap.servers[0];
       byId("marketLoadStatus").textContent = "";
       await restoreLocation();
+      loadItemDetailLinks(root.fetch?.bind(root)).then((links) => { itemDetailLinks = links; renderTable(); });
     }
 
     root.addEventListener?.("popstate", () => { if (store.bootstrap) restoreLocation(); });
 
     byId("marketRows").addEventListener("click", (event) => {
+      if (event.target.closest("a[data-item-detail]")) return;
       if (favoriteClick(event)) return;
       const rowElement = event.target.closest("tr[data-key]");
       if (!rowElement) return;
@@ -873,7 +903,7 @@
     initialize().catch(showError);
   }
 
-  const api = { DISPLAY_LIMIT, GOLD_SERVER, CHANGE_DAYS, PUBLIC_CHANGE_DAYS, normalizePublicSort, FAVORITES_STORAGE_KEY, createFavorites, favoriteButton, connectFavorites, createUrlState, activeWindowMeta, buildPriceChangeIndex, priceSeriesKey, priceChangeText, chartRows, chartX, periodTime, nextChartPeriod, chartAnchor, selectChartRows, chartRangeControl, connectChartDetails, renderPriceChart, goldSeasonOptions, itemSearchText, rowActivity, rowKey, shouldShowGoldSeason, sortedRows, start };
+  const api = { loadItemDetailLinks, itemDetailHref, itemNameHtml, DISPLAY_LIMIT, GOLD_SERVER, CHANGE_DAYS, PUBLIC_CHANGE_DAYS, normalizePublicSort, FAVORITES_STORAGE_KEY, createFavorites, favoriteButton, connectFavorites, createUrlState, activeWindowMeta, buildPriceChangeIndex, priceSeriesKey, priceChangeText, chartRows, chartX, periodTime, nextChartPeriod, chartAnchor, selectChartRows, chartRangeControl, connectChartDetails, renderPriceChart, goldSeasonOptions, itemSearchText, rowActivity, rowKey, shouldShowGoldSeason, sortedRows, start };
   root.MarketPublicApp = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   if (root.document && root.ProgressiveMarketDataStore) start();
