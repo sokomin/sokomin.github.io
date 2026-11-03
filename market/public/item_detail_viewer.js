@@ -9,9 +9,11 @@
     if (!Number.isInteger(price?.amount) || price.amount < 0) return -1;
     return price.currency === "ingot" ? price.amount * 100000000 : price.currency === "gold" ? price.amount : -1;
   }
+  const excludedPrice = (price) => goldValue(price) > 200000 * 100000000;
   function groupOffers(items) {
     const groups = new Map();
     for (const item of items) {
+      if (excludedPrice(item.price)) continue;
       const variant = /^[a-f0-9]{64}$/.test(item.variant_key || "") ? item.variant_key : item.id;
       const key = JSON.stringify([item.server, item.date, item.item_id, item.item_key, variant]);
       if (!groups.has(key)) groups.set(key, []);
@@ -35,6 +37,7 @@
     return labels.map((v) => `<span class="detail-badge">${esc(v)}</span>`).join("");
   }
   function renderOffer(item, selected, query) {
+    if (excludedPrice(item.price)) return "";
     const params = new URLSearchParams(query);
     params.set("id", item.id);
     if (params.get("date") === "all") params.set("offerDate", item.date);
@@ -44,6 +47,8 @@
     return `<li><a class="detail-offer${selected ? " is-selected" : ""}" href="?${esc(params.toString())}" data-offer="${esc(item.id)}" data-date="${esc(item.date || "")}"${selected ? ' aria-current="true"' : ""}><span class="detail-offer-name">${esc(item.display_name)}</span><strong class="detail-offer-price">${esc(price)}</strong><span class="detail-badges">${badges(item)}${offers.length > 1 ? `<span class="detail-badge">${offers.length.toLocaleString("ja-JP")}出品</span>` : ""}${item.date ? `<span class="detail-badge">${esc(dateText(item.date))}</span>` : ""}</span></a></li>`;
   }
   function renderDetail(item, offers = [item]) {
+    if (excludedPrice(item.price)) return "";
+    offers = offers.filter((offer) => !excludedPrice(offer.price));
     const groups = (item.groups || []).map((group) => `<section class="detail-option-group"><h3>${esc(group.name)}</h3><ul>${group.lines.map((line) => `<li class="${line.active === false ? "is-sealed" : ""}">${line.slot ? `<span class="detail-slot">${line.slot}.</span> ` : ""}${line.label ? `<span class="detail-option-label">${esc(line.label)}</span> ` : ""}${esc(line.text)}${line.active === false ? ' <span class="detail-seal">封印</span>' : ""}</li>`).join("")}</ul></section>`).join("");
     const date = item.date.replace(/^(....)(..)(..)$/, "$1/$2/$3");
     const sales = offers.map((offer) => `<div class="detail-sale"><span>販売価格${offer.quantity > 1 ? ` / ${esc(offer.quantity.toLocaleString("ja-JP"))}個` : ""}</span><strong>${esc(priceText(offer.price))}</strong></div>`).join("");
@@ -51,10 +56,10 @@
   }
   function matchingOffers(items, sokominDetailState) {
     const query = String(sokominDetailState.query || "").normalize("NFKC").toLowerCase();
-    return items.filter((item) => (!sokominDetailState.key || item.item_key === sokominDetailState.key) && (!sokominDetailState.complexOnly || item.complex) && (!query || `${item.display_name} ${item.item_type}`.normalize("NFKC").toLowerCase().includes(query)));
+    return items.filter((item) => !excludedPrice(item.price) && (!sokominDetailState.key || item.item_key === sokominDetailState.key) && (!sokominDetailState.complexOnly || item.complex) && (!query || `${item.display_name} ${item.item_type}`.normalize("NFKC").toLowerCase().includes(query)));
   }
   function verifyDetail(item, offer, server, date) {
-    return item?.schema === 1 && item.id === offer.id && item.item_id === offer.item_id && item.item_key === offer.item_key && item.server === server && item.date === date && item.price?.amount === offer.price.amount && item.price?.currency === offer.price.currency && item.quantity === offer.quantity && Array.isArray(item.groups);
+    return item?.schema === 1 && !excludedPrice(item.price) && item.id === offer.id && item.item_id === offer.item_id && item.item_key === offer.item_key && item.server === server && item.date === date && item.price?.amount === offer.price.amount && item.price?.currency === offer.price.currency && item.quantity === offer.quantity && Array.isArray(item.groups);
   }
   function variantIdentity(item) {
     const canonical = (value) => Array.isArray(value) ? value.map(canonical) : value && typeof value === "object" ? Object.fromEntries(Object.keys(value).sort().map((key) => [key, canonical(value[key])])) : value;
@@ -167,7 +172,7 @@
             if (data.schema !== 1 || data.server !== server || data.date !== day || !Array.isArray(data.items)) throw new Error("catalog mismatch");
             catalogs.set(cacheKey, data);
           }
-          return data.items.filter((item) => validId(item.id) && validKey(item.item_key)).map((item) => ({ ...item, server, date: day }));
+          return data.items.filter((item) => validId(item.id) && validKey(item.item_key) && !excludedPrice(item.price)).map((item) => ({ ...item, server, date: day }));
         });
         if (ticket !== catalogRevision) return;
         items = lists.flat();
