@@ -113,82 +113,82 @@ const totalsEl = document.getElementById("totals");
 function render(){
   cardsEl.innerHTML = "";
   for (const cat of CATEGORIES){
-    const isUnlocked = unlocked(cat);
-    const card = document.createElement("div"); card.className = "card";
+    const isUnlocked_sokomin = unlocked(cat);
+    const card_min = document.createElement("div"); card_min.className = "card";
 
     if (cat.name=="フェーズストーン") {
-      card.innerHTML = `<h2 style="border-left:6px solid rgb(245,158,11);padding-left:10px;">フェーズストーン　<img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/4d88009434afcb2aa3c27fc9be038ecc00e8b187.10.9.9.3.png" border="0" alt="" name="insertImg" /></h2>`;
+      card_min.innerHTML = `<h2 style="border-left:6px solid rgb(245,158,11);padding-left:10px;">フェーズストーン　<img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/4d88009434afcb2aa3c27fc9be038ecc00e8b187.10.9.9.3.png" border="0" alt="" name="insertImg" /></h2>`;
     } else if (cat.name=="プレーンストーン") {
-      card.innerHTML = `<h2 style="border-left:6px solid rgb(52,211,153);padding-left:10px;">プレーンストーン　<img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/70f50a4f1d895b59e2e2494acfe932af9fc713d6.10.9.9.3.png" border="0" alt="" name="insertImg" /></h2>`;
+      card_min.innerHTML = `<h2 style="border-left:6px solid rgb(52,211,153);padding-left:10px;">プレーンストーン　<img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/70f50a4f1d895b59e2e2494acfe932af9fc713d6.10.9.9.3.png" border="0" alt="" name="insertImg" /></h2>`;
     } else if (cat.name=="ニューラルストーン") {
-      card.innerHTML = `<h2 style="border-left:6px solid rgb(96,165,250);padding-left:10px;">ニューラルストーン　<img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/41878f7935af3342a84ad70a41e08d30e3b5e7e9.10.9.9.3.png" border="0" alt="" name="insertImg" /></h2>`;
+      card_min.innerHTML = `<h2 style="border-left:6px solid rgb(96,165,250);padding-left:10px;">ニューラルストーン　<img src="https://image.space.rakuten.co.jp/d/strg/ctrl/9/41878f7935af3342a84ad70a41e08d30e3b5e7e9.10.9.9.3.png" border="0" alt="" name="insertImg" /></h2>`;
     } else {
-      card.innerHTML = `<h2>${cat.name}</h2>`;
+      card_min.innerHTML = `<h2>${cat.name}</h2>`;
     }
 
     // stage
-    const stageDiv = document.createElement("div");
-    stageDiv.className = "stage";
-    const sel = document.createElement("select");
+    const stageDiv_sokomin = document.createElement("div");
+    stageDiv_sokomin.className = "stage";
+    const sel_sokomin = document.createElement("select");
     for (let i=0; i<=MAX_STAGE; i++){
       const o = document.createElement("option");
       o.value = i; o.textContent = i;
       if (i === state[cat.key].stage) o.selected = true;
-      sel.appendChild(o);
+      sel_sokomin.appendChild(o);
     }
-    sel.addEventListener("change", e=>{
+    sel_sokomin.addEventListener("change", e=>{
       state[cat.key].stage = +e.target.value;
       saveState(); render();
     });
-    stageDiv.innerHTML = `<b>段階</b>:`; stageDiv.appendChild(sel);
-    card.appendChild(stageDiv);
+    stageDiv_sokomin.innerHTML = `<b>段階</b>:`; stageDiv_sokomin.appendChild(sel_sokomin);
+    card_min.appendChild(stageDiv_sokomin);
 
     // skills（← ここを修正：条件は i < getSkillCount(...)）
     for (let i=0; i<getSkillCount(cat.key); i++){
       const def = SKILL_EFFECTS[cat.key][i];
-      const row = document.createElement("div"); row.className = "row";
-      const label = document.createElement("label"); label.textContent = def.name;
+      const row_sokomin = document.createElement("div"); row_sokomin.className = "row";
+      const label_min = document.createElement("label"); label_min.textContent = def.name;
       const s = document.createElement("select");
 
-      const current = state[cat.key].skills[i];
-      const usedElse = skillPointUsed(cat.key) - cumulativeSkillCost(current);
+      const current_sokomin = state[cat.key].skills[i];
+      const usedElse_min = skillPointUsed(cat.key) - cumulativeSkillCost(current_sokomin);
 
       for (let lv=0; lv<=MAX_SKILL_LV; lv++){
         const o = document.createElement("option");
         o.value = lv; o.textContent = lv;
 
-        const newTotal = usedElse + cumulativeSkillCost(lv);
-        if (newTotal > skillPointCap(cat.key)) o.disabled = true;
-        if (lv === current) o.selected = true;
+        const newTotal_min = usedElse_min + cumulativeSkillCost(lv);
+        if (newTotal_min > skillPointCap(cat.key)) o.disabled = true;
+        if (lv === current_sokomin) o.selected = true;
 
         s.appendChild(o);
       }
-      s.disabled = !isUnlocked;
+      s.disabled = !isUnlocked_sokomin;
       s.addEventListener("change", e=>{
         state[cat.key].skills[i] = +e.target.value;
         saveState(); render();
       });
 
-      row.appendChild(label); row.appendChild(s);
-      card.appendChild(row);
+      row_sokomin.appendChild(label_min); row_sokomin.appendChild(s);
+      card_min.appendChild(row_sokomin);
     }
 
     // effects summary
-    const effDiv = document.createElement("div"); effDiv.className = "effects";
-    const table = document.createElement("table");
-    table.innerHTML = "<tr><th>効果</th><th>合計値</th></tr>";
+    const effDiv_sokomin = document.createElement("div"); effDiv_sokomin.className = "effects";
+    const table_min = document.createElement("table");
+    table_min.innerHTML = "<tr><th>効果</th><th>合計値</th></tr>";
     state[cat.key].skills.forEach((lv,idx)=>{
       if (lv>0){
-        const eff = getSkillEffect(cat.key, idx, lv);
+        const eff_sokomin = getSkillEffect(cat.key, idx, lv);
         const tr = document.createElement("tr");
-        tr.innerHTML = `<td>${eff.name}</td><td>+${eff.value}${eff.unit}</td>`;
-        table.appendChild(tr);
+        tr.innerHTML = `<td>${eff_sokomin.name}</td><td>+${eff_sokomin.value}${eff_sokomin.unit}</td>`;
+        table_min.appendChild(tr);
       }
     });
-    effDiv.appendChild(table);
-    card.appendChild(effDiv);
+    effDiv_sokomin.appendChild(table_min);
+    card_min.appendChild(effDiv_sokomin);
 
-    cardsEl.appendChild(card);
+    cardsEl.appendChild(card_min);
   }
   renderTotals();
 }
@@ -196,10 +196,10 @@ function render(){
 function renderTotals(){
   totalsEl.innerHTML = "<h2>合計</h2>";
   for (const c of CATEGORIES){
-    const used = skillPointUsed(c.key), cap = skillPointCap(c.key);
-    const div = document.createElement("div"); div.className = "line";
-    div.textContent = `${c.name}: 段階 ${state[c.key].stage} / 消費 ${used} / 上限 ${cap}`;
-    totalsEl.appendChild(div);
+    const used_min = skillPointUsed(c.key), cap_sokomin = skillPointCap(c.key);
+    const div_sokomin = document.createElement("div"); div_sokomin.className = "line";
+    div_sokomin.textContent = `${c.name}: 段階 ${state[c.key].stage} / 消費 ${used_min} / 上限 ${cap_sokomin}`;
+    totalsEl.appendChild(div_sokomin);
   }
 }
 
@@ -209,8 +209,8 @@ function renderTotals(){
 function saveState(){ localStorage.setItem("stone-sim", JSON.stringify(state)); }
 function loadState(){
   try{
-    const raw = localStorage.getItem("stone-sim"); if(!raw) return;
-    const obj = JSON.parse(raw);
+    const raw_min = localStorage.getItem("stone-sim"); if(!raw_min) return;
+    const obj = JSON.parse(raw_min);
     for (const c of CATEGORIES){
       if (obj[c.key]){
         state[c.key].stage = clamp(obj[c.key].stage, 0, MAX_STAGE);

@@ -291,9 +291,12 @@
             color: var(--amber);
             font-size: 12px;
         }
+        #evsim-out-a, #evsim-out-b, .grid { overflow-x:auto; max-width:100%; }
+        #phase-market table { min-width:720px; }
+        #phase-market .controls { display:flex; flex-wrap:wrap; gap:8px; }
+        .phase-price-source { display:block; font-size:12px; }
     </style>
     <script>var rswitch = true;</script>
-    <script type="text/javascript" src="./js2023/phase_stone.js"></script>
     <!-- 忘れずに変えてね -->
     <title>フェーズストーン シミュレータ 赤石の民衆</title>
     <meta name="description" content="RED STONE（レッドストーン）の「フェーズストーン シミュレータ」。条件を設定して結果を試算し、育成・装備・確率計算の検討に利用できます。" />
@@ -616,9 +619,24 @@
                     <br>
                     <br>
                     <br>
+
+                    <section id="phase-market" class="panel">
+                      <h5>材料の参考相場</h5>
+                      <div class="controls">
+                        <label>サーバー <select id="phase-market-server"></select></label>
+                        <label>Gold年 <select id="phase-market-year"></select></label>
+                        <button id="phase-market-show">相場を表示</button>
+                        <button id="phase-market-best">最安を一般触媒価格へ反映</button>
+                      </div>
+                      <div class="grid"><table><thead><tr><th>素材</th><th>参考価格</th><th>実観測日</th><th></th></tr></thead><tbody id="phase-market-rows"></tbody></table></div>
+                      <p id="phase-market-error" role="alert"></p>
+                    </section>
+
                     <script type="text/javascript" src="./js2023/phase_common.js"></script>
                     <script type="text/javascript" src="./js2023/phase_stone.js"></script>
                     <script type="text/javascript" src="./js2023/phase_expect.js"></script>
+                    <script src="./js2023/phase_market_data.js"></script>
+                    <script src="./js2023/phase_market_prices.js"></script>
                     <footer class="android-footer mdl-mega-footer">
                         <font color="red">
                             当サイトで利用している画像及びデータは、L&K Co., Ltd.に帰属します。<br>
