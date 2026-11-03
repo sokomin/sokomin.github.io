@@ -37,7 +37,8 @@
       const snapshot=await window.RefinementMarket.load(server,refinement.materials);
       if(request!==marketRequest)return;
       materialPrices=snapshot.prices;
-      $('market-date').textContent=server+'鯖 ／ '+snapshot.generatedAt;updateCost();
+      const date=String(snapshot.generatedAt??'').match(/^\d{4}-\d{2}-\d{2}(?=[ T]|$)/)?.[0];
+      $('market-date').textContent=server+'鯖'+(date?' ／ '+date:'');updateCost();
     }catch(error){if(request!==marketRequest)return;$('market-date').textContent='';$('market-error').textContent=error.message;updateCost();}
     finally {if(request===marketRequest)$('refresh-market').disabled=false;}
   }
