@@ -9,7 +9,7 @@
     content="RED STONE ,レッドストーン,赤石の民衆,そこらの民衆,ＲＥＤ ＳＴＯＮＥ,そこみん,赤石,攻略情報,キャラクターシミュレーター,装備,ステータス" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://sokomin.github.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://sokomin.github.io; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://sokomin.github.io; frame-src 'self' https://sokomin.github.io; object-src 'none'; base-uri 'self' https://sokomin.github.io; form-action 'self' https://www.google.com" />
+    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://sokomin.github.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://sokomin.github.io; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://sokomin.github.io https://raw.githubusercontent.com/sokomin/sokomin_repository2026/main/market_info/; frame-src 'self' https://sokomin.github.io; object-src 'none'; base-uri 'self' https://sokomin.github.io; form-action 'self' https://www.google.com" />
   <link rel="icon" href="https://sokomin.github.io/design/RedStoneLogo.png" sizes="32x32" />
   <link rel="icon" href="https://sokomin.github.io/design/RedStoneLogo.png" sizes="192x192" />
   <link rel="apple-touch-icon-precomposed" href="https://sokomin.github.io/design/RedStoneLogo.png" />
@@ -2756,6 +2756,7 @@
           
           <nav class="sim-tab-bar" role="tablist">
             <button type="button" class="sim-tab-btn is-active" data-tab-btn="item"  role="tab">アイテム</button>
+            <button type="button" class="sim-tab-btn" data-tab-btn="shop" role="tab">露店</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="enhance"  role="tab">アイテム強化</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="stone"    role="tab">フェーズストーン</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="skill"    role="tab">スキル</button>
@@ -3455,7 +3456,20 @@
 
           
           
-          <div class="tab-pane" data-tab="enhance">
+          <div class="tab-pane" data-tab="shop" id="market-shop" style="color:#fff;background:rgba(20,16,8,.94);padding:10px">
+  <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+    <input id="shop-query" aria-label="装備名" placeholder="装備名" style="max-width:100%;width:200px">
+    <select id="shop-server" aria-label="相場サーバー"><option value="">サーバー</option><option value="b" selected>Bridgehead</option><option value="s">Strasserad</option><option value="v">Valutish</option><option value="g">Gold Experience</option></select>
+    <input id="shop-year" aria-label="Gold年" placeholder="Gold年" inputmode="numeric" maxlength="4" style="width:80px" disabled>
+    <select id="shop-date" aria-label="撮影日"><option value="recent" selected>直近半年</option><option value="latest">最新</option></select>
+    <button type="button" id="shop-search">検索</button>
+  </div>
+  <div id="shop-error" role="alert" style="color:#fff"></div>
+  <div style="overflow-x:auto;margin:10px 0"><table style="width:100%;border-collapse:collapse;text-align:left;color:#fff"><thead><tr><th>商品</th><th>価格</th><th>撮影日</th><th></th></tr></thead><tbody id="shop-results"></tbody></table></div>
+  <div><button type="button" id="shop-prev" disabled>前へ</button> <output id="shop-count" style="color:#fff"></output> <button type="button" id="shop-next" disabled>次へ</button></div>
+  <p style="color:#fff">購入費用 <output id="shop-total" style="color:#fff">0本</output></p><ul id="shop-history" style="overflow-wrap:anywhere;color:#fff"></ul>
+</div>
+<div class="tab-pane" data-tab="enhance">
             <div class="item-tab-layout">
 
               
@@ -4904,6 +4918,8 @@
 <div id="item-detail-popup" class="item-detail-popup"></div>
 
 <script type="module">
+import { createShop, restoreShopAvailability, serializeShopAvailability, restoreShopBf, serializeShopBf, renderShopBfEditor, restoreShopNx, serializeShopNx, preserveShopNx, renderShopNxSelection, shopSeirenFamily, shopItemRecord, restoreShopNative, serializeShopNative, preserveShopNative, restoreShopNonstandard, serializeShopNonstandard, restoreShopSeiren, serializeShopSeiren, renderShopGameNative, restoreShopGameCorrections, serializeShopGameCorrections } from './lib/market_shop.js';
+import { mountMarketShop } from './lib/market_shop_search_ui.js';
 
 const __SK_BUILD = "sokomin/character_simulator@2026-05-25​‌‌‌​​‌‌​‌‌​‌‌‌‌​‌‌​‌​‌‌​‌‌​‌‌‌‌​‌‌​‌‌​‌​‌‌​‌​​‌​‌‌​‌‌‌​";
 import { DataLoader } from './lib/data_loader.js';
@@ -5333,6 +5349,8 @@ const formState = {
 };
 const INVENTORY_MAX = 84;  
 const inventory = new Inventory(INVENTORY_MAX);
+let marketShopUI = null;
+const marketShop = createShop({ inventory, restore: restoreInventoryEntry, recalculate: () => recalcAll(), changed: () => { scheduleAutosave(); marketShopUI?.refresh(); } });
 let selectedInv = null;
 
 let feasibleCache = new Map();
@@ -6109,7 +6127,7 @@ function applySeirenSelection(idx, value, partKey) {
   const value0 = (entry.tiers?.[parsed.tier] || [])[stageIdx];
   if (value0 == null) { formState.seirenOps[idx] = null; return; }
 
-  const familyId = (nm.familyId != null) ? Number(nm.familyId) : -1;
+  const familyId = shopSeirenFamily(nm);
   const isUnsupported = !(familyId >= 0);
 
   if (isUnsupported) {
@@ -7193,6 +7211,7 @@ function kindName(kind) {
 
 
 function buildItemDetailHtml(inv, rec, character) {
+  rec = shopItemRecord(inv, rec);
   if (!rec) return '';
   const iconUrl = getItemIconUrl(rec.imgId) || '';
   const kindStr = kindName(rec.kind);
@@ -7382,6 +7401,9 @@ function buildItemDetailHtml(inv, rec, character) {
     const isNx = slot.slotKind === 'nxop' || slot.slotKind === 'long_nxop';
     if (isNx && isNonstandardItem(rec)) continue;
     const nxPos = (isNx && slot.pos != null) ? Number(slot.pos) : -1;
+    if (isNx && inv?.nxAvailableCount != null && nxPos >= inv.nxAvailableCount) continue;
+    const observed = isNx && inv?.shopObservedNx?.find(row => row.slot === nxPos);
+    if (observed) { html += `<span class="idp-op is-nx">- ${esc(observed.text)} <span class="idp-nx-label">${nxPos < unlockedCount ? '[Nx]' : '[封印中]'}</span></span>`; continue; }
     
     if (isNx && nxPos >= 0 && nxPos < unlockedCount && inv && inv.nxUnlockedOps && inv.nxUnlockedOps[nxPos]) {
       const ovr = inv.nxUnlockedOps[nxPos];
@@ -7412,6 +7434,8 @@ function buildItemDetailHtml(inv, rec, character) {
       }
     }
     
+    const nativeHtml = renderShopGameNative(slot, inv, loader);
+    if (nativeHtml != null) { html += nativeHtml; continue; }
     if (isNx && nxPos >= unlockedCount) {
       const info0 = resolveOpDisplayInfo(slot.familyId, slot.value);
       html += `<span class="idp-op is-nx" style="color:#7a7a7a">- ${esc(info0.name)} <span style="font-size:10.5px">[封印中]</span></span>`;
@@ -7500,6 +7524,8 @@ function buildItemDetailHtml(inv, rec, character) {
       const op = inv.seirenOps[i];
       if (!op) continue;
       const tierTxt = op.seirenTier ? `[${tierLabel[op.seirenTier] || op.seirenTier}] ` : '';
+      const observedSeiren = inv.shopObservedSeiren?.find(row => row.index === i);
+      if (observedSeiren) { html += `<span class="idp-op is-ui">${esc(observedSeiren.text)} <span class="idp-ui-label">[製錬${i + 1}]</span></span>`; continue; }
       const nameTxt = optionDisplayName(op.seirenName || op.name || '?', op);
       let v = (op.value != null) ? op.value
             : (op.addValue != null) ? op.addValue
@@ -7584,10 +7610,10 @@ function buildItemDetailHtml(inv, rec, character) {
       const unit = def.unit || '';
       const suppressed = !!inv.bfop._suppressed;
       const dispOnly = !!inv.bfop.isDisplayOnly;
-      const heading = `${gradeLabel}強化`;
+      const heading = inv.shopObservedBf ? '異界強化' : `${gradeLabel}強化`;
       html += `<div class="idp-section-title" style="color:#cbe79b">&lt;${esc(heading)}&gt;</div>`;
       const valTxt = (v != null) ? `+${v}${unit}` : (range ? `+${range.max}${unit}` : '?');
-      const tierTag = `<span style="color:${tierColor}; font-size:11px">[${esc(tierLabel)}]</span>`;
+      const tierTag = inv.shopObservedBf ? '' : `<span style="color:${tierColor}; font-size:11px">[${esc(tierLabel)}]</span>`;
 
       const tag = suppressed
         ? ` <span class="idp-ui-label" style="color:#d8884c">[BF制限]</span>`
@@ -8216,7 +8242,7 @@ async function recalcAllNow() {
   for (const inv of inventory.items()) {
     const item = await Item.get(inv.itemId);
     if (!item) continue;
-    equipped.push({ inv, item });
+    equipped.push({ inv, item: shopItemRecord(inv, item) });
   }
   
   for (const { inv, item } of equipped) {
@@ -9138,6 +9164,14 @@ function buildSnapshot() {
   const character = readCharacter();
   const snap = serializeSession(character, inventory, readGraceRebirth());
   snap.settings = getSettingsState();
+  snap.settings.marketShop = marketShop.snapshot();
+  serializeShopAvailability(snap, inventory);
+  serializeShopBf(snap, inventory);
+  serializeShopNx(snap, inventory);
+  serializeShopNative(snap, inventory);
+  serializeShopNonstandard(snap, inventory);
+  serializeShopSeiren(snap, inventory);
+  serializeShopGameCorrections(snap, inventory);
   snap.damageCalc = DamageCalc.getState();
   snap.incomingDamageCalc = IncomingDamageCalc.getState();
   snap.skills = { ...skillStates };  
@@ -9700,6 +9734,8 @@ async function restoreInventoryEntry(entry) {
   if (typeof entry.nxUnlockedCount === 'number') {
     inv.nxUnlockedCount = Math.max(0, Math.min(4, entry.nxUnlockedCount));
   }
+  restoreShopAvailability(inv, entry);
+  restoreShopBf(inv, entry);
   if (Array.isArray(entry.nxUnlockedOps)) {
     for (let k = 0; k < 4; k++) {
       const e = entry.nxUnlockedOps[k];
@@ -9743,6 +9779,12 @@ async function restoreInventoryEntry(entry) {
       inv.nxUnlockedOps[k] = null;
     }
   }
+  restoreShopNx(inv, entry);
+  restoreShopNative(inv, entry);
+  restoreShopNonstandard(inv, entry);
+  restoreShopSeiren(inv, entry);
+  restoreShopGameCorrections(inv, entry);
+  shopItemRecord(inv, rec);
   return inv;
 }
 
@@ -9767,6 +9809,8 @@ async function loadSnapshot(data, sourceLabel) {
   try { parsed = deserializeSession(data); }
   catch (err) { setSessionStatus('読込失敗: ' + err.message); return; }
 
+  try { const shopCheck = createShop({}); shopCheck.reset(data.settings?.marketShop || []); }
+  catch (err) { setSessionStatus('読込失敗: ' + err.message); return; }
   const calculationDataFailures = await loadSnapshotCalculationData(data);
 
   
@@ -9919,6 +9963,8 @@ async function loadSnapshot(data, sourceLabel) {
   for (const inv of [...inventory.items()]) inventory.remove(inv.slotIndex);
   selectedInv = null;
   for (const inv of restoredInventory.items()) inventory.addAt(inv, inv.slotIndex);
+  marketShop.reset(data.settings?.marketShop || []);
+  marketShopUI?.reset();
   invalidateFeasibleCache();
   if (data.damageCalc) await DamageCalc.setState(data.damageCalc);
   IncomingDamageCalc.setState(data.incomingDamageCalc);
@@ -14635,6 +14681,8 @@ function bindSessionEvents() {
     
     resetBadgeState();
     setSettingsState(null);
+    marketShop.reset();
+    marketShopUI?.reset();
     buildOpSearchIndex();
     refreshCurrentOpSearchResults();
     refreshSelectedOpLabels();
@@ -20918,6 +20966,7 @@ async function main() {
     await refreshItemList();
   }
 
+  marketShopUI = mountMarketShop({ root: $('market-shop'), shop: marketShop, getRecord: id => Item.get(id), loader, inventory });
   loadCreatureDataOnce().then(async () => {
     
     const hasAny = creatureState.slots.some((s) => s && s.id);
@@ -21121,6 +21170,9 @@ async function loadEditStateFromInv(inv) {
     editState.scroll = { type: null, id: null, stage: 1 };
   }
   
+  editState.shopBfEdited = false;
+  editState.shopSeirenEdited = false;
+  editState.shopNxEdited = [false,false,false,false];
   editState.seirenStage = Math.max(0, Math.min(15, Number(inv.seirenStage) || 0));
   editState.seirenOps = [null, null, null, null, null];
   if (Array.isArray(inv.seirenOps)) {
@@ -21411,9 +21463,10 @@ const _editNonstandardOpenOptionsCache = [new Map(), new Map(), new Map(), new M
 async function refreshEditNxPanel(rec) {
   try { await loadOpConvertData(); } catch (e) {  }
   const countSel = document.getElementById('edit-nx-count');
+  if (countSel) { const available = inventory.get(editTargetSlotIdx)?.nxAvailableCount ?? 4; for (const option of countSel.options) option.disabled = Number(option.value) > available; }
   const convSel  = document.getElementById('edit-nx-converter');
   if (countSel) countSel.value = String(editState.nxUnlockedCount);
-  if (convSel)  convSel.value  = editState.nxConverter || '';
+  if (convSel) { convSel.value = editState.nxConverter || ''; const empty = convSel.querySelector('option[value=""]'); if (empty) empty.textContent = inventory.get(editTargetSlotIdx)?.shopObservedNx?.length && !editState.shopNxEdited?.some(Boolean) ? '(未指定)' : '(変換なし)'; }
   
   const rows = document.querySelectorAll('.edit-nx-slot-row');
   for (const r of rows) {
@@ -21442,6 +21495,7 @@ async function refreshEditNxPanel(rec) {
       } else {
         sel.value = '';
       }
+      renderShopNxSelection(inventory.get(editTargetSlotIdx), editState, k, sel, document);
       sel.disabled = !editState.nxConverter;
     }
   } finally {
@@ -21510,6 +21564,7 @@ function refreshEditBfopPanel() {
   const gradeSel = document.getElementById('edit-bfop-grade');
   const idSel    = document.getElementById('edit-bfop-id');
   const tierSel  = document.getElementById('edit-bfop-tier');
+  if (renderShopBfEditor(inventory.get(editTargetSlotIdx), editState, gradeSel, tierSel, idSel, document)) return;
   if (gradeSel) gradeSel.value = editState.bfop.grade || 'black';
   if (tierSel)  tierSel.value  = editState.bfop.tier  || 'top';
   if (idSel) {
@@ -21782,6 +21837,12 @@ async function applyEditToInv() {
   built.slotIndex = inv.slotIndex;
   built.equippedSlot = inv.equippedSlot;
   
+  restoreShopAvailability(built, inv);
+  preserveShopNative(built, inv, rec);
+  restoreShopGameCorrections(built, inv);
+  if (inv.shopObservedNx) preserveShopNx(built, inv, editState.shopNxEdited);
+  if (!editState.shopBfEdited) restoreShopBf(built, inv);
+  if (!editState.shopSeirenEdited) restoreShopSeiren(built, inv);
   inventory._slots[inv.slotIndex] = built;
   if (selectedInv && selectedInv.inv.slotIndex === inv.slotIndex) {
     selectedInv = { inv: built, item: rec };
@@ -21897,6 +21958,7 @@ function bindEditTabEvents() {
     }
   });
   if (nxConv)  nxConv.addEventListener('change', async () => {
+    editState.shopNxEdited = [true,true,true,true];
     editState.nxConverter = nxConv.value || '';
     if (!editState.nxConverter) editState.nxUnlockedOps = [null, null, null, null];
     if (editTargetSlotIdx >= 0) {
@@ -21908,6 +21970,7 @@ function bindEditTabEvents() {
   document.querySelectorAll('.edit-nx-op-select').forEach((sel) => {
     sel.addEventListener('change', () => {
       const k = Number(sel.dataset.enx);
+      (editState.shopNxEdited ||= [false,false,false,false])[k] = true;
       const name = sel.value;
       if (!name) { editState.nxUnlockedOps[k] = null; return; }
       
@@ -21938,6 +22001,7 @@ function bindEditTabEvents() {
     });
   });
   
+  document.getElementById('edit-seiren-section')?.addEventListener('change', () => { editState.shopSeirenEdited = true; });
   const seirenStage = document.getElementById('edit-seiren-stage');
   if (seirenStage) seirenStage.addEventListener('change', async () => {
     editState.seirenStage = Math.max(0, Math.min(15, Number(seirenStage.value) || 0));
@@ -21997,6 +22061,7 @@ function bindEditTabEvents() {
   const bfGrade = document.getElementById('edit-bfop-grade');
   const bfId    = document.getElementById('edit-bfop-id');
   const bfTier  = document.getElementById('edit-bfop-tier');
+  for (const control of [bfGrade, bfId, bfTier]) control?.addEventListener('change', () => { editState.shopBfEdited = true; });
   if (bfGrade) bfGrade.addEventListener('change', () => {
     editState.bfop.grade = bfGrade.value || 'black';
     editState.bfop.id = null;
