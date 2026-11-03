@@ -3,6 +3,8 @@ mapid = mapid ? mapid : 0;
 const file_url = "https://sokomin.github.io/sokomin_repository/db/mobdb/mobdb" + mapid + ".js";
 //モンスターとのリンク作成用
 const mob_file_url = "https://sokomin.github.io/sokomin_repository/db/map2_2023.csv";
+const map_display_exclusions_url = "https://sokomin.github.io/sokomin_repository2026/db/monster/map_display_exclusions.csv";
+var map_display_exclusions = [];
 var DROP_TEXT_CONST = "";
 
 // 入れ子じゃん・・・ジェネレータだから許して。
@@ -109,7 +111,70 @@ function convertCSVtoArray(str, monster_str) {// 読み込んだCSVデータが�
         }
     }
 
-    getMobDB();
+    getMapDisplayExclusions();
+}
+
+function parseMapDisplayExclusions(text) {
+    function readRow(line) {
+        var fields = [], value = "", quoted = false;
+        for (var i = 0; i < line.length; i++) {
+            if (line[i] === '"') {
+                if (quoted && line[i + 1] === '"') {
+                    value += '"';
+                    i++;
+                } else {
+                    quoted = !quoted;
+                }
+            } else if (line[i] === "," && !quoted) {
+                fields.push(value.trim());
+                value = "";
+            } else {
+                value += line[i];
+            }
+        }
+        if (quoted) return null;
+        fields.push(value.trim());
+        return fields;
+    }
+    var lines = String(text || "").replace(/^\uFEFF/, "").split(/\r?\n/);
+    var header = readRow(lines.shift() || "");
+    if (!header || header.length !== 2 || header[0] !== "map_id" || header[1] !== "name") return [];
+    return lines.map(readRow).filter(function (fields) {
+        return fields && fields.length === 2 && /^\d+$/.test(fields[0]) && fields[1] !== "";
+    }).map(function (fields) {
+        return { map_id: Number(fields[0]), name: fields[1] };
+    });
+}
+
+function getMapDisplayExclusions() {
+    $.ajax({
+        type: "GET",
+        url: map_display_exclusions_url,
+        dataType: "text",
+        success: function (text) {
+            map_display_exclusions = parseMapDisplayExclusions(text);
+            getMobDB();
+        },
+        error: function () {
+            map_display_exclusions = [];
+            getMobDB();
+        }
+    });
+}
+
+function applyMapDisplayExclusions(obj, mapId) {
+    var names = map_display_exclusions.filter(function (rule) {
+        return rule.map_id === Number(mapId);
+    }).map(function (rule) { return rule.name; });
+    if (!names.length) return;
+    obj.m[mapId] = (obj.m[mapId] || []).filter(function (mob) {
+        return names.indexOf(mob.name) === -1;
+    });
+    if (obj.l && obj.l[mapId]) {
+        obj.l[mapId] = obj.l[mapId].map(function (name) {
+            return names.indexOf(name) === -1 ? name : "None.";
+        });
+    }
 }
 
 function getMobDB() {
@@ -120,6 +185,7 @@ function getMobDB() {
         success: function (result) {
             var obj = (new Function(result + "return{m:MobData,l:MobList,a:AreaData}"))();
             // var obj = (new Function(result + "return{m:MobData,a:AreaData}"))();
+            applyMapDisplayExclusions(obj, mapid);
             MobData = obj.m;
             AreaData = obj.a;
             NameMob = obj.l && obj.l[mapid] ? obj.l[mapid] : NameMob;
@@ -335,6 +401,9 @@ function createRendou2Color(rendou) {
 }
 
 function createDownTabe(SubInfo) {
+    if (SubInfo && SubInfo.dfi === null) {
+        return "調査中";
+    }
     if (checkSubInfo(SubInfo)) {
         var npc_doc = '<table id="table10" border="0" style="max-width: 560px;" cellspacing="1" cellpadding="2">';
         npc_doc = npc_doc + '<colgroup><col span="8" width="80%" /></colgroup><tbody>';

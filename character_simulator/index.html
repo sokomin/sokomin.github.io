@@ -1341,6 +1341,10 @@
     .damage-breakdown table { width: 100%; border-collapse: collapse; }
     .damage-breakdown th, .damage-breakdown td { padding: 1px 4px; text-align: left; vertical-align: top; }
     .damage-breakdown td.dbd-val { text-align: right; color: #f4e7a2; font-family: "Consolas", monospace; white-space: nowrap; }
+    .incoming-layout { display: grid; grid-template-columns: minmax(260px, 1fr) minmax(260px, 1fr); gap: 10px; align-items: start; }
+    .tab-pane[data-tab="incoming"] > h3 { color: #5b3d12; }
+    #incoming-element { width: 100%; background: #120c04; color: #00ff66; border: 1px solid #8b6a28; font: inherit; padding: 2px 4px; }
+    @media (max-width: 900px) { .incoming-layout { grid-template-columns: minmax(0, 1fr); } }
     .damage-empty {
       padding: 12px; text-align: center; color: #b0944c; font-size: 12px;
     }
@@ -2768,6 +2772,7 @@
             <button type="button" class="sim-tab-btn"           data-tab-btn="trans"    role="tab">超越スキル</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="blood"    role="tab">ブラッドレコード</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="damage"   role="tab">ダメージ計算</button>
+            <button type="button" class="sim-tab-btn"           data-tab-btn="incoming" role="tab">被ダメージ計算</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="pvp"      role="tab">PVP計算</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="optimizer" role="tab" hidden aria-hidden="true" tabindex="-1">装備探索</button>
             <button type="button" class="sim-tab-btn"           data-tab-btn="mapmon"   role="tab">マップ&amp;モンスター</button>
@@ -4627,6 +4632,72 @@
           </div>
 
           
+          <div class="tab-pane" data-tab="incoming">
+            <div class="incoming-layout">
+              <div class="damage-panel">
+                <h4>敵の攻撃</h4>
+                <table class="damage-input-table"><tbody>
+                  <tr><th><label for="incoming-element">攻撃属性</label></th><td><select id="incoming-element"><option value="Fire">火</option><option value="Water">水</option><option value="Wind">風</option><option value="Earth">大地</option><option value="Light">光</option><option value="Dark">闇</option></select></td></tr>
+                  <tr><th><label for="incoming-rawMin">素ダメージ 最小</label></th><td><input type="number" id="incoming-rawMin" value="2000" min="0" step="any"></td></tr>
+                  <tr><th><label for="incoming-rawMax">素ダメージ 最大</label></th><td><input type="number" id="incoming-rawMax" value="2000" min="0" step="any"></td></tr>
+                  <tr><th><label for="incoming-weaken">敵の抵抗弱化%</label></th><td><input type="number" id="incoming-weaken" value="0" min="0" step="any"></td></tr>
+                </tbody></table>
+                <h4 style="margin-top:12px;">自分の防御条件</h4>
+                <label class="damage-auto-toggle"><input type="checkbox" id="incoming-auto" checked>キャラクターの抵抗・吸収・被ダメージ減少を自動取得</label>
+                <table class="damage-input-table"><tbody>
+                  <tr><th><label for="incoming-resist">補正後の属性抵抗%</label></th><td><input type="number" id="incoming-resist" value="0" step="any"></td></tr>
+                  <tr><th><label for="incoming-elementAbsorb">選択属性の吸収%</label></th><td><input type="number" id="incoming-elementAbsorb" value="0" min="0" step="any"></td></tr>
+                  <tr><th><label for="incoming-magicAbsorb">魔法ダメージ吸収%</label></th><td><input type="number" id="incoming-magicAbsorb" value="0" min="0" step="any"></td></tr>
+                  <tr><th><label for="incoming-reduction">被ダメージ減少%</label></th><td><input type="number" id="incoming-reduction" value="0" min="0" max="100" step="any"></td></tr>
+                </tbody></table>
+                <button type="button" id="incoming-reset" class="sim-btn">計算条件を初期化</button>
+              </div>
+              <div class="damage-panel">
+                <h4>1発あたりの計算結果</h4>
+                <div aria-live="polite">
+                  <table class="damage-result-table"><tbody>
+                    <tr class="is-highlight"><th>被ダメージ</th><td id="incoming-damage">—</td></tr>
+                    <tr><th>吸収による回復量</th><td id="incoming-healing">—</td></tr>
+                    <tr><th>差引HP減少（負なら回復）</th><td id="incoming-hpLoss">—</td></tr>
+                    <tr><th>吸収計算の基準ダメージ</th><td id="incoming-basis">—</td></tr>
+                  </tbody></table>
+                  <p id="incoming-error" class="damage-warnings" role="status"></p>
+                </div>
+              </div>
+            </div>
+            <h3>応急処置</h3>
+            <div class="incoming-layout">
+              <div class="damage-panel">
+                <h4>応急処置の条件</h4>
+                <label class="damage-auto-toggle"><input type="checkbox" id="firstaid-auto" checked>装備の応急処置量・最大HPを自動取得</label>
+                <table class="damage-input-table"><tbody>
+                  <tr><th><label for="firstaid-amount">応急処置量（合計）%</label></th><td><input type="number" id="firstaid-amount" value="0" min="0" step="any"></td></tr>
+                  <tr><th><label for="firstaid-maxHp">最大HP</label></th><td><input type="number" id="firstaid-maxHp" value="200000" min="1" step="any"></td></tr>
+                  <tr><th><label for="firstaid-hp">被弾前の通常HP</label></th><td><input type="number" id="firstaid-hp" value="100000" min="0" step="any"></td></tr>
+                  <tr><th><label for="firstaid-aidHp">被弾前の応急処置HP</label></th><td><input type="number" id="firstaid-aidHp" value="0" min="0" step="any"></td></tr>
+                </tbody></table>
+                <button type="button" id="firstaid-reset" class="sim-btn">応急処置の条件を初期化</button>
+              </div>
+              <div class="damage-panel">
+                <h4>応急処置の計算結果</h4>
+                <div aria-live="polite">
+                  <table class="damage-result-table"><tbody>
+                    <tr><th>適用する応急処置量</th><td id="firstaid-effective">—</td></tr>
+                    <tr><th>発動率</th><td id="firstaid-chance">—</td></tr>
+                    <tr><th>発動時の応急処置量（HP上限前）</th><td id="firstaid-potential">—</td></tr>
+                    <tr class="is-highlight"><th>発動時に追加される応急処置HP</th><td id="firstaid-added">—</td></tr>
+                    <tr><th>被弾後の通常HP（発動共通）</th><td id="firstaid-normalHp">—</td></tr>
+                    <tr><th>未発動：応急処置HP</th><td id="firstaid-normalAid">—</td></tr>
+                    <tr><th>未発動：合計HP</th><td id="firstaid-normalTotal">—</td></tr>
+                    <tr><th>発動：応急処置HP</th><td id="firstaid-triggerAid">—</td></tr>
+                    <tr><th>発動：合計HP</th><td id="firstaid-triggerTotal">—</td></tr>
+                  </tbody></table>
+                  <p id="firstaid-error" class="damage-warnings" role="status"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="tab-pane" data-tab="pvp">
             <div class="damage-tab-layout">
               <div class="damage-panel">
@@ -4845,7 +4916,7 @@ import { newCharacter } from './lib/character.js';
 import { newSTTemp, debugSnapshot } from './lib/sttemp.js';
 import { aggregateForCharacter } from './lib/stat_aggregator.js';
 import { finalizeStats } from './lib/stat_finalizer.js';
-import { formatOpText, stripOpTags } from './lib/op_text_formatter.js';
+import { formatOpText, stripOpTags, isLosslessDisplayTemplate, translatePrefixDisplayEffect } from './lib/op_text_formatter.js';
 import { nativeOptionExtra } from './lib/native_option_defs.js';
 import {
   refreshEquipmentRequirementsFromFinalStats,
@@ -4856,6 +4927,10 @@ import { calcOpValue, applyOpToSTTemp, aggregateAllOpsForItem } from './lib/op_c
 import { getEffectiveLv, PRIMARY_STAT_IDS } from './lib/character.js';
 import { computeAbilities } from './lib/abilities.js';
 import { buildPvpProfile } from './lib/pvp_profile.js';
+import { createIncomingDamageCalculator } from './lib/incoming_damage.js';
+import { createFirstAidCalculator } from './lib/first_aid.js';
+const FirstAidCalc = createFirstAidCalculator({ document, onChange: () => scheduleAutosave() });
+const IncomingDamageCalc = createIncomingDamageCalculator({ document, onChange: () => scheduleAutosave(), firstAid: FirstAidCalc });
 import { downloadCharacterReportXlsx } from './lib/excel_report.js';
 import { compatibleSeirenSelection, skillDamageIssue, readSkillAttackCount, effectiveSkillAttackCount, serialTaskQueue } from './lib/ui_state_safety.js';
 import { clampBaseStatsToFloor, computeBaseStatFloor, getAutoStatId, preserveAllocatedStatsForFloorChange, statTotal } from './lib/job_stats.js';
@@ -5017,7 +5092,7 @@ function optionTemplateModeEntry(opId, source) {
 function optionTemplateDisplayText(opId, source) {
   const tpl = Op.getDisplayTemplate(opId, source);
   const entry = optionTemplateModeEntry(opId, source);
-  return entry?.new || tpl;
+  return entry?.new && isLosslessDisplayTemplate(entry.old, entry.new) ? entry.new : tpl;
 }
 
 function getSettingsState() {
@@ -5056,6 +5131,8 @@ function opConvertDisplayName(name) {
 function optionDisplayEffect(effect, meta = {}) {
   const raw = String(effect || '');
   if (appSettings.optionNameMode !== '2026' || !raw) return raw;
+  const translated = translatePrefixDisplayEffect(raw, getOptionNameModeData('2026')?.option_text);
+  if (translated !== raw) return translated;
   const modes = loader.opConvertDisplayNameModes?.modes?.['2026'];
   if (!modes) return raw;
   const names = [];
@@ -5078,6 +5155,9 @@ function optionDisplayEffect(effect, meta = {}) {
 function buildOptionDisplayEffect(displayName, rawEffect) {
   const bracketTokens = rawEffect.match(/\[[^\]]+\]/g) || [];
   if (bracketTokens.length > 1) return rawEffect;
+  const remaining = rawEffect.replace(/\[[^\]]+\]/g, '');
+  if (bracketTokens.length && /\d|\//.test(remaining)) return rawEffect;
+  if (!bracketTokens.length && (rawEffect.match(/[+\-]?\d+(?:\.\d+)?/g) || []).length !== 1) return rawEffect;
   if (bracketTokens.length === 0 && !/[+\-]?\d/.test(rawEffect)) return rawEffect;
   const hasPercent = /[％%]/.test(rawEffect);
   const token = `[0${hasPercent ? '％' : ''}]`;
@@ -5090,6 +5170,11 @@ function formatOpConvertNameValue(name, value) {
   const rawName = String(name || '');
   const label = opConvertDisplayName(rawName);
   const v = String(value ?? '');
+  if (appSettings.optionNameMode === '2026') {
+    if (v.trim() === '-') return label;
+    const ratio = v.match(/^\+?(\d+)\s*\/\s*(\d+)$/);
+    if (ratio && /[+＋]\s*$/.test(label)) return `${label}${ratio[1]}/レベル ${ratio[2]}`;
+  }
   if (/着用.*レベル.*減少|アイテム着用Lv.*減少/.test(rawName)) {
     return `このアイテムの着用レベル -${v}`;
   }
@@ -6355,6 +6440,7 @@ function buildOpSearchIndex() {
   }
   for (const fk of Object.keys(opPrefix.families)) {
     const family = opPrefix.families[fk];
+    if (family.selectable === false) continue;
     const familyId = Number(fk);
     for (const tier of (family.tiers || [])) {
       const gradeClass = tier.gradeClass || 'normal';
@@ -8624,6 +8710,8 @@ async function recalcAllNow() {
   const neutralAbilities = computeAbilities(ch, { ...f, equipped: neutralStats }, equipped, loader);
   lastPvpProfile = buildPvpProfile({ ...ch, realLv: getEffectiveLv(ch) }, neutralStats, neutralAbilities);
 
+  IncomingDamageCalc.syncFromCharacter(f.equipped, wisdomBonus, ATTR_RESIST_CAP);
+  FirstAidCalc.syncFromCharacter(f.equipped, ab.hpMax);
   try { DamageCalc.syncFromCharacter(ch, f, ab); }
   catch (e) { console.warn('[DamageCalc] sync failed:', e); }
 
@@ -9051,6 +9139,7 @@ function buildSnapshot() {
   const snap = serializeSession(character, inventory, readGraceRebirth());
   snap.settings = getSettingsState();
   snap.damageCalc = DamageCalc.getState();
+  snap.incomingDamageCalc = IncomingDamageCalc.getState();
   snap.skills = { ...skillStates };  
   
   const creatureInventory = creatureState.inventory || [];
@@ -9832,6 +9921,7 @@ async function loadSnapshot(data, sourceLabel) {
   for (const inv of restoredInventory.items()) inventory.addAt(inv, inv.slotIndex);
   invalidateFeasibleCache();
   if (data.damageCalc) await DamageCalc.setState(data.damageCalc);
+  IncomingDamageCalc.setState(data.incomingDamageCalc);
   await recalcAll();
   await refreshItemList();
   setSessionStatus(calculationDataFailures.length ? `${sourceLabel || ''} 読込: ${calculationDataFailures.join('・')}の効果を取得できません。再読込してください。` : `${sourceLabel || ''} 読込完了: inv=${parsed.inventory?.length || 0} 件`);
@@ -10889,7 +10979,7 @@ function renderMonsterDetailFromRow(row) {
       + '    </div>';
   }
   html += '    <div class="mapmon-mob-spec">'
-       +  '      Lv: <input type="number" id="mapmon-detail-lv" min="' + (isCollapsed ? 1250 : 1) + '" max="' + (isCollapsed ? 1600 : 999) + '" value="' + lvCurrent + '" style="width:70px;">'
+       +  '      Lv: <input type="number" id="mapmon-detail-lv" min="' + (isCollapsed ? 1250 : 1) + '" max="' + (isCollapsed ? 1600 : 9999) + '" value="' + lvCurrent + '" style="width:70px;">'
        +  '      <span style="color:#777;font-size:11px;margin-left:6px;">(' + (isCollapsed ? '1250〜1600' : 'デフォルト ' + lvDefault) + ')</span>'
        +  '    </div>';
   html += '  </div>';
@@ -14526,6 +14616,7 @@ function bindSessionEvents() {
     if (creatureUIInitialized) renderCreatureTab();
     if (creatureBookUIInitialized) renderCreatureBookTab();
     
+    IncomingDamageCalc.reset();
     Titles.reset();
     
     DragonBlessing.reset();
@@ -20761,6 +20852,7 @@ async function main() {
   bindItemDetailHovers();
   bindTabBar();
   bindPvpCalculator();
+  IncomingDamageCalc.init();
   initEnhanceTab();
   renderStoneCards();
   renderFlagList();

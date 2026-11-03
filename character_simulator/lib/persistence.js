@@ -1,6 +1,39 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import { requestBlobDownload } from './file_download.js';
 
 const SCHEMA_VERSION = 'rs-character-sim-v1';
@@ -27,7 +60,7 @@ const SESSION_TOP_LEVEL_KEYS = new Set([
   'v', 'saved', 'character', 'inventory', 'settings', 'skills', 'creature',
   'titles', 'dragon', 'missionBook', 'potential', 'costume', 'transSkill',
   'bloodRecord', 'omniSkill', 'badges', 'mapMonster', 'pet', 'minipet', 'guild',
-  'pvpProfile', 'damageCalc',
+  'pvpProfile', 'damageCalc', 'incomingDamageCalc',
 ]);
 const DANGEROUS_OBJECT_KEYS = new Set(['__proto__', 'prototype', 'constructor']);
 const SESSION_MAX_DEPTH = 24;
@@ -96,7 +129,7 @@ export function validateSessionData(data) {
     throw new Error(`persistence: inventory exceeds ${SESSION_CAPACITY_MODEL.inventoryEntries} entries`);
   }
   for (const key of ['settings', 'skills', 'creature', 'titles', 'dragon', 'missionBook', 'potential',
-    'costume', 'transSkill', 'bloodRecord', 'omniSkill', 'badges', 'mapMonster', 'pet', 'minipet', 'guild', 'pvpProfile', 'damageCalc']) {
+    'costume', 'transSkill', 'bloodRecord', 'omniSkill', 'badges', 'mapMonster', 'pet', 'minipet', 'guild', 'pvpProfile', 'damageCalc', 'incomingDamageCalc']) {
     assertOptionalObject(data, key);
   }
   if (data.skills && Object.keys(data.skills).length > 32) throw new Error('persistence: too many skill job states');
@@ -158,9 +191,11 @@ export function serializeSession(character, inventory, opts = {}) {
       daybreak:     !!inv.daybreak,
       equippedSlot: inv.equippedSlot ?? null,
     };
-
     
-
+    
+    
+    
+    
     if (inv.seirenStage && inv.seirenStage > 0) {
       entry.seirenStage = Math.max(0, Math.min(15, Number(inv.seirenStage) || 0));
       entry.seirenOps = (inv.seirenOps || []).map((o) => o ? {
@@ -172,15 +207,18 @@ export function serializeSession(character, inventory, opts = {}) {
         rowId:       o.rowId       ?? null,
         name:        o.name        ?? null,
         displayOnly: o.displayOnly ?? null,
-
+        
+        
         seirenSel:   o.seirenSel   ?? null,
         seirenName:  o.seirenName  ?? null,
         seirenTier:  o.seirenTier  ?? null,
       } : null);
     }
-
     
-
+    
+    
+    
+    
     
     
     if (typeof inv.nxUnlockedCount === 'number' && inv.nxUnlockedCount !== 4) {
@@ -209,7 +247,8 @@ export function serializeSession(character, inventory, opts = {}) {
         return null;
       });
     }
-
+    
+    
     
     
     if (inv.bfop && inv.bfop.bfId) {
@@ -219,15 +258,18 @@ export function serializeSession(character, inventory, opts = {}) {
         tier:  inv.bfop.bfTier || 'top',
       };
     }
-
+    
+    
     
     if (inv.ultLv != null) entry.ultLv = inv.ultLv;
-
+    
+    
     
     if (inv.incusedRingLv != null && Number(inv.incusedRingLv) !== 1) {
       entry.incusedRingLv = Math.max(1, Math.min(30, Number(inv.incusedRingLv) | 0));
     }
-
+    
+    
     if (inv.arcana && inv.arcana.key) {
       entry.arcana = {
         table: (inv.arcana.table === 'pet') ? 'pet' : 'normal',
@@ -257,7 +299,8 @@ export function serializeSession(character, inventory, opts = {}) {
           : [],
       };
     }
-
+    
+    
     if (inv.scroll && inv.scroll.id) {
       entry.scroll = {
         type:  inv.scroll.type ?? null,
@@ -328,6 +371,8 @@ export function deserializeSession(data) {
 
 
 
+
+
 export function saveToLocalStorage(key, data) {
   try {
     localStorage.setItem(key, JSON.stringify(data));
@@ -356,6 +401,8 @@ export function removeFromLocalStorage(key) {
   try { localStorage.removeItem(key); return true; }
   catch (err) { return false; }
 }
+
+
 
 
 

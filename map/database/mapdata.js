@@ -206,6 +206,7 @@ NameList = {
     1141: { name: "ミラーダンジョン 捨てられた研究所下層 1-2", img: "[1133]Abandoned_lab_low.rmd.png", black: "[1133]Abandoned_lab_low.rmd.png", lvmin: 2050, lvmax: 2060 },
     1142: { name: "ミラーダンジョン 捨てられた研究所下層 1-3", img: "[1133]Abandoned_lab_low.rmd.png", black: "[1133]Abandoned_lab_low.rmd.png", lvmin: 2050, lvmax: 2060 },
     1143: { name: "栄誉の祭典", img: "[1143]Festival_of_Glory.rmd.png", black: "[1143]Festival_of_Glory.rmd.png", lvmin: 0, lvmax: 0 },
+    1144: { name: "宝石の島", img: "", black: "jewel-island.png", lvmin: 900, lvmax: 900 },
     1: { name: "中央プラトン街道 / グレートフォレスト入口付近", img: "[001]G07.rmd.png", black: "[000]T01.rmd.png", lvmin: 5, lvmax: 30 },
     2: { name: "狼の巣窟", img: "[002]G07_C01_B01.rmd.png", black: "[000]T01.rmd.png", lvmin: 17, lvmax: 25 },
     3: { name: "旧レッドアイ研究所　Ｂ１", img: "[003]G07_D01_B01.rmd.png", black: "[000]T01.rmd.png", lvmin: 25, lvmax: 35 },

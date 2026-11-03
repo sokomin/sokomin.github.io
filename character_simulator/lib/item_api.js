@@ -1,6 +1,18 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 import { DataLoader, getSharedLoader } from './data_loader.js';
 
 const MAX_CHAIN_DEPTH = 4;
@@ -14,6 +26,8 @@ export function getLoader() {
   if (!_loader) _loader = getSharedLoader();
   return _loader;
 }
+
+
 
 
 
@@ -33,6 +47,8 @@ export const Item = {
     return getLoader().findInSearch(itemId);
   },
 };
+
+
 
 
 
@@ -81,6 +97,15 @@ export const Op = {
 
 
 
+
+
+
+
+
+
+
+
+
 export const OpPrefix = {
   
   getFamily(familyId) {
@@ -116,6 +141,7 @@ export const OpPrefix = {
     if (!op || !op.families) return;
     for (const fk of Object.keys(op.families)) {
       const f = op.families[fk];
+      if (f.selectable === false) continue;
       const familyId = Number(fk);
       for (const tier of (f.tiers || [])) {
         yield { familyId, tier };
@@ -123,6 +149,7 @@ export const OpPrefix = {
     }
   },
 };
+
 
 
 function _extractEffectRange(effect) {
@@ -142,17 +169,23 @@ function _extractEffectRange(effect) {
 
 
 
+
+
 export function* iterateAllOps(inv, item) {
   if (!item || !Array.isArray(item.opSlots)) return;
 
-
+  
+  
   const nxAuto = !!(item && item.nxAvailable);
 
-
   
-
   
-
+  
+  
+  
+  
+  
+  
   const unlockedCount = (inv && typeof inv.nxUnlockedCount === 'number')
     ? Math.max(0, Math.min(4, inv.nxUnlockedCount))
     : 4;
@@ -172,7 +205,8 @@ export function* iterateAllOps(inv, item) {
     const isNx = source === 'item.nxoption';
     if (isNx) {
       if (!(nxAuto || (inv && inv.nxActive))) continue;
-
+      
+      
       const pos = (slot.pos != null) ? Number(slot.pos) : nxopPosCounter++;
       
       if (pos >= unlockedCount) continue;
@@ -196,9 +230,11 @@ export function* iterateAllOps(inv, item) {
       if (inv.ops[k]) yield { op: _normalizeOpSlot(inv.ops[k]), source: 'ui.op', index: k };
     }
   }
-
   
-
+  
+  
+  
+  
   if (inv.nxActive && Array.isArray(inv.nxUnlockedOps)) {
     const nxopInItem = (item.opSlots || []).some((s) => s && (s.slotKind === 'nxop' || s.slotKind === 'long_nxop'));
     if (!nxopInItem) {
@@ -214,7 +250,8 @@ export function* iterateAllOps(inv, item) {
       if (inv.customBaseOps[k]) yield { op: inv.customBaseOps[k], source: 'custom.base', index: k };
     }
   }
-
+  
+  
   
   
   if (inv.bfop && !inv.bfop._suppressed) yield { op: inv.bfop, source: 'bfop', index: 0 };
@@ -246,7 +283,8 @@ function _normalizeOpSlot(slot) {
   if (!fam || fam.opId == null) return slot;  
 
   const v = (typeof slot.value === 'number') ? slot.value : 0;
-
+  
+  
   return Object.assign({}, slot, {
     opId: fam.opId,
     vals: [v, 0, 0, 0],

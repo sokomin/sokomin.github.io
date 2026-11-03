@@ -83,27 +83,34 @@ export function getMapMeta(mapId) {
 
 export function getMonstersForMap(mapId) {
   const id = Number(mapId);
-
+  
+  
   const result = [];
   const seen = new Set();  
-  for (const row of _mapMobRows) {
-    if (Number(row.mapid) !== id) continue;
-    const mobid = Number(row.mobid);
-    if (!Number.isFinite(mobid)) continue;
-    const mob = _mobById.get(mobid);
-    if (mob == null) continue;
-    
-    const key = mobid + ':' + row.name + ':' + row.lvmin + ':' + row.lvmax;
-    if (seen.has(key)) continue;
-    seen.add(key);
-    result.push({
-      mapMobName: row.name || '',
-      lvMin:      Number(row.lvmin) || 0,
-      lvMax:      Number(row.lvmax) || 0,
-      width:      Number(row.width) || 0,
-      height:     Number(row.height) || 0,
-      monster:    mob,
-    });
+  const localRows = (_nameList[id]?.monsters || []).map((row) => ({
+    mapid: id, mobid: row.monsterId, name: row.name,
+    lvmin: row.lvMin, lvmax: row.lvMax,
+  }));
+  for (const rows of [_mapMobRows, localRows]) {
+    for (const row of rows) {
+      if (Number(row.mapid) !== id) continue;
+      const mobid = Number(row.mobid);
+      if (!Number.isFinite(mobid)) continue;
+      const mob = _mobById.get(mobid);
+      if (mob == null) continue;
+      
+      const key = mobid + ':' + row.name + ':' + row.lvmin + ':' + row.lvmax;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      result.push({
+        mapMobName: row.name || '',
+        lvMin:      Number(row.lvmin) || 0,
+        lvMax:      Number(row.lvmax) || 0,
+        width:      Number(row.width) || 0,
+        height:     Number(row.height) || 0,
+        monster:    mob,
+      });
+    }
   }
   return result;
 }

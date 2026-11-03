@@ -12,6 +12,7 @@ export const NATIVE_OPTION_STATS = {
   174: { id: 'physStrongRate' },
   175: { id: 'finalAttackPercent' },
   941: { id: 'physStrongCapAmplify' },
+  1035: { id: 'finalDamagePercent' },
 };
 
 export const NATIVE_STAT_DEPENDENT = {
