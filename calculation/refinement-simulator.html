@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<!-- Terms of use for original articles and guides on Redstone Sokomin: https://sokomin.github.io/information/p.html -->
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=960">
+        <!-- Page styles -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://sokomin.github.io/material.indigo-pink.min.css" />
+        <link rel="stylesheet" href="../styles.css">
+        <link rel="icon" href="../design/RedStoneLogo.png" sizes="32x32">
+        <link rel="icon" href="../design/RedStoneLogo.png" sizes="192x192">
+        <link rel="apple-touch-icon-precomposed" href="../design/RedStoneLogo.png">
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133658114-1"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-133658114-1');
+        </script>
+        <script type="text/javascript" src="../design/jquery-3.4.1.min.js"></script>
+        <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+        </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2122309953813422"
+          crossorigin="anonymous"></script>
+        
+        <title>製錬シミュレーター 赤石の民衆</title>
+        <meta name="description" content="製錬の成功率と失敗時の段階低下を反映し、目標段階までの素材消費と費用を計算。相場情報から素材単価を自動取得します。">
+        <link rel="canonical" href="https://sokomin.github.io/calculation/refinement-simulator.html">
+    <link rel="stylesheet" href="refinement-simulator.css">
+<script defer src="../market/public/progressive_market_loader.js"></script>
+<script defer src="refinement-model.js"></script>
+<script defer src="refinement-market.js"></script>
+
+<script defer src="refinement-ui.js"></script>
+<script>const __SK_BUILD = "sokomin/calculation~refinement-simulator@2026-11-03​‌‌‌​​‌‌​‌‌​‌‌‌‌​‌‌​‌​‌‌​‌‌​‌‌‌‌​‌‌​‌‌​‌​‌‌​‌​​‌​‌‌​‌‌‌​";</script>
+<script defer src="https://sokomin.github.io/design/copy-provenance.js" data-sk-page="calculation~refinement-simulator"></script>
+</head>
+    <body>
+        <meta http-equiv="Content-Style-Type" content="text/css">
+        <meta http-equiv="Content-Script-Type" content="text/javascript">
+        <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,そこらの民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,そこみん,赤石,攻略情報">
+        <link
+            rel="alternate"
+            type="application/rss+xml"
+            title="RSS"
+            href="/rss.xml"
+        >
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <a name="container"></a>
+            <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+                <div class="mdl-layout__header-row">
+                    <span class="android-title mdl-layout-title">
+                        <a href="https://sokomin.github.io/index.html">
+                            <img class="android-logo-image" src="../design/logo3.png">
+                        </a>
+                    </span>
+                    <!-- Add spacer, to align navigation to the right in desktop -->
+                    <div class="android-header-spacer mdl-layout-spacer"></div>
+                    <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                        <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                            <i class="material-icons">search</i>
+                        </label>
+                        <div class="mdl-textfield__expandable-holder">
+                            <input
+                                placeholder="サイト内検索(Enterで実行)"
+                                class="mdl-textfield__input"
+                                type="text"
+                                onkeypress="enter();"
+                                id="search-field"
+                            >
+                        </div>
+                    </div>
+                    <!-- Navigation -->
+                    <div class="android-navigation-container">
+                        <nav class="android-navigation mdl-navigation">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/index.html">ホーム</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                        </nav>
+                    </div>
+                    <span class="android-mobile-title mdl-layout-title">
+                        <a href="https://sokomin.github.io/index.html">
+                            <img class="android-logo-image" src="../design/logo3.png">
+                        </a>
+                    </span>
+                    <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
+                        <i class="material-icons">more_vert</i>
+                    </button>
+                    <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                        <li class="mdl-menu__item">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+                        </li>
+                        <li class="mdl-menu__item">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+                        </li>
+                        <li disabled class="mdl-menu__item">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+                        </li>
+                        <li class="mdl-menu__item">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="android-drawer mdl-layout__drawer">
+                <span class="mdl-layout-title">
+                    <h2>メニュー</h2>
+                </span>
+                <nav class="mdl-navigation">
+                    <a class="mdl-navigation__link sokomin-layout-item" href="../item/item.html">
+                        <strong>アイテム</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-skill" href="../skill/skill.html">
+                        <strong>スキル</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-pt" href="../monster/monster.html">
+                        <strong>モンスター</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-pt" href="../secret/secret.html">
+                        <strong>ダンジョン</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-quest" href="../quest/quest.html">
+                        <strong>クエスト</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-guild" href="../guild/guild.html">
+                        <strong>ギルド</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-friend" href="../korea/korea-update.html">
+                        <strong>韓国情報</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-info" href="../information/information.html">
+                        <strong>雑学</strong>
+                    </a>
+                </nav>
+            </div>
+            <div class="android-large-table mdl-layout__content">
+                <!--main-->
+                <main class="main-background mdl-typography--text-center refinement-calculator" data-first-view>
+<nav aria-label="パンくず"><a href="../index.html">トップ</a> &gt; 製錬シミュレーター</nav>
+<h1>製錬シミュレーター</h1>
+<nav class="index_table icon-navigation" aria-label="ページ内目次"><table id="table10" class="icon-navigation-table"><tbody><tr><th colspan="3">目次</th></tr><tr>
+<td><a href="#cost"><img src="../item/design/image/item/iconItem_2922.png" width="45" height="45" alt=""><br><span>▼期待費用</span></a></td>
+<td><a href="#trial"><img src="../item/design/image/item/iconItem_3536.png" width="45" height="45" alt=""><br><span>▼製錬を試す</span></a></td>
+<td><a href="#preview"><img src="../item/design/image/item/iconItem_3537.png" width="45" height="45" alt=""><br><span>▼OP一覧</span></a></td>
+</tr></tbody></table></nav>
+<h3 id="cost">期待費用</h3>
+<div class="refinement-layout"><form id="refinement-form"><fieldset id="plan-fields"><legend>製錬条件</legend><div class="refinement-fields">
+<label>サーバー<select id="world"><option value="B">B鯖</option><option value="S">S鯖</option><option value="V">V鯖</option></select></label>
+<label>開始段階<select id="start-stage"><option value="0">＋0</option></select></label>
+<label>目標段階<select id="target-stage"><option value="3">＋3</option></select></label>
+<label>ガード<select id="guard"><option value="none">なし</option><option value="guard">製錬ガード</option><option value="guard2">製錬ガードⅡ</option></select></label>
+<label id="guard-from-field" hidden>ガードの使用開始<select id="guard-from"><option value="0">＋0から</option></select></label>
+</div><p><label><input id="advanced" type="checkbox"> ＋11以上を含める</label></p></fieldset>
+<div class="refinement-actions"><button type="button" id="refresh-market">相場を更新</button></div>
+<p id="price-date" aria-live="polite"></p><p id="market-error" class="refinement-error" role="alert"></p><p id="plan-error" class="refinement-error" role="alert"></p>
+</form><section class="refinement-result" aria-label="目標までの期待値" aria-live="polite"><div>期待費用</div><output id="expected-cost">—</output>
+<dl><dt>試行回数</dt><dd id="expected-attempts">—</dd><dt>Gold手数料</dt><dd id="expected-fee">—</dd><dt>付与されるOP</dt><dd id="expected-slots">—</dd></dl>
+</section></div>
+<div class="refinement-scroll"><table id="table10"><tbody><tr><th>素材</th><th>期待消費数</th><th>参考単価</th><th>最終観測日</th></tr></tbody><tbody id="expected-materials"></tbody></table></div>
+<h3 id="trial">製錬を試す</h3>
+<div class="refinement-actions"><button type="button" id="one-attempt" class="primary">1回製錬</button><button type="button" id="run-target">目標まで製錬</button>
+<label>試行上限 <select id="attempt-limit"><option value="100">100回</option><option value="1000">1,000回</option><option value="10000" selected>10,000回</option></select></label>
+<button type="button" id="stop-run" disabled>停止</button><button type="button" id="reset-run">リセット</button></div>
+<p id="run-status" aria-live="polite"></p>
+<div class="refinement-result"><dl><dt>製錬段階</dt><dd id="actual-stage">＋0</dd><dt>試行回数</dt><dd id="actual-attempts">0回</dd><dt>消費費用</dt><dd id="actual-cost">0本</dd></dl></div>
+<div class="refinement-layout"><table id="table10"><tbody><tr><th>素材</th><th>消費数</th></tr></tbody><tbody id="actual-materials"></tbody></table>
+<table id="table10"><tbody><tr><th>段階</th><th>結果</th></tr></tbody><tbody id="attempt-log"></tbody></table></div>
+<h3 id="preview">OP一覧（＋1～＋10）</h3>
+<div class="refinement-fields"><label>部位<select id="preview-part"><option value="weapon">武器</option></select></label><label>装備等級<select id="preview-grade"><option value="1">ユニーク</option><option value="2">DXU</option><option value="3" selected>UMU</option></select></label><label>表示段階<select id="preview-stage"><option value="10">＋10</option></select></label></div>
+<div class="refinement-actions"><button type="button" id="show-preview">OPを表示</button></div><p id="preview-error" class="refinement-error" role="alert"></p>
+<div class="refinement-scroll"><table id="table10"><tbody id="op-preview"></tbody></table></div>
+<h3>関連情報</h3>
+<p><a href="../option/seiren.html">製錬システム</a> ／ <a href="../option/seiren-option.html">製錬オプション一覧</a> ／ <a href="../option/seiren-option11.html">＋11以上のオプション一覧</a> ／ <a href="../market/index.html">相場情報</a>⁠​‌‌‌​​‌‌​‌‌​‌‌‌‌​‌‌​‌​‌‌​‌‌​‌‌‌‌​‌‌​‌‌​‌​‌‌​‌​​‌​‌‌​‌‌‌​⁠</p>
+<footer class="android-footer mdl-mega-footer">
+                        <font color="red">当サイトで利用している画像及びデータは、L&K Co., Ltd.に帰属します。
+                            <br>
+                            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。
+                            <br>
+                        </font>
+                        © L&K Co., Ltd. All Rights Reserved.​‌‌‌​​‌‌​‌‌​‌‌‌‌​‌‌​‌​‌‌​‌‌​‌‌‌‌​‌‌​‌‌​‌​‌‌​‌​​‌​‌‌​‌‌‌​<br>
+                    </footer>
+</main></div><script src="https://sokomin.github.io/material.min.js"></script></div></body></html>
