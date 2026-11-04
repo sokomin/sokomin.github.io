@@ -107,11 +107,16 @@ export function resolveItemPart(itemOrKind) {
 
 
 export function resolveEquipSlot(item, character) {
-  void character;
+  if (!isWeaponJobAllowed(item, character)) return null;
   if (item && WEAPON_KINDS.has(Number(item.kind))) return 'weapon';
   
   if (item && SUB_WEAPON_KINDS.has(Number(item.kind))) return 'sub_weapon';
   const part = resolveItemPart(item);
   if (part == null) return null;
   return PART_TO_SLOT_KEY[part] || null;
+}
+
+export function isWeaponJobAllowed(item, character) {
+  
+  return character?.job == null || Number(item?.kind) !== 63 || Number(character.job) === 21;
 }

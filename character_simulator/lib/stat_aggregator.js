@@ -7,7 +7,7 @@ import { aggregateAllOpsForItem } from './op_calc.js';
 import { PRIMARY_STAT_IDS, getEffectiveLv } from './character.js';
 import { countSetEquipped, applySetBonusesToSTTemp } from './set_bonus.js';
 import { countSetOpsEquipped, applySetOpsToSTTemp } from './set_op_bonus.js';
-import { updateEquipmentMetadata } from './equipment_meta.js';
+import { updateEquipmentMetadata, isJobAllowed } from './equipment_meta.js';
 import { finalizeStats } from './stat_finalizer.js';
 import { applyStonesToSTTemp } from './stone_effects.js';
 
@@ -61,6 +61,7 @@ export async function aggregateForCharacter(character, equippedItems, opts = {})
     applyBaseStats(maxT, c);
     applyJobBonus(maxT, c);
     for (const { inv, item } of resolved) {
+      if (!isJobAllowed(item, c)) continue;
       aggregateAllOpsForItem(maxT, inv, item, LvTemp, c);
     }
     const counts0 = countSetEquipped(
@@ -96,14 +97,14 @@ export async function aggregateForCharacter(character, equippedItems, opts = {})
     applyBaseStats(STTemp, c);
     applyJobBonus(STTemp, c);
     for (const { inv, item } of resolved) {
-      if (!inv.equippedSlot) continue;
+      if (!inv.equippedSlot || !inv.canEquip) continue;
       aggregateAllOpsForItem(STTemp, inv, item, LvTemp, c);
     }
-    const counts = countSetEquipped(resolved.filter(({ inv }) => inv.equippedSlot != null));
+    const counts = countSetEquipped(resolved.filter(({ inv }) => inv.equippedSlot != null && inv.canEquip));
     applySetBonusesToSTTemp(STTemp, counts, LvTemp);
     
     try {
-      const opCounts = countSetOpsEquipped(resolved.filter(({ inv }) => inv.equippedSlot != null));
+      const opCounts = countSetOpsEquipped(resolved.filter(({ inv }) => inv.equippedSlot != null && inv.canEquip));
       applySetOpsToSTTemp(STTemp, opCounts);
     } catch (err) {
       console.warn('[aggregator] set OP application failed (Pass 2):', err);

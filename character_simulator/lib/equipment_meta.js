@@ -1,7 +1,7 @@
 
 
 
-import { resolveEquipSlot } from './slot_resolver.js';
+import { resolveEquipSlot, isWeaponJobAllowed } from './slot_resolver.js';
 import { checkKuroneConstraint } from './kurone.js';
 import { computeItemRequiredLv } from './req_lv.js';
 
@@ -21,6 +21,7 @@ export function updateEquipmentMetadata(inv, item, character, opts = {}) {
   if (!isJobAllowed(item, character)) {
     inv.jobMismatch    = true;
     inv.mismatchReason = 'job';
+    inv.equippedSlot   = null;
     return inv;
   }
 
@@ -88,6 +89,7 @@ export function refreshEquipmentRequirementsFromFinalStats(entries, character, f
 }
 
 export function isJobAllowed(item, character) {
+  if (!isWeaponJobAllowed(item, character)) return false;
   if (!item || !item.req) return true;
   const t = item.req.jobType;
   if (t === 1) return character.gender === 1;

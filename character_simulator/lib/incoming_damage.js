@@ -3,7 +3,6 @@ export const INCOMING_ELEMENTS = ['Fire', 'Water', 'Wind', 'Earth', 'Light', 'Da
 const finite = (value, fallback = 0) => Number.isFinite(Number(value)) ? Number(value) : fallback;
 const percent = (value) => Math.max(0, Math.min(100, finite(value)));
 
-
 export function calculateIncomingMagicDamage(input) {
   const rawMin = finite(input.rawMin, NaN);
   const rawMax = finite(input.rawMax, NaN);
@@ -28,7 +27,7 @@ export function incomingDefenseFromStats(stats, wisdomBonus, resistCap) {
   return {
     elements: Object.fromEntries(INCOMING_ELEMENTS.map((element) => [element, {
       resist: Math.min(resistCap, Math.floor(finite(stats['attr' + element + 'Resist']) + wisdomBonus)),
-      elementAbsorb: Math.floor(finite(stats['attr' + element + 'Absorb'])),
+      elementAbsorb: Math.floor(Math.max(0, finite(stats['attr' + element + 'Absorb']) - finite(stats['attr' + element + 'AbsorbShared']))),
     }])),
     magicAbsorb: finite(stats.attrMagicAbsorb),
     reduction: finite(stats.damageReducePercent),

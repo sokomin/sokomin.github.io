@@ -1,21 +1,21 @@
 export const FIRST_AID_CHANCE = 10;
 export const FIRST_AID_CAP = 200;
 
-
-export function calculateFirstAid({ damage, amount, maxHp, hp, aidHp = 0 }) {
-  const values = [damage, amount, maxHp, hp, aidHp];
-  if (values.some((value) => !Number.isFinite(value)) || damage < 0 || amount < 0
+export function calculateFirstAid({ damage, healing = 0, amount, maxHp, hp, aidHp = 0 }) {
+  const values = [damage, healing, amount, maxHp, hp, aidHp];
+  if (values.some((value) => !Number.isFinite(value)) || damage < 0 || healing < 0 || amount < 0
       || maxHp <= 0 || hp < 0 || aidHp < 0 || hp + aidHp > maxHp) {
     throw new RangeError('HPは0以上、最大HPは正の値とし、通常HP＋応急処置HPを最大HP以下にしてください。');
   }
   const effectiveAmount = Math.min(FIRST_AID_CAP, amount);
   const consumedAid = Math.min(aidHp, damage);
   const remainingAid = aidHp - consumedAid;
-  const remainingHp = Math.max(0, hp - (damage - consumedAid));
+  let remainingHp = Math.max(0, hp - (damage - consumedAid));
+  const lethal = damage > 0 && remainingHp + remainingAid === 0;
+  if (!lethal) remainingHp = Math.min(maxHp - remainingAid, remainingHp + healing);
   const total = remainingHp + remainingAid;
   const potential = damage * effectiveAmount / 100;
   
-  const lethal = damage > 0 && total === 0;
   const added = lethal ? null : Math.min(potential, maxHp - total);
   return {
     effectiveAmount, potential, chance: damage > 0 && amount > 0 ? FIRST_AID_CHANCE : 0,
@@ -62,7 +62,7 @@ export function createFirstAidCalculator({ document, onChange }) {
       node(key).textContent = '—';
     }
     if (error) return;
-    const results = [received.min.damage, received.max.damage].map((damage) => calculateFirstAid({ damage, ...state }));
+    const results = [received.min, received.max].map(({ damage, healing }) => calculateFirstAid({ damage, healing, ...state }));
     const range = (key) => {
       if (results.some((result) => result[key] == null)) return '致死量のため未判定';
       const values = results.map((result) => result[key]).sort((a, b) => a - b);

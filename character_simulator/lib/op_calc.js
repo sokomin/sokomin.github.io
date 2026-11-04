@@ -3,6 +3,7 @@
 
 import { Op, OpPrefix, iterateAllOps, getLoader } from './item_api.js';
 import { NATIVE_BASE_STATS, NATIVE_OPTION_STATS, NATIVE_STAT_DEPENDENT } from './native_option_defs.js';
+import { recordSharedAbsorption } from './absorption.js';
 
 
 
@@ -412,6 +413,7 @@ export function applyOpToSTTemp(STTemp, calc, item) {
   
   if (layer === 'sumAll' && Array.isArray(calc.stats)) {
     for (const sid of calc.stats) accumulate(STTemp, 'sum', sid, v);
+    recordSharedAbsorption(STTemp, calc.stats, v);
     return;
   }
 

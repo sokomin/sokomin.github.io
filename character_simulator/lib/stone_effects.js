@@ -1,6 +1,7 @@
 
 
 import { getLayerAggregation } from './op_calc.js';
+import { recordSharedAbsorption } from './absorption.js';
 
 
 export const CATEGORIES = [
@@ -220,6 +221,7 @@ export function applyStonesToSTTemp(STTemp, stones) {
         const v = op.perLv * lv;
         if (Array.isArray(op.stats)) {
           for (const sid of op.stats) accumulateStone(STTemp, sid, v);
+          recordSharedAbsorption(STTemp, op.stats, v);
         } else if (op.statId) {
           accumulateStone(STTemp, op.statId, v);
         }

@@ -54,7 +54,7 @@ export function computeAbilities(character, finalStats, equippedItems, loader) {
   let weaponName = '';
   let weaponAtkMin = 0, weaponAtkMax = 0;
   for (const { inv, item } of (equippedItems || [])) {
-    if (inv && inv.equippedSlot === 'weapon' && item && item.combat) {
+    if (inv && inv.canEquip !== false && inv.equippedSlot === 'weapon' && item && item.combat) {
       weaponName = item.name || '';
       weaponAtkMin = numOrZero(item.combat.atkMin);
       weaponAtkMax = numOrZero(item.combat.atkMax);
@@ -70,7 +70,7 @@ export function computeAbilities(character, finalStats, equippedItems, loader) {
   
   let itemDefSum = 0;
   for (const { inv, item } of (equippedItems || [])) {
-    if (!inv || !inv.equippedSlot) continue;
+    if (!inv || inv.canEquip === false || !inv.equippedSlot) continue;
     if (inv.equippedSlot === 'weapon') continue;
     if (item && item.combat && Number.isFinite(item.combat.def)) {
       itemDefSum += Number(item.combat.def) || 0;

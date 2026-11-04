@@ -4934,6 +4934,7 @@ import { aggregateForCharacter } from './lib/stat_aggregator.js';
 import { finalizeStats } from './lib/stat_finalizer.js';
 import { formatOpText, stripOpTags, isLosslessDisplayTemplate, translatePrefixDisplayEffect } from './lib/op_text_formatter.js';
 import { nativeOptionExtra } from './lib/native_option_defs.js';
+import { recordSharedAbsorption } from './lib/absorption.js';
 import {
   refreshEquipmentRequirementsFromFinalStats,
   updateEquipmentMetadata,
@@ -17750,6 +17751,7 @@ const YatikanuIncusedArmor = (() => {
         const value = valueOf(effect, lv, LvTemp);
         if (value == null) continue;
         for (const stat of effect.stats) addStat(STTemp, stat, value);
+        recordSharedAbsorption(STTemp, effect.stats, value);
       }
     }
   }
@@ -19906,8 +19908,14 @@ const DamageCalc = (() => {
     return Math.max(1.5, 3 - 0.3 * (applied / 100));
   }
 
+  function selectedWeaponMagicDamage(inputs) {
+    const min = Number(inputs.weaponMin) || 0;
+    const max = Number(inputs.weaponMax) || 0;
+    return inputs.dmgMode === 'min' ? min : inputs.dmgMode === 'avg' ? (min + max) / 2 : max;
+  }
+
   function musketWeaponMagicFor(hitType, inputs) {
-    const weapon = inputs.weaponMax || inputs.weaponMin || 0;
+    const weapon = selectedWeaponMagicDamage(inputs);
     const baseSkill = weapon * ((inputs.atkApplyPct || 0) / 100) * (1 + (inputs.weaponDmgPct || 0) / 100);
     const mainHits = Math.max(0, Number(inputs.mainHits) || 0);
     const extraHits = Math.max(0, Number(inputs.extraHits) || 0);
@@ -20048,7 +20056,7 @@ const DamageCalc = (() => {
         baseMagicDmgPct: inputs.magicDmgPct || 0,
         musketSpec: musketSpec2,
         musketBaseSkillDmg: musketSpec2
-          ? (inputsAdj.weaponMax || inputsAdj.weaponMin || 0) * ((inputsAdj.atkApplyPct || 0) / 100) * (1 + (inputsAdj.weaponDmgPct || 0) / 100)
+          ? selectedWeaponMagicDamage(inputsAdj) * ((inputsAdj.atkApplyPct || 0) / 100) * (1 + (inputsAdj.weaponDmgPct || 0) / 100)
           : null,
         musketReloadSec: musketSpec2 ? musketReloadSeconds(inputsAdj.attackSpd) : null,
         musketInterval: interval,
