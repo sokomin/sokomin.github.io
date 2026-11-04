@@ -10,19 +10,18 @@ export function calculateFirstAid({ damage, healing = 0, amount, maxHp, hp, aidH
   const effectiveAmount = Math.min(FIRST_AID_CAP, amount);
   const consumedAid = Math.min(aidHp, damage);
   const remainingAid = aidHp - consumedAid;
-  let remainingHp = Math.max(0, hp - (damage - consumedAid));
+  const remainingHp = Math.min(maxHp - remainingAid,
+    Math.max(0, hp - (damage - consumedAid) + healing));
   const lethal = damage > 0 && remainingHp + remainingAid === 0;
-  if (!lethal) remainingHp = Math.min(maxHp - remainingAid, remainingHp + healing);
   const total = remainingHp + remainingAid;
   const potential = damage * effectiveAmount / 100;
-  
-  const added = lethal ? null : Math.min(potential, maxHp - total);
+  const added = lethal ? 0 : Math.min(potential, maxHp - total);
   return {
-    effectiveAmount, potential, chance: damage > 0 && amount > 0 ? FIRST_AID_CHANCE : 0,
+    effectiveAmount, potential, chance: !lethal && damage > 0 && amount > 0 ? FIRST_AID_CHANCE : 0,
     hp: remainingHp, aidHp: remainingAid, total, consumedAid,
     noDamage: aidHp > 0 && remainingAid === 0, lethal,
-    added, triggeredAidHp: added == null ? null : remainingAid + added,
-    triggeredTotal: added == null ? null : total + added,
+    added, triggeredAidHp: remainingAid + added,
+    triggeredTotal: total + added,
   };
 }
 
@@ -64,7 +63,6 @@ export function createFirstAidCalculator({ document, onChange }) {
     if (error) return;
     const results = [received.min, received.max].map(({ damage, healing }) => calculateFirstAid({ damage, healing, ...state }));
     const range = (key) => {
-      if (results.some((result) => result[key] == null)) return '致死量のため未判定';
       const values = results.map((result) => result[key]).sort((a, b) => a - b);
       return values[0] === values[1] ? format(values[0]) : format(values[0]) + ' 〜 ' + format(values[1]);
     };

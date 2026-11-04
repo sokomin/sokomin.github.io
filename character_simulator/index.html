@@ -54,7 +54,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
   </noscript>
   <link rel="stylesheet" href="https://sokomin.github.io/material.indigo-pink.min.css">
-  <link rel="stylesheet" href="https://sokomin.github.io/styles.css">
+  <link rel="stylesheet" href="./site-layout.css">
   <script defer src="https://sokomin.github.io/material.min.js"></script>
 
   <style>
@@ -696,6 +696,7 @@
     }
     .item-detail-popup .idp-op.is-base { color: #fff; }
     .item-detail-popup .idp-op.is-nx   { color: #fff; }
+    .item-detail-popup .idp-op.is-sealed { opacity: 0.45; }
     .item-detail-popup .idp-op.is-ui   { color: #fff; }
     
     .item-detail-popup .idp-op.is-job-mismatch { color: #888; text-decoration: line-through; }
@@ -4602,7 +4603,7 @@
                   <tr><th>魔法致命打率%</th><td><input type="number" id="dmg-in-mCritRate" value="0" step="0.1"></td></tr>
                   <tr><th>魔法強打率%</th><td><input type="number" id="dmg-in-mStrongRate" value="0" step="0.1"></td></tr>
                   <tr><th>魔法ダメ制限 (ベース)</th><td><input type="number" id="dmg-in-mCapBase" value="20000" step="1"></td></tr>
-                  <tr><th>称号の魔法超過率%</th><td><input type="number" id="dmg-in-mLimitPct" value="0" step="0.1" title="制限超過分に適用する称号の率。Lv1=8% / Lv2=16% / Lv3=24% / Lv4=32% / Lv5=36%。装備による称号効果補正は適用式が未検証のため未反映。手入力は自動取得OFFで保持。"><small>自動取得は称号のみ。装備補正の適用式は未検証・未反映。</small></td></tr>
+                  <tr><th>称号の魔法超過率%</th><td><input type="number" id="dmg-in-mLimitPct" value="0" step="0.1"></td></tr>
                   <tr style="display:none;"><th>魔法上限+ (旧)</th><td><input type="number" id="dmg-in-mLimitFlat" value="0" step="1"></td></tr>
                   <tr><th>攻撃速度%</th><td><input type="number" id="dmg-in-mAttackSpd" value="0" step="1"></td></tr>
                   <tr><th>使用ダメ (最大/最小/平均)</th><td>
@@ -4930,13 +4931,12 @@ import { resolveEquipSlot, resolveItemPart } from './lib/slot_resolver.js';
 import { makeItem, seirenUnlockedCount } from './lib/make_item.js';
 import { newCharacter } from './lib/character.js';
 import { newSTTemp, debugSnapshot } from './lib/sttemp.js';
-import { aggregateForCharacter } from './lib/stat_aggregator.js';
+import { aggregateWithEquipmentRequirements } from './lib/stat_aggregator.js';
 import { finalizeStats } from './lib/stat_finalizer.js';
 import { formatOpText, stripOpTags, isLosslessDisplayTemplate, translatePrefixDisplayEffect } from './lib/op_text_formatter.js';
 import { nativeOptionExtra } from './lib/native_option_defs.js';
 import { recordSharedAbsorption } from './lib/absorption.js';
 import {
-  refreshEquipmentRequirementsFromFinalStats,
   updateEquipmentMetadata,
 } from './lib/equipment_meta.js';
 import { computeItemRequiredLv, computeRequiredLvBreakdown } from './lib/req_lv.js';
@@ -7231,6 +7231,7 @@ function buildItemDetailHtml(inv, rec, character) {
   html += `<div class="idp-section-title">&lt;基本情報&gt;</div>`;
   const nonstandardBaseLines = rec.nonstandard && Array.isArray(rec.nonstandard.baseLines)
     ? rec.nonstandard.baseLines.map((line) => String(line || '').trim()).filter(Boolean)
+        .filter((line) => Number(rec.kind) !== 2 || !/^射程距離(?:\s|$)/.test(line))
     : [];
   if (nonstandardBaseLines.length === 0) {
     if (rec.durability != null) {
@@ -7239,7 +7240,7 @@ function buildItemDetailHtml(inv, rec, character) {
     if (rec.combat && (rec.combat.atkMin || rec.combat.atkMax)) {
       const spdSec = rec.combat.speed ? (rec.combat.speed / 100).toFixed(2) + '秒' : '';
       html += `<span class="idp-row"><span class="idp-key">攻撃力</span> <span class="idp-val">${rec.combat.atkMin}~${rec.combat.atkMax}</span>${spdSec ? ` (${spdSec})` : ''}</span>`;
-      if (rec.combat.range != null) {
+      if (Number(rec.kind) !== 2 && rec.combat.range != null) {
         html += `<span class="idp-row"><span class="idp-key">射程距離</span> <span class="idp-val">${rec.combat.range}</span></span>`;
       }
     }
@@ -7404,7 +7405,7 @@ function buildItemDetailHtml(inv, rec, character) {
     const nxPos = (isNx && slot.pos != null) ? Number(slot.pos) : -1;
     if (isNx && inv?.nxAvailableCount != null && nxPos >= inv.nxAvailableCount) continue;
     const observed = isNx && inv?.shopObservedNx?.find(row => row.slot === nxPos);
-    if (observed) { html += `<span class="idp-op is-nx">- ${esc(observed.text)} <span class="idp-nx-label">${nxPos < unlockedCount ? '[Nx]' : '[封印中]'}</span></span>`; continue; }
+    if (observed) { html += `<span class="idp-op is-nx${nxPos >= unlockedCount ? ' is-sealed' : ''}">- ${esc(observed.text)} <span class="idp-nx-label">${nxPos < unlockedCount ? '[Nx]' : '[封印中]'}</span></span>`; continue; }
     
     if (isNx && nxPos >= 0 && nxPos < unlockedCount && inv && inv.nxUnlockedOps && inv.nxUnlockedOps[nxPos]) {
       const ovr = inv.nxUnlockedOps[nxPos];
@@ -7439,7 +7440,7 @@ function buildItemDetailHtml(inv, rec, character) {
     if (nativeHtml != null) { html += nativeHtml; continue; }
     if (isNx && nxPos >= unlockedCount) {
       const info0 = resolveOpDisplayInfo(slot.familyId, slot.value);
-      html += `<span class="idp-op is-nx" style="color:#7a7a7a">- ${esc(info0.name)} <span style="font-size:10.5px">[封印中]</span></span>`;
+      html += `<span class="idp-op is-nx is-sealed">- ${esc(info0.name)} <span style="font-size:10.5px">[封印中]</span></span>`;
       continue;
     }
     
@@ -8253,7 +8254,7 @@ async function recalcAllNow() {
   
   applyBfDedupSuppress(equipped);
   
-  const T = await aggregateForCharacter(ch, equipped);
+  const { temp: T, final: f } = await aggregateWithEquipmentRequirements(ch, equipped, async (T, ch) => {
   
   if (creatureDb) {
     const LvTempCreature = getEffectiveLv(ch);
@@ -8261,7 +8262,6 @@ async function recalcAllNow() {
     applyCreaturePassivesToSTTemp(T, mergedPassives, creatureDb, LvTempCreature, ch);
     applyCreatureStatsToSTTemp(T, creatureState, creatureDb);
     applyCreatureBookToSTTemp(T, creatureState, creatureDb, LvTempCreature);
-    if (creatureBookUIInitialized) renderCreatureBookSummary();
   }
 
   if (minipetDb) applyMinipetToSTTemp(T, ch);
@@ -8300,17 +8300,19 @@ async function recalcAllNow() {
   applyScrollsToSTTemp(T, equipped, getEffectiveLv(ch));
   
   applyJobPassivesToSTTemp(T, ch);
+  }, (T, ch) => {
   const f = finalizeStats(T);
   
   applyJobPassivesPostFinalize(f, ch);
   
   Titles.applyBerserkPostFinalize(f);
-
+  return f;
+  });
+  if (creatureDb && creatureBookUIInitialized) renderCreatureBookSummary();
 
   const preMapFinalStats = { ...f.equipped };
   const preMapEquippedStats = Object.create(null);
   for (const s of STAT_KEYS) preMapEquippedStats[s] = Number(f.equipped[s]) || 0;
-  refreshEquipmentRequirementsFromFinalStats(equipped, ch, preMapFinalStats);
   applyMapEffectsToCharacter(f, getCurrentMapSubInfo());
 
   
@@ -8424,8 +8426,7 @@ async function recalcAllNow() {
   setDetailFlat('dt-magic-limit-flat',         lbMagicFlat);
   setDetailPercent('dt-magic-limit-percent',   lbMagicPct);
   if ($('dt-magic-limit-percent')) $('dt-magic-limit-percent').title =
-    `称号の超過率 ${titleBonus.magicPct || 0}% + 装備等の表示補正 ${lbMagicPct - (titleBonus.magicPct || 0)}%。` +
-    'ダメージ計算の自動取得は称号の超過率のみ。装備補正の適用式は未検証のため加算していません。';
+    `称号の超過率 ${titleBonus.magicPct || 0}% + 装備等の表示補正 ${lbMagicPct - (titleBonus.magicPct || 0)}%。`;
   
   f.equipped.__withTitleLimitBreakPhysFlat   = lbPhysFlat;
   f.equipped.__withTitleLimitBreakPhysPct    = lbPhysPct;
@@ -16408,7 +16409,7 @@ const PotentialDisassembly = (() => {
       }
       return `<div>${esc(unknown.label)}<small>${esc(unknown.detail || '')}</small></div>${input}`;
     }).join('');
-    return `<div class="potential-disassembly-manual"><div class="potential-disassembly-manual-title">未確定項目の補完</div>${controls}</div>`;
+    return `<div class="potential-disassembly-manual"><div class="potential-disassembly-manual-title">分解条件</div>${controls}</div>`;
   }
 
   function renderEstimate(item, estimate, manual) {

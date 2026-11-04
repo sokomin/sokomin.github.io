@@ -21,7 +21,7 @@ export function renderShopGameNative(slot,inv,loader) {
   const template=shopNativeTemplate(loader,slot);
   if(!template)throw Error('ゲームの装備効果定義がありません: '+slot.opId);
   const text=formatOpText(template,slot.vals||[],nativeOptionExtra(slot.opId));
-  return `<span class="idp-op${nx?' is-nx':''}">- ${text}${nx?` <span class="idp-nx-label">${pos<count?'[Nx]':'[封印中]'}</span>`:''}</span>`;
+  return `<span class="idp-op${nx?' is-nx':''}${nx&&pos>=count?' is-sealed':''}">- ${text}${nx?` <span class="idp-nx-label">${pos<count?'[Nx]':'[封印中]'}</span>`:''}</span>`;
 }
 
 export function restoreShopGameCorrections(inv,entry){

@@ -29,6 +29,7 @@ export function createShopSearch({ fetcher = (...args) => fetch(...args), dataRo
       const dates = [...new Set(index.captures.filter(c => c.server === server && /^\d{8}$/.test(c.date) && (server !== 'g' || c.date.startsWith(year))).map(c => c.date))].sort().reverse();
       const { choice, days } = shopDateRange(dates, date);
       const items = [];
+      const seen = new Set();
       
       for (let offset = 0; offset < days.length; offset += 3) {
         const batch = days.slice(offset, offset + 3);
@@ -46,6 +47,12 @@ export function createShopSearch({ fetcher = (...args) => fetch(...args), dataRo
             if (!Number.isSafeInteger(row.price?.amount) || row.price.amount < 0 || !['ingot','gold'].includes(row.price.currency) || !Number.isSafeInteger(row.quantity) || row.quantity < 1 || !Number.isInteger(row.item_id)) throw Error('商品の価格・個数が不正です');
             const gold = row.price.amount * (row.price.currency === 'ingot' ? 100000000 : 1);
             if (!Number.isSafeInteger(gold)) throw Error('商品価格が大きすぎます');
+
+            if (typeof row.variant_key === 'string' && /^[a-f0-9]{64}$/.test(row.variant_key)) {
+              const identity = JSON.stringify([row.variant_key, row.item_id, row.item_key, row.display_name, row.item_type, gold, row.quantity]);
+              if (seen.has(identity)) continue;
+              seen.add(identity);
+            }
             items.push({ source, name:row.display_name, itemId:row.item_id, gold, quantity:row.quantity });
           }
         }

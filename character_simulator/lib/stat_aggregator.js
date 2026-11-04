@@ -7,7 +7,7 @@ import { aggregateAllOpsForItem } from './op_calc.js';
 import { PRIMARY_STAT_IDS, getEffectiveLv } from './character.js';
 import { countSetEquipped, applySetBonusesToSTTemp } from './set_bonus.js';
 import { countSetOpsEquipped, applySetOpsToSTTemp } from './set_op_bonus.js';
-import { updateEquipmentMetadata, isJobAllowed } from './equipment_meta.js';
+import { updateEquipmentMetadata, isJobAllowed, refreshEquipmentRequirementsFromFinalStats } from './equipment_meta.js';
 import { finalizeStats } from './stat_finalizer.js';
 import { applyStonesToSTTemp } from './stone_effects.js';
 
@@ -125,6 +125,33 @@ export async function aggregateForCharacter(character, equippedItems, opts = {})
   }
 
   return STTemp;
+}
+
+
+export async function aggregateWithEquipmentRequirements(character, entries, applyBonuses, finalize = finalizeStats) {
+  const c = cloneCharacterForLoop(character);
+  const worn = entries.filter(({ inv, item }) => inv.equippedSlot != null && isJobAllowed(item, c));
+  let active = worn;
+  let previous = null;
+  const limit = Math.max(8, worn.length + 3);
+  for (let iteration = 0; iteration < limit; iteration++) {
+    const included = new Set(active.map(({ inv }) => inv));
+    for (const { inv } of worn) inv.canEquip = included.has(inv);
+    const temp = await aggregateForCharacter(c, active, { validate: false });
+    await applyBonuses(temp, c);
+    const final = finalize(temp, c);
+    refreshEquipmentRequirementsFromFinalStats(entries, c, final.equipped);
+    const next = worn.filter(({ inv }) => inv.equippedSlot != null && inv.canEquip);
+    const signature = worn.map(({ inv }) => next.some(e => e.inv === inv) ? '1' : '0').join('')
+      + '|' + PRIMARY_STAT_IDS.map(s => final.equipped[s] || 0).join(',');
+    if (signature === previous && next.length === active.length
+        && next.every((entry, i) => entry === active[i])) return { temp, final };
+    previous = signature;
+    active = next;
+    c.stats.equipped = { ...final.equipped };
+    c.stats.maxEquipped = { ...final.equipped };
+  }
+  throw new Error('Equipment requirements did not converge');
 }
 
 function cloneCharacterForLoop(character) {
