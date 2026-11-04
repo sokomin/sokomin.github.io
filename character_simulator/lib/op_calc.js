@@ -33,6 +33,11 @@ export function getLayerAggregation(layer, statId) {
 
 
 export function calcOpValue(opOrSlot, inv, source, LvTemp, character) {
+  if (Array.isArray(opOrSlot.statAxes) && opOrSlot.familyId == null && opOrSlot.opId == null) {
+    if (!opOrSlot.statAxes.length || opOrSlot.statAxes.some(a => !a.statId || !Number.isFinite(a.value))) throw Error('効果の軸別補正値が不正です');
+    return { value: 0, constant: 0, statId: null, layer: 'sum', multiplier: 1,
+      isDisplayOnly: false, source, axisResults: opOrSlot.statAxes.map(a => ({...a,layer:'sum'})) };
+  }
   
   if ((source === 'item.option' || source === 'item.nxoption') && opOrSlot.familyId == null) {
     const id = Number(opOrSlot.opId);
@@ -452,7 +457,9 @@ export function aggregateAllOpsForItem(STTemp, inv, item, LvTemp, character) {
       }
     }
     if (enhance) {
-      enhanceOps.push({ enhance });
+      const percent = op.value ?? op.vals?.[0];
+      if (!Number.isInteger(percent) || percent < 40 || percent > 50) throw Error('増強オプションの値が範囲外です');
+      enhanceOps.push({ enhance, percent, familyId: op.familyId });
       continue;  
     }
 
@@ -460,7 +467,7 @@ export function aggregateAllOpsForItem(STTemp, inv, item, LvTemp, character) {
     applyOpToSTTemp(STTemp, calc, item);
 
     
-    if (source !== 'item.base' && calc && !calc.isDisplayOnly) {
+    if (source === 'ui.op' && calc && !calc.isDisplayOnly) {
       const v = (numOrZero(calc.value) + numOrZero(calc.constant)) * (calc.multiplier || 1);
       if (Array.isArray(calc.axisResults) && calc.axisResults.length) {
         for (const a of calc.axisResults) {
@@ -475,11 +482,11 @@ export function aggregateAllOpsForItem(STTemp, inv, item, LvTemp, character) {
   }
 
 
-  for (const { enhance } of enhanceOps) {
-    const target = enhance.targetStat;
-    const pct    = numOrZero(enhance.percentMultiplier);
+  for (const { enhance, percent, familyId } of enhanceOps) {
+
+    const target = ({886:'physDamagePercent',887:'defPercent',888:'hpPercent',889:'cpPercent'})[familyId] || enhance.targetStat;
     const sum    = numOrZero(localStatTotals[target]);
-    const v      = Math.floor(sum * pct);
+    const v      = Math.floor(sum * percent / 100);
     if (v === 0) continue;
     if (!STTemp.sum) STTemp.sum = Object.create(null);
     STTemp.sum[target] = (STTemp.sum[target] || 0) + v;

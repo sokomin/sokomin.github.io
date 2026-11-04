@@ -49,6 +49,7 @@ export function computePetStats(mob, petLv, chStats, jobId) {
   
   
   const petOpsRaw = {
+    physCritDamageReduce: Number(chStats?.petPhysCritDamageReduce) || 0,
     allStat:            Number(chStats?.petAllStat)              || 0,
     maxHpPct:           Number(chStats?.petMaxHp)                || 0,
     physAtkPct:         Number(chStats?.petPhysAtk)              || 0,
@@ -81,6 +82,13 @@ export function computePetStats(mob, petLv, chStats, jobId) {
     leveled.wis  += v;
     leveled.chs  += v;
     leveled.luc  += v;
+  }
+  for (const [stat, key] of [['str','Str'],['agi','Agi'],['con','Con'],['intl','Int'],['wis','Wiz'],['chs','Chs'],['luc','Luc']]) {
+    leveled[stat] += Number(chStats?.['pet'+key]) || 0;
+  }
+  for (const element of ['Fire','Water','Wind','Earth','Light','Dark']) {
+    const key = element.toLowerCase() + 'Res';
+    leveled[key] += Number(chStats?.['petAttr'+element+'Resist']) || 0;
   }
   if (petOpsRaw.maxHpPct) {
     leveled.defaultHp = Math.floor(leveled.defaultHp * (1 + petOpsRaw.maxHpPct / 100));

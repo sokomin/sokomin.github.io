@@ -12,11 +12,15 @@ const NATIVE_EFFECTS = {
   31: value => `物理命中率+${value}%`,
 };
 const PET_EFFECTS = {
+  '(召喚獣・ペット)物理ダメージ': { familyId: 683, render: value => `同伴者の物理攻撃力増加${value}%` },
   '(召喚獣・ペット)攻撃速度': { familyId: 303, render: value => `同伴者の攻撃速度増加${value}%` },
   '(召喚獣・ペット)魔法致命打発動確率': { familyId: 686, render: value => `同伴者の魔法致命打確率(%)+${value}%` },
 };
-const seirenLabel=value=>shopEffectText(value).replace(/\((?:同伴者|ペット・召喚獣|召喚獣・ペット)\)/g,'同伴者の').replace(/同伴者(?!の)/g,'同伴者の').replace(/アンデット/g,'アンデッド').replace(/(人間|アンデッド・悪魔|動物・神獣)型からの(物理|魔法)攻撃ダメージ/g,'vs$1の被$2ダメージ').replace(/(人間|アンデッド・悪魔|動物・神獣)型(物理|魔法)/g,'vs$1の$2').replace(/・/g,'、').replace(/^(同伴者の)?クリティカルダメージ減少/g,'$1被物理致命打ダメージの減少').replace(/クリティカル/g,'致命打').replace(/(?<!物理)命中率/g,'物理命中率').replace(/最大体力/g,'最大HP').replace(/魔法の精度/g,'魔法精度').replace(/\([+%]?\)/g,'');
+const seirenLabel=value=>shopEffectText(String(value).normalize('NFKC').replace(/アンデット/g,'アンデッド').replace(/(人間|アンデッド・悪魔|動物・神獣)型からの(物理|魔法)攻撃ダメージ/g,'vs$1の被$2ダメージ').replace(/(人間|アンデッド・悪魔|動物・神獣)型(物理|魔法)/g,'vs$1の$2').replace(/^(\(召喚獣・ペット\))?クリティカルダメージ減少/g,'$1被物理致命打ダメージの減少')).replace(/\((?:同伴者|ペット・召喚獣|召喚獣・ペット)\)/g,'同伴者の').replace(/同伴者(?!の)/g,'同伴者の').replace(/アンデット/g,'アンデッド').replace(/・/g,'、').replace(/クリティカル/g,'致命打').replace(/(?<!物理)命中率/g,'物理命中率').replace(/最大体力/g,'最大HP').replace(/ステータス/g,'').replace(/魔法の精度/g,'魔法精度').replace(/\([+%]?\)/g,'');
 const BF_OBSERVED = [
+
+  ['white_final_dmg', /^最終攻撃力増加([\d.]+)%$/],
+  ['cp_move_red', /^移動時のCP減少-([\d.]+)$/],
   ['skill_lv', /^全スキルレベル\+([\d.]+)$/],
   ['mhp_drain', /^敵に与えた魔法ダメージのHP吸収\+([\d.]+)%$/],
   ['hp_drain', /^敵に与えたダメージのHP吸収\+([\d.]+)%$/],
@@ -49,9 +53,9 @@ export function shopEnhancements(detail, record, groups, seirenData,loader) {
     result.seirenOps = smelting.map((line, index) => {
       const tier = TIERS[line.label], matches = [];
       for (const [ei, row] of (part[thresholds[index]] || []).entries()) {
-        const value = row.tiers?.[tier]?.[stage - 1];
-        if (!Number.isFinite(value)) continue;
         for (const [ni, name] of (row.names || []).entries()) {
+          const value = (name.tiers || row.tiers)?.[tier]?.[stage - 1];
+          if (!Number.isFinite(value)) continue;
           const familyId = shopSeirenFamily(name);
           const render = PET_EFFECTS[name.name]?.render || NATIVE_EFFECTS[familyId];
           const resolved=loader&&shopEffectResolver(loader)(line.text);

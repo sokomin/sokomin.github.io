@@ -6,7 +6,9 @@ export function compatibleSeirenSelection(current, pool) {
     if (!Array.isArray(entry?.tiers?.[current.seirenTier])) continue;
     const ni = (entry.names || []).findIndex((name) =>
       name.name === current.seirenName
-      && Number(name.familyId ?? -1) === Number(current.familyId ?? -1));
+      && (Number(name.familyId ?? -1) === Number(current.familyId ?? -1)
+        || name.statId && name.statId === current.statId
+        || name.stats && JSON.stringify(name.stats) === JSON.stringify(current.stats)));
     if (ni >= 0) return `ent:${ei}:nm:${ni}:tier:${current.seirenTier}`;
   }
   return '';

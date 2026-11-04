@@ -2,6 +2,9 @@
 
 export const NATIVE_BASE_STATS = {
   0: { id: 'def' },
+  67: { id: 'agi' },
+  69: { id: 'luc' },
+  70: { id: 'physCritRate' },
   74: { id: 'atkspd' },
   88: { id: 'physCritResist' },
   721: { id: 'atkMinFlat' },
@@ -9,8 +12,10 @@ export const NATIVE_BASE_STATS = {
 };
 
 export const NATIVE_OPTION_STATS = {
+  172: { stats: ['str','agi','con','int','wiz','chs','luc'] },
   174: { id: 'physStrongRate' },
   175: { id: 'finalAttackPercent' },
+  752: { id: 'magicCritDamage' },
   941: { id: 'physStrongCapAmplify' },
   1035: { id: 'finalDamagePercent' },
 };

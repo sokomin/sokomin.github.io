@@ -38,6 +38,19 @@ function prefixOption(line, loader) {
   for (const [key, family] of Object.entries(families || {})) for (const tier of family.tiers || []) {
     if (clean(tier.name) !== clean(line.label)) continue;
     named=true;
+    if (Number(key) === 869) {
+      const observed=clean(line.text).match(/^最終全ての状態抵抗\(%\)\+(\d+)%$/);
+      if(observed&&Number(observed[1])>=1&&Number(observed[1])<=5)found.push({statId:'finalStatusResist',rowId:tier.id,name:tier.name,value:Number(observed[1])});
+      continue;
+    }
+    if (family.enhance) {
+      const ranges=[];
+      const template=tier.effect.replace(/\[(-?\d+)~(-?\d+)([%％]?)\]/g,(_,a,b,unit)=>{ranges.push([Number(a),Number(b)]);return `[0${unit}]`;});
+      const observed=Number(key)===886?line.text.replace('武器ダメージ増加','攻撃力増加'):line.text;
+      const values=inverseShopNative(shopEffectText(template),ranges,shopEffectText(observed));
+      if (values && ranges.length===1 && Number.isInteger(values[0])) found.push({familyId:Number(key),rowId:tier.id,name:tier.name,value:values[0]});
+      continue;
+    }
     if (tier.gradeClass === 'set' && getSetOpDef(tier.id)?.name === tier.name && clean(line.text) === 'セットオプション') {
       found.push({ familyId: Number(key), rowId: tier.id, name: tier.name, value: 0 });
       continue;
@@ -64,7 +77,6 @@ function prefixOption(line, loader) {
         if(family.stat?.layer==='lvLinked'){
           const ratio=clean(line.text).match(/\+([\d.]+)\/レベル([\d.]+)/);if(!ratio)continue;option.addValue=Number(ratio[1]);option.divisor=Number(ratio[2]);
         }else option.value=ranges.length?actual[0]:Number(line.text.match(/-?\d+(?:\.\d+)?/)?.[0]??1);
-        if(family.enhance&&option.value!==family.enhance.percentMultiplier*100)continue;
         found.push(option);continue;
       }
       const observed=shopEffectResolver(loader)(line.text);
@@ -97,8 +109,8 @@ function prefixOption(line, loader) {
   }
 
   const distinct=new Map();
-  for(const option of found){const f=families[option.familyId];const key=JSON.stringify([shopModelKey(option,loader)||option.familyId,option.value,option.addValue,option.divisor,option.jobIdx,f.tiers.find(t=>t.id===option.rowId)?.gradeClass==='set'?option.rowId:null]);if(!distinct.has(key))distinct.set(key,option);}
-  if(!named&&!distinct.size){const observed=shopEffectResolver(loader)(line.text);if(observed?.familyId!=null&&families[observed.familyId]?.stat&&typeof line.label==='string'&&/^\[[^\[\]]{1,100}\]$/.test(line.label))return{...observed,name:line.label};}
+  for(const option of found){const f=families[option.familyId];const key=JSON.stringify([shopModelKey(option,loader)||option.familyId,option.value,option.addValue,option.divisor,option.jobIdx,f?.tiers.find(t=>t.id===option.rowId)?.gradeClass==='set'?option.rowId:null]);if(!distinct.has(key))distinct.set(key,option);}
+  if(!named&&!distinct.size&&!/ステータスを/.test(line.text)){const observed=shopEffectResolver(loader)(line.text);if(observed?.familyId!=null&&families[observed.familyId]?.stat&&typeof line.label==='string'&&/^\[[^\[\]]{1,100}\]$/.test(line.label))return{...observed,name:line.label};}
   if (distinct.size !== 1) fail('この称号オプションは正確に復元できません: ' + (line.label || line.text));
   return [...distinct.values()][0];
 }
@@ -138,6 +150,9 @@ export function detailToShopEntry(detail, record, loader, seirenData) {
   } else if (nx.length && !detail.nonstandard) fail('Nx解放状態が不足しています');
   if(detail.nonstandard)Object.assign(entry,shopNonstandardEntry(detail,record,groups,loader));
   for (const slot of detail.nonstandard?[]:record.opSlots || []) {
+
+    if (carvingLevel != null && slot.slotKind === 'op' && slot.opId === 774 &&
+        record.opSlots.some(s=>s.slotKind==='base'&&s.opId===773&&s.vals?.[1]===slot.vals?.[1])) continue;
     
     if (slot.slotKind === 'nxop' && slot.pos >= (detail.nx?.available || 0)) continue;
     const lines = slot.slotKind === 'base' ? base : slot.slotKind === 'op' ? unique : slot.slotKind === 'nxop' ? nx : null;
@@ -148,7 +163,7 @@ export function detailToShopEntry(detail, record, loader, seirenData) {
     const vals = slot.vals || [];
     const range = vals[0];
     const carvingBase=carvingLevel!=null&&slot.slotKind==='base';
-    const matchValues=carvingBase?vals.map(()=>carvingLevel):vals;
+    const matchValues=carvingBase?vals.map(v=>slot.opId===773&&!Array.isArray(v)?v:carvingLevel):vals;
     for (let i = 0; i < lines.length; i++) {
       if (slot.slotKind === 'nxop' && lines[i].slot !== slot.pos + 1) continue;
       let values=inverseShopNative(template,matchValues,lines[i].text,slot.opId)||inverseShopNative(shopEffectText(template),matchValues,shopEffectText(lines[i].text),slot.opId);
@@ -173,6 +188,9 @@ export function detailToShopEntry(detail, record, loader, seirenData) {
         (entry.shopGameCorrections||=[]).push({index:record.opSlots.indexOf(slot),opId:slot.opId,observed:observed.text,expected:renderShopGameNative(slot,null,loader)});
       }
     }
+    if (candidates.length > 1 && candidates.every(candidate =>
+      JSON.stringify(candidate.values) === JSON.stringify(candidates[0].values) &&
+      clean(lines[candidate.i].text) === clean(lines[candidates[0].i].text))) candidates = candidates.slice(0,1);
     if (candidates.length !== 1) fail('装備効果の値を正確に復元できません: ' + record.name);
     const { i, value, values } = candidates[0];
     if(!carvingBase&&values.some((v,n)=>!Array.isArray(v)&&Array.isArray(vals[n]))) (entry.shopNativeSlots ||= []).push({index:record.opSlots.indexOf(slot),opId:slot.opId,values});

@@ -5,6 +5,12 @@ const EFFECTS = [
 ];
 export function parseShopNxEffect(text,loader=getLoader()) {
   const normalized = String(text).normalize('NFKC').replace(/\s+/g, '');
+  const compositeTemplate = loader?.options?.templates?.[922]?.displayTemplate;
+  const axes = compositeTemplate && inverseShopNative(compositeTemplate, [[0,65535],[0,65535]], text, 922);
+  if (axes && axes.every(Number.isInteger)) return {
+    statAxes: [{statId:'limitBreakPhysPercent',value:axes[0]/10},{statId:'limitBreakMagicPercent',value:axes[1]/10}],
+    text:String(text),
+  };
   if(normalized==='CP+0')return{familyId:29,value:0,text:String(text)};
   for (const effect of EFFECTS) {
     const match = normalized.match(effect.pattern);
@@ -21,7 +27,7 @@ export function restoreShopNx(inv, entry) {
   if (!Array.isArray(rows) || rows.length > 4) throw Error('Nx変換効果が不正です');
   const restored = rows.map(row => {
     const effect = parseShopNxEffect(row.text);
-    if (!Number.isInteger(row.slot) || row.slot < 0 || row.slot >= (inv.nxAvailableCount ?? 4) || slots.has(row.slot) || !effect || ['statId','familyId','value','addValue','divisor'].some(k=>effect[k]!==row[k])) throw Error('Nx変換効果が一致しません');
+    if (!Number.isInteger(row.slot) || row.slot < 0 || row.slot >= (inv.nxAvailableCount ?? 4) || slots.has(row.slot) || !effect || ['statId','familyId','value','addValue','divisor','stats','isDisplayOnly','statAxes'].some(k=>JSON.stringify(effect[k])!==JSON.stringify(row[k]))) throw Error('Nx変換効果が一致しません');
     slots.add(row.slot); return { slot: row.slot, ...effect };
   });
   inv.shopObservedNx = restored;
@@ -33,7 +39,7 @@ export function serializeShopNx(snapshot, inventory) {
   for (const entry of snapshot.inventory || []) {
     const rows = inventory.get(entry.slotIndex)?.shopObservedNx;
     if (!rows?.length) continue;
-    entry.shopObservedNx = rows.map(row => ({ ...row }));
+    entry.shopObservedNx = structuredClone(rows);
     for (const row of rows) if (entry.nxUnlockedOps) entry.nxUnlockedOps[row.slot] = null;
   }
 }
@@ -50,3 +56,4 @@ export function renderShopNxSelection(inv, state, slot, select, document) {
 }
 import { getLoader } from './item_api.js';
 import { shopEffectResolver } from './market_shop_effects.js';
+import { inverseShopNative } from './market_shop_native.js';

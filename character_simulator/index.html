@@ -6020,7 +6020,7 @@ function buildSeirenOptionList(pool, stage) {
 
       const unit = isUnsupported ? '' : getSeirenFamilyUnit(nm.familyId);
       for (const tierKey of ['lower', 'middle', 'upper']) {
-        const arr = entry.tiers ? entry.tiers[tierKey] : null;
+        const arr = (nm.tiers || entry.tiers)?.[tierKey];
         const v = Array.isArray(arr) ? arr[stageIdx] : null;
         if (v == null) continue;
         const tierLabel = SEIREN_TIER_LABEL[tierKey];
@@ -6125,8 +6125,13 @@ function applySeirenSelection(idx, value, partKey) {
   if (!entry || !nm) { formState.seirenOps[idx] = null; return; }
   const stage = Math.max(1, Math.min(15, Number(formState.seirenStage) || 1));
   const stageIdx = stage - 1;
-  const value0 = (entry.tiers?.[parsed.tier] || [])[stageIdx];
+  const value0 = ((nm.tiers || entry.tiers)?.[parsed.tier] || [])[stageIdx];
   if (value0 == null) { formState.seirenOps[idx] = null; return; }
+
+  if (nm.statId || nm.stats) {
+    formState.seirenOps[idx] = { ...(nm.statId ? {statId:nm.statId} : {stats:nm.stats.slice()}), value:Number(value0), seirenSel:value, seirenName:nm.name, seirenTier:parsed.tier, name:nm.name };
+    return;
+  }
 
   const familyId = shopSeirenFamily(nm);
   const isUnsupported = !(familyId >= 0);
@@ -8339,10 +8344,10 @@ async function recalcAllNow() {
     el.classList.toggle('is-zero',  v === 0);
     el.classList.toggle('is-minus', v < 0);
   };
-  const setDetailPercent = (id, value) => {
+  const setDetailPercent = (id, value, digits = 0) => {
     const el = $(id);
     if (!el) return;
-    const v = Math.floor(Number(value) || 0);
+    const v = digits ? Number((Number(value) || 0).toFixed(digits)) : Math.floor(Number(value) || 0);
     el.textContent = (v >= 0 ? '+' : '') + v + '%';
     applyValueClass(el, v);
   };
@@ -8422,9 +8427,9 @@ async function recalcAllNow() {
   const lbMagicFlat  = (f.equipped.limitBreakMagicFlat   || 0) + (sideSum.limitBreak.magicFlat   || 0) + titleBonus.magicFlat + dragonBonus.limitBreakMagicFlat + potentialBonus.magicFlat;
   const lbMagicPct   = (f.equipped.limitBreakMagicPercent|| 0) + (sideSum.limitBreak.magicPercent|| 0) + titleBonus.magicPct                                  + potentialBonus.magicPct;
   setDetailFlat('dt-phys-limit-flat',          lbPhysFlat);
-  setDetailPercent('dt-phys-limit-percent',    lbPhysPct);
+  setDetailPercent('dt-phys-limit-percent',    lbPhysPct, 3);
   setDetailFlat('dt-magic-limit-flat',         lbMagicFlat);
-  setDetailPercent('dt-magic-limit-percent',   lbMagicPct);
+  setDetailPercent('dt-magic-limit-percent',   lbMagicPct, 3);
   if ($('dt-magic-limit-percent')) $('dt-magic-limit-percent').title =
     `称号の超過率 ${titleBonus.magicPct || 0}% + 装備等の表示補正 ${lbMagicPct - (titleBonus.magicPct || 0)}%。`;
   
@@ -20250,7 +20255,7 @@ const DamageCalc = (() => {
       
       const titleBonus2 = Titles.computeBonus();
       const titleMagicPct = titleBonus2.magicPct || 0;
-      setIfAuto('dmg-in-mLimitPct', titleMagicPct);
+      setIfAuto('dmg-in-mLimitPct', eq.__withTitleLimitBreakMagicPct ?? (titleMagicPct + (Number(eq.limitBreakMagicPercent) || 0)));
       setIfAuto('dmg-in-mFinalDmg', (Number(eq.finalMagicDamage) || 0) + (Number(eq.finalDamagePercent) || 0));
       setIfAuto('dmg-in-mBloodFieldDmg', Number(eq.bloodFieldFinalDmg) || 0);
       setIfAuto('dmg-in-mMobCut', mapDamageCutPct);
