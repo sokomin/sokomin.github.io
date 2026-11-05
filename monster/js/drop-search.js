@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  var DEFAULT_CSV_URL = "https://sokomin.github.io/sokomin_repository/db/monster.csv";
+  var DEFAULT_CSV_URL = "../sokomin_repository/db/monster.csv";
   var MAX_RESULTS = 300;
   var DROP_FIELD_START = 29;
   var DROP_FIELD_END = 85;
@@ -255,7 +255,7 @@
       effectId2 = 0;
     }
     var padded = ("0" + effectId).slice(-3).toLowerCase();
-    return "https://sokomin.github.io/monster/design/image/monster/0" + padded + "000" + effectId2 + ".png";
+    return "../monster/design/image/monster/0" + padded + "000" + effectId2 + ".png";
   }
 
   function getCsvUrl() {
@@ -304,7 +304,7 @@
         return monster;
       })
       .filter(function (monster) {
-        return monster.name && monster.name !== "自爆テスター" && monster.dropItems.length > 0;
+        return isPublicMonster(monster.id, monster) && monster.name && monster.name !== "自爆テスター" && monster.dropItems.length > 0;
       });
   }
 

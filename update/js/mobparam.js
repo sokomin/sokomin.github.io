@@ -19,3 +19,15 @@ mobRank = {
     8: "ボス2",
     9: "ボス3",
 }
+
+var monsterVisibilityRecords = {"1499":{"name":"逃亡魔法師Sp[テスト用]","Species":"1","Lineage":"3","EffectId":"267","EffectId_2":"0","unknown_69":"624"},"1866":{"name":"非アクションスキル","Species":"0","Lineage":"0","EffectId":"333","EffectId_2":"0","unknown_69":"958"},"2152":{"name":"HP倍数テスト用","Species":"0","Lineage":"9","EffectId":"389","EffectId_2":"0","unknown_69":"-1"}};
+
+function isPublicMonster(id, data) {
+    if (!data || !Object.prototype.hasOwnProperty.call(monsterVisibilityRecords, String(id))) {
+        return true;
+    }
+    var expected = monsterVisibilityRecords[String(id)];
+    return !Object.keys(expected).every(function (key) {
+        return data[key] !== undefined && String(data[key]) === expected[key];
+    });
+}

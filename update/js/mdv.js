@@ -2,7 +2,7 @@
 function getCSV(mode) {
     var req = new XMLHttpRequest();// HTTPでファイルを読み込むためのXMLHttpRrequestオブジェクトを生成
     // req.open("get", "https://sokomin.github.io/update/js/monster.csv", true);//アクセスするファイルを指定
-    req.open("get", "https://sokomin.github.io/sokomin_repository/db/monster.csv", true);
+    req.open("get", "../sokomin_repository/db/monster.csv", true);
     req.send(null);// HTTPリクエストの発行
     // レスポンスが返ってきたらconvertCSVtoArray()を呼ぶ	
     req.onload = function () {
@@ -13,7 +13,7 @@ function getCSV(mode) {
 // 出現マップ一覧に使用する
 function getCSV2(mode, monster) {
     var req = new XMLHttpRequest();
-    req.open("get", "https://sokomin.github.io/sokomin_repository/db/map2_2023.csv", true);
+    req.open("get", "../sokomin_repository/db/map2_2023.csv", true);
     req.send(null);
     req.onload = function () {
         getMapCSV(mode, monster, req.responseText);
@@ -23,7 +23,7 @@ function getCSV2(mode, monster) {
 // マップ一覧
 function getMapCSV(is_area, monster_str, map2_str) {
     var req = new XMLHttpRequest();
-    req.open("get", "https://sokomin.github.io/sokomin_repository/db/maplist.csv", true);
+    req.open("get", "../sokomin_repository/db/maplist.csv", true);
     req.send(null);
     req.onload = function () {
         getMapModifierCSV(is_area, monster_str, map2_str, req.responseText);
@@ -32,7 +32,7 @@ function getMapCSV(is_area, monster_str, map2_str) {
 
 function getMapModifierCSV(is_area, monster_str, map2_str, map_str) {
     var req = new XMLHttpRequest();
-    req.open("get", "https://sokomin.github.io/character_simulator/lib/data/map_monster_modifiers.csv", true);
+    req.open("get", "../character_simulator/lib/data/map_monster_modifiers.csv", true);
     req.send(null);
     req.onload = function () {
         convertCSVtoArray(is_area, monster_str, map2_str, map_str, req.responseText);
@@ -72,7 +72,7 @@ function convertCSVtoArray(mode, str, map2, map_str, modifier_str) {// 読み込
                 txt = txt.replace(re, "");
                 obj_format[j] = txt;
             }
-            // TODO フォーマット違ったらエラー出すなりしたい
+
             console.log(obj_format);
         } else {
             var md = {};
@@ -84,7 +84,9 @@ function convertCSVtoArray(mode, str, map2, map_str, modifier_str) {// 読み込
             }
             re = /\"/g;
             result[i][0] = result[i][0].replace(re, "");
-            monster_data[result[i][0]] = md;
+            if (/^\d+$/.test(result[i][0]) && isPublicMonster(result[i][0], md)) {
+                monster_data[result[i][0]] = md;
+            }
         }
     }
     // console.log(monster_data);
@@ -102,7 +104,7 @@ function convertCSVtoArray(mode, str, map2, map_str, modifier_str) {// 読み込
                 txt = txt.replace(re, "");
                 obj_format[j] = txt;
             }
-            // TODO フォーマット違ったらエラー出すなりしたい
+
             console.log(obj_format);
         } else {
             var md = {};
@@ -133,7 +135,7 @@ function convertCSVtoArray(mode, str, map2, map_str, modifier_str) {// 読み込
                 txt = txt.replace(re, "");
                 obj_format[j] = txt;
             }
-            // TODO フォーマット違ったらエラー出すなりしたい
+
             console.log(obj_format);
         } else {
             var md = {};
@@ -180,6 +182,10 @@ function createMobTable() {
     var IMGID = getParam('imgid') ? parseInt(getParam('imgid')) : -1;
     var DEBUG = getParam('debug') ? parseInt(getParam('debug')) : 0;
     var $div_main = $('<div>');
+    if (MOBID >= 0 && !Object.prototype.hasOwnProperty.call(monster_data, String(MOBID))) {
+        $("#preview_html").empty().append($("<p>").text("該当するモンスターは見つかりませんでした。"));
+        return;
+    }
     var title_text = "<h4>" + mobSpec[MOBSPEC] + " " + mobRank[MOBRANK] + " の一覧" + "</h4>";
     if (MOBID < 0) {
         $div_main.append(title_text);
@@ -382,7 +388,7 @@ function createMobTable() {
         // 画像
         var mImage = Number(data["EffectId"]).toString(16);
         mImage = ('0' + mImage).slice(-3)
-        mImage = "https://sokomin.github.io/monster/design/image/monster/0" + mImage.toLowerCase() + "000" + data["EffectId_2"] + ".png";
+        mImage = "../monster/design/image/monster/0" + mImage.toLowerCase() + "000" + data["EffectId_2"] + ".png";
         $tr_row2.append($('<th>').attr({
             "colspan": "2"
         }).css({
@@ -394,8 +400,8 @@ function createMobTable() {
         // mobに関連する情報はここに
         var $tr_row3 = $('<tr>');
         // 出現マップ情報取得
-        // TODO　(事前に計算・集計しておいて出力。)
-        // 作りたいけど、どこに何のmobいるか把握しきれてないので見送っておきます。
+
+
         var $mapDiv = $('<div>');
         var area_map = createMapMob(map_mob_data,i);
 
@@ -611,7 +617,7 @@ function validateData(data, spec, rank, debug, drop_txt, skill_txt) {
     if (Number(data["DefaultHP"]) <= 0) {
         return true;
     }
-    // FIXME -1で死んでる画像があるので、monster.csv側を見直したい。
+
     // if (Number(data["EffectId_2"]) < 0) {
     //     return true;
     // }
@@ -916,7 +922,7 @@ function createMobIconList() {
         }
         var link_txt = '<a href="https://sokomin.github.io/update/monster_data_viewer.html?imgid=' + data["EffectId"] +'&debug=9999">調べる</a>';
         mImage = ('0' + mImage).slice(-3)
-        mImage = "https://sokomin.github.io/monster/design/image/monster/0" + mImage.toLowerCase() + "000" + eid + ".png";
+        mImage = "../monster/design/image/monster/0" + mImage.toLowerCase() + "000" + eid + ".png";
         $tr_row2.append($('<th>').attr({
             "colspan": "2"
         }).css({

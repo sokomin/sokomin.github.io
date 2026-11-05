@@ -334,6 +334,9 @@ export function serializeSession(character, inventory, opts = {}) {
         isDisplayOnly: !!s.isDisplayOnly,
       } : null);
     }
+    if (inv.disassemblyManual) {
+      entry.disassemblyManual = JSON.parse(JSON.stringify(inv.disassemblyManual));
+    }
     invArr.push(entry);
   }
   return {

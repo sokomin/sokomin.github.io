@@ -5050,7 +5050,7 @@ import {
 import { applyMonsterLevel } from './lib/monster_level_calc.js';
 import { computePetStats, isPetCapableJob } from './lib/pet_calc.js';
 import { createGuildSystem } from './lib/guild.js';
-import { calculateDisassemblyEstimate } from './lib/potential_disassembly.js';
+import { calculateDisassemblyEstimate, resolveDisassemblyBaseItem, describeDisassemblyOption, disassemblyInputKey } from './lib/potential_disassembly.js';
 import {
   allocateCostumeCrestSlots,
   PRIMARY_BASE_CAP,
@@ -9792,6 +9792,9 @@ async function restoreInventoryEntry(entry) {
   restoreShopSeiren(inv, entry);
   restoreShopGameCorrections(inv, entry);
   shopItemRecord(inv, rec);
+  if (entry.disassemblyManual?.values && typeof entry.disassemblyManual.values === 'object') {
+    inv.disassemblyManual = { key: entry.disassemblyManual.key, values: { ...entry.disassemblyManual.values } };
+  }
   return inv;
 }
 
@@ -16354,7 +16357,9 @@ const PotentialDisassembly = (() => {
   let initialized = false;
   let rulesPromise = null;
   let renderToken = 0;
-  const manualBySlot = new Map();
+  function manualFor(inv) {
+    return inv.disassemblyManual?.key === disassemblyInputKey(inv) ? inv.disassemblyManual.values : {};
+  }
 
   function loadRules() {
     if (!rulesPromise) {
@@ -16362,39 +16367,21 @@ const PotentialDisassembly = (() => {
         .then((response) => {
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
           return response.json();
-        });
+        }).catch((error) => { rulesPromise = null; throw error; });
     }
     return rulesPromise;
   }
 
   function describeOption(op) {
-    if (!op) return null;
-    let entry = null;
-    if (op.rowId != null) {
-      entry = opSearchIndex.find((candidate) => Number(candidate.rowId) === Number(op.rowId)) || null;
-    }
-    if (!entry && op.familyId != null) {
-      const tier = OpPrefix.findTier(Number(op.familyId), Number(op.value) || 0);
-      if (tier) {
-        entry = {
-          rowId: tier.id,
-          familyId: Number(op.familyId),
-          name: tier.name || '',
-          displayName: optionDisplayName(tier.name || '', {
-            familyId: Number(op.familyId), rowId: tier.id, sortid: tier.sortid,
-          }),
-          gradeClass: tier.gradeClass || 'normal',
-        };
-      }
-    }
+    const entry = describeDisassemblyOption(op, loader.optionPrefix);
     if (!entry) return null;
     const gradeLabels = {
       normal: '一般', set: 'セット', dx: 'DX', ult: 'ULT', npc: 'NPC', college: '協会',
     };
     return {
-      name: entry.displayName || entry.name || `OP#${entry.rowId}`,
-      gradeClass: entry.gradeClass || 'normal',
-      gradeLabel: gradeLabels[entry.gradeClass || 'normal'] || entry.gradeClass,
+      name: optionDisplayName(entry.name || '', { familyId: op.familyId, rowId: entry.id, sortid: entry.sortid }),
+      gradeClass: entry.gradeClass,
+      gradeLabel: gradeLabels[entry.gradeClass] || entry.gradeClass,
     };
   }
 
@@ -16425,7 +16412,7 @@ const PotentialDisassembly = (() => {
       result.innerHTML = `
         <div class="potential-disassembly-item-name">${esc(itemName)}</div>
         <div class="potential-disassembly-total">
-          <span>分解ポイント: <strong>0</strong> ${esc(estimate.currencyLabel || '潜在能力ポイント')}</span>
+          <span>${esc(estimate.reason)}</span>
         </div>
       `;
       return;
@@ -16440,16 +16427,18 @@ const PotentialDisassembly = (() => {
     result.innerHTML = `
       <div class="potential-disassembly-item-name">${esc(itemName)}</div>
       <div class="potential-disassembly-total">
-        <span>分解ポイント: <strong>${estimate.cappedTotal}</strong> ${esc(estimate.currencyLabel)}</span>
+        <span>分解ポイント: <strong>${estimate.complete ? estimate.cappedTotal : '—'}</strong> ${esc(estimate.currencyLabel)}</span>
       </div>
       <table class="potential-disassembly-breakdown">
         <thead><tr><th>加算項目</th><th class="col-points">ポイント</th></tr></thead>
         <tbody>${rows || '<tr><td colspan="2">加算項目なし</td></tr>'}</tbody>
       </table>
+      ${renderManualControls(estimate.inputs || estimate.unknowns, manual)}
     `;
   }
 
   async function renderSelected() {
+    const token = ++renderToken;
     const select = $('potential-disassembly-item');
     const result = $('potential-disassembly-result');
     if (!select || !result) return;
@@ -16467,22 +16456,26 @@ const PotentialDisassembly = (() => {
       result.innerHTML = '<span class="potential-disassembly-empty">選択した装備が見つかりません。</span>';
       return;
     }
-    const token = ++renderToken;
     try {
       const [item, rules] = await Promise.all([Item.get(inv.itemId), loadRules()]);
       if (token !== renderToken) return;
       if (!item) throw new Error('アイテムデータが見つかりません');
-      const manual = manualBySlot.get(slotIndex) || {};
+      const isRing = resolveItemPart(item) === 9;
+      const baseItem = isRing ? item : await resolveDisassemblyBaseItem(item, loader.itemsSearch.rows, id => Item.get(id));
+      if (token !== renderToken || inventory.get(slotIndex) !== inv) return;
+      const manual = manualFor(inv);
       const estimate = calculateDisassemblyEstimate({
         inv,
         item,
         rules,
-        isRing: resolveItemPart(item) === 9,
+        isRing,
         describeOption,
         manual,
+        baseItem,
       });
       renderEstimate(item, estimate, manual);
     } catch (error) {
+      if (token !== renderToken || inventory.get(slotIndex) !== inv) return;
       console.warn('[PotentialDisassembly] render failed:', error);
       result.innerHTML = `<span class="potential-disassembly-empty">分解見積もりを読み込めませんでした: ${esc(error.message || error)}</span>`;
     }
@@ -16519,11 +16512,15 @@ const PotentialDisassembly = (() => {
     $('potential-disassembly-refresh')?.addEventListener('click', () => refresh());
     $('potential-disassembly-result')?.addEventListener('change', (event) => {
       const input = event.target.closest('[data-disassembly-manual]');
-      const slotIndex = Number($('potential-disassembly-item')?.value);
+      const selected = $('potential-disassembly-item')?.value;
+      const slotIndex = selected === '' ? NaN : Number(selected);
       if (!input || !Number.isInteger(slotIndex) || slotIndex < 0) return;
-      const manual = manualBySlot.get(slotIndex) || {};
+      const inv = inventory.get(slotIndex);
+      if (!inv) return;
+      const manual = { ...manualFor(inv) };
       manual[input.getAttribute('data-disassembly-manual')] = input.value;
-      manualBySlot.set(slotIndex, manual);
+      inv.disassemblyManual = { key: disassemblyInputKey(inv), values: manual };
+      scheduleAutosave();
       renderSelected();
     });
     await loadRules();
