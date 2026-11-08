@@ -5,24 +5,35 @@
   const validId = (id) => typeof id === "string" && /^[a-f0-9]{24}$/.test(id);
   const validKey = (key) => typeof key === "string" && /^[a-f0-9]{12}$/.test(key);
   const dateText = (date) => String(date || "").replace(/^(....)(..)(..)$/, "$1/$2/$3");
+  function dateRangeText(first, last) {
+    const sameYear = first.slice(0, 4) === last.slice(0, 4);
+    return [first, last].map((date) => sameYear ? dateText(date).slice(5) : dateText(date)).join("～");
+  }
   function goldValue(price) {
     if (!Number.isInteger(price?.amount) || price.amount < 0) return -1;
     return price.currency === "ingot" ? price.amount * 100000000 : price.currency === "gold" ? price.amount : -1;
   }
   const excludedPrice = (price) => goldValue(price) > 200000 * 100000000;
-  function groupOffers(items) {
+  function groupOffers(items, allDates = false) {
     const groups = new Map();
     for (const item of items) {
       if (excludedPrice(item.price)) continue;
-      const variant = /^[a-f0-9]{64}$/.test(item.variant_key || "") ? item.variant_key : item.id;
-      const key = JSON.stringify([item.server, item.date, item.item_id, item.item_key, variant]);
+      const variant = typeof item.variant_key === "string" && /^[a-f0-9]{64}$/.test(item.variant_key) ? item.variant_key : "";
+      const key = JSON.stringify([item.server, allDates && variant ? "" : item.date, item.item_id, item.item_key, variant || item.id]);
       if (!groups.has(key)) groups.set(key, []);
       groups.get(key).push(item);
     }
     return [...groups.values()].map((offers) => {
       offers.sort((a, b) => goldValue(b.price) - goldValue(a.price) || a.id.localeCompare(b.id));
-      return { ...offers[0], offers };
-    }).sort((a, b) => goldValue(b.price) - goldValue(a.price) || String(b.date || "").localeCompare(a.date || "") || a.id.localeCompare(b.id));
+      const group = { ...offers[0], offers, firstDate: offers[0].date, lastDate: offers[0].date };
+      if (allDates) {
+        for (const offer of offers) {
+          if (offer.date < group.firstDate) group.firstDate = offer.date;
+          if (offer.date > group.lastDate) group.lastDate = offer.date;
+        }
+      }
+      return group;
+    }).sort((a, b) => goldValue(b.price) - goldValue(a.price) || String(b.lastDate || "").localeCompare(a.lastDate || "") || a.id.localeCompare(b.id));
   }
   function priceText(price) {
     if (!price || !Number.isInteger(price.amount) || price.amount < 0) return "価格未取得";
@@ -36,15 +47,18 @@
     if (item.available) labels.push(`解放 ${item.opened}/${item.available}`);
     return labels.map((v) => `<span class="detail-badge">${esc(v)}</span>`).join("");
   }
-  function renderOffer(item, selected, query) {
+  function renderOffer(item, selected, query, target = item) {
     if (excludedPrice(item.price)) return "";
     const params = new URLSearchParams(query);
-    params.set("id", item.id);
-    if (params.get("date") === "all") params.set("offerDate", item.date);
+    const allDates = params.get("date") === "all";
+    params.set("id", target.id);
+    if (allDates) params.set("offerDate", target.date);
     else params.delete("offerDate");
     const offers = item.offers || [item], lowest = offers[offers.length - 1];
-    const price = goldValue(lowest.price) === goldValue(item.price) ? priceText(item.price) : priceText(lowest.price) + "～" + priceText(item.price);
-    return `<li><a class="detail-offer${selected ? " is-selected" : ""}" href="?${esc(params.toString())}" data-offer="${esc(item.id)}" data-date="${esc(item.date || "")}"${selected ? ' aria-current="true"' : ""}><span class="detail-offer-name">${esc(item.display_name)}</span><strong class="detail-offer-price">${esc(price)}</strong><span class="detail-badges">${badges(item)}${offers.length > 1 ? `<span class="detail-badge">${offers.length.toLocaleString("ja-JP")}出品</span>` : ""}${item.date ? `<span class="detail-badge">${esc(dateText(item.date))}</span>` : ""}</span></a></li>`;
+    const range = allDates && offers.length > 1;
+    const price = range || goldValue(lowest.price) !== goldValue(item.price) ? priceText(lowest.price) + "～" + priceText(item.price) : priceText(item.price);
+    const date = range ? dateRangeText(item.firstDate, item.lastDate) : dateText(item.date);
+    return `<li><a class="detail-offer${selected ? " is-selected" : ""}" href="?${esc(params.toString())}" data-offer="${esc(target.id)}" data-date="${esc(target.date || "")}"${selected ? ' aria-current="true"' : ""}><span class="detail-offer-name">${esc(item.display_name)}</span><strong class="detail-offer-price">${esc(price)}</strong><span class="detail-badges">${badges(target)}${offers.length > 1 ? `<span class="detail-badge">${offers.length.toLocaleString("ja-JP")}出品</span>` : ""}${date ? `<span class="detail-badge">${esc(date)}</span>` : ""}</span></a></li>`;
   }
   function renderDetail(item, offers = [item]) {
     if (excludedPrice(item.price)) return "";
@@ -82,7 +96,8 @@
     const params = new URLSearchParams(root.location.search);
     const minDetailDataRoot = new URL(sokominDetailApp.dataset.dataRoot, root.location.href);
     const sokominDetailState = { server: params.get("server") || sokominDetailApp.dataset.server || "b", date: params.get("date") || sokominDetailApp.dataset.date || "", key: "", id: "", offerDate: "", query: "", complexOnly: false, limit: 100 };
-    let captures = [], items = [], minDetailRevision = 0, catalogRevision = 0, loadingCatalog = false;
+    let captures = [], items = [], shown = [], minDetailRevision = 0, catalogRevision = 0, loadingCatalog = false;
+    const shownLinks = new Map();
     const details = new Map(), catalogs = new Map();
     function readFilters(query) {
       sokominDetailState.key = validKey(query.get("key")) ? query.get("key") : "";
@@ -114,18 +129,18 @@
     function writeLocation(replace = false) {
       root.history[replace ? "replaceState" : "pushState"](null, "", `?${urlState()}`);
     }
-    const selected = (group) => group.offers.some((offer) => offer.id === sokominDetailState.id && (!sokominDetailState.offerDate || offer.date === sokominDetailState.offerDate));
-    async function selectOffer(group, navigate = false) {
+    const selected = (group) => group.offers.find((offer) => offer.id === sokominDetailState.id && (!sokominDetailState.offerDate || offer.date === sokominDetailState.offerDate));
+    async function selectOffer(group, offer, navigate = false) {
       const ticket = ++minDetailRevision;
-      const server = group.server, date = group.date;
-      const offer = group.offers.find((item) => item.id === sokominDetailState.id) || group;
+      const { server, date } = offer;
+      const dayOffers = group.offers.filter((row) => row.date === date);
       sokominDetailState.id = offer.id;
       sokominDetailState.offerDate = date;
       writeLocation(!navigate);
       byId("detailPanel").innerHTML = '<p class="detail-loading">読み込み中</p>';
-      renderList(false);
+      drawOffers();
       try {
-        const records = await mapLimited(group.offers, async (row) => {
+        const records = await mapLimited(dayOffers, async (row) => {
           const cacheKey = `${server}/${date}/${row.id}`;
           const item = details.get(cacheKey) || await json(`${server}/${date}/items/${row.id}.json`);
           if (!verifyDetail(item, row, server, date)) throw new Error("detail mismatch");
@@ -133,24 +148,35 @@
           return item;
         });
         if (ticket !== minDetailRevision) return;
-        if (records.some((item) => variantIdentity(item) !== variantIdentity(records[0]))) throw new Error("variant mismatch");
+        if (records.length > 1) {
+          const identity = variantIdentity(records[0]);
+          if (records.some((item, index) => index > 0 && variantIdentity(item) !== identity)) throw new Error("variant mismatch");
+        }
         byId("detailPanel").innerHTML = renderDetail(records.find((row) => row.id === offer.id) || records[0], records);
       } catch (error) {
         if (ticket !== minDetailRevision) return;
         byId("detailPanel").innerHTML = '<p role="alert">詳細を読み込めませんでした。</p><button type="button" id="detailRetry">再読み込み</button>';
-        byId("detailRetry").addEventListener("click", () => { for (const row of group.offers) details.delete(`${server}/${date}/${row.id}`); selectOffer(group); });
+        byId("detailRetry").addEventListener("click", () => { for (const row of dayOffers) details.delete(`${server}/${date}/${row.id}`); selectOffer(group, offer); });
       }
     }
-    function renderList(select = true) {
+    function drawOffers() {
+      shownLinks.clear();
+      const query = urlState();
+      byId("detailOffers").innerHTML = shown.map((group) => {
+        const active = selected(group);
+        const target = active || group;
+        shownLinks.set(`${target.date}/${target.id}`, { group, target });
+        return renderOffer(group, Boolean(active), query, target);
+      }).join("") || '<li class="detail-empty">該当するアイテムがありません。</li>';
+    }
+    function renderList() {
       if (loadingCatalog) return;
-      const matched = groupOffers(matchingOffers(items, sokominDetailState));
-      const shown = sokominDetailState.limit ? matched.slice(0, sokominDetailState.limit) : matched;
+      const matched = groupOffers(matchingOffers(items, sokominDetailState), sokominDetailState.date === "all");
+      shown = sokominDetailState.limit ? matched.slice(0, sokominDetailState.limit) : matched;
       byId("offerCount").textContent = shown.length < matched.length ? `${shown.length.toLocaleString("ja-JP")} / ${matched.length.toLocaleString("ja-JP")}件` : `${shown.length.toLocaleString("ja-JP")}件`;
-      byId("detailOffers").innerHTML = shown.map((item) => renderOffer(item, selected(item), urlState())).join("") || '<li class="detail-empty">該当するアイテムがありません。</li>';
-      if (!select) return;
       const offer = matched.find(selected) || shown[0];
-      if (offer) selectOffer(offer);
-      else { ++minDetailRevision; sokominDetailState.id = ""; sokominDetailState.offerDate = ""; byId("detailPanel").innerHTML = ""; writeLocation(true); }
+      if (offer) selectOffer(offer, selected(offer) || offer);
+      else { ++minDetailRevision; sokominDetailState.id = ""; sokominDetailState.offerDate = ""; byId("detailPanel").innerHTML = ""; writeLocation(true); drawOffers(); }
     }
     async function loadDay() {
       const ticket = ++catalogRevision;
@@ -159,6 +185,8 @@
       const days = date === "all" ? [...new Set(captures.filter((c) => c.server === server).map((c) => c.date))] : [date];
       loadingCatalog = true;
       items = [];
+      shown = [];
+      shownLinks.clear();
       byId("offerCount").textContent = "";
       byId("detailOffers").innerHTML = "";
       byId("detailPanel").innerHTML = "";
@@ -195,10 +223,10 @@
     byId("detailOffers").addEventListener("click", (event) => {
       const link = event.target.closest("a[data-offer]");
       if (!link || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button > 0) return;
-      const offer = groupOffers(items).find((item) => item.id === link.dataset.offer && (!link.dataset.date || item.date === link.dataset.date));
-      if (!offer) return;
+      const selection = shownLinks.get(`${link.dataset.date || sokominDetailState.date}/${link.dataset.offer}`);
+      if (!selection) return;
       event.preventDefault();
-      selectOffer(offer, true);
+      selectOffer(selection.group, selection.target, true);
     });
     function filterChanged() { sokominDetailState.id = ""; sokominDetailState.offerDate = ""; writeLocation(); renderList(); }
     byId("detailSearch").addEventListener("input", (event) => { sokominDetailState.query = event.target.value; filterChanged(); });
