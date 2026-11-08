@@ -1,6 +1,7 @@
 
 
 
+import { buildNpcopSlot, validateNpcAttachments } from './npcop_enhancement.js';
 import { newInventoryItem } from './inventory.js';
 import { Op, iterateAllOps } from './item_api.js';
 import { getLoader } from './item_api.js';
@@ -52,9 +53,16 @@ export function makeItem(state, itemRecord, opts = {}) {
 
   const opEntries = state.ops || [null, null, null];
   if (!state.opsOff) {
+    const loader = getLoader();
+    validateNpcAttachments(opEntries, loader.optionPrefix, itemRecord, loader.master);
     for (let k = 0; k < 3; k++) {
       const e = opEntries[k];
       if (e == null) continue;
+      if (e.npcEnhancement != null) {
+        const loader = getLoader();
+        inv.ops[k] = { ...buildNpcopSlot(e, e.npcEnhancement.stage, e.npcEnhancement.stat, loader.optionPrefix, itemRecord, k, loader.master), source: 'ui.op' };
+        continue;
+      }
       if (typeof e === 'object' && e.familyId != null && e.familyId >= 0) {
         const slot = { familyId: Number(e.familyId), source: 'ui.op' };
         if (e.addValue != null || e.divisor != null) {

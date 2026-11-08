@@ -56,9 +56,9 @@ export const SET_OP_DEFS = [
   { rowId: 888, name: '[巧みな]', grade: 'rare',
     summary: '魔法精度 +3/10/30% (閾値 2/4/6)',
     tiers: [
-      { count: 2, effects: [{ value: 3,  displayOnly: true }] },
-      { count: 4, effects: [{ value: 10, displayOnly: true }] },
-      { count: 6, effects: [{ value: 30, displayOnly: true }] },
+      { count: 2, effects: [{ statId: 'magicAccuracy', value: 3 }] },
+      { count: 4, effects: [{ statId: 'magicAccuracy', value: 10 }] },
+      { count: 6, effects: [{ statId: 'magicAccuracy', value: 30 }] },
     ],
   },
   { rowId: 889, name: '[庇護の]', grade: 'rare',
@@ -131,12 +131,8 @@ export const SET_OP_DEFS = [
   { rowId: 897, name: '[節制の]', grade: 'general',
     summary: '物理致命打無効 + 物理ダメ +200/1000% (閾値 3/6)',
     tiers: [
-      { count: 3, effects: [
-        { statId: 'physDamagePercent', value: 200, displayOnly: true },
-      ]},
-      { count: 6, effects: [
-        { statId: 'physDamagePercent', value: 1000, displayOnly: true },
-      ]},
+      { count: 3, effects: [{ statId: 'physDamagePercent', value: 200 }, { statId: 'disablePhysCrit', value: 1 }] },
+      { count: 6, effects: [{ statId: 'physDamagePercent', value: 1000 }, { statId: 'disablePhysCrit', value: 1 }] },
     ],
   },
   { rowId: 898, name: '[極意の]', grade: 'general',
@@ -144,21 +140,19 @@ export const SET_OP_DEFS = [
     tiers: [
       { count: 3, effects: [
         { stats: ['attrFire','attrWater','attrWind','attrEarth','attrLight','attrDark'], value: 30 },
-        { stats: ['attrFireResist','attrWaterResist','attrWindResist','attrEarthResist','attrLightResist','attrDarkResist'], value: -100,
-          displayOnly: true },
+        { statId: 'setSelfAttrResistPenalty', value: 100 },
       ]},
       { count: 6, effects: [
         { stats: ['attrFire','attrWater','attrWind','attrEarth','attrLight','attrDark'], value: 100 },
-        { stats: ['attrFireResist','attrWaterResist','attrWindResist','attrEarthResist','attrLightResist','attrDarkResist'], value: -100,
-          displayOnly: true },
+        { statId: 'setSelfAttrResistPenalty', value: 100 },
       ]},
     ],
   },
   { rowId: 899, name: '[渇きの]', grade: 'general',
     summary: 'CP 比率低いほど 魔法ダメ +Max 30/100% (閾値 3/6)',
     tiers: [
-      { count: 3, effects: [{ value: 30,  displayOnly: true }] },
-      { count: 6, effects: [{ value: 100, displayOnly: true }] },
+      { count: 3, effects: [{ statId: 'setThirstMaxPercent', value: 30 }] },
+      { count: 6, effects: [{ statId: 'setThirstMaxPercent', value: 100 }] },
     ],
   },
   { rowId: 900, name: '[信義の]', grade: 'general',
@@ -174,11 +168,9 @@ export const SET_OP_DEFS = [
     tiers: [
 
       { count: 3, effects: [
-        { statId: 'poisonResist', value: 10 },
         { value: 10, displayOnly: true },
       ]},
       { count: 6, effects: [
-        { statId: 'poisonResist', value: 30 },
         { value: 30, displayOnly: true },
       ]},
     ],
@@ -197,9 +189,9 @@ export const SET_OP_DEFS = [
     summary: '最大 HP を 3000/12000/40000 に固定',
     tiers: [
 
-      { count: 2, effects: [{ value: 3000,  displayOnly: true }] },
-      { count: 4, effects: [{ value: 12000, displayOnly: true }] },
-      { count: 6, effects: [{ value: 40000, displayOnly: true }] },
+      { count: 2, effects: [{ statId: 'setHpFixed', value: 3000 }] },
+      { count: 4, effects: [{ statId: 'setHpFixed', value: 12000 }] },
+      { count: 6, effects: [{ statId: 'setHpFixed', value: 40000 }] },
     ],
   },
   { rowId: 904, name: '[迅速の]', grade: 'general',
@@ -315,4 +307,19 @@ export function summarizeActiveSetOps(counts) {
   
   out.sort((a, b) => (b.count - a.count) || a.def.name.localeCompare(b.def.name));
   return out;
+}
+export function magicHitChancePercent(evasion, accuracy, charisma) {
+  const values = [evasion, accuracy, charisma].map(Number);
+  if (!values.every(Number.isFinite)) throw new RangeError('命中条件に数値を入力してください。');
+  const [e, a, c] = values;
+  return Math.max(0, Math.min(100, (100 - e) * (1 + a / 100) * (1 + c / 2000)));
+}
+export function thirstMagicBonusPercent(maxEffect, currentCp, maxCp) {
+  const [effect, current, max] = [maxEffect, currentCp, maxCp].map(Number);
+  if (!Number.isFinite(effect) || effect < 0) throw new RangeError('魔法ダメージ補正が不正です。');
+  if (effect === 0) return 0;
+  if (![current, max].every(Number.isFinite) || max <= 0 || current < 0 || current > max) {
+    throw new RangeError('CPは最大CPを正数、現在CPを0〜最大CPにしてください。');
+  }
+  return effect * (1 - current / max);
 }

@@ -2,7 +2,7 @@
 
 export const TIER_LABELS = ['高', '中', '低'];
 
-export const AREA_BOSS_RING_ITEM_IDS = new Set([13116, 13117, 13118, 13292]);
+export const AREA_BOSS_RING_ITEM_IDS = new Set([13116, 13117, 13118, 13292, 14460]);
 
 export function isAreaBossRing(itemOrId) {
   if (itemOrId == null) return false;
@@ -117,11 +117,35 @@ const RING_NEPPU_OPS = [
   { key:'luc_flat',          label:'運上昇',                  unit:'',  values:[25,10,5], familyId:6 },
 ];
 
+const RING_SCORPION_OPS = [
+  { key:'scorpion_limit_phys_pct', label:'限界突破称号の物理ダメージ制限の超過量適用増加', unit:'%', values:[3,2,1], statId:'limitBreakPhysPercent', slots:[0] },
+  { key:'scorpion_limit_magic_pct', label:'限界突破称号の魔法ダメージ制限の超過量適用増加', unit:'%', values:[3,2,1], statId:'limitBreakMagicPercent', slots:[0] },
+  { key:'scorpion_limit_phys_flat', label:'限界突破称号の物理ダメージ制限＋', values:[3,2,1], statId:'limitBreakPhysFlat', slots:[0] },
+  { key:'scorpion_limit_magic_flat', label:'限界突破称号の魔法ダメージ制限＋', values:[3,2,1], statId:'limitBreakMagicFlat', slots:[0] },
+  { key:'scorpion_final_def_ignore', label:'敵の最終防御力無視増加', unit:'%', values:[3,2,1], statId:'targetFinalDefenseIgnorePercent', slots:[0] },
+  { key:'scorpion_magic_cap', label:'魔法攻撃力増加（%）制限＋', values:[3,2,1], statId:'magicDamageCapFlat', slots:[0] },
+  { key:'scorpion_strong_damage', label:'物理強打ダメージ増加', unit:'%', values:[10,6,4], statId:'physStrongDamage' },
+  { key:'scorpion_strong_rate', label:'物理強打確率（%）＋', unit:'%', values:[9,7,5], statId:'physStrongRate' },
+  { key:'scorpion_attack', label:'物理攻撃力増加', unit:'%', values:[3,2,1], familyId:21 },
+  { key:'magic_dmg', label:'魔法攻撃力増加', unit:'%', values:[12,8,4], familyId:145 },
+  { key:'magic_weak', label:'敵の魔法抵抗（%）－', unit:'%', values:[6,4,2], familyId:138 },
+  { key:'def_pct', label:'防御力増加', unit:'%', values:[15,10,5], familyId:24 },
+  { key:'hp_pct', label:'最大HP増加', unit:'%', values:[10,7,4], familyId:26 },
+  { key:'cp_pct', label:'最大CP増加', unit:'%', values:[15,12,9], familyId:28 },
+  { key:'str_flat', label:'力＋', values:[25,10,5], familyId:0 },
+  { key:'wiz_flat', label:'知恵＋', values:[25,10,5], familyId:3 },
+  { key:'int_flat', label:'知識＋', values:[25,10,5], familyId:4 },
+  { key:'con_flat', label:'健康＋', values:[25,10,5], familyId:2 },
+  { key:'agi_flat', label:'敏捷＋', values:[25,10,5], familyId:1 },
+  { key:'chs_flat', label:'カリスマ＋', values:[25,10,5], familyId:5 },
+  { key:'luc_flat', label:'運＋', values:[25,10,5], familyId:6 },
+];
 const OP_TABLE = {
   13116: RING_DENRIN_OPS,
   13117: RING_DATEN_OPS,
   13118: RING_ENMA_OPS,
   13292: RING_NEPPU_OPS,
+  14460: RING_SCORPION_OPS,
 };
 
 const RING_META = {
@@ -129,10 +153,12 @@ const RING_META = {
   13117: { boss: 'ゲリオ',     name: '堕天のリング',  short: 'daten'  },
   13118: { boss: 'シュラグ',   name: '炎魔のリング',  short: 'enma'   },
   13292: { boss: 'ファルコン', name: '熱風のリング',  short: 'neppu'  },
+  14460: { boss: 'セルケピア', name: '蠍王の指輪', short: 'scorpion' },
 };
 
-export function getOpsForRing(itemId) {
-  return OP_TABLE[Number(itemId)] || [];
+export function getOpsForRing(itemId, slotIndex = null) {
+  const list = OP_TABLE[Number(itemId)] || [];
+  return slotIndex == null ? list : list.filter(d => !d.slots || d.slots.includes(slotIndex));
 }
 
 export function getBaseOpDef(itemId, key) {
@@ -192,6 +218,8 @@ export function buildBaseOpSlots(itemId, slots) {
     if (!s || !s.key) continue;
     const def = getBaseOpDef(itemId, s.key);
     if (!def) continue;
+    if (def.slots && !def.slots.includes(i)) continue;
+    if (Number(itemId) === 14460 && ![0, 1, 2].includes(s.tier)) continue;
     const tier = Math.max(0, Math.min(2, Number(s.tier) || 0));
     if (def.displayOnly) {
       

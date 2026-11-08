@@ -7,6 +7,7 @@ import { inverseShopNative, restoreShopNative } from './market_shop_native.js';
 import { shopNativeTemplate,shopEffectResolver,shopEffectText,shopModelKey } from './market_shop_effects.js';
 import { shopNonstandardEntry,restoreShopNonstandard } from './market_shop_nonstandard.js';
 import { fixedShopGameValues,restoreShopGameCorrections,renderShopGameNative } from './market_shop_game_base.js';
+import { resolveEquipSlot } from './slot_resolver.js';
 export { renderShopGameNative,restoreShopGameCorrections,serializeShopGameCorrections } from './market_shop_game_base.js';
 export { restoreShopNonstandard,serializeShopNonstandard } from './market_shop_nonstandard.js';
 export { shopItemRecord, restoreShopNative, serializeShopNative,preserveShopNative } from './market_shop_native.js';
@@ -115,11 +116,35 @@ function prefixOption(line, loader) {
   return [...distinct.values()][0];
 }
 
-export function detailToShopEntry(detail, record, loader, seirenData) {
+async function loadShopScrollData() {
+  const response = await fetch(new URL('./data/scrolls.json', import.meta.url));
+  if (!response.ok) fail('図案書データを取得できません');
+  const data = await response.json();
+  if (!Array.isArray(data?.scrolls)) fail('図案書データが不正です');
+  return data;
+}
+function shopScroll(lines, record, data) {
+  const value = lines.length === 1 && /^図案書『([^』\r\n]+)』 ([1-5])段$/.exec(lines[0].text);
+  const slot = resolveEquipSlot(record);
+  if (!value || !['neck', 'head', 'back_ear', 'waist', 'hand', 'body', 'foot'].includes(slot)) {
+    fail('商品の魔力注入情報が不正です');
+  }
+  const [, name, stageText] = value;
+  const stage = Number(stageText);
+  const college = String(record.name || '').startsWith('協会') || String(record.desc || '').includes('冒険家協会が製作した');
+  const matches = data?.scrolls?.filter(scroll =>
+    scroll.name === name &&
+    (scroll.type === 'college' || String(scroll.category || '').includes('協会')) === college &&
+    scroll.stages?.some(entry => entry.stage === stage)
+  ) || [];
+  if (matches.length !== 1) fail('商品の図案書と段階を特定できません');
+  return { type: matches[0].type, id: matches[0].id, stage };
+}
+export function detailToShopEntry(detail, record, loader, seirenData, scrollData) {
   if (!record || record.id !== detail.item_id || clean(record.name) !== clean(detail.name)) fail('装備データが一致しません');
   if (!Number.isSafeInteger(detail.quantity) || detail.quantity < 1) fail('商品の個数が不正です');
   if (detail.notes?.length) fail('この商品の強化は取り込みに未対応です');
-  const allowed = new Set(['基本オプション','称号オプション','固有オプション','Nx解放オプション']);
+  const allowed = new Set(['基本オプション','称号オプション','固有オプション','Nx解放オプション','魔力注入']);
   if (detail.smelting_level > 0) allowed.add(`製錬 +${detail.smelting_level}`);
   allowed.add('異界強化');
   if(detail.nonstandard){allowed.add('非規格オプション');allowed.add('錬成オプション');}
@@ -130,6 +155,7 @@ export function detailToShopEntry(detail, record, loader, seirenData) {
     groups.set(group.name, group.lines);
   }
   const entry = { itemId: record.id, revisions: [null,null,null], ops: [], nxActive: !!detail.nx, nxUnlockedCount: 0 };
+  if (groups.has('魔力注入')) entry.scroll = shopScroll(groups.get('魔力注入'), record, scrollData);
   const base = [...(groups.get('基本オプション') || [])];
   const unique = [...(groups.get('固有オプション') || [])];
   const nx = [...(groups.get('Nx解放オプション') || [])];
@@ -226,6 +252,8 @@ export function createShop({ inventory, restore, recalculate, changed, sourceOpt
   const cache = new Map();
   let seirenDataPromise;
   const seirenData = () => seirenDataPromise ||= (sourceOptions.loadSeirenData || loadShopSeirenData)().catch(error => { seirenDataPromise = null; throw error; });
+  let scrollDataPromise;
+  const scrollData = () => scrollDataPromise ||= (sourceOptions.loadScrollData || loadShopScrollData)().catch(error => { scrollDataPromise = null; throw error; });
   return {
     snapshot: () => JSON.parse(JSON.stringify(ledger)),
     reset(rows = []) {
@@ -274,7 +302,9 @@ export function createShop({ inventory, restore, recalculate, changed, sourceOpt
       try {
         const data = product.detail.smelting_level > 0 ? await seirenData() : undefined;
         if (revision !== generation || !isCurrent()) fail('購入を中断しました');
-        const entry = detailToShopEntry(product.detail,record,loader,data);
+        const scrolls = product.detail.groups.some(group => group.name === '魔力注入') ? await scrollData() : undefined;
+        if (revision !== generation || !isCurrent()) fail('購入を中断しました');
+        const entry = detailToShopEntry(product.detail,record,loader,data,scrolls);
         inv = await restore(entry);
         if (!inv || revision !== generation || !isCurrent()) fail('購入を中断しました');
         restoreShopAvailability(inv, entry);

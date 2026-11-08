@@ -86,6 +86,14 @@ export function finalizeStats(STTemp, opts = {}) {
   }
 
   
+  if (equipped.disablePhysCrit > 0) equipped.physCritRate = 0;
+  const resistPenalty = numOr0(equipped.setSelfAttrResistPenalty);
+  if (resistPenalty) {
+    for (const element of ['Fire', 'Water', 'Wind', 'Earth', 'Light', 'Dark']) {
+      const key = 'attr' + element + 'Resist';
+      equipped[key] = numOr0(equipped[key]) - resistPenalty;
+    }
+  }
   const layers = {};
   for (const k of Object.keys(STTemp)) {
     layers[k] = Object.assign({}, STTemp[k]);

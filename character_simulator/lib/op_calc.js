@@ -7,6 +7,7 @@ import { recordSharedAbsorption } from './absorption.js';
 
 
 
+import { npcEffect } from './npcop_enhancement.js';
 const LAYER_AGG = {
   fixedCap:        'max',
   attrFixedCap:    'max',
@@ -33,6 +34,14 @@ export function getLayerAggregation(layer, statId) {
 
 
 export function calcOpValue(opOrSlot, inv, source, LvTemp, character) {
+  if (Number(inv?.itemId) === 14460 && source === 'item.base' && Number(opOrSlot.opId) === 80) {
+    const roll = Number(inv.revisions?.[0]);
+    const value = Number.isInteger(roll) && roll >= 1 && roll <= 5 ? roll : 1;
+    return { value, constant: 0, statId: 'attrEarthResist', layer: 'sum', multiplier: 1,
+      isDisplayOnly: false, source, displayValue: value };
+  }
+  const npc = opOrSlot.npcEnhancement != null ? npcEffect(opOrSlot, getLoader().optionPrefix, LvTemp || 0) : null;
+  if (npc) return { value: npc.value, constant: 0, statId: npc.stat, layer: npc.layer, multiplier: 1, isDisplayOnly: false, source, displayValue: npc.value };
   if (Array.isArray(opOrSlot.statAxes) && opOrSlot.familyId == null && opOrSlot.opId == null) {
     if (!opOrSlot.statAxes.length || opOrSlot.statAxes.some(a => !a.statId || !Number.isFinite(a.value))) throw Error('効果の軸別補正値が不正です');
     return { value: 0, constant: 0, statId: null, layer: 'sum', multiplier: 1,

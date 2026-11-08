@@ -175,6 +175,7 @@ export function serializeSession(character, inventory, opts = {}) {
       exRevision:         inv.exRevision ?? null,
       durabilityRevision: inv.durabilityRevision ?? null,
       ops: (inv.ops || []).map((o) => o ? {
+        ...(o.npcEnhancement != null ? { npcEnhancement: { ...o.npcEnhancement } } : {}),
         familyId:  o.familyId ?? null,
         value:     o.value     ?? null,
         addValue:  o.addValue  ?? null,

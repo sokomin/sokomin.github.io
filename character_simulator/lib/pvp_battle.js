@@ -1,4 +1,5 @@
-export const PVP_ENGINE_VERSION = 'v1（検証中）';
+import { magicHitChancePercent } from './set_op_bonus.js';
+export const PVP_ENGINE_VERSION = 'v1';
 
 export const JOB_SKILL_DB = Object.freeze({
   0: 'knight', 1: 'warrior', 2: 'archer', 3: 'lancer', 4: 'wizard', 5: 'wolf',
@@ -151,7 +152,7 @@ export function calculateSkillBase(profile, skill, baseLevel, map = null, option
   const baseValue = options.magicRoll === 'min' ? min : options.magicRoll === 'avg' ? (min + max) / 2 : max;
   let normal = baseValue * (1 + intBonus(intelligence) * intelligence / 200);
   normal *= (100 + num(offense.magicDamagePct) + num(offense.enhance?.[attr])) / 100;
-  const cap = Math.max(1, num(options.magicCap, 20000));
+  const cap = Math.max(1, num(options.magicCap, 20000) + num(offense.magicDamageCapFlat));
   if (normal > cap) normal = cap + (normal - cap) * (num(offense.limitBreakMagicPct) / 100);
   normal += num(offense.limitBreakMagicFlat);
   normal *= 1 + num(offense.finalMagicPct) / 100;
@@ -184,6 +185,8 @@ export function calculatePvpHit(attacker, defender, skillBase, map = null, optio
   let resistPct = 0;
   let provisional = false;
   if (skillBase.mode === 'physical') {
+    const ignore = clamp(num(attack.targetFinalDefenseIgnorePercent), 0, 100);
+    adjustedDefense *= 1 - ignore / 100;
     preSqrt = adjustedAttack > 0 ? adjustedAttack / (1 + adjustedDefense / adjustedAttack) : 0;
   } else {
     provisional = true;
@@ -198,7 +201,10 @@ export function calculatePvpHit(attacker, defender, skillBase, map = null, optio
   const humanReduceCoef = Math.max(0, 1 - num(defense.humanDamageReducePct) / 100);
   const damageCutCoef = Math.max(0, 1 - num(options.damageCutPct) / 100);
   const perHit = afterPvpFormula * levelCoef * humanReduceCoef * damageCutCoef;
-  const total = perHit * skillBase.hitCount;
+  const hitChance = skillBase.mode === 'magic'
+    ? magicHitChancePercent(num(defense.magicEvasion), num(attack.magicAccuracy), num(attack.chs) * (skillBase.mapState?.statCoef ?? 1))
+    : 100;
+  const total = perHit * skillBase.hitCount * hitChance / 100;
   const hp = Math.max(0, num(defense.maxHp));
   return {
     calculable: true,
@@ -213,6 +219,7 @@ export function calculatePvpHit(attacker, defender, skillBase, map = null, optio
     humanReduceCoef,
     damageCutCoef,
     perHit,
+    hitChance,
     hitCount: skillBase.hitCount,
     total,
     hp,
