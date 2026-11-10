@@ -8,6 +8,7 @@ import { shopNativeTemplate,shopEffectResolver,shopEffectText,shopModelKey } fro
 import { shopNonstandardEntry,restoreShopNonstandard } from './market_shop_nonstandard.js';
 import { fixedShopGameValues,restoreShopGameCorrections,renderShopGameNative } from './market_shop_game_base.js';
 import { resolveEquipSlot } from './slot_resolver.js';
+import { getOpsForRing } from './area_boss_ring.js';
 export { renderShopGameNative,restoreShopGameCorrections,serializeShopGameCorrections } from './market_shop_game_base.js';
 export { restoreShopNonstandard,serializeShopNonstandard } from './market_shop_nonstandard.js';
 export { shopItemRecord, restoreShopNative, serializeShopNative,preserveShopNative } from './market_shop_native.js';
@@ -123,6 +124,7 @@ async function loadShopScrollData() {
   if (!Array.isArray(data?.scrolls)) fail('図案書データが不正です');
   return data;
 }
+
 function shopScroll(lines, record, data) {
   const value = lines.length === 1 && /^図案書『([^』\r\n]+)』 ([1-5])段$/.exec(lines[0].text);
   const slot = resolveEquipSlot(record);
@@ -140,11 +142,48 @@ function shopScroll(lines, record, data) {
   if (matches.length !== 1) fail('商品の図案書と段階を特定できません');
   return { type: matches[0].type, id: matches[0].id, stage };
 }
+
+const VARIABLE_OPTIONS = '変更可能なオプション';
+const SCORPION_BASE_OP_IDS = {
+  scorpion_limit_phys_pct: 704, scorpion_limit_magic_pct: 706,
+  scorpion_limit_phys_flat: 703, scorpion_limit_magic_flat: 705,
+  scorpion_final_def_ignore: 756, scorpion_magic_cap: 733,
+  scorpion_strong_damage: 755, scorpion_strong_rate: 462, scorpion_attack: 460,
+  magic_dmg: 201, magic_weak: 194, def_pct: 351, hp_pct: 352, cp_pct: 353,
+  str_flat: 63, wiz_flat: 64, int_flat: 65, con_flat: 66, agi_flat: 67, chs_flat: 68, luc_flat: 69,
+};
+
+function scorpionShopOptions(lines, itemId, loader) {
+  if (!lines?.length || lines.length > 3) fail('蠍王の指輪の変更可能なオプションが不正です');
+  const slots = [null, null, null];
+  for (const line of lines) {
+    const label = typeof line.label === 'string' && /^([1-3])次$/.exec(line.label);
+    if (!label) fail('変更可能なオプションの枠が不正です');
+    const index = Number(label[1]) - 1;
+    if (slots[index] || (line.slot != null && line.slot !== index + 1)) fail('変更可能なオプションの枠が不正です');
+    const observed = clean(line.text);
+    const matches = [];
+    for (const def of getOpsForRing(itemId, index)) {
+      const opId = SCORPION_BASE_OP_IDS[def.key];
+      const template = shopNativeTemplate(loader, { slotKind: 'base', opId });
+      if (!template) continue;
+      def.values.forEach((value, tier) => {
+        if (clean(formatOpText(template, [value])) === observed) matches.push({ abrKey: def.key, abrTier: tier });
+      });
+    }
+    if (matches.length !== 1) fail('変更可能なオプションの効果または値を復元できません');
+    slots[index] = matches[0];
+  }
+  return slots;
+}
+
 export function detailToShopEntry(detail, record, loader, seirenData, scrollData) {
   if (!record || record.id !== detail.item_id || clean(record.name) !== clean(detail.name)) fail('装備データが一致しません');
   if (!Number.isSafeInteger(detail.quantity) || detail.quantity < 1) fail('商品の個数が不正です');
   if (detail.notes?.length) fail('この商品の強化は取り込みに未対応です');
+  const scorpion = record.id === 14460;
   const allowed = new Set(['基本オプション','称号オプション','固有オプション','Nx解放オプション','魔力注入']);
+  if (scorpion) allowed.add(VARIABLE_OPTIONS);
   if (detail.smelting_level > 0) allowed.add(`製錬 +${detail.smelting_level}`);
   allowed.add('異界強化');
   if(detail.nonstandard){allowed.add('非規格オプション');allowed.add('錬成オプション');}
@@ -155,6 +194,10 @@ export function detailToShopEntry(detail, record, loader, seirenData, scrollData
     groups.set(group.name, group.lines);
   }
   const entry = { itemId: record.id, revisions: [null,null,null], ops: [], nxActive: !!detail.nx, nxUnlockedCount: 0 };
+  if (scorpion) {
+    if (detail.nx || detail.nonstandard) fail('蠍王の指輪の装備形式が不正です');
+    entry.customBaseOps = scorpionShopOptions(groups.get(VARIABLE_OPTIONS), record.id, loader);
+  }
   if (groups.has('魔力注入')) entry.scroll = shopScroll(groups.get('魔力注入'), record, scrollData);
   const base = [...(groups.get('基本オプション') || [])];
   const unique = [...(groups.get('固有オプション') || [])];
@@ -192,7 +235,8 @@ export function detailToShopEntry(detail, record, loader, seirenData, scrollData
     const matchValues=carvingBase?vals.map(v=>slot.opId===773&&!Array.isArray(v)?v:carvingLevel):vals;
     for (let i = 0; i < lines.length; i++) {
       if (slot.slotKind === 'nxop' && lines[i].slot !== slot.pos + 1) continue;
-      let values=inverseShopNative(template,matchValues,lines[i].text,slot.opId)||inverseShopNative(shopEffectText(template),matchValues,shopEffectText(lines[i].text),slot.opId);
+      let values=inverseShopNative(template,matchValues,lines[i].text,slot.opId);
+      if (!values && !scorpion) values=inverseShopNative(shopEffectText(template),matchValues,shopEffectText(lines[i].text),slot.opId);
       if(!values&&slot.opId===1051&&vals[2]===2141&&clean(lines[i].text)==='バジリスクパス発動')values=vals.slice();
       if(values)candidates.push({i,value:values[0],values});
     }
@@ -204,7 +248,7 @@ export function detailToShopEntry(detail, record, loader, seirenData, scrollData
         lines.splice(index,1); continue;
       }
     }
-    if(!candidates.length&&!carvingBase){
+    if(!candidates.length&&!carvingBase&&!scorpion){
       const fixed=fixedShopGameValues(slot,loader);
       const kind=slot.slotKind==='base'?'基本オプション':'固有オプション';
       const peers=record.opSlots.filter(s=>s.slotKind===slot.slotKind),original=groups.get(kind)||[];
@@ -219,7 +263,8 @@ export function detailToShopEntry(detail, record, loader, seirenData, scrollData
       clean(lines[candidate.i].text) === clean(lines[candidates[0].i].text))) candidates = candidates.slice(0,1);
     if (candidates.length !== 1) fail('装備効果の値を正確に復元できません: ' + record.name);
     const { i, value, values } = candidates[0];
-    if(!carvingBase&&values.some((v,n)=>!Array.isArray(v)&&Array.isArray(vals[n]))) (entry.shopNativeSlots ||= []).push({index:record.opSlots.indexOf(slot),opId:slot.opId,values});
+    if (scorpion && slot.slotKind === 'base' && !Number.isInteger(value)) fail('蠍王の指輪の大地属性抵抗が不正です');
+    if(!scorpion&&!carvingBase&&values.some((v,n)=>!Array.isArray(v)&&Array.isArray(vals[n]))) (entry.shopNativeSlots ||= []).push({index:record.opSlots.indexOf(slot),opId:slot.opId,values});
     const line = lines.splice(i,1)[0];
     if (slot.slotKind === 'base' && slot.pos < 3) entry.revisions[slot.pos] = carvingBase?(Array.isArray(vals[0])?carvingLevel:vals[0]):value;
     if (slot.slotKind === 'nxop' && (line.slot !== slot.pos + 1 || line.active !== (slot.pos < entry.nxUnlockedCount))) fail('Nx解放順序が一致しません');

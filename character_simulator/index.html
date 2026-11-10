@@ -7487,7 +7487,7 @@ function buildItemDetailHtml(inv, rec, character) {
       }
     }
     
-    const nativeHtml = renderShopGameNative(slot, inv, loader);
+    const nativeHtml = renderShopGameNative(slot, inv, loader, rec.id);
     if (nativeHtml != null) { html += nativeHtml; continue; }
     if (isNx && nxPos >= unlockedCount) {
       const info0 = resolveOpDisplayInfo(slot.familyId, slot.value);
@@ -8290,6 +8290,22 @@ function renderPotionRecovery(equipped, lifeSpeedPercent) {
   return potionSpeed;
 }
 
+function computeAbilitiesWithOmni(ch, finalStats, equipped, loader) {
+  const eq = finalStats.equipped;
+  const { hpFlat = 0, defFlat = 0, weaponAtkFlat = 0 } = eq;
+  if (!hpFlat && !defFlat && !weaponAtkFlat) return computeAbilities(ch, finalStats, equipped, loader);
+  const defenseMultiplier = 1 + (eq.defPercent || 0) / 100;
+  return computeAbilities(ch, {
+    ...finalStats,
+    equipped: {
+      ...eq,
+      hp: (eq.hp || 0) + hpFlat,
+      def: (eq.def || 0) + defFlat * defenseMultiplier,
+      atkMinFlat: (eq.atkMinFlat || 0) + weaponAtkFlat,
+      atkMaxFlat: (eq.atkMaxFlat || 0) + weaponAtkFlat,
+    },
+  }, equipped, loader);
+}
 async function recalcAllNow() {
   const ch = readCharacter();
 
@@ -8765,7 +8781,7 @@ async function recalcAllNow() {
   }
 
   
-  const ab = computeAbilities(ch, f, equipped, loader);
+  const ab = computeAbilitiesWithOmni(ch, f, equipped, loader);
   $('ab-hp').textContent  = String(ab.hpMax);
   $('ab-cp').textContent  = String(ab.cpMax);
   $('ab-atk').textContent = (ab.atkMin || ab.atkMax) ? `${ab.atkMin}~${ab.atkMax}` : '0';
@@ -8789,7 +8805,7 @@ async function recalcAllNow() {
   lastFinalStats = f.equipped;
   lastAbilitySummary = { ...ab };
   const neutralStats = { ...f.equipped, ...preMapFinalStats };
-  const neutralAbilities = computeAbilities(ch, { ...f, equipped: neutralStats }, equipped, loader);
+  const neutralAbilities = computeAbilitiesWithOmni(ch, { ...f, equipped: neutralStats }, equipped, loader);
   lastPvpProfile = buildPvpProfile({ ...ch, realLv: getEffectiveLv(ch) }, neutralStats, neutralAbilities);
 
   IncomingDamageCalc.syncFromCharacter(f.equipped, wisdomBonus, ATTR_RESIST_CAP);
@@ -10190,7 +10206,7 @@ const SCROLL_LABEL_TO_STAT = {
   '運':           { statId: 'luc' },
   
   'HP':           { statId: 'hp' },          
-  '最大HP':       { statId: 'hpPercent', requirePct: true },
+  '最大HP':       { statId: 'hp', pctStatId: 'hpPercent' },
   'CP':           { statId: 'cp' },
   '最大CP':       { statId: 'cp' },          
   
@@ -10202,6 +10218,8 @@ const SCROLL_LABEL_TO_STAT = {
   'ダメージ':           { statId: 'physDamagePercent', requirePct: true },
   '魔法ダメージ':       { statId: 'attrMagic',          requirePct: true },
   
+  '攻撃力':             { statId: 'physDamagePercent', requirePct: true },
+  '魔法攻撃力':         { statId: 'attrMagic',          requirePct: true },
   'CP獲得ボーナス':     { statId: 'cpBonus',            requirePct: true },
   
   '強打':               { statId: 'physStrongRate',     requirePct: true },
@@ -13353,7 +13371,7 @@ const CREATURE_PASSIVE_OP_FLAG1 = {
   
   291: { statId: 'reqLvReduce',            layer: 'sum' },
   
-  172: { stats: ['str','dex','vit','luk','int','wis','chs'], layer: 'sumAll' },
+  172: { stats: PRIMARY_STAT_IDS, layer: 'sumAll' },
   
 };
 

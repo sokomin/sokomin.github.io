@@ -13,14 +13,15 @@ export function fixedShopGameValues(slot, loader) {
   return values.map(v=>Array.isArray(v)?v.slice():v);
 }
 
-export function renderShopGameNative(slot,inv,loader) {
+export function renderShopGameNative(slot,inv,loader,itemId) {
   if(slot.opId==null||slot.familyId!=null)return null;
   const nx=['nxop','long_nxop'].includes(slot.slotKind),pos=Number(slot.pos);
   const count=inv?.nxUnlockedCount??4;
   if(nx&&pos<count&&inv?.nxUnlockedOps?.[pos])return null;
   const template=shopNativeTemplate(loader,slot);
   if(!template)throw Error('ゲームの装備効果定義がありません: '+slot.opId);
-  const text=formatOpText(template,slot.vals||[],nativeOptionExtra(slot.opId));
+  const values = itemId === 14460 && slot.slotKind === 'op' && slot.opId === 978 ? [10] : slot.vals || [];
+  const text=formatOpText(template,values,nativeOptionExtra(slot.opId));
   return `<span class="idp-op${nx?' is-nx':''}${nx&&pos>=count?' is-sealed':''}">- ${text}${nx?` <span class="idp-nx-label">${pos<count?'[Nx]':'[封印中]'}</span>`:''}</span>`;
 }
 

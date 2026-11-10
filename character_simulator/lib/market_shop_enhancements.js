@@ -47,7 +47,8 @@ export function shopEnhancements(detail, record, groups, seirenData,loader) {
   if (stage) {
     const thresholds = [1, 5, 10, 15].filter(n => n <= stage);
     if (!smelting || smelting.length !== thresholds.length) fail('製錬段階と効果数が一致しません');
-    const part = seirenData?.parts?.[resolveEquipSlot(record)];
+    const partKey = resolveEquipSlot(record);
+    const part = seirenData?.parts?.[partKey];
     if (!part) fail('装備部位の製錬データがありません');
     result.seirenStage = stage;
     result.seirenOps = smelting.map((line, index) => {
@@ -60,7 +61,10 @@ export function shopEnhancements(detail, record, groups, seirenData,loader) {
           const render = PET_EFFECTS[name.name]?.render || NATIVE_EFFECTS[familyId];
           const resolved=loader&&shopEffectResolver(loader)(line.text);
           const label=row.names[0]?.name.endsWith('型からの')&&ni>0?row.names[0].name+name.name:name.name;
-          const labelMatch=[`${label}${value}%`,`${label}${value}`].some(text=>seirenLabel(text)===seirenLabel(line.text));
+          const companionCritMatch = partKey === 'body' && stage === 10 && thresholds[index] === 10 &&
+            name.name === '(召喚獣・ペット)被ダメージ時、クリティカルダメージ減少' &&
+            resolved?.statId === 'petPhysCritDamageReduce' && resolved.value === value;
+          const labelMatch=companionCritMatch||[`${label}${value}%`,`${label}${value}`].some(text=>seirenLabel(text)===seirenLabel(line.text));
           const standard=render&&clean(render(value))===clean(line.text)||resolved&&shopModelKey(resolved,loader)!=null&&shopModelKey(resolved,loader)===shopModelKey({familyId},loader)&&resolved.value===value;
           if(!standard&&!labelMatch)continue;
           if(!standard&&labelMatch&&resolved){(result.shopObservedSeiren||=[]).push({index,text:line.text,label:line.label});matches.push({...resolved,source:'ui.seiren',seirenName:line.text,seirenTier:tier,displayOnly:!!resolved.isDisplayOnly});continue;}
