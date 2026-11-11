@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<!-- Terms of use for original articles and guides on Redstone Sokomin: https://sokomin.github.io/information/p.html -->
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=960">
+        <!-- Page styles -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://sokomin.github.io/material.indigo-pink.min.css" />
+        <link rel="stylesheet" href="https://sokomin.github.io/styles.css">
+        <link rel="icon" href="https://sokomin.github.io/design/RedStoneLogo.png" sizes="32x32">
+        <link rel="icon" href="https://sokomin.github.io/design/RedStoneLogo.png" sizes="192x192">
+        <link rel="apple-touch-icon-precomposed" href="https://sokomin.github.io/design/RedStoneLogo.png">
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        
+        <script type="text/javascript" src="https://sokomin.github.io/design/jquery-3.4.1.min.js"></script>
+        <script>
+        function enter() {
+            if (window.event.keyCode == 13) {
+                var last_keyword = $('#search-field').val();
+                window.location.href = "https://www.google.com/search?hl=ja&hq=inurl:sokomin.github.io&ie=UTF-8&oe=UTF-8&filter=0&q=" + last_keyword;
+            }
+        }
+        </script>
+  
+        <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+        .sokomin-ad { margin: 24px 0; width: 84vw; max-width: 880px; }
+        .sokomin-ad .adsbygoogle { display: block; }
+        </style>
+        <title>獲得経験値計算機 赤石の民衆</title>
+        <meta name="description" content="レベル差や経験値補正からモンスター討伐時の獲得経験値を計算します。">
+        
+    <link rel="stylesheet" href="./style.css">
+</head>
+    <body>
+        <meta http-equiv="Content-Style-Type" content="text/css">
+        <meta http-equiv="Content-Script-Type" content="text/javascript">
+        <meta name="keywords" content="RED STONE ,レッドストーン,赤石の民衆,そこらの民衆,ＲＥＤ ＳＴＯＮＥ,レッドストーン,そこみん,赤石,攻略情報">
+        <link
+            rel="alternate"
+            type="application/rss+xml"
+            title="RSS"
+            href="https://sokomin.github.io/rss.xml"
+        >
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <a name="container"></a>
+            <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+                <div class="mdl-layout__header-row">
+                    <span class="android-title mdl-layout-title">
+                        <a href="https://sokomin.github.io/index.html">
+                            <img class="android-logo-image" src="https://sokomin.github.io/design/logo3.png">
+                        </a>
+                    </span>
+                    <!-- Add spacer, to align navigation to the right in desktop -->
+                    <div class="android-header-spacer mdl-layout-spacer"></div>
+                    <div class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+                        <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+                            <i class="material-icons">search</i>
+                        </label>
+                        <div class="mdl-textfield__expandable-holder">
+                            <input
+                                placeholder="サイト内検索(Enterで実行)"
+                                class="mdl-textfield__input"
+                                type="text"
+                                onkeypress="enter();"
+                                id="search-field"
+                            >
+                        </div>
+                    </div>
+                    <!-- Navigation -->
+                    <div class="android-navigation-container">
+                        <nav class="android-navigation mdl-navigation">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/index.html">ホーム</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                        </nav>
+                    </div>
+                    <span class="android-mobile-title mdl-layout-title">
+                        <a href="https://sokomin.github.io/index.html">
+                            <img class="android-logo-image" src="https://sokomin.github.io/design/logo3.png">
+                        </a>
+                    </span>
+                    <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" id="more-button">
+                        <i class="material-icons">more_vert</i>
+                    </button>
+                    <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+                        <li class="mdl-menu__item">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/calculator.html">計算機</a>
+                        </li>
+                        <li class="mdl-menu__item">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/history.html">赤石史</a>
+                        </li>
+                        <li disabled class="mdl-menu__item">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://sokomin.github.io/link.html">リンク</a>
+                        </li>
+                        <li class="mdl-menu__item">
+                            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://marshmallow-qa.com/sokoranominnsyu">お問合せ</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="android-drawer mdl-layout__drawer">
+                <span class="mdl-layout-title">
+                    <h2>メニュー</h2>
+                </span>
+                <nav class="mdl-navigation">
+                    <a class="mdl-navigation__link sokomin-layout-item" href="https://sokomin.github.io/item/item.html">
+                        <strong>アイテム</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-skill" href="https://sokomin.github.io/skill/skill.html">
+                        <strong>スキル</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-pt" href="https://sokomin.github.io/monster/monster.html">
+                        <strong>モンスター</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-pt" href="https://sokomin.github.io/secret/secret.html">
+                        <strong>ダンジョン</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-quest" href="https://sokomin.github.io/quest/quest.html">
+                        <strong>クエスト</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-guild" href="https://sokomin.github.io/guild/guild.html">
+                        <strong>ギルド</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-friend" href="https://sokomin.github.io/korea/korea-update.html">
+                        <strong>韓国情報</strong>
+                    </a>
+                    <a class="mdl-navigation__link sokomin-layout-info" href="https://sokomin.github.io/information/information.html">
+                        <strong>雑学</strong>
+                    </a>
+                </nav>
+            </div>
+            <div class="android-large-table mdl-layout__content main-background experience-shell" data-first-view>
+<div class="experience-content">
+<nav data-breadcrumb aria-label="パンくず" style="text-align:left;margin:0 0 12px"><a href="https://sokomin.github.io/">トップ</a> &gt; <a href="https://sokomin.github.io/calculator.html">計算機</a> &gt; <span aria-current="page">獲得経験値計算機</span></nav>
+<h1>獲得経験値計算機</h1><form id="experience-form" novalidate>
+    <div class="experience-top">
+        <fieldset class="experience-conditions">
+            <legend>基本条件</legend>
+            <div class="fields">
+                <label>計算条件<select name="profile"><option value="normal">通常</option><option value="gold2024">GoldEx 2024</option><option value="gold2025">GoldEx 2025</option><option value="gold2026">GoldEx 2026</option><option value="post2000">2000Lv以降</option></select></label>
+                <label>狩場<select name="source"><option value="manual">基礎経験値を入力</option><option value="collapsed">崩壊ミラーマップ</option><option value="postfield" hidden>2000Lv以降の専用狩場</option><option value="quest" hidden>クエスト</option></select></label>
+                <label>キャラLv<input type="number" name="playerLevel" data-label="キャラLv" value="1250" min="1" max="2199" step="1"></label>
+<label>敵Lv<input type="number" name="monsterLevel" data-label="敵Lv" value="1250" min="1" max="9999" step="1"></label>
+<label>討伐数<input type="number" name="kills" data-label="討伐数" value="1" min="1" max="1000000000" step="1"></label>
+                <div id="base-field"><label>基礎経験値<input type="number" name="baseExp" data-label="基礎経験値" value="1000" min="1" max="1000000000000000" step="1"></label></div>
+                <div class="experience-party"><label>PTメンバーLv<input name="partyLevels" placeholder="ソロは空欄。PTは自分を含めて入力" inputmode="text"></label></div>
+            </div>
+            <fieldset id="mirror-fields" hidden>
+                <legend>崩壊ミラーマップ</legend>
+                <div class="fields"><label>マップ検索<input name="mapSearch" type="search"></label>
+<label>マップ<select name="mapId"></select></label></div>
+                <div class="paging">
+                    <button id="map-prev" type="button">前へ</button>
+                    <span id="map-page" aria-live="polite"></span>
+                    <button id="map-next" type="button">次へ</button>
+                    <label class="check"><input type="checkbox" name="partyBoss">パーティーボス</label>
+                </div>
+            </fieldset>
+            <div class="actions">
+                <button type="submit">計算</button>
+                <button type="reset">リセット</button>
+            </div>
+        </fieldset>
+        <section class="experience-result" aria-labelledby="result-heading">
+            <h2 id="result-heading">獲得経験値</h2>
+            <dl class="results" aria-live="polite">
+                <div class="result-primary"><dt>1体あたり</dt><dd><output id="per-kill">—</output></dd></div>
+                <div class="result-primary"><dt id="total-label">合計経験値</dt><dd><output id="total">—</output></dd></div>
+                <div><dt>補正前経験値</dt><dd><output id="base-result">—</output></dd></div>
+                <div><dt>補正後の基礎</dt><dd><output id="level-base">—</output></dd></div>
+                <div><dt>経験値倍率</dt><dd><output id="multiplier">—</output></dd></div>
+            </dl>
+            <p id="error" role="alert"></p>
+        </section>
+    </div>
+    <section id="ordinary-bonuses" class="experience-bonuses" aria-labelledby="ordinary-heading">
+        <h2 id="ordinary-heading">経験値補正</h2>
+        <details class="experience-group">
+            <summary>スフィアー・イベント・消耗品</summary>
+            <div class="fields">
+                <label>スフィアー・かけら<select name="portal"><option value="none">なし</option><option value="sphere">スフィアー・かけら（2倍）</option><option value="sphere-kit">＋パワーキット（3倍）</option><option value="sphere-ult">＋ULTパワーキット（4倍）</option></select></label>
+                <label>経験値イベント倍率<input type="number" name="eventMultiplier" data-label="経験値イベント倍率" value="1" min="1" max="1000000" step="any"></label>
+                <label>ベリー<select name="berryType">
+                    <option value="sun">サンベリー</option>
+                    <option value="apple-mango">アップルマンゴーベリー（+150%）</option>
+                </select></label>
+                <label id="sun-berry-field">サンベリー（%）<input type="number" name="berryPercent" data-label="サンベリー（%）" value="0" min="0" max="1000" step="1"></label>
+                <label>追加の消耗品<select name="consumable">
+                    <option value="">なし</option>
+                    <option value="pine">パインベリー（+150%）</option>
+                    <option value="fresh-pine">新鮮なパインベリー（+150%）</option>
+                    <option value="omikuji-great">タヌマキのおみくじ［大吉］（+150%）</option>
+                    <option value="omikuji-good">タヌマキのおみくじ［吉］（+150%）</option>
+                    <option value="omikuji">タヌマキのおみくじ［平］（+150%）</option>
+                    <option value="omikuji-bad">タヌマキのおみくじ［凶］（+150%）</option>
+                    <option value="omikuji-worst">タヌマキのおみくじ［大凶］（+150%）</option>
+                    <option value="inari">いなり寿司（+150%）</option>
+                    <option value="nori">のり巻き（+150%）</option>
+                    <option value="nigiri">にぎり寿司（+150%）</option>
+                    <option value="hako">箱寿司（+150%）</option>
+                    <option value="temari">手まり寿司（+150%）</option>
+                </select></label>
+                <label id="carpet-field" hidden>金鯖カーペット（%）<input type="number" name="carpetPercent" data-label="金鯖カーペット（%）" value="0" min="0" max="5" step="1"></label>
+            </div>
+            <div class="checks">
+                <label class="check"><input type="checkbox" name="returner">復帰者</label>
+<label class="check"><input type="checkbox" name="aura">RED STONEのオーラ</label>
+<label class="check"><input type="checkbox" name="badge">G共通ブーストバッジ</label>
+<label class="check"><input type="checkbox" name="treasure">宝箱3段階</label>
+                <label id="auras-field" hidden class="check"><input type="checkbox" name="auras">アウラス・スフィアー</label>
+            </div>
+        </details>
+        <details class="experience-group">
+            <summary>知恵・クリーチャー・装備</summary>
+            <div class="fields"><label>知恵<input type="number" name="wisdom" data-label="知恵" value="0" min="0" max="1000000000" step="1"></label>
+<label>クリーチャー経験値Lv<input type="number" name="creatureLevel" data-label="クリーチャー経験値Lv" value="0" min="0" max="50" step="1"></label>
+<label>上級経験値Lv<input type="number" name="creatureAdvancedLevel" data-label="上級経験値Lv" value="0" min="0" max="50" step="1"></label>
+<label>クリーチャードロップ率Lv<input type="number" name="creatureDropLevel" data-label="クリーチャードロップ率Lv" value="0" min="0" max="50" step="1"></label>
+<label>コスチューム強化<input type="number" name="costumeStage" data-label="コスチューム強化" value="0" min="0" max="10" step="1"></label>
+<label>クレスト経験値補正（％）<input type="number" name="crestPercent" data-label="クレスト経験値補正" value="0" min="0" max="1000" step="any"></label>
+<label>EXP指輪1 刻印Lv<input type="number" name="ring1" data-label="EXP指輪1 刻印Lv" value="0" min="0" max="30" step="1"></label>
+<label>EXP指輪2 刻印Lv<input type="number" name="ring2" data-label="EXP指輪2 刻印Lv" value="0" min="0" max="30" step="1"></label></div>
+            <div class="checks"><label class="check"><input type="checkbox" name="costume">コスチューム</label>
+<label class="check"><input type="checkbox" name="courageRing">試練のリング［勇気］</label>
+<label class="check"><input type="checkbox" name="potential5">潜在能力：経験値獲得ボーナス</label>
+<label class="check"><input type="checkbox" name="potential75">潜在能力：経験値獲得ボーナスII</label></div>
+        </details>
+        <details class="experience-group">
+            <summary>PT・ギルド</summary>
+            <div class="fields"><label>PT経験値補正（%）<input type="number" name="partyExperiencePercent" data-label="PT経験値補正" value="0" min="0" max="1000" step="0.1"></label>
+<label>転生回数<input type="number" name="rebirth" data-label="転生回数" value="0" min="0" max="5" step="1"></label>
+<label>生体学Lv<input type="number" name="biologyLevel" data-label="生体学Lv" value="0" min="0" max="5" step="1"></label>
+<label>ギルド旗Lv<input type="number" name="flagLevel" data-label="ギルド旗Lv" value="0" min="0" max="5" step="1"></label></div>
+        </details>
+        <details class="experience-group">
+            <summary>その他のイベント・バッジ</summary>
+            <div class="fields">
+                <label>狩りの効果<select name="fieldBoost">
+                    <option value="">なし</option>
+                    <option value="bell">導きの鐘（2倍）</option>
+                    <option value="red-balloon">赤い風船（割れた時・10倍）</option>
+                </select></label>
+                <label>経験値バッジ<select name="eventBadge"><option value="">なし</option></select></label>
+            </div>
+            <div class="checks">
+                <label class="check"><input type="checkbox" name="guildMaster">ギルドマスターの恩恵（1.5倍）</label>
+                <label class="check"><input type="checkbox" name="anniversarySunBerry">21周年サンベリー（+500%）</label>
+                <label class="check"><input type="checkbox" name="lionBadge">熾煌翼獅子最高綬章（+100%）</label>
+            </div>
+        </details>
+    </section>
+    <section id="post-bonuses" class="experience-bonuses" aria-labelledby="post-heading" hidden>
+        <h2 id="post-heading">2000Lv以降の経験値補正</h2>
+        <details class="experience-group" open>
+            <summary>専用の装備・効果</summary>
+            <div class="fields">
+                <label>知恵<input type="number" name="postWisdom" data-label="知恵" value="0" min="0" max="1000000000" step="1"></label>
+<label>専用ギルド旗Lv<input type="number" name="postFlagLevel" data-label="専用ギルド旗Lv" value="0" min="0" max="5" step="1"></label>
+<label>伝承クレスト数<input type="number" name="postCrestCount" data-label="伝承クレスト数" value="0" min="0" max="2" step="1"></label>
+<label>宝箱<select name="postTreasureTier"><option value="0">なし</option><option value="1">1段階</option><option value="2">2段階</option><option value="3">3段階</option></select></label>
+                <label>経験値イベント倍率<input type="number" name="hotTime" data-label="経験値イベント倍率" value="1" min="1" max="1000000" step="any"></label>
+            </div>
+            <div class="checks"><label class="check"><input type="checkbox" name="nova">ノヴァ・ポータル</label>
+<label class="check"><input type="checkbox" name="starBerry">スターベリー</label>
+<label class="check"><input type="checkbox" name="appleMangoBerry">アップルマンゴーベリー（+5%）</label>
+<label class="check"><input type="checkbox" name="bell">導きの鐘</label>
+<label class="check"><input type="checkbox" name="devilHunt">悪魔狩りの案配</label>
+<label class="check"><input type="checkbox" name="postGuildBuff">ギルドバフ</label>
+<label class="check"><input type="checkbox" name="postAura">RED STONEのオーラ</label></div>
+        </details>
+    </section>
+</form>
+<section class="experience-formulas" aria-labelledby="formula-heading">
+    <h2 id="formula-heading">計算式</h2>
+    <h3>通常・GoldEx（2000Lv未満）</h3>
+    <p>基礎経験値（崩壊ミラー） ＝ 切り上げ（マップ・敵Lv帯の設定値 × (敵Lv ＋ 4) ÷ 10）</p>
+    <p>Lv差補正 ＝ 最大（1%、1 − ｜敵Lv − キャラLvまたはPT平均Lv｜ ÷ 75）</p>
+    <p>Lv補正後の基礎 ＝ 切り上げ（基礎経験値 × Lv差補正）</p>
+    <p>補正後の基礎 ＝ Lv補正後の基礎（ソロ）、切り上げ（Lv補正後の基礎 × (1 ÷ ∛PT人数 ＋ PT経験値補正 ÷ 100)）（PT）</p>
+    <p>加算補正率 ＝（知恵・クリーチャー・装備・生体学・ギルド旗・復帰者・RED STONEのオーラ・経験値バッジ・金鯖カーペットの補正％合計）÷ 100</p>
+    <p>主倍率 ＝ 計算条件の倍率 × スフィアー・かけら × 宝箱 × アウラス・スフィアー × 狩りの効果 × 最大（経験値イベント倍率、適用中のギルドマスターの恩恵） × (1 ＋ 加算補正率)</p>
+    <p>ベリー加算率 ＝（最大（選択したベリーの％、21周年サンベリーの％）＋ 追加の消耗品の％ ＋ 熾煌翼獅子最高綬章の％）÷ 100</p>
+    <p>1体あたり ＝ 切り上げ（補正後の基礎 × (主倍率 ＋ ベリー加算率)）</p>
+    <h3>2000Lv以降</h3>
+    <p>補正後の基礎 ＝ 切り上げ（60 × 敵Lv差補正 × PT最高Lv差補正）</p>
+    <p>1体あたり ＝ 切り上げ（補正後の基礎 × (1 ＋ 知恵・ノヴァ・ポータル・専用ギルド旗・伝承クレスト・ギルドバフ・RED STONEのオーラ・宝箱・アップルマンゴーベリーの補正％合計 ÷ 100) × 経験値イベント倍率 × 導きの鐘 × 悪魔狩りの案配 × スターベリー）</p>
+    <p>専用狩場以外・クエストの経験値 ＝ 0</p>
+    <h3>共通</h3>
+    <p>合計経験値 ＝ 1体あたり × 討伐数</p>
+</section>
+<nav class="references" aria-label="関連リンク">
+    <a href="https://sokomin.github.io/information/collapsed_mirror.html">崩壊ミラーマップ</a>
+    <a href="https://sokomin.github.io/information/after_2000Lv.html">2000Lv以降の仕様</a>
+    <a href="https://sokomin.github.io/calculation/tubo_calc.html">壺PTシミュレータ</a>
+</nav>
+<footer class="android-footer mdl-mega-footer">
+                        <font color="red">当サイトで利用している画像及びデータは、L&K Co., Ltd.に帰属します。
+                            <br>
+                            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。
+                            <br>
+                        </font>
+                        © L&K Co., Ltd. All Rights Reserved.<br>
+                    </footer></div><script type="module" src="./app.mjs"></script><script src="https://sokomin.github.io/material.min.js"></script></div></div></body></html>
