@@ -18,156 +18,101 @@ var creaturePassiveOverrides = {
 };
 // /creature passive overrides
 
-function translateTubo(num) {
-    if (crnt_num === 10000) {
-        console.log("これ以上登録できません。");
-        return num;
-    }
-    if (crnt_num >= 9996 && crnt_num <= 9999) {
-        // formの中で入力してonclickしてDOM書き換えるとバグってリロードされちゃうから無理矢理回避してます。
-        var d1dom = document.getElementById("sub_d1");
-        var d2dom = document.getElementById("sub_d2");
-        var d3dom = document.getElementById("sub_d3");
-        var e1dom = document.getElementById("sub_e1");
-        var e2dom = document.getElementById("sub_e2");
-        var e3dom = document.getElementById("sub_e3");
-        var d1 = d1dom.value ? d1dom.value : "";
-        var d2 = d2dom.value ? d2dom.value : "";
-        var d3 = d3dom.value ? d3dom.value : "";
-        var e1 = e1dom.value ? parseInt(e1dom.value) : 0;
-        var e2 = e2dom.value ? parseInt(e2dom.value) : 0;
-        var e3 = e3dom.value ? parseInt(e3dom.value) : 0;
-
-        skillData.forEach(function (e, index) {
-            if (e.id === crnt_num) {
-                var name = "";
-                if (crnt_num === 9996) {
-                    name = "自作メインクリーチャー"
-                } else if (crnt_num === 9997) {
-                    name = "自作サブクリーチャー１"
-                } else if (crnt_num === 9998) {
-                    name = "自作サブクリーチャー２"
-                } else if (crnt_num === 9999) {
-                    name = "自作サブクリーチャー３"
-                }
-                skillData[index] = {
-                    name: name,
-                    id: crnt_num,
-                    used: true,
-                    mainId: d1,
-                    mainLv: e1,
-                    sub1Id: d2,
-                    sub1IdLv: e2,
-                    sub2Id: d3,
-                    sub2IdLv: e3
-                }
-                console.log(skillData[index]);
+function readTuboLevels() {
+    var fields = ["sub_e1", "sub_e2", "sub_e3"].map(id => document.getElementById(id));
+    var levels = fields.map(input => {
+        var text = input.value.trim();
+        var level = Number(text);
+        var valid = text === "" || (/^[0-9]+$/.test(text) && level <= 50);
+        var errorId = input.id + "_error";
+        var error = document.getElementById(errorId);
+        if (!valid) {
+            if (!error) {
+                error = document.createElement("div");
+                error.id = errorId;
+                error.className = "color-image1";
+                error.textContent = "0～50の整数を入力";
+                input.after(error);
             }
-        });
-        crnt_num++;
+            input.setAttribute("aria-invalid", "true");
+            input.setAttribute("aria-describedby", errorId);
+            return null;
+        }
+        if (error) {
+            error.remove();
+            input.removeAttribute("aria-invalid");
+            input.removeAttribute("aria-describedby");
+        }
+        return level;
+    });
+    var invalidIndex = levels.indexOf(null);
+    if (invalidIndex !== -1) {
+        fields[invalidIndex].focus();
+        return null;
     }
-    return (crnt_num - 1);
+    return levels;
 }
 
-var crnt_num = 9996;
-var cnt = 0;
+function translateTubo(pos) {
+    var levels = readTuboLevels();
+    if (levels === null) {
+        return null;
+    }
+    var [e1, e2, e3] = levels;
+    var id = 9996 + pos;
+    var names = ["自作メインクリーチャー", "自作サブクリーチャー１", "自作サブクリーチャー２", "自作サブクリーチャー３"];
+    var index = skillData.findIndex(creature => creature.id === id);
+    skillData[index] = {
+        name: names[pos],
+        id: id,
+        used: true,
+        mainId: document.getElementById("sub_d1").value,
+        mainLv: e1,
+        sub1Id: document.getElementById("sub_d2").value,
+        sub1IdLv: e2,
+        sub2Id: document.getElementById("sub_d3").value,
+        sub2IdLv: e3
+    };
+    return id;
+}
+
 var set_c = [-1, -1, -1, -1];
+var creatureSlotIds = ["main_c", "sub_c1", "sub_c2", "sub_c3"];
+var creatureSlotTitles = ["メイン", "サブ１", "サブ２", "サブ３"];
+
+function updateCreatureSlot(pos, num) {
+    var src = num === -1
+        ? "../calculation/image//interface2_0767" + (pos === 0 ? "" : "-1") + ".png"
+        : "../information/creature2_files/creature_" + num + ".png";
+    document.getElementById(creatureSlotIds[pos]).innerHTML =
+        '<input onclick="setCreature(-1, ' + pos + ')" type="image" src="' + src +
+        '" title="' + creatureSlotTitles[pos] + '">';
+    set_c[pos] = parseInt(num);
+}
 
 function setCreature(num, pos) {
     if (num === -1) {
-        if (pos === 0) {
-            var greet = document.getElementById('main_c');
-            greet.innerHTML = '<input onclick="setCreature(-1, 0)" type="image"src="../calculation/image//interface2_0767.png" title="メイン">';
-            cnt = 0;
-            crnt_num = 9996;
-            set_c[0] = -1;
-            calc();
-            return;
-        }
-        if (pos === 1) {
-            var greet = document.getElementById('sub_c1');
-            greet.innerHTML = '<input onclick="setCreature(-1, 1)" type="image"src="../calculation/image//interface2_0767-1.png" title="サブ１">';
-            cnt = 1;
-            crnt_num = 9997;
-            set_c[1] = -1;
-            calc();
-            return;
-        }
-        if (pos === 2) {
-            var greet = document.getElementById('sub_c2');
-            greet.innerHTML = '<input onclick="setCreature(-1, 2)" type="image"src="../calculation/image//interface2_0767-1.png" title="サブ２">';
-            cnt = 2;
-            crnt_num = 9998;
-            set_c[2] = -1;
-            calc();
-            return;
-        }
-        if (pos === 3) {
-            var greet = document.getElementById('sub_c3');
-            greet.innerHTML = '<input onclick="setCreature(-1, 3)" type="image"src="../calculation/image//interface2_0767-1.png" title="サブ３">';
-            cnt = 3;
-            crnt_num = 9999;
-            set_c[3] = -1;
-            calc();
-            return;
-        }
+        updateCreatureSlot(pos, num);
+        calc();
+        return;
+    }
+    var slot = set_c.indexOf(-1);
+    if (slot === -1) {
+        console.log("インベントリが一杯です。(赤文字)" + set_c);
+        return;
     }
     if (parseInt(num) === 9999) {
-        num = translateTubo(num);
+        num = translateTubo(slot);
+        if (num === null) {
+            return;
+        }
     }
-    if (cnt === 0 && set_c[0] === -1) {
-        var greet = document.getElementById('main_c');
-        greet.innerHTML = '<input onclick="setCreature(-1, 0)" type="image"src="../information/creature2_files/creature_' + num + '.png" title="メイン">';
-        cnt = 1;
-        crnt_num = 9997;
-        set_c[0] = parseInt(num);
-        calc();
-        return;
-    }
-    if (cnt === 1 && set_c[1] === -1) {
-        var greet = document.getElementById('sub_c1');
-        greet.innerHTML = '<input onclick="setCreature(-1, 1)" type="image"src="../information/creature2_files/creature_' + num + '.png" title="サブ１">';
-        cnt = 2;
-        crnt_num = 9998;
-        set_c[1] = parseInt(num);
-        calc();
-        return;
-    }
-    if (cnt === 2 && set_c[2] === -1) {
-        var greet = document.getElementById('sub_c2');
-        greet.innerHTML = '<input onclick="setCreature(-1, 2)" type="image"src="../information/creature2_files/creature_' + num + '.png" title="サブ２">';
-        cnt = 3;
-        crnt_num = 9999;
-        set_c[2] = parseInt(num);
-        calc();
-        return;
-    }
-    if (cnt === 3 && set_c[3] === -1) {
-        var greet = document.getElementById('sub_c3');
-        greet.innerHTML = '<input onclick="setCreature(-1, 3)" type="image"src="../information/creature2_files/creature_' + num + '.png" title="サブ３">';
-        cnt = 4;
-        crnt_num = 10000;
-        set_c[3] = parseInt(num);
-        calc();
-        return;
-    }
-    console.log("インベントリが一杯です。(赤文字)" + set_c);
-    //ここまできたら目いっぱいセットされてるよ
-};
+    updateCreatureSlot(slot, num);
+    calc();
+}
 
-// いいから全部リセットだ！！！
 function resetCreature() {
-    var greet = document.getElementById('main_c');
-    greet.innerHTML = '<input onclick="setCreature(-1, 0)" type="image"src="../calculation/image//interface2_0767.png" title="メイン">';
-    var greet1 = document.getElementById('sub_c1');
-    greet1.innerHTML = '<input onclick="setCreature(-1, 1)" type="image"src="../calculation/image//interface2_0767-1.png" title="サブ１">';
-    var greet2 = document.getElementById('sub_c2');
-    greet2.innerHTML = '<input onclick="setCreature(-1, 2)" type="image"src="../calculation/image//interface2_0767-1.png" title="サブ２">';
-    var greet3 = document.getElementById('sub_c3');
-    greet3.innerHTML = '<input onclick="setCreature(-1, 3)" type="image"src="../calculation/image//interface2_0767-1.png" title="サブ３">';
-    cnt = 0;
-    crnt_num = 9996;
-    set_c = [-1, -1, -1, -1];
+    creatureSlotIds.forEach((id, pos) => updateCreatureSlot(pos, -1));
     calc();
 }
 
