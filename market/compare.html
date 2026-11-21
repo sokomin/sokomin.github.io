@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+
+<!-- Terms of use for original articles and guides on Redstone Sokomin: https://sokomin.github.io/information/p.html -->
+
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=960">
+  <!-- Page styles -->
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" href="https://sokomin.github.io/material.indigo-pink.min.css" />
+  <link rel="stylesheet" href="https://sokomin.github.io/styles.css" />
+  <link rel="icon" href="https://sokomin.github.io/design/RedStoneLogo.png" sizes="32x32" />
+  <link rel="icon" href="https://sokomin.github.io/design/RedStoneLogo.png" sizes="192x192" />
+  <link rel="apple-touch-icon-precomposed" href="https://sokomin.github.io/design/RedStoneLogo.png" />
+  <title>RED STONE 3サーバー相場比較 | 赤石の民衆</title>
+  <meta name="description" content="Bridgehead・Strasserad・Valutishのアイテム参考相場を、オプション別に比較できます。">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="RED STONE 3サーバー相場比較 | 赤石の民衆">
+  <meta property="og:description" content="Bridgehead・Strasserad・Valutishのアイテム参考相場を、オプション別に比較できます。">
+  <meta property="og:url" content="https://sokomin.github.io/market/compare.html">
+  <style>
+    .android-large-table > .main-background { box-sizing: border-box; width: 100%; }
+    .comparison-breadcrumb { padding: 14px 12px 0 0; }
+    .comparison { box-sizing: border-box; max-width: 1240px; margin: 0 auto; padding: 24px clamp(16px, 3vw, 36px) 44px; text-align: left; color: #22352d; }
+    .comparison h1 { margin: 0 0 22px; font-size: clamp(24px, 4vw, 38px); line-height: 1.25; }
+    .comparison p { margin: 0 0 14px; }
+    #comparison-search { margin-bottom: 24px; }
+    .comparison-controls { display: flex; align-items: stretch; gap: 12px; max-width: 720px; }
+    .comparison input, .comparison button { box-sizing: border-box; min-height: 44px; font: inherit; border-radius: 5px; }
+    .comparison input { flex: 1; min-width: 0; padding: 8px 12px; border: 1px solid #82978e; background: white; }
+    .comparison button { flex-shrink: 0; padding: 8px 18px; background: #245d47; border: 1px solid #245d47; color: #fff; cursor: pointer; font-weight: 700; }
+    .comparison button:disabled { color: #43574c; background: #ebf1ed; border-color: #d1ded7; cursor: default; }
+    .comparison :focus-visible { outline: 2px solid #99540f; outline-offset: 2px; }
+    .comparison [hidden] { display: none !important; }
+    #comparison-status, #comparison-failure { margin: 0 0 12px; }
+    #comparison-status:empty, #comparison-failure:empty { margin: 0; }
+    #comparison-failure { color: #9b331e; }
+    #comparison-retry { margin-bottom: 10px; }
+    #comparison-results { scroll-margin-block-start: 16px; }
+    .comparison table#table10 { width: 100%; max-width: none; margin: 0; table-layout: fixed; }
+    .comparison #table10 th, .comparison #table10 td { padding: 13px 16px; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+    .comparison #table10 thead th { color: white; background: #245d47; }
+    .comparison #table10 thead th:first-child { width: 38%; }
+    .comparison #table10 th.comparison-name { color: #22352d; background: #edf4ee; }
+    .comparison #table10 td { color: #22352d; background: white; font-variant-numeric: tabular-nums; }
+    .comparison .comparison-price { color: #174f39; font-weight: 700; font-size: 1.1em; text-decoration: underline; }
+    .comparison-bar { display: block; height: .36em; margin: .25em 0 .35em; background: #e5ede7; border-radius: 4px; }
+    .comparison-bar span { display: block; height: 100%; background: #56866f; border-radius: inherit; }
+    .comparison-secondary { display: block; margin-top: 2px; color: #455d52; font-size: .9em; }
+    .comparison-mobile-label { display: none; }
+    #comparison-pagination { display: flex; gap: 12px; align-items: center; margin-top: 18px; }
+    .comparison-notes { margin-top: 32px; padding-top: 18px; border-top: 1px solid #ccd9d0; color: #455d52; }
+    .comparison-notes h2 { margin: 0 0 .4em; font-size: 1.15em; line-height: 1.4; }
+    .comparison .comparison-notes p { margin: 0 0 .4em; }
+    @media (max-width: 650px), (max-device-width: 600px) and (pointer: coarse) {
+      .comparison { padding-inline: 12px; }
+      .comparison h1 { margin-bottom: 18px; }
+      #comparison-search { margin-bottom: 18px; }
+      .comparison-controls { gap: 8px; }
+      .comparison #table10, .comparison #table10 tbody { display: block; }
+      .comparison #table10 thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+      .comparison #table10 tr { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-bottom: 12px; background: white; }
+      .comparison #table10 .comparison-name { grid-column: 1 / -1; }
+      .comparison #table10 th, .comparison #table10 td { padding: 8px 6px; }
+      .comparison-mobile-label { display: block; font-weight: 700; }
+    }
+    @media (max-device-width: 600px) and (pointer: coarse) and (min-width: 651px) {
+      .android-header .mdl-layout__header-row { height: 90px; }
+      .android-header .android-title, .android-header .android-navigation-container, .android-header .android-search-box { display: none; }
+      .android-header .android-mobile-title { display: block !important; position: absolute; left: 50%; transform: translateX(-50%); }
+      .android-header .android-logo-image { width: 240px; height: auto; }
+      .android-header .android-more-button, .mdl-layout__drawer-button { width: 90px; height: 88px; }
+      .mdl-layout__drawer-button { line-height: 88px; }
+      .comparison, .comparison p, .comparison-breadcrumb, .android-footer { font-size: 30px; line-height: 1.4; }
+      .comparison { padding: 30px 30px 56px; }
+      .comparison h1 { margin-bottom: 28px; font-size: 46px; }
+      #comparison-search { margin-bottom: 36px; }
+      .comparison-controls { gap: 18px; max-width: none; }
+      .comparison input, .comparison button { min-height: 108px; }
+      .comparison button { padding-inline: 26px; }
+      .comparison #table10 tr { margin-bottom: 22px; }
+      .comparison #table10 th, .comparison #table10 td { padding: 18px 14px; }
+      #comparison-pagination { margin-top: 24px; }
+      .comparison-notes { margin-top: 44px; padding-top: 24px; }
+    }
+  </style>
+    <link rel="canonical" href="https://sokomin.github.io/market/compare.html" />
+    <script>const __SK_BUILD = "sokomin/market~compare@2026-11-21​‌‌‌​​‌‌​‌‌​‌‌‌‌​‌‌​‌​‌‌​‌‌​‌‌‌‌​‌‌​‌‌​‌​‌‌​‌​​‌​‌‌​‌‌‌​";</script>
+    <script src="https://sokomin.github.io/design/copy-provenance.js" data-sk-page="market~compare" defer></script>
+</head>
+
+<body>
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <a name="container"></a>
+
+    <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+      <div class="mdl-layout__header-row">
+        <span class="android-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="https://sokomin.github.io/design/logo3.png" alt="赤石の民衆" />
+          </a>
+        </span>
+        <!-- Add spacer, to align navigation to the right in desktop -->
+        <div class="android-header-spacer mdl-layout-spacer"></div>
+        <div
+          class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field" aria-label="サイト内検索">
+            <i class="material-icons" aria-hidden="true">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input placeholder="サイト内検索(Enterで実行)" class="mdl-textfield__input" type="text"
+              aria-label="サイト内検索" id="search-field" />
+          </div>
+        </div>
+        <!-- Navigation -->
+        <div class="android-navigation-container">
+          <nav class="android-navigation mdl-navigation">
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/index.html">ホーム</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/calculator.html">計算機</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/history.html">赤石史</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/link.html">リンク</a>
+          </nav>
+        </div>
+        <span class="android-mobile-title mdl-layout-title">
+          <a href="https://sokomin.github.io/index.html">
+            <img class="android-logo-image" src="https://sokomin.github.io/design/logo3.png" alt="赤石の民衆" />
+          </a>
+        </span>
+        <button class="android-more-button mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+          id="more-button" aria-label="サイトメニュー">
+          <i class="material-icons" aria-hidden="true">more_vert</i>
+        </button>
+        <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="more-button">
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/calculator.html">計算機</a></li>
+          <li class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/history.html">赤石史</a></li>
+          <li disabled class="mdl-menu__item"><a class="mdl-navigation__link mdl-typography--text-uppercase"
+              href="https://sokomin.github.io/link.html">リンク</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="android-drawer mdl-layout__drawer">
+      <span class="mdl-layout-title">
+        <h2>メニュー</h2>
+      </span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link sokomin-layout-item"
+          href="https://sokomin.github.io/item/item.html"><strong>アイテム</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-skill"
+          href="https://sokomin.github.io/skill/skill.html"><strong>スキル</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt"
+          href="https://sokomin.github.io/monster/monster.html"><strong>モンスター</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-pt"
+          href="https://sokomin.github.io/secret/secret.html"><strong>ダンジョン</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-quest"
+          href="https://sokomin.github.io/quest/quest.html"><strong>クエスト</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-guild"
+          href="https://sokomin.github.io/guild/guild.html"><strong>ギルド</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-friend"
+          href="https://sokomin.github.io/korea/korea-update.html"><strong>韓国情報</strong></a>
+        <a class="mdl-navigation__link sokomin-layout-info"
+          href="https://sokomin.github.io/information/information.html"><strong>雑学</strong></a>
+      </nav>
+    </div>
+
+    <div class="android-large-table mdl-layout__content" data-first-view>
+
+      <nav class="comparison-breadcrumb" data-breadcrumb aria-label="パンくず" style="text-align:left;margin-left:16px">
+        <a href="../index.html">ホーム</a><span aria-hidden="true"> ＞ </span>
+        <a href="index.html">RED STONE 相場情報</a><span aria-hidden="true"> ＞ </span>
+        <span aria-current="page">RED STONE 3サーバー相場比較</span>
+      </nav>
+      <div class="main-background mdl-typography--text-center">
+        <main class="comparison">
+          <h1>RED STONE 3サーバー相場比較</h1>
+          <form id="comparison-search" role="search" aria-label="相場比較">
+            <div class="comparison-controls">
+              <input id="comparison-query" type="search" name="q" maxlength="100" aria-label="相場を検索">
+              <button type="submit">比較する</button>
+            </div>
+          </form>
+          <noscript><p>相場を比較するにはJavaScriptを有効にしてください。</p></noscript>
+          <p id="comparison-status" role="status"></p>
+          <p id="comparison-failure" role="status"></p>
+          <button id="comparison-retry" type="button" hidden>再試行</button>
+          <section id="comparison-results" aria-label="比較結果" tabindex="-1" hidden>
+            <table id="table10" aria-label="サーバー別の参考相場">
+              <thead><tr>
+                <th scope="col">アイテム</th>
+                <th scope="col">Bridgehead</th>
+                <th scope="col">Strasserad</th>
+                <th scope="col">Valutish</th>
+              </tr></thead>
+              <tbody id="comparison-rows"></tbody>
+            </table>
+            <nav id="comparison-pagination" aria-label="比較結果のページ" hidden>
+              <button id="comparison-previous" type="button">前へ</button>
+              <span id="comparison-page"></span>
+              <button id="comparison-next" type="button">次へ</button>
+            </nav>
+          </section>
+          <section class="comparison-notes" aria-labelledby="comparison-notes-title">
+            <h2 id="comparison-notes-title">備考</h2>
+            <p>Bridgehead・Strasserad・Valutishの参考相場を、アイテムのオプション別に比較できます。</p>
+            <p>同じ行では、棒が長いほど参考相場が高くなります。各鯖の最終観測日は、最新の観測日より2日以上前の場合だけ表示します。</p>
+          </section>
+        </main>
+        <footer class="android-footer mdl-mega-footer">
+          <font color="red">
+            当サイトで利用している画像及びデータは、L&amp;K Co., Ltd.に帰属します。<br>
+            許可無くご利用又は転用する事は出来ませんので、予めご了承下さい。<br>
+          </font>
+          © L&amp;K Co., Ltd. All Rights Reserved.​‌‌‌​​‌‌​‌‌​‌‌‌‌​‌‌​‌​‌‌​‌‌​‌‌‌‌​‌‌​‌‌​‌​‌‌​‌​​‌​‌‌​‌‌‌​<br>
+        </footer>
+
+      </div>
+
+      <script src="public/market_comparison.js?v=20261121.3" defer></script>
+      <script src="https://sokomin.github.io/material.min.js"></script>
+    </div>
+  </div>
+</body>
+
+</html>
