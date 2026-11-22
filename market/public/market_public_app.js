@@ -147,7 +147,7 @@
   }
 
   function itemSearchText(row) {
-    return `${row.display_name || row.item_name || ""} ${row.option_effects || ""}`.toLowerCase();
+    return `${row.display_name || row.item_name || ""} ${row.option_names || ""} ${row.option_effects || ""} ${row.search_terms || ""}`.normalize("NFKC").toLowerCase();
   }
 
   function rowActivity(row) {
@@ -412,7 +412,7 @@
         state.server = allowed(params.get("server"), available,
           available.includes("Bridgehead") ? "Bridgehead" : available[0]);
         const query = params.get("q") || "";
-        state.query = query.trim().toLowerCase();
+        state.query = query.normalize("NFKC").trim().toLowerCase();
         state.category = allowed(params.get("category"), ["all", "equipment", "other"], "all");
         state.sort = allowed(normalizePublicSort(params.get("sort")), sorts, "count");
         const period = allowed(params.get("period"), hasRecent
@@ -831,7 +831,7 @@
         .catch((error) => { if (ticket === revision) showError(error); });
     });
     byId("marketSearch").addEventListener("input", (event) => {
-      state.query = event.target.value.trim().toLowerCase();
+      state.query = event.target.value.normalize("NFKC").trim().toLowerCase();
       state.selectedKey = "";
       const ticket = ++revision;
       urlState.write();
