@@ -117,8 +117,7 @@ export const BF_OPTIONS = [
   { id:'hit', name:'命中率', familyId:31, unit:'%', black:B_hit, white:W_hit, whiteProb:1 },
   
   { id:'hp_drain',  name:'敵に与えたダメージHP吸収',         familyId:50, unit:'%', black:B_drain,   white:W_drain,   whiteProb:2 },
-  
-  { id:'mhp_drain', name:'敵に与えた魔法ダメージHP吸収',     displayOnly:true, unit:'%', black:B_drain, white:W_drain, whiteProb:2 },
+  { id:'mhp_drain', name:'敵に与えた魔法ダメージHP吸収',     statId:'magicHpDrainPercent', unit:'%', black:B_drain, white:W_drain, whiteProb:2 },
   { id:'cp_bonus',  name:'ボーナスCP獲得',                   familyId:51, unit:'%', black:B_cpbonus, white:W_cpbonus, whiteProb:3 },
   
   { id:'cp_move_red',name:'移動時減少CP',                    displayOnly:true, unit:'', black:B_cpdrain, white:W_cpdrain, whiteProb:3 },
@@ -176,7 +175,7 @@ export const BF_OPTIONS = [
   {
     id:'white_pet_final_dmg',
     name:'(召喚獣、ペット)最終ダメージ',
-    displayOnly:true,    
+    statId:'petFinalDamage',
     unit:'%',
     whiteOnly:true,
     whiteProb:0.70,

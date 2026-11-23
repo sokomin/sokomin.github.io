@@ -8,6 +8,12 @@ export function isPetCapableJob(jobId) {
   return PET_CAPABLE_JOBS.has(Number(jobId));
 }
 
+export function calculatePetFinalDamage(damageBeforeFinal, ownerStats) {
+  if (!Number.isSafeInteger(damageBeforeFinal) || damageBeforeFinal < 0) return null;
+  const percent = Number(ownerStats?.petFinalDamage) || 0;
+  return damageBeforeFinal + damageBeforeFinal * percent / 100;
+}
+
 export function computePetStats(mob, petLv, chStats, jobId) {
   if (!mob) return null;
   const Lv = Math.max(1, Number(petLv) || 1);

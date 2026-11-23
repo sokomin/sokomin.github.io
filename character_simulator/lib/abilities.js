@@ -64,8 +64,10 @@ export function computeAbilities(character, finalStats, equippedItems, loader) {
   
   const atkStatValue = (jobId === 2 || jobId === 3) ? atkAgi : atkStr;
   const atkBonus = Math.floor(atkStatValue * 0.5);
-  const atkMin = weaponAtkMin + atkMinFlat + atkBonus;
-  const atkMax = weaponAtkMax + atkMaxFlat + atkBonus;
+  const atkBaseMin = weaponAtkMin + atkMinFlat;
+  const atkBaseMax = weaponAtkMax + atkMaxFlat;
+  const atkMin = atkBaseMin + atkBonus;
+  const atkMax = atkBaseMax + atkBonus;
 
   
   let itemDefSum = 0;
@@ -85,6 +87,8 @@ export function computeAbilities(character, finalStats, equippedItems, loader) {
     cpMax,
     atkMin,
     atkMax,
+    atkBaseMin,
+    atkBaseMax,
     def,
     weaponName,
   };

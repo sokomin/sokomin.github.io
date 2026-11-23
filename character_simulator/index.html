@@ -1255,6 +1255,13 @@
     @media (max-width: 1100px) {
       .damage-tab-layout { grid-template-columns: 1fr; }
     }
+    @media (max-width: 700px) {
+      .sim-frame-shell:has(:is([data-tab="damage"], [data-tab="pet"]).is-active) .sim-character-proxy {
+        position: static; width: 100%; min-height: 0;
+      }
+      .sim-main-content:has(> :is([data-tab="damage"], [data-tab="pet"]).is-active) { margin-left: 0; }
+      .damage-tab-layout { grid-template-columns: minmax(0, 1fr); }
+    }
     .damage-panel {
       background: #1a1610;
       border: 1px solid #5b3d12;
@@ -1321,13 +1328,33 @@
     .damage-result-table td { text-align: right; color: #00ff66; font-family: "Consolas", monospace; }
     .damage-result-table tr.is-highlight td { color: #ffd070; font-weight: bold; }
 
+    #damage-result-mixed.is-single-hit tr > :nth-child(3) { display: none; }
+
+    @media (max-width: 540px) {
+      #damage-result-mixed:not([hidden]), #damage-result-mixed tbody { display: block; }
+      #damage-result-mixed thead {
+        position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%);
+      }
+      #damage-result-mixed tbody tr, #damage-result-mixed tbody th { display: block; }
+      #damage-result-mixed td {
+        display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px;
+        padding-inline: 4px; font-size: 11px; overflow-wrap: anywhere;
+      }
+      #damage-result-mixed td::before {
+        content: attr(data-label); text-align: left; color: #b0944c; font: 11px sans-serif;
+      }
+      #damage-result-mixed.is-single-hit td:last-child::before { content: "期待値1発"; }
+      #damage-result-mixed:not([hidden]) ~ details .damage-breakdown th { min-width: 4em; }
+      #damage-result-mixed:not([hidden]) ~ details .damage-breakdown td.dbd-val { white-space: normal; }
+    }
+
     .damage-expected, .damage-dps {
       margin-top: 6px; padding: 4px 6px;
       background: #120c04; border: 1px solid #443823;
       color: #ffd070; font-weight: bold;
       display: flex; justify-content: space-between;
     }
-    .damage-expected span, .damage-dps span { color: #00ff66; font-family: "Consolas", monospace; }
+    .damage-expected span, #damage-dps-value { color: #00ff66; font-family: "Consolas", monospace; }
     .damage-warnings {
       margin-top: 6px; font-size: 11px; color: #d77;
       line-height: 1.4;
@@ -1546,6 +1573,14 @@
       background: #1a1610; border: 1px solid #5b3d12;
       color: #d09a4a; font-size: 12.5px; line-height: 1.6; text-align: center;
     }
+    #pet-damage-before-final { width: 9em; max-width: 100%; }
+    @media (max-width: 540px) {
+      .pet-slot-row select { min-width: 0; max-width: 100%; }
+      .pet-slot-stat-table { table-layout: fixed; }
+      .pet-slot-stat-table td { overflow-wrap: anywhere; }
+      .pet-slot-stat-table td.pet-key { white-space: normal; width: 45%; }
+    }
+
     .pet-slot-list { display: flex; flex-direction: column; gap: 6px; }
     .pet-slot {
       display: grid;
@@ -4000,6 +4035,14 @@
               <div class="pet-slot-list" id="pet-slot-list">
                 <div class="pet-slot-empty">読み込み中…</div>
               </div>
+              <details id="pet-final-damage-preview" hidden>
+                <summary>狩りの最終ダメージ</summary>
+                <div>
+                  <label for="pet-damage-before-final">補正前の与ダメージ</label>
+                  <input id="pet-damage-before-final" type="number" min="0" step="1">
+                </div>
+                <div>補正後 <output id="pet-damage-after-final" for="pet-damage-before-final">–</output></div>
+              </details>
             </div>
           </div>
 
@@ -4544,7 +4587,6 @@
           <div class="tab-pane" data-tab="damage">
             <div class="damage-tab-layout">
 
-              
               <div class="damage-panel">
                 <h4>スキル選択</h4>
                 <div class="damage-skill-controls">
@@ -4562,7 +4604,6 @@
                 </div>
               </div>
 
-              
               <div class="damage-panel">
                 <h4>入力値 <span id="damage-mode-tag" style="font-size:10.5px; color:#6cc270; margin-left:6px;">物理</span>
                   <label class="damage-auto-toggle">
@@ -4570,7 +4611,6 @@
                   </label>
                 </h4>
 
-                
                 <table class="damage-input-table" id="damage-input-phys"><tbody>
                   <tr><th>武器最小攻撃力</th><td><input type="number" id="dmg-in-weaponMin" value="0" step="1"></td></tr>
                   <tr><th>武器最大攻撃力</th><td><input type="number" id="dmg-in-weaponMax" value="0" step="1"></td></tr>
@@ -4584,8 +4624,10 @@
                   <tr><th>致命打率%</th><td><input type="number" id="dmg-in-critRate" value="0" step="0.1"></td></tr>
                   <tr><th>ダブクリ率% (致命中)</th><td><input type="number" id="dmg-in-doubleCritRate" value="0" step="0.1"></td></tr>
                   <tr><th>強打率%</th><td><input type="number" id="dmg-in-strongRate" value="0" step="0.1"></td></tr>
+                  <tr><th><label for="dmg-in-critDmg">致命打ダメ増%</label></th><td><input type="number" id="dmg-in-critDmg" value="0" step="1"></td></tr>
                   <tr><th>ダブクリダメ増%</th><td><input type="number" id="dmg-in-doubleCritDmg" value="0" step="1"></td></tr>
                   <tr><th>強打ダメ増%</th><td><input type="number" id="dmg-in-strongDmg" value="0" step="1"></td></tr>
+                  <tr><th><label for="dmg-in-strongCapAmplify">強打時限界増幅%</label></th><td><input type="number" id="dmg-in-strongCapAmplify" value="0" step="1"></td></tr>
                   <tr><th>限界突破物理%</th><td><input type="number" id="dmg-in-limitBreakPct" value="0" step="0.1"></td></tr>
                   <tr><th>物理ダメ上限 (ベース)</th><td><input type="number" id="dmg-in-physCapBase" value="20000" step="1"></td></tr>
                   <tr><th>物理上限+ (称号/その他)</th><td><input type="number" id="dmg-in-limitBreakFlat" value="0" step="1"></td></tr>
@@ -4595,7 +4637,41 @@
                   <tr><th>敵ダメージカット%</th><td><input type="number" id="dmg-in-mobCut" value="0" step="1"></td></tr>
                 </tbody></table>
 
-                
+                <details id="damage-ranzan-settings" hidden>
+                  <summary>乱斬り改</summary>
+                  <table class="damage-input-table"><tbody><tr>
+                    <th><label for="dmg-in-ranzanDistance">敵との距離 (m)</label></th>
+                    <td><input type="number" id="dmg-in-ranzanDistance" min="0" step="any" value="4"></td>
+                  </tr></tbody></table>
+                </details>
+                <details id="damage-cannon-effects" hidden>
+                  <summary>キャノニアの強化</summary>
+                  <table class="damage-input-table"><tbody>
+                    <tr><th><label for="dmg-in-cannonBarrelLv">バレルチューニング 実効Lv</label></th><td><input type="number" id="dmg-in-cannonBarrelLv" min="0" step="1" value="0"></td></tr>
+                    <tr><th><label for="dmg-in-cannonAwakening">覚醒</label></th><td><select id="dmg-in-cannonAwakening">
+                      <option value="0">なし</option>
+                      <option value="2073">デマイズモンガー</option>
+                      <option value="2077">ソリタリィフォース</option>
+                      <option value="2081">スィージブロッサム</option>
+                    </select></td></tr>
+                  </tbody><tbody id="damage-cannon-ammo" hidden>
+                    <tr><th><label for="dmg-in-cannonAntiTankLv">対戦車弾 実効Lv</label></th><td><input type="number" id="dmg-in-cannonAntiTankLv" min="0" step="1" value="0"></td></tr>
+                    <tr><th><label for="dmg-in-cannonBarbedLv">バーブドフラグメント 実効Lv</label></th><td><input type="number" id="dmg-in-cannonBarbedLv" min="0" step="1" value="0"></td></tr>
+                    <tr><th><label for="dmg-in-cannonChainLv">連鎖爆発 実効Lv</label></th><td><input type="number" id="dmg-in-cannonChainLv" min="0" step="1" value="0"></td></tr>
+                    <tr id="damage-cannon-ammo-error-row" hidden><td colspan="2"><span id="damage-cannon-ammo-error" role="status"></span></td></tr>
+                  </tbody></table>
+                </details>
+                <details id="damage-siege-settings" hidden>
+                  <summary>3スキル比較</summary>
+                  <table class="damage-input-table"><tbody>
+                    <tr><th><label for="dmg-in-siegeTargets">範囲内の敵数</label></th><td><input type="number" id="dmg-in-siegeTargets" min="1" max="6" step="1" value="1"></td></tr>
+                    <tr><th><label for="dmg-in-siegeStay">設置ごとの滞在秒数</label></th><td><input type="number" id="dmg-in-siegeStay" min="0" max="3" step="0.1" value="3"></td></tr>
+                    <tr><th><label for="dmg-in-siegeCp">開始CP（空欄で制限なし）</label></th><td><input type="number" id="dmg-in-siegeCp" min="0" step="0.1" value=""></td></tr>
+                    <tr><th><label for="dmg-in-siegeRefill">CP補給量</label></th><td><input type="number" id="dmg-in-siegeRefill" min="0" step="0.1" value="0"></td></tr>
+                    <tr><th><label for="dmg-in-siegeRefillEvery">CP補給間隔（秒）</label></th><td><input type="number" id="dmg-in-siegeRefillEvery" min="0" step="0.1" value="0"></td></tr>
+                  </tbody></table>
+                  <div id="damage-siege-result" class="damage-breakdown"></div>
+                </details>
                 <table class="damage-input-table" id="damage-input-magic" style="display:none;"><tbody>
                   <tr class="damage-musket-row" style="display:none;"><th>武器最小攻撃力</th><td><input type="number" id="dmg-in-mWeaponMin" value="0" step="1"></td></tr>
                   <tr class="damage-musket-row" style="display:none;"><th>武器最大攻撃力</th><td><input type="number" id="dmg-in-mWeaponMax" value="0" step="1"></td></tr>
@@ -4619,20 +4695,23 @@
                   <tr><th>最大CP</th><td><input type="number" id="dmg-in-mMaxCp" value="0" min="0" step="1"></td></tr>
                   <tr><th>渇きの最大効果%</th><td><input type="number" id="dmg-in-mThirst" value="0" min="0" step="1"></td></tr>
                   <tr><th>魔法ダメ強化%</th><td><input type="number" id="dmg-in-mDmgPct" value="0" step="1"></td></tr>
+                  <tr id="damage-wind-enhance-row" hidden><th><label for="dmg-in-mWindEnhance">風強化%</label></th><td><input type="number" id="dmg-in-mWindEnhance" value="0" step="1"></td></tr>
                   <tr><th>錬金術 Lv</th><td><input type="number" id="dmg-in-mAlchemy" value="0" step="1"></td></tr>
                   <tr><th>石像補正%</th><td><input type="number" id="dmg-in-mStoneStatue" value="0" step="1"></td></tr>
                   <tr><th>神秘水補正%</th><td><input type="number" id="dmg-in-mMysticWater" value="0" step="1"></td></tr>
                   <tr><th>刃油補正%</th><td><input type="number" id="dmg-in-mBladeOil" value="0" step="1"></td></tr>
-                  <tr><th>敵の属性抵抗%</th><td><input type="number" id="dmg-in-mEnemyResist" value="0" step="1"></td></tr>
-                  <tr><th>敵の属性弱化%</th><td><input type="number" id="dmg-in-mEnemyWeaken" value="0" step="1"></td></tr>
+                  <tr><th><label id="damage-resist-label" for="dmg-in-mEnemyResist">敵の属性抵抗%</label></th><td><input type="number" id="dmg-in-mEnemyResist" value="0" step="1"></td></tr>
+                  <tr><th><label id="damage-weaken-label" for="dmg-in-mEnemyWeaken">敵の属性弱化%</label></th><td><input type="number" id="dmg-in-mEnemyWeaken" value="0" step="1"></td></tr>
                   <tr><th>最終ダメ%</th><td><input type="number" id="dmg-in-mFinalDmg" value="0" step="1"></td></tr>
                   <tr><th>ブラッドレコード最終ダメ%</th><td><input type="number" id="dmg-in-mBloodFieldDmg" value="0" step="1" title="ブラッドレコード適用マップで発生する 「外側」 の最終ダメージ層。 通常の最終ダメ% とは別に独立して × (1+x/100) で乗算される。"></td></tr>
                   <tr><th>敵ダメージカット%</th><td><input type="number" id="dmg-in-mMobCut" value="0" step="1"></td></tr>
                   <tr><th>魔法致命打率%</th><td><input type="number" id="dmg-in-mCritRate" value="0" step="0.1"></td></tr>
+                  <tr><th><label for="dmg-in-mCritDmg">魔法致命打ダメージ%</label></th><td><input type="number" id="dmg-in-mCritDmg" value="0" step="0.1"></td></tr>
                   <tr><th>魔法強打率%</th><td><input type="number" id="dmg-in-mStrongRate" value="0" step="0.1"></td></tr>
+                  <tr><th><label for="dmg-in-mStrongDmg">魔法強打ダメージ%</label></th><td><input type="number" id="dmg-in-mStrongDmg" value="0" step="0.1"></td></tr>
                   <tr><th>魔法ダメ制限 (ベース)</th><td><input type="number" id="dmg-in-mCapBase" value="20000" step="1"></td></tr>
                   <tr><th>魔法限界突破%</th><td><input type="number" id="dmg-in-mLimitPct" value="0" step="0.1"></td></tr>
-                  <tr style="display:none;"><th>魔法上限+ (旧)</th><td><input type="number" id="dmg-in-mLimitFlat" value="0" step="1"></td></tr>
+                  <tr><th><label for="dmg-in-mLimitFlat">魔法限界突破固定値</label></th><td><input type="number" id="dmg-in-mLimitFlat" value="0" step="1"></td></tr>
                   <tr><th>攻撃速度%</th><td><input type="number" id="dmg-in-mAttackSpd" value="0" step="1"></td></tr>
                   <tr><th>使用ダメ (最大/最小/平均)</th><td>
                     <select id="dmg-in-mDmgMode" style="width:100%; background:#120c04; color:#00ff66; border:1px solid #8b6a28; font:inherit; padding:1px 4px;">
@@ -4644,12 +4723,11 @@
                 </tbody></table>
               </div>
 
-              
               <div class="damage-panel">
                 <h4>予測ダメージ</h4>
-                <table class="damage-result-table">
+                <table class="damage-result-table" id="damage-result-single">
                   <thead>
-                    <tr><th>種別</th><th>1回の使用ダメージ（全HIT）</th></tr>
+                    <tr><th>種別</th><th id="damage-single-column">1回の使用ダメージ（全HIT）</th></tr>
                   </thead>
                   <tbody id="damage-result-tbody">
                     <tr><th id="dmg-rlabel-normal">通常 (×1)</th><td id="dmg-r-normal">-</td></tr>
@@ -4658,13 +4736,37 @@
                     <tr><th id="dmg-rlabel-strong">強打 (×3)</th><td id="dmg-r-strong">-</td></tr>
                   </tbody>
                 </table>
-                <div class="damage-expected">
-                  期待値 1回 <span id="damage-expected-value">-</span>
+                <table class="damage-result-table" id="damage-result-mixed" hidden>
+                  <thead><tr><th scope="col">内訳</th><th scope="col">通常1HIT</th><th scope="col">通常1回</th><th scope="col" id="damage-mixed-expected-column">期待値1回</th></tr></thead>
+                  <tbody>
+                    <tr><th scope="row">物理</th><td id="dmg-mix-phys-hit" data-label="通常1HIT">-</td><td id="dmg-mix-phys-normal" data-label="通常1回">-</td><td id="dmg-mix-phys-expected" data-label="期待値1回">-</td></tr>
+                    <tr><th scope="row">直撃風</th><td id="dmg-mix-wind-hit" data-label="通常1HIT">-</td><td id="dmg-mix-wind-normal" data-label="通常1回">-</td><td id="dmg-mix-wind-expected" data-label="期待値1回">-</td></tr>
+                    <tr class="is-highlight"><th scope="row">直撃合計</th><td id="dmg-mix-total-hit" data-label="通常1HIT">-</td><td id="dmg-mix-total-normal" data-label="通常1回">-</td><td id="dmg-mix-total-expected" data-label="期待値1回">-</td></tr>
+                  </tbody>
+                </table>
+                <div class="damage-expected" id="damage-expected-single">
+                  <span id="damage-expected-label">期待値 1回</span> <span id="damage-expected-value">-</span>
                 </div>
-                <div class="damage-dps">
-                  DPS (1秒あたり) <span id="damage-dps-value">-</span>
+                <div class="damage-dps" id="damage-dps-single">
+                  <span id="damage-dps-label">DPS (1秒あたり)</span> <span id="damage-dps-value">-</span>
+                </div>
+                <div class="damage-expected" id="damage-hp-drain" hidden>
+                  HP吸収期待値（1発） <span id="damage-hp-drain-value"></span>
                 </div>
                 <div id="damage-warnings" class="damage-warnings"></div>
+                <details id="damage-scroll-effects" hidden>
+                  <summary>図案書</summary>
+                  <table class="damage-input-table"><tbody>
+                    <tr id="damage-scroll-hp-ratio" hidden><th><label for="dmg-in-scrollHpPct">敵の残りHP (%)</label></th><td><input type="number" id="dmg-in-scrollHpPct" min="0" max="100" step="any" value="100"></td></tr>
+                    <tr id="damage-scroll-enemy-hp" hidden><th><label for="dmg-in-scrollEnemyHp">敵の最大HP</label></th><td><input type="number" id="dmg-in-scrollEnemyHp" min="1" step="any" value=""></td></tr>
+                    <tr id="damage-scroll-attack" hidden><th><label for="dmg-in-scrollAttack">自身の攻撃力</label></th><td><input type="number" id="dmg-in-scrollAttack" min="0" step="any" value=""></td></tr>
+                  </tbody></table>
+                  <div id="damage-scroll-error" class="damage-warnings" role="status" hidden></div>
+                  <table class="damage-result-table">
+                    <thead><tr><th scope="col">効果</th><th scope="col">発動時</th><th scope="col">期待値</th></tr></thead>
+                    <tbody id="damage-scroll-results"></tbody>
+                  </table>
+                </details>
                 <details style="margin-top:6px;">
                   <summary style="cursor:pointer; color:#b0944c; font-size:11.5px;">計算詳細を表示</summary>
                   <div id="damage-breakdown" class="damage-breakdown"></div>
@@ -4674,7 +4776,6 @@
             </div>
           </div>
 
-          
           <div class="tab-pane" data-tab="incoming">
             <div class="incoming-layout">
               <div class="damage-panel">
@@ -4978,7 +5079,7 @@ import { createFirstAidCalculator } from './lib/first_aid.js';
 const FirstAidCalc = createFirstAidCalculator({ document, onChange: () => scheduleAutosave() });
 const IncomingDamageCalc = createIncomingDamageCalculator({ document, onChange: () => scheduleAutosave(), firstAid: FirstAidCalc });
 import { downloadCharacterReportXlsx } from './lib/excel_report.js';
-import { compatibleSeirenSelection, skillDamageIssue, readSkillAttackCount, effectiveSkillAttackCount, serialTaskQueue } from './lib/ui_state_safety.js';
+import { compatibleSeirenSelection, skillDamageIssue, effectiveSkillAttackCount, serialTaskQueue } from './lib/ui_state_safety.js';
 import { clampBaseStatsToFloor, computeBaseStatFloor, getAutoStatId, preserveAllocatedStatsForFloorChange, statTotal } from './lib/job_stats.js';
 import {
   serializeSession, deserializeSession,
@@ -5078,7 +5179,7 @@ import {
   getSecretMapMeta, getMonstersForSecretMap,
 } from './lib/secret_map.js';
 import { applyMonsterLevel } from './lib/monster_level_calc.js';
-import { computePetStats, isPetCapableJob } from './lib/pet_calc.js';
+import { calculatePetFinalDamage, computePetStats, isPetCapableJob } from './lib/pet_calc.js';
 import { createGuildSystem } from './lib/guild.js';
 import { calculateDisassemblyEstimate, resolveDisassemblyBaseItem, describeDisassemblyOption, disassemblyInputKey } from './lib/potential_disassembly.js';
 import {
@@ -8308,6 +8409,7 @@ function computeAbilitiesWithOmni(ch, finalStats, equipped, loader) {
 }
 async function recalcAllNow() {
   const ch = readCharacter();
+  const barrelAttackPct = DamageCalc.barrelAttackPct(ch.job);
 
   enforceSoloRingLimit();
   const equipped = [];
@@ -8370,6 +8472,7 @@ async function recalcAllNow() {
   applyScrollsToSTTemp(T, equipped, getEffectiveLv(ch));
   
   applyJobPassivesToSTTemp(T, ch);
+  if (barrelAttackPct) T.sum.physDamagePercent = (T.sum.physDamagePercent || 0) + barrelAttackPct;
   }, (T, ch) => {
   const f = finalizeStats(T);
   
@@ -8797,7 +8900,8 @@ async function recalcAllNow() {
   
   renderSetOpList(equipped);
   
-  renderScrollSetList(equipped);
+  const scrollSummary = summarizeActiveScrolls(equipped);
+  renderScrollSetList(equipped, scrollSummary);
 
   
   hideItemDetailPopup();
@@ -8810,7 +8914,7 @@ async function recalcAllNow() {
 
   IncomingDamageCalc.syncFromCharacter(f.equipped, wisdomBonus, ATTR_RESIST_CAP);
   FirstAidCalc.syncFromCharacter(f.equipped, ab.hpMax);
-  try { DamageCalc.syncFromCharacter(ch, f, ab); }
+  try { DamageCalc.syncFromCharacter(ch, f, ab, barrelAttackPct, scrollSummary); }
   catch (e) { console.warn('[DamageCalc] sync failed:', e); }
 
   
@@ -9282,6 +9386,8 @@ function buildSnapshot() {
   snap.mapMonster = { ...mapMonsterState };
   
   snap.pet = { slots: petState.slots.map((s) => s ? { mobid: s.mobid, customLv: s.customLv } : null) };
+  const petDamage = $('pet-damage-before-final')?.valueAsNumber;
+  if (Number.isSafeInteger(petDamage) && petDamage >= 0) snap.pet.damageBeforeFinal = petDamage;
 
   snap.minipet = {
     slots: minipetState.slots.map((s) => ({
@@ -9982,6 +10088,9 @@ async function loadSnapshot(data, sourceLabel) {
   } else {
     petState.slots = [null, null, null];
   }
+  const petDamage = data.pet?.damageBeforeFinal;
+  const petDamageInput = $('pet-damage-before-final');
+  if (petDamageInput) petDamageInput.value = Number.isSafeInteger(petDamage) && petDamage >= 0 ? String(petDamage) : '';
   if (petUIInitialized) renderPetTab();
 
 
@@ -10043,6 +10152,11 @@ async function loadSnapshot(data, sourceLabel) {
   marketShopUI?.reset();
   invalidateFeasibleCache();
   if (data.damageCalc) await DamageCalc.setState(data.damageCalc);
+  else {
+    DamageCalc.resetCannonInputs();
+    DamageCalc.resetRanzanDistance();
+    DamageCalc.resetScrollInputs();
+  }
   IncomingDamageCalc.setState(data.incomingDamageCalc);
   await recalcAll();
   await refreshItemList();
@@ -10294,10 +10408,9 @@ function applyScrollsToSTTemp(STTemp, equippedList, LvTemp) {
   }
 }
 
-function renderScrollSetList(equippedList) {
+function renderScrollSetList(equippedList, summary = summarizeActiveScrolls(equippedList)) {
   const root = $('scroll-set-list');
   if (!root) return;
-  const summary = summarizeActiveScrolls(equippedList);
   if (summary.length === 0) {
     root.innerHTML = '<div class="tdtext" style="color:#9aa68b; font-size:11px">(図案付き装備なし)</div>';
     return;
@@ -11195,7 +11308,6 @@ function getCharacterLvForPet() {
   return Number.isFinite(v) && v >= 1 ? v : 1;
 }
 
-
 function petDisplayName(mob) {
   if (!mob || !mob.name) return '';
   return mob.name.replace(/^\[T\]/, '');
@@ -11224,13 +11336,29 @@ async function initPetTab() {
       return;
     }
   }
-  petUIInitialized = true;
+  if (!petUIInitialized) {
+    $('pet-damage-before-final').addEventListener('input', () => {
+      renderPetFinalDamage();
+      scheduleAutosave();
+    });
+    petUIInitialized = true;
+  }
   renderPetTab();
 }
 
+function renderPetFinalDamage() {
+  const preview = $('pet-final-damage-preview');
+  const output = $('pet-damage-after-final');
+  const hasPet = petState.slots.some(slot => slot && getMonsterById(slot.mobid));
+  preview.hidden = !isPetCapableJob($('ch-job').value) || !hasPet;
+  const damage = preview.hidden ? null
+    : calculatePetFinalDamage($('pet-damage-before-final').valueAsNumber, lastFinalStats);
+  output.value = damage == null ? '–' : damage.toLocaleString('ja-JP', { maximumFractionDigits: 2 });
+}
 
 function renderPetTab() {
   if (!petUIInitialized) return;
+  renderPetFinalDamage();
   const ch = readCharacter();
   const capable = isPetCapableJob(ch.job);
   const msg     = $('pet-tab-disabled-msg');
@@ -11255,7 +11383,6 @@ function renderPetTab() {
   bindPetSlotEvents(tameables);
 }
 
-
 function buildPetOpsSummaryHtml(chStats) {
   const read = (k) => Number(chStats?.[k]) || 0;
   
@@ -11277,7 +11404,7 @@ function buildPetOpsSummaryHtml(chStats) {
     ['魔法強打 ダメ',      read('petMagicStrongDamage'),    '%', false],
     
     ['全属性攻撃力',       read('petAttrAtk') + read('petAttrAllBonus'), '%', false],
-    ['最終ダメージ',       read('petFinalDamage'),          '%', false],
+    ['最終ダメージ',       read('petFinalDamage'),          '%', true],
     ['属性吸収無視',       read('petAbsorbIgnore') > 0 ? 1 : 0, 'flag', false],
     
     ['攻撃速度',           read('petAtkSpeed'),             '%', false],
@@ -11288,7 +11415,7 @@ function buildPetOpsSummaryHtml(chStats) {
 
   let html = '<div class="pet-ops-panel" aria-label="（ペット・召喚獣）装備補正等まとめ">';
   html += '  <div class="pet-ops-panel-title">（ペット・召喚獣）装備補正等まとめ</div>';
-  html += '  <div class="pet-ops-panel-note">✓ = ペットステに反映済 / 他 = 表示のみ</div>';
+  html += '  <div class="pet-ops-panel-note">✓ = 計算に反映 / 他 = 表示のみ</div>';
   html += '  <div class="sim-detail-grid">';
   for (const [label, val, unit, applied] of opRows) {
     let valTxt;
@@ -14747,6 +14874,9 @@ function bindSessionEvents() {
     if (creatureUIInitialized) renderCreatureTab();
     if (creatureBookUIInitialized) renderCreatureBookTab();
     
+    DamageCalc.resetCannonInputs();
+    DamageCalc.resetRanzanDistance();
+    DamageCalc.resetScrollInputs();
     IncomingDamageCalc.reset();
     Titles.reset();
     
@@ -14775,6 +14905,7 @@ function bindSessionEvents() {
     mapMonsterState = newMapMonsterState();
     
     petState.slots = [null, null, null];
+    $('pet-damage-before-final').value = '';
     if (petUIInitialized) renderPetTab();
     
     minipetState.slots = [newMinipetSlot(), newMinipetSlot()];
@@ -18054,17 +18185,15 @@ const ChaosIncusedRing = (() => {
 
 const TransSkill = (() => {
 
-  
-
   const flat = (perLv) => ({ flat: 0, perLv });
   const flatT2 = (at10, perLvAfter) => ({ flat: at10, perLv: perLvAfter });
 
-
   const JOB_RARE_SKILLS = {
     0:  { name: 'パラレルスティング改',    note: '最大攻撃回数 1 回増加' },
-    1:  { name: 'ドラゴンツイスター改',    note: '30%程度で追加発動' },
+    1:  { name: 'ドラゴンツイスター改',    note: 'ドラゴンツイスターとドラゴンストームの攻撃周期短縮' },
     2:  { name: 'テイルチェイサー改',      note: '最大体力比例ダメージ 10%' },
-    3:  { name: 'オーサムフォートレス改',  note: '分身数 +4 / 攻撃回数 +1 / 範囲 +2m' },
+    3:  { name: 'オーサムフォートレス改',  note: '分身数 +4 / 攻撃回数 +1 / 範囲 +2m',
+      damage: { skillId: 246, extraHits: 1, extraRangeM: 2 } },
     4:  { name: 'フォーベガチャージング改', note: '持続時間 10 秒増加' },
     5:  { name: 'ビーストベルセルク改',    note: '体力吸収 1% / 無敵 2 秒 / CT 30 秒' },
     6:  { name: 'ミラータワー改',          note: '最大 HP の 2 倍シールド生成' },
@@ -18074,10 +18203,12 @@ const TransSkill = (() => {
     10: { name: 'ダーティーフィーバー改',  note: '最小攻撃回数 8 回' },
     11: { name: '分身改',                  note: '分身 1 体増加' },
     12: { name: 'ゴリアテスレイヤー改',    note: '敵引き寄せ / PVP 時 CT 10 秒' },
-    13: { name: '花の乙女スペシャル改',    note: '攻撃回数 +1 回' },
+    13: { name: '花の乙女スペシャル改',    note: '攻撃回数 +1 回',
+      damage: { skillId: 348, extraHits: 1 } },
     14: { name: '死霊術改',                note: '調教ペット HP 100% 増加' },
     15: { name: '広がる悪意改',            note: '火抵抗 40% 以上敵を攻撃時、 抵抗を 40% に低下' },
-    16: { name: '乱斬り改',                note: '攻撃 1 回に変更 / 4m 内敵に最終ダメージ 600% 増加' },
+    16: { name: '乱斬り改',                note: '攻撃 1 回に変更 / 4m 内敵に最終ダメージ 600% 増加',
+      damage: { skillId: 403, hitCount: 1, damageRangeM: 4, finalDamagePct: 600 } },
     17: { name: '半月いなし改',            note: '(詳細未記載)' },
     18: { name: '放射光改',                note: '1 秒間無敵状態' },
     19: { name: '掃除の邪魔しちゃダメ改',  note: '最大攻撃回数 1 回増加' },
@@ -18089,7 +18220,6 @@ const TransSkill = (() => {
     25: { name: 'サージングウェーブ改',    note: '回転速度 50% 増加' },
   };
 
-  
   const DEFS = [
     
     { id: 'n_str', name: '筋力強化', category: 'normal', maxSp: 76100,
@@ -18135,7 +18265,6 @@ const TransSkill = (() => {
         { label: 'ランダム属性追加ダメージ', tier1: { flat: 500, perLv: 50 }, tier2: { flat: 1000, perLv: 10 }, special: { flat: 250, perLv: 50 }, unit: '' },
       ] },
 
-    
     { id: 'r_str_focus', name: '筋力集中鍛錬', category: 'rareCommon', maxSp: 30000,
       effects: [
         { stat: 'str',               tier1: flat(150), tier2: flatT2(1500, 30) },
@@ -18184,12 +18313,11 @@ const TransSkill = (() => {
       displayOnly: [
         { label: '回復速度', tier1: { flat: 0, perLv: 10 }, tier2: { flat: 100, perLv: 1 }, special: { flat: 0, perLv: 10 }, unit: '' },
       ] },
-    { id: 'r_ct', name: '早まる時空改', category: 'rareCommon', maxSp: 30000,
+    { id: 'r_ct', name: '早まる時空改', category: 'rareCommon', maxSp: 30000, fixedCooldownReductionSec: 1,
       displayOnly: [
         { label: 'CT', note: 'SLv1 で 1 秒減少 (固定)' },
       ] },
 
-    
     { id: 'u_phys_strong', name: '物理強打', category: 'unique', maxSp: 148700,
       effects: [
         { stat: 'physStrongRate',   tier1: flat(1.0), tier2: flatT2(10, 0.2) },
@@ -18249,7 +18377,6 @@ const TransSkill = (() => {
       ] },
   ];
 
-
   function buildJobRareDef(jobId) {
     const rec = JOB_RARE_SKILLS[Number(jobId)];
     if (!rec) return null;
@@ -18262,7 +18389,6 @@ const TransSkill = (() => {
     };
   }
 
-  
   const STAT_LABELS = {
     str:'力', agi:'敏捷', con:'健康', int:'知識', wiz:'知恵', chs:'カリスマ', luc:'運',
     hpPercent:'最大HP%', cpPercent:'最大CP%',
@@ -18291,7 +18417,6 @@ const TransSkill = (() => {
     { title: 'スロット 4', sub: 'プレミア' },
   ];
 
-  
   function tierValue(tier, slv) {
     if (!tier) return 0;
     return (Number(tier.flat) || 0) + (Number(tier.perLv) || 0) * Math.max(0, slv);
@@ -18305,7 +18430,6 @@ const TransSkill = (() => {
     return v;
   }
 
-  
   function aggregate(jobId) {
     const sumMap = Object.create(null);
     const slotInfos = state.slots.map(() => ({ skill: null, lines: [] }));
@@ -18358,7 +18482,6 @@ const TransSkill = (() => {
   function clampSlv(n) { n = Number(n) || 0; return Math.max(0, Math.min(20, n | 0)); }
   function clampSpecial(n) { n = Number(n) || 0; return Math.max(0, Math.min(5, n | 0)); }
 
-  
   function findDef(skillId, jobId) {
     if (!skillId) return null;
     if (skillId.startsWith('rj_')) {
@@ -18370,7 +18493,6 @@ const TransSkill = (() => {
     return DEFS.find((d) => d.id === skillId) || null;
   }
 
-  
   function applyToSTTemp(STTemp, jobId) {
     if (!STTemp || !STTemp.sum) return;
     const { sumMap } = aggregate(jobId);
@@ -18386,7 +18508,15 @@ const TransSkill = (() => {
     return evalEntry(def.displayOnly[0], clampSlv(slot.slv), 0);
   }
 
-  
+  function getDamageModifiers(jobId, skillId) {
+    const learned = (id) => state.slots.some((slot) => slot?.skillId === id && clampSlv(slot.slv) > 0);
+    const jobEffect = JOB_RARE_SKILLS[jobId]?.damage;
+    return {
+      jobEffect: jobEffect && jobEffect.skillId === skillId && learned(`rj_${jobId}`) ? jobEffect : null,
+      fixedCooldownReductionSec: learned('r_ct') ? findDef('r_ct').fixedCooldownReductionSec : 0,
+    };
+  }
+
   const state = {
     slots: [
       { skillId: '', slv: 0, specialLv: 0 },
@@ -18396,13 +18526,11 @@ const TransSkill = (() => {
     ],
   };
 
-  
   function isSkillTakenByOther(skillId, slotIdx) {
     if (!skillId) return false;
     return state.slots.some((s, i) => i !== slotIdx && s && s.skillId === skillId);
   }
 
-  
   function availableDefs(jobId) {
     const list = [...DEFS];
     const jobRare = buildJobRareDef(jobId);
@@ -18415,7 +18543,6 @@ const TransSkill = (() => {
     return list;
   }
 
-  
   function readCurrentJobId() {
     try {
       const el = document.getElementById('ch-job');
@@ -18455,14 +18582,12 @@ const TransSkill = (() => {
         return `<optgroup label="${esc(CATEGORY_LABELS[cat])}">${opts}</optgroup>`;
       }).join('');
 
-      
       const slvOpts = Array.from({ length: 21 }, (_, i) =>
         `<option value="${i}"${i === s.slv ? ' selected' : ''}>${i}</option>`).join('');
       
       const spOpts = Array.from({ length: 6 }, (_, i) =>
         `<option value="${i}"${i === s.specialLv ? ' selected' : ''}>${i}</option>`).join('');
 
-      
       const def = findDef(s.skillId, jobId);
       let effHtml = '<span class="trans-slot-effects-note">スキル未選択</span>';
       let isEmpty = true;
@@ -18507,7 +18632,6 @@ const TransSkill = (() => {
     renderSummary();
   }
 
-  
   function aggregateSingleSlot(slot, jobId) {
     if (!slot || !slot.skillId) return { lines: [] };
     const tmpState = { slots: [slot] };
@@ -18631,9 +18755,8 @@ const TransSkill = (() => {
     renderSlots();
   }
 
-  return { init, applyToSTTemp, getLifeRecoverySpeedPercent, getState, getReportRows, setState, reset, rerender, DEFS, JOB_RARE_SKILLS };
+  return { init, applyToSTTemp, getLifeRecoverySpeedPercent, getDamageModifiers, getState, getReportRows, setState, reset, rerender, DEFS, JOB_RARE_SKILLS };
 })();
-
 
 const BloodRecord = (() => {
   const STAT_KEYS_7 = ['str','agi','con','int','wiz','chs','luc'];
@@ -19597,21 +19720,17 @@ const DamageCalc = (() => {
   
   let lastSkillBonus = 0;        
   let lastEquipped = null;       
+  let activeScrollEffects = new Map();
+  const scrollInputRows = {
+    'dmg-in-scrollHpPct': 'damage-scroll-hp-ratio',
+    'dmg-in-scrollEnemyHp': 'damage-scroll-enemy-hp',
+    'dmg-in-scrollAttack': 'damage-scroll-attack',
+  };
+  const supportedScrollEffects = new Set(['yuumou', 'sen', 'junsui', 'rei', 'yuuki', 'junkan', 'oga_no_soudou']);
 
-
-  async function loadForJob(jobId) {
-    const revision = ++skillLoadRevision;
+  async function fetchSkillDb(jobId) {
     const prefix = JOB_SKILL_DB[Number(jobId)];
-    currentJobId = Number(jobId);
-    skillDb = null;
-    if (!prefix) {
-      skillDb = null;
-
-      populateSkillSelectEmpty(`このジョブのダメージ計算は準備中です。`);
-      renderSkillInfo(null, null);
-      renderResults(null);
-      return;
-    }
+    if (!prefix) return null;
     const fetchJson = async (key) => {
       try {
         const res = await fetch(SKILL_DATA_BASE + key + '.json', { cache: 'no-cache' });
@@ -19623,20 +19742,44 @@ const DamageCalc = (() => {
       fetchJson(prefix),
       fetchJson(prefix + '_awake'),
     ]);
-    if (revision !== skillLoadRevision) return;
-    if (!normal && !awake) {
-      skillDb = null;
-      populateSkillSelectEmpty(`スキルDBの読込に失敗しました。`);
+    if (!normal && !awake) return null;
+    if (normal?.skills) for (const skill of normal.skills) skill.isAwake = false;
+    if (awake?.skills) for (const skill of awake.skills) skill.isAwake = true;
+    return { jobId: Number(jobId), prefix, normal, awake };
+  }
+
+  function installSkillDb(jobId, db) {
+    currentJobId = Number(jobId);
+    skillDb = db;
+    if (!db) {
+      populateSkillSelectEmpty(JOB_SKILL_DB[currentJobId] ? 'スキルDBの読込に失敗しました。' : '—');
       renderSkillInfo(null, null);
+      applyModeUI('phys');
       renderResults(null);
       return;
     }
     
-    if (normal && normal.skills) for (const s of normal.skills) s.isAwake = false;
-    if (awake  && awake.skills)  for (const s of awake.skills)  s.isAwake = true;
-    skillDb = { jobId: Number(jobId), prefix, normal, awake };
     populateSkillSelect();
     onSkillChange();
+  }
+
+  async function loadForJob(jobId) {
+    const revision = ++skillLoadRevision;
+    currentJobId = Number(jobId);
+    skillDb = null;
+    const db = await fetchSkillDb(jobId);
+    if (revision === skillLoadRevision) installSkillDb(jobId, db);
+  }
+
+  async function prepareState(jobId, state) {
+    const db = await fetchSkillDb(jobId);
+    const [group, id] = state.skill.split('_');
+    const skills = (group === 'a' ? db?.awake : db?.normal)?.skills;
+    const skill = skills?.find((entry) => String(entry.id) === id);
+    if (!skill || !(skill.hasPhysDmgPct || skill.hasMagicDmgRange || musketSpecForKey(state.skill))) {
+      throw Error('ダメージ計算のスキルを取得できません');
+    }
+    return db;
   }
 
   function populateSkillSelectEmpty(msg) {
@@ -19694,8 +19837,6 @@ const DamageCalc = (() => {
     return skill;
   }
 
-
-  
   const EXTRAPOLATE_KEYS = new Set(['physDmgPct', 'magicDmgMin', 'magicDmgMax']);
 
   function interpolateAtLv(skill, lv) {
@@ -19719,10 +19860,8 @@ const DamageCalc = (() => {
 
     const target = Math.max(minKey, Math.round(lv));
 
-    
     if (skill.levels[target]) return skill.levels[target];
 
-    
     if (target > maxKey) {
       const prevKey = keys.length >= 2 ? keys[keys.length - 2] : maxKey;
       const prevRow = skill.levels[prevKey] || {};
@@ -19732,13 +19871,15 @@ const DamageCalc = (() => {
         const a = prevRow[k], b = lastRow[k];
         if (typeof a === 'number' && typeof b === 'number' && maxKey !== prevKey) {
           const slope = (b - a) / (maxKey - prevKey);
-          out[k] = b + slope * (target - maxKey);
+          const value = b + slope * (target - maxKey);
+          
+          if (k === 'physDmgPct' && a >= 0 && b >= 0 && value < 0) delete out[k];
+          else out[k] = value;
         }
       }
       return out;
     }
 
-    
     let lo = minKey, hi = maxKey;
     for (let i = 0; i < keys.length; i++) {
       if (keys[i] <= target) lo = keys[i];
@@ -19761,10 +19902,14 @@ const DamageCalc = (() => {
     return out;
   }
 
-  
+  function usesMixedDamage(skill) {
+    return Boolean(skill.mixedDamage) || (skill.id === 1858 && skill.magicAttr === 'wind');
+  }
+
   function detectModeFromSkill(skill) {
     if (!skill) return 'phys';
     if (musketSpecForSkill(skill)) return 'magic';
+    if (usesMixedDamage(skill)) return 'mixed';
     
     if (skill.hasPhysDmgPct) return 'phys';
     if (skill.hasMagicDmgRange) return 'magic';
@@ -19773,12 +19918,18 @@ const DamageCalc = (() => {
 
   function applyModeUI(mode) {
     currentMode = mode;
+    const mixed = mode === 'mixed';
     const tag = $('damage-mode-tag');
-    if (tag) tag.textContent = (mode === 'magic') ? '魔法' : '物理';
+    if (tag) tag.textContent = mixed ? '物理＋風' : (mode === 'magic') ? '魔法' : '物理';
     const phys = $('damage-input-phys');
     const mag  = $('damage-input-magic');
     if (phys) phys.style.display = (mode === 'magic') ? 'none' : '';
-    if (mag)  mag.style.display  = (mode === 'magic') ? '' : 'none';
+    if (mag)  mag.style.display  = (mode === 'phys') ? 'none' : '';
+    $('damage-wind-enhance-row').hidden = !mixed;
+    $('damage-resist-label').textContent = mixed ? '敵の風抵抗%' : '敵の属性抵抗%';
+    $('damage-weaken-label').textContent = mixed ? '追加の風弱化%' : '敵の属性弱化%';
+    $('damage-result-mixed').hidden = !mixed;
+    for (const id of ['damage-result-single', 'damage-expected-single', 'damage-dps-single']) $(id).hidden = mixed;
     const skill = getSelectedSkill();
     const isMusket = mode === 'magic' && !!musketSpecForSkill(skill);
     document.querySelectorAll('.damage-musket-row').forEach((row) => {
@@ -19787,9 +19938,9 @@ const DamageCalc = (() => {
 
     if (mode === 'magic') {
       $('dmg-rlabel-normal').textContent = '通常 (×1)';
-      $('dmg-rlabel-crit').textContent   = '魔法致命打 (×2)';
+      $('dmg-rlabel-crit').textContent   = '魔法致命打';
       $('dmg-rlabel-double').textContent = '—';
-      $('dmg-rlabel-strong').textContent = '魔法強打 (×4)';
+      $('dmg-rlabel-strong').textContent = '魔法強打';
       const dr = $('dmg-row-double'); if (dr) dr.style.display = 'none';
     } else {
       $('dmg-rlabel-normal').textContent = '通常 (×1)';
@@ -19800,7 +19951,6 @@ const DamageCalc = (() => {
     }
   }
 
-  
   function renderSkillInfo(skill, levelRow) {
     const box = $('damage-skill-info');
     if (!box) return;
@@ -19817,7 +19967,7 @@ const DamageCalc = (() => {
       `<div class="dsi-row"><span class="dsi-key">パワーアップ</span><span class="dsi-val">${esc(skill.powerup || '—')}</span></div>`,
     ];
     if (levelRow && typeof levelRow.physDmgPct === 'number') {
-      lines.push(`<div class="dsi-row"><span class="dsi-key">物理表記ダメ</span><span class="dsi-val">+${fmt(levelRow.physDmgPct)}%</span></div>`);
+      lines.push(`<div class="dsi-row"><span class="dsi-key">物理表記ダメ</span><span class="dsi-val">${fmtSignedPercent(levelRow.physDmgPct)}</span></div>`);
     }
     if (levelRow && typeof levelRow.magicDmgMin === 'number') {
       const attr = skill.magicAttr ? attrLabel(skill.magicAttr) : '魔法';
@@ -19846,7 +19996,8 @@ const DamageCalc = (() => {
         const suffix = formula.displayRounding ? '（表の表示丸め前）' : '';
         return `${({ min: '最小 ', max: '最大 ', value: '' })[edge] || ''}${expression} = ${value}${suffix}`;
       });
-      return `<tr><th>${esc(row.label)}</th><td>${esc(terms.length ? terms.join(' / ') : row.status === 'conditional' ? row.points[0]?.text || '条件依存' : '表の整合確認が必要')}</td></tr>`;
+      if (!terms.length && row.status !== 'conditional') return '';
+      return `<tr><th>${esc(row.label)}</th><td>${esc(terms.length ? terms.join(' / ') : row.points[0]?.text || '条件依存')}</td></tr>`;
     });
     if (formulaLines.length) {
       lines.push(`<details><summary>スキル表の数式（Lv${effectiveLv}）</summary><p>Lvは装備補正込み。定数は増分0。追加・支援効果の式も表示します。総ダメージへの適用範囲は計算内訳を確認してください。</p><table><tbody>${formulaLines.join('')}</tbody></table></details>`);
@@ -19857,7 +20008,163 @@ const DamageCalc = (() => {
     box.innerHTML = lines.join('');
   }
 
-  
+  const cannonShotIds = new Set([2048, 2049, 2050, 2051]);
+  const cannonBarrelInput = 'dmg-in-cannonBarrelLv';
+  const cannonAwakeningInput = 'dmg-in-cannonAwakening';
+  const cannonAmmoInputs = ['dmg-in-cannonAntiTankLv', 'dmg-in-cannonBarbedLv', 'dmg-in-cannonChainLv'];
+  const cannonInputs = [cannonBarrelInput, cannonAwakeningInput, ...cannonAmmoInputs];
+  const siegeCooldownReduction = new Map([[2084, 0.40], [2083, 0.50], [2082, 0.30]]);
+  const siegeInputDefaults = {
+    'dmg-in-siegeTargets': '1',
+    'dmg-in-siegeStay': '3',
+    'dmg-in-siegeCp': '',
+    'dmg-in-siegeRefill': '0',
+    'dmg-in-siegeRefillEvery': '0',
+  };
+
+  function cannonLevel(id) {
+    const level = Number($(id)?.value);
+    return Number.isSafeInteger(level) && level > 0 ? level : 0;
+  }
+
+  function barrelAttackPct(jobId) {
+    return Number(jobId) === 25 ? cannonLevel(cannonBarrelInput) * 5 : 0;
+  }
+
+  function readCannonAmmo(skill) {
+    const applies = currentJobId === 25 && cannonShotIds.has(skill?.id);
+    $('damage-cannon-effects').hidden = currentJobId !== 25 || currentMode === 'magic';
+    $('damage-cannon-ammo').hidden = !applies;
+    const levels = applies ? cannonAmmoInputs.map(cannonLevel) : [];
+    const activeCount = levels.filter(level => level > 0).length;
+    const overLimit = activeCount > 2;
+    $('damage-cannon-ammo-error-row').hidden = !overLimit;
+    $('damage-cannon-ammo-error').textContent = overLimit ? '砲弾強化は2種までです。' : '';
+    if (!applies || overLimit) return null;
+
+    const [antiTankLv, barbedLv, chainLv] = levels;
+    const chainSkill = chainLv && skillDb.awake?.skills.find(entry => entry.id === 2076);
+    const chainPct = chainSkill ? interpolateAtLv(chainSkill, chainLv)?.physDmgPct : null;
+    return {
+      shellMasteryPct: activeCount > 0 && $(cannonAwakeningInput).value === '2073' ? 400 : 0,
+      defenseIgnorePct: antiTankLv ? Math.min(15, (99 + antiTankLv) / 10) : 0,
+      limitBreakPct: antiTankLv ? 5 : 0,
+      bleed: barbedLv ? { damagePct: Math.min(50, (99 + barbedLv) / 5), durationSec: 10 } : null,
+      chain: Number.isFinite(chainPct) ? { damagePct: chainPct, rangeM: 3, maxTargets: 2, hitsPerTarget: 2 } : null,
+    };
+  }
+
+  function resetCannonInputs() {
+    for (const id of cannonInputs) $(id).value = 0;
+    for (const [id, value] of Object.entries(siegeInputDefaults)) $(id).value = value;
+  }
+
+  function resetRanzanDistance() {
+    const input = $('dmg-in-ranzanDistance');
+    input.value = input.defaultValue;
+  }
+
+  function resetScrollInputs() {
+    for (const id of Object.keys(scrollInputRows)) {
+      const input = $(id);
+      input.value = input.defaultValue;
+    }
+  }
+
+  function scrollHitEffect(id, component, { enemyHpPct, enemyMaxHp, selfAttack, consumeCp }) {
+    if (id === 'junkan') {
+      const onProc = Number.isFinite(consumeCp) ? Math.max(0, consumeCp) / 2 : null;
+      return { onProc, expected: onProc == null ? null : onProc * 0.4 };
+    }
+
+    const { normal, crit, double, strong, inputs, attackCount } = component;
+    const pStrong = clamp01((inputs.strongRate || 0) / 100);
+    const pCrit = crit == null ? 0 : clamp01((inputs.critRate || 0) / 100) * (1 - pStrong);
+    const pDouble = double == null ? 0 : pCrit * clamp01((inputs.doubleCritRate || 0) / 100);
+    const criticalDamage = crit * (pCrit - pDouble) + double * pDouble;
+    if (id === 'yuumou' || id === 'sen') {
+      if (enemyHpPct == null) return { onProc: null, expected: null };
+      if (enemyHpPct < 70) return { onProc: 0, expected: 0 };
+      const landedDamage = (1 - pCrit - pStrong) * normal + criticalDamage + pStrong * strong;
+      const onProc = landedDamage / attackCount * 0.3;
+      return { onProc, expected: onProc };
+    }
+    if (pCrit === 0) return { onProc: null, expected: 0 };
+    const onProc = id === 'junsui'
+      ? (enemyMaxHp == null || selfAttack == null ? null : Math.min(enemyMaxHp * 0.1, selfAttack * 1.5))
+      : criticalDamage / pCrit / attackCount * 0.1;
+    const triggerRate = id === 'yuuki' ? 0.6 : 0.4;
+    return { onProc, expected: onProc == null ? null : onProc * pCrit * triggerRate };
+  }
+
+  function scrollOgreEffect(base, buffed) {
+    const expected = base + (buffed - base) * 0.15;
+    return [{ onProc: buffed, expected }, { onProc: buffed * 2, expected: expected * 2 }];
+  }
+
+  function renderScrollEffects(r) {
+    const panel = $('damage-scroll-effects');
+    if (!panel) return;
+    if (!r || !activeScrollEffects.size || !$('damage-auto-sync')?.checked) {
+      panel.hidden = true;
+      return;
+    }
+    const effects = activeScrollEffects;
+    const physical = r?.physical ?? (r?.mode === 'phys' ? r : null);
+    const magic = r?.wind ?? (r?.mode === 'magic' ? r : null);
+    const bravery = effects.has('yuumou') || effects.has('sen');
+    const purity = effects.has('junsui') && physical;
+    const fields = [bravery, purity, purity];
+    const rows = [];
+    let invalid = false;
+    const values = Object.entries(scrollInputRows).map(([inputId, rowId], index) => {
+      const row = $(rowId);
+      row.hidden = !fields[index];
+      if (row.hidden) return null;
+      const input = $(inputId);
+      if (!input.validity.valid) {
+        invalid = true;
+        return null;
+      }
+      return input.value === '' ? null : input.valueAsNumber;
+    });
+    const [enemyHpPct, enemyMaxHp, selfAttack] = values;
+    const conditions = { enemyHpPct, enemyMaxHp, selfAttack, consumeCp: r?.lvRow?.consumeCp };
+    const add = (label, { onProc, expected }) => rows.push([label, onProc, expected]);
+    for (const [id, name] of effects) {
+      if (id === 'junkan') add(`${name} CP獲得（1使用）`, scrollHitEffect(id, null, conditions));
+      if (id === 'oga_no_soudou' && physical) {
+        const { inputs, skillPct, attackCount, transFinalMultiplier = 1 } = physical;
+        const buffed = { ...inputs, physDmgPct: inputs.physDmgPct + 100, critRate: physical.crit == null ? 0 : 100 };
+        const pStrong = clamp01(buffed.strongRate / 100);
+        const pCrit = clamp01(buffed.critRate / 100) * (1 - pStrong);
+        const pDouble = pCrit * clamp01(buffed.doubleCritRate / 100);
+        const damage = type => physDamageFor(type, buffed, skillPct, attackCount) * transFinalMultiplier;
+        const expected = (1 - pStrong - pCrit) * damage('normal') + (pCrit - pDouble) * damage('crit')
+          + pDouble * damage('double') + pStrong * damage('strong');
+        const [one, two] = scrollOgreEffect(physical.expected, expected);
+        add(`${name} 次の各1回`, one);
+        add(`${name} 次の2回合計`, two);
+      }
+      for (const [part, component] of [['物理', physical], ['魔法', magic]]) {
+        const drainsHp = id === 'rei' || id === 'yuuki';
+        const relevant = id === 'yuumou' || id === 'sen' || drainsHp || (id === 'junsui' && part === '物理');
+        const attackCount = component?.attackCount ?? r.attackCount ?? (component?.singleHit ? 1 : null);
+        if (!relevant || !component || !(attackCount > 0) || r.musketSpec) continue;
+        const label = drainsHp ? 'HP吸収' : '追撃';
+        add(`${name} ${label}（${part}1打）`, scrollHitEffect(id, { ...component, attackCount }, conditions));
+      }
+    }
+    panel.hidden = rows.length === 0;
+    const error = $('damage-scroll-error');
+    error.hidden = !invalid;
+    const errorText = invalid ? '図案書の入力範囲を確認してください。' : '';
+    if (error.textContent !== errorText) error.textContent = errorText;
+    const table = $('damage-scroll-results');
+    const content = rows.map(([label, onProc, expected]) => `<tr><th scope="row">${esc(label)}</th><td>${onProc == null ? '—' : fmt(onProc)}</td><td>${expected == null ? '—' : fmt(expected)}</td></tr>`).join('');
+    if (table.innerHTML !== content) table.innerHTML = content;
+  }
+
   function readPhysInputs() {
     const num = (id) => Number($(id)?.value || 0) || 0;
     const ignore = $('damage-auto-sync')?.checked
@@ -19873,10 +20180,12 @@ const DamageCalc = (() => {
       finalPhysPct: num('dmg-in-finalPhysPct'),
       bloodFieldDmg: num('dmg-in-bloodFieldDmg'),
       critRate: num('dmg-in-critRate'),
+      critDmg: num('dmg-in-critDmg'),
       doubleCritRate: num('dmg-in-doubleCritRate'),
       strongRate: num('dmg-in-strongRate'),
       doubleCritDmg: num('dmg-in-doubleCritDmg'),
       strongDmg: num('dmg-in-strongDmg'),
+      strongCapAmplify: num('dmg-in-strongCapAmplify'),
       limitBreakPct: num('dmg-in-limitBreakPct'),
       limitBreakFlat: num('dmg-in-limitBreakFlat'),
       physCapBase: num('dmg-in-physCapBase'),
@@ -19887,7 +20196,120 @@ const DamageCalc = (() => {
     };
   }
 
+  function effectiveSkillCooldown(cooldownSec, reductionPercent, fixedReductionSec = 0) {
+    const base = Math.max(0, Number(cooldownSec) || 0);
+    const percentMultiplier = 1 - clamp01(reductionPercent / 100);
+    if (!fixedReductionSec) return base * percentMultiplier;
+    return Math.min(base * percentMultiplier, Math.max(0, base - fixedReductionSec));
+  }
+
+  function physicalTiming(skill, lvRow, inputs) {
+    const attackIntervalSec = Math.max(0.001, 1 / Math.max(0, 1 + inputs.attackSpd / 100));
+    const cooldownSec = Math.max(0, Number(lvRow.cooldownSec) || 0);
+    const effectiveCooldownSec = effectiveSkillCooldown(cooldownSec, inputs.skillCdReduce, inputs.fixedCooldownReductionSec);
+    const durationSec = skill.zone?.durationSec ?? skill.durationSec;
+    const { hitIntervalSec, activationLockSec = 0, allowsOverlap } = skill;
+    const activationIntervalSec = Math.max(attackIntervalSec, effectiveCooldownSec, activationLockSec,
+      allowsOverlap === false ? (durationSec ?? 0) : 0);
+    
+    const overlapUnresolved = allowsOverlap == null && durationSec - activationIntervalSec > 1e-9;
+    return {
+      attackIntervalSec, cooldownSec, effectiveCooldownSec, activationLockSec,
+      durationSec, hitIntervalSec, allowsOverlap, activationIntervalSec,
+      castsPerSecond: 1 / activationIntervalSec, overlapUnresolved,
+    };
+  }
+
+  function physicalRotation(skills, durationSec, { initialCp, refillCp, refillIntervalSec }) {
+    const epsilon = 1e-9;
+    const state = skills.map(skill => ({ ...skill, readyAt: 0, activeUntil: 0, casts: 0, occupiedSec: 0 }));
+    const canRefill = Number.isFinite(initialCp) && refillCp > 0 && refillIntervalSec >= 0.1;
+    let refillCount = 0;
+    let nextRefill = canRefill ? refillIntervalSec : Infinity;
+    let cp = initialCp;
+    let spentCp = 0;
+    let gainedCp = 0;
+    let time = 0;
+    let actionReadyAt = 0;
+    let cpShortage = false;
+    while (time < durationSec - epsilon) {
+      if (nextRefill <= time + epsilon) {
+        cp += refillCp;
+        refillCount++;
+        nextRefill = (refillCount + 1) * refillIntervalSec;
+      }
+      const ready = entry => entry.readyAt <= time + epsilon && entry.activeUntil <= time + epsilon;
+      const affordable = entry => entry.consumeCp <= cp + epsilon;
+      if (actionReadyAt <= time + epsilon) {
+        cpShortage ||= state.some(entry => ready(entry) && !affordable(entry));
+        const cast = state.find(entry => ready(entry) && affordable(entry));
+        if (cast) {
+          cast.casts++;
+          cast.occupiedSec += Math.min(cast.staySec ?? 0, durationSec - time);
+          cp = Math.max(0, cp - cast.consumeCp) + cast.gainCp;
+          spentCp += cast.consumeCp;
+          gainedCp += cast.gainCp;
+          cast.readyAt = time + cast.timing.effectiveCooldownSec;
+          const duration = cast.timing.durationSec ?? 0;
+          if (cast.timing.allowsOverlap === false) cast.activeUntil = time + duration;
+          actionReadyAt = time + Math.max(cast.timing.attackIntervalSec, cast.timing.activationLockSec);
+          if (cast.triggersReduction) {
+            for (const other of state) {
+              if (other !== cast && other.readyAt > time + epsilon) {
+                other.readyAt = time + (other.readyAt - time) * (1 - other.remainingCtReduction);
+              }
+            }
+          }
+        }
+      }
+      let next = nextRefill;
+      for (const entry of state) {
+        if (affordable(entry)) next = Math.min(next, Math.max(actionReadyAt, entry.readyAt, entry.activeUntil));
+      }
+      time = next;
+    }
+    return { durationSec, skills: state, spentCp, gainedCp, refillCount, cp, cpShortage };
+  }
+
+  function siegeRotation(effectiveLv, inputs, expectedFor, dragonTalonPct) {
+    const targets = Math.max(1, Math.min(6, Math.floor(Number($('dmg-in-siegeTargets').value) || 0)));
+    const staySec = Math.max(0, Math.min(3, Number($('dmg-in-siegeStay').value) || 0));
+    const start = $('dmg-in-siegeCp').value.trim();
+    const cp = {
+      initialCp: start === '' ? Infinity : Math.max(0, Number(start) || 0),
+      refillCp: Math.max(0, Number($('dmg-in-siegeRefill').value) || 0),
+      refillIntervalSec: Math.max(0, Number($('dmg-in-siegeRefillEvery').value) || 0),
+    };
+    const skills = [];
+    for (const [id, reduction] of siegeCooldownReduction) {
+      const skill = skillDb.awake?.skills.find(entry => entry.id === id);
+      const row = skill && interpolateAtLv(skill, effectiveLv);
+      if (!Number.isFinite(row?.physDmgPct) || !Number.isFinite(row.consumeCp) || !Number.isFinite(row.gainCp)) return null;
+      const timing = physicalTiming(skill, row, inputs);
+      const hits = effectiveSkillAttackCount(skill, row, inputs.attackSpd);
+      const damage = (type, pct = row.physDmgPct, count = hits) => physDamageFor(type, inputs, pct, count);
+      const mainExpected = expectedFor(damage('normal'), damage('crit'), damage('double'), damage('strong'));
+      const wave = skill.shockwave;
+      const waveTargets = wave ? Math.min(targets, wave.maxTargets) : 0;
+      let waveExpected = 0;
+      if (wave) {
+        const pct = wave.physDmgPct.intercept + wave.physDmgPct.perLevel * Math.max(skill.levelKeys[0], Math.round(effectiveLv));
+        waveExpected = expectedFor(damage('normal', pct, 1), damage('crit', pct, 1),
+          damage('double', pct, 1), damage('strong', pct, 1)) * waveTargets;
+      }
+      skills.push({
+        id, name: skill.name, timing, consumeCp: row.consumeCp, gainCp: row.gainCp,
+        remainingCtReduction: dragonTalonPct ? reduction : 0, triggersReduction: dragonTalonPct > 0,
+        mainHits: skill.zone ? null : (hits ?? 1), mainExpected, waveTargets, waveExpected,
+        staySec: skill.zone ? staySec : 0,
+        reachesCap: physicalAttackBeforeCap(inputs, row.physDmgPct) >= physicalCap(inputs),
+      });
+    }
+    return [10, 60].map(seconds => physicalRotation(skills, seconds, cp));
+  }
+
   let currentCpAuto = true;
+
   function readMagicInputs() {
     const num = (id) => Number($(id)?.value || 0) || 0;
     const capBonus = $('damage-auto-sync')?.checked ? (Number(lastEquipped?.magicDamageCapFlat) || 0) : 0;
@@ -19919,7 +20341,9 @@ const DamageCalc = (() => {
       bloodFieldDmg: num('dmg-in-mBloodFieldDmg'),
       mobCut:        num('dmg-in-mMobCut'),
       critRate:      num('dmg-in-mCritRate'),
+      critDmg:       num('dmg-in-mCritDmg'),
       strongRate:    num('dmg-in-mStrongRate'),
+      strongDmg:     num('dmg-in-mStrongDmg'),
       limitPct:      num('dmg-in-mLimitPct'),
       limitFlat:     num('dmg-in-mLimitFlat'),
       capBase:       (num('dmg-in-mCapBase') || 20000) + capBonus,
@@ -19928,31 +20352,21 @@ const DamageCalc = (() => {
     };
   }
 
-
-  
   
   function physDamageFor(hitType, inputs, skillPctTotal, attackCount) {
-    const weapon = (inputs.weaponMax || inputs.weaponMin || 0);
-    const strMul = 1 + (inputs.str / 200);
-    const skillMul = (100 + skillPctTotal + inputs.physDmgPct) / 100;
-    let base = (1 + weapon) * strMul * skillMul + inputs.nonWeapon * strMul;
-    base = Math.max(0, base - inputs.mobDef);
-    base *= (1 + inputs.finalAtkPct / 100);
-    base *= (1 + Math.min(inputs.vsTypePct, 300) / 100);
-    base *= (1 + inputs.limitBreakPct / 100);
+    let base = Math.min(physicalAttackBeforeCap(inputs, skillPctTotal), physicalCap(inputs));
 
-    
-    const cap = (inputs.physCapBase || 20000) + (inputs.limitBreakFlat || 0);
-    base = Math.min(base, cap);
-
-    let critMul = 1;
-    if (hitType === 'crit') critMul = 2;
-    else if (hitType === 'double') critMul = 4;
-    else if (hitType === 'strong') critMul = 3;
-    base *= critMul;
-    if (hitType === 'double') base *= (1 + inputs.doubleCritDmg / 100);
-    if (hitType === 'strong') base *= (1 + inputs.strongDmg / 100);
-    base *= (1 + inputs.finalPhysPct / 100);
+    let finalPhysPct = inputs.finalPhysPct;
+    if (hitType === 'crit') base *= 2 * (1 + inputs.critDmg / 100);
+    else if (hitType === 'double') {
+      base *= 4;
+      base *= (1 + inputs.doubleCritDmg / 100);
+    } else if (hitType === 'strong') {
+      base *= 3;
+      base *= (1 + inputs.strongDmg / 100);
+      finalPhysPct += inputs.strongCapAmplify;
+    }
+    base *= (1 + finalPhysPct / 100);
 
     base *= (1 + (inputs.bloodFieldDmg || 0) / 100);
     base *= Math.max(0, 1 - (inputs.mobCut || 0) / 100);
@@ -19960,10 +20374,27 @@ const DamageCalc = (() => {
     return base;
   }
 
+  function physicalAttackBeforeCap(inputs, skillPctTotal) {
+    const weapon = (inputs.weaponMax || inputs.weaponMin || 0);
+    const strMul = 1 + (inputs.str / 200);
+    const skillMul = (100 + skillPctTotal + inputs.physDmgPct) / 100;
+    let base = (1 + weapon) * strMul * skillMul + inputs.nonWeapon * strMul;
+    base = Math.max(0, base - inputs.mobDef);
+    base *= (1 + inputs.finalAtkPct / 100);
+    base *= (1 + Math.min(inputs.vsTypePct, 300) / 100);
+    return base * (1 + inputs.limitBreakPct / 100);
+  }
 
-  
+  function physicalCap(inputs) {
+    return (inputs.physCapBase || 20000) + (inputs.limitBreakFlat || 0);
+  }
 
-  
+  function magicHitMultiplier(hitType, inputs) {
+    if (hitType === 'crit') return 2 * (1 + inputs.critDmg / 100);
+    if (hitType === 'strong') return 4 * (1 + inputs.strongDmg / 100);
+    return 1;
+  }
+
   function magicDamageFor(hitType, inputs, skillDmgValue, attackCount) {
     const intB = calcIntBonus(inputs.int);
     let base = skillDmgValue * (1 + intB * (inputs.int / 200));
@@ -19972,18 +20403,12 @@ const DamageCalc = (() => {
     base *= (1 + inputs.finalDmg / 100);
     base *= Math.max(0, 1 - inputs.mobCut / 100);
 
-
-    
-    const cap = inputs.capBase || 20000;
+    const cap = (inputs.capBase || 20000) + inputs.limitFlat;
     if (base > cap) {
       base = cap + (base - cap) * ((inputs.limitPct || 0) / 100);
     }
 
-    let hitMul = 1;
-    if (hitType === 'crit')   hitMul = 2;  
-    else if (hitType === 'strong') hitMul = 4;  
-    base *= hitMul;
-
+    base *= magicHitMultiplier(hitType, inputs);
 
     base *= (1 + (inputs.bloodFieldDmg || 0) / 100);
 
@@ -20036,11 +20461,59 @@ const DamageCalc = (() => {
     }
   }
 
+  function calculateMagicComponent(skill, lvRow, attackCount, musketSpec) {
+    const inputs = readMagicInputs();
+    const keys = ['mCharisma', 'mAccuracy', 'mEvasion', 'mCurrentCp', 'mMaxCp', 'mThirst'];
+    if (keys.some(key => !String($('dmg-in-' + key)?.value ?? '').trim())) {
+      throw new RangeError('計算条件に数値を入力してください。');
+    }
+    const hitChance = magicHitChancePercent(inputs.evasion, inputs.accuracy, inputs.charisma);
+    const thirstBonus = thirstMagicBonusPercent(inputs.thirstMax, inputs.currentCp, inputs.maxCp);
+    const skillAttr = musketSpec ? musketSpec.attr : skill.magicAttr;
+    const mixedDamage = usesMixedDamage(skill);
+    const attrPct = mixedDamage ? Number($('dmg-in-mWindEnhance')?.value) || 0
+      : (skillAttr && lastEquipped ? Number(lastEquipped['attr' + capitalize(skillAttr)]) || 0 : 0);
+    const inputsAdj = { ...inputs, magicDmgPct: inputs.magicDmgPct + attrPct + thirstBonus };
+    if (mixedDamage && $('damage-auto-sync')?.checked) {
+      inputsAdj.enemyWeaken += (Number(lastEquipped?.attrWindWeaken) || 0)
+        + (Number(lastEquipped?.guildFlagAttrWeaken) || 0);
+    }
+
+    const min = Number(lvRow.magicDmgMin) || 0;
+    const max = Number(lvRow.magicDmgMax) || 0;
+    const base = inputs.dmgMode === 'min' ? min : inputs.dmgMode === 'avg' ? (min + max) / 2 : max;
+    const damage = hitType => musketSpec ? musketWeaponMagicFor(hitType, inputsAdj)
+      : magicDamageFor(hitType, inputsAdj, base, attackCount);
+    const normal = damage('normal');
+    const crit = damage('crit');
+    const strong = damage('strong');
+    const pStrong = clamp01(inputsAdj.strongRate / 100);
+    const pCrit = clamp01(inputsAdj.critRate / 100) * (1 - pStrong);
+    const pNormal = Math.max(0, 1 - pStrong - pCrit);
+    const expectedOnHit = pNormal * normal + pCrit * crit + pStrong * strong;
+    return {
+      hitChance, thirstBonus, expectedOnHit,
+      normal, crit, double: null, strong,
+      expected: expectedOnHit * hitChance / 100,
+      inputs: inputsAdj, baseSkillDmg: base, dmgRange: { min, max },
+      skillAttr: skillAttr || null, attrPct, baseMagicDmgPct: inputs.magicDmgPct,
+    };
+  }
+
   function recalc() {
     const skill = getSelectedSkill();
+    const { jobEffect, fixedCooldownReductionSec } = TransSkill.getDamageModifiers(currentJobId, skill?.id);
+    const ranzanSettings = $('damage-ranzan-settings');
+    const hasDistanceCondition = jobEffect?.damageRangeM != null;
+    ranzanSettings.hidden = !hasDistanceCondition;
     const lvInput = $('damage-skill-lv');
     const baseLv = Math.max(1, Math.min(50, Number(lvInput?.value || 50) | 0));
 
+    const mode = detectModeFromSkill(skill);
+    applyModeUI(mode);
+    const cannonAmmo = readCannonAmmo(skill);
+    const siegeSkill = currentJobId === 25 && siegeCooldownReduction.has(skill?.id);
+    $('damage-siege-settings').hidden = !siegeSkill;
     if (!skill) {
       renderResults(null);
       return;
@@ -20053,7 +20526,6 @@ const DamageCalc = (() => {
       return;
     }
 
-
     const skillBonus = Number(lastSkillBonus) || 0;
     const effectiveLv = baseLv + skillBonus;
     const bonusLabel = $('damage-skill-lv-bonus');
@@ -20065,102 +20537,169 @@ const DamageCalc = (() => {
       renderResults({ na: true, msg: 'スキルレベルデータがありません。' });
       return;
     }
-    const mode = detectModeFromSkill(skill);
-    applyModeUI(mode);
-    renderSkillInfo(skill, lvRow);
-    const dataIssue = skillDamageIssue(skill, lvRow, mode, !!musketSpec);
+    const championDirectHit = [1853, 1855, 1858].includes(skill.id);
+    const opticalistDirectHit = [454, 1187, 1192].includes(skill.id);
+    const maidDirectHit = currentJobId === 19 && [767, 780, 783].includes(skill.id);
+    const demonSorceressDirectOnly = currentJobId === 20 && [791, 793, 796].includes(skill.id);
+    const demonSorceressSingleHit = demonSorceressDirectOnly && skill.id !== 793;
+    const musketLongGun = currentJobId === 21 && [893, 895].includes(skill.id);
+    const alchemistDirectHit = currentJobId === 22 && [879, 884].includes(skill.id);
+    const directHit = championDirectHit || opticalistDirectHit || maidDirectHit || demonSorceressSingleHit || musketLongGun || alchemistDirectHit;
+    const baseAttackCount = effectiveSkillAttackCount(skill, lvRow, Number($('dmg-in-attackSpd')?.value));
+    const tableAttackCount = jobEffect?.hitCount
+      ?? (baseAttackCount == null ? null : baseAttackCount + (jobEffect?.extraHits ?? 0));
+    const attackCount = (maidDirectHit || demonSorceressSingleHit || (directHit && tableAttackCount != null)) ? 1 : tableAttackCount;
+    const dataIssue = skillDamageIssue(skill, lvRow, mode, !!musketSpec, attackCount);
+    renderSkillInfo(skill, dataIssue || tableAttackCount == null || skill.id === 1187
+      ? lvRow : { ...lvRow, attackCount: tableAttackCount });
     if (dataIssue) {
       renderResults({ na: true, msg: dataIssue });
       return;
     }
 
-    const attackCount = effectiveSkillAttackCount(skill, lvRow, Number($('dmg-in-attackSpd')?.value));
-    if (attackCount != null) renderSkillInfo(skill, { ...lvRow, attackCount });
+    let transFinalMultiplier = 1;
+    if (hasDistanceCondition) {
+      const value = $('dmg-in-ranzanDistance').value.trim();
+      const distance = Number(value);
+      if (!value || !Number.isFinite(distance) || distance < 0) {
+        renderResults({ na: true, msg: '敵との距離に0以上の数値を入力してください。' });
+        return;
+      }
+      if (distance <= jobEffect.damageRangeM) transFinalMultiplier += jobEffect.finalDamagePct / 100;
+    }
 
-    if (mode === 'phys') {
-      const inputs = readPhysInputs();
-      if (lastEquipped?.disablePhysCrit && $('damage-auto-sync')?.checked) inputs.critRate = 0;
+    let magic;
+    if (mode !== 'phys') {
+      try {
+        magic = calculateMagicComponent(skill, lvRow, attackCount, musketSpec);
+      } catch (error) {
+        renderResults({ na: true, msg: error.message });
+        return;
+      }
+    }
+
+    if (mode !== 'magic') {
+      const standardInputs = readPhysInputs();
+      standardInputs.fixedCooldownReductionSec = fixedCooldownReductionSec;
+      const barrelPct = barrelAttackPct(currentJobId);
+      const dragonTalonPct = siegeSkill && $(cannonAwakeningInput).value === '2081' ? 30 : 0;
+      standardInputs.finalAtkPct += dragonTalonPct;
+      standardInputs.physDmgPct += barrelPct;
+      const inputs = cannonAmmo ? {
+        ...standardInputs,
+        mobDef: standardInputs.mobDef * (1 - cannonAmmo.defenseIgnorePct / 100),
+        limitBreakPct: standardInputs.limitBreakPct + cannonAmmo.limitBreakPct,
+        finalPhysPct: standardInputs.finalPhysPct + cannonAmmo.shellMasteryPct,
+      } : standardInputs;
+      const disablePhysCrit = Boolean(lastEquipped?.disablePhysCrit && $('damage-auto-sync')?.checked);
+      if (disablePhysCrit) inputs.critRate = 0;
       const skillPct = Number(lvRow.physDmgPct) || 0;
-      const dN = physDamageFor('normal', inputs, skillPct, attackCount);
-      const dC = physDamageFor('crit',   inputs, skillPct, attackCount);
-      const dD = physDamageFor('double', inputs, skillPct, attackCount);
-      const dS = physDamageFor('strong', inputs, skillPct, attackCount);
+      const dN = physDamageFor('normal', inputs, skillPct, attackCount) * transFinalMultiplier;
+      const dC = physDamageFor('crit',   inputs, skillPct, attackCount) * transFinalMultiplier;
+      const dD = physDamageFor('double', inputs, skillPct, attackCount) * transFinalMultiplier;
+      const dS = physDamageFor('strong', inputs, skillPct, attackCount) * transFinalMultiplier;
       
       const pStrong = clamp01(inputs.strongRate / 100);
       const pCrit   = clamp01(inputs.critRate   / 100) * (1 - pStrong);
       const pDouble = pCrit * clamp01(inputs.doubleCritRate / 100);
       const pCritOnly = pCrit - pDouble;
       const pNormal = Math.max(0, 1 - pStrong - pCrit);
-      const expected = pNormal * dN + pCritOnly * dC + pDouble * dD + pStrong * dS;
-      const interval = 1 / (1 + (inputs.attackSpd / 100));
-      const dps = expected / Math.max(0.001, interval);
-      renderResults({
+      const expectedFor = (normal, crit, double, strong) =>
+        pNormal * normal + pCritOnly * crit + pDouble * double + pStrong * strong;
+      const expected = expectedFor(dN, dC, dD, dS);
+      const timing = physicalTiming(skill, lvRow, inputs);
+      const hitCountUnknown = timing.durationSec != null && attackCount == null;
+      const singleHit = directHit || (skill.id === 1869 && attackCount == null);
+      const cycleDps = timing.overlapUnresolved ? null : expected / timing.activationIntervalSec;
+      const physical = {
         mode: 'phys',
-        normal: dN, crit: dC, double: dD, strong: dS,
-        expected, dps, inputs, skillPct, attackCount, lvRow,
+        normal: dN, crit: disablePhysCrit ? null : dC, double: disablePhysCrit ? null : dD, strong: dS,
+        expected, dps: hitCountUnknown || singleHit ? null : cycleDps, singleHit, directHit, timing, inputs, skillPct, attackCount, lvRow,
+        dpsPerHit: hitCountUnknown ? cycleDps : null,
+        ...(skill.durationSec != null ? { durationSec: skill.durationSec, hitIntervalSec: skill.hitIntervalSec } : {}),
         effectiveLv, baseLv, skillBonus,
-      });
-    } else {
-      const inputs = readMagicInputs();
-      let hitChance, thirstBonus;
-      try {
-        const keys = ['mCharisma', 'mAccuracy', 'mEvasion', 'mCurrentCp', 'mMaxCp', 'mThirst'];
-        if (keys.some(key => !String($('dmg-in-' + key)?.value ?? '').trim())) {
-          throw new RangeError('計算条件に数値を入力してください。');
-        }
-        hitChance = magicHitChancePercent(inputs.evasion, inputs.accuracy, inputs.charisma);
-        thirstBonus = thirstMagicBonusPercent(inputs.thirstMax, inputs.currentCp, inputs.maxCp);
-      } catch (error) {
-        renderResults({ na: true, msg: error.message });
-        return;
+      };
+      if (hasDistanceCondition) physical.transFinalMultiplier = transFinalMultiplier;
+      if (jobEffect?.extraRangeM && Number.isFinite(lvRow.attackRange)) {
+        physical.attackRangeM = lvRow.attackRange + jobEffect.extraRangeM;
       }
-      const musketSpec2 = musketSpecForSkill(skill);
-
-      const skillAttr = musketSpec2 ? musketSpec2.attr : skill.magicAttr;
-      const attrPct = (skillAttr && lastEquipped)
-        ? Number(lastEquipped['attr' + capitalize(skillAttr)]) || 0
-        : 0;
-      const inputsAdj = { ...inputs, magicDmgPct: (inputs.magicDmgPct || 0) + attrPct + thirstBonus };
-
-      const min = Number(lvRow.magicDmgMin) || 0;
-      const max = Number(lvRow.magicDmgMax) || 0;
-      const base = (inputs.dmgMode === 'min') ? min
-                 : (inputs.dmgMode === 'avg') ? (min + max) / 2
-                 : max;
-      const dN = musketSpec2 ? musketWeaponMagicFor('normal', inputsAdj) : magicDamageFor('normal', inputsAdj, base, attackCount);
-      const dC = musketSpec2 ? musketWeaponMagicFor('crit',   inputsAdj) : magicDamageFor('crit',   inputsAdj, base, attackCount);
-      const dS = musketSpec2 ? musketWeaponMagicFor('strong', inputsAdj) : magicDamageFor('strong', inputsAdj, base, attackCount);
-      
-      const pStrong = clamp01(inputsAdj.strongRate / 100);
-      const pCrit   = clamp01(inputsAdj.critRate / 100) * (1 - pStrong);
-      const pNormal = Math.max(0, 1 - pStrong - pCrit);
-      const expectedOnHit = pNormal * dN + pCrit * dC + pStrong * dS;
-      const expected = expectedOnHit * hitChance / 100;
-      const attackInterval = musketSpec2 && inputsAdj.musketDpsMode === 'reload'
+      if (barrelPct) physical.barrelAttackPct = barrelPct;
+      if (siegeSkill) {
+        physical.dragonTalonPct = dragonTalonPct;
+        physical.rotation = siegeRotation(effectiveLv, inputs, expectedFor, dragonTalonPct);
+      }
+      if (cannonAmmo?.shellMasteryPct) physical.shellMasteryPct = cannonAmmo.shellMasteryPct;
+      if (cannonAmmo?.limitBreakPct) {
+        physical.antiTank = { defenseIgnorePct: cannonAmmo.defenseIgnorePct, limitBreakPct: cannonAmmo.limitBreakPct };
+      }
+      if (cannonAmmo?.bleed && expected > 0) {
+        const basePerHit = expected / (attackCount || 1);
+        physical.bleed = { ...cannonAmmo.bleed, damageBasis: basePerHit * cannonAmmo.bleed.damagePct / 100 };
+      }
+      if (cannonAmmo?.chain && expected > 0) {
+        const chain = cannonAmmo.chain;
+        const damage = hit => physDamageFor(hit, standardInputs, chain.damagePct, chain.hitsPerTarget);
+        const perTargetExpected = expectedFor(damage('normal'), damage('crit'), damage('double'), damage('strong'));
+        physical.chain = {
+          ...chain, perTargetExpected,
+          shotAndChainExpected: expected / (attackCount || 1) + perTargetExpected,
+          maxTargetsExpected: chain.maxTargets * perTargetExpected,
+        };
+      }
+      if (skill.shockwave) {
+        const { rangeM, maxTargets, physDmgPct } = skill.shockwave;
+        const shockwavePct = physDmgPct.intercept + physDmgPct.perLevel * Math.max(skill.levelKeys[0], Math.round(effectiveLv));
+        const shockwaveDamage = hit => physDamageFor(hit, inputs, shockwavePct, 1);
+        const perTargetExpected = expectedFor(
+          shockwaveDamage('normal'), shockwaveDamage('crit'), shockwaveDamage('double'), shockwaveDamage('strong'),
+        );
+        physical.shockwave = {
+          rangeM, maxTargets, perTargetExpected,
+          bothHitsExpected: expected + perTargetExpected,
+          maxTargetsExpected: maxTargets * perTargetExpected,
+        };
+      }
+      if (skill.zone) physical.zone = skill.zone;
+      if (mode === 'mixed') {
+        renderResults({
+          mode, physical, wind: magic, attackCount, effectiveLv, baseLv, skillBonus, lvRow, singleHit,
+          normal: physical.normal + magic.normal,
+          expected: physical.expected + magic.expected,
+          dps: null,
+          windBladeDance: skill.mixedDamage?.windBladeDance,
+        });
+      } else {
+        renderResults(physical);
+      }
+    } else {
+      const inputsAdj = magic.inputs;
+      const attackInterval = musketSpec && inputsAdj.musketDpsMode === 'reload'
         ? musketReloadSeconds(inputsAdj.attackSpd) / Math.max(1, inputsAdj.bulletCount || 1)
         : 1 / (1 + (inputsAdj.attackSpd / 100));
       const cooldown = Number(lvRow.cooldownSec) || 0;
-      const cdReduce = Math.max(0, Math.min(100, Number($('dmg-in-skillCdReduce')?.value) || 0));
-      const interval = Math.max(attackInterval, cooldown * (1 - cdReduce / 100));
-      const dps = expected / Math.max(0.001, interval);
+      const cdReduce = Number($('dmg-in-skillCdReduce')?.value) || 0;
+      const effectiveCooldownSec = effectiveSkillCooldown(cooldown, cdReduce, fixedCooldownReductionSec);
+      const interval = Math.max(attackInterval, effectiveCooldownSec);
+      const doomDayHit = skill.id === 1262;
+      const singleHit = opticalistDirectHit || maidDirectHit || demonSorceressSingleHit || alchemistDirectHit ||
+        skill.id === 1249 || skill.id === 1254 || skill.id === 1870 || doomDayHit;
+      const dps = singleHit || demonSorceressDirectOnly ? null : magic.expected / Math.max(0.001, interval);
+      const drainPercent = Number(lastEquipped?.magicHpDrainPercent) || 0;
+      const drainsOnHit = (skill.id === 450 || skill.id === 1701) && (attackCount ?? 1) === 1;
+      const magicHpDrainExpected = drainsOnHit && drainPercent > 0
+        ? Math.max(0, magic.expected) * drainPercent / 100 : null;
       renderResults({
         mode: 'magic',
-        hitChance, thirstBonus, expectedOnHit,
-        normal: dN, crit: dC, double: null, strong: dS,
-        expected, dps,
-        inputs: inputsAdj,
-        baseSkillDmg: base, dmgRange: { min, max },
+        ...magic, dps, singleHit, directHit, doomDayHit, demonSorceressDirectOnly,
+        magicHpDrainExpected,
         attackCount, lvRow,
         skillId: skill.id,
-        cooldown, interval,
-        skillAttr: skillAttr || null,
-        attrPct,
-        baseMagicDmgPct: inputs.magicDmgPct || 0,
-        musketSpec: musketSpec2,
-        musketBaseSkillDmg: musketSpec2
+        cooldown, effectiveCooldownSec, interval,
+        musketSpec,
+        musketBaseSkillDmg: musketSpec
           ? selectedWeaponMagicDamage(inputsAdj) * ((inputsAdj.atkApplyPct || 0) / 100) * (1 + (inputsAdj.weaponDmgPct || 0) / 100)
           : null,
-        musketReloadSec: musketSpec2 ? musketReloadSeconds(inputsAdj.attackSpd) : null,
+        musketReloadSec: musketSpec ? musketReloadSeconds(inputsAdj.attackSpd) : null,
         musketInterval: interval,
         effectiveLv, baseLv, skillBonus,
       });
@@ -20173,8 +20712,56 @@ const DamageCalc = (() => {
   }
 
   function renderResults(r) {
+    const siegeResult = $('damage-siege-result');
+    const siegeHtml = r?.rotation ? damageBreakdownTable(siegeRotationRows(r.rotation, r.effectiveLv)) : '';
+    if (siegeResult.innerHTML !== siegeHtml) siegeResult.innerHTML = siegeHtml;
     lastResult = (r && !r.na) ? r : null;
+    renderScrollEffects(lastResult);
+    const drainBox = $('damage-hp-drain');
+    if (drainBox) {
+      const drain = lastResult?.magicHpDrainExpected;
+      drainBox.hidden = drain == null;
+      $('damage-hp-drain-value').textContent = drain == null ? '' : fmt(drain);
+    }
+    const expectedLabel = $('damage-expected-label');
+    const expectedText = r?.singleHit ? '期待値 1発' : '期待値 1回';
+    if (expectedLabel && expectedLabel.textContent !== expectedText) expectedLabel.textContent = expectedText;
+    const singleColumn = $('damage-single-column');
+    const singleColumnText = r?.directHit ? '1発のダメージ' : '1回の使用ダメージ（全HIT）';
+    if (singleColumn.textContent !== singleColumnText) singleColumn.textContent = singleColumnText;
+    const dpsLabel = r?.dpsPerHit != null ? '1 HIT換算DPS' : 'DPS (1秒あたり)';
+    if ($('damage-dps-label').textContent !== dpsLabel) $('damage-dps-label').textContent = dpsLabel;
     const set = (id, v) => { const n = $(id); if (n) n.textContent = (v == null) ? '-' : fmtInt(v); };
+    if (currentMode === 'mixed') {
+      const mixed = r?.mode === 'mixed' ? r : null;
+      const singleHit = Boolean(mixed?.singleHit);
+      const expectedColumn = singleHit ? '期待値1発' : '期待値1回';
+      const classes = $('damage-result-mixed').classList;
+      if (singleHit) classes.add('is-single-hit');
+      else classes.remove('is-single-hit');
+      const expectedHeader = $('damage-mixed-expected-column');
+      if (expectedHeader.textContent !== expectedColumn) expectedHeader.textContent = expectedColumn;
+      for (const [key, component] of [['phys', mixed?.physical], ['wind', mixed?.wind], ['total', mixed]]) {
+        set('dmg-mix-' + key + '-hit', component ? component.normal / mixed.attackCount : null);
+        set('dmg-mix-' + key + '-normal', component?.normal);
+        set('dmg-mix-' + key + '-expected', component?.expected);
+      }
+      if (mixed) {
+        const dance = mixed.windBladeDance;
+        const rows = [
+          ['実効Lv', mixed.effectiveLv],
+          ['直撃風の表記', `${fmt(mixed.wind.dmgRange.min)}〜${fmt(mixed.wind.dmgRange.max)}`],
+          ...(singleHit ? [] : [['攻撃回数', mixed.attackCount], ...physicalTimingRows(mixed.physical)]),
+        ];
+        if (dance?.trigger === 'onHit') {
+          rows.push(['風刃の舞', `命中後、${dance.tickIntervalSec}秒ごとに${dance.durationSec}秒間`]);
+        }
+        $('damage-warnings').textContent = '';
+        $('damage-breakdown').innerHTML = damageBreakdownTable(rows);
+        updatePvpCalculator();
+        return;
+      }
+    }
     if (!r) {
       set('dmg-r-normal', null); set('dmg-r-crit', null); set('dmg-r-double', null); set('dmg-r-strong', null);
       $('damage-expected-value').textContent = '-';
@@ -20198,23 +20785,16 @@ const DamageCalc = (() => {
     set('dmg-r-double', r.double);
     set('dmg-r-strong', r.strong);
     $('damage-expected-value').textContent = fmtInt(r.expected);
-    $('damage-dps-value').textContent = fmtInt(r.dps);
+    $('damage-dps-value').textContent = fmtInt(r.dps ?? r.dpsPerHit);
 
     const warns = [];
     const selectedSkill = getSelectedSkill();
     if (selectedSkill?.damageScopeNote) warns.push(selectedSkill.damageScopeNote);
     if (selectedSkill?.attackCountBySpeed) warns.push('攻撃回数は追加攻撃速度75%ごとに1回増加、最大12回です。');
-    if (lastEquipped?.physStrongCapAmplify && r.mode === 'phys') warns.push('物理強打時の限界ダメージ増幅は、この結果に含まれていません。');
     if (lastEquipped?.disablePhysCrit && r.mode === 'phys' && $('damage-auto-sync')?.checked) warns.push('装備効果により物理クリティカルは発動しません。');
-    const unresolved = (selectedSkill?.damageRows || []).filter((row) => row.kind === 'attack' && ['table', 'partial'].includes(row.status));
-    if (unresolved.length) warns.push('表の整合確認が必要なダメージ項目があります。確定した軸には数式を使い、残りは表の補間・外挿を使っています。');
-    if (selectedSkill?.hasPhysDmgPct && selectedSkill?.hasMagicDmgRange) warns.push('現在の結果は物理成分です。魔法成分は合算していません。各成分の式は「スキル表の数式」で確認できます。');
     let rows;
     if (r.mode === 'magic') {
       const inp = r.inputs;
-      if (r.skillId === 54 || r.skillId === 1221) {
-        warns.push('各HITを同じ表記ダメージで計算しています。スキル表の段階別補正85～125%は未反映です。');
-      }
       if (r.musketSpec) {
         
       } else if (r.dmgRange && (r.dmgRange.min || r.dmgRange.max)) {
@@ -20225,12 +20805,15 @@ const DamageCalc = (() => {
       if (inp.critRate > 100) warns.push('魔法致命打率% が 100 を超えています。');
       if ((100 - inp.enemyResist + inp.enemyWeaken) <= 0) warns.push('属性抵抗 - 弱化 が 100% 以上のため、ダメージは 0 に張り付いています。');
       const attrLabelStr = r.skillAttr ? attrLabel(r.skillAttr) : '無';
+      const soulBurn = r.skillId === 1870;
       rows = [
         ['命中率', `${fmt(r.hitChance)}%`],
         ['渇きの増加率', `${fmt(r.thirstBonus)}%`],
         ['実効 Lv', `${r.effectiveLv} (= ベース ${r.baseLv}${r.skillBonus ? ' + スキル+' + r.skillBonus : ''})` +
           (r.effectiveLv > 50 ? ' ★Lv50 超え (ダメージは等差式／外挿)' : '')],
-        ['HIT数 / 使用間隔', `${r.attackCount || 1} HIT / ${fmt(r.interval)} 秒 (表のCT ${r.cooldown || 0} 秒)`],
+        ...(r.doomDayHit
+          ? [['クールタイム', `${fmt(r.cooldown)} 秒`]]
+          : soulBurn || r.directHit || r.demonSorceressDirectOnly ? [] : [['HIT数 / 使用間隔', `${r.attackCount || 1} HIT / ${fmt(r.interval)} 秒 (表のCT ${r.cooldown || 0} 秒)`]]),
         ['スキル属性', attrLabelStr],
         ['表記ダメ (採用)', r.musketSpec
           ? `${fmtInt(r.musketBaseSkillDmg)} (= 武器${fmt(inp.weaponMax || inp.weaponMin)} × 適用${fmt(inp.atkApplyPct)}% × ダメージ${(1 + (inp.weaponDmgPct || 0) / 100).toFixed(3)}倍)`
@@ -20253,13 +20836,18 @@ const DamageCalc = (() => {
         ['最終ダメ% 倍率', (1 + inp.finalDmg / 100).toFixed(3) + ' 倍'],
         ['ブラッドレコード最終ダメ% 倍率 (外側)', (1 + (inp.bloodFieldDmg || 0) / 100).toFixed(3) + ' 倍'],
         ['Mobカット 倍率', (1 - inp.mobCut / 100).toFixed(3) + ' 倍'],
-        ['魔法ダメ制限 (cap)', fmtInt(inp.capBase || 20000)],
+        ['魔法ダメ制限 (cap)', fmtInt((inp.capBase || 20000) + inp.limitFlat)],
         ['限界突破 超過%', `${fmt(inp.limitPct)}% ` +
           `(称号 Lv0=0% / Lv1=8% / Lv2=16% / Lv3=24% / Lv4=32% / Lv5=36%)`],
         ['制限超過時の式', `damage = cap + (raw - cap) × 超過%/100`],
-        ['ヒット倍率', '通常×1 / 魔法致命×2 / 魔法強打×4'],
-        ['攻撃回数', r.attackCount ? fmt(r.attackCount) : '—'],
-        ['1発間隔 (1/(1+atkSpd%))', (1 / (1 + inp.attackSpd / 100)).toFixed(3) + ' 秒'],
+        ['ヒット倍率', `通常×1 / 魔法致命×${fmt(magicHitMultiplier('crit', inp))} / 魔法強打×${fmt(magicHitMultiplier('strong', inp))}`],
+        ...(r.doomDayHit || soulBurn ? [] : [
+        ...(r.directHit ? [] : [
+          ['攻撃回数', r.attackCount ? fmt(r.attackCount) : '—'],
+          ...(r.demonSorceressDirectOnly ? [] :
+            [['1発間隔 (1/(1+atkSpd%))', (1 / (1 + inp.attackSpd / 100)).toFixed(3) + ' 秒']]),
+        ]),
+        ]),
       ];
     } else {
       const inp = r.inputs;
@@ -20268,16 +20856,13 @@ const DamageCalc = (() => {
       }
       if (inp.critRate > 100) warns.push('致命打率% が 100 を超えています。');
       if (inp.doubleCritRate > 100) warns.push('ダブクリ率% が 100 を超えています。');
-      if (inp.skillCdReduce !== 0) {
-        warns.push('スキルCT減少% は DPS 算出に反映していません (スキル単位の CT データを未取得のため)。');
-      }
       rows = [
         ['実効 Lv', `${r.effectiveLv} (= ベース ${r.baseLv}${r.skillBonus ? ' + スキル+' + r.skillBonus : ''})` +
           (r.effectiveLv > 50 ? ' ★Lv50 超え (ダメ系のみ外挿、攻撃範囲等は Lv50 で打ち止め)' : '')],
         ['武器攻撃力 (最大採用)', fmtInt(inp.weaponMax || inp.weaponMin)],
         ['力補正', (1 + inp.str / 200).toFixed(3) + ' 倍'],
-        ['スキル表記ダメ%', `+${fmt(r.skillPct)}%`],
-        ['物理ダメ% (合計)', `+${fmt(inp.physDmgPct)}%`],
+        ['スキル表記ダメ%', fmtSignedPercent(r.skillPct)],
+        ['物理ダメ% (合計)', fmtSignedPercent(inp.physDmgPct)],
         ['skillMul (合算倍率)', ((100 + r.skillPct + inp.physDmgPct) / 100).toFixed(3) + ' 倍'],
         ['Mob防御 (減算)', fmtInt(inp.mobDef)],
         ['最終攻撃力 倍率', (1 + inp.finalAtkPct / 100).toFixed(3) + ' 倍'],
@@ -20285,44 +20870,127 @@ const DamageCalc = (() => {
         ['限界突破% 倍率', (1 + inp.limitBreakPct / 100).toFixed(3) + ' 倍'],
         ['ダメ上限 (キャップ)', `${fmtInt((inp.physCapBase || 20000) + (inp.limitBreakFlat || 0))} ` +
           `(= ベース ${fmtInt(inp.physCapBase || 20000)} + 称号 ${fmtInt(inp.limitBreakFlat || 0)})`],
+        ['致命打ダメ増 倍率', (1 + inp.critDmg / 100).toFixed(3) + ' 倍'],
         ['ダブクリダメ増 倍率', (1 + inp.doubleCritDmg / 100).toFixed(3) + ' 倍'],
         ['強打ダメ増 倍率', (1 + inp.strongDmg / 100).toFixed(3) + ' 倍'],
         ['最終物理ダメ% 倍率', (1 + inp.finalPhysPct / 100).toFixed(3) + ' 倍'],
+        ['強打時の最終物理ダメ倍率', (1 + (inp.finalPhysPct + inp.strongCapAmplify) / 100).toFixed(3) + ' 倍'],
         ['ブラッドレコード最終ダメ% 倍率 (外側)', (1 + (inp.bloodFieldDmg || 0) / 100).toFixed(3) + ' 倍'],
         ['Mobカット 倍率', (1 - (inp.mobCut || 0) / 100).toFixed(3) + ' 倍'],
-        ['攻撃回数', r.attackCount ? fmt(r.attackCount) : '—'],
-        ['1発間隔 (1/(1+atkSpd%))', (1 / (1 + inp.attackSpd / 100)).toFixed(3) + ' 秒'],
+        ...(r.singleHit ? [] : [
+          ['攻撃回数', r.attackCount ? fmt(r.attackCount) : '—'],
+          ...physicalTimingRows(r),
+        ]),
       ];
     }
+    if (r.transFinalMultiplier > 1) rows.push(['乱斬り改 最終ダメージ', fmtSignedPercent((r.transFinalMultiplier - 1) * 100)]);
+    if (r.attackRangeM != null) rows.push(['オーサムフォートレス改 攻撃範囲', fmt(r.attackRangeM) + ' m']);
+    if (r.barrelAttackPct) rows.push(['バレルチューニング', fmtSignedPercent(r.barrelAttackPct)]);
+    if (r.shellMasteryPct) rows.push(['シェルマスタリー', fmtSignedPercent(r.shellMasteryPct)]);
+    if (r.dragonTalonPct) rows.push(['ドラゴンタロン 最終攻撃力', fmtSignedPercent(r.dragonTalonPct)]);
+    if (r.antiTank) {
+      rows.push(['対戦車弾 防御無視', fmt(r.antiTank.defenseIgnorePct) + '%'],
+        ['対戦車弾 物理限界突破', fmtSignedPercent(r.antiTank.limitBreakPct)]);
+    }
+    if (r.bleed) {
+      rows.push(['出血持続時間', fmt(r.bleed.durationSec) + ' 秒'],
+        ['出血の基準ダメージ（砲撃1 HIT）', fmtInt(r.bleed.damageBasis)]);
+    }
+    if (r.chain) {
+      const chain = r.chain;
+      rows.push(['連鎖爆発 範囲・打撃数', fmt(chain.rangeM) + ' m / ' + chain.hitsPerTarget + ' HIT'],
+        ['連鎖爆発 期待値（中心の敵1体）', fmtInt(chain.perTargetExpected)],
+        ['砲撃1 HIT＋連鎖爆発（中心の敵1体）', fmtInt(chain.shotAndChainExpected)],
+        ['連鎖爆発 合計（爆発1組・' + chain.maxTargets + '体に命中）', fmtInt(chain.maxTargetsExpected)]);
+    }
+    if (r.shockwave) {
+      const wave = r.shockwave;
+      rows.push(
+        ['衝撃波範囲', fmt(wave.rangeM) + ' m'],
+        ['衝撃波期待値（1体）', fmtInt(wave.perTargetExpected)],
+        ['直撃＋衝撃波（同じ敵に両方命中）', fmtInt(wave.bothHitsExpected)],
+        [`衝撃波合計（${wave.maxTargets}体に命中）`, fmtInt(wave.maxTargetsExpected)],
+      );
+    }
+    if (r.zone) {
+      rows.push(['設置範囲', fmt(r.zone.rangeM) + ' m'], ['設置持続時間', fmt(r.zone.durationSec) + ' 秒']);
+    }
     $('damage-warnings').innerHTML = warns.map((w) => `・${esc(w)}`).join('<br>');
-    $('damage-breakdown').innerHTML =
-      '<table><tbody>' +
-      rows.map(([k, v]) => `<tr><th>${esc(k)}</th><td class="dbd-val">${esc(String(v))}</td></tr>`).join('') +
-      '</tbody></table>';
+    $('damage-breakdown').innerHTML = damageBreakdownTable(rows);
     updatePvpCalculator();
   }
 
+  function siegeRotationRows(rotation, effectiveLv) {
+    const rows = [['公式表のCT短縮率', '共通Lv ' + effectiveLv]];
+    const pair = get => rotation.map(get).join(' / ');
+    rows.push(['比較時間', pair(run => run.durationSec + ' 秒')]);
+    for (const [i, skill] of rotation[0].skills.entries()) {
+      rows.push([skill.name + ' 使用回数', pair(run => run.skills[i].casts)]);
+      if (skill.mainHits != null) {
+        rows.push([skill.name + ' 直撃HIT換算', pair(run => run.skills[i].casts * skill.mainHits)]);
+      } else {
+        rows.push([skill.name + ' 範囲滞在（延べ秒）', pair(run => fmt(run.skills[i].occupiedSec))]);
+      }
+      if (skill.waveTargets) rows.push(['衝撃波HIT（範囲内の敵）', pair(run => run.skills[i].casts * skill.waveTargets)]);
+      if (skill.reachesCap) rows.push([skill.name + ' 上限到達', 'あり']);
+    }
+    rows.push(['直撃・衝撃波のみの期待値', pair(run => fmtInt(run.skills.reduce(
+      (sum, skill) => sum + skill.casts * ((skill.mainHits == null ? 0 : skill.mainExpected) + skill.waveExpected), 0)))]);
+    rows.push(['消費CP', pair(run => fmt(run.spentCp))]);
+    if (Number.isFinite(rotation[0].cp)) {
+      rows.push(['CP補給回数', pair(run => run.refillCount)], ['残りCP', pair(run => fmt(run.cp))]);
+      if (rotation.some(run => run.cpShortage)) rows.push(['CP不足', pair(run => run.cpShortage ? 'あり' : 'なし')]);
+    }
+    return rows;
+  }
 
-  function syncFromCharacter(ch, finalStats, abilities) {
+  function physicalTimingRows(result) {
+    const { activationIntervalSec, cooldownSec, effectiveCooldownSec, durationSec, hitIntervalSec, overlapUnresolved } = result.timing;
+    const seconds = value => Number.isFinite(value) ? fmt(value) + ' 秒' : '—';
+    const rows = [];
+    if (cooldownSec > 0) rows.push(['CT (短縮後)', seconds(effectiveCooldownSec)]);
+    rows.push([overlapUnresolved ? '発動間隔の下限' : '発動間隔', seconds(activationIntervalSec)]);
+    if (durationSec != null && !result.zone) rows.push(['持続時間', seconds(durationSec)]);
+    if (hitIntervalSec != null) rows.push(['ヒット間隔', seconds(hitIntervalSec)]);
+    return rows;
+  }
+
+  function damageBreakdownTable(rows) {
+    return (
+      '<table><tbody>' +
+      rows.map(([k, v]) => `<tr><th>${esc(k)}</th><td class="dbd-val">${esc(String(v))}</td></tr>`).join('') +
+      '</tbody></table>'
+    );
+  }
+
+  function syncFromCharacter(ch, finalStats, abilities, syncedBarrelPct = 0, scrolls = []) {
     if (!ch || !finalStats || !abilities) return;
     const eq = finalStats.equipped || {};
     
     lastEquipped = eq;
+    activeScrollEffects = new Map(scrolls.filter(({ def, count }) => count >= 5 && supportedScrollEffects.has(def.id))
+      .map(({ def }) => [def.id, def.name]));
     lastSkillBonus = Number(eq.skillLv) || 0;
     const auto = $('damage-auto-sync');
     if (!auto || !auto.checked) { recalc(); return; }
     isSyncing = true;
     try {
       
-      setIfAuto('dmg-in-weaponMin', abilities.atkMin || 0);
-      setIfAuto('dmg-in-weaponMax', abilities.atkMax || 0);
+      const isMusket = Number(ch.job) === 21;
+      const useBaseWeaponAttack = isMusket || [16, 17, 18, 19].includes(Number(ch.job));
+      setIfAuto('dmg-in-weaponMin', (useBaseWeaponAttack ? abilities.atkBaseMin : abilities.atkMin) || 0);
+      setIfAuto('dmg-in-weaponMax', (useBaseWeaponAttack ? abilities.atkBaseMax : abilities.atkMax) || 0);
     setIfAuto('dmg-in-attackSpd', 20 + (Number(eq.atkspd) || 0));
-      setIfAuto('dmg-in-str',       Number(eq.str) || Number(ch?.stats?.base?.str) || 0);
-      setIfAuto('dmg-in-physDmgPct', Number(eq.physDamagePercent) || 0);
+      const wolfForm = Number(ch.job) === 5;
+      const physicalStat = wolfForm ? 'int' : 'str';
+      setIfAuto('dmg-in-str', Number(eq[physicalStat]) || Number(ch.stats?.base?.[physicalStat]) || 0);
+      setIfAuto('dmg-in-physDmgPct', (Number(eq.physDamagePercent) || 0) - syncedBarrelPct);
       setIfAuto('dmg-in-critRate',   eq.disablePhysCrit ? 0 : (Number(eq.physCritRate) || 0));
       setIfAuto('dmg-in-finalAtkPct', Number(eq.finalAttackPercent) || 0);
       setIfAuto('dmg-in-strongRate', Number(eq.physStrongRate) || 0);
+      setIfAuto('dmg-in-critDmg',    Number(eq.physCritDamage) || 0);
       setIfAuto('dmg-in-strongDmg',  Number(eq.physStrongDamage) || 0);
+      setIfAuto('dmg-in-strongCapAmplify', Number(eq.physStrongCapAmplify) || 0);
       setIfAuto('dmg-in-doubleCritDmg', Number(eq.doubleCritDamage) || 0);
       setIfAuto('dmg-in-limitBreakPct',
         (eq.__withTitleLimitBreakPhysPct != null)
@@ -20339,24 +21007,25 @@ const DamageCalc = (() => {
       const mapDamageCutPct = getCurrentMapDamageCutPct();
       setIfAuto('dmg-in-mobCut', mapDamageCutPct);
 
-      
-      setIfAuto('dmg-in-mWeaponMin', abilities.atkMin || 0);
-      setIfAuto('dmg-in-mWeaponMax', abilities.atkMax || 0);
+      setIfAuto('dmg-in-mWeaponMin', (isMusket ? abilities.atkBaseMin : abilities.atkMin) || 0);
+      setIfAuto('dmg-in-mWeaponMax', (isMusket ? abilities.atkBaseMax : abilities.atkMax) || 0);
       setIfAuto('dmg-in-mWeaponDamagePct', Number(eq.physDamagePercent) || 0);
       
-      const intVal = Number(eq.int) || Number(ch?.stats?.base?.int) || 0;
-      setIfAuto('dmg-in-mInt', intVal);
-      setIfAuto('dmg-in-mCharisma', Number(eq.chs) || 0);
+      const magicStat = wolfForm ? 'str' : 'int';
+      setIfAuto('dmg-in-mInt', Number(eq[magicStat]) || Number(ch.stats?.base?.[magicStat]) || 0);
+      setIfAuto('dmg-in-mCharisma', Number(eq[wolfForm ? 'con' : 'chs']) || 0);
       setIfAuto('dmg-in-mAccuracy', Number(eq.magicAccuracy) || 0);
       setIfAuto('dmg-in-mThirst', Number(eq.setThirstMaxPercent) || 0);
       const cpInput = $('dmg-in-mCurrentCp');
       if (cpInput && currentCpAuto) cpInput.value = String(abilities.cpMax);
       setIfAuto('dmg-in-mMaxCp', abilities.cpMax);
       setIfAuto('dmg-in-mDmgPct',   Number(eq.attrMagic) || 0); 
+      setIfAuto('dmg-in-mWindEnhance', Number(eq.attrWind) || 0);
       setIfAuto('dmg-in-mCritRate', Number(eq.magicCritRate) || 0);
+      setIfAuto('dmg-in-mCritDmg', Number(eq.magicCritDamage) || 0);
       setIfAuto('dmg-in-mStrongRate', Number(eq.magicStrongRate) || 0);
+      setIfAuto('dmg-in-mStrongDmg', Number(eq.magicStrongDamage) || 0);
 
-      
       const titleBonus2 = Titles.computeBonus();
       const titleMagicPct = titleBonus2.magicPct || 0;
       setIfAuto('dmg-in-mLimitPct', eq.__withTitleLimitBreakMagicPct ?? (titleMagicPct + (Number(eq.limitBreakMagicPercent) || 0)));
@@ -20365,12 +21034,13 @@ const DamageCalc = (() => {
       setIfAuto('dmg-in-mMobCut', mapDamageCutPct);
       setIfAuto('dmg-in-mAttackSpd', Number(eq.atkspd) || 0);
       
+      setIfAuto('dmg-in-mLimitFlat', eq.__withTitleLimitBreakMagicFlat
+        ?? ((Number(eq.limitBreakMagicFlat) || 0) + (titleBonus2.magicFlat || 0)));
       setIfAuto('dmg-in-mAlchemy', titleBonus2.alchemyLv || 0);
     } finally {
       isSyncing = false;
     }
 
-    
     const jobId = Number($('ch-job')?.value);
     if (jobId !== currentJobId) {
       loadForJob(jobId);
@@ -20390,8 +21060,10 @@ const DamageCalc = (() => {
     const t = ev.target;
     if (t?.id === 'dmg-in-mCurrentCp') currentCpAuto = false;
     if (t && t.classList) t.classList.remove('is-auto');
-    if (!isSyncing) recalc();
-    if (!isSyncing) scheduleAutosave();
+    if (isSyncing) return;
+    if (t?.id === cannonBarrelInput) recalcAll();
+    else recalc();
+    scheduleAutosave();
   }
 
   function onSkillChange() {
@@ -20408,13 +21080,17 @@ const DamageCalc = (() => {
 
   function clamp01(v) { return Math.max(0, Math.min(1, v)); }
   function fmt(v) { return (Math.round(Number(v) * 100) / 100).toString(); }
+  function fmtSignedPercent(v) {
+    const value = fmt(v);
+    return (value.startsWith('-') ? '' : '+') + value + '%';
+  }
   function fmtInt(v) {
     if (v == null || isNaN(v)) return '-';
     const n = Math.round(Number(v));
     return n.toLocaleString('en-US');
   }
 
-  function init() {
+  function init({ loadSkills = true } = {}) {
     if (initialized) return;
     initialized = true;
     const inputIds = [
@@ -20423,20 +21099,24 @@ const DamageCalc = (() => {
       'dmg-in-physDmgPct','dmg-in-vsTypePct','dmg-in-finalAtkPct','dmg-in-finalPhysPct',
       'dmg-in-bloodFieldDmg',
       'dmg-in-critRate','dmg-in-doubleCritRate','dmg-in-strongRate',
-      'dmg-in-doubleCritDmg','dmg-in-strongDmg',
+      'dmg-in-critDmg','dmg-in-doubleCritDmg','dmg-in-strongDmg','dmg-in-strongCapAmplify',
       'dmg-in-limitBreakPct','dmg-in-limitBreakFlat','dmg-in-physCapBase',
       'dmg-in-attackSpd','dmg-in-skillCdReduce','dmg-in-mobDef','dmg-in-mobCut',
+      'dmg-in-ranzanDistance',
+      ...Object.keys(scrollInputRows),
+      ...cannonInputs,
+      ...Object.keys(siegeInputDefaults),
       
       'dmg-in-mWeaponMin','dmg-in-mWeaponMax','dmg-in-mWeaponDamagePct',
       'dmg-in-mAtkApplyPct','dmg-in-mMainHits','dmg-in-mExtraHits',
       'dmg-in-mExtraScalePct','dmg-in-mBulletCount','dmg-in-mMusketDpsMode',
       'dmg-in-mCharisma','dmg-in-mAccuracy','dmg-in-mEvasion',
       'dmg-in-mCurrentCp','dmg-in-mMaxCp','dmg-in-mThirst',
-      'dmg-in-mInt','dmg-in-mDmgPct','dmg-in-mAlchemy','dmg-in-mStoneStatue',
+      'dmg-in-mInt','dmg-in-mDmgPct','dmg-in-mWindEnhance','dmg-in-mAlchemy','dmg-in-mStoneStatue',
       'dmg-in-mMysticWater','dmg-in-mBladeOil',
       'dmg-in-mEnemyResist','dmg-in-mEnemyWeaken',
       'dmg-in-mFinalDmg','dmg-in-mBloodFieldDmg','dmg-in-mMobCut',
-      'dmg-in-mCritRate','dmg-in-mStrongRate',
+      'dmg-in-mCritRate','dmg-in-mCritDmg','dmg-in-mStrongRate','dmg-in-mStrongDmg',
       'dmg-in-mLimitPct','dmg-in-mLimitFlat','dmg-in-mCapBase',
       'dmg-in-mAttackSpd','dmg-in-mDmgMode',
     ];
@@ -20450,7 +21130,7 @@ const DamageCalc = (() => {
     $('damage-skill-lv')?.addEventListener('input', onSkillChange);
     $('damage-auto-sync')?.addEventListener('change', () => { recalcAll(); scheduleAutosave(); });
 
-    loadForJob(Number($('ch-job')?.value) || 0);
+    if (loadSkills) loadForJob(Number($('ch-job')?.value) || 0);
   }
 
   function getLastResult() {
@@ -20469,17 +21149,30 @@ const DamageCalc = (() => {
       baseLv: Number($('damage-skill-lv')?.value) || 50, inputs };
   }
 
-  async function setState(state) {
+  async function setState(state, preparedDb) {
     if (!state) return; 
-    init();
-    await loadForJob(Number($('ch-job')?.value) || 0);
+    init({ loadSkills: false });
+    const job = Number($('ch-job')?.value) || 0;
+    if (preparedDb === undefined) {
+      await loadForJob(job);
+    } else {
+      ++skillLoadRevision;
+      installSkillDb(job, preparedDb);
+    }
     if (typeof state.auto === 'boolean') $('damage-auto-sync').checked = state.auto;
     currentCpAuto = typeof state.currentCpAuto === 'boolean' ? state.currentCpAuto : state.inputs?.['dmg-in-mCurrentCp'] == null;
     $('damage-skill-lv').value = Math.max(1, Math.min(50, Number(state.baseLv) || 50));
     const select = $('damage-skill-select');
     if ([...select.options].some((option) => option.value === state.skill)) select.value = state.skill;
     for (const node of document.querySelectorAll('[id^="dmg-in-"]')) {
-      const value = state.inputs?.[node.id];
+      const hasZeroDefault = ['dmg-in-critDmg', 'dmg-in-strongCapAmplify',
+        'dmg-in-mCritDmg', 'dmg-in-mStrongDmg', 'dmg-in-mLimitFlat'].includes(node.id) || cannonInputs.includes(node.id);
+      const initial = node.tagName === 'SELECT'
+        ? ([...node.options].find((option) => option.defaultSelected) || node.options[0])?.value
+        : node.defaultValue;
+      const value = state.inputs?.[node.id] ?? siegeInputDefaults[node.id]
+        ?? (node.id === 'dmg-in-ranzanDistance' || Object.hasOwn(scrollInputRows, node.id) ? node.defaultValue : undefined)
+        ?? (hasZeroDefault ? 0 : preparedDb !== undefined ? initial : undefined);
       if (value == null) continue;
       if (node.tagName === 'SELECT') {
         if ([...node.options].some((option) => option.value === String(value))) node.value = String(value);
@@ -20491,7 +21184,8 @@ const DamageCalc = (() => {
   }
 
   let skillLoadRevision = 0;
-  return { init, syncFromCharacter, loadForJob, getLastResult, refresh, getState, setState };
+  return { init, syncFromCharacter, loadForJob, getLastResult, refresh, getState, setState,
+    prepareState, fetchSkillDb, getSkillDb: () => skillDb, barrelAttackPct, resetCannonInputs, resetRanzanDistance, resetScrollInputs };
 })();
 
 const EquipmentOptimizer = (() => {
@@ -20660,7 +21354,7 @@ const EquipmentOptimizer = (() => {
   }
 
   function scoreOf(result, metric) {
-    if (!result) return -Infinity;
+    if (result?.[metric] == null) return -Infinity;
     const v = Number(result[metric]);
     return Number.isFinite(v) ? v : -Infinity;
   }
@@ -20678,7 +21372,7 @@ const EquipmentOptimizer = (() => {
       score,
       metric,
       expected: Number(damage.expected) || 0,
-      dps: Number(damage.dps) || 0,
+      dps: damage.dps,
       normal: Number(damage.normal) || 0,
       build: cloneBuild(actualBuild),
       signature: buildSignature(actualBuild),
@@ -20715,7 +21409,7 @@ const EquipmentOptimizer = (() => {
         `<tr>` +
         `<th>${i + 1}</th>` +
         `<td class="num">${Math.round(r.score).toLocaleString('en-US')}</td>` +
-        `<td class="num">${Math.round(r.dps).toLocaleString('en-US')}</td>` +
+        `<td class="num">${r.dps == null ? '-' : Math.round(r.dps).toLocaleString('en-US')}</td>` +
         `<td class="num">${Math.round(r.expected).toLocaleString('en-US')}</td>` +
         `<td class="diff">${html(r.diffText).replace(/\n/g, '<br>')}</td>` +
         `<td><button type="button" data-opt-preview="${i}">Preview</button> ` +
@@ -20774,6 +21468,10 @@ const EquipmentOptimizer = (() => {
       }
 
       const metric = $('optimizer-metric')?.value || 'dps';
+      if (first.dps == null && metric === 'dps') {
+        setStatus('評価に「期待値 1回」または「通常 1回」を選んでください。');
+        return;
+      }
       const limit = Math.max(1, Math.min(50, num('optimizer-limit', 8)));
       const passes = Math.max(1, Math.min(5, num('optimizer-passes', 2)));
       const candidates = await collectCandidates(limit);
@@ -20895,7 +21593,8 @@ function pvpSyncAttackerFromDamageCalc() {
       pvpDamageRefreshInProgress = false;
     }
   }
-  const result = DamageCalc.getLastResult ? DamageCalc.getLastResult() : null;
+  const selectedResult = DamageCalc.getLastResult ? DamageCalc.getLastResult() : null;
+  const result = selectedResult?.physical ?? selectedResult;
   const status = $('pvp-atk-sync-status');
   if (!result || !Number.isFinite(Number(result.expected))) {
     if (status) status.textContent = 'ダメージ計算タブでスキルを選択すると自動入力します。';
@@ -20961,7 +21660,8 @@ function updatePvpCalculator() {
   const humanReduce = pvpReadNumber('pvp-def-human-reduce');
 
   const atk = atkPower * (1 + pvpAtk / 100) * (1 + humanAtk / 100) * (1 + finalDmg / 100);
-  const damageResult = $('pvp-auto-attacker')?.checked ? DamageCalc.getLastResult() : null;
+  const selectedResult = $('pvp-auto-attacker')?.checked ? DamageCalc.getLastResult() : null;
+  const damageResult = selectedResult?.physical ?? selectedResult;
   const ignore = damageResult?.mode === 'phys' && $('damage-auto-sync')?.checked
     ? Math.max(0, Math.min(100, Number(lastFinalStats?.targetFinalDefenseIgnorePercent) || 0)) : 0;
   const def = defBase * (1 + pvpDef / 100) * (1 + defExtra / 100) * (1 - ignore / 100);

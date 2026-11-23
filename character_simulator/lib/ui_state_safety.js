@@ -14,14 +14,16 @@ export function compatibleSeirenSelection(current, pool) {
   return '';
 }
 
-export function skillDamageIssue(skill, row, mode, weaponMagic = false) {
+export function skillDamageIssue(skill, row, mode, weaponMagic = false,
+  attackCount = effectiveSkillAttackCount(skill, row, 0)) {
   if (!row) return '現在の条件では計算結果を表示できません。';
   if (weaponMagic) return '';
   const keys = mode === 'phys' ? ['physDmgPct'] : ['magicDmgMin', 'magicDmgMax'];
+  if (mode === 'mixed') keys.push('physDmgPct');
   if (keys.some((key) => typeof row[key] !== 'number' || !Number.isFinite(row[key]))) {
     return '現在の条件では計算結果を表示できません。';
   }
-  if (skill.hasAttackCount && readSkillAttackCount(row.attackCount) == null) {
+  if ((skill.hasAttackCount || mode === 'mixed') && attackCount == null) {
     return '現在の条件では計算結果を表示できません。';
   }
   return '';
@@ -38,9 +40,8 @@ export function effectiveSkillAttackCount(skill, row, attackSpeedPercent) {
     const bonus = Math.max(0, Number(attackSpeedPercent) || 0);
     return Math.min(speed.max, speed.base + Math.floor(bonus / speed.stepPercent));
   }
-  return skill.calculationHitCount || readSkillAttackCount(row?.attackCount);
+  return readSkillAttackCount(skill.calculationHitCount) ?? readSkillAttackCount(row?.attackCount);
 }
-
 
 export function serialTaskQueue(task) {
   let tail = Promise.resolve();
